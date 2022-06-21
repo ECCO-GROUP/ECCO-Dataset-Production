@@ -7,8 +7,10 @@ Author: Duncan Bark
 
 from email.policy import default
 import os
+from posixpath import split
 import sys
 import copy
+import glob
 import json
 import time
 import boto3
@@ -20,7 +22,8 @@ from collections import defaultdict
 from numpy import product
 
 sys.path.append(f'{Path(__file__).parent.resolve()}')
-from aws_helpers import get_credentials_helper, upload_S3, create_lambda_function, get_aws_credentials, save_logs, get_logs
+from eccov4r4_gen_for_podaac_cloud import generate_netcdfs
+from aws_helpers import get_credentials_helper, upload_S3, create_lambda_function, get_aws_credentials, save_logs, get_logs, get_files_time_steps
 from gen_netcdf_utils import create_all_factors
 import ecco_cloud_utils as ea
 
@@ -60,6 +63,10 @@ if __name__ == "__main__":
     local = not dict_key_args['use_cloud']
     use_lambda = dict_key_args['use_lambda']
     force_reconfigure = dict_key_args['force_reconfigure']
+
+    # if use lambda, then local is False (only use S3 for data)
+    if use_lambda:
+        local = False
 
     # Testing/setup paths and config -------------------------------------
     # path_to_yaml = Path(__file__).parent.resolve() / 'configs' / 'gen_netcdf_config.yaml'
@@ -117,12 +124,12 @@ if __name__ == "__main__":
             line_vals = line.strip().split(',')
             all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], line_vals[3]])
 
-    # Verify AWS access keys
+    # Get AWS credentials, and info from aws_config
     credentials = {}
+    aws_config_metadata = {}
     if not local:
         # Load 'aws_config.json'
         aws_config_json = json.load(open(Path(__file__).parent.resolve() / 'configs' / 'aws_config.json'))
-        aws_config_metadata = {}
         for entry in aws_config_json:
             aws_config_metadata[entry['name']] = entry['value']
 
@@ -148,6 +155,13 @@ if __name__ == "__main__":
         account_id = aws_config_metadata['account_id']
         region = aws_config_metadata['region']
         memory_size = aws_config_metadata['memory_size']
+
+        max_1D_latlon = aws_config_metadata['max_latlon_exec_1D']
+        max_1D_native = aws_config_metadata['max_native_exec_1D']
+        max_2D_latlon = aws_config_metadata['max_latlon_exec_2D']
+        max_2D_native = aws_config_metadata['max_native_exec_2D']
+        max_3D_latlon = aws_config_metadata['max_latlon_exec_3D']
+        max_3D_native = aws_config_metadata['max_native_exec_3D']
 
         if 'linux' in platform.platform().lower():
             aws_login_file = './aws-login.linux.amd64'
@@ -232,12 +246,8 @@ if __name__ == "__main__":
     # loop through all jobs and either process them locally
     # or invoke the created lambda function
     if process_data:
-        for (grouping_to_process, product_type, output_freq_code, time_steps_to_process) in all_jobs:
-
-            # Reorganize model output in S3 to be structured by grouping, grid, and frequency
-            # i.e. ecco_group_0_avg_mon_latlon, ecco_group_11_snap, etc.
-            # buckets_list = s3.list_buckets()
-
+        for (grouping_to_process, product_type, output_freq_code, time_steps_to_process) in all_jobs:      
+            # Get field time steps and field files
             if product_type == 'latlon':
                 curr_grouping = groupings_for_latlon_datasets[grouping_to_process]
             elif product_type == 'native':
@@ -248,115 +258,155 @@ if __name__ == "__main__":
             filename = curr_grouping['filename']
 
             if output_freq_code == 'AVG_DAY':
-                s3_dir_prefix = 'diags_all/diags_daily'
+                freq_folder = 'diags_daily'
+                s3_dir_prefix = f'diags_all/{freq_folder}'
                 period_suffix = 'day_mean'
 
             elif output_freq_code == 'AVG_MON':
-                s3_dir_prefix = 'diags_all/diags_monthly'
+                freq_folder = 'diags_monthly'
+                s3_dir_prefix = f'diags_all/{freq_folder}'
                 period_suffix = 'mon_mean'
 
             elif output_freq_code == 'SNAPSHOT':
-                s3_dir_prefix = 'diags_all/diags_inst'
+                freq_folder = 'diags_inst'
+                s3_dir_prefix = f'diags_all/{freq_folder}'
                 period_suffix = 'day_inst'
             else:
                 print('valid options are AVG_DAY, AVG_MON, SNAPSHOT')
                 print('you provided ', output_freq_code)
-                sys.exit()        
+                sys.exit()
 
-            s3_field_paths = []
+            if not local:
+                field_files, field_time_steps, all_time_steps_all_vars = get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, 
+                                                                                                source_bucket, product_type)
+            else:
+                field_files = {}
+                field_time_steps = {}
+                all_time_steps_all_vars = []
+                for field in fields:
+                    if time_steps_to_process == 'all':
+                        field_files[field] = sorted(glob.glob(f'{config_metadata["model_data_dir"]}/{freq_folder}/{field}_{period_suffix}/*.data'))
+                        time_steps = [key.split('.')[-2] for key in field_files[field]]
+                        field_time_steps[field] = sorted(time_steps)
+                        all_time_steps_all_vars.extend(time_steps)
+                    else:
+                        field_files[field] = []
+                        field_time_steps[field] = []
+                        for ts in time_steps_to_process:
+                            ts = str(ts).zfill(10)
+                            field_files[field].append(f'{config_metadata["model_data_dir"]}/{freq_folder}/{field}_{period_suffix}/{field}_{period_suffix}.{ts}.data')
+                            field_time_steps[field].append(ts)
+                            all_time_steps_all_vars.append(ts)
+                        field_files[field] = sorted(field_files[field])
+                        field_time_steps[field] = sorted(field_time_steps[field])
+
+            # check that each field has the same number of times
+            all_time_steps = sorted(list(set(all_time_steps_all_vars)))
             for field in fields:
-                s3_field_paths.append(f'{s3_dir_prefix}/{field}_{period_suffix}')
-
-            field_files = defaultdict(list)
-            field_time_steps = defaultdict(list)
-            for s3_field_path in s3_field_paths:
-                start_after = ''
-                field = s3_field_path.split('/')[-1]
-                while True:
-                    source_objects = s3.list_objects_v2(Bucket=source_bucket, Prefix=s3_field_path, StartAfter=start_after)
-
-                    if 'Contents' not in source_objects:
-                        break
-
-                    data_keys = [key['Key'] for key in source_objects['Contents'] if '.data' in key['Key']]
-                    field_files[field].extend(data_keys)
-                    start_after = data_keys[-1]
-
-                    time_steps = [key.split('.')[-2] for key in data_keys]
-                    field_time_steps[field].extend(time_steps)
-
-                    if product_type == 'native':
-                        meta_keys = [key['Key'] for key in source_objects['Contents'] if '.meta' in key['Key']]
-                        field_files[field].extend(meta_keys)
-                        start_after = meta_keys[-1]
-
-            # group number of time steps and files to process based on time to execute
-            
-            import pdb; pdb.set_trace()
+                if all_time_steps == field_time_steps[field]:
+                    continue
+                else:
+                    print(f'Unequal time steps for field "{field}". Exiting')
+                    sys.exit()
 
 
             # **********
             # CREATE LAMBDA REQUEST FOR EACH "JOB"
             # **********
             if use_lambda:
-                # create payload for current lambda job
+                # group number of time steps and files to process based on time to execute
+                max_execs = 0
+                if product_type == 'latlon':
+                    if dimension == '1D':
+                        max_execs = max_1D_latlon
+                    elif dimension == '2D':
+                        max_execs = max_2D_latlon
+                    else:
+                        max_execs = max_3D_latlon
+                elif product_type == 'native':
+                    if dimension == '1D':
+                        max_execs = max_1D_native
+                    elif dimension == '2D':
+                        max_execs = max_2D_native
+                    else:
+                        max_execs = max_3D_native
+
+                split_time_steps = [all_time_steps[x:x+max_execs] for x in range(0,len(all_time_steps), max_execs)]
+
+                split_field_files = []
+                for field in fields:
+                    split_files = [field_files[field][x:x+max_execs] for x in range(0, len(all_time_steps), max_execs)]
+                    for i, split_f in enumerate(split_files):
+                        if len(split_field_files) <= i:
+                            split_field_files.append({})
+                        split_field_files[i][field] = split_f
+
+                for i, time_steps in enumerate(split_time_steps):
+                    # create payload for current lambda job
+                    payload = {
+                        'grouping_to_process': grouping_to_process,
+                        'product_type': product_type,
+                        'output_freq_code': output_freq_code,
+                        'time_steps_to_process': time_steps,
+                        'field_files': split_field_files[i],
+                        'config_metadata': config_metadata,
+                        'aws_metadata': aws_config_metadata,
+                        'debug_mode': debug_mode,
+                        'local': local,
+                        'use_lambda': use_lambda,
+                        'credentials': credentials
+                    }
+
+                    data_to_process= {
+                        'grouping_to_process': grouping_to_process,
+                        'product_type': product_type,
+                        'output_freq_code': output_freq_code,
+                        'time_steps_to_process': time_steps
+                    }
+
+                    # invoke lambda job
+                    try:
+                        if use_lambda:
+                            invoke_response = lambda_client.invoke(
+                                FunctionName=function_name,
+                                InvocationType='Event',
+                                Payload=json.dumps(payload),   
+                            )
+
+                            job_logs[invoke_response['ResponseMetadata']['RequestId'].strip()] = {
+                                'date':invoke_response['ResponseMetadata']['HTTPHeaders']['date'], 
+                                'status': invoke_response['StatusCode'], 
+                                'data': data_to_process, 
+                                'report': [], 
+                                'error': [],
+                                'end': False,
+                                'success': False
+                            }
+                    
+                            num_jobs += 1
+                
+                    except Exception as e:
+                        print(f'Lambda invoke error: {e}')
+                        print(f'\tTime Steps: {time_steps}')
+            else:
+                # Call local generate_netcdfs function
                 payload = {
                     'grouping_to_process': grouping_to_process,
                     'product_type': product_type,
                     'output_freq_code': output_freq_code,
-                    'time_steps_to_process': time_steps_to_process,
+                    'time_steps_to_process': all_time_steps,
+                    'field_files': field_files,
                     'config_metadata': config_metadata,
                     'aws_metadata': aws_config_metadata,
                     'debug_mode': debug_mode,
                     'local': local,
+                    'use_lambda': use_lambda,
                     'credentials': credentials
                 }
 
-                data_to_process= {
-                    'grouping_to_process': grouping_to_process,
-                    'product_type': product_type,
-                    'output_freq_code': output_freq_code,
-                    'time_steps_to_process': time_steps_to_process
-                }
-
-                # invoke lambda job
-                try:
-                    if use_lambda:
-                        invoke_response = lambda_client.invoke(
-                            FunctionName=function_name,
-                            InvocationType='Event',
-                            Payload=json.dumps(payload),   
-                        )
-
-                        job_logs[invoke_response['ResponseMetadata']['RequestId'].strip()] = {
-                            'date':invoke_response['ResponseMetadata']['HTTPHeaders']['date'], 
-                            'status': invoke_response['StatusCode'], 
-                            'data': data_to_process, 
-                            'report': [], 
-                            'error': [],
-                            'end': False
-                        }
-                
-                        num_jobs += 1
-            
-                except Exception as e:
-                    print(f'Lambda invoke error: {e}')
-
-            # print(f'time_steps_to_process: {time_steps_to_process} ({type(time_steps_to_process)})')
-            # print(f'grouping_to_process: {grouping_to_process} ({type(grouping_to_process)})')
-            # print(f'product_type: {product_type} ({type(product_type)})')
-            # print(f'output_freq_code: {output_freq_code} ({type(output_freq_code)})')
-
-            # generate_netcdfs(output_freq_code,
-            #                     product_type,
-            #                     grouping_to_process,
-            #                     time_steps_to_process,
-            #                     config_metadata,
-            #                     aws_metadata,
-            #                     debug_mode,
-            #                     local,
-            #                     credentials)
+                generate_netcdfs(payload)
         
+        # Lambda logging
         if use_lambda:
             log_client = boto3.client('logs')
             log_group_name = '/aws/lambda/ecco_processing'
@@ -481,8 +531,8 @@ if __name__ == "__main__":
                             job_logs[job_id]['extra'] = extra_logs[logStreamName]
                             job_logs[job_id]['end'] = True
                             job_logs[job_id]['success'] = logStreamName in success_jobs
-                            if job_id in job_id_report_name.keys() and job_id_report_name[job_id]['logStreamName'] in error_logs.keys():
-                                job_logs[job_id]['error'] = error_logs[job_id_report_name[job_id]['logStreamName']]
+                            if job_id in job_id_report_name.keys() and logStreamName in error_logs.keys():
+                                job_logs[job_id]['error'] = error_logs[logStreamName]
 
                     # print('pre-ended_log')
                     ended_log_stream_names.extend([job_id_report_name[jid]['logStreamName'] for jid in end_jobs_list if jid in job_id_report_name.keys()])

@@ -5,6 +5,42 @@ import json
 import boto3
 import subprocess
 from pathlib import Path
+from collections import defaultdict
+
+
+def get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, source_bucket, product_type):
+    s3_field_paths = []
+    for field in fields:
+        s3_field_paths.append(f'{s3_dir_prefix}/{field}_{period_suffix}')
+
+    field_files = defaultdict(list)
+    field_time_steps = defaultdict(list)
+    all_time_steps_all_vars = []
+    for i, s3_field_path in enumerate(s3_field_paths):
+        start_after = ''
+        field = fields[i]
+        while True:
+            source_objects = s3.list_objects_v2(Bucket=source_bucket, Prefix=s3_field_path, StartAfter=start_after)
+
+            if 'Contents' not in source_objects:
+                break
+
+            if product_type == 'latlon':
+                file_type = '.data'
+            elif product_type == 'native':
+                file_type = '.meta'
+
+            file_keys = [key['Key'] for key in source_objects['Contents'] if file_type in key['Key'] and key['Key'] not in field_files[field]]
+            field_files[field].extend(file_keys)
+            time_steps = [key.split('.')[-2] for key in file_keys]
+            field_time_steps[field].extend(time_steps)
+            start_after = file_keys[-1]
+        
+        field_files[field] = sorted(field_files[field])
+        field_time_steps[field] = sorted(field_time_steps[field])
+        all_time_steps_all_vars.extend(time_steps)
+
+    return field_files, field_time_steps, all_time_steps_all_vars
 
 
 def get_logs(log_client, log_group_name, log_stream_names, start_time=0, end_time=0, filter_pattern='', type=''):

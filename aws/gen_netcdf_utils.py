@@ -448,12 +448,12 @@ def create_all_factors(ea, config_metadata, dataset_dim, debug_mode):
 # ==========================================================================================================================
 # VARIABLE LOADING UTILS
 # ==========================================================================================================================
-def latlon_load_2D(ea, ecco, wet_pts_k, target_grid, mds_var_dir, mds_file, record_end_time, mapping_factors_dir):
-    if isinstance(mds_file, str):
-        mds_file_name = mds_file.split('/')[-1]
-    else:
-        mds_file_name = mds_file.name
-    F = ecco.read_llc_to_tiles(mds_var_dir, mds_file_name,
+def latlon_load_2D(ea, ecco, wet_pts_k, target_grid, data_file_path, record_end_time, mapping_factors_dir):
+    # if isinstance(mds_file, str):
+    #     mds_file_name = mds_file.split('/')[-1]
+    # else:
+    #     mds_file_name = mds_file.name
+    F = ecco.read_llc_to_tiles(data_file_path,
                                 llc=90, skip=0,
                                 nk=1, nl=1,
                                 filetype='>f',
@@ -491,13 +491,13 @@ def latlon_load_2D(ea, ecco, wet_pts_k, target_grid, mds_var_dir, mds_file, reco
     return F_DA
 
 
-def latlon_load_3D(ea, ecco, Z, wet_pts_k, target_grid, mds_var_dir, 
-                    mds_file, record_end_time, nk, mapping_factors_dir):
-    if isinstance(mds_file, str):
-        mds_file_name = mds_file.split('/')[-1]
-    else:
-        mds_file_name = mds_file.name
-    F = ecco.read_llc_to_tiles(mds_var_dir, mds_file_name,
+def latlon_load_3D(ea, ecco, Z, wet_pts_k, target_grid, data_file_path, 
+                    record_end_time, nk, mapping_factors_dir):
+    # if isinstance(mds_file, str):
+    #     mds_file_name = mds_file.split('/')[-1]
+    # else:
+    #     mds_file_name = mds_file.name
+    F = ecco.read_llc_to_tiles(data_file_path,
                                 llc=90, skip=0, nk=nk,
                                 nl=1,
                                 filetype='>f',
@@ -538,14 +538,14 @@ def latlon_load_3D(ea, ecco, Z, wet_pts_k, target_grid, mds_var_dir,
     return F_DA
 
 
-def latlon_load(ea, ecco, Z, wet_pts_k, target_grid, mds_var_dir, mds_file,
+def latlon_load(ea, ecco, Z, wet_pts_k, target_grid, data_file_path,
                 record_end_time, nk, dataset_dim, var, output_freq_code, mapping_factors_dir):
     if dataset_dim == '2D':
         F_DA = latlon_load_2D(ea, ecco, wet_pts_k, target_grid, 
-                                mds_var_dir, mds_file, record_end_time, mapping_factors_dir)
+                                data_file_path, record_end_time, mapping_factors_dir)
     elif dataset_dim == '3D':
         F_DA = latlon_load_3D(ea, ecco, Z, wet_pts_k, target_grid, 
-                                mds_var_dir, mds_file, record_end_time, nk, mapping_factors_dir)
+                                data_file_path, record_end_time, nk, mapping_factors_dir)
 
     # assign name to data array
     # print('... assigning name', var)

@@ -1,0 +1,21 @@
+{
+    "Total Time (s)": 0.639,
+    "Cost Information": {},
+    "ae041257-8dac-406b-813c-ee8c8c9df9b8": {
+        "date": "Fri, 17 Jun 2022 00:16:16 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "latlon",
+            "output_freq_code": "AVG_MON",
+            "time_steps_to_process": [
+                "0000000732",
+                "0000001428",
+                "0000002172"
+            ]
+        },
+        "report": [],
+        "error": [],
+        "end": false
+    }
+}
