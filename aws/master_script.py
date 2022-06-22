@@ -130,7 +130,10 @@ if __name__ == "__main__":
                     times.append(int(tv))
                 all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], times])
             else:
-                all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], line_vals[3]])
+                if line_vals[3] == 'all':
+                    all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], line_vals[3]])
+                else:
+                    all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], int(line_vals[3])])
 
 
     # Get grouping information
@@ -198,6 +201,8 @@ if __name__ == "__main__":
             f'{function_name_prefix}_3D_latlon': aws_config_metadata['memory_size_3D_latlon'],
             f'{function_name_prefix}_3D_native': aws_config_metadata['memory_size_3D_native']
         }
+
+        number_of_batches_to_process = aws_config_metadata['number_of_batches_to_process']
 
         if 'linux' in platform.platform().lower():
             aws_login_file = './aws-login.linux.amd64'
@@ -314,17 +319,17 @@ if __name__ == "__main__":
 
             if output_freq_code == 'AVG_DAY':
                 freq_folder = 'diags_daily'
-                s3_dir_prefix = f'diags_all/{freq_folder}'
+                s3_dir_prefix = f'V4r4/{freq_folder}'
                 period_suffix = 'day_mean'
 
             elif output_freq_code == 'AVG_MON':
                 freq_folder = 'diags_monthly'
-                s3_dir_prefix = f'diags_all/{freq_folder}'
+                s3_dir_prefix = f'V4r4/{freq_folder}'
                 period_suffix = 'mon_mean'
 
             elif output_freq_code == 'SNAPSHOT':
                 freq_folder = 'diags_inst'
-                s3_dir_prefix = f'diags_all/{freq_folder}'
+                s3_dir_prefix = f'V4r4/{freq_folder}'
                 period_suffix = 'day_inst'
             else:
                 print('valid options are AVG_DAY, AVG_MON, SNAPSHOT')
@@ -405,24 +410,26 @@ if __name__ == "__main__":
                 # split along time step for this value.
                 max_execs = int(max_execs/len(fields))
 
-                split_time_steps = [all_time_steps[x:x+max_execs] for x in range(0,len(all_time_steps), max_execs)]
+                time_steps_by_batch = [all_time_steps[x:x+max_execs] for x in range(0,len(all_time_steps), max_execs)]
+                number_of_batches = len(time_steps_by_batch)
 
-                split_field_files = []
+                field_files_by_batch = {}
                 for field in fields:
-                    split_files = [field_files[field][x:x+max_execs] for x in range(0, len(all_time_steps), max_execs)]
-                    for i, split_f in enumerate(split_files):
-                        if len(split_field_files) <= i:
-                            split_field_files.append({})
-                        split_field_files[i][field] = split_f
+                    batched_field_files = [field_files[field][x:x+max_execs] for x in range(0, len(all_time_steps), max_execs)]
+                    for batch_number, batch_field_files in enumerate(batched_field_files):
+                        if batch_number not in field_files_by_batch.keys():
+                            field_files_by_batch[batch_number] = {}
+                        field_files_by_batch[batch_number][field] = batch_field_files
 
-                for i, time_steps in enumerate(split_time_steps):
+                number_of_batches = min([number_of_batches_to_process, number_of_batches])
+                for i in range(number_of_batches):
                     # create payload for current lambda job
                     payload = {
                         'grouping_to_process': grouping_to_process,
                         'product_type': product_type,
                         'output_freq_code': output_freq_code,
-                        'time_steps_to_process': time_steps,
-                        'field_files': split_field_files[i],
+                        'time_steps_to_process': time_steps_by_batch[i],
+                        'field_files': field_files_by_batch[i],
                         'config_metadata': config_metadata,
                         'aws_metadata': aws_config_metadata,
                         'debug_mode': debug_mode,
@@ -435,7 +442,7 @@ if __name__ == "__main__":
                         'grouping_to_process': grouping_to_process,
                         'product_type': product_type,
                         'output_freq_code': output_freq_code,
-                        'time_steps_to_process': time_steps
+                        'time_steps_to_process': time_steps_by_batch[i]
                     }
 
                     # invoke lambda job

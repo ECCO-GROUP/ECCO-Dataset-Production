@@ -9,7 +9,7 @@ from collections import defaultdict
 
 
 def get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, source_bucket, product_type, time_steps_to_process):
-    if time_steps_to_process != 'all' and not isinstance(time_steps_to_process, list):
+    if time_steps_to_process != 'all' and not isinstance(time_steps_to_process, int):
         print(f'Bad time steps provided ("{time_steps_to_process}"). Skipping job.')
         return -1
 
@@ -23,6 +23,7 @@ def get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, source_bucket
     for i, s3_field_path in enumerate(s3_field_paths):
         start_after = ''
         field = fields[i]
+        total_field_files = 0
         while True:
             source_objects = s3.list_objects_v2(Bucket=source_bucket, Prefix=s3_field_path, StartAfter=start_after)
 
@@ -34,17 +35,25 @@ def get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, source_bucket
             elif product_type == 'native':
                 file_type = '.meta'
 
-            if time_steps_to_process == 'all':
-                file_keys = [key['Key'] for key in source_objects['Contents'] if file_type in key['Key'] and key['Key'] not in field_files[field]]
-            else:
-                file_keys = []
-                for ts in time_steps_to_process:
-                    ts = str(ts).zfill(10)
-                    temp_keys = [key['Key'] for key in source_objects['Contents'] if file_type in key['Key'] and key['Key'] not in field_files[field] and ts in key['Key']]
-                    if temp_keys == []:
-                        print(f'Invalid time step provided ("{ts}"). Skipping job.')
-                        return -1
-                    file_keys.extend(temp_keys)
+            file_keys = [key['Key'] for key in source_objects['Contents'] if file_type in key['Key'] and key['Key'] not in field_files[field]]
+            
+            if time_steps_to_process != 'all':
+                if total_field_files < time_steps_to_process:
+                    num_files_left = time_steps_to_process - total_field_files
+                    if len(file_keys) > num_files_left:
+                        file_keys = file_keys[:num_files_left]
+                else:
+                    break
+            # else:
+            #     file_keys = []
+            #     for ts in time_steps_to_process:
+            #         ts = str(ts).zfill(10)
+            #         temp_keys = [key['Key'] for key in source_objects['Contents'] if file_type in key['Key'] and key['Key'] not in field_files[field] and ts in key['Key']]
+            #         if temp_keys == []:
+            #             print(f'Invalid time step provided ("{ts}"). Skipping job.')
+            #             return -1
+            #         file_keys.extend(temp_keys)
+            total_field_files += len(file_keys)
             field_files[field].extend(file_keys)
             time_steps = [key.split('.')[-2] for key in file_keys]
             field_time_steps[field].extend(time_steps)
