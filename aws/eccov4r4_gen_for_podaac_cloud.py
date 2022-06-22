@@ -26,6 +26,14 @@ import gen_netcdf_utils as ut
 
 
 # ==========================================================================================================================
+def logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded):
+    print(f'DURATION\tSCRIPT\t{total_time}\tseconds')
+    print(f'DURATION\tDOWNLOAD\t{total_download_time}\tseconds')
+    print(f'FILES\tDOWNLOAD\t{num_downloaded}')
+    print(f'DURATION\tNETCDF\t{total_netcdf_time}\tseconds')
+    print(f'DURATION\tUPLOAD\t{total_upload_time}\tseconds')
+    print(f'FILES\tUPLOAD\t{num_uploaded}')
+    return
 
 
 def generate_netcdfs(event):
@@ -79,7 +87,11 @@ def generate_netcdfs(event):
                 s3 = boto3.client('s3')
                 model_granule_bucket, processed_data_bucket = buckets
         elif not local:
-            print(f'No bucket names in aws_metadata:\n{aws_metadata}')
+            end_time = time.time()
+            total_time = end_time-start_time
+            print(f'ERROR No bucket names in aws_metadata:\n{aws_metadata}')
+            logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+            print(f'FAILURE')
             sys.exit()
 
         # Define fill values for binary and netcdf
@@ -232,8 +244,11 @@ def generate_netcdfs(event):
             period_suffix = 'day_inst'
             dataset_description_head = 'This dataset contains instantaneous '
         else:
-            print('valid options are AVG_DAY, AVG_MON, SNAPSHOT')
-            print('you provided ', output_freq_code)
+            end_time = time.time()
+            total_time = end_time-start_time
+            print(f'ERROR Invalid output_freq_code provided ("{output_freq_code}")')
+            logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+            print(f'FAILURE')
             sys.exit()
 
         # print('...output_freq_code ', output_freq_code)
@@ -415,8 +430,11 @@ def generate_netcdfs(event):
                             source_data_file_path.append(df)
 
                     if len(source_data_file_path) != 1:
-                        print('invalid # of data files')
-                        print(source_data_file_path)
+                        end_time = time.time()
+                        total_time = end_time-start_time
+                        print(f'ERROR Invalid # of data files. Data files: ({source_data_file_path})')
+                        logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+                        print(f'FAILURE')
                         sys.exit()
                     else:
                         source_data_file_path = Path(source_data_file_path[0])
@@ -461,8 +479,12 @@ def generate_netcdfs(event):
                             try:
                                 data_file_path.parent.mkdir(parents=True, exist_ok=True)
                             except Exception as e:
-                                print(f'cannot make {data_file_path}')
-                                print(f'Error: {e}')
+                                end_time = time.time()
+                                total_time = end_time-start_time
+                                print(f'{e}')
+                                print(f'ERROR cannot make {data_file_path}')
+                                logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+                                print(f'FAILURE')
                                 sys.exit()
                         if not data_file_path.exists():
                             print(f'S3: {source_data_file_path}\nLOCAL: {data_file_path}')
@@ -530,7 +552,11 @@ def generate_netcdfs(event):
                         response = s3.upload_file(str(netcdf_output_filename), processed_data_bucket, name)
                         # print(f'\n... uploaded {netcdf_output_filename} to bucket {processed_data_bucket}')
                     except:
-                        print(f'Unable to upload file {netcdf_output_filename} to bucket {processed_data_bucket}')
+                        end_time = time.time()
+                        total_time = end_time-start_time
+                        print(f'ERROR Unable to upload file {netcdf_output_filename} to bucket {processed_data_bucket}')
+                        logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+                        print(f'FAILURE')
                         sys.exit()
                     os.remove(netcdf_output_filename)
                     s3_upload_end_time = time.time()
@@ -551,12 +577,7 @@ def generate_netcdfs(event):
         # logger.info(f'DURATION\tNETCDF\t{total_netcdf_time}\tseconds')
         # logger.info(f'DURATION\tUPLOAD\t{total_upload_time}\tseconds')
         # logger.info(f'FILES\tUPLOAD\t{num_uploaded}')
-        print(f'DURATION\tSCRIPT\t{total_time}\tseconds')
-        print(f'DURATION\tDOWNLOAD\t{total_download_time}\tseconds')
-        print(f'FILES\tDOWNLOAD\t{num_downloaded}')
-        print(f'DURATION\tNETCDF\t{total_netcdf_time}\tseconds')
-        print(f'DURATION\tUPLOAD\t{total_upload_time}\tseconds')
-        print(f'FILES\tUPLOAD\t{num_uploaded}')
+        logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
         print(f'SUCCESS')
     
     except Exception as e:
@@ -569,12 +590,7 @@ def generate_netcdfs(event):
         })
         # # logger.error(err_msg)
         print(err_msg)
-        print(f'DURATION\tSCRIPT\t{total_time}\tseconds')
-        print(f'DURATION\tDOWNLOAD\t{total_download_time}\tseconds')
-        print(f'FILES\tDOWNLOAD\t{num_downloaded}')
-        print(f'DURATION\tNETCDF\t{total_netcdf_time}\tseconds')
-        print(f'DURATION\tUPLOAD\t{total_upload_time}\tseconds')
-        print(f'FILES\tUPLOAD\t{num_uploaded}')
+        logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
         print(f'FAILURE')
 
     return

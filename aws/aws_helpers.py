@@ -8,7 +8,11 @@ from pathlib import Path
 from collections import defaultdict
 
 
-def get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, source_bucket, product_type):
+def get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, source_bucket, product_type, time_steps_to_process):
+    if time_steps_to_process != 'all' and not isinstance(time_steps_to_process, list):
+        print(f'Bad time steps provided ("{time_steps_to_process}"). Skipping job.')
+        return -1
+
     s3_field_paths = []
     for field in fields:
         s3_field_paths.append(f'{s3_dir_prefix}/{field}_{period_suffix}')
@@ -30,7 +34,17 @@ def get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, source_bucket
             elif product_type == 'native':
                 file_type = '.meta'
 
-            file_keys = [key['Key'] for key in source_objects['Contents'] if file_type in key['Key'] and key['Key'] not in field_files[field]]
+            if time_steps_to_process == 'all':
+                file_keys = [key['Key'] for key in source_objects['Contents'] if file_type in key['Key'] and key['Key'] not in field_files[field]]
+            else:
+                file_keys = []
+                for ts in time_steps_to_process:
+                    ts = str(ts).zfill(10)
+                    temp_keys = [key['Key'] for key in source_objects['Contents'] if file_type in key['Key'] and key['Key'] not in field_files[field] and ts in key['Key']]
+                    if temp_keys == []:
+                        print(f'Invalid time step provided ("{ts}"). Skipping job.')
+                        return -1
+                    file_keys.extend(temp_keys)
             field_files[field].extend(file_keys)
             time_steps = [key.split('.')[-2] for key in file_keys]
             field_time_steps[field].extend(time_steps)
@@ -40,57 +54,64 @@ def get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, source_bucket
         field_time_steps[field] = sorted(field_time_steps[field])
         all_time_steps_all_vars.extend(time_steps)
 
-    return field_files, field_time_steps, all_time_steps_all_vars
+    return (field_files, field_time_steps, all_time_steps_all_vars)
 
 
 def get_logs(log_client, log_group_name, log_stream_names, start_time=0, end_time=0, filter_pattern='', type=''):
-    if type == 'event':
-        events_current = log_client.filter_log_events(logGroupName=log_group_name, logStreamNames=log_stream_names, filterPattern=filter_pattern, startTime=start_time, endTime=end_time)
-        ret_logs = events_current['events']
-        while True:
-            if 'nextToken' in events_current.keys():
-                events_current = log_client.filter_log_events(logGroupName=log_group_name, logStreamNames=log_stream_names, filterPattern=filter_pattern, nextToken=events_current['nextToken'])
-                if events_current['events'] != []:
-                    ret_logs.extend(events_current['events'])
-            else:
-                break
-    elif type == 'logStream':
-        log_streams_current = log_client.describe_log_streams(logGroupName=log_group_name, orderBy='LastEventTime')
-        ret_logs = log_streams_current['logStreams']
-        while True:
-            if 'nextToken' in log_streams_current.keys():
-                log_streams_current = log_client.describe_log_streams(logGroupName=log_group_name, orderBy='LastEventTime', nextToken=log_streams_current['nextToken'])
-                if log_streams_current['logStreams'] != []:
-                    ret_logs.extend(log_streams_current['logStreams'])
-            else:
-                break
+    try:
+        if type == 'event':
+            events_current = log_client.filter_log_events(logGroupName=log_group_name, logStreamNames=log_stream_names, filterPattern=filter_pattern, startTime=start_time, endTime=end_time)
+            ret_logs = events_current['events']
+            while True:
+                if 'nextToken' in events_current.keys():
+                    events_current = log_client.filter_log_events(logGroupName=log_group_name, logStreamNames=log_stream_names, filterPattern=filter_pattern, nextToken=events_current['nextToken'])
+                    if events_current['events'] != []:
+                        ret_logs.extend(events_current['events'])
+                else:
+                    break
+        elif type == 'logStream':
+            log_streams_current = log_client.describe_log_streams(logGroupName=log_group_name, orderBy='LastEventTime')
+            ret_logs = log_streams_current['logStreams']
+            while True:
+                if 'nextToken' in log_streams_current.keys():
+                    log_streams_current = log_client.describe_log_streams(logGroupName=log_group_name, orderBy='LastEventTime', nextToken=log_streams_current['nextToken'])
+                    if log_streams_current['logStreams'] != []:
+                        ret_logs.extend(log_streams_current['logStreams'])
+                else:
+                    break
+    except Exception as e:
+        import pdb; pdb.set_trace()
+        print(e)
     return ret_logs
 
 
 def save_logs(job_logs, MB_to_GB, estimated_jobs, start_time, ctr, fn_extra=''):
-    for job in job_logs.keys():
-        if job != 'Cost Information' and job != 'Total Time (s)':
-            if job not in estimated_jobs:
-                if (fn_extra != 'INITIAL') and (job_logs[job]['end']):
-                    estimated_jobs.append(job)
-                if job_logs[job]['report'] != []:
-                    job_reports = job_logs[job]['report']
-                    for job_report in job_reports:
-                        request_duration_time = job_report["Duration (s)"]
-                        request_time = job_report["Billed Duration (s)"]
-                        request_memory = job_report["Memory Size (MB)"]
-                        cost_estimate = job_report["Cost Estimate (USD)"]
-                        job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total Time (s)'] += request_duration_time
-                        job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total Billed Time (s)'] += request_time
-                        job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total GB*s'] += (request_memory * MB_to_GB * request_time)
-                        job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total Cost (USD)'] += cost_estimate
-                        job_logs['Cost Information']['Total Cost'] += cost_estimate
+    try:
+        for job in job_logs.keys():
+            if job != 'Cost Information' and job != 'Master Script Total Time (s)':
+                if job not in estimated_jobs:
+                    if (fn_extra != 'INITIAL') and (job_logs[job]['end']):
+                        estimated_jobs.append(job)
+                    if job_logs[job]['report'] != []:
+                        job_reports = job_logs[job]['report']
+                        for job_report in job_reports:
+                            request_duration_time = job_report["Duration (s)"]
+                            request_time = job_report["Billed Duration (s)"]
+                            request_memory = job_report["Memory Size (MB)"]
+                            cost_estimate = job_report["Cost Estimate (USD)"]
+                            job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total Time (s)'] += request_duration_time
+                            job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total Billed Time (s)'] += request_time
+                            job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total GB*s'] += (request_memory * MB_to_GB * request_time)
+                            job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total Cost (USD)'] += cost_estimate
+                            job_logs['Cost Information']['Total Cost'] += cost_estimate
 
-    if fn_extra != '' and fn_extra[0] != '_':
-        fn_extra = f'{fn_extra}'
-    time_str = time.strftime('%Y%m%d:%H%M%S', time.localtime())
-    with open(f'./logs/job_logs_{start_time}_{ctr}_{time_str}_{fn_extra}.json', 'w') as f:
-        json.dump(job_logs, f, indent=4)
+        if fn_extra != '' and fn_extra[0] != '_':
+            fn_extra = f'{fn_extra}'
+        time_str = time.strftime('%Y%m%d:%H%M%S', time.localtime())
+        with open(f'./logs/job_logs_{start_time}_{ctr}_{time_str}_{fn_extra}.json', 'w') as f:
+            json.dump(job_logs, f, indent=4)
+    except Exception as e:
+        print(e)
     
     return job_logs, estimated_jobs
 
@@ -135,7 +156,7 @@ def upload_S3(s3, source_path, bucket, check_list=True):
 def create_lambda_function(client, function_name, role, memory_size, image_uri):
     # Create lambda function using the provided values
 
-    # TODO: Check if the function has already been made
+    # Create function
     try:
         client.create_function(
             FunctionName=function_name,
@@ -147,7 +168,8 @@ def create_lambda_function(client, function_name, role, memory_size, image_uri):
             MemorySize=memory_size
         )
     except:
-        print('\nFunction already made')
+        print(f'\nFailed to create function: {function_name}')
+        return
 
     print(f'\nVerifying lambda function creation ({function_name})...')
     while True:
@@ -158,7 +180,7 @@ def create_lambda_function(client, function_name, role, memory_size, image_uri):
         elif status == 'Active':
             print(f'\tFunction created successfully')
             break
-        time.sleep(5)
+        time.sleep(2)
     
     return
 

@@ -30,12 +30,7 @@
         "value": "448078824696.dkr.ecr.us-west-2.amazonaws.com/ecco_processing:latest"
      },
      {
-        "name": "memory_size",
-        "type": "i",
-        "value": 1024
-     },
-     {
-        "name": "function_name",
+        "name": "function_name_prefix",
         "type": "s",
         "value": "ecco_processing"
      },
@@ -57,7 +52,7 @@
      {
         "name": "max_latlon_exec_2D",
         "type": "i",
-        "value": 10
+        "value": 100
      },
      {
         "name": "max_latlon_exec_3D",
@@ -78,5 +73,35 @@
         "name": "max_native_exec_3D",
         "type": "l",
         "value": 2
+     },
+     {
+        "name": "memory_size_1D_latlon",
+        "type": "i",
+        "value": 216
+     },
+     {
+        "name": "memory_size_1D_native",
+        "type": "i",
+        "value": 216
+     },
+     {
+        "name": "memory_size_2D_latlon",
+        "type": "i",
+        "value": 512
+     },
+     {
+        "name": "memory_size_2D_native",
+        "type": "i",
+        "value": 350
+     },
+     {
+        "name": "memory_size_3D_latlon",
+        "type": "i",
+        "value": 850
+     },
+     {
+        "name": "memory_size_3D_native",
+        "type": "i",
+        "value": 850
      }
 ]
