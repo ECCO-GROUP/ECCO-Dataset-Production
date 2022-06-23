@@ -103,5 +103,10 @@
         "name": "memory_size_3D_native",
         "type": "i",
         "value": 850
+     },
+     {
+        "name": "number_of_batches_to_process",
+        "type": "i",
+        "value": 2
      }
 ]
