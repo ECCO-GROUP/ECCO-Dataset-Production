@@ -6,5 +6,9 @@
 
 # Access-Key-Generation is a JPL github repo: 
 # https://github.jpl.nasa.gov/cloud/Access-Key-Generation
+
+## account_owner
 /home5/ifenty/git_repos_others/Access-Key-Generation/aws-login.py -pub -a arn:aws:iam::448078824696:role/account_owner
+
+## power_user
 #/home5/ifenty/git_repos_others/Access-Key-Generation/aws-login.py -pub -a arn:aws:iam::448078824696:role/power_user
