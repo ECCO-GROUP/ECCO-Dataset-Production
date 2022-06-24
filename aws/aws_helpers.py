@@ -69,15 +69,28 @@ def get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, source_bucket
 def get_logs(log_client, log_group_name, log_stream_names, start_time=0, end_time=0, filter_pattern='', type=''):
     try:
         if type == 'event':
-            events_current = log_client.filter_log_events(logGroupName=log_group_name, logStreamNames=log_stream_names, filterPattern=filter_pattern, startTime=start_time, endTime=end_time)
-            ret_logs = events_current['events']
+            ret_logs = []
+            log_stream_ctr = 0
+            total_logs_checked = 0
+            mod_log_stream_names = log_stream_names
             while True:
-                if 'nextToken' in events_current.keys():
-                    events_current = log_client.filter_log_events(logGroupName=log_group_name, logStreamNames=log_stream_names, filterPattern=filter_pattern, nextToken=events_current['nextToken'])
-                    if events_current['events'] != []:
-                        ret_logs.extend(events_current['events'])
+                if len(log_stream_names) > 100:
+                    mod_log_stream_names = log_stream_names[log_stream_ctr*100:log_stream_ctr*100 + 100]
+                total_logs_checked += len(mod_log_stream_names)
+                events_current = log_client.filter_log_events(logGroupName=log_group_name, logStreamNames=mod_log_stream_names, filterPattern=filter_pattern, startTime=start_time, endTime=end_time)
+                ret_logs.extend(events_current['events'])
+                while True:
+                    if 'nextToken' in events_current.keys():
+                        events_current = log_client.filter_log_events(logGroupName=log_group_name, logStreamNames=mod_log_stream_names, filterPattern=filter_pattern, nextToken=events_current['nextToken'])
+                        if events_current['events'] != []:
+                            ret_logs.extend(events_current['events'])
+                    else:
+                        break
+
+                if total_logs_checked == len(log_stream_names):
+                    break 
                 else:
-                    break
+                    log_stream_ctr += 1
         elif type == 'logStream':
             log_streams_current = log_client.describe_log_streams(logGroupName=log_group_name, orderBy='LastEventTime')
             ret_logs = log_streams_current['logStreams']
@@ -167,6 +180,7 @@ def create_lambda_function(client, function_name, role, memory_size, image_uri):
 
     # Create function
     try:
+        print(f'\nCreating lambda function "{function_name}" with {memory_size} MB of memory')
         client.create_function(
             FunctionName=function_name,
             Role=role,
@@ -177,10 +191,10 @@ def create_lambda_function(client, function_name, role, memory_size, image_uri):
             MemorySize=memory_size
         )
     except:
-        print(f'\nFailed to create function: {function_name}')
+        print(f'Failed to create function: {function_name}')
         return
 
-    print(f'\nVerifying lambda function creation ({function_name})...')
+    print(f'Verifying lambda function creation ({function_name})...')
     while True:
         status = client.get_function_configuration(FunctionName=function_name)['State']
         if status == "Failed":

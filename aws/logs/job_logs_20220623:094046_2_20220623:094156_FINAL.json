@@ -1,0 +1,215 @@
+{
+    "Master Script Total Time (s)": 37.346000000000004,
+    "Cost Information": {
+        "2048 MB Total Time (s)": 80.60125,
+        "2048 MB Total Billed Time (s)": 82.46600000000001,
+        "2048 MB Total GB*s": 164.93200000000002,
+        "2048 MB Total Cost (USD)": 0.0027488721644000004,
+        "Total Cost": 0.0027488721644000004
+    },
+    "31a70318-96ad-4a79-a1d5-f228b654d02f": {
+        "date": "Thu, 23 Jun 2022 16:41:20 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "latlon",
+            "output_freq_code": "AVG_MON",
+            "time_steps_to_process": [
+                "0000000732",
+                "0000001428",
+                "0000002172"
+            ]
+        },
+        "report": [
+            {
+                "logStreamName": "2022/06/23/[$LATEST]5fb3a6a7c82b429da5380eeebdbec3fd",
+                "Duration (s)": 16.03612,
+                "Billed Duration (s)": 16.443,
+                "Memory Size (MB)": 2048,
+                "Max Memory Used (MB)": 277,
+                "Init Duration (s)": 0.40678,
+                "Cost Estimate (USD)": 0.0005481010962000001
+            }
+        ],
+        "error": [],
+        "end": true,
+        "success": true,
+        "extra": {
+            "Duration (s)": {
+                "TOTAL": 15.161715269088745,
+                "SCRIPT": 14.034809350967407,
+                "DOWNLOAD": 0.5008938312530518,
+                "NETCDF": 0.3122859001159668,
+                "UPLOAD": 0.31372618675231934
+            },
+            "Files (#)": {
+                "DOWNLOAD": 9,
+                "UPLOAD": 3
+            }
+        }
+    },
+    "3a30bbb9-79d0-44ec-b20b-985fd9c00f39": {
+        "date": "Thu, 23 Jun 2022 16:41:22 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "latlon",
+            "output_freq_code": "AVG_MON",
+            "time_steps_to_process": [
+                "0000000732",
+                "0000001428",
+                "0000002172"
+            ]
+        },
+        "report": [
+            {
+                "logStreamName": "2022/06/23/[$LATEST]53783aec408545068691871d3168fdcb",
+                "Duration (s)": 15.801969999999999,
+                "Billed Duration (s)": 16.225,
+                "Memory Size (MB)": 2048,
+                "Max Memory Used (MB)": 280,
+                "Init Duration (s)": 0.42252,
+                "Cost Estimate (USD)": 0.0005408344150000001
+            }
+        ],
+        "error": [],
+        "end": true,
+        "success": true,
+        "extra": {
+            "Duration (s)": {
+                "TOTAL": 15.151256322860718,
+                "SCRIPT": 13.968692302703857,
+                "DOWNLOAD": 0.46764445304870605,
+                "NETCDF": 0.3084893226623535,
+                "UPLOAD": 0.4064302444458008
+            },
+            "Files (#)": {
+                "DOWNLOAD": 9,
+                "UPLOAD": 3
+            }
+        }
+    },
+    "11369d09-ba78-4ee1-9489-6c4574586372": {
+        "date": "Thu, 23 Jun 2022 16:41:23 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "latlon",
+            "output_freq_code": "AVG_MON",
+            "time_steps_to_process": [
+                "0000000732",
+                "0000001428",
+                "0000002172"
+            ]
+        },
+        "report": [
+            {
+                "logStreamName": "2022/06/23/[$LATEST]2feeee93d74c4eb08415e51d45709828",
+                "Duration (s)": 16.314709999999998,
+                "Billed Duration (s)": 16.678,
+                "Memory Size (MB)": 2048,
+                "Max Memory Used (MB)": 277,
+                "Init Duration (s)": 0.36291,
+                "Cost Estimate (USD)": 0.0005559344452
+            }
+        ],
+        "error": [],
+        "end": true,
+        "success": true,
+        "extra": {
+            "Duration (s)": {
+                "TOTAL": 15.456245422363281,
+                "SCRIPT": 14.410714626312256,
+                "DOWNLOAD": 0.4121975898742676,
+                "NETCDF": 0.3065941333770752,
+                "UPLOAD": 0.3267390727996826
+            },
+            "Files (#)": {
+                "DOWNLOAD": 9,
+                "UPLOAD": 3
+            }
+        }
+    },
+    "ad4191f0-959e-464d-8432-0ad3b55fd526": {
+        "date": "Thu, 23 Jun 2022 16:41:24 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "latlon",
+            "output_freq_code": "AVG_MON",
+            "time_steps_to_process": [
+                "0000000732",
+                "0000001428",
+                "0000002172"
+            ]
+        },
+        "report": [
+            {
+                "logStreamName": "2022/06/23/[$LATEST]78adcffea40c4a30ba4b87994cd17cb5",
+                "Duration (s)": 16.31649,
+                "Billed Duration (s)": 16.639,
+                "Memory Size (MB)": 2048,
+                "Max Memory Used (MB)": 277,
+                "Init Duration (s)": 0.32154000000000005,
+                "Cost Estimate (USD)": 0.0005546344426
+            }
+        ],
+        "error": [],
+        "end": true,
+        "success": true,
+        "extra": {
+            "Duration (s)": {
+                "TOTAL": 15.440717935562134,
+                "SCRIPT": 14.220211029052734,
+                "DOWNLOAD": 0.4909658432006836,
+                "NETCDF": 0.31606435775756836,
+                "UPLOAD": 0.41347670555114746
+            },
+            "Files (#)": {
+                "DOWNLOAD": 9,
+                "UPLOAD": 3
+            }
+        }
+    },
+    "ca432ce8-5faf-4e7b-aa12-a29a3d86e8ab": {
+        "date": "Thu, 23 Jun 2022 16:41:26 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "latlon",
+            "output_freq_code": "AVG_MON",
+            "time_steps_to_process": [
+                "0000000732",
+                "0000001428",
+                "0000002172"
+            ]
+        },
+        "report": [
+            {
+                "logStreamName": "2022/06/23/[$LATEST]2dedfcec134844a9b100794be5acd759",
+                "Duration (s)": 16.13196,
+                "Billed Duration (s)": 16.481,
+                "Memory Size (MB)": 2048,
+                "Max Memory Used (MB)": 280,
+                "Init Duration (s)": 0.34888,
+                "Cost Estimate (USD)": 0.0005493677654
+            }
+        ],
+        "error": [],
+        "end": true,
+        "success": true,
+        "extra": {
+            "Duration (s)": {
+                "TOTAL": 15.202304124832153,
+                "SCRIPT": 14.033032655715942,
+                "DOWNLOAD": 0.44785594940185547,
+                "NETCDF": 0.3133516311645508,
+                "UPLOAD": 0.4080638885498047
+            },
+            "Files (#)": {
+                "DOWNLOAD": 9,
+                "UPLOAD": 3
+            }
+        }
+    }
+}

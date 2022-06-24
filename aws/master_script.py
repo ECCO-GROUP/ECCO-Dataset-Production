@@ -442,7 +442,8 @@ if __name__ == "__main__":
                         'grouping_to_process': grouping_to_process,
                         'product_type': product_type,
                         'output_freq_code': output_freq_code,
-                        'time_steps_to_process': time_steps_by_batch[i]
+                        'time_steps_to_process': time_steps_by_batch[i],
+                        'dimension': dimension
                     }
 
                     # invoke lambda job
@@ -493,6 +494,7 @@ if __name__ == "__main__":
             log_group_names = [lg['logGroupName'] for lg in log_client.describe_log_groups()['logGroups'] if 'ecco_processing' in lg['logGroupName']]
             # log_group_name = '/aws/lambda/ecco_processing_2D_latlon'
             ended_log_stream_names = []
+            deleted_log_stream_names = []
             num_jobs_ended = 0
             log_save_time = time.time()
             estimated_jobs = []
@@ -506,7 +508,8 @@ if __name__ == "__main__":
                         ctr += 1
                         total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
                         job_logs['Master Script Total Time (s)'] = total_time
-                        job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='INITIAL')
+                        last_job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='INITIAL')
+                        job_logs = copy.deepcopy(last_job_logs)
 
                     print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
                     time.sleep(2)
@@ -517,7 +520,12 @@ if __name__ == "__main__":
                         log_stream_names = []
                         log_streams = get_logs(log_client, log_group_name, [], type='logStream')
                         for ls in log_streams:
-                            if ls['logStreamName'] not in ended_log_stream_names:
+                            if ls['logStreamName'] in ended_log_stream_names:
+                                if ls['logStreamName'] not in deleted_log_stream_names:
+                                    print(f'Deleting log stream: {ls["logStreamName"]}')
+                                    log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls['logStreamName'])
+                                    deleted_log_stream_names.append(ls['logStreamName'])
+                            else:
                                 log_stream_names.append(ls['logStreamName'])
 
                         if log_stream_names != []:
@@ -630,6 +638,11 @@ if __name__ == "__main__":
                         job_logs['Master Script Total Time (s)'] = total_time
                         # write final job_log to file
                         job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='FINAL')
+                        for ls_name in ended_log_stream_names:
+                            if ls_name not in deleted_log_stream_names:
+                                print(f'Deleting log stream: {ls_name}')
+                                log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls_name)
+                                deleted_log_stream_names.append(ls_name)
                         break
 
                     # write job_log to file every >~10 seconds
