@@ -15,6 +15,11 @@
         "value": "ecco-model-granules"
      },
      {
+        "name": "bucket_subfolder",
+        "type": "s",
+        "value": "V4r4"
+     },
+     {
         "name": "output_bucket",
         "type": "s",
         "value": "ecco-processed-data"
@@ -52,12 +57,12 @@
      {
         "name": "max_latlon_exec_2D",
         "type": "i",
-        "value": 100
+        "value": 3
      },
      {
         "name": "max_latlon_exec_3D",
         "type": "i",
-        "value": 2
+        "value": 3
      },
      {
         "name": "max_native_exec_1D",
@@ -97,12 +102,12 @@
      {
         "name": "memory_size_3D_latlon",
         "type": "i",
-        "value": 850
+        "value": 1500
      },
      {
         "name": "memory_size_3D_native",
         "type": "i",
-        "value": 850
+        "value": 1024
      },
      {
         "name": "number_of_batches_to_process",

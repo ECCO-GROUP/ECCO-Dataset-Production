@@ -55,6 +55,11 @@
        "value": ""
     },
     {
+       "name": "model_data_dir_folder_name",
+       "type": "s",
+       "value": "V4r4"
+    },
+    {
        "name": "metadata_dir",
        "type": "s",
        "value": ""

@@ -85,7 +85,7 @@ if __name__ == "__main__":
     # Default directories
     parent_dir = Path(__file__).parent.resolve()
     mapping_factors_dir_default = str(parent_dir / 'mapping_factors')
-    diags_root_default = str(parent_dir / 'diags_all')
+    diags_root_default = str(parent_dir / f'{config_metadata["model_data_dir_folder_name"]}')
     metadata_default = str(parent_dir / 'metadata' / 'ECCov4r4_metadata_json')
     podaac_metadata_filename_default = 'PODAAC_datasets-revised_20210226.5.csv'
     ecco_grid_dir_default = str(parent_dir / 'ecco_grids')
@@ -179,6 +179,7 @@ if __name__ == "__main__":
             aws_config_metadata['output_bucket'] = processed_data_bucket_default
 
         source_bucket = aws_config_metadata['source_bucket']
+        source_bucket_folder_name = aws_config_metadata['bucket_subfolder']
         function_name_prefix = aws_config_metadata['function_name_prefix']
         image_uri = aws_config_metadata['image_uri']
         role = aws_config_metadata['role']
@@ -240,7 +241,7 @@ if __name__ == "__main__":
 
         # Upload data to S3 bucket
         if upload_to_S3:
-            status = upload_S3(s3, config_metadata['model_data_dir'], aws_config_metadata['source_bucket'])
+            status = upload_S3(s3, config_metadata['model_data_dir'], config_metadata['model_data_dir_folder_name'], aws_config_metadata['source_bucket'])
             if not status:
                 print(f'Uploading to S3 failed. Exiting')
                 sys.exit()
@@ -319,26 +320,25 @@ if __name__ == "__main__":
 
             if output_freq_code == 'AVG_DAY':
                 freq_folder = 'diags_daily'
-                s3_dir_prefix = f'V4r4/{freq_folder}'
                 period_suffix = 'day_mean'
 
             elif output_freq_code == 'AVG_MON':
                 freq_folder = 'diags_monthly'
-                s3_dir_prefix = f'V4r4/{freq_folder}'
                 period_suffix = 'mon_mean'
 
             elif output_freq_code == 'SNAPSHOT':
                 freq_folder = 'diags_inst'
-                s3_dir_prefix = f'V4r4/{freq_folder}'
                 period_suffix = 'day_inst'
             else:
                 print('valid options are AVG_DAY, AVG_MON, SNAPSHOT')
                 print('you provided ', output_freq_code)
                 sys.exit()
 
+            s3_dir_prefix = f'{source_bucket_folder_name}/{freq_folder}'
+
             if not local:
                 file_time_steps = get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, 
-                                                        source_bucket, product_type, time_steps_to_process)
+                                                        source_bucket,  product_type, time_steps_to_process)
                 if file_time_steps == -1:
                     print(f'--- Skipping job:\n\tgrouping: {grouping_to_process}\n\tproduct_type: {product_type}\n\toutput_freq_code: {output_freq_code}\n\ttime_steps_to_process: {time_steps_to_process}')
                     continue
@@ -442,8 +442,8 @@ if __name__ == "__main__":
                         'grouping_to_process': grouping_to_process,
                         'product_type': product_type,
                         'output_freq_code': output_freq_code,
-                        'time_steps_to_process': time_steps_by_batch[i],
-                        'dimension': dimension
+                        'dimension': dimension,
+                        'time_steps_to_process': time_steps_by_batch[i]
                     }
 
                     # invoke lambda job
@@ -501,6 +501,7 @@ if __name__ == "__main__":
             last_job_logs = copy.deepcopy(job_logs)
             end_jobs_list = []
             ctr = -1
+            total_num_log_streams = 0
             try:
                 while True:
                     # intital log
@@ -512,33 +513,36 @@ if __name__ == "__main__":
                         job_logs = copy.deepcopy(last_job_logs)
 
                     print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
-                    time.sleep(2)
+                    time.sleep(10)
                     end_time = int(time.time()/ms_to_sec)
                     
                     # TODO: loop through ended_log_stream_names and delete those that did not have an error
-                    for log_group_name in log_group_names:
-                        log_stream_names = []
-                        log_streams = get_logs(log_client, log_group_name, [], type='logStream')
-                        for ls in log_streams:
+                    log_stream_names = defaultdict(list)
+                    log_streams = get_logs(log_client, log_group_names, [], type='logStream')
+                    for log_group_name, group_streams in log_streams.items():
+                        for ls in group_streams:
                             if ls['logStreamName'] in ended_log_stream_names:
                                 if ls['logStreamName'] not in deleted_log_stream_names:
                                     print(f'Deleting log stream: {ls["logStreamName"]}')
                                     log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls['logStreamName'])
                                     deleted_log_stream_names.append(ls['logStreamName'])
+                                    total_num_log_streams -= 1
                             else:
-                                log_stream_names.append(ls['logStreamName'])
+                                log_stream_names[log_group_name].append(ls['logStreamName'])
+                                total_num_log_streams += 1
 
-                        if log_stream_names != []:
-                            # get logs for SUCCESS, DURATION, FILES, ERROR, REPORT, START, and END
-                            success_jobs = []
-                            extra_logs = {}
-                            error_logs = defaultdict(list)
-                            report_logs = defaultdict(list)
-                            job_id_report_name = {}
-                            start_logs = defaultdict(int)
-                            end_logs = defaultdict(int)
-                            key_logs = get_logs(log_client, log_group_name, log_stream_names, start_time=start_time, end_time=end_time, filter_pattern='?SUCCESS ?DURATION ?FILES ?ERROR ?REPORT ?START ?END', type='event')
+                    if total_num_log_streams != 0:
+                        # get logs for SUCCESS, DURATION, FILES, ERROR, REPORT, START, and END
+                        success_jobs = []
+                        extra_logs = {}
+                        error_logs = defaultdict(list)
+                        report_logs = defaultdict(list)
+                        job_id_report_name = {}
+                        start_logs = defaultdict(int)
+                        end_logs = defaultdict(int)
+                        group_key_logs = get_logs(log_client, log_group_names, log_stream_names, start_time=start_time, end_time=end_time, filter_pattern='?SUCCESS ?DURATION ?FILES ?ERROR ?REPORT ?START ?END', type='event')
 
+                        for log_group_name, key_logs in group_key_logs.items():
                             # find start logs, count number for each ID
                             # Job is only considered ended if it has the same number of start logs and end logs to a maximum of 3
                             for log in key_logs:
@@ -641,8 +645,11 @@ if __name__ == "__main__":
                         for ls_name in ended_log_stream_names:
                             if ls_name not in deleted_log_stream_names:
                                 print(f'Deleting log stream: {ls_name}')
-                                log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls_name)
-                                deleted_log_stream_names.append(ls_name)
+                                for log_group_name, group_streams_raw in log_streams.items():
+                                    group_streams = [gs['logStreamName'] for gs in group_streams_raw]
+                                    if ls_name in group_streams:
+                                        log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls_name)
+                                        deleted_log_stream_names.append(ls_name)
                         break
 
                     # write job_log to file every >~10 seconds
