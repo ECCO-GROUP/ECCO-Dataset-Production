@@ -105,7 +105,7 @@ def get_logs(log_client, log_group_names, log_stream_names, start_time=0, end_ti
                     else:
                         break
     except Exception as e:
-        import pdb; pdb.set_trace()
+        print('Error accessing logs: ')
         print(e)
     return ret_logs
 
@@ -136,6 +136,7 @@ def save_logs(job_logs, MB_to_GB, estimated_jobs, start_time, ctr, fn_extra=''):
         with open(f'./logs/job_logs_{start_time}_{ctr}_{time_str}_{fn_extra}.json', 'w') as f:
             json.dump(job_logs, f, indent=4)
     except Exception as e:
+        print('Error saving logs: ')
         print(e)
     
     return job_logs, estimated_jobs

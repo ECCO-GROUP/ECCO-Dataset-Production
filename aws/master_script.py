@@ -114,7 +114,10 @@ if __name__ == "__main__":
     # Creates mapping_factors (2D and 3D), landmask, and latlon_grid files
     # Not needed unless changes have been made to the factors code and you need
     # to update the factors/mask in the lambda docker image
-    create_all_factors(ea, config_metadata, ['2D', '3D'], debug_mode=debug_mode)
+    status = create_all_factors(ea, config_metadata, ['2D', '3D'], debug_mode=debug_mode)
+    if status == -1:
+        print('Error creating all factors. Exiting')
+        sys.exit()
 
     # Get all configurations
     all_jobs = []

@@ -7,18 +7,17 @@ Adapted from ifenty's "eccov4r4_gen_for_podaac.py"
 """
 
 import os
-import shutil
 import sys
 import json
 import time
 import boto3
+import shutil
 import traceback
 import numpy as np
 import pandas as pd
 import xarray as xr
 import netCDF4 as nc4
 from pathlib import Path
-from collections import defaultdict
 
 sys.path.append(f'{Path(__file__).parent.resolve()}')
 import ecco_v4_py as ecco
@@ -27,7 +26,8 @@ import gen_netcdf_utils as ut
 
 
 # ==========================================================================================================================
-def logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded):
+def logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded):
+    total_time = time.time() - start_time
     print(f'DURATION\tSCRIPT\t{total_time}\tseconds')
     print(f'DURATION\tDOWNLOAD\t{total_download_time}\tseconds')
     print(f'FILES\tDOWNLOAD\t{num_downloaded}')
@@ -52,7 +52,6 @@ def generate_netcdfs(event):
 
     # Logging values
     start_time = time.time()
-    total_time = 0
     total_netcdf_time = 0
     total_download_time = 0
     num_downloaded = 0
@@ -88,10 +87,8 @@ def generate_netcdfs(event):
                 s3 = boto3.client('s3')
                 model_granule_bucket, processed_data_bucket = buckets
         elif not local:
-            end_time = time.time()
-            total_time = end_time-start_time
             print(f'ERROR No bucket names in aws_metadata:\n{aws_metadata}')
-            logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+            logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
             print(f'FAILURE')
             sys.exit()
 
@@ -118,7 +115,9 @@ def generate_netcdfs(event):
 
         ecco_start_time = np.datetime64(config_metadata['model_start_time'])
         ecco_end_time   = np.datetime64(config_metadata['model_end_time'])
-
+        
+        # get list of fields to process
+        fields_to_load = list(field_files.keys())
 
         # ======================================================================================================================
         # METADATA SETUP
@@ -194,26 +193,23 @@ def generate_netcdfs(event):
             filename_tail = filename_tail_native
             groupings = groupings_for_native_datasets
             output_dir_type = config_metadata['output_dir_base'] / 'native'
-            latlon_bounds, depth_bounds, _, _ = ut.get_latlon_grid(Path(config_metadata['mapping_factors_dir']), debug_mode)
-
+            status, (latlon_bounds, depth_bounds, _, _) = ut.get_latlon_grid(Path(config_metadata['mapping_factors_dir']), debug_mode)
         elif product_type == 'latlon':
             dataset_description_tail = dataset_description_tail_latlon
             filename_tail = filename_tail_latlon
             groupings = groupings_for_latlon_datasets
             output_dir_type = config_metadata['output_dir_base'] / 'lat-lon'
-            latlon_bounds, depth_bounds, target_grid, wet_pts_k = ut.get_latlon_grid(Path(config_metadata['mapping_factors_dir']), debug_mode)
-            # CHANGE TO TWO DICTS (BOUNDS, and GRID)
+            status, (latlon_bounds, depth_bounds, target_grid, wet_pts_k) = ut.get_latlon_grid(Path(config_metadata['mapping_factors_dir']), debug_mode)
+        if status == -1:
+            logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+            print('FAILURE')
+            sys.exit()
         # ======================================================================================================================
 
 
         # ======================================================================================================================
         # GROUPINGS
         # ======================================================================================================================
-        # show groupings
-        # print('\nAll groupings')
-        # for gi, gg in enumerate(groupings_for_native_datasets):
-        #     print('\t', gi, gg['name'])
-
         # determine which grouping to process
         # print('\nDetermining grouping to process')
         grouping = []
@@ -251,10 +247,8 @@ def generate_netcdfs(event):
             period_suffix = 'day_inst'
             dataset_description_head = 'This dataset contains instantaneous '
         else:
-            end_time = time.time()
-            total_time = end_time-start_time
             print(f'ERROR Invalid output_freq_code provided ("{output_freq_code}")')
-            logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+            logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
             print(f'FAILURE')
             sys.exit()
 
@@ -262,102 +256,18 @@ def generate_netcdfs(event):
 
         output_dir_freq = output_dir_type / period_suffix
         # print('...making output_dir freq ', output_dir_freq)
-
         # make output directory
-        # if local:
-        if True:
-            if not output_dir_freq.exists():
-                try:
-                    output_dir_freq.mkdir(parents=True)
-                    # print('... made %s ' % output_dir_freq)
-                except:
-                    print('...cannot make %s ' % output_dir_freq)
-        else:
-            print(f'Making output bucket {processed_data_bucket}')
-            # *****
-            # TODO: Make bucket if not present (maybe)
-            # *****
-
-
-        # get files
-        # s3_files = defaultdict(list)
-        # if local:
-            # get list of files from local directory
-            # model_granule_roots = np.sort(list(mds_diags_root_dir.glob('*' + period_suffix + '*')))
-        # else:
-        #     # get list of files from S3 bucket
-        #     response = s3.list_objects_v2(Bucket=model_granule_bucket)
-        #     if response['ResponseMetadata']['HTTPStatusCode'] != 200:
-        #         print(f'Unable to collect objects in bucket {model_granule_bucket}')
-        #         return -1
-        #     else:
-        #         model_granule_roots = []
-        #         for k in response['Contents']:
-        #             k = k['Key']
-        #             if '.data' in k:
-        #                 field = k.split('/')[-2].replace(f'_{period_suffix}', '')
-        #                 s3_files[field].append(k)
-        #                 k_root = k.split(f'{period_suffix}/')[0] + period_suffix
-        #                 if k_root not in model_granule_roots:
-        #                     model_granule_roots.append(k_root)
-
-
-        ## load field file and directory names
-        # print ('...number of subdirectories found ', len(model_granule_roots))
-        # all_field_names = []
-
-        # extract record name out of full directory
-        # if local:
-        #     for f in model_granule_roots:
-        #         all_field_names.append(f.name)
-        # else:
-        #     for f in model_granule_roots:
-        #         all_field_names.append(f.split('/')[-2])
-
-        # print(all_field_names)
+        if not output_dir_freq.exists():
+            try:
+                output_dir_freq.mkdir(parents=True)
+            except:
+                print(f'ERROR Cannot make output directory "{output_dir_freq}"')
+                logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+                print('FAILURE')
+                sys.exit()
 
         # create dataset description head
         dataset_description = dataset_description_head + grouping['name'] + dataset_description_tail
-        # ======================================================================================================================
-
-
-        # ======================================================================================================================
-        # CREATE FIELDS  & TIME STEPS
-        # ======================================================================================================================
-        # find fields in dataset
-        # tmp = grouping['fields'].split(',')
-        # fields_to_load  = []
-        # for field in tmp:
-        #     fields_to_load.append(field.strip())
-        fields_to_load = list(field_files.keys())
-
-        # find directories with fields
-        # field_directories = {}
-        # for field in fields_to_load:
-        #     field_match =  "".join([field, "_", period_suffix])
-        #     num_matching_dirs = 0
-        #     for fp in model_granule_roots:
-        #         if field_match == str(fp).split('/')[-1]:
-        #             field_directories[field] = fp
-        #             num_matching_dirs += 1
-        #     if num_matching_dirs == 0:
-        #         print('>>>>>> no match found for ', field)
-        #     elif num_matching_dirs > 1 :
-        #         print('>>>>>> more than one matching dir for ', field)
-
-
-        # print('\nDirectories with the variables in the grouping')
-        # for field in fields_to_load:
-            # print('... ', field, field_directories[field])
-
-        # print('\nDetermining time steps to load')
-
-        # determine which time steps to process
-        # if time_steps_to_process == 'all':
-        #     # print('...using all time steps')
-        #     time_steps_to_process = ut.find_all_time_steps(fields_to_load, field_directories, local, s3_files)
-        # else:
-        #     print('...using provided time steps to process list ', time_steps_to_process)
         # ======================================================================================================================
 
 
@@ -438,10 +348,8 @@ def generate_netcdfs(event):
                             source_data_file_path.append(df)
 
                     if len(source_data_file_path) != 1:
-                        end_time = time.time()
-                        total_time = end_time-start_time
                         print(f'ERROR Invalid # of data files. Data files: ({source_data_file_path})')
-                        logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+                        logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
                         print(f'FAILURE')
                         sys.exit()
                     else:
@@ -459,42 +367,15 @@ def generate_netcdfs(event):
                         source_meta_file_path = f'{str(source_data_file_path)[:-5]}.meta'
                         meta_file_path = Path(f'{str(data_file_path)[:-5]}.meta')
 
-                    # mds_field_dir = field_directories[field]
-                    # mds_field_dir = Path('/tmp') / mds_field_dir
-
-                    # # print ('\nProcessing ', field, mds_field_dir)
-
-                    # if local:
-                    #     mds_file = list(mds_field_dir.glob(field + '*' + str(cur_ts).zfill(10) + '*.data'))
-                    # else:
-                    #     mds_file = []
-                    #     for f in s3_files[field]:
-                    #         if str(cur_ts).zfill(10) in f:
-                    #             mds_file.append(f)
-
-                    # if len(mds_file) != 1:
-                    #     print('invalid # of mds files')
-                    #     print(mds_file)
-                    #     sys.exit()
-                    # else:
-                    #     mds_file = mds_file[0]
-
-                    # print(f'mds_file: {mds_file}')
-                    # tmp_file_path = mds_field_dir / str(mds_file).split('/')[-1]
-                    # print(f'Temp file path: {tmp_file_path}')
-
                     # Download data_file from S3
                     if not local:
                         s3_download_start_time = time.time()
                         if not data_file_path.parent.exists():
                             try:
                                 data_file_path.parent.mkdir(parents=True, exist_ok=True)
-                            except Exception as e:
-                                end_time = time.time()
-                                total_time = end_time-start_time
-                                print(f'{e}')
-                                print(f'ERROR cannot make {data_file_path}')
-                                logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+                            except:
+                                print(f'ERROR Cannot make {data_file_path}')
+                                logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
                                 print(f'FAILURE')
                                 sys.exit()
                         if not data_file_path.exists():
@@ -509,13 +390,22 @@ def generate_netcdfs(event):
 
                     # Load latlon vs native variable
                     if product_type == 'latlon':
-                        F_DS = ut.latlon_load(ea, ecco, ecco_grid.Z.values, wet_pts_k, target_grid, 
-                                                data_file_path, record_end_time, nk, 
-                                                dataset_dim, field, output_freq_code, Path(config_metadata['mapping_factors_dir']))
+                        status, F_DS = ut.latlon_load(ea, ecco, ecco_grid.Z.values, wet_pts_k, target_grid, 
+                                                    data_file_path, record_end_time, nk, 
+                                                    dataset_dim, field, output_freq_code, Path(config_metadata['mapping_factors_dir']))
+                        if status == -1:
+                            logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+                            print('FAILURE')
+                            sys.exit()
                         
                     elif product_type == 'native':
-                        F_DS = ut.native_load(ecco, field, ecco_grid, config_metadata['ecco_grid_dir_mds'], 
+                        status, F_DS = ut.native_load(ecco, field, ecco_grid, config_metadata['ecco_grid_dir_mds'], 
                                                 data_file_path, output_freq_code, cur_ts)
+                        if status == -1:
+                            logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+                            print('FAILURE')
+                            sys.exit()
+
 
                     # delete downloaded file from cloud disks
                     if not local:
@@ -542,10 +432,14 @@ def generate_netcdfs(event):
                 del(F_DS_vars)
 
                 podaac_dir = Path(config_metadata['metadata_dir']) / config_metadata['podaac_metadata_filename']
-                G, netcdf_output_filename, encoding = ut.set_metadata(ecco, G, product_type, all_metadata, dataset_dim, 
-                                                                    output_freq_code, netcdf_fill_value, 
-                                                                    grouping, filename_tail, output_dir_freq, 
-                                                                    dataset_description, podaac_dir)
+                status, G, netcdf_output_filename, encoding = ut.set_metadata(ecco, G, product_type, all_metadata, dataset_dim, 
+                                                                                output_freq_code, netcdf_fill_value, 
+                                                                                grouping, filename_tail, output_dir_freq, 
+                                                                                dataset_description, podaac_dir)
+                if status == -1:
+                    logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+                    print('FAILURE')
+                    sys.exit()
 
                 # SAVE DATASET
                 netcdf_start_time = time.time()
@@ -559,7 +453,6 @@ def generate_netcdfs(event):
                 total_netcdf_time += netcdf_end_time-netcdf_start_time
                 # print('\n... checking existence of new file: ', netcdf_output_filename.exists())
 
-
                 # Upload output netcdf to s3
                 if not local:
                     s3_upload_start_time = time.time()
@@ -569,19 +462,14 @@ def generate_netcdfs(event):
                         response = s3.upload_file(str(netcdf_output_filename), processed_data_bucket, name)
                         # print(f'\n... uploaded {netcdf_output_filename} to bucket {processed_data_bucket}')
                     except:
-                        end_time = time.time()
-                        total_time = end_time-start_time
                         print(f'ERROR Unable to upload file {netcdf_output_filename} to bucket {processed_data_bucket}')
-                        logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+                        logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
                         print(f'FAILURE')
                         sys.exit()
                     os.remove(netcdf_output_filename)
                     s3_upload_end_time = time.time()
                     total_upload_time += s3_upload_end_time-s3_upload_start_time
                     num_uploaded += 1
-                    
-
-                # print('\n')
             # ==================================================================================================================
         # =============================================================================================
 
@@ -591,15 +479,7 @@ def generate_netcdfs(event):
                 shutil.rmtree(tmp_data_path)
 
         # LOGGING
-        end_time = time.time()
-        total_time = end_time-start_time
-        # logger.info(f'DURATION\tSCRIPT\t{total_time}\tseconds')
-        # logger.info(f'DURATION\tDOWNLOAD\t{total_download_time}\tseconds')
-        # logger.info(f'FILES\tDOWNLOAD\t{num_downloaded}')
-        # logger.info(f'DURATION\tNETCDF\t{total_netcdf_time}\tseconds')
-        # logger.info(f'DURATION\tUPLOAD\t{total_upload_time}\tseconds')
-        # logger.info(f'FILES\tUPLOAD\t{num_uploaded}')
-        logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+        logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
         print(f'SUCCESS')
     
     except Exception as e:
@@ -610,11 +490,8 @@ def generate_netcdfs(event):
             "errorMessage": str(exception_value),
             "stackTrace": traceback_string
         })
-        # # logger.error(err_msg)
-        print(err_msg)
-        print()
-        print(repr(e))
-        logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+        print(f'ERROR {err_msg}\n{repr(e)}')
+        logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
         print(f'FAILURE')
 
     return

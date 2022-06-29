@@ -148,10 +148,15 @@ def load_ecco_vars_from_mds(mds_var_dir,
     Returns
     =======
 
+    status : Int status value (-1 == failure, 1 == success)
+
     ecco_dataset : xarray Dataset
 
 
     """
+
+    # status variable (1 == success, -1 == failure)
+    status = 1
 
     # range object is different between python 2 and 3
     if sys.version_info[0] >= 3 and isinstance(tiles_to_load, range):
@@ -386,9 +391,8 @@ def load_ecco_vars_from_mds(mds_var_dir,
         dataset_dim = '2D'
     else:
         #print('no 2D or 3D dimensions')
-        print('ERROR cannot find 2D or 3D dims in dataset')
-        print('FAILURE')
-        sys.exit()
+        print('ERROR Cannot find 2D or 3D dims in dataset')
+        return (-1, ecco_dataset)
 
     # drop 3D and dims coordinates that do not appear in any data variable
     if drop_unused_coords:
@@ -471,7 +475,7 @@ def load_ecco_vars_from_mds(mds_var_dir,
     #     for dim in ecco_dataset.dims:
     #         print(dim, ecco_dataset[dim].attrs)
 
-    return ecco_dataset
+    return (status, ecco_dataset)
 
 
 def read_llc_to_compact(fpath, llc=90, skip=0, nk=1, nl=1,
