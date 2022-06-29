@@ -97,7 +97,7 @@
      {
         "name": "memory_size_2D_native",
         "type": "i",
-        "value": 350
+        "value": 1024
      },
      {
         "name": "memory_size_3D_latlon",

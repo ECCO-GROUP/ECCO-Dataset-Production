@@ -1,0 +1,76 @@
+{
+    "Master Script Total Time (s)": 19.724,
+    "Cost Information": {
+        "1024 MB Total Time (s)": 10.00164,
+        "1024 MB Total Billed Time (s)": 10.549,
+        "1024 MB Total GB*s": 10.549,
+        "1024 MB Total Cost (USD)": 0.0001758170183,
+        "Total Cost": 0.0001758170183
+    },
+    "e18ce437-7773-48a3-9e01-bd62fd512292": {
+        "date": "Mon, 27 Jun 2022 23:25:34 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "native",
+            "output_freq_code": "AVG_MON",
+            "dimension": "2D",
+            "time_steps_to_process": [
+                "0000000732",
+                "0000001428"
+            ]
+        },
+        "report": [],
+        "error": [],
+        "end": false,
+        "success": false
+    },
+    "7c4fefd6-6324-42de-b1eb-2be267b70c6c": {
+        "date": "Mon, 27 Jun 2022 23:25:35 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "native",
+            "output_freq_code": "AVG_MON",
+            "dimension": "2D",
+            "time_steps_to_process": [
+                "0000002172",
+                "0000002892"
+            ]
+        },
+        "report": [
+            {
+                "logStreamName": "2022/06/27/[$LATEST]b0699d374040461a847f840607fa25b3",
+                "Duration (s)": 10.00164,
+                "Billed Duration (s)": 10.549,
+                "Memory Size (MB)": 1024,
+                "Max Memory Used (MB)": 412,
+                "Init Duration (s)": 0.54655,
+                "Cost Estimate (USD)": 0.0001758170183
+            }
+        ],
+        "error": [
+            "ERROR cannot find 2D or 3D dims in dataset\n"
+        ],
+        "end": true,
+        "success": false,
+        "extra": {}
+    },
+    "882ca5ee-36eb-4c6a-a194-e5141bc56946": {
+        "date": "Mon, 27 Jun 2022 23:25:35 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "native",
+            "output_freq_code": "AVG_MON",
+            "dimension": "2D",
+            "time_steps_to_process": [
+                "0000003636"
+            ]
+        },
+        "report": [],
+        "error": [],
+        "end": false,
+        "success": false
+    }
+}

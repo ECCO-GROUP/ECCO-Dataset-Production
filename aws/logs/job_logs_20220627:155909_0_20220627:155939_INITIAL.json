@@ -1,0 +1,57 @@
+{
+    "Master Script Total Time (s)": 2.308,
+    "Cost Information": {},
+    "73318fbc-ef7a-4b07-91b0-a00ffd51c8d5": {
+        "date": "Mon, 27 Jun 2022 22:59:41 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "native",
+            "output_freq_code": "AVG_MON",
+            "dimension": "2D",
+            "time_steps_to_process": [
+                "0000000732",
+                "0000001428"
+            ]
+        },
+        "report": [],
+        "error": [],
+        "end": false,
+        "success": false
+    },
+    "0080289e-9240-4fb2-bf6b-4a65f9fad2a2": {
+        "date": "Mon, 27 Jun 2022 22:59:41 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "native",
+            "output_freq_code": "AVG_MON",
+            "dimension": "2D",
+            "time_steps_to_process": [
+                "0000002172",
+                "0000002892"
+            ]
+        },
+        "report": [],
+        "error": [],
+        "end": false,
+        "success": false
+    },
+    "bfcb6a5d-d8ba-48a1-a2f0-97e283735280": {
+        "date": "Mon, 27 Jun 2022 22:59:41 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "native",
+            "output_freq_code": "AVG_MON",
+            "dimension": "2D",
+            "time_steps_to_process": [
+                "0000003636"
+            ]
+        },
+        "report": [],
+        "error": [],
+        "end": false,
+        "success": false
+    }
+}

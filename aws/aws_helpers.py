@@ -30,10 +30,7 @@ def get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, source_bucket
             if 'Contents' not in source_objects:
                 break
 
-            if product_type == 'latlon':
-                file_type = '.data'
-            elif product_type == 'native':
-                file_type = '.meta'
+            file_type = '.data'
 
             file_keys = [key['Key'] for key in source_objects['Contents'] if file_type in key['Key'] and key['Key'] not in field_files[field]]
             
@@ -73,6 +70,9 @@ def get_logs(log_client, log_group_names, log_stream_names, start_time=0, end_ti
             for log_group_name in log_group_names:
                 log_stream_ctr = 0
                 total_logs_checked = 0
+                if len(log_stream_names[log_group_name]) == 0:
+                    ret_logs[log_group_name] = []
+                    continue
                 mod_log_stream_names = log_stream_names[log_group_name]
                 while True:
                     if len(log_stream_names) > 100:

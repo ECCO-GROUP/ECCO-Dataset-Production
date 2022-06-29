@@ -386,7 +386,8 @@ def load_ecco_vars_from_mds(mds_var_dir,
         dataset_dim = '2D'
     else:
         #print('no 2D or 3D dimensions')
-        print('cannot find 2D or 3D dims in dataset')
+        print('ERROR cannot find 2D or 3D dims in dataset')
+        print('FAILURE')
         sys.exit()
 
     # drop 3D and dims coordinates that do not appear in any data variable

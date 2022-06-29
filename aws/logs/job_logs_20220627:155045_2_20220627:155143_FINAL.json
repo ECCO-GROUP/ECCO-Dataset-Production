@@ -1,0 +1,108 @@
+{
+    "Master Script Total Time (s)": 31.693,
+    "Cost Information": {
+        "1024 MB Total Time (s)": 48.61105,
+        "1024 MB Total Billed Time (s)": 51.081,
+        "1024 MB Total GB*s": 51.081,
+        "1024 MB Total Cost (USD)": 0.0008513517027,
+        "Total Cost": 0.0008513517027
+    },
+    "552017d1-7def-47a6-a3cf-b38ea76c921a": {
+        "date": "Mon, 27 Jun 2022 22:51:15 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "native",
+            "output_freq_code": "AVG_MON",
+            "dimension": "2D",
+            "time_steps_to_process": [
+                "0000000732",
+                "0000001428"
+            ]
+        },
+        "report": [
+            {
+                "logStreamName": "2022/06/27/[$LATEST]91e44045bfe34ef198bdeeae4fa01782",
+                "Duration (s)": 8.18826,
+                "Billed Duration (s)": 8.504,
+                "Memory Size (MB)": 1024,
+                "Max Memory Used (MB)": 412,
+                "Init Duration (s)": 0.31527,
+                "Cost Estimate (USD)": 0.0001417336168
+            }
+        ],
+        "error": [],
+        "end": true,
+        "success": false,
+        "extra": {}
+    },
+    "31c39138-54dc-470c-83e6-ef9154e4436b": {
+        "date": "Mon, 27 Jun 2022 22:51:15 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "native",
+            "output_freq_code": "AVG_MON",
+            "dimension": "2D",
+            "time_steps_to_process": [
+                "0000002172",
+                "0000002892"
+            ]
+        },
+        "report": [
+            {
+                "logStreamName": "2022/06/27/[$LATEST]237bad452d02434a9c2d202a80630c56",
+                "Duration (s)": 20.592959999999998,
+                "Billed Duration (s)": 21.748,
+                "Memory Size (MB)": 1024,
+                "Max Memory Used (MB)": 412,
+                "Init Duration (s)": 1.1548399999999999,
+                "Cost Estimate (USD)": 0.00036246739160000004
+            }
+        ],
+        "error": [],
+        "end": true,
+        "success": false,
+        "extra": {}
+    },
+    "68694381-91d8-44f7-9372-6a678243ac11": {
+        "date": "Mon, 27 Jun 2022 22:51:15 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "native",
+            "output_freq_code": "AVG_MON",
+            "dimension": "2D",
+            "time_steps_to_process": [
+                "0000003636"
+            ]
+        },
+        "report": [
+            {
+                "logStreamName": "2022/06/27/[$LATEST]b2604915f54c4ed493e4684815aba776",
+                "Duration (s)": 19.82983,
+                "Billed Duration (s)": 20.829,
+                "Memory Size (MB)": 1024,
+                "Max Memory Used (MB)": 402,
+                "Init Duration (s)": 0.99891,
+                "Cost Estimate (USD)": 0.00034715069430000004
+            }
+        ],
+        "error": [],
+        "end": true,
+        "success": false,
+        "extra": {
+            "Duration (s)": {
+                "TOTAL": 1.15891432762146,
+                "SCRIPT": 0.0,
+                "DOWNLOAD": 0.7364339828491211,
+                "NETCDF": 0.22578883171081543,
+                "UPLOAD": 0.19669151306152344
+            },
+            "Files (#)": {
+                "DOWNLOAD": 4,
+                "UPLOAD": 1
+            }
+        }
+    }
+}

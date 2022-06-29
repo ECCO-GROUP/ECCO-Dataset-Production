@@ -1,6 +1,7 @@
 import os
 import sys
 import lzma
+from tkinter import N
 import uuid
 import pickle
 import datetime
@@ -10,6 +11,7 @@ import pyresample as pr
 from pathlib import Path
 from pprint import pprint
 from pandas import read_csv
+from scipy import sparse
 from collections import OrderedDict
 
 # ==========================================================================================================================
@@ -193,6 +195,7 @@ def create_mapping_factors(ea, dataset_dim, mapping_factors_dir, debug_mode, sou
                         pickle.dump(grid_mappings_k, lzma.open(fname_3D, 'wb'))
                 except:
                     print('cannot make %s ' % mapping_factors_dir)
+
     return
 
 
@@ -470,6 +473,8 @@ def latlon_load_2D(ea, ecco, wet_pts_k, target_grid, data_file_path, record_end_
     nearest_source_index_to_target_index_i = grid_mappings_k
 
     # transform to new grid
+    import time
+    st = time.time()
     F_ll =  \
         ea.transform_to_target_grid(source_indices_within_target_radius_i,
                                     nearest_source_index_to_target_index_i,
@@ -478,6 +483,7 @@ def latlon_load_2D(ea, ecco, wet_pts_k, target_grid, data_file_path, record_end_
                                     operation='mean',
                                     land_mask=ll_land_mask,
                                     allow_nearest_neighbor=True)
+    tr_et = time.time()
 
     # expand F_ll with time dimension
     F_ll = np.expand_dims(F_ll, 0)
@@ -487,7 +493,102 @@ def latlon_load_2D(ea, ecco, wet_pts_k, target_grid, data_file_path, record_end_
                                 target_grid['lats_1D'],
                                 target_grid['lons_1D']],
                         dims=["time", "latitude","longitude"])
+
+    print(f'Transform time: {tr_et-st}')
+
+    # =============================================================================================
+    # Create sparse matrix representation of mapping factors
+    print('starting sparse matrix stuff')
+    n = 13*90*90
+    tg = target_grid['shape']
+    m = 2*180 * 2*360
+    B = np.zeros((n, m))
+
+    print('starting loop')
+    # target_ind_raw = np.where(source_indices_within_target_radius_i != -1)[0]
+    # target_ind = []
+    # source_ind = []
+    # source_to_target_weights = []
+    # for ti in target_ind_raw:
+    #     si = source_indices_within_target_radius_i[ti]
+    #     if len(si) > 1:
+    #         for si_j in si:
+    #             target_ind.append(ti)
+    #             source_ind.append(si_j)
+    #             source_to_target_weights.append(1/len(si))
+    #     else:
+    #         target_ind.append(ti)
+    #         source_ind.append(si[0])
+    #         source_to_target_weights.append(1)
     
+    target_ind_raw = np.where(source_indices_within_target_radius_i != -1)[0]
+    nearest_ind_raw = np.where((nearest_source_index_to_target_index_i != -1) & (source_indices_within_target_radius_i == -1))[0]
+    target_ind = []
+    source_ind = []
+    source_to_target_weights = []
+    ctr = 0
+    for wet_ind in np.where(~np.isnan(ll_land_mask))[0]:
+        if wet_ind in target_ind_raw:
+            si = source_indices_within_target_radius_i[wet_ind]
+            if len(si) > 1:
+                ctr += 1
+                for si_j in si:
+                    target_ind.append(wet_ind)
+                    source_ind.append(si_j)
+                    source_to_target_weights.append(1/len(si))
+            else:
+                target_ind.append(wet_ind)
+                source_ind.append(si[0])
+                source_to_target_weights.append(1)
+        # elif wet_ind in nearest_ind_raw:
+            # ni = nearest_source_index_to_target_index_i[wet_ind]
+            # target_ind.append(wet_ind)
+            # source_ind.append(ni)
+            # source_to_target_weights.append(1)
+
+    print('ended loop')
+
+    # example -----
+    N1 = 10
+    N2 = 5
+    data = np.random.randint(0, 5, size=N1) #flat list of values to enter into sparse matrix
+    rows = np.arange(N1) #list of row indices to enter values
+    cols = np.random.randint(0, N2, size=N1) #list of column indices to enter value
+
+    # conn_matrix[0] is list that is N2 long, with data[0] entered at [row[0], col[0]]
+    # ...
+    conn_matrix = sparse.csr_matrix((data, (rows, cols)), shape=(N1, N2))
+    # -------------
+
+
+    # new way using example
+    B = sparse.csr_matrix((source_to_target_weights, (source_ind, target_ind)), shape=(n,m))
+
+    F_rav = F.ravel()
+
+    A = B.T.dot(F_rav)
+
+    # near_ind = nearest_ind_raw
+    # A[near_ind] = F_rav[nearest_source_index_to_target_index_i[near_ind]]
+    A = np.where(~np.isnan(ll_land_mask), A, np.nan)
+    ctr2 = 0
+    for wet_ind in np.where(~np.isnan(ll_land_mask))[0]:
+        if wet_ind in target_ind_raw:
+            continue
+        elif wet_ind in nearest_ind_raw:
+            ctr2 += 1
+            ni = nearest_source_index_to_target_index_i[wet_ind]
+            A[wet_ind] = F_wet_native[ni]
+
+    A_ll = A.reshape((1, 360, 720))
+
+    # A_ll = np.where(A_ll == 0, np.nan, A_ll)
+
+    meaned_ind = np.where(source_indices_within_target_radius_i != -1)[0]
+
+    import pdb; pdb.set_trace()
+    # =============================================================================================
+
     return F_DA
 
 
@@ -564,7 +665,7 @@ def latlon_load(ea, ecco, Z, wet_pts_k, target_grid, data_file_path,
     return F_DS
 
 
-def native_load(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, mds_file, output_freq_code, cur_ts):
+def native_load(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, output_freq_code, cur_ts):
     # land masks
     ecco_land_mask_c  = ecco_grid.maskC.copy(deep=True)
     ecco_land_mask_c.values = np.where(ecco_land_mask_c==True, 1, np.nan)
@@ -573,7 +674,8 @@ def native_load(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, mds_file, 
     ecco_land_mask_s  = ecco_grid.maskS.copy(deep=True)
     ecco_land_mask_s.values = np.where(ecco_land_mask_s==True, 1, np.nan)
 
-    short_mds_name = mds_file.name.split('.')[0]
+    short_mds_name = mds_var_dir.name.split('.')[0]
+    mds_var_dir = mds_var_dir.parent
 
     F_DS = ecco.load_ecco_vars_from_mds(mds_var_dir,
                                         mds_grid_dir = ecco_grid_dir_mds,
@@ -582,7 +684,7 @@ def native_load(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, mds_file, 
                                         drop_unused_coords = True,
                                         grid_vars_to_coords = False,
                                         output_freq_code=output_freq_code,
-                                        model_time_steps_to_load=cur_ts,
+                                        model_time_steps_to_load=int(cur_ts),
                                         less_output = True)
 
     vars_to_drop = set(F_DS.data_vars).difference(set([var]))
@@ -684,9 +786,9 @@ def global_DS_changes(F_DS, output_freq_code, grouping, var, array_precision, ec
 
     elif product_type == 'native':
         if 'XC_bnds' in ecco_grid.coords:
-            F_DS = F_DS.assign_coords({"XC_bnds": (("tile","j","i","nb"), ecco_grid['XC_bnds'])})
+            F_DS = F_DS.assign_coords({"XC_bnds": (("tile","j","i","nb"), ecco_grid['XC_bnds'].data)})
         if 'YC_bnds' in ecco_grid.coords:
-            F_DS = F_DS.assign_coords({"YC_bnds": (("tile","j","i","nb"), ecco_grid['YC_bnds'])})
+            F_DS = F_DS.assign_coords({"YC_bnds": (("tile","j","i","nb"), ecco_grid['YC_bnds'].data)})
 
         #   if 3D assign depth bounds, use k as index
         if dataset_dim == '3D' and 'Z' in list(F_DS.coords):

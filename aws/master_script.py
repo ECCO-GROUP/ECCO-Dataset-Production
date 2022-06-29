@@ -5,6 +5,7 @@ Author: Duncan Bark
 
 """
 
+from distutils.log import error
 from email.policy import default
 import os
 from posixpath import split
@@ -113,7 +114,7 @@ if __name__ == "__main__":
     # Creates mapping_factors (2D and 3D), landmask, and latlon_grid files
     # Not needed unless changes have been made to the factors code and you need
     # to update the factors/mask in the lambda docker image
-    # create_all_factors(ea, config_metadata, ['2D', '3D'], debug_mode=debug_mode)
+    create_all_factors(ea, config_metadata, ['2D', '3D'], debug_mode=debug_mode)
 
     # Get all configurations
     all_jobs = []
@@ -123,17 +124,10 @@ if __name__ == "__main__":
                 continue
 
             line_vals = line.strip().split(',')
-            if '[' in line:
-                times = []
-                for tv in line_vals[3:]:
-                    tv = tv.replace('[', '').replace(']', '')
-                    times.append(int(tv))
-                all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], times])
+            if line_vals[3] == 'all':
+                all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], line_vals[3]])
             else:
-                if line_vals[3] == 'all':
-                    all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], line_vals[3]])
-                else:
-                    all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], int(line_vals[3])])
+                all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], int(line_vals[3])])
 
 
     # Get grouping information
@@ -271,7 +265,7 @@ if __name__ == "__main__":
             job_logs['Master Script Total Time (s)'] = 0
             job_logs['Cost Information'] = defaultdict(float)
 
-            for (grouping_to_process, product_type, output_freq_code, time_steps_to_process) in all_jobs:
+            for (grouping_to_process, product_type, output_freq_code, num_time_steps_to_process) in all_jobs:
                 # Get field time steps and field files
                 if product_type == 'latlon':
                     curr_grouping = groupings_for_latlon_datasets[grouping_to_process]
@@ -307,7 +301,7 @@ if __name__ == "__main__":
     # loop through all jobs and either process them locally
     # or invoke the created lambda function
     if process_data:
-        for (grouping_to_process, product_type, output_freq_code, time_steps_to_process) in all_jobs:      
+        for (grouping_to_process, product_type, output_freq_code, num_time_steps_to_process) in all_jobs:      
             # Get field time steps and field files
             if product_type == 'latlon':
                 curr_grouping = groupings_for_latlon_datasets[grouping_to_process]
@@ -334,13 +328,13 @@ if __name__ == "__main__":
                 print('you provided ', output_freq_code)
                 sys.exit()
 
-            s3_dir_prefix = f'{source_bucket_folder_name}/{freq_folder}'
-
             if not local:
+                s3_dir_prefix = f'{source_bucket_folder_name}/{freq_folder}'
+
                 file_time_steps = get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, 
-                                                        source_bucket,  product_type, time_steps_to_process)
+                                                        source_bucket,  product_type, num_time_steps_to_process)
                 if file_time_steps == -1:
-                    print(f'--- Skipping job:\n\tgrouping: {grouping_to_process}\n\tproduct_type: {product_type}\n\toutput_freq_code: {output_freq_code}\n\ttime_steps_to_process: {time_steps_to_process}')
+                    print(f'--- Skipping job:\n\tgrouping: {grouping_to_process}\n\tproduct_type: {product_type}\n\toutput_freq_code: {output_freq_code}\n\tnum_time_steps_to_process: {num_time_steps_to_process}')
                     continue
                 else:
                     field_files, field_time_steps, all_time_steps_all_vars = file_time_steps
@@ -349,25 +343,20 @@ if __name__ == "__main__":
                 field_time_steps = {}
                 all_time_steps_all_vars = []
                 for field in fields:
-                    if time_steps_to_process == 'all':
-                        field_files[field] = sorted(glob.glob(f'{config_metadata["model_data_dir"]}/{freq_folder}/{field}_{period_suffix}/*.data'))
-                        time_steps = [key.split('.')[-2] for key in field_files[field]]
+                    field_files[field] = sorted(glob.glob(f'{config_metadata["model_data_dir"]}/{freq_folder}/{field}_{period_suffix}/*.data'))
+                    time_steps = [key.split('.')[-2] for key in field_files[field]]
+                    if num_time_steps_to_process == 'all':
                         field_time_steps[field] = sorted(time_steps)
                         all_time_steps_all_vars.extend(time_steps)
-                    elif isinstance(time_steps_to_process, list):
-                        field_files[field] = []
-                        field_time_steps[field] = []
-                        for ts in time_steps_to_process:
-                            ts = str(ts).zfill(10)
-                            field_files[field].append(f'{config_metadata["model_data_dir"]}/{freq_folder}/{field}_{period_suffix}/{field}_{period_suffix}.{ts}.data')
-                            field_time_steps[field].append(ts)
-                            all_time_steps_all_vars.append(ts)
-                        field_files[field] = sorted(field_files[field])
-                        field_time_steps[field] = sorted(field_time_steps[field])
+                    elif num_time_steps_to_process > 0:
+                        time_steps = sorted(time_steps)[:num_time_steps_to_process]
+                        field_files[field] = sorted(field_files[field])[:num_time_steps_to_process]
+                        field_time_steps[field] = time_steps
                     else:
-                        print(f'Bad time steps provided ("{time_steps_to_process}"). Skipping job.')
-                        print(f'--- Skipping job:\n\tgrouping: {grouping_to_process}\n\tproduct_type: {product_type}\n\toutput_freq_code: {output_freq_code}\n\ttime_steps_to_process: {time_steps_to_process}')
+                        print(f'Bad time steps provided ("{num_time_steps_to_process}"). Skipping job.')
+                        print(f'--- Skipping job:\n\tgrouping: {grouping_to_process}\n\tproduct_type: {product_type}\n\toutput_freq_code: {output_freq_code}\n\tnum_time_steps_to_process: {num_time_steps_to_process}')
                         continue
+                    all_time_steps_all_vars.extend(time_steps)
 
             # check that each field has the same number of times
             all_time_steps = sorted(list(set(all_time_steps_all_vars)))
@@ -522,9 +511,9 @@ if __name__ == "__main__":
                     for log_group_name, group_streams in log_streams.items():
                         for ls in group_streams:
                             if ls['logStreamName'] in ended_log_stream_names:
-                                if ls['logStreamName'] not in deleted_log_stream_names:
+                                if ls['logStreamName'] not in deleted_log_stream_names and ls['logStreamName'] not in error_logs.keys():
                                     print(f'Deleting log stream: {ls["logStreamName"]}')
-                                    log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls['logStreamName'])
+                                    # log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls['logStreamName'])
                                     deleted_log_stream_names.append(ls['logStreamName'])
                                     total_num_log_streams -= 1
                             else:
@@ -647,8 +636,8 @@ if __name__ == "__main__":
                                 print(f'Deleting log stream: {ls_name}')
                                 for log_group_name, group_streams_raw in log_streams.items():
                                     group_streams = [gs['logStreamName'] for gs in group_streams_raw]
-                                    if ls_name in group_streams:
-                                        log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls_name)
+                                    if ls_name in group_streams and ls_name not in error_logs.keys():
+                                        # log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls_name)
                                         deleted_log_stream_names.append(ls_name)
                         break
 

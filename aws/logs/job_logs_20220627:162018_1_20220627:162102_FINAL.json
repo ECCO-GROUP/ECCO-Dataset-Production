@@ -1,0 +1,132 @@
+{
+    "Master Script Total Time (s)": 17.311,
+    "Cost Information": {
+        "1024 MB Total Time (s)": 18.64385,
+        "1024 MB Total Billed Time (s)": 20.288,
+        "1024 MB Total GB*s": 20.288,
+        "1024 MB Total Cost (USD)": 0.0003381340096000001,
+        "Total Cost": 0.0003381340096000001
+    },
+    "73683c49-ed54-4bb9-b789-ce64c39dabad": {
+        "date": "Mon, 27 Jun 2022 23:20:49 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "native",
+            "output_freq_code": "AVG_MON",
+            "dimension": "2D",
+            "time_steps_to_process": [
+                "0000000732",
+                "0000001428"
+            ]
+        },
+        "report": [
+            {
+                "logStreamName": "2022/06/27/[$LATEST]9cf0bc53f4d14e1c91165082ab69cc8d",
+                "Duration (s)": 6.45857,
+                "Billed Duration (s)": 7.0760000000000005,
+                "Memory Size (MB)": 1024,
+                "Max Memory Used (MB)": 387,
+                "Init Duration (s)": 0.6169,
+                "Cost Estimate (USD)": 0.00011793356920000001
+            }
+        ],
+        "error": [],
+        "end": true,
+        "success": false,
+        "extra": {
+            "Duration (s)": {
+                "TOTAL": 0.1335124969482422,
+                "SCRIPT": 0.0,
+                "DOWNLOAD": 0.1335124969482422,
+                "NETCDF": 0.0,
+                "UPLOAD": 0.0
+            },
+            "Files (#)": {
+                "DOWNLOAD": 1,
+                "UPLOAD": 0
+            }
+        }
+    },
+    "912a28a4-c46a-49c3-bc39-620c55a293d6": {
+        "date": "Mon, 27 Jun 2022 23:20:49 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "native",
+            "output_freq_code": "AVG_MON",
+            "dimension": "2D",
+            "time_steps_to_process": [
+                "0000002172",
+                "0000002892"
+            ]
+        },
+        "report": [
+            {
+                "logStreamName": "2022/06/27/[$LATEST]6c28fa3d31c64290b0c0299474a37e92",
+                "Duration (s)": 6.23217,
+                "Billed Duration (s)": 6.831,
+                "Memory Size (MB)": 1024,
+                "Max Memory Used (MB)": 387,
+                "Init Duration (s)": 0.59802,
+                "Cost Estimate (USD)": 0.00011385022770000001
+            }
+        ],
+        "error": [],
+        "end": true,
+        "success": false,
+        "extra": {
+            "Duration (s)": {
+                "TOTAL": 0.16932916641235352,
+                "SCRIPT": 0.0,
+                "DOWNLOAD": 0.16932916641235352,
+                "NETCDF": 0.0,
+                "UPLOAD": 0.0
+            },
+            "Files (#)": {
+                "DOWNLOAD": 1,
+                "UPLOAD": 0
+            }
+        }
+    },
+    "d7347a78-fb25-469e-b37c-6bfb57e0f4aa": {
+        "date": "Mon, 27 Jun 2022 23:20:50 GMT",
+        "status": 202,
+        "data": {
+            "grouping_to_process": 0,
+            "product_type": "native",
+            "output_freq_code": "AVG_MON",
+            "dimension": "2D",
+            "time_steps_to_process": [
+                "0000003636"
+            ]
+        },
+        "report": [
+            {
+                "logStreamName": "2022/06/27/[$LATEST]fe62db753d9f4d91adfe43dec9b5c2f2",
+                "Duration (s)": 5.95311,
+                "Billed Duration (s)": 6.381,
+                "Memory Size (MB)": 1024,
+                "Max Memory Used (MB)": 387,
+                "Init Duration (s)": 0.42727,
+                "Cost Estimate (USD)": 0.00010635021270000001
+            }
+        ],
+        "error": [],
+        "end": true,
+        "success": false,
+        "extra": {
+            "Duration (s)": {
+                "TOTAL": 0.15650367736816406,
+                "SCRIPT": 0.0,
+                "DOWNLOAD": 0.15650367736816406,
+                "NETCDF": 0.0,
+                "UPLOAD": 0.0
+            },
+            "Files (#)": {
+                "DOWNLOAD": 1,
+                "UPLOAD": 0
+            }
+        }
+    }
+}

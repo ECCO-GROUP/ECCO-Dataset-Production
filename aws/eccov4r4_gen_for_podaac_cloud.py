@@ -7,6 +7,7 @@ Adapted from ifenty's "eccov4r4_gen_for_podaac.py"
 """
 
 import os
+import shutil
 import sys
 import json
 import time
@@ -93,6 +94,12 @@ def generate_netcdfs(event):
             logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
             print(f'FAILURE')
             sys.exit()
+
+        # Create tmp_data directory if using S3 (and not Lambda)
+        if not local and not use_lambda:
+            tmp_data_path = Path(__file__).parent / 'tmp_data'
+            if not os.path.exists(tmp_data_path):
+                os.mkdir(tmp_data_path)
 
         # Define fill values for binary and netcdf
         # ECCO always uses -9999 for missing data.
@@ -187,13 +194,13 @@ def generate_netcdfs(event):
             filename_tail = filename_tail_native
             groupings = groupings_for_native_datasets
             output_dir_type = config_metadata['output_dir_base'] / 'native'
+            latlon_bounds, depth_bounds, _, _ = ut.get_latlon_grid(Path(config_metadata['mapping_factors_dir']), debug_mode)
 
         elif product_type == 'latlon':
             dataset_description_tail = dataset_description_tail_latlon
             filename_tail = filename_tail_latlon
             groupings = groupings_for_latlon_datasets
             output_dir_type = config_metadata['output_dir_base'] / 'lat-lon'
-
             latlon_bounds, depth_bounds, target_grid, wet_pts_k = ut.get_latlon_grid(Path(config_metadata['mapping_factors_dir']), debug_mode)
             # CHANGE TO TWO DICTS (BOUNDS, and GRID)
         # ======================================================================================================================
@@ -226,21 +233,21 @@ def generate_netcdfs(event):
         # ======================================================================================================================
         # DIRECTORIES & FILE PATHS
         # ======================================================================================================================
-        diags_root = Path(config_metadata['model_data_dir'])
+        # diags_root = Path(config_metadata['model_data_dir'])
 
         # print('\nGetting directories for group fields')
         if output_freq_code == 'AVG_DAY':
-            mds_diags_root_dir = diags_root / 'diags_daily'
+            # mds_diags_root_dir = diags_root / 'diags_daily'
             period_suffix = 'day_mean'
             dataset_description_head = 'This dataset contains daily-averaged '
 
         elif output_freq_code == 'AVG_MON':
-            mds_diags_root_dir = diags_root / 'diags_monthly'
+            # mds_diags_root_dir = diags_root / 'diags_monthly'
             period_suffix = 'mon_mean'
             dataset_description_head = 'This dataset contains monthly-averaged '
 
         elif output_freq_code == 'SNAPSHOT':
-            mds_diags_root_dir = diags_root / 'diags_inst'
+            # mds_diags_root_dir = diags_root / 'diags_inst'
             period_suffix = 'day_inst'
             dataset_description_head = 'This dataset contains instantaneous '
         else:
@@ -273,39 +280,39 @@ def generate_netcdfs(event):
 
 
         # get files
-        s3_files = defaultdict(list)
-        if local:
+        # s3_files = defaultdict(list)
+        # if local:
             # get list of files from local directory
-            model_granule_roots = np.sort(list(mds_diags_root_dir.glob('*' + period_suffix + '*')))
-        else:
-            # get list of files from S3 bucket
-            response = s3.list_objects_v2(Bucket=model_granule_bucket)
-            if response['ResponseMetadata']['HTTPStatusCode'] != 200:
-                print(f'Unable to collect objects in bucket {model_granule_bucket}')
-                return -1
-            else:
-                model_granule_roots = []
-                for k in response['Contents']:
-                    k = k['Key']
-                    if '.data' in k:
-                        field = k.split('/')[-2].replace(f'_{period_suffix}', '')
-                        s3_files[field].append(k)
-                        k_root = k.split(f'{period_suffix}/')[0] + period_suffix
-                        if k_root not in model_granule_roots:
-                            model_granule_roots.append(k_root)
+            # model_granule_roots = np.sort(list(mds_diags_root_dir.glob('*' + period_suffix + '*')))
+        # else:
+        #     # get list of files from S3 bucket
+        #     response = s3.list_objects_v2(Bucket=model_granule_bucket)
+        #     if response['ResponseMetadata']['HTTPStatusCode'] != 200:
+        #         print(f'Unable to collect objects in bucket {model_granule_bucket}')
+        #         return -1
+        #     else:
+        #         model_granule_roots = []
+        #         for k in response['Contents']:
+        #             k = k['Key']
+        #             if '.data' in k:
+        #                 field = k.split('/')[-2].replace(f'_{period_suffix}', '')
+        #                 s3_files[field].append(k)
+        #                 k_root = k.split(f'{period_suffix}/')[0] + period_suffix
+        #                 if k_root not in model_granule_roots:
+        #                     model_granule_roots.append(k_root)
 
 
         ## load field file and directory names
         # print ('...number of subdirectories found ', len(model_granule_roots))
-        all_field_names = []
+        # all_field_names = []
 
         # extract record name out of full directory
-        if local:
-            for f in model_granule_roots:
-                all_field_names.append(f.name)
-        else:
-            for f in model_granule_roots:
-                all_field_names.append(f.split('/')[-2])
+        # if local:
+        #     for f in model_granule_roots:
+        #         all_field_names.append(f.name)
+        # else:
+        #     for f in model_granule_roots:
+        #         all_field_names.append(f.split('/')[-2])
 
         # print(all_field_names)
 
@@ -318,24 +325,25 @@ def generate_netcdfs(event):
         # CREATE FIELDS  & TIME STEPS
         # ======================================================================================================================
         # find fields in dataset
-        tmp = grouping['fields'].split(',')
-        fields_to_load  = []
-        for field in tmp:
-            fields_to_load.append(field.strip())
+        # tmp = grouping['fields'].split(',')
+        # fields_to_load  = []
+        # for field in tmp:
+        #     fields_to_load.append(field.strip())
+        fields_to_load = list(field_files.keys())
 
         # find directories with fields
-        field_directories = {}
-        for field in fields_to_load:
-            field_match =  "".join([field, "_", period_suffix])
-            num_matching_dirs = 0
-            for fp in model_granule_roots:
-                if field_match == str(fp).split('/')[-1]:
-                    field_directories[field] = fp
-                    num_matching_dirs += 1
-            if num_matching_dirs == 0:
-                print('>>>>>> no match found for ', field)
-            elif num_matching_dirs > 1 :
-                print('>>>>>> more than one matching dir for ', field)
+        # field_directories = {}
+        # for field in fields_to_load:
+        #     field_match =  "".join([field, "_", period_suffix])
+        #     num_matching_dirs = 0
+        #     for fp in model_granule_roots:
+        #         if field_match == str(fp).split('/')[-1]:
+        #             field_directories[field] = fp
+        #             num_matching_dirs += 1
+        #     if num_matching_dirs == 0:
+        #         print('>>>>>> no match found for ', field)
+        #     elif num_matching_dirs > 1 :
+        #         print('>>>>>> more than one matching dir for ', field)
 
 
         # print('\nDirectories with the variables in the grouping')
@@ -439,14 +447,17 @@ def generate_netcdfs(event):
                     else:
                         source_data_file_path = Path(source_data_file_path[0])
 
-
                     if local:
                         data_file_path = source_data_file_path
                     elif not use_lambda:
                         data_file_path = Path(__file__).parent / 'tmp_data' / source_data_file_path
                     else:
                         data_file_path = Path(f'/tmp/{source_data_file_path}')
-                        
+
+                    meta_file_path = ''
+                    if product_type == 'native':
+                        source_meta_file_path = f'{str(source_data_file_path)[:-5]}.meta'
+                        meta_file_path = Path(f'{str(data_file_path)[:-5]}.meta')
 
                     # mds_field_dir = field_directories[field]
                     # mds_field_dir = Path('/tmp') / mds_field_dir
@@ -489,6 +500,9 @@ def generate_netcdfs(event):
                         if not data_file_path.exists():
                             print(f'S3: {source_data_file_path}\nLOCAL: {data_file_path}')
                             s3.download_file(model_granule_bucket, str(source_data_file_path), str(data_file_path))
+                        if product_type == 'native' and not meta_file_path.exists():
+                            print(f'S3: {source_meta_file_path}\nLOCAL: {meta_file_path}')
+                            s3.download_file(model_granule_bucket, str(source_meta_file_path), str(meta_file_path))
                         s3_download_end_time = time.time()
                         total_download_time += s3_download_end_time-s3_download_start_time
                         num_downloaded += 1
@@ -505,7 +519,10 @@ def generate_netcdfs(event):
 
                     # delete downloaded file from cloud disks
                     if not local:
-                        os.remove(data_file_path)
+                        if os.path.exists(data_file_path):
+                            os.remove(data_file_path)
+                        if product_type == 'native' and os.path.exists(meta_file_path):
+                            os.remove(meta_file_path)
                     
                     F_DS = ut.global_DS_changes(F_DS, output_freq_code, grouping, field,
                                                 array_precision, ecco_grid, depth_bounds, product_type, 
@@ -568,6 +585,11 @@ def generate_netcdfs(event):
             # ==================================================================================================================
         # =============================================================================================
 
+        # Remove tmp_data directory
+        if not local and not use_lambda:
+            if os.path.exists(tmp_data_path):
+                shutil.rmtree(tmp_data_path)
+
         # LOGGING
         end_time = time.time()
         total_time = end_time-start_time
@@ -590,6 +612,8 @@ def generate_netcdfs(event):
         })
         # # logger.error(err_msg)
         print(err_msg)
+        print()
+        print(repr(e))
         logging_info(total_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
         print(f'FAILURE')
 
