@@ -395,6 +395,7 @@ def create_all_factors(ea, config_metadata, dataset_dim, debug_mode):
             except:
                 print(f'ERROR Cannot save latlon_grid file "{latlon_grid_name}"')
                 return -1
+
     return status
 
 
@@ -404,6 +405,9 @@ def create_all_factors(ea, config_metadata, dataset_dim, debug_mode):
 def latlon_load_2D(ea, ecco, wet_pts_k, target_grid, data_file_path, record_end_time, mapping_factors_dir):
     status = 1
 
+    # k = 0 because 2D is surface level
+    k = 0
+
     F = ecco.read_llc_to_tiles(data_file_path,
                                 llc=90, skip=0,
                                 nk=1, nl=1,
@@ -411,55 +415,56 @@ def latlon_load_2D(ea, ecco, wet_pts_k, target_grid, data_file_path, record_end_
                                 less_output=True,
                                 use_xmitgcm=False)
 
-    # original source_field
     F_wet_native = F[wet_pts_k[0]]
 
-
-    # new source_field
-    # make new F where wet_pts_k[0] indices have the values from
-    # F and all others are 0
-    # NOTE: This results in F_ll and A_ll matching, but the final data
-    # not matching previous outputs
-    # ------------------
-    # new_F = np.full_like(F, np.nan)
-    # new_F[wet_pts_k[0]] = F[wet_pts_k[0]]
-    # F_wet_native = new_F.ravel()
-    # wet_source_ind = np.where(~np.isnan(F_wet_native))[0]
-    # F_rav = F_wet_native.copy()
-
-    # try 2
-    new_F = np.full_like(F, 0)
-    new_F[wet_pts_k[0]] = F[wet_pts_k[0]]
-    F_rav = new_F.ravel()
-
-
-    # get mapping factors for the the surface level
-    status, _, grid_mappings_k = get_mapping_factors('2D', mapping_factors_dir, 'k', k=0)
-    if status == -1:
-        return (status, [])
+    # # get mapping factors for the the surface level
+    # status, _, grid_mappings_k = get_mapping_factors('2D', mapping_factors_dir, 'k', k=k)
+    # if status == -1:
+    #     return (status, [])
 
     status, ll_land_mask = get_land_mask(mapping_factors_dir, k=0)
     if status == -1:
         return (status, [])
 
-    source_indices_within_target_radius_i, \
-    nearest_source_index_to_target_index_i = grid_mappings_k
+    # source_indices_within_target_radius_i, \
+    # nearest_source_index_to_target_index_i = grid_mappings_k
 
-    # transform to new grid
-    import time
-    st = time.time()
-    F_ll =  \
-        ea.transform_to_target_grid(source_indices_within_target_radius_i,
-                                    nearest_source_index_to_target_index_i,
-                                    F_wet_native,
-                                    target_grid['shape'],
-                                    operation='mean',
-                                    land_mask=ll_land_mask,
-                                    allow_nearest_neighbor=True)
-    tr_et = time.time()
+    # # transform to new grid
+    # F_ll =  \
+    #     ea.transform_to_target_grid(source_indices_within_target_radius_i,
+    #                                 nearest_source_index_to_target_index_i,
+    #                                 F_wet_native,
+    #                                 target_grid['shape'],
+    #                                 operation='mean',
+    #                                 land_mask=ll_land_mask,
+    #                                 allow_nearest_neighbor=True)
 
-    # expand F_ll with time dimension
-    F_ll = np.expand_dims(F_ll, 0)
+    # # expand F_ll with time dimension
+    # F_ll = np.expand_dims(F_ll, 0)
+
+
+    # =============================================================================================
+    # import time
+    # st = time.time()
+    # Load sparse matrix for level k from disk
+    sm_path = f'./mapping_factors/sparse/sparse_matrix_{k}.npz'
+    B = sparse.load_npz(sm_path)
+
+    A = B.T.dot(F_wet_native)
+
+    A = np.where(np.isnan(ll_land_mask), np.nan, A)
+
+    F_ll = A.reshape((1, 360, 720))
+
+    del(A)
+
+    # tr_et = time.time()
+
+    # A_ll_clean = np.where(np.isnan(A_ll), -9999., A_ll)
+    # F_ll_clean = np.where(np.isnan(F_ll), -9999., F_ll)
+    # A_F_diff = np.where(A_ll_clean[0] != F_ll_clean[0])
+    # A_F_same = np.where(A_ll_clean[0] == F_ll_clean[0])
+    # =============================================================================================
 
     F_DA = xr.DataArray(F_ll,
                         coords=[[record_end_time],
@@ -467,83 +472,7 @@ def latlon_load_2D(ea, ecco, wet_pts_k, target_grid, data_file_path, record_end_
                                 target_grid['lons_1D']],
                         dims=["time", "latitude","longitude"])
 
-    print(f'Transform time: {tr_et-st}')
-
-    # =============================================================================================
-    # Create sparse matrix representation of mapping factors
-    print('starting sparse matrix stuff')
-    n = 13*90*90
-    tg = target_grid['shape']
-    m = 2*180 * 2*360
-    B = np.zeros((n, m))
-
-    print('starting loop')
-    
-    target_ind_raw = np.where(source_indices_within_target_radius_i != -1)[0]
-    nearest_ind_raw = np.where((nearest_source_index_to_target_index_i != -1) & (source_indices_within_target_radius_i == -1))[0]
-    target_ind = []
-    source_ind = []
-    source_to_target_weights = []
-    ctr = 0
-    for wet_ind in np.where(~np.isnan(ll_land_mask))[0]:
-        if wet_ind in target_ind_raw:
-            si = source_indices_within_target_radius_i[wet_ind]
-            if len(si) > 1:
-                ctr += 1
-                for si_j in si:
-                    target_ind.append(wet_ind)
-                    source_ind.append(si_j)
-                    source_to_target_weights.append(1/len(si))
-            else:
-                target_ind.append(wet_ind)
-                source_ind.append(si[0])
-                source_to_target_weights.append(1)
-
-    print('ended loop')
-
-    # example -----
-    N1 = 10
-    N2 = 5
-    data = np.random.randint(0, 5, size=N1) #flat list of values to enter into sparse matrix
-    rows = np.arange(N1) #list of row indices to enter values
-    cols = np.random.randint(0, N2, size=N1) #list of column indices to enter value
-
-    # conn_matrix[0] is list that is N2 long, with data[0] entered at [row[0], col[0]]
-    # ...
-    conn_matrix = sparse.csr_matrix((data, (rows, cols)), shape=(N1, N2))
-    # -------------
-
-    # new way using example
-    B = sparse.csr_matrix((source_to_target_weights, (source_ind, target_ind)), shape=(n,m))
-
-    A = B.T.dot(F_rav)
-
-    # near_ind = nearest_ind_raw
-    # A[near_ind] = F_rav[nearest_source_index_to_target_index_i[near_ind]]
-
-    A = np.where(np.isnan(ll_land_mask), np.nan, A)
-    ctr2 = 0
-    for wet_ind in np.where(~np.isnan(ll_land_mask))[0]:
-        if wet_ind in target_ind_raw:
-            continue
-        elif wet_ind in nearest_ind_raw:
-            ctr2 += 1
-            ni = nearest_source_index_to_target_index_i[wet_ind]
-            A[wet_ind] = F_wet_native[ni]
-
-    A_ll = A.reshape((1, 360, 720))
-
-    # A_ll = np.where(A_ll == 0, np.nan, A_ll)
-
-    meaned_ind = np.where(source_indices_within_target_radius_i != -1)[0]
-
-    A_ll_clean = np.where(np.isnan(A_ll), -9999., A_ll)
-    F_ll_clean = np.where(np.isnan(F_ll), -9999., F_ll)
-    A_F_diff = np.where(A_ll_clean[0] != F_ll_clean[0])
-    A_F_same = np.where(A_ll_clean[0] == F_ll_clean[0])
-
-    import pdb; pdb.set_trace()
-    # =============================================================================================
+    # print(f'Transform time: {tr_et-st}')
 
     return (status, F_DA)
 

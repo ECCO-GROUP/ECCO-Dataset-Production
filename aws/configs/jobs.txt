@@ -1,5 +1,6 @@
 #grouping_to_process,product_type,output_frequency,num_time_steps_to_process
-0,latlon,AVG_MON,1
+#0,latlon,AVG_MON,1
+0,latlon,AVG_MON,50
 #0,native,AVG_MON,5
 #11,latlon,AVG_MON,5
 #11,latlon,AVG_MON,5

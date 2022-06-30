@@ -17,6 +17,8 @@ import time
 import boto3
 import argparse
 import platform
+import numpy as np
+from scipy import sparse
 from pathlib import Path
 from collections import defaultdict
 
@@ -25,7 +27,7 @@ from numpy import product
 sys.path.append(f'{Path(__file__).parent.resolve()}')
 from eccov4r4_gen_for_podaac_cloud import generate_netcdfs
 from aws_helpers import get_credentials_helper, upload_S3, create_lambda_function, get_aws_credentials, save_logs, get_logs, get_files_time_steps
-from gen_netcdf_utils import create_all_factors
+from gen_netcdf_utils import create_all_factors, get_land_mask, get_latlon_grid, get_mapping_factors
 import ecco_cloud_utils as ea
 
 
@@ -118,6 +120,69 @@ if __name__ == "__main__":
     if status == -1:
         print('Error creating all factors. Exiting')
         sys.exit()
+
+
+
+    # ====================================================================================================
+    # SPARSE MATRIX CREATION
+    # ====================================================================================================
+
+    # get the land mask of the latlon grid
+    nk = config_metadata['num_vertical_levels']
+
+    for k in range(nk):
+        sm_path = f'./mapping_factors/sparse/sparse_matrix_{k}.npz'
+        if os.path.exists(sm_path):
+            continue
+
+        status, ll_land_mask = get_land_mask(config_metadata['mapping_factors_dir'], k)
+        if status == -1:
+            print(f'Error getting land mask for level k={k}')
+            sys.exit()
+
+        # Create sparse matrix representation of mapping factors
+        for dataset_dim in ['2D', '3D']:
+            if dataset_dim == '2D' and k > 0:
+                continue
+            status, _, (source_indices_within_target_radius_i, \
+            nearest_source_index_to_target_index_i) = get_mapping_factors(dataset_dim, config_metadata['mapping_factors_dir'], 'k', k=k)
+            if status == -1:
+                print(f'Error getting mapping factors for level k={k}')
+                sys.exit()
+
+            status, (_, _, _, wet_pts_k) = get_latlon_grid(Path(config_metadata['mapping_factors_dir']), debug_mode)
+
+            n = len(wet_pts_k[k][0])
+            m = 2*180 * 2*360
+            
+            target_ind_raw = np.where(source_indices_within_target_radius_i != -1)[0]
+            nearest_ind_raw = np.where((nearest_source_index_to_target_index_i != -1) & (source_indices_within_target_radius_i == -1))[0]
+            target_ind = []
+            source_ind = []
+            source_to_target_weights = []
+            for wet_ind in np.where(~np.isnan(ll_land_mask))[0]:
+                if wet_ind in target_ind_raw:
+                    si_list = source_indices_within_target_radius_i[wet_ind]
+                    for si in si_list:
+                        target_ind.append(wet_ind)
+                        source_ind.append(si)
+                        source_to_target_weights.append(1/len(si_list))
+                elif wet_ind in nearest_ind_raw:
+                    ni = nearest_source_index_to_target_index_i[wet_ind]
+                    target_ind.append(wet_ind)
+                    source_ind.append(ni)
+                    source_to_target_weights.append(1)
+
+
+            # create sparse matrix
+            B = sparse.csr_matrix((source_to_target_weights, (source_ind, target_ind)), shape=(n,m))
+
+            # save sparse matrix
+            sparse.save_npz(sm_path, B)
+
+    # ====================================================================================================
+    # ====================================================================================================
+
 
     # Get all configurations
     all_jobs = []
