@@ -27,17 +27,31 @@ import gen_netcdf_utils as ut
 
 # ==========================================================================================================================
 def logging_info(start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded):
-    total_time = time.time() - start_time
-    print(f'DURATION\tSCRIPT\t{total_time}\tseconds')
+    script_time = time.time() - start_time
+    script_time -= (total_download_time + total_netcdf_time + total_upload_time)
+    IO_time = total_download_time + total_netcdf_time + total_upload_time
+    total_time = script_time + IO_time
+    print(f'DURATION\tTOTAL\t{total_time}\tseconds')
+    print(f'DURATION\tSCRIPT\t{script_time}\tseconds')
+    print(f'DURATION\tIO\t{IO_time}\tseconds')
     print(f'DURATION\tDOWNLOAD\t{total_download_time}\tseconds')
-    print(f'FILES\tDOWNLOAD\t{num_downloaded}')
     print(f'DURATION\tNETCDF\t{total_netcdf_time}\tseconds')
     print(f'DURATION\tUPLOAD\t{total_upload_time}\tseconds')
+    print(f'FILES\tDOWNLOAD\t{num_downloaded}')
     print(f'FILES\tUPLOAD\t{num_uploaded}')
     return
 
 
 def generate_netcdfs(event):
+    # Logging values
+    start_time = time.time()
+    total_netcdf_time = 0
+    total_download_time = 0
+    num_downloaded = 0
+    total_upload_time = 0
+    num_uploaded = 0
+
+    # Pull variables from "event" argument
     output_freq_code = event['output_freq_code']
     product_type = event['product_type']
     grouping_to_process = event['grouping_to_process']
@@ -49,14 +63,6 @@ def generate_netcdfs(event):
     local = event['local']
     use_lambda = event['use_lambda']
     credentials = event['credentials']
-
-    # Logging values
-    start_time = time.time()
-    total_netcdf_time = 0
-    total_download_time = 0
-    num_downloaded = 0
-    total_upload_time = 0
-    num_uploaded = 0
 
     try:
         # Fix paths

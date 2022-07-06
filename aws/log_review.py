@@ -49,6 +49,8 @@ for log_file in log_files:
         lf_json = json.load(lf)
 
     example_log = lf_json[list(lf_json.keys())[-1]]
+    if not isinstance(example_log['report'], list):
+        example_log['report'] = [example_log['report']]
     curr_mem = example_log['report'][0]['Memory Size (MB)']
     if 'dimension' not in example_log['data']:
         curr_dim = '2D'
@@ -90,6 +92,9 @@ for log_file in log_files:
                 all_indiv_memories_dict[curr_dim] = defaultdict(int)
                 all_indiv_times_dict[curr_dim] = defaultdict(list)
                 all_indiv_costs_dict[curr_dim] = defaultdict(list)
+
+            if not isinstance(i['report'], list):
+                i['report'] = [i['report']]
 
             memory_data_all[curr_dim][curr_mem]['Individual Time (s)'].append(i['report'][0]['Billed Duration (s)'] / normalization)
             memory_data_all[curr_dim][curr_mem]['Individual Cost ($)'].append(i['report'][0]['Cost Estimate (USD)'] / normalization)

@@ -26,7 +26,7 @@ from numpy import product
 
 sys.path.append(f'{Path(__file__).parent.resolve()}')
 from eccov4r4_gen_for_podaac_cloud import generate_netcdfs
-from aws_helpers import get_credentials_helper, upload_S3, create_lambda_function, get_aws_credentials, save_logs, get_logs, get_files_time_steps
+from aws_helpers import get_credentials_helper, upload_S3, create_lambda_function, get_aws_credentials, save_logs, get_logs, get_files_time_steps, aws_logging
 from gen_netcdf_utils import create_all_factors, get_land_mask, get_latlon_grid, get_mapping_factors
 import ecco_cloud_utils as ea
 
@@ -369,6 +369,7 @@ if __name__ == "__main__":
     # loop through all jobs and either process them locally
     # or invoke the created lambda function
     if process_data:
+        request_ids = []
         for (grouping_to_process, product_type, output_freq_code, num_time_steps_to_process) in all_jobs:      
             # Get field time steps and field files
             if product_type == 'latlon':
@@ -512,15 +513,17 @@ if __name__ == "__main__":
                                 Payload=json.dumps(payload),   
                             )
 
-                            job_logs[invoke_response['ResponseMetadata']['RequestId'].strip()] = {
+                            request_id = invoke_response['ResponseMetadata']['RequestId'].strip()
+                            job_logs[request_id] = {
                                 'date':invoke_response['ResponseMetadata']['HTTPHeaders']['date'], 
                                 'status': invoke_response['StatusCode'], 
                                 'data': data_to_process, 
-                                'report': [], 
-                                'error': [],
+                                'report': {}, 
+                                'error': '',
                                 'end': False,
                                 'success': False
                             }
+                            request_ids.append(request_id)
                     
                             num_jobs += 1
                 
@@ -545,184 +548,205 @@ if __name__ == "__main__":
 
                 generate_netcdfs(payload)
         
-        # Lambda logging
+        # Lambda logging ==========================================================================
         if use_lambda:
-            log_client = boto3.client('logs')
-            log_group_names = [lg['logGroupName'] for lg in log_client.describe_log_groups()['logGroups'] if 'ecco_processing' in lg['logGroupName']]
-            # log_group_name = '/aws/lambda/ecco_processing_2D_latlon'
-            ended_log_stream_names = []
-            deleted_log_stream_names = []
-            num_jobs_ended = 0
-            log_save_time = time.time()
-            estimated_jobs = []
-            last_job_logs = copy.deepcopy(job_logs)
-            end_jobs_list = []
-            ctr = -1
-            total_num_log_streams = 0
-            try:
-                while True:
-                    # intital log
-                    if ctr == -1:
-                        ctr += 1
-                        total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
-                        job_logs['Master Script Total Time (s)'] = total_time
-                        last_job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='INITIAL')
-                        job_logs = copy.deepcopy(last_job_logs)
+            # ALTERNATE TECHNIQUE, NOT FINISHED
+            aws_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs)
 
-                    print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
-                    time.sleep(10)
-                    end_time = int(time.time()/ms_to_sec)
+
+
+            # delete_logs = False
+            # duration_keys = ['ALL', 'IMPORT', 'RUN', 'TOTAL', 'SCRIPT', 'IO', 'DOWNLOAD', 'NETCDF', 'UPLOAD']
+            # log_client = boto3.client('logs')
+            # log_group_names = [lg['logGroupName'] for lg in log_client.describe_log_groups()['logGroups'] if 'ecco_processing' in lg['logGroupName']]
+            # # log_group_name = '/aws/lambda/ecco_processing_2D_latlon'
+            # stream_name_job_ids = defaultdict(list)
+            # ended_log_stream_names = []
+            # deleted_log_stream_names = []
+            # num_jobs_ended = 0
+            # log_save_time = time.time()
+            # estimated_jobs = []
+            # last_job_logs = copy.deepcopy(job_logs)
+            # end_jobs_list = []
+            # ctr = -1
+            # total_num_log_streams = 0
+
+            # try:
+            #     while True:
+            #         # intital log
+            #         if ctr == -1:
+            #             ctr += 1
+            #             total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
+            #             job_logs['Master Script Total Time (s)'] = total_time
+            #             last_job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='INITIAL')
+            #             job_logs = copy.deepcopy(last_job_logs)
+
+            #         print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
+            #         time.sleep(1)
+            #         end_time = int(time.time()/ms_to_sec)
                     
-                    # TODO: loop through ended_log_stream_names and delete those that did not have an error
-                    log_stream_names = defaultdict(list)
-                    log_streams = get_logs(log_client, log_group_names, [], type='logStream')
-                    for log_group_name, group_streams in log_streams.items():
-                        for ls in group_streams:
-                            if ls['logStreamName'] in ended_log_stream_names:
-                                if ls['logStreamName'] not in deleted_log_stream_names and ls['logStreamName'] not in error_logs.keys():
-                                    print(f'Deleting log stream: {ls["logStreamName"]}')
-                                    # log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls['logStreamName'])
-                                    deleted_log_stream_names.append(ls['logStreamName'])
-                                    total_num_log_streams -= 1
-                            else:
-                                log_stream_names[log_group_name].append(ls['logStreamName'])
-                                total_num_log_streams += 1
+                    # # TODO: loop through ended_log_stream_names and delete those that did not have an error
+                    # log_stream_names = defaultdict(list)
+                    # log_streams = get_logs(log_client, log_group_names, [], type='logStream')
+                    # for log_group_name, group_streams in log_streams.items():
+                    #     for ls in group_streams:
+                    #         if ls['logStreamName'] in ended_log_stream_names:
+                    #             if delete_logs:
+                    #                 if ls['logStreamName'] not in deleted_log_stream_names and ls['logStreamName'] not in error_logs.keys():
+                    #                     print(f'Deleting log stream: {ls["logStreamName"]}')
+                    #                     log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls['logStreamName'])
+                    #                     deleted_log_stream_names.append(ls['logStreamName'])
+                    #                     total_num_log_streams -= 1
+                    #         else:
+                    #             log_stream_names[log_group_name].append(ls['logStreamName'])
+                    #             total_num_log_streams += 1
 
-                    if total_num_log_streams != 0:
-                        # get logs for SUCCESS, DURATION, FILES, ERROR, REPORT, START, and END
-                        success_jobs = []
-                        extra_logs = {}
-                        error_logs = defaultdict(list)
-                        report_logs = defaultdict(list)
-                        job_id_report_name = {}
-                        start_logs = defaultdict(int)
-                        end_logs = defaultdict(int)
-                        group_key_logs = get_logs(log_client, log_group_names, log_stream_names, start_time=start_time, end_time=end_time, filter_pattern='?SUCCESS ?DURATION ?FILES ?ERROR ?REPORT ?START ?END', type='event')
+                    # if total_num_log_streams != 0:
 
-                        for log_group_name, key_logs in group_key_logs.items():
-                            # find start logs, count number for each ID
-                            # Job is only considered ended if it has the same number of start logs and end logs to a maximum of 3
-                            for log in key_logs:
-                                if 'START' in log['message']:
-                                    job_id = log['message'].split(' ')[2].strip()
-                                    start_logs[job_id] += 1
+                    #     # get logs for SUCCESS, DURATION, FILES, ERROR, REPORT, START, and END
+                        # success_jobs = []
+                    #     extra_logs = {}
+                    #     error_logs = defaultdict(list)
+                    #     report_logs = defaultdict(list)
+                    #     job_id_report_name = {}
+                    #     start_logs = defaultdict(int)
+                    #     end_logs = defaultdict(int)
+                    #     group_key_logs = get_logs(log_client, log_group_names, log_stream_names, start_time=start_time, end_time=end_time, filter_pattern='?SUCCESS ?DURATION ?FILES ?ERROR ?REPORT ?START ?END', type='event')
 
-                            for log in key_logs:
-                                logStreamName = log['logStreamName']
+                    #     for log_group_name, key_logs in group_key_logs.items():
+                    #         # find start logs, count number for each ID
+                    #         # Job is only considered ended if it has the same number of start logs and end logs to a maximum of 3
+                    #         for log in key_logs:
+                    #             if 'START' in log['message']:
+                    #                 logStreamName = log['logStreamName']
+                    #                 job_id = log['message'].split(' ')[2].strip()
+                    #                 start_logs[job_id] += 1
 
-                                # get SUCCESS logs
-                                if 'SUCCESS' in log['message']:
-                                    if logStreamName not in success_jobs:
-                                        success_jobs.append(logStreamName)
+                    #                 if job_id not in stream_name_job_ids[logStreamName]:
+                    #                     stream_name_job_ids[logStreamName].append(job_id)
 
-                                # get TIME logs
-                                if 'DURATION' in log['message']:
-                                    if logStreamName not in extra_logs.keys():
-                                        extra_logs[logStreamName] = {}
-                                    if 'Duration (s)' not in extra_logs[logStreamName].keys():
-                                        extra_logs[logStreamName]['Duration (s)'] = defaultdict(float)
-                                    _, duration_type, duration, _ = log['message'].split('\t')
-                                    extra_logs[logStreamName]['Duration (s)']['TOTAL'] += float(duration)
-                                    extra_logs[logStreamName]['Duration (s)'][duration_type] += float(duration)
+                    #         for log in key_logs:
+                    #             logStreamName = log['logStreamName']
+
+                    #             # get SUCCESS logs
+                    #             if 'SUCCESS' in log['message']:
+                    #                 if logStreamName not in success_jobs:
+                    #                     success_jobs.append(logStreamName)
+
+                    #             # get TIME logs
+                    #             if 'DURATION' in log['message']:
+                    #                 if logStreamName not in extra_logs.keys():
+                    #                     extra_logs[logStreamName] = {}
+                    #                 if 'Duration (s)' not in extra_logs[logStreamName].keys():
+                    #                     extra_logs[logStreamName]['Duration (s)'] = defaultdict(float)
+                    #                     for dur_key in duration_keys:
+                    #                         extra_logs[logStreamName]['Duration (s)'][dur_key] = 0.0
+                    #                 _, duration_type, duration, _ = log['message'].split('\t')
+                    #                 if duration_type not in ['ALL', 'RUN', 'IMPORT']:
+                    #                     extra_logs[logStreamName]['Duration (s)']['TOTAL'] += float(duration)
+                    #                 if duration_type in ['DOWNLOAD', 'NETCDF', 'UPLOAD']:
+                    #                     extra_logs[logStreamName]['Duration (s)']['IO'] += float(duration)
+                    #                 extra_logs[logStreamName]['Duration (s)'][duration_type] += float(duration)
                                 
-                                # get COUNT logs
-                                if 'FILES' in log['message']:
-                                    if logStreamName not in extra_logs.keys():
-                                        extra_logs[logStreamName] = {}
-                                    if 'Files (#)' not in extra_logs[logStreamName].keys():
-                                        extra_logs[logStreamName]['Files (#)'] = defaultdict(int)
-                                    _, file_type, file_count = log['message'].split('\t')
-                                    extra_logs[logStreamName]['Files (#)'][file_type] += int(file_count)
+                    #             # get COUNT logs
+                    #             if 'FILES' in log['message']:
+                    #                 if logStreamName not in extra_logs.keys():
+                    #                     extra_logs[logStreamName] = {}
+                    #                 if 'Files (#)' not in extra_logs[logStreamName].keys():
+                    #                     extra_logs[logStreamName]['Files (#)'] = defaultdict(int)
+                    #                 _, file_type, file_count = log['message'].split('\t')
+                    #                 extra_logs[logStreamName]['Files (#)'][file_type] += int(file_count)
 
-                                if logStreamName not in extra_logs:
-                                    extra_logs[logStreamName] = {}
+                    #             if logStreamName not in extra_logs:
+                    #                 extra_logs[logStreamName] = {}
 
-                                # get ERROR logs
-                                if 'ERROR' in log['message']:
-                                    error_logs[logStreamName].append(log['message'])
+                    #             # get ERROR logs
+                    #             if 'ERROR' in log['message']:
+                    #                 error_logs[logStreamName].append(log['message'])
 
-                                # get REPORT logs
-                                if 'REPORT' in log['message']:
-                                    report_job_id = ''
-                                    report = {'logStreamName':logStreamName}
-                                    report_message = log['message'].split('\t')[:-1]
-                                    for rm in report_message:
-                                        if 'REPORT' in rm:
-                                            rm = rm[7:]
-                                        rm = rm.split(': ')
-                                        if ' ms' in rm[-1]:
-                                            rm[-1] = float(rm[-1].replace(' ms', '').strip()) * ms_to_sec
-                                            rm[0] = f'{rm[0].strip()} (s)'
-                                        elif ' MB' in rm[-1]:
-                                            rm[-1] = int(rm[-1].replace(' MB', '').strip())
-                                            rm[0] = f'{rm[0].strip()} (MB)'
-                                        elif 'RequestId' in rm[0]:
-                                            report_job_id = rm[-1].strip()
-                                            continue
-                                        report[rm[0]] = rm[-1]
+                    #             # get REPORT logs
+                    #             if 'REPORT' in log['message']:
+                    #                 report_job_id = ''
+                    #                 report = {'logStreamName':logStreamName}
+                    #                 report_message = log['message'].split('\t')[:-1]
+                    #                 for rm in report_message:
+                    #                     if 'REPORT' in rm:
+                    #                         rm = rm[7:]
+                    #                     rm = rm.split(': ')
+                    #                     if ' ms' in rm[-1]:
+                    #                         rm[-1] = float(rm[-1].replace(' ms', '').strip()) * ms_to_sec
+                    #                         rm[0] = f'{rm[0].strip()} (s)'
+                    #                     elif ' MB' in rm[-1]:
+                    #                         rm[-1] = int(rm[-1].replace(' MB', '').strip())
+                    #                         rm[0] = f'{rm[0].strip()} (MB)'
+                    #                     elif 'RequestId' in rm[0]:
+                    #                         report_job_id = rm[-1].strip()
+                    #                         continue
+                    #                     report[rm[0]] = rm[-1]
 
-                                    # estimate cost
-                                    request_time = report['Billed Duration (s)']
-                                    request_memory = report['Memory Size (MB)'] * MB_to_GB
-                                    cost_estimate = request_memory * request_time * USD_per_GBsec
-                                    report['Cost Estimate (USD)'] = cost_estimate
+                    #                 # estimate cost
+                    #                 request_time = report['Billed Duration (s)']
+                    #                 request_memory = report['Memory Size (MB)'] * MB_to_GB
+                    #                 cost_estimate = request_memory * request_time * USD_per_GBsec
+                    #                 report['Cost Estimate (USD)'] = cost_estimate
 
-                                    report_logs[report_job_id].append(report)
-                                    job_id_report_name[report_job_id] = report
+                    #                 report_logs[report_job_id].append(report)
+                    #                 job_id_report_name[report_job_id] = report
 
-                                # get END logs
-                                if 'END' in log['message']:
-                                    end_job_id = log['message'].split(': ')[-1].strip()
-                                    end_logs[end_job_id] += 1
-                                    if (end_job_id.strip() not in end_jobs_list) and (start_logs[end_job_id] == end_logs[end_job_id]):
-                                        end_jobs_list.append(end_job_id.strip())
+                    #             # get END logs
+                    #             if 'END' in log['message']:
+                    #                 end_job_id = log['message'].split(': ')[-1].strip()
+                    #                 end_logs[end_job_id] += 1
+                    #                 if (end_job_id.strip() not in end_jobs_list) and (start_logs[end_job_id] == end_logs[end_job_id]):
+                    #                     end_jobs_list.append(end_job_id.strip())
 
-                    for job_id in end_jobs_list:
-                        if (job_id in job_logs.keys()) and (not job_logs[job_id]['end']):
-                            logStreamName = job_id_report_name[job_id]['logStreamName']
-                            num_jobs_ended += 1
-                            job_logs[job_id]['report'] = report_logs[job_id]
-                            job_logs[job_id]['extra'] = extra_logs[logStreamName]
-                            job_logs[job_id]['end'] = True
-                            job_logs[job_id]['success'] = logStreamName in success_jobs
-                            if job_id in job_id_report_name.keys() and logStreamName in error_logs.keys():
-                                job_logs[job_id]['error'] = error_logs[logStreamName]
+                    # for job_id in end_jobs_list:
+                    #     if (job_id in job_logs.keys()) and (not job_logs[job_id]['end']):
+                    #         logStreamName = job_id_report_name[job_id]['logStreamName']
+                    #         num_jobs_ended += 1
+                    #         job_logs[job_id]['report'] = report_logs[job_id]
+                    #         job_logs[job_id]['extra'] = extra_logs[logStreamName]
+                    #         job_logs[job_id]['end'] = True
+                    #         job_logs[job_id]['success'] = logStreamName in success_jobs
+                    #         if job_id in job_id_report_name.keys() and logStreamName in error_logs.keys():
+                    #             job_logs[job_id]['error'] = error_logs[logStreamName]
 
-                    # print('pre-ended_log')
-                    ended_log_stream_names.extend([job_id_report_name[jid]['logStreamName'] for jid in end_jobs_list if jid in job_id_report_name.keys()])
-                    ended_log_stream_names = list(set(ended_log_stream_names))
+                    # # print('pre-ended_log')
+                    # ended_log_stream_names.extend([job_id_report_name[jid]['logStreamName'] for jid in end_jobs_list if jid in job_id_report_name.keys()])
+                    # ended_log_stream_names = list(set(ended_log_stream_names))
 
-                    if (num_jobs_ended == num_jobs):
-                        ctr += 1
-                        print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
-                        total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
-                        job_logs['Master Script Total Time (s)'] = total_time
-                        # write final job_log to file
-                        job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='FINAL')
-                        for ls_name in ended_log_stream_names:
-                            if ls_name not in deleted_log_stream_names:
-                                print(f'Deleting log stream: {ls_name}')
-                                for log_group_name, group_streams_raw in log_streams.items():
-                                    group_streams = [gs['logStreamName'] for gs in group_streams_raw]
-                                    if ls_name in group_streams and ls_name not in error_logs.keys():
-                                        # log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls_name)
-                                        deleted_log_stream_names.append(ls_name)
-                        break
+                    # if (num_jobs_ended == num_jobs):
+                    #     ctr += 1
+                    #     print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
+                    #     total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
+                    #     job_logs['Master Script Total Time (s)'] = total_time
+                    #     # write final job_log to file
+                    #     job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='FINAL')
+                    #     if delete_logs:
+                    #         for ls_name in ended_log_stream_names:
+                    #             if ls_name not in deleted_log_stream_names:
+                    #                 for log_group_name, group_streams_raw in log_streams.items():
+                    #                     group_streams = [gs['logStreamName'] for gs in group_streams_raw]
+                    #                     if ls_name in group_streams and ls_name not in error_logs.keys():
+                    #                         print(f'Deleting log stream: {ls_name}')
+                    #                         log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls_name)
+                    #                         deleted_log_stream_names.append(ls_name)
+                    #     break
 
-                    # write job_log to file every >~10 seconds
-                    if (time.time() - log_save_time >= 10) and (job_logs != last_job_logs):
-                        ctr += 1
-                        log_save_time = time.time()
-                        total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
-                        job_logs['Master Script Total Time (s)'] = total_time
-                        last_job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr)
-                        job_logs = copy.deepcopy(last_job_logs)
-            except Exception as e:
-                print(f'Error processing logs for lambda jobs')
-                print(e)
-                exc_type, exc_obj, exc_tb = sys.exc_info()
-                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                print(exc_type, fname, exc_tb.tb_lineno)
+                    # # write job_log to file every >~10 seconds
+                    # if (time.time() - log_save_time >= 10) and (job_logs != last_job_logs):
+                    #     ctr += 1
+                    #     log_save_time = time.time()
+                    #     total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
+                    #     job_logs['Master Script Total Time (s)'] = total_time
+                    #     last_job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr)
+                    #     job_logs = copy.deepcopy(last_job_logs)
+            # except Exception as e:
+            #     print(f'Error processing logs for lambda jobs')
+            #     print(e)
+            #     exc_type, exc_obj, exc_tb = sys.exc_info()
+            #     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            #     print(exc_type, fname, exc_tb.tb_lineno)
 
 
             # Delete lambda function

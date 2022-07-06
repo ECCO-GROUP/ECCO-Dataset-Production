@@ -1,4 +1,6 @@
+import os
 import sys
+import copy
 import glob
 import time
 import json
@@ -75,7 +77,7 @@ def get_logs(log_client, log_group_names, log_stream_names, start_time=0, end_ti
                     continue
                 mod_log_stream_names = log_stream_names[log_group_name]
                 while True:
-                    if len(log_stream_names) > 100:
+                    if len(log_stream_names[log_group_name]) > 100:
                         mod_log_stream_names = log_stream_names[log_group_name][log_stream_ctr*100:log_stream_ctr*100 + 100]
                     total_logs_checked += len(mod_log_stream_names)
                     events_current = log_client.filter_log_events(logGroupName=log_group_name, logStreamNames=mod_log_stream_names, filterPattern=filter_pattern, startTime=start_time, endTime=end_time)
@@ -117,24 +119,25 @@ def save_logs(job_logs, MB_to_GB, estimated_jobs, start_time, ctr, fn_extra=''):
                 if job not in estimated_jobs:
                     if (fn_extra != 'INITIAL') and (job_logs[job]['end']):
                         estimated_jobs.append(job)
-                    if job_logs[job]['report'] != []:
-                        job_reports = job_logs[job]['report']
-                        for job_report in job_reports:
-                            request_duration_time = job_report["Duration (s)"]
-                            request_time = job_report["Billed Duration (s)"]
-                            request_memory = job_report["Memory Size (MB)"]
-                            cost_estimate = job_report["Cost Estimate (USD)"]
-                            job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total Time (s)'] += request_duration_time
-                            job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total Billed Time (s)'] += request_time
-                            job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total GB*s'] += (request_memory * MB_to_GB * request_time)
-                            job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total Cost (USD)'] += cost_estimate
-                            job_logs['Cost Information']['Total Cost'] += cost_estimate
+                    
+                    job_report = job_logs[job]['report']
+                    if job_report != {}:
+                        request_duration_time = job_report["Duration (s)"]
+                        request_time = job_report["Billed Duration (s)"]
+                        request_memory = job_report["Memory Size (MB)"]
+                        cost_estimate = job_report["Cost Estimate (USD)"]
+                        job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total Time (s)'] += request_duration_time
+                        job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total Billed Time (s)'] += request_time
+                        job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total GB*s'] += (request_memory * MB_to_GB * request_time)
+                        job_logs['Cost Information'][f'{job_report["Memory Size (MB)"]} MB Total Cost (USD)'] += cost_estimate
+                        job_logs['Cost Information']['Total Cost'] += cost_estimate
 
         if fn_extra != '' and fn_extra[0] != '_':
             fn_extra = f'{fn_extra}'
         time_str = time.strftime('%Y%m%d:%H%M%S', time.localtime())
-        with open(f'./logs/job_logs_{start_time}_{ctr}_{time_str}_{fn_extra}.json', 'w') as f:
-            json.dump(job_logs, f, indent=4)
+        if fn_extra != 'INITIAL':
+            with open(f'./logs/job_logs_{start_time}_{ctr}_{time_str}_{fn_extra}.json', 'w') as f:
+                json.dump(job_logs, f, indent=4)
     except Exception as e:
         print('Error saving logs: ')
         print(e)
@@ -244,7 +247,186 @@ def get_aws_credentials(aws_login_file, aws_region):
 
 
 
+def aws_logging(request_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs):
+    delete_logs = False
+    duration_keys = ['ALL', 'IMPORT', 'RUN', 'TOTAL', 'SCRIPT', 'IO', 'DOWNLOAD', 'NETCDF', 'UPLOAD']
+    log_client = boto3.client('logs')
+    log_group_names = [lg['logGroupName'] for lg in log_client.describe_log_groups()['logGroups'] if 'ecco_processing' in lg['logGroupName']]
+    num_jobs_ended = 0
+    log_save_time = time.time()
+    estimated_jobs = []
+    last_request_logs = copy.deepcopy(request_logs)
+    ctr = -1
 
+
+    completed_request_ids = []
+    deleted_stream_names = defaultdict(list)
+    completed_stream_names = defaultdict(list)
+    log_stream_request_ids = defaultdict(list)
+
+    try:
+        while True:
+            request_id_count = defaultdict(int)
+            # intital log
+            if ctr == -1:
+                ctr += 1
+                total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
+                request_logs['Master Script Total Time (s)'] = total_time
+                last_request_logs, estimated_jobs = save_logs(request_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='INITIAL')
+                request_logs = copy.deepcopy(last_request_logs)
+
+            print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
+            time.sleep(1)
+            end_time = int(time.time()/ms_to_sec)
+            
+            # TODO: loop through ended_log_stream_names and delete those that did not have an error
+            log_stream_names = defaultdict(list)
+            total_num_log_streams = 0
+            log_streams = get_logs(log_client, log_group_names, [], type='logStream')
+            for log_group_name, group_streams in log_streams.items():
+                for ls in group_streams:
+                    log_stream_name = ls['logStreamName']
+                    if log_stream_name not in deleted_stream_names[log_group_name]:
+                        log_stream_names[log_group_name].append(log_stream_name)
+                        total_num_log_streams += 1
+
+            if total_num_log_streams > 0:
+                group_key_logs = get_logs(log_client, log_group_names, log_stream_names, start_time=start_time, end_time=end_time, filter_pattern='?START ?END ?REPORT', type='event')
+
+                # Loop through all START, END, and REPORT events
+                for log_group_name, key_logs in group_key_logs.items():
+                    for log in key_logs:
+                        log_stream_name = log['logStreamName']
+                        if 'START' in log['message']:
+                            request_id = log['message'].split(' ')[2].strip()
+                            if request_id not in log_stream_request_ids[log_stream_name]:
+                                log_stream_request_ids[log_stream_name].append(request_id)
+                            if request_id not in request_logs.keys():
+                                request_logs[request_id] = {}
+                            request_logs[request_id]['start'] = log['timestamp']
+                            request_id_count[request_id] += 1
+                        elif 'END' in log['message']:
+                            request_id = log['message'].split(' ')[2].strip()
+                            request_logs[request_id]['end'] = log['timestamp']
+                            request_id_count[request_id] += 1
+                        else: #'REPORT' in log['message']
+                            request_id = ''
+                            report = {'logStreamName':log_stream_name, 'logGroupName':log_group_name}
+                            report_message = log['message'].split('\t')[:-1]
+                            for rm in report_message:
+                                if 'REPORT' in rm:
+                                    rm = rm[7:]
+                                rm = rm.split(': ')
+                                if ' ms' in rm[-1]:
+                                    rm[-1] = float(rm[-1].replace(' ms', '').strip()) * ms_to_sec
+                                    rm[0] = f'{rm[0].strip()} (s)'
+                                elif ' MB' in rm[-1]:
+                                    rm[-1] = int(rm[-1].replace(' MB', '').strip())
+                                    rm[0] = f'{rm[0].strip()} (MB)'
+                                elif 'RequestId' in rm[0]:
+                                    request_id = rm[-1].strip()
+                                    continue
+                                report[rm[0]] = rm[-1]
+
+                            # estimate cost
+                            request_time = report['Billed Duration (s)']
+                            request_memory = report['Memory Size (MB)'] * MB_to_GB
+                            cost_estimate = request_memory * request_time * USD_per_GBsec
+                            report['Cost Estimate (USD)'] = cost_estimate
+                            request_logs[request_id]['report'] = report
+
+                            request_id_count[request_id] += 1
+
+                # Loop through all requests that have a START, END, and REPORT event
+                for request_id, request_fields in request_logs.items():
+                    if request_id != 'Cost Information' and request_id != 'Master Script Total Time (s)':
+                        # request_fields_keys = list(request_fields.keys())
+                        # if 'start' in request_fields_keys and 'end' in request_fields_keys and 'report' in request_fields_keys:
+                        if request_id_count[request_id] == 3:
+                            req_start = request_fields['start']
+                            req_end = request_fields['end']
+                            log_stream_name = request_fields['report']['logStreamName']
+                            log_group_name = request_fields['report']['logGroupName']
+                            req_extra_logs = get_logs(log_client, [log_group_name], {log_group_name:[log_stream_name]}, start_time=req_start, end_time=req_end, filter_pattern='?FAILURE ?SUCCESS ?DURATION ?FILES ?ERROR', type='event')
+                            for log_group_name, extra_logs in req_extra_logs.items():
+                                for log in extra_logs:
+                                    # check that the log is for the current request time range
+                                    # some jobs are executed within the same log stream, and specifying
+                                    # the start_time and end_time in filter_log_events() doesnt seem to work
+                                    timestamp = log['timestamp']
+                                    if timestamp < req_start or timestamp > req_end:
+                                        continue
+
+                                    # get SUCCESS logs
+                                    if 'SUCCESS' in log['message']:
+                                        request_logs[request_id]['success'] = True
+
+                                    # get FAILURE logs
+                                    if 'FAILURE' in log['message']:
+                                        request_logs[request_id]['success'] = False
+
+                                    # get TIME logs
+                                    if 'DURATION' in log['message']:
+                                        if 'extra' not in request_logs[request_id].keys():
+                                            request_logs[request_id]['extra'] = {}
+                                        if 'Duration (s)' not in request_logs[request_id]['extra'].keys():
+                                            request_logs[request_id]['extra']['Duration (s)'] = defaultdict(float)
+                                            for dur_key in duration_keys:
+                                                request_logs[request_id]['extra']['Duration (s)'][dur_key] = 0.0
+                                        _, duration_type, duration, _ = log['message'].split('\t')
+                                        request_logs[request_id]['extra']['Duration (s)'][duration_type] = float(duration)
+                                    
+                                    # get COUNT logs
+                                    if 'FILES' in log['message']:
+                                        if 'extra' not in request_logs[request_id].keys():
+                                            request_logs[request_id]['extra'] = {}
+                                        if 'Files (#)' not in request_logs[request_id]['extra'].keys():
+                                            request_logs[request_id]['extra']['Files (#)'] = defaultdict(int)
+                                        _, file_type, file_count = log['message'].split('\t')
+                                        request_logs[request_id]['extra']['Files (#)'][file_type] += int(file_count)
+
+                                    # get ERROR logs
+                                    if 'ERROR' in log['message']:
+                                        request_logs[request_id]['error'] = log['message']
+
+                            if request_id not in completed_request_ids:
+                                completed_request_ids.append(request_id)
+                                num_jobs_ended += 1
+                            if log_stream_name not in completed_stream_names[log_group_name]:
+                                completed_stream_names[log_group_name].append(log_stream_name)
+                        
+
+            # Loop through completed_stream_names, delete log streams if all requests within it are completed
+            for log_group_name in log_group_names:
+                for log_stream_name in completed_stream_names[log_group_name]:
+                    if log_stream_name not in deleted_stream_names[log_group_name]:
+                        num_req_to_complete = len(log_stream_request_ids[log_stream_name])
+                        num_completed = 0
+                        for request_id in log_stream_request_ids[log_stream_name]:
+                            if request_id in completed_request_ids:
+                                num_completed += 1
+                        if num_req_to_complete == num_completed:
+                            # delete current log stream (all requests contained within log stream are complete)
+                            print(f'Deleting log stream: {log_stream_name}')
+                            log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=log_stream_name)
+                            deleted_stream_names[log_group_name].append(log_stream_name)
+
+            if (num_jobs_ended == num_jobs):
+                ctr += 1
+                print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
+                total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
+                request_logs['Master Script Total Time (s)'] = total_time
+                # write final request_logs to file
+                request_logs, estimated_jobs = save_logs(request_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='FINAL')
+                break
+
+    except Exception as e:
+        print(f'Error processing logs for lambda jobs')
+        print(e)
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno)
+        import pdb; pdb.set_trace()
 
 
 
