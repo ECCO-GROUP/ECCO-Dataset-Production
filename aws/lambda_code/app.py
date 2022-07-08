@@ -2,8 +2,10 @@ import time
 import importlib
 
 def run_script(event):
+    processing_file = event['product_generation_config']['processing_code_filename']
+    print(f'Importing file: {processing_file}')
     im_st = time.time()
-    script = importlib.import_module('eccov4r4_gen_for_podaac_cloud')
+    script = importlib.import_module(processing_file)
     print(f'DURATION\tIMPORT\t{time.time() - im_st}\tseconds')
 
     run_st = time.time()

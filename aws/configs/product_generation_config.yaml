@@ -1,0 +1,106 @@
+# =================================================================================================
+# Metadata, Filenames, and Paths
+# =================================================================================================
+# String
+# Name of processing code file to import. Assumes it has a function named "generate_netcdfs" which
+# accepts the payload defined in master_script.py
+processing_code_filename: 'eccov4r4_gen_for_podaac_cloud'
+
+# Boolean
+# Include extra print statements when processing
+extra_prints: False
+
+# String
+# Tail string for the dataset description for latlon grid
+dataset_description_tail_latlon: ' interpolated to a regular 0.5-degree grid from the ECCO Version 4 revision 4 (V4r4) ocean and sea-ice state estimate.'
+
+# String
+# Tail string for the dataset description for native grid
+dataset_description_tail_native: ' on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 revision 4 (V4r4) ocean and sea-ice state estimate.'
+
+# String
+# Tail string for filename of processed files for latlon grid
+filename_tail_latlon: '_ECCO_V4r4_latlon_0p50deg.nc'
+
+# String
+# Tail string for filename of processed files for native grid
+filename_tail_native: '_ECCO_V4r4_native_llc0090.nc'
+
+# String
+# Absolute directory path string for the mapping factors directory
+# Default: /aws/mapping_factors
+mapping_factors_dir: ''
+
+# String
+# Absolute directory path string for the model output directory
+# Default: /aws/temp_model_output
+model_output_dir: ''
+
+# String
+# Subfolder within model_output_dir to look for model output files
+model_output_dir_folder_name: 'V4r4'
+
+# String
+# Absolute directory path string for the metadata directory
+# Default: /aws/metadata
+metadata_dir: ''
+
+# String
+# Filename string of the PODAAC metadata to use (must be a CSV)
+podaac_metadata_filename: 'PODAAC_datasets-revised_20210226.5.csv'
+
+# String
+# Absolute directory path string for the ECCO grid directory (must include all necessary grids and files)
+# Default: /aws/ecco_grids
+ecco_grid_dir: ''
+
+# String
+# Absolute directory path string for the ECCO grid mds directory (must include all necessary grids and files)
+# Default: /aws/ecco_grids
+ecco_grid_dir_mds: ''
+
+# String
+# Filename string of the ECCO grid file (must be a NetCDF4 file)
+ecco_grid_filename: 'GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc'
+
+# String
+# Base absolute directory path string for the processed output files
+# Default: /aws/temp_output
+processed_output_dir_base: ''
+
+
+# =================================================================================================
+# Model Values
+# =================================================================================================
+# Int
+binary_fill_value: -9999
+
+# String
+array_precision: 'float32'
+
+# String
+model_start_time: '1992-01-01T12:00:00'
+
+# String
+model_end_time: '2017-12-31T12:00:00'
+
+
+# =================================================================================================
+# Grid Values
+# =================================================================================================
+# Int
+# Maximum number of vertical levels. Assumes only 1 vertical level for 2D files.
+num_vertical_levels: 50
+
+# Float
+latlon_grid_resolution: 0.5
+
+# Float
+latlon_max_lat: 90.0
+
+# List(Float)
+latlon_grid_area_extent: [-180.0, 90.0, 180.0, -90.0]
+
+# List(Float)
+# Resolution independent
+latlon_grid_dims: [360, 180]

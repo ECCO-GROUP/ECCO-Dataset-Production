@@ -4,16 +4,12 @@ Created May 18, 2022
 Author: Duncan Bark
 
 """
-
-from distutils.log import error
-from email.policy import default
 import os
-from posixpath import split
 import sys
-import copy
 import glob
 import json
 import time
+import yaml
 import boto3
 import argparse
 import platform
@@ -22,14 +18,13 @@ from scipy import sparse
 from pathlib import Path
 from collections import defaultdict
 
-from numpy import product
-
+# Local imports
 sys.path.append(f'{Path(__file__).parent.resolve()}')
-from eccov4r4_gen_for_podaac_cloud import generate_netcdfs
-from aws_helpers import get_credentials_helper, upload_S3, create_lambda_function, get_aws_credentials, save_logs, get_logs, get_files_time_steps, aws_logging
-from gen_netcdf_utils import create_all_factors, get_land_mask, get_latlon_grid, get_mapping_factors
+import aws_utils as aws_utils
 import ecco_cloud_utils as ea
-
+import gen_netcdf_utils as gen_netcdf_utils
+import create_factors_utils as create_factors_utils
+from eccov4r4_gen_for_podaac_cloud import generate_netcdfs
 
 def create_parser():
     parser = argparse.ArgumentParser()
@@ -71,71 +66,55 @@ if __name__ == "__main__":
     if use_lambda:
         local = False
 
-    # Testing/setup paths and config -------------------------------------
-    # path_to_yaml = Path(__file__).parent.resolve() / 'configs' / 'gen_netcdf_config.yaml'
-    # with open(path_to_yaml, "r") as f:
-    #     config = yaml.load(f, yaml.Loader)
-    # local = config['local']
-
-    # Load 'product_generation_config.json'
-    config_json = json.load(open(Path(__file__).parent.resolve() / 'configs' / 'product_generation_config.json'))
-    config_metadata = {}
-    for entry in config_json:
-        config_metadata[entry['name']] = entry['value']
-
+    # Load 'product_generation_config.yaml'
+    product_generation_config = yaml.safe_load(open(Path(__file__).parent.resolve() / 'configs' / 'product_generation_config.yaml'))
 
     # Load directories (local vs AWS)
     # Default directories
     parent_dir = Path(__file__).parent.resolve()
     mapping_factors_dir_default = str(parent_dir / 'mapping_factors')
-    diags_root_default = str(parent_dir / f'{config_metadata["model_data_dir_folder_name"]}')
-    metadata_default = str(parent_dir / 'metadata' / 'ECCov4r4_metadata_json')
-    podaac_metadata_filename_default = 'PODAAC_datasets-revised_20210226.5.csv'
+    diags_root_default = str(parent_dir / 'temp_model_output')
+    metadata_default = str(parent_dir / 'metadata')
     ecco_grid_dir_default = str(parent_dir / 'ecco_grids')
     ecco_grid_dir_mds_default = str(parent_dir / 'ecco_grids')
-    ecco_grid_filename_default = 'GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc'
-    output_dir_base_default = str(parent_dir / 'temp_output')
+    processed_output_dir_base_default = str(parent_dir / 'temp_output')
 
-    if config_metadata['mapping_factors_dir'] == '':
-        config_metadata['mapping_factors_dir'] = str(Path(mapping_factors_dir_default))
-    if config_metadata['model_data_dir'] == '':
-        config_metadata['model_data_dir'] = str(Path(diags_root_default))
-    if config_metadata['metadata_dir'] == '':
-        config_metadata['metadata_dir'] = str(Path(metadata_default))
-    if config_metadata['podaac_metadata_filename'] == '':
-        config_metadata['podaac_metadata_filename'] = podaac_metadata_filename_default
-    if config_metadata['ecco_grid_dir'] == '':
-        config_metadata['ecco_grid_dir'] = str(Path(ecco_grid_dir_default))
-    if config_metadata['ecco_grid_dir_mds'] == '':
-        config_metadata['ecco_grid_dir_mds'] = str(Path(ecco_grid_dir_mds_default))
-    if config_metadata['ecco_grid_filename'] == '':
-        config_metadata['ecco_grid_filename'] = ecco_grid_filename_default
-    if config_metadata['output_dir_base'] == '':
-        config_metadata['output_dir_base'] = str(Path(output_dir_base_default))
+    if product_generation_config['mapping_factors_dir'] == '':
+        product_generation_config['mapping_factors_dir'] = str(Path(mapping_factors_dir_default))
+    if product_generation_config['model_output_dir'] == '':
+        product_generation_config['model_output_dir'] = str(Path(diags_root_default))
+    if product_generation_config['metadata_dir'] == '':
+        product_generation_config['metadata_dir'] = str(Path(metadata_default))
+    if product_generation_config['ecco_grid_dir'] == '':
+        product_generation_config['ecco_grid_dir'] = str(Path(ecco_grid_dir_default))
+    if product_generation_config['ecco_grid_dir_mds'] == '':
+        product_generation_config['ecco_grid_dir_mds'] = str(Path(ecco_grid_dir_mds_default))
+    if product_generation_config['processed_output_dir_base'] == '':
+        product_generation_config['processed_output_dir_base'] = str(Path(processed_output_dir_base_default))
+
+    extra_prints = product_generation_config['extra_prints']
 
     # Creates mapping_factors (2D and 3D), landmask, and latlon_grid files
     # Not needed unless changes have been made to the factors code and you need
     # to update the factors/mask in the lambda docker image
-    status = create_all_factors(ea, config_metadata, ['2D', '3D'], debug_mode=debug_mode)
-    if status == -1:
-        print('Error creating all factors. Exiting')
-        sys.exit()
-
+    # status = create_factors_utils.create_all_factors(ea, product_generation_config, ['2D', '3D'], debug_mode=debug_mode, extra_prints=extra_prints)
+    # if status == -1:
+    #     print('Error creating all factors. Exiting')
+    #     sys.exit()
 
 
     # ====================================================================================================
     # SPARSE MATRIX CREATION
     # ====================================================================================================
-
     # get the land mask of the latlon grid
-    nk = config_metadata['num_vertical_levels']
+    nk = product_generation_config['num_vertical_levels']
 
     for k in range(nk):
         sm_path = f'./mapping_factors/sparse/sparse_matrix_{k}.npz'
         if os.path.exists(sm_path):
             continue
 
-        status, ll_land_mask = get_land_mask(config_metadata['mapping_factors_dir'], k)
+        status, ll_land_mask = gen_netcdf_utils.get_land_mask(product_generation_config['mapping_factors_dir'], k, extra_prints=extra_prints)
         if status == -1:
             print(f'Error getting land mask for level k={k}')
             sys.exit()
@@ -145,12 +124,12 @@ if __name__ == "__main__":
             if dataset_dim == '2D' and k > 0:
                 continue
             status, _, (source_indices_within_target_radius_i, \
-            nearest_source_index_to_target_index_i) = get_mapping_factors(dataset_dim, config_metadata['mapping_factors_dir'], 'k', k=k)
+            nearest_source_index_to_target_index_i) = create_factors_utils.get_mapping_factors(dataset_dim, product_generation_config['mapping_factors_dir'], 'k', k=k)
             if status == -1:
                 print(f'Error getting mapping factors for level k={k}')
                 sys.exit()
 
-            status, (_, _, _, wet_pts_k) = get_latlon_grid(Path(config_metadata['mapping_factors_dir']), debug_mode)
+            status, (_, _, _, wet_pts_k) = gen_netcdf_utils.get_latlon_grid(Path(product_generation_config['mapping_factors_dir']), debug_mode)
 
             n = len(wet_pts_k[k][0])
             m = 2*180 * 2*360
@@ -179,19 +158,19 @@ if __name__ == "__main__":
 
             # save sparse matrix
             sparse.save_npz(sm_path, B)
-
-    # ====================================================================================================
     # ====================================================================================================
 
 
     # Get all configurations
     all_jobs = []
     with open(f'{Path(__file__).parent.resolve() / "configs" / "jobs.txt"}', 'r') as j:
+        # /Users/bark/Documents/ECCO_GROUP/ECCO-Dataset-Production/aws/configs/jobs.txt
         for line in j:
-            if '#' in line:
+            line = line.strip()
+            if '#' in line or line == '':
                 continue
 
-            line_vals = line.strip().split(',')
+            line_vals = line.split(',')
             if line_vals[3] == 'all':
                 all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], line_vals[3]])
             else:
@@ -199,31 +178,26 @@ if __name__ == "__main__":
 
 
     # Get grouping information
-    metadata_fields = ['ECCOv4r4_groupings_for_1D_datasets',
-        'ECCOv4r4_groupings_for_latlon_datasets',
-        'ECCOv4r4_groupings_for_native_datasets']
+    metadata_fields = ['ECCOv4r4_groupings_for_latlon_datasets', 'ECCOv4r4_groupings_for_native_datasets']
 
     # load METADATA
     metadata = {}
 
     for mf in metadata_fields:
         mf_e = mf + '.json'
-        with open(str(Path(config_metadata['metadata_dir']) / mf_e), 'r') as fp:
+        with open(str(Path(product_generation_config['metadata_dir']) / mf_e), 'r') as fp:
             metadata[mf] = json.load(fp)
 
-    groupings_for_1D_datasets = metadata['ECCOv4r4_groupings_for_1D_datasets']
     groupings_for_latlon_datasets = metadata['ECCOv4r4_groupings_for_latlon_datasets']
     groupings_for_native_datasets = metadata['ECCOv4r4_groupings_for_native_datasets']
 
-
-    # Get AWS credentials, and info from aws_config
+    # Setup all AWS required variables and information
+    # Includes authentication, lambda function creation
     credentials = {}
     aws_config_metadata = {}
     if not local:
-        # Load 'aws_config.json'
-        aws_config_json = json.load(open(Path(__file__).parent.resolve() / 'configs' / 'aws_config.json'))
-        for entry in aws_config_json:
-            aws_config_metadata[entry['name']] = entry['value']
+        # Load 'aws_config.yaml'
+        aws_config_metadata = yaml.safe_load(open(Path(__file__).parent.resolve() / 'configs' / 'aws_config.yaml'))
 
         # AWS defaults
         aws_profile_name_default = 'saml-pub'
@@ -247,18 +221,13 @@ if __name__ == "__main__":
         role = aws_config_metadata['role']
         account_id = aws_config_metadata['account_id']
         region = aws_config_metadata['region']
-        # memory_size = aws_config_metadata['memory_size']
 
-        max_1D_latlon = aws_config_metadata['max_latlon_exec_1D']
-        max_1D_native = aws_config_metadata['max_native_exec_1D']
-        max_2D_latlon = aws_config_metadata['max_latlon_exec_2D']
-        max_2D_native = aws_config_metadata['max_native_exec_2D']
-        max_3D_latlon = aws_config_metadata['max_latlon_exec_3D']
-        max_3D_native = aws_config_metadata['max_native_exec_3D']
+        time_2D_latlon = aws_config_metadata['latlon_2D_time']
+        time_2D_native = aws_config_metadata['native_2D_time']
+        time_3D_latlon = aws_config_metadata['latlon_3D_time']
+        time_3D_native = aws_config_metadata['native_3D_time']
 
         memory_sizes = {
-            f'{function_name_prefix}_1D_latlon': aws_config_metadata['memory_size_1D_latlon'],
-            f'{function_name_prefix}_1D_native': aws_config_metadata['memory_size_1D_native'],
             f'{function_name_prefix}_2D_latlon': aws_config_metadata['memory_size_2D_latlon'],
             f'{function_name_prefix}_2D_native': aws_config_metadata['memory_size_2D_native'],
             f'{function_name_prefix}_3D_latlon': aws_config_metadata['memory_size_3D_latlon'],
@@ -273,21 +242,21 @@ if __name__ == "__main__":
             aws_login_file = 'aws-login.darwin.amd64'
 
         # Verify credentials
-        credentials = get_credentials_helper()
+        credentials = aws_utils.get_credentials_helper()
         try:
             if force_reconfigure:
                 # Getting new credentials
-                credentials = get_aws_credentials(aws_login_file, region)
+                credentials = aws_utils.get_aws_credentials(aws_login_file, region)
             elif credentials != {}:
                 boto3.setup_default_session(profile_name=credentials['profile_name'])
                 try:
                     boto3.client('s3').list_buckets()
                 except:
                     # Present credentials are invalid, try to get new ones
-                    credentials = get_aws_credentials(aws_login_file, region)
+                    credentials = aws_utils.get_aws_credentials(aws_login_file, region)
             else:
                 # No credentials present, try to get new ones
-                credentials = get_aws_credentials(aws_login_file, region)
+                credentials = aws_utils.get_aws_credentials(aws_login_file, region)
         except Exception as e:
             print(f'Unable to login to AWS. Exiting')
             print(e)
@@ -303,7 +272,7 @@ if __name__ == "__main__":
 
         # Upload data to S3 bucket
         if upload_to_S3:
-            status = upload_S3(s3, config_metadata['model_data_dir'], config_metadata['model_data_dir_folder_name'], aws_config_metadata['source_bucket'])
+            status = aws_utils.upload_S3(s3, product_generation_config['model_output_dir'], product_generation_config['model_output_dir_folder_name'], aws_config_metadata['source_bucket'])
             if not status:
                 print(f'Uploading to S3 failed. Exiting')
                 sys.exit()
@@ -313,13 +282,6 @@ if __name__ == "__main__":
             # Create lambda client
             lambda_client = boto3.client('lambda')
 
-            # get current functions
-            current_functions = [f['FunctionName'] for f in lambda_client.list_functions()['Functions']]
-            # for function_name, memory_size in memory_sizes.items():
-            #     if function_name in current_functions:
-            #         continue
-            #     else:
-            #         create_lambda_function(lambda_client, function_name, arn, memory_size, image_uri)
             lambda_start_time = time.strftime('%Y%m%d:%H%M%S', time.localtime())
 
             # values for cost estimation
@@ -332,6 +294,11 @@ if __name__ == "__main__":
             job_logs = {}
             job_logs['Master Script Total Time (s)'] = 0
             job_logs['Cost Information'] = defaultdict(float)
+            job_logs['Number of Lambda Jobs'] = 0
+            job_logs['All timesteps'] = []
+            job_logs['Timesteps submitted'] = []
+            job_logs['Timesteps failed'] = []
+            job_logs['Jobs'] = {}
 
             for (grouping_to_process, product_type, output_freq_code, num_time_steps_to_process) in all_jobs:
                 # Get field time steps and field files
@@ -344,25 +311,23 @@ if __name__ == "__main__":
                 dimension = curr_grouping['dimension']
 
                 if product_type == 'latlon':
-                    if dimension == '1D':
-                        function_name = f'{function_name_prefix}_1D_latlon'
-                    elif dimension == '2D':
+                    if dimension == '2D':
                         function_name = f'{function_name_prefix}_2D_latlon'
                     else:
                         function_name = f'{function_name_prefix}_3D_latlon'
                 elif product_type == 'native':
-                    if dimension == '1D':
-                        function_name = f'{function_name_prefix}_1D_native'
-                    elif dimension == '2D':
+                    if dimension == '2D':
                         function_name = f'{function_name_prefix}_2D_native'
                     else:
                         function_name = f'{function_name_prefix}_3D_native'
                 
                 # create lambda functions for jobs
+                # get current functions
+                current_functions = [f['FunctionName'] for f in lambda_client.list_functions()['Functions']]
                 if function_name not in current_functions:
                     memory_size = memory_sizes[function_name]
-                    create_lambda_function(lambda_client, function_name, arn, memory_sizes[function_name], image_uri)
-                    current_functions.append(function_name)   
+                    aws_utils.create_lambda_function(lambda_client, function_name, arn, memory_sizes[function_name], image_uri)
+                    current_functions.append(function_name)
     
             start_time = int(time.time()/ms_to_sec)
 
@@ -400,7 +365,7 @@ if __name__ == "__main__":
             if not local:
                 s3_dir_prefix = f'{source_bucket_folder_name}/{freq_folder}'
 
-                file_time_steps = get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, 
+                file_time_steps = aws_utils.get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, 
                                                         source_bucket,  product_type, num_time_steps_to_process)
                 if file_time_steps == -1:
                     print(f'--- Skipping job:\n\tgrouping: {grouping_to_process}\n\tproduct_type: {product_type}\n\toutput_freq_code: {output_freq_code}\n\tnum_time_steps_to_process: {num_time_steps_to_process}')
@@ -412,7 +377,7 @@ if __name__ == "__main__":
                 field_time_steps = {}
                 all_time_steps_all_vars = []
                 for field in fields:
-                    field_files[field] = sorted(glob.glob(f'{config_metadata["model_data_dir"]}/{freq_folder}/{field}_{period_suffix}/*.data'))
+                    field_files[field] = sorted(glob.glob(f'{product_generation_config["model_output_dir"]}/{freq_folder}/{field}_{period_suffix}/*.data'))
                     time_steps = [key.split('.')[-2] for key in field_files[field]]
                     if num_time_steps_to_process == 'all':
                         field_time_steps[field] = sorted(time_steps)
@@ -436,6 +401,8 @@ if __name__ == "__main__":
                     print(f'Unequal time steps for field "{field}". Exiting')
                     sys.exit()
 
+            job_logs['All timesteps'] = all_time_steps
+
             # **********
             # CREATE LAMBDA REQUEST FOR EACH "JOB"
             # **********
@@ -443,30 +410,44 @@ if __name__ == "__main__":
                 # group number of time steps and files to process based on time to execute
                 max_execs = 0
                 if product_type == 'latlon':
-                    if dimension == '1D':
-                        max_execs = max_1D_latlon
-                        function_name = f'{function_name_prefix}_1D_latlon'
-                    elif dimension == '2D':
-                        max_execs = max_2D_latlon
+                    if dimension == '2D':
+                        exec_time_per_vl = time_2D_latlon
                         function_name = f'{function_name_prefix}_2D_latlon'
                     else:
-                        max_execs = max_3D_latlon
+                        exec_time_per_vl = time_3D_latlon
                         function_name = f'{function_name_prefix}_3D_latlon'
                 elif product_type == 'native':
-                    if dimension == '1D':
-                        max_execs = max_1D_native
-                        function_name = f'{function_name_prefix}_1D_native'
-                    elif dimension == '2D':
-                        max_execs = max_2D_native
+                    if dimension == '2D':
+                        exec_time_per_vl = time_2D_native
                         function_name = f'{function_name_prefix}_2D_native'
                     else:
-                        max_execs = max_3D_native
+                        exec_time_per_vl = time_3D_native
                         function_name = f'{function_name_prefix}_3D_native'
 
+                # OLD TECHNIQUE (USING NUMBER OF EXECUTIONS)
                 # Max execs is calculated from time/time_step/field, so the true maximum for this grouping
                 # is this value divided by the number of fields per step and then the total number of files
                 # split along time step for this value.
                 max_execs = int(max_execs/len(fields))
+
+                # NEW TECHNIQUE (USING TIME VALUES)
+                max_time = 900 #s
+                total_vl_possible = int(max_time / exec_time_per_vl)
+                num_vl = 1
+                if dimension == '3D':
+                    num_vl = 50
+                max_execs = int(total_vl_possible / (len(fields) * num_vl))
+
+                # IF LESS THAN 1, ISSUES WILL OCCUR
+                if max_execs == 0:
+                    print(f'Max execs is 0, this means you cannot process a single vertical level in less than 15 minutes.')
+                    sys.exit()
+
+                # If override_max_execs is given, use the lower value between the calculated max_execs
+                # and the provided override_max_execs.
+                if aws_config_metadata['override_max_execs'] != 0:
+                    max_execs = min([max_execs, aws_config_metadata['override_max_execs']])
+                    # max_execs = aws_config_metadata['override_max_execs']
 
                 time_steps_by_batch = [all_time_steps[x:x+max_execs] for x in range(0,len(all_time_steps), max_execs)]
                 number_of_batches = len(time_steps_by_batch)
@@ -480,6 +461,10 @@ if __name__ == "__main__":
                         field_files_by_batch[batch_number][field] = batch_field_files
 
                 number_of_batches = min([number_of_batches_to_process, number_of_batches])
+                print(f'Number of batches: {number_of_batches}')
+                print(f'Number of time steps per batch: {len(field_files_by_batch[0][fields[0]])}')
+                print(f'Length of final batch: {len(field_files_by_batch[number_of_batches-1][fields[0]])}')
+                print(f'Total number of time steps to process: {len(all_time_steps)}')
                 for i in range(number_of_batches):
                     # create payload for current lambda job
                     payload = {
@@ -488,12 +473,13 @@ if __name__ == "__main__":
                         'output_freq_code': output_freq_code,
                         'time_steps_to_process': time_steps_by_batch[i],
                         'field_files': field_files_by_batch[i],
-                        'config_metadata': config_metadata,
+                        'product_generation_config': product_generation_config,
                         'aws_metadata': aws_config_metadata,
                         'debug_mode': debug_mode,
                         'local': local,
                         'use_lambda': use_lambda,
-                        'credentials': credentials
+                        'credentials': credentials,
+                        'processing_code_filename': product_generation_config['processing_code_filename']
                     }
 
                     data_to_process= {
@@ -507,6 +493,7 @@ if __name__ == "__main__":
                     # invoke lambda job
                     try:
                         if use_lambda:
+                            print(f'Lambda Job requested: {num_jobs+1:4}', end='\r')
                             invoke_response = lambda_client.invoke(
                                 FunctionName=function_name,
                                 InvocationType='Event',
@@ -514,22 +501,26 @@ if __name__ == "__main__":
                             )
 
                             request_id = invoke_response['ResponseMetadata']['RequestId'].strip()
-                            job_logs[request_id] = {
+                            job_logs['Jobs'][request_id] = {
                                 'date':invoke_response['ResponseMetadata']['HTTPHeaders']['date'], 
                                 'status': invoke_response['StatusCode'], 
                                 'data': data_to_process, 
                                 'report': {}, 
-                                'error': '',
+                                'start': True,
                                 'end': False,
-                                'success': False
+                                'success': False,
+                                'any_failed': False,
+                                'timesteps_failed': [],
+                                'error': {}
                             }
                             request_ids.append(request_id)
+                            job_logs['Timesteps submitted'].extend(time_steps_by_batch[i])
                     
                             num_jobs += 1
-                
                     except Exception as e:
                         print(f'Lambda invoke error: {e}')
                         print(f'\tTime Steps: {time_steps}')
+                print()
             else:
                 # Call local generate_netcdfs function
                 payload = {
@@ -538,7 +529,7 @@ if __name__ == "__main__":
                     'output_freq_code': output_freq_code,
                     'time_steps_to_process': all_time_steps,
                     'field_files': field_files,
-                    'config_metadata': config_metadata,
+                    'product_generation_config': product_generation_config,
                     'aws_metadata': aws_config_metadata,
                     'debug_mode': debug_mode,
                     'local': local,
@@ -550,210 +541,14 @@ if __name__ == "__main__":
         
         # Lambda logging ==========================================================================
         if use_lambda:
-            # ALTERNATE TECHNIQUE, NOT FINISHED
-            aws_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs)
-
-
-
-            # delete_logs = False
-            # duration_keys = ['ALL', 'IMPORT', 'RUN', 'TOTAL', 'SCRIPT', 'IO', 'DOWNLOAD', 'NETCDF', 'UPLOAD']
-            # log_client = boto3.client('logs')
-            # log_group_names = [lg['logGroupName'] for lg in log_client.describe_log_groups()['logGroups'] if 'ecco_processing' in lg['logGroupName']]
-            # # log_group_name = '/aws/lambda/ecco_processing_2D_latlon'
-            # stream_name_job_ids = defaultdict(list)
-            # ended_log_stream_names = []
-            # deleted_log_stream_names = []
-            # num_jobs_ended = 0
-            # log_save_time = time.time()
-            # estimated_jobs = []
-            # last_job_logs = copy.deepcopy(job_logs)
-            # end_jobs_list = []
-            # ctr = -1
-            # total_num_log_streams = 0
-
-            # try:
-            #     while True:
-            #         # intital log
-            #         if ctr == -1:
-            #             ctr += 1
-            #             total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
-            #             job_logs['Master Script Total Time (s)'] = total_time
-            #             last_job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='INITIAL')
-            #             job_logs = copy.deepcopy(last_job_logs)
-
-            #         print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
-            #         time.sleep(1)
-            #         end_time = int(time.time()/ms_to_sec)
-                    
-                    # # TODO: loop through ended_log_stream_names and delete those that did not have an error
-                    # log_stream_names = defaultdict(list)
-                    # log_streams = get_logs(log_client, log_group_names, [], type='logStream')
-                    # for log_group_name, group_streams in log_streams.items():
-                    #     for ls in group_streams:
-                    #         if ls['logStreamName'] in ended_log_stream_names:
-                    #             if delete_logs:
-                    #                 if ls['logStreamName'] not in deleted_log_stream_names and ls['logStreamName'] not in error_logs.keys():
-                    #                     print(f'Deleting log stream: {ls["logStreamName"]}')
-                    #                     log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls['logStreamName'])
-                    #                     deleted_log_stream_names.append(ls['logStreamName'])
-                    #                     total_num_log_streams -= 1
-                    #         else:
-                    #             log_stream_names[log_group_name].append(ls['logStreamName'])
-                    #             total_num_log_streams += 1
-
-                    # if total_num_log_streams != 0:
-
-                    #     # get logs for SUCCESS, DURATION, FILES, ERROR, REPORT, START, and END
-                        # success_jobs = []
-                    #     extra_logs = {}
-                    #     error_logs = defaultdict(list)
-                    #     report_logs = defaultdict(list)
-                    #     job_id_report_name = {}
-                    #     start_logs = defaultdict(int)
-                    #     end_logs = defaultdict(int)
-                    #     group_key_logs = get_logs(log_client, log_group_names, log_stream_names, start_time=start_time, end_time=end_time, filter_pattern='?SUCCESS ?DURATION ?FILES ?ERROR ?REPORT ?START ?END', type='event')
-
-                    #     for log_group_name, key_logs in group_key_logs.items():
-                    #         # find start logs, count number for each ID
-                    #         # Job is only considered ended if it has the same number of start logs and end logs to a maximum of 3
-                    #         for log in key_logs:
-                    #             if 'START' in log['message']:
-                    #                 logStreamName = log['logStreamName']
-                    #                 job_id = log['message'].split(' ')[2].strip()
-                    #                 start_logs[job_id] += 1
-
-                    #                 if job_id not in stream_name_job_ids[logStreamName]:
-                    #                     stream_name_job_ids[logStreamName].append(job_id)
-
-                    #         for log in key_logs:
-                    #             logStreamName = log['logStreamName']
-
-                    #             # get SUCCESS logs
-                    #             if 'SUCCESS' in log['message']:
-                    #                 if logStreamName not in success_jobs:
-                    #                     success_jobs.append(logStreamName)
-
-                    #             # get TIME logs
-                    #             if 'DURATION' in log['message']:
-                    #                 if logStreamName not in extra_logs.keys():
-                    #                     extra_logs[logStreamName] = {}
-                    #                 if 'Duration (s)' not in extra_logs[logStreamName].keys():
-                    #                     extra_logs[logStreamName]['Duration (s)'] = defaultdict(float)
-                    #                     for dur_key in duration_keys:
-                    #                         extra_logs[logStreamName]['Duration (s)'][dur_key] = 0.0
-                    #                 _, duration_type, duration, _ = log['message'].split('\t')
-                    #                 if duration_type not in ['ALL', 'RUN', 'IMPORT']:
-                    #                     extra_logs[logStreamName]['Duration (s)']['TOTAL'] += float(duration)
-                    #                 if duration_type in ['DOWNLOAD', 'NETCDF', 'UPLOAD']:
-                    #                     extra_logs[logStreamName]['Duration (s)']['IO'] += float(duration)
-                    #                 extra_logs[logStreamName]['Duration (s)'][duration_type] += float(duration)
-                                
-                    #             # get COUNT logs
-                    #             if 'FILES' in log['message']:
-                    #                 if logStreamName not in extra_logs.keys():
-                    #                     extra_logs[logStreamName] = {}
-                    #                 if 'Files (#)' not in extra_logs[logStreamName].keys():
-                    #                     extra_logs[logStreamName]['Files (#)'] = defaultdict(int)
-                    #                 _, file_type, file_count = log['message'].split('\t')
-                    #                 extra_logs[logStreamName]['Files (#)'][file_type] += int(file_count)
-
-                    #             if logStreamName not in extra_logs:
-                    #                 extra_logs[logStreamName] = {}
-
-                    #             # get ERROR logs
-                    #             if 'ERROR' in log['message']:
-                    #                 error_logs[logStreamName].append(log['message'])
-
-                    #             # get REPORT logs
-                    #             if 'REPORT' in log['message']:
-                    #                 report_job_id = ''
-                    #                 report = {'logStreamName':logStreamName}
-                    #                 report_message = log['message'].split('\t')[:-1]
-                    #                 for rm in report_message:
-                    #                     if 'REPORT' in rm:
-                    #                         rm = rm[7:]
-                    #                     rm = rm.split(': ')
-                    #                     if ' ms' in rm[-1]:
-                    #                         rm[-1] = float(rm[-1].replace(' ms', '').strip()) * ms_to_sec
-                    #                         rm[0] = f'{rm[0].strip()} (s)'
-                    #                     elif ' MB' in rm[-1]:
-                    #                         rm[-1] = int(rm[-1].replace(' MB', '').strip())
-                    #                         rm[0] = f'{rm[0].strip()} (MB)'
-                    #                     elif 'RequestId' in rm[0]:
-                    #                         report_job_id = rm[-1].strip()
-                    #                         continue
-                    #                     report[rm[0]] = rm[-1]
-
-                    #                 # estimate cost
-                    #                 request_time = report['Billed Duration (s)']
-                    #                 request_memory = report['Memory Size (MB)'] * MB_to_GB
-                    #                 cost_estimate = request_memory * request_time * USD_per_GBsec
-                    #                 report['Cost Estimate (USD)'] = cost_estimate
-
-                    #                 report_logs[report_job_id].append(report)
-                    #                 job_id_report_name[report_job_id] = report
-
-                    #             # get END logs
-                    #             if 'END' in log['message']:
-                    #                 end_job_id = log['message'].split(': ')[-1].strip()
-                    #                 end_logs[end_job_id] += 1
-                    #                 if (end_job_id.strip() not in end_jobs_list) and (start_logs[end_job_id] == end_logs[end_job_id]):
-                    #                     end_jobs_list.append(end_job_id.strip())
-
-                    # for job_id in end_jobs_list:
-                    #     if (job_id in job_logs.keys()) and (not job_logs[job_id]['end']):
-                    #         logStreamName = job_id_report_name[job_id]['logStreamName']
-                    #         num_jobs_ended += 1
-                    #         job_logs[job_id]['report'] = report_logs[job_id]
-                    #         job_logs[job_id]['extra'] = extra_logs[logStreamName]
-                    #         job_logs[job_id]['end'] = True
-                    #         job_logs[job_id]['success'] = logStreamName in success_jobs
-                    #         if job_id in job_id_report_name.keys() and logStreamName in error_logs.keys():
-                    #             job_logs[job_id]['error'] = error_logs[logStreamName]
-
-                    # # print('pre-ended_log')
-                    # ended_log_stream_names.extend([job_id_report_name[jid]['logStreamName'] for jid in end_jobs_list if jid in job_id_report_name.keys()])
-                    # ended_log_stream_names = list(set(ended_log_stream_names))
-
-                    # if (num_jobs_ended == num_jobs):
-                    #     ctr += 1
-                    #     print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
-                    #     total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
-                    #     job_logs['Master Script Total Time (s)'] = total_time
-                    #     # write final job_log to file
-                    #     job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='FINAL')
-                    #     if delete_logs:
-                    #         for ls_name in ended_log_stream_names:
-                    #             if ls_name not in deleted_log_stream_names:
-                    #                 for log_group_name, group_streams_raw in log_streams.items():
-                    #                     group_streams = [gs['logStreamName'] for gs in group_streams_raw]
-                    #                     if ls_name in group_streams and ls_name not in error_logs.keys():
-                    #                         print(f'Deleting log stream: {ls_name}')
-                    #                         log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=ls_name)
-                    #                         deleted_log_stream_names.append(ls_name)
-                    #     break
-
-                    # # write job_log to file every >~10 seconds
-                    # if (time.time() - log_save_time >= 10) and (job_logs != last_job_logs):
-                    #     ctr += 1
-                    #     log_save_time = time.time()
-                    #     total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
-                    #     job_logs['Master Script Total Time (s)'] = total_time
-                    #     last_job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr)
-                    #     job_logs = copy.deepcopy(last_job_logs)
-            # except Exception as e:
-            #     print(f'Error processing logs for lambda jobs')
-            #     print(e)
-            #     exc_type, exc_obj, exc_tb = sys.exc_info()
-            #     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            #     print(exc_type, fname, exc_tb.tb_lineno)
-
+            # Call function to process lambda logs until all jobs are finished
+            aws_utils.lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs)
 
             # Delete lambda function
             for function_name in current_functions:
                 if 'ecco_processing' in function_name:
                     print(f'Deleting function: {function_name}')
-                    lambda_client.delete_function(FunctionName=function_name)
+                    # lambda_client.delete_function(FunctionName=function_name)
 
         # **********
         # TODO: Check output S3 bucket for data

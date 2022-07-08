@@ -1,149 +1,22 @@
-import os
-import sys
 import lzma
 import uuid
 import pickle
 import datetime
 import numpy as np
 import xarray as xr
-import pyresample as pr
 from pathlib import Path
 from scipy import sparse
-from pprint import pprint
 from pandas import read_csv
 from collections import OrderedDict
 
 
 # ==========================================================================================================================
-# MAPPING FACTORS, LAND MASK, and LATLON GRID
+# GET LAND MASK, and GET LATLON GRID
 # ==========================================================================================================================
-def get_mapping_factors(dataset_dim, mapping_factors_dir, factors_to_get, debug_mode=False, extra_prints=False, k=0):
-    status = 1
-    
-    # factors_to_get : factors to load in from the mapping_factors_dir
-    # can be 'all', 'k', or 'both'
-    grid_mappings_all = []
-    grid_mappings_k = []
-
-    if extra_prints: print('\nGetting Grid Mappings')
-    grid_mapping_fname_all = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_all.xz'
-    grid_mapping_fname_2D = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_2D.xz'
-    grid_mapping_fname_3D = Path(mapping_factors_dir) / '3D' / f'ecco_latlon_grid_mappings_3D_{k}.xz'
-
-    if debug_mode:
-        print('...DEBUG MODE -- SKIPPING GRID MAPPINGS')
-        grid_mappings_all = []
-        grid_mappings_k = []
-    else:
-        # Check to see that the mapping factors have been made
-        if (dataset_dim == '2D' and grid_mapping_fname_2D.is_file()) or (dataset_dim == '3D' and grid_mapping_fname_3D.is_file()):
-            # if so, load
-            try:
-                if factors_to_get == 'all' or factors_to_get == 'both':
-                    if extra_prints: print(f'... loading ecco_latlon_grid_mappings_all.xz')
-                    grid_mappings_all = pickle.load(lzma.open(grid_mapping_fname_all, 'rb'))
-
-                if factors_to_get == 'k' or factors_to_get == 'both':
-                    if dataset_dim == '2D':
-                        if extra_prints: print(f'... loading ecco_latlon_grid_mappings_{dataset_dim}.xz')
-                        grid_mappings_k = pickle.load(lzma.open(grid_mapping_fname_2D, 'rb'))
-                    elif dataset_dim == '3D':
-                        if extra_prints: print(f'... loading ecco_latlon_grid_mappings_{dataset_dim}_{k}.xz')
-                        grid_mappings_k = pickle.load(lzma.open(grid_mapping_fname_3D, 'rb'))
-            except:
-                print(f'ERROR Unable to load grid mapping factors: {mapping_factors_dir}')
-                return (-1, grid_mappings_all, grid_mappings_k)
-        else:
-            print(f'ERROR Grid mapping factors have not been created or cannot be found: {mapping_factors_dir}')
-            return (-1, grid_mappings_all, grid_mappings_k)
-
-    return (status, grid_mappings_all, grid_mappings_k)
-
-
-def create_mapping_factors(ea, dataset_dim, mapping_factors_dir, debug_mode, source_grid_all, target_grid, target_grid_radius, source_grid_min_L, source_grid_max_L, source_grid_k, nk):
-    print('\nCreating Grid Mappings')
-
-    status = 1
-    grid_mapping_fname_all = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_all.xz'
-    grid_mapping_fname_2D = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_2D.xz'
-    grid_mapping_fname_3D = Path(mapping_factors_dir) / '3D'
-
-    if not grid_mapping_fname_3D.exists():
-        try:
-            grid_mapping_fname_3D.mkdir()
-        except:
-            print(f'ERROR Cannot make grid mappings 3D directory "{grid_mapping_fname_3D}"')
-            return -1
-
-    if debug_mode:
-        print('...DEBUG MODE -- SKIPPING GRID MAPPINGS')
-        grid_mappings_all = []
-        grid_mappings_k = []
-    else:
-        # first check to see if you have already calculated the grid mapping factors
-        if dataset_dim == '3D':
-            all_3D = True
-            all_3D_fnames = [f'ecco_latlon_grid_mappings_3D_{i}.xz' for i in range(nk)]
-            curr_3D_fnames = os.listdir(grid_mapping_fname_3D)
-            for fname in all_3D_fnames:
-                if fname not in curr_3D_fnames:  
-                    all_3D = False
-                    break
-
-        if (dataset_dim == '2D' and grid_mapping_fname_2D.is_file()) or (dataset_dim == '3D' and all_3D):
-            # Factors already made, continuing
-            print('... mapping factors already created')
-        else:
-            # if not, make new grid mapping factors
-            print('... no mapping factors found, recalculating')
-
-            if ~(grid_mapping_fname_all.is_file()):
-                # find the mapping between all points of the ECCO grid and the target grid.
-                grid_mappings_all = \
-                    ea.find_mappings_from_source_to_target(source_grid_all,
-                                                            target_grid,
-                                                            target_grid_radius,
-                                                            source_grid_min_L,
-                                                            source_grid_max_L)
-
-                # Save grid_mappings_all
-                try:
-                    pickle.dump(grid_mappings_all, lzma.open(grid_mapping_fname_all, 'wb'))
-                except:
-                    print(f'ERROR Cannot save grid_mappings_all file "{grid_mapping_fname_all}"')
-                    return -1
-
-            # If the dataset is 2D, only compute one level of the mapping factors
-            if dataset_dim == '2D':
-                nk = 1
-
-            # Find the mapping factors between all wet points of the ECCO grid
-            # at each vertical level and the target grid
-            for k_i in range(nk):
-                print(k_i)
-                grid_mappings_k = \
-                    ea.find_mappings_from_source_to_target(source_grid_k[k_i],
-                                                            target_grid,
-                                                            target_grid_radius,
-                                                            source_grid_min_L,
-                                                            source_grid_max_L)
-
-                try:
-                    if dataset_dim == '2D':
-                        pickle.dump(grid_mappings_k, lzma.open(grid_mapping_fname_2D, 'wb'))
-                    elif dataset_dim == '3D':
-                        fname_3D = Path(grid_mapping_fname_3D) / f'ecco_latlon_grid_mappings_3D_{k_i}.xz'
-                        pickle.dump(grid_mappings_k, lzma.open(fname_3D, 'wb'))
-                except:
-                    print(f'ERROR Cannot save grid_mappings_k file(s) "{mapping_factors_dir}"')
-                    return -1
-    return status
-
-
 def get_land_mask(mapping_factors_dir, k=0, debug_mode=False, extra_prints=False):
     if extra_prints: print('\nGetting Land Mask')
 
-    status = 1
+    status = 'SUCCESS'
     land_mask_ll = []
 
     if debug_mode:
@@ -159,81 +32,19 @@ def get_land_mask(mapping_factors_dir, k=0, debug_mode=False, extra_prints=False
             try:
                 land_mask_ll = pickle.load(lzma.open(land_mask_fname, 'rb'))
             except:
-                    print(f'ERROR Unable to load land mask "{land_mask_fname}"')
-                    return (-1, land_mask_ll)
+                status = f'ERROR Unable to load land mask "{land_mask_fname}"'
+                return (status, land_mask_ll)
         else:
-            print(f'ERROR Land mask has not been created or cannot be found "{land_mask_fname}"')
-            return (-1, land_mask_ll)
+            status = f'ERROR Land mask has not been created or cannot be found "{land_mask_fname}"'
+            return (status, land_mask_ll)
 
     return (status, land_mask_ll)
 
 
-def create_land_mask(ea, mapping_factors_dir, debug_mode, nk, target_grid_shape, ecco_grid, dataset_dim):
-    print('\nCreating Land Mask')
+def get_latlon_grid(mapping_factors_dir, debug_mode=False, extra_prints=False):
+    if extra_prints: print('\nGetting latlon grid')
 
-    status = 1
-    ecco_land_mask_c = ecco_grid.maskC.copy(deep=True)
-    ecco_land_mask_c.values = np.where(ecco_land_mask_c==True, 1, np.nan)
-
-    land_mask_fname = Path(mapping_factors_dir) / 'land_mask'
-
-    if not land_mask_fname.exists():
-        try:
-            land_mask_fname.mkdir()
-        except:
-            print(f'ERROR Cannot make land_mask directory "{land_mask_fname}"')
-            return -1
-
-    if debug_mode:
-        print('...DEBUG MODE -- SKIPPING LAND MASK')
-        land_mask_ll = []
-
-    else:
-        # first check to see if you have already calculated the landmask
-        all_mask = True
-        all_mask_fnames = [f'ecco_latlon_land_mask_{i}.xz' for i in range(nk)]
-        curr_mask_fnames = os.listdir(land_mask_fname)
-        for fname in all_mask_fnames:
-            if fname not in curr_mask_fnames:  
-                all_mask = False
-                break
-
-        if all_mask:
-            # Land mask already made, continuing
-            print('... land mask already created')
-        else:
-            # if not, recalculate.
-
-            (status, source_indices_within_target_radius_i, \
-            nearest_source_index_to_target_index_i), _ = get_mapping_factors(dataset_dim, mapping_factors_dir,
-                                                                            'all', debug_mode)
-            if status == -1:
-                return status
-
-            for k in range(nk):
-                print(k)
-
-                source_field = ecco_land_mask_c.values[k,:].ravel()
-
-                land_mask_ll = ea.transform_to_target_grid(source_indices_within_target_radius_i,
-                                                            nearest_source_index_to_target_index_i,
-                                                            source_field, target_grid_shape,
-                                                            operation='nearest', 
-                                                            allow_nearest_neighbor=True)
-
-                try:
-                    fname_mask = Path(land_mask_fname) / f'ecco_latlon_land_mask_{k}.xz'
-                    pickle.dump(land_mask_ll.ravel(), lzma.open(fname_mask, 'wb'))
-                except:
-                    print(f'ERROR Cannot save land_mask file "{land_mask_fname}"')
-                    return -1
-    return status
-
-
-def get_latlon_grid(mapping_factors_dir, debug_mode=False):
-    # print('\nGetting latlon grid')
-
-    status = 1
+    status = 'SUCCESS'
     latlon_grid = {}
 
     if debug_mode:
@@ -248,302 +59,103 @@ def get_latlon_grid(mapping_factors_dir, debug_mode=False):
             try:
                 latlon_grid = pickle.load(lzma.open(latlon_grid_name, 'rb'))
             except:
-                print(f'ERROR Unable to load land mask "{latlon_grid_name}"')
-                return (-1, latlon_grid)
+                status = f'ERROR Unable to load land mask "{latlon_grid_name}"'
+                return (status, latlon_grid)
         else:
-            print(f'ERROR Land mask has not been created or cannot be found "{latlon_grid_name}"')
-            return (-1, latlon_grid)
+            status = f'ERROR Land mask has not been created or cannot be found "{latlon_grid_name}"'
+            return (status, latlon_grid)
 
     return (status, latlon_grid)
 
 
-def create_all_factors(ea, config_metadata, dataset_dim, debug_mode):
-    status = 1
-    mapping_factors_dir = Path(config_metadata['mapping_factors_dir'])
-    nk = config_metadata['num_vertical_levels']
-    ecco_grid = xr.open_dataset(Path(config_metadata['ecco_grid_dir']) / config_metadata['ecco_grid_filename'])
-
-    if not mapping_factors_dir.exists():
-        try:
-            mapping_factors_dir.mkdir()
-        except:
-            print(f'ERROR Cannot make mapping factors directory "{mapping_factors_dir}"')
-            return -1
-
-    if debug_mode:
-        print('...DEBUG MODE -- SKIPPING LATLON GRID')
-    else:
-        wet_pts_k = {}
-        xc_wet_k = {}
-        yc_wet_k = {}
-
-        # Dictionary of pyresample 'grids' for each level of the ECCO grid where
-        # there are wet points.  Used for the bin-averaging.  We don't want to bin
-        # average dry points.
-        source_grid_k = {}
-        # print('\nSwath Definitions')
-        # print('... making swath definitions for latlon grid levels 1..nk')
-        for k in range(nk):
-            wet_pts_k[k] = np.where(ecco_grid.hFacC[k,:] > 0)
-            xc_wet_k[k] = ecco_grid.XC.values[wet_pts_k[k]]
-            yc_wet_k[k] = ecco_grid.YC.values[wet_pts_k[k]]
-
-            source_grid_k[k] = pr.geometry.SwathDefinition(lons=xc_wet_k[k], lats=yc_wet_k[k])
-
-
-        # The pyresample 'grid' information for the 'source' (ECCO grid) defined using
-        # all XC and YC points, even land.  Used to create the land mask
-        source_grid_all =  pr.geometry.SwathDefinition(lons=ecco_grid.XC.values.ravel(),
-                                                        lats=ecco_grid.YC.values.ravel())
-
-        # the largest and smallest length of grid cell size in the ECCO grid.  Used
-        # to determine how big of a lookup table we need to do the bin-average interp.
-        source_grid_min_L = np.min([float(ecco_grid.dyG.min().values), float(ecco_grid.dxG.min().values)])
-        source_grid_max_L = np.max([float(ecco_grid.dyG.max().values), float(ecco_grid.dxG.max().values)])
-
-
-        # Define the TARGET GRID -- a lat lon grid
-        ## create target grid.
-        product_name = ''
-
-        data_res = config_metadata['data_res']
-        data_max_lat = config_metadata['data_max_lat']
-        area_extent = config_metadata['area_extent']
-        dims = [int(d/data_res) for d in config_metadata['dims']]
-
-        # Grid projection information
-        proj_info = {'area_id':'longlat',
-                        'area_name':'Plate Carree',
-                        'proj_id':'EPSG:4326',
-                        'proj4_args':'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'}
-
-        _, _, target_grid, target_grid_lons, target_grid_lats = ea.generalized_grid_product(product_name,
-                                                                                            data_res,
-                                                                                            data_max_lat,
-                                                                                            area_extent,
-                                                                                            dims,
-                                                                                            proj_info)
-
-        # pull out just the lats and lons (1D arrays)
-        target_grid_lons_1D = target_grid_lons[0,:]
-        target_grid_lats_1D = target_grid_lats[:,0]
-
-        # calculate the areas of the lat-lon grid
-        ea_area = ea.area_of_latlon_grid(-180, 180, -90, 90, data_res, data_res, less_output=True)
-        lat_lon_grid_area = ea_area['area']
-        target_grid_shape = lat_lon_grid_area.shape
-
-
-        # calculate effective radius of each target grid cell.  required for the bin
-        # averaging
-        target_grid_radius = np.sqrt(lat_lon_grid_area / np.pi).ravel()
-
-
-        # CALCULATE GRID-TO-GRID MAPPING FACTORS
-        if not isinstance(dataset_dim, list):
-            dataset_dim = [dataset_dim]
-        for dim in dataset_dim:
-            status = create_mapping_factors(ea, dim, mapping_factors_dir, debug_mode, 
-                                            source_grid_all, target_grid, target_grid_radius, 
-                                            source_grid_min_L, source_grid_max_L, source_grid_k, nk)
-            if status == -1:
-                return status
-
-            # make a land mask in lat-lon using hfacC
-            status = create_land_mask(ea, mapping_factors_dir, debug_mode, nk, 
-                                        target_grid_shape, ecco_grid, dim)
-            if status == -1:
-                return status
-
-        ## MAKE LAT AND LON BOUNDS FOR NEW DATA ARRAYS
-        lat_bounds = np.zeros((dims[1],2))
-        for i in range(dims[1]):
-            lat_bounds[i,0] = target_grid_lats[i,0] - data_res/2
-            lat_bounds[i,1] = target_grid_lats[i,0] + data_res/2
-
-        lon_bounds = np.zeros((dims[0],2))
-        for i in range(dims[0]):
-            lon_bounds[i,0] = target_grid_lons[0,i] - data_res/2
-            lon_bounds[i,1] = target_grid_lons[0,i] + data_res/2
-
-        # Make depth bounds
-        depth_bounds = np.zeros((nk,2))
-        tmp = np.cumsum(ecco_grid.drF.values)
-
-        for k in range(nk):
-            if k == 0:
-                depth_bounds[k,0] = 0.0
-            else:
-                depth_bounds[k,0] = -tmp[k-1]
-            depth_bounds[k,1] = -tmp[k]
-
-
-        latlon_bounds = {'lat':lat_bounds, 'lon':lon_bounds}
-        target_grid_dict = {'shape':target_grid_shape, 'lats_1D':target_grid_lats_1D, 'lons_1D':target_grid_lons_1D}
-        latlon_grid = [latlon_bounds, depth_bounds, target_grid_dict, wet_pts_k]
-
-        # print('\nCreating latlon grid')
-        latlon_grid_name = Path(mapping_factors_dir) / f'latlon_grid.xz'
-        if latlon_grid_name.is_file():
-            # latlon grid already made, continuing
-            print('... latlon grid already created')
-        else:
-            # if not, recalculate.
-            # print('.... making new latlon_grid')
-            try:
-                pickle.dump(latlon_grid, lzma.open(latlon_grid_name, 'wb'))
-            except:
-                print(f'ERROR Cannot save latlon_grid file "{latlon_grid_name}"')
-                return -1
-
-    return status
-
-
 # ==========================================================================================================================
-# VARIABLE LOADING UTILS
+# VARIABLE TRANSFORMATION UTILS
 # ==========================================================================================================================
-def latlon_load_2D(ea, ecco, wet_pts_k, target_grid, data_file_path, record_end_time, mapping_factors_dir):
-    status = 1
+def transform_latlon(ecco, Z, wet_pts_k, target_grid, data_file_path, record_end_time, 
+                    nk, dataset_dim, var, output_freq_code, mapping_factors_dir, extra_prints=False):
+    status = 'SUCCESS'
 
-    # k = 0 because 2D is surface level
-    k = 0
+    # Make sure nk (number of vertical levels) is 1 for 2D datasets
+    if dataset_dim == '2D':
+        nk = 1
 
-    F = ecco.read_llc_to_tiles(data_file_path,
-                                llc=90, skip=0,
-                                nk=1, nl=1,
-                                filetype='>f',
-                                less_output=True,
-                                use_xmitgcm=False)
-
-    F_wet_native = F[wet_pts_k[0]]
-
-    # # get mapping factors for the the surface level
-    # status, _, grid_mappings_k = get_mapping_factors('2D', mapping_factors_dir, 'k', k=k)
-    # if status == -1:
+    # # if str(data_file_path) == '/Users/bark/Documents/ECCO_GROUP/ECCO-Dataset-Production/aws/temp_model_output/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.data' or str(data_file_path) == '/Users/bark/Documents/ECCO_GROUP/ECCO-Dataset-Production/aws/temp_model_output/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.data':
+    # if str(data_file_path) == '/tmp/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.data' or str(data_file_path) == '/tmp/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.data':
+    #     status = f'ERROR test error'
+    # if status != 'SUCCESS':
     #     return (status, [])
 
-    status, ll_land_mask = get_land_mask(mapping_factors_dir, k=0)
-    if status == -1:
-        return (status, [])
-
-    # source_indices_within_target_radius_i, \
-    # nearest_source_index_to_target_index_i = grid_mappings_k
-
-    # # transform to new grid
-    # F_ll =  \
-    #     ea.transform_to_target_grid(source_indices_within_target_radius_i,
-    #                                 nearest_source_index_to_target_index_i,
-    #                                 F_wet_native,
-    #                                 target_grid['shape'],
-    #                                 operation='mean',
-    #                                 land_mask=ll_land_mask,
-    #                                 allow_nearest_neighbor=True)
-
-    # # expand F_ll with time dimension
-    # F_ll = np.expand_dims(F_ll, 0)
-
-
-    # =============================================================================================
-    # import time
-    # st = time.time()
-    # Load sparse matrix for level k from disk
-    sm_path = f'./mapping_factors/sparse/sparse_matrix_{k}.npz'
-    B = sparse.load_npz(sm_path)
-
-    A = B.T.dot(F_wet_native)
-
-    A = np.where(np.isnan(ll_land_mask), np.nan, A)
-
-    F_ll = A.reshape((1, 360, 720))
-
-    del(A)
-
-    # tr_et = time.time()
-
-    # A_ll_clean = np.where(np.isnan(A_ll), -9999., A_ll)
-    # F_ll_clean = np.where(np.isnan(F_ll), -9999., F_ll)
-    # A_F_diff = np.where(A_ll_clean[0] != F_ll_clean[0])
-    # A_F_same = np.where(A_ll_clean[0] == F_ll_clean[0])
-    # =============================================================================================
-
-    F_DA = xr.DataArray(F_ll,
-                        coords=[[record_end_time],
-                                target_grid['lats_1D'],
-                                target_grid['lons_1D']],
-                        dims=["time", "latitude","longitude"])
-
-    # print(f'Transform time: {tr_et-st}')
-
-    return (status, F_DA)
-
-
-def latlon_load_3D(ea, ecco, Z, wet_pts_k, target_grid, data_file_path, 
-                    record_end_time, nk, mapping_factors_dir):
-    status = 1
-
+    # Read in model output mds
+    if extra_prints: print('... loading mds', data_file_path)
     F = ecco.read_llc_to_tiles(data_file_path,
-                                llc=90, skip=0, nk=nk,
-                                nl=1,
+                                llc=90, skip=0, 
+                                nk=nk, nl=1,
                                 filetype='>f',
                                 less_output=True,
                                 use_xmitgcm=False)
 
+    # Initialize blank transformed grid with nk vertical levels
+    # For 2D, this has shape (1, 360, 720)
+    # For 3D, this has shape (nk, 360, 720), where nk is the number of vertical levels
     F_ll = np.zeros((nk,360,720))
 
     for k in range(nk):
-        F_wet_native = F[k][wet_pts_k[k]]
+        # Select corresponding vertical level from loaded model output file
+        if dataset_dim == '2D':
+            F_wet_native = F[wet_pts_k[k]]
+        else:
+            F_wet_native = F[k][wet_pts_k[k]]
 
-        status, _, grid_mappings_k = get_mapping_factors('3D', mapping_factors_dir, 'k', k=k)
-        if status == -1:
+        # Get land mask for the corresponding vertical level
+        status, ll_land_mask = get_land_mask(mapping_factors_dir, k=k, extra_prints=extra_prints)
+        if status != 'SUCCESS':
             return (status, [])
 
-        status, ll_land_mask = get_land_mask(mapping_factors_dir, k=k)
-        if status == -1:
-            return (status, [])
+        # Load sparse matrix for level k from disk
+        sm_path = mapping_factors_dir / 'sparse' / f'sparse_matrix_{k}.npz'
+        B = sparse.load_npz(sm_path)
 
-        source_indices_within_target_radius_i, \
-        nearest_source_index_to_target_index_i = grid_mappings_k
+        # Dot product the sparse matrix and the wet source points
+        # This performs a weighted average of the points within the target point radius,
+        # or includes the nearest neighbor if applicable.
+        A = B.T.dot(F_wet_native)
 
-        F_ll[k,:] =  \
-            ea.transform_to_target_grid(source_indices_within_target_radius_i,
-                                        nearest_source_index_to_target_index_i,
-                                        F_wet_native, target_grid['shape'], land_mask=ll_land_mask,
-                                        operation='mean', allow_nearest_neighbor=True)
+        # Set land values to nan
+        A = np.where(np.isnan(ll_land_mask), np.nan, A)
 
+        # Reshape transformed model output to latlon grid
+        # Place into blank transformed grid at corresponding vertical level
+        F_ll[k,:] = A.reshape(target_grid['shape'])
+
+    # Delete F and A from memory, not needed anymore
+    del(F)
+    del(A)
+
+    # Remove single vertical level from 2D datasets
+    if dataset_dim == '2D':
+        F_ll = F_ll[0]
 
     # expand F_ll with time dimension
     F_ll = np.expand_dims(F_ll, 0)
 
-    # Delete F from memory, not needed anymore
-    del(F)
-
-    F_DA = xr.DataArray(F_ll,
-                        coords=[[record_end_time],
-                                Z,
-                                target_grid['lats_1D'],
-                                target_grid['lons_1D']],
-                        dims=["time", "Z", "latitude","longitude"])
-
-    return (status, F_DA)
-
-
-def latlon_load(ea, ecco, Z, wet_pts_k, target_grid, data_file_path,
-                record_end_time, nk, dataset_dim, var, output_freq_code, mapping_factors_dir):
-    status = 1
-
+    # Create DataArray's for transformed grid, with coords and dims.
+    if extra_prints: print('... creating DataArray', F_ll)
     if dataset_dim == '2D':
-        status, F_DA = latlon_load_2D(ea, ecco, wet_pts_k, target_grid, 
-                                        data_file_path, record_end_time, mapping_factors_dir)
-        if status == -1:
-            return (status, [])
+        F_DA = xr.DataArray(F_ll,
+                            coords=[[record_end_time],
+                                    target_grid['lats_1D'],
+                                    target_grid['lons_1D']],
+                            dims=["time", "latitude","longitude"])
     elif dataset_dim == '3D':
-        status, F_DA = latlon_load_3D(ea, ecco, Z, wet_pts_k, target_grid, 
-                                        data_file_path, record_end_time, nk, mapping_factors_dir)
-        if status == -1:
-            return (status, [])
+        F_DA = xr.DataArray(F_ll,
+                            coords=[[record_end_time],
+                                    Z,
+                                    target_grid['lats_1D'],
+                                    target_grid['lons_1D']],
+                            dims=["time", "Z", "latitude","longitude"])
 
     # assign name to data array
-    # print('... assigning name', var)
+    if extra_prints: print('... assigning name', var)
     F_DA.name = var
 
     F_DS = F_DA.to_dataset()
@@ -559,8 +171,8 @@ def latlon_load(ea, ecco, Z, wet_pts_k, target_grid, data_file_path,
     return (status, F_DS)
 
 
-def native_load(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, output_freq_code, cur_ts):
-    status = 1
+def transform_native(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, output_freq_code, cur_ts, extra_prints=False):
+    status = 'SUCCESS'
 
     # land masks
     ecco_land_mask_c  = ecco_grid.maskC.copy(deep=True)
@@ -582,8 +194,8 @@ def native_load(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, output_fre
                                         output_freq_code=output_freq_code,
                                         model_time_steps_to_load=int(cur_ts),
                                         less_output = True)
-    
-    if status == -1:
+
+    if status != 'SUCCESS':
         return (status, F_DS)
 
     vars_to_drop = set(F_DS.data_vars).difference(set([var]))
@@ -606,32 +218,32 @@ def native_load(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, output_fre
         if len(set.intersection(data_var_dims, set(['i','j']))) == 2 :
             if data_var_3D:
                 F_DS[data_var].values = F_DS[data_var].values * ecco_land_mask_c.values
-                # print('... masking with 3D maskC ', data_var)
+                if extra_prints: print('... masking with 3D maskC ', data_var)
             else:
-                # print('... masking with 2D maskC ', data_var)
+                if extra_prints: print('... masking with 2D maskC ', data_var)
                 F_DS[data_var].values= F_DS[data_var].values * ecco_land_mask_c[0,:].values
 
         # i_g, j = 'u' point
         elif len(set.intersection(data_var_dims, set(['i_g','j']))) == 2 :
             if data_var_3D:
-                # print('... masking with 3D maskW ', data_var)
+                if extra_prints: print('... masking with 3D maskW ', data_var)
                 F_DS[data_var].values = F_DS[data_var].values * ecco_land_mask_w.values
             else:
-                # print('... masking with 2D maskW ', data_var)
+                if extra_prints: print('... masking with 2D maskW ', data_var)
                 F_DS[data_var].values = F_DS[data_var].values * ecco_land_mask_w[0,:].values
 
         # i, j_g = 's' point
         elif len(set.intersection(data_var_dims, set(['i','j_g']))) == 2 :
             if data_var_3D:
-                # print('... masking with 3D maskS ', data_var)
+                if extra_prints: print('... masking with 3D maskS ', data_var)
                 F_DS[data_var].values = F_DS[data_var].values * ecco_land_mask_s.values
             else:
-                # print('... masking with 2D maskS ', data_var)
+                if extra_prints: print('... masking with 2D maskS ', data_var)
                 F_DS[data_var].values = F_DS[data_var].values * ecco_land_mask_s[0,:].values
 
         else:
-            print(f'ERROR: Cannot determine dimension of data variable "{data_var}"')
-            status = -1
+            status = f'ERROR: Cannot determine dimension of data variable "{data_var}"'
+            return (status, F_DS)
     
     return (status, F_DS)
 
@@ -640,7 +252,7 @@ def native_load(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, output_fre
 # METADATA UTILS
 # ==========================================================================================================================
 def global_DS_changes(F_DS, output_freq_code, grouping, var, array_precision, ecco_grid,
-                        depth_bounds, product_type, latlon_bounds, netcdf_fill_value, dataset_dim, record_times):
+                        depth_bounds, product_type, latlon_bounds, netcdf_fill_value, dataset_dim, record_times, extra_prints=False):
     if 'AVG' in output_freq_code:
         F_DS.time_bnds.values[0][0] = record_times['start']
         F_DS.time_bnds.values[0][1] = record_times['end']
@@ -655,8 +267,8 @@ def global_DS_changes(F_DS, output_freq_code, grouping, var, array_precision, ec
 
             if var == orig_var_name:
                 F_DS = F_DS.rename({orig_var_name:new_var_name})
-                # print('renaming from ', orig_var_name, new_var_name)
-                # print(F_DS.data_vars)
+                if extra_prints: print('renaming from ', orig_var_name, new_var_name)
+                if extra_prints: print(F_DS.data_vars)
 
     # cast data variable to desired precision
     for data_var in F_DS.data_vars:
@@ -753,7 +365,7 @@ def find_podaac_metadata(podaac_dataset_table, filename, debug=False):
     }
     if debug:
         print('\n... podaac metadata:')
-        pprint(podaac_metadata)
+        print(podaac_metadata)
 
     return podaac_metadata
 
@@ -789,41 +401,41 @@ def apply_podaac_metadata(xrds, podaac_metadata):
 
 
 def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_code, netcdf_fill_value,
-                    grouping, filename_tail, output_dir_freq, dataset_description, podaac_dir):
-    status = 1
+                    grouping, filename_tail, output_dir_freq, dataset_description, podaac_dir, extra_prints=False):
+    status = 'SUCCESS'
 
     # ADD VARIABLE SPECIFIC METADATA TO VARIABLE ATTRIBUTES (DATA ARRAYS)
-    # print('\n... adding metadata specific to the variable')
+    if extra_prints: print('\n... adding metadata specific to the variable')
     G, grouping_gcmd_keywords = \
         ecco.add_variable_metadata(all_metadata['var_native'], G)
 
     if product_type == 'latlon':
-        # print('\n... using latlon dataseta metadata specific to the variable')
+        if extra_prints: print('\n... using latlon dataseta metadata specific to the variable')
         G, grouping_gcmd_keywords = \
             ecco.add_variable_metadata(all_metadata['var_latlon'], G)
 
     # ADD COORDINATE METADATA
     if product_type == 'latlon':
-        # print('\n... adding coordinate metadata for latlon dataset')
+        if extra_prints: print('\n... adding coordinate metadata for latlon dataset')
         G = ecco.add_coordinate_metadata(all_metadata['coord_latlon'],G)
 
     elif product_type == 'native':
-        # print('\n... adding coordinate metadata for native dataset')
+        if extra_prints: print('\n... adding coordinate metadata for native dataset')
         G = ecco.add_coordinate_metadata(all_metadata['coord_native'],G)
 
     # ADD GLOBAL METADATA
-    # print("\n... adding global metadata for all datasets")
+    if extra_prints: print("\n... adding global metadata for all datasets")
     G = ecco.add_global_metadata(all_metadata['global_all'], G, dataset_dim)
 
     if product_type == 'latlon':
-        # print('\n... adding global meta for latlon dataset')
+        if extra_prints: print('\n... adding global meta for latlon dataset')
         G = ecco.add_global_metadata(all_metadata['global_latlon'], G, dataset_dim)
     elif product_type == 'native':
-        # print('\n... adding global metadata for native dataset')
+        if extra_prints: print('\n... adding global metadata for native dataset')
         G = ecco.add_global_metadata(all_metadata['global_native'], G, dataset_dim)
 
     # ADD GLOBAL METADATA ASSOCIATED WITH TIME AND DATE
-    # print('\n... adding time / data global attrs')
+    if extra_prints: print('\n... adding time / data global attrs')
     if 'AVG' in output_freq_code:
         G.attrs['time_coverage_start'] = str(G.time_bnds.values[0][0])[0:19]
         G.attrs['time_coverage_end'] = str(G.time_bnds.values[0][1])[0:19]
@@ -851,7 +463,7 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
         dv_coordinate_attrs[dv] = " ".join(set_intersect)
 
 
-    # print('\n... creating variable encodings')
+    if extra_prints: print('\n... creating variable encodings')
     # PROVIDE SPECIFIC ENCODING DIRECTIVES FOR EACH DATA VAR
     dv_encoding = {}
     for dv in G.data_vars:
@@ -864,7 +476,7 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
         G[dv].encoding['coordinates'] = dv_coordinate_attrs[dv]
 
     # PROVIDE SPECIFIC ENCODING DIRECTIVES FOR EACH COORDINATE
-    # print('\n... creating coordinate encodings')
+    if extra_prints: print('\n... creating coordinate encodings')
     coord_encoding = {}
 
     for coord in G.coords:
@@ -890,7 +502,7 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
     encoding = {**dv_encoding, **coord_encoding}
 
     # MERGE GCMD KEYWORDS
-    # print('\n... merging GCMD keywords')
+    if extra_prints: print('\n... merging GCMD keywords')
     common_gcmd_keywords = G.keywords.split(',')
     gcmd_keywords_list = set(grouping_gcmd_keywords + common_gcmd_keywords)
 
@@ -907,7 +519,7 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
     ## ADD FINISHING TOUCHES
 
     # uuic
-    # print('\n... adding uuid')
+    if extra_prints: print('\n... adding uuid')
     G.attrs['uuid'] = str(uuid.uuid1())
 
     # add any dataset grouping specific comments.
@@ -921,7 +533,7 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
         G.time.attrs['long_name'] = 'snapshot time'
 
     # set averaging period duration and resolution
-    # print('\n... setting time coverage resolution')
+    if extra_prints: print('\n... setting time coverage resolution')
     # --- AVG MON
     if output_freq_code == 'AVG_MON':
         G.attrs['time_coverage_duration'] = 'P1M'
@@ -953,20 +565,20 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
         ppp_tttt = 'snap'
 
     ## construct filename
-    # print('\n... creating filename')
+    if extra_prints: print('\n... creating filename')
 
     filename = grouping['filename'] + '_' + ppp_tttt + '_' + date_str + filename_tail
 
     # make subdirectory for the grouping
     output_dir = Path(output_dir_freq) / grouping['filename']
-    # print('\n... creating output_dir', output_dir)
+    if extra_prints: print('\n... creating output_dir', output_dir)
 
     if not output_dir.exists():
         try:
             output_dir.mkdir(parents=True, exist_ok=True)
         except:
-            print (f'ERROR Cannot make output directory "{output_dir}"')
-            return (-1, G, '', encoding)
+            status = f'ERROR Cannot make output directory "{output_dir}"'
+            return (status, G, '', encoding)
 
 
     # create full pathname for netcdf file
@@ -979,17 +591,17 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
     G.attrs['summary'] = dataset_description + ' ' + G.attrs['summary']
 
     # get podaac metadata based on filename
-    # print('\n... getting PODAAC metadata')
+    if extra_prints: print('\n... getting PODAAC metadata')
     # podaac_dataset_table = read_csv(podaac_dir / 'datasets.csv')
     podaac_dataset_table = read_csv(podaac_dir)
     podaac_metadata = find_podaac_metadata(podaac_dataset_table, filename)
 
     # apply podaac metadata based on filename
-    # print('\n... applying PODAAC metadata')
+    if extra_prints: print('\n... applying PODAAC metadata')
     G = apply_podaac_metadata(G, podaac_metadata)
 
     # sort comments alphabetically
-    # print('\n... sorting global attributes')
+    if extra_prints: print('\n... sorting global attributes')
     G.attrs = sort_attrs(G.attrs)
 
     # add one final comment (PODAAC request)

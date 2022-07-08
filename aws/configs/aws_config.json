@@ -62,7 +62,7 @@
      {
         "name": "max_latlon_exec_3D",
         "type": "i",
-        "value": 3
+        "value": 9
      },
      {
         "name": "max_native_exec_1D",
@@ -92,7 +92,7 @@
      {
         "name": "memory_size_2D_latlon",
         "type": "i",
-        "value": 2048
+        "value": 1024
      },
      {
         "name": "memory_size_2D_native",
@@ -102,7 +102,7 @@
      {
         "name": "memory_size_3D_latlon",
         "type": "i",
-        "value": 1500
+        "value": 1280
      },
      {
         "name": "memory_size_3D_native",

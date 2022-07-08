@@ -1,0 +1,91 @@
+# =================================================================================================
+# AWS SETUP
+# =================================================================================================
+# String
+# Name of AWS Credential profile to use for authentication
+profile_name: 'saml-pub'
+
+# String
+# AWS region to use
+region: 'us-west-2'
+
+# String
+# Name of S3 bucket to source ECCO model output files
+source_bucket: 'ecco-model-granules'
+
+# String
+# Subfolder of source_bucket to source ECCO model output files
+bucket_subfolder: 'V4r4'
+
+# String
+# Name of S3 bucket to save processed datasets
+output_bucket: 'ecco-processed-data'
+
+# String
+# Name of S3 bucket to use for testing purposes
+test_bucket: 'ecco-test-lambda'
+
+# String
+# AWS Account ID
+account_id: '448078824696'
+
+# String
+# URI of Docker image to use from AWS Elastic Container Registry (ECR)
+image_uri: '448078824696.dkr.ecr.us-west-2.amazonaws.com/ecco_processing:latest'
+
+# String
+# Name of the role for the lambda's to assume when executing
+role: 'lambda-role'
+
+# String
+# Lambda function name prefix (2D/3D_native/latlon appended)
+function_name_prefix: 'ecco_processing'
+
+
+# =================================================================================================
+# EXECUTION TIMES (2D/3D latlon and 2D/3D native)
+# =================================================================================================
+# Float
+# Time to process single 2D latlon vertical level (s)
+latlon_2D_time: 1.0
+
+# Float
+# Time to process single 3D latlon vertical level (s)
+latlon_3D_time: 0.1
+
+# Float
+# Time to process single 2D native vertical level (s)
+native_2D_time: 1.0
+
+# Float
+# Time to process single 3D native vertical level (s)
+native_3D_time: 0.1
+
+# Int
+# Override the max number of timestep executions to be processed in each lambda job.
+# This value is used if lower than the calculated max_execs from time.
+override_max_execs: 5
+
+
+# =================================================================================================
+# MEMORY SIZES (2D/3D latlon and 2D/3D native)
+# =================================================================================================
+# Int
+# Memory size for 2D latlon lambda jobs (MB)
+memory_size_2D_latlon: 1024
+
+# Int
+# Memory size for 3D latlon lambda jobs (MB)
+memory_size_3D_latlon: 1536
+
+# Int
+# Memory size for 2D native lambda jobs (MB)
+memory_size_2D_native: 1024
+
+# Int
+# Memory size for 3D native lambda jobs (MB)
+memory_size_3D_native: 1024
+
+# Int
+# Number of batches to process. Overrides calculated value if lower
+number_of_batches_to_process: 1000

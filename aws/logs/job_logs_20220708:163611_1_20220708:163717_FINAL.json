@@ -1,0 +1,147 @@
+{
+    "Master Script Total Time (s)": 33.46,
+    "Cost Information": {
+        "1024 MB Total Time (s)": 18.19332,
+        "1024 MB Total Billed Time (s)": 19.233,
+        "1024 MB Total GB*s": 19.233,
+        "1024 MB Total Cost (USD)": 0.0003205506411,
+        "Total Cost": 0.0003205506411
+    },
+    "Number of Lambda Jobs": 2,
+    "All timesteps": [
+        "0000000732",
+        "0000001428",
+        "0000002172",
+        "0000002892",
+        "0000003636",
+        "0000004356",
+        "0000005100",
+        "0000005844",
+        "0000006564",
+        "0000007308"
+    ],
+    "Timesteps submitted": [
+        "0000000732",
+        "0000001428",
+        "0000002172",
+        "0000002892",
+        "0000003636",
+        "0000004356",
+        "0000005100",
+        "0000005844",
+        "0000006564",
+        "0000007308"
+    ],
+    "Timesteps failed": [
+        "0000001428",
+        "0000002172"
+    ],
+    "Jobs": {
+        "7b98d896-3399-4dea-ad28-41c7e99571ff": {
+            "date": "Fri, 08 Jul 2022 23:36:46 GMT",
+            "status": 202,
+            "data": {
+                "grouping_to_process": 0,
+                "product_type": "latlon",
+                "output_freq_code": "AVG_MON",
+                "dimension": "2D",
+                "time_steps_to_process": [
+                    "0000000732",
+                    "0000001428",
+                    "0000002172",
+                    "0000002892",
+                    "0000003636"
+                ]
+            },
+            "report": {
+                "logStreamName": "2022/07/08/[$LATEST]7fc9670730d64c5fbf3896e67b6b70c1",
+                "logGroupName": "/aws/lambda/ecco_processing_2D_latlon",
+                "Duration (s)": 8.50727,
+                "Billed Duration (s)": 9.081,
+                "Memory Size (MB)": 1024,
+                "Max Memory Used (MB)": 272,
+                "Init Duration (s)": 0.57345,
+                "Cost Estimate (USD)": 0.0001513503027
+            },
+            "start": 1657323407173,
+            "end": 1657323415681,
+            "success": false,
+            "any_failed": true,
+            "timesteps_failed": [
+                "0000001428",
+                "0000002172"
+            ],
+            "error": {
+                "0000001428": "{\"errorType\": \"Exception\", \"errorMessage\": \"ERROR test error\", \"stackTrace\": [\"Traceback (most recent call last):\\n\", \"  File \\\"/home/app/eccov4r4_gen_for_podaac_cloud.py\\\", line 409, in generate_netcdfs\\n    raise Exception(status)\\n\", \"Exception: ERROR test error\\n\"]}\n",
+                "0000002172": "{\"errorType\": \"Exception\", \"errorMessage\": \"ERROR test error\", \"stackTrace\": [\"Traceback (most recent call last):\\n\", \"  File \\\"/home/app/eccov4r4_gen_for_podaac_cloud.py\\\", line 409, in generate_netcdfs\\n    raise Exception(status)\\n\", \"Exception: ERROR test error\\n\"]}\n"
+            },
+            "extra": {
+                "Duration (s)": {
+                    "ALL": 8.505486726760864,
+                    "IMPORT": 4.972634315490723,
+                    "RUN": 3.5327935218811035,
+                    "TOTAL": 3.532698392868042,
+                    "SCRIPT": 1.3976023197174072,
+                    "IO": 2.1350960731506348,
+                    "DOWNLOAD": 1.32912015914917,
+                    "NETCDF": 0.5100021362304688,
+                    "UPLOAD": 0.2959737777709961
+                },
+                "Files (#)": {
+                    "DOWNLOAD": 11,
+                    "UPLOAD": 3
+                }
+            }
+        },
+        "542572b2-518f-4131-b9fe-3ca988f28827": {
+            "date": "Fri, 08 Jul 2022 23:36:46 GMT",
+            "status": 202,
+            "data": {
+                "grouping_to_process": 0,
+                "product_type": "latlon",
+                "output_freq_code": "AVG_MON",
+                "dimension": "2D",
+                "time_steps_to_process": [
+                    "0000004356",
+                    "0000005100",
+                    "0000005844",
+                    "0000006564",
+                    "0000007308"
+                ]
+            },
+            "report": {
+                "logStreamName": "2022/07/08/[$LATEST]b8a539cb0423495bb8a657eafc580e34",
+                "logGroupName": "/aws/lambda/ecco_processing_2D_latlon",
+                "Duration (s)": 9.68605,
+                "Billed Duration (s)": 10.152000000000001,
+                "Memory Size (MB)": 1024,
+                "Max Memory Used (MB)": 271,
+                "Init Duration (s)": 0.46574000000000004,
+                "Cost Estimate (USD)": 0.00016920033840000002
+            },
+            "start": 1657323407290,
+            "end": 1657323416976,
+            "success": true,
+            "any_failed": false,
+            "timesteps_failed": [],
+            "error": {},
+            "extra": {
+                "Duration (s)": {
+                    "ALL": 9.684030055999756,
+                    "IMPORT": 4.855860233306885,
+                    "RUN": 4.8280792236328125,
+                    "TOTAL": 4.824974060058594,
+                    "SCRIPT": 1.4942941665649414,
+                    "IO": 3.3306798934936523,
+                    "DOWNLOAD": 1.9296562671661377,
+                    "NETCDF": 0.8257894515991211,
+                    "UPLOAD": 0.5752341747283936
+                },
+                "Files (#)": {
+                    "DOWNLOAD": 15,
+                    "UPLOAD": 5
+                }
+            }
+        }
+    }
+}

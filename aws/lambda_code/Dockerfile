@@ -6,8 +6,8 @@ ARG FUNCTION_DIR="/home/app/"
 WORKDIR ${FUNCTION_DIR}
 
 # copy necessary files
-RUN mkdir ./ecco_cloud_utils
-COPY ./ecco_cloud_utils ./ecco_cloud_utils
+# RUN mkdir ./ecco_cloud_utils
+# COPY ./ecco_cloud_utils ./ecco_cloud_utils
 RUN mkdir ./ecco_grids
 COPY ./ecco_grids ./ecco_grids
 RUN mkdir ./ecco_v4_py

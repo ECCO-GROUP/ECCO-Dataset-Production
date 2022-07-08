@@ -18,6 +18,7 @@ import datetime
 import numpy as np
 import xarray as xr
 from xmitgcm import open_mdsdataset
+from xmitgcm.file_utils import clear_cache
 
 from .llc_array_conversion  import llc_compact_to_tiles
 
@@ -178,6 +179,8 @@ def load_ecco_vars_from_mds(mds_var_dir,
         str(ecco_v4_start_day)  + ' ' +  str(ecco_v4_start_hour) + ':' +  \
         str(ecco_v4_start_min)  + ':' + str(ecco_v4_start_sec)
 
+    # clear cache so listdir() will find the newly downloaded mds files for the current timestep
+    clear_cache()
 
     if model_time_steps_to_load == 'all':
         # if not less_output:
@@ -390,9 +393,8 @@ def load_ecco_vars_from_mds(mds_var_dir,
     elif len(all_var_dims.intersection(keys_2D)) > 0:
         dataset_dim = '2D'
     else:
-        #print('no 2D or 3D dimensions')
-        print('ERROR Cannot find 2D or 3D dims in dataset')
-        return (-1, ecco_dataset)
+        status = 'ERROR no 2D or 3D dimensions'
+        return (status, ecco_dataset)
 
     # drop 3D and dims coordinates that do not appear in any data variable
     if drop_unused_coords:
