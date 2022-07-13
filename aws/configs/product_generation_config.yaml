@@ -2,6 +2,14 @@
 # Metadata, Filenames, and Paths
 # =================================================================================================
 # String
+# Output dataset DOI (as from PODAAC_datasets metadata file)
+doi: '10.5067'
+
+# String
+# Version number of ECCO output
+ecco_version: 'V4r4'
+
+# String
 # Name of processing code file to import. Assumes it has a function named "generate_netcdfs" which
 # accepts the payload defined in master_script.py
 processing_code_filename: 'eccov4r4_gen_for_podaac_cloud'
@@ -104,3 +112,46 @@ latlon_grid_area_extent: [-180.0, 90.0, 180.0, -90.0]
 # List(Float)
 # Resolution independent
 latlon_grid_dims: [360, 180]
+
+
+# GROUPINGS
+# =================================================================================================
+# 20 NATIVE GRID GROUPINGS
+#    0 dynamic sea surface height and model sea level anomaly
+#    1 ocean bottom pressure and model ocean bottom pressure anomaly
+#    2 ocean and sea-ice surface freshwater fluxes
+#    3 ocean and sea-ice surface heat fluxes
+#    4 atmosphere surface temperature, humidity, wind, and pressure
+#    5 ocean mixed layer depth
+#    6 ocean and sea-ice surface stress
+#    7 sea-ice and snow concentration and thickness
+#    8 sea-ice velocity
+#    9 sea-ice and snow horizontal volume fluxes
+#    10 Gent-McWilliams ocean bolus transport streamfunction
+#    11 ocean three-dimensional volume fluxes
+#    12 ocean three-dimensional potential temperature fluxes
+#    13 ocean three-dimensional salinity fluxes
+#    14 sea-ice salt plume fluxes
+#    15 ocean potential temperature and salinity
+#    16 ocean density, stratification, and hydrostatic pressure
+#    17 ocean velocity
+#    18 Gent-McWilliams ocean bolus velocity
+#    19 ocean three-dimensional momentum tendency
+
+# ----- > groupings_native_snap (5) = [0, 1, 7, 8, 15]
+# SSH, obp, sea ice and snow, sea ice velocity, TS
+
+# 13 LATLON GRID GROUPINGS
+#    0 dynamic sea surface height
+#    1 ocean bottom pressure
+#    2 ocean and sea-ice surface freshwater fluxes
+#    3 ocean and sea-ice surface heat fluxes
+#    4 atmosphere surface temperature, humidity, wind, and pressure
+#    5 ocean mixed layer depth
+#    6 ocean and sea-ice surface stress
+#    7 sea-ice and snow concentration and thickness
+#    8 sea-ice velocity
+#    9 ocean potential temperature and salinity
+#    10 ocean density, stratification, and hydrostatic pressure
+#    11 ocean velocity
+#    12 Gent-McWilliams ocean bolus velocity

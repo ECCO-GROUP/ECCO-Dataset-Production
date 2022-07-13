@@ -4,7 +4,6 @@ Created May 18, 2022
 Author: Duncan Bark
 
 """
-import os
 import sys
 import glob
 import json
@@ -13,8 +12,6 @@ import yaml
 import boto3
 import argparse
 import platform
-import numpy as np
-from scipy import sparse
 from pathlib import Path
 from collections import defaultdict
 
@@ -22,7 +19,6 @@ from collections import defaultdict
 sys.path.append(f'{Path(__file__).parent.resolve()}')
 import aws_utils as aws_utils
 import ecco_cloud_utils as ea
-import gen_netcdf_utils as gen_netcdf_utils
 import create_factors_utils as create_factors_utils
 from eccov4r4_gen_for_podaac_cloud import generate_netcdfs
 
@@ -46,6 +42,15 @@ def create_parser():
 
     parser.add_argument('--force_reconfigure', default=False, action='store_true',
                         help='Force code to re-run code to get AWS credentials')
+
+    parser.add_argument('--create_factors', default=False, action='store_true',
+                        help='ONLY creates all factors: 2D/3D factors, landmask, latlon_grid fields, and sparse matricies')
+
+    parser.add_argument('--require_input', default=False, action='store_true',
+                        help='Requests approval from user to start executing lambda jobs for each job (eg. 0,latlon,AVG_MON,all)')
+
+    parser.add_argument('--include_all_timesteps', default=False, action='store_true',
+                        help='Includes all timesteps and all submitted time steps for all lambda jobs in logs')
     return parser
 
 
@@ -94,71 +99,17 @@ if __name__ == "__main__":
 
     extra_prints = product_generation_config['extra_prints']
 
-    # Creates mapping_factors (2D and 3D), landmask, and latlon_grid files
-    # Not needed unless changes have been made to the factors code and you need
-    # to update the factors/mask in the lambda docker image
-    # status = create_factors_utils.create_all_factors(ea, product_generation_config, ['2D', '3D'], debug_mode=debug_mode, extra_prints=extra_prints)
-    # if status == -1:
-    #     print('Error creating all factors. Exiting')
-    #     sys.exit()
-
-
-    # ====================================================================================================
-    # SPARSE MATRIX CREATION
-    # ====================================================================================================
-    # get the land mask of the latlon grid
-    nk = product_generation_config['num_vertical_levels']
-
-    for k in range(nk):
-        sm_path = f'./mapping_factors/sparse/sparse_matrix_{k}.npz'
-        if os.path.exists(sm_path):
-            continue
-
-        status, ll_land_mask = gen_netcdf_utils.get_land_mask(product_generation_config['mapping_factors_dir'], k, extra_prints=extra_prints)
+    if dict_key_args['create_factors']:
+        # Creates mapping_factors (2D and 3D), landmask, latlon_grid, and sparse matrix files
+        # Not needed unless changes have been made to the factors code and you need
+        # to update the factors/mask in the lambda docker image
+        status = create_factors_utils.create_all_factors(ea, product_generation_config, ['2D', '3D'], debug_mode=debug_mode, extra_prints=extra_prints)
         if status == -1:
-            print(f'Error getting land mask for level k={k}')
+            print('Error creating all factors. Exiting')
             sys.exit()
-
-        # Create sparse matrix representation of mapping factors
-        for dataset_dim in ['2D', '3D']:
-            if dataset_dim == '2D' and k > 0:
-                continue
-            status, _, (source_indices_within_target_radius_i, \
-            nearest_source_index_to_target_index_i) = create_factors_utils.get_mapping_factors(dataset_dim, product_generation_config['mapping_factors_dir'], 'k', k=k)
-            if status == -1:
-                print(f'Error getting mapping factors for level k={k}')
-                sys.exit()
-
-            status, (_, _, _, wet_pts_k) = gen_netcdf_utils.get_latlon_grid(Path(product_generation_config['mapping_factors_dir']), debug_mode)
-
-            n = len(wet_pts_k[k][0])
-            m = 2*180 * 2*360
-            
-            target_ind_raw = np.where(source_indices_within_target_radius_i != -1)[0]
-            nearest_ind_raw = np.where((nearest_source_index_to_target_index_i != -1) & (source_indices_within_target_radius_i == -1))[0]
-            target_ind = []
-            source_ind = []
-            source_to_target_weights = []
-            for wet_ind in np.where(~np.isnan(ll_land_mask))[0]:
-                if wet_ind in target_ind_raw:
-                    si_list = source_indices_within_target_radius_i[wet_ind]
-                    for si in si_list:
-                        target_ind.append(wet_ind)
-                        source_ind.append(si)
-                        source_to_target_weights.append(1/len(si_list))
-                elif wet_ind in nearest_ind_raw:
-                    ni = nearest_source_index_to_target_index_i[wet_ind]
-                    target_ind.append(wet_ind)
-                    source_ind.append(ni)
-                    source_to_target_weights.append(1)
-
-
-            # create sparse matrix
-            B = sparse.csr_matrix((source_to_target_weights, (source_ind, target_ind)), shape=(n,m))
-
-            # save sparse matrix
-            sparse.save_npz(sm_path, B)
-    # ====================================================================================================
+        
+        print('\nCompleted creation of all factors. Exiting')
+        sys.exit()
 
 
     # Get all configurations
@@ -169,13 +120,15 @@ if __name__ == "__main__":
             line = line.strip()
             if '#' in line or line == '':
                 continue
+            
+            if line == 'done':
+                break
 
             line_vals = line.split(',')
             if line_vals[3] == 'all':
                 all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], line_vals[3]])
             else:
                 all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], int(line_vals[3])])
-
 
     # Get grouping information
     metadata_fields = ['ECCOv4r4_groupings_for_latlon_datasets', 'ECCOv4r4_groupings_for_native_datasets']
@@ -295,8 +248,9 @@ if __name__ == "__main__":
             job_logs['Master Script Total Time (s)'] = 0
             job_logs['Cost Information'] = defaultdict(float)
             job_logs['Number of Lambda Jobs'] = 0
-            job_logs['All timesteps'] = []
-            job_logs['Timesteps submitted'] = []
+            if dict_key_args['include_all_timesteps']:
+                job_logs['All timesteps'] = []
+                job_logs['Timesteps submitted'] = []
             job_logs['Timesteps failed'] = []
             job_logs['Jobs'] = {}
 
@@ -364,9 +318,9 @@ if __name__ == "__main__":
 
             if not local:
                 s3_dir_prefix = f'{source_bucket_folder_name}/{freq_folder}'
-
+                
                 file_time_steps = aws_utils.get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, 
-                                                        source_bucket,  product_type, num_time_steps_to_process)
+                                                                source_bucket, num_time_steps_to_process)
                 if file_time_steps == -1:
                     print(f'--- Skipping job:\n\tgrouping: {grouping_to_process}\n\tproduct_type: {product_type}\n\toutput_freq_code: {output_freq_code}\n\tnum_time_steps_to_process: {num_time_steps_to_process}')
                     continue
@@ -401,14 +355,15 @@ if __name__ == "__main__":
                     print(f'Unequal time steps for field "{field}". Exiting')
                     sys.exit()
 
-            job_logs['All timesteps'] = all_time_steps
 
             # **********
             # CREATE LAMBDA REQUEST FOR EACH "JOB"
             # **********
             if use_lambda:
+                if dict_key_args['include_all_timesteps']:
+                    job_logs['All timesteps'].extend(all_time_steps)
+
                 # group number of time steps and files to process based on time to execute
-                max_execs = 0
                 if product_type == 'latlon':
                     if dimension == '2D':
                         exec_time_per_vl = time_2D_latlon
@@ -424,21 +379,18 @@ if __name__ == "__main__":
                         exec_time_per_vl = time_3D_native
                         function_name = f'{function_name_prefix}_3D_native'
 
-                # OLD TECHNIQUE (USING NUMBER OF EXECUTIONS)
-                # Max execs is calculated from time/time_step/field, so the true maximum for this grouping
-                # is this value divided by the number of fields per step and then the total number of files
-                # split along time step for this value.
-                max_execs = int(max_execs/len(fields))
-
                 # NEW TECHNIQUE (USING TIME VALUES)
+                max_execs = 0
                 max_time = 900 #s
                 total_vl_possible = int(max_time / exec_time_per_vl)
                 num_vl = 1
                 if dimension == '3D':
-                    num_vl = 50
+                    num_vl = product_generation_config['num_vertical_levels']
                 max_execs = int(total_vl_possible / (len(fields) * num_vl))
 
-                # IF LESS THAN 1, ISSUES WILL OCCUR
+                # If max_execs is 0, then the number of field (and vertical levels) per time step is too high and will cause
+                # the lambda job to exceed it's 15min time limit. Work may be required to improve the speed of the algorithms
+                # or to process the problematic timesteps separately.
                 if max_execs == 0:
                     print(f'Max execs is 0, this means you cannot process a single vertical level in less than 15 minutes.')
                     sys.exit()
@@ -447,11 +399,18 @@ if __name__ == "__main__":
                 # and the provided override_max_execs.
                 if aws_config_metadata['override_max_execs'] != 0:
                     max_execs = min([max_execs, aws_config_metadata['override_max_execs']])
-                    # max_execs = aws_config_metadata['override_max_execs']
 
+                # Split all_time_steps into groups with length=max_execs (the final batch will have any left over)
+                # ex. all_time_steps = [1, 2, 3, 4, 5, 6, 7], max_execs=2
+                #     time_steps_by_batch = [[1, 2], [3, 4], [5, 6], [7]]
                 time_steps_by_batch = [all_time_steps[x:x+max_execs] for x in range(0,len(all_time_steps), max_execs)]
                 number_of_batches = len(time_steps_by_batch)
 
+                # For each field, split the field_files into groups with length=max_execs (in the same fashion as the time steps)
+                # Due to there being multiple fields per batch, the batches are assigned a number which is used as the key to the 
+                # dictionary containing the fields and their files for the corresponding batch number
+                # ex. field_files = {'SSH':['file1', 'file2', 'file3'], 'SSHIBC':['file1', 'file2', 'file3']}, max_execs = 2
+                #     field_files_by_batch = {1:{['SSH':['file1', 'file2']], 'SSHIBC':['file1', 'file2']}, 2:{['SSH':['file3']], 'SSHIBC':['file3']}}
                 field_files_by_batch = {}
                 for field in fields:
                     batched_field_files = [field_files[field][x:x+max_execs] for x in range(0, len(all_time_steps), max_execs)]
@@ -461,10 +420,19 @@ if __name__ == "__main__":
                         field_files_by_batch[batch_number][field] = batch_field_files
 
                 number_of_batches = min([number_of_batches_to_process, number_of_batches])
+                print(f'Job information -- {grouping_to_process}, {product_type}, {output_freq_code}, {num_time_steps_to_process}')
                 print(f'Number of batches: {number_of_batches}')
                 print(f'Number of time steps per batch: {len(field_files_by_batch[0][fields[0]])}')
                 print(f'Length of final batch: {len(field_files_by_batch[number_of_batches-1][fields[0]])}')
                 print(f'Total number of time steps to process: {len(all_time_steps)}')
+
+                if dict_key_args['require_input']:
+                    create_lambdas = input(f'Would like to start executing the lambda jobs (y/n)?\t').lower()
+                    if create_lambdas != 'y':
+                        print('Exiting')
+                        sys.exit()
+                    print()
+
                 for i in range(number_of_batches):
                     # create payload for current lambda job
                     payload = {
@@ -514,7 +482,9 @@ if __name__ == "__main__":
                                 'error': {}
                             }
                             request_ids.append(request_id)
-                            job_logs['Timesteps submitted'].extend(time_steps_by_batch[i])
+
+                            if dict_key_args['include_all_timesteps']:
+                                job_logs['Timesteps submitted'].extend(time_steps_by_batch[i])
                     
                             num_jobs += 1
                     except Exception as e:
@@ -523,6 +493,9 @@ if __name__ == "__main__":
                 print()
             else:
                 # Call local generate_netcdfs function
+                # Note: You can update this to utilize parallel processing
+                # if you mimic the lambda functionality of batches and creating
+                # separate payloads and function calls for each batch.
                 payload = {
                     'grouping_to_process': grouping_to_process,
                     'product_type': product_type,

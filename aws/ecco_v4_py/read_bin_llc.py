@@ -156,8 +156,7 @@ def load_ecco_vars_from_mds(mds_var_dir,
 
     """
 
-    # status variable (1 == success, -1 == failure)
-    status = 1
+    status = 'SUCCESS'
 
     # range object is different between python 2 and 3
     if sys.version_info[0] >= 3 and isinstance(tiles_to_load, range):

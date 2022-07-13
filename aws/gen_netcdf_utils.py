@@ -52,7 +52,7 @@ def get_latlon_grid(mapping_factors_dir, debug_mode=False, extra_prints=False):
         latlon_grid = {}
     else:
         # check to see if you have already calculated the latlon_grid
-        latlon_grid_name = Path(mapping_factors_dir) / f'latlon_grid.xz'
+        latlon_grid_name = Path(mapping_factors_dir) / 'latlon_grid' / f'latlon_grid.xz'
 
         if latlon_grid_name.is_file():
             # if so, load
@@ -160,7 +160,7 @@ def transform_latlon(ecco, Z, wet_pts_k, target_grid, data_file_path, record_end
 
     F_DS = F_DA.to_dataset()
 
-    #   add time bounds object
+    # add time bounds object
     if 'AVG' in output_freq_code:
         tb_ds, _ = \
             ecco.make_time_bounds_and_center_times_from_ecco_dataset(F_DS,
@@ -171,20 +171,22 @@ def transform_latlon(ecco, Z, wet_pts_k, target_grid, data_file_path, record_end
     return (status, F_DS)
 
 
-def transform_native(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, output_freq_code, cur_ts, extra_prints=False):
+def transform_native(ecco, var, ecco_land_masks, ecco_grid_dir_mds, mds_var_dir, output_freq_code, cur_ts, extra_prints=False):
     status = 'SUCCESS'
+    import time
+    native_trans_time = time.time()
 
     # land masks
-    ecco_land_mask_c  = ecco_grid.maskC.copy(deep=True)
-    ecco_land_mask_c.values = np.where(ecco_land_mask_c==True, 1, np.nan)
-    ecco_land_mask_w  = ecco_grid.maskW.copy(deep=True)
-    ecco_land_mask_w.values = np.where(ecco_land_mask_w==True, 1, np.nan)
-    ecco_land_mask_s  = ecco_grid.maskS.copy(deep=True)
-    ecco_land_mask_s.values = np.where(ecco_land_mask_s==True, 1, np.nan)
+    ll_time = time.time()
+    ecco_land_mask_c, ecco_land_mask_w, ecco_land_mask_s = ecco_land_masks
+    ll_time = time.time() - ll_time
 
     short_mds_name = mds_var_dir.name.split('.')[0]
     mds_var_dir = mds_var_dir.parent
 
+    load_time = time.time()
+    # load specified field files from the provided directory
+    # This loads them into the native tile grid
     status, F_DS = ecco.load_ecco_vars_from_mds(mds_var_dir,
                                         mds_grid_dir = ecco_grid_dir_mds,
                                         mds_files = short_mds_name,
@@ -194,10 +196,12 @@ def transform_native(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, outpu
                                         output_freq_code=output_freq_code,
                                         model_time_steps_to_load=int(cur_ts),
                                         less_output = True)
+    load_time = time.time() - load_time
 
     if status != 'SUCCESS':
         return (status, F_DS)
 
+    extra_time = time.time()
     vars_to_drop = set(F_DS.data_vars).difference(set([var]))
     F_DS.drop_vars(vars_to_drop)
 
@@ -205,7 +209,9 @@ def transform_native(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, outpu
     all_var_dims = set([])
     for ecco_var in F_DS.data_vars:
         all_var_dims = set.union(all_var_dims, set(F_DS[ecco_var].dims))
+    extra_time = time.time() - extra_time
 
+    mask_time = time.time()
     # mask the data variables
     for data_var in F_DS.data_vars:
         data_var_dims = set(F_DS[data_var].dims)
@@ -244,6 +250,14 @@ def transform_native(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, outpu
         else:
             status = f'ERROR: Cannot determine dimension of data variable "{data_var}"'
             return (status, F_DS)
+    mask_time = time.time() - mask_time
+
+    native_trans_time = time.time() - native_trans_time
+    print(f'\nNative trans time: {native_trans_time}')
+    print(f'Native load time: {load_time}')
+    print(f'Native mask time: {mask_time}')
+    print(f'Native land mask time: {ll_time}')
+    print(f'Native extra time: {extra_time}\n')
     
     return (status, F_DS)
 
@@ -253,6 +267,7 @@ def transform_native(ecco, var, ecco_grid, ecco_grid_dir_mds, mds_var_dir, outpu
 # ==========================================================================================================================
 def global_DS_changes(F_DS, output_freq_code, grouping, var, array_precision, ecco_grid,
                         depth_bounds, product_type, latlon_bounds, netcdf_fill_value, dataset_dim, record_times, extra_prints=False):
+    # Specify time bounds values for the dataset
     if 'AVG' in output_freq_code:
         F_DS.time_bnds.values[0][0] = record_times['start']
         F_DS.time_bnds.values[0][1] = record_times['end']
@@ -287,17 +302,19 @@ def global_DS_changes(F_DS, output_freq_code, grouping, var, array_precision, ec
 
     # add bounds to spatial coordinates
     if product_type == 'latlon':
-        #   assign lat and lon bounds
+        # assign lat and lon bounds
         F_DS=F_DS.assign_coords({"latitude_bnds": (("latitude","nv"), latlon_bounds['lat'])})
         F_DS=F_DS.assign_coords({"longitude_bnds": (("longitude","nv"), latlon_bounds['lon'])})
 
-        #   if 3D assign depth bounds, use Z as index
+        # if 3D assign depth bounds, use Z as index
         if dataset_dim == '3D' and 'Z' in list(F_DS.coords):
             F_DS = F_DS.assign_coords({"Z_bnds": (("Z","nv"), depth_bounds)})
 
     elif product_type == 'native':
+        # Assign XC bounds coords to the dataset if it is in the grid
         if 'XC_bnds' in ecco_grid.coords:
             F_DS = F_DS.assign_coords({"XC_bnds": (("tile","j","i","nb"), ecco_grid['XC_bnds'].data)})
+        # Assign YC bounds coords to the dataset if it is in the grid
         if 'YC_bnds' in ecco_grid.coords:
             F_DS = F_DS.assign_coords({"YC_bnds": (("tile","j","i","nb"), ecco_grid['YC_bnds'].data)})
 
@@ -309,6 +326,7 @@ def global_DS_changes(F_DS, output_freq_code, grouping, var, array_precision, ec
 
 
 def sort_attrs(attrs):
+    # Sort attributes of a givent attribute dictionary
     od = OrderedDict()
 
     keys = sorted(list(attrs.keys()),key=str.casefold)
@@ -319,7 +337,7 @@ def sort_attrs(attrs):
     return od
 
 
-def find_podaac_metadata(podaac_dataset_table, filename, debug=False):
+def find_podaac_metadata(podaac_dataset_table, filename, doi, ecco_version, debug=False):
     """Return revised file metadata based on an input ECCO `filename`.
 
     This should consistently parse a filename that conforms to the
@@ -339,12 +357,12 @@ def find_podaac_metadata(podaac_dataset_table, filename, debug=False):
         head, tail = filename.split("_mon_mean_")
         head = f"{head}_mon_mean"
     else:
-        raise Exception("Error: filename may not conform to ECCO V4r4 convention.")
+        raise Exception(f"Error: filename may not conform to ECCO {ecco_version} convention.")
 
     if debug:
         print('split filename into ', head, tail)
 
-    tail = tail.split("_ECCO_V4r4_")[1]
+    tail = tail.split(f"_ECCO_{ecco_version}_")[1]
 
     if debug:
         print('further split tail into ',  tail)
@@ -359,7 +377,7 @@ def find_podaac_metadata(podaac_dataset_table, filename, debug=False):
     metadata = podaac_dataset_table[index].iloc[0].to_dict()
 
     podaac_metadata = {
-        'id': metadata['DATASET.PERSISTENT_ID'].replace("PODAAC-","10.5067/"),
+        'id': metadata['DATASET.PERSISTENT_ID'].replace("PODAAC-",f"{doi}/"),
         'metadata_link': f"https://cmr.earthdata.nasa.gov/search/collections.umm_json?ShortName={metadata['DATASET.SHORT_NAME']}",
         'title': metadata['DATASET.LONG_NAME'],
     }
@@ -401,7 +419,7 @@ def apply_podaac_metadata(xrds, podaac_metadata):
 
 
 def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_code, netcdf_fill_value,
-                    grouping, filename_tail, output_dir_freq, dataset_description, podaac_dir, extra_prints=False):
+                    grouping, filename_tail, output_dir_freq, dataset_description, podaac_dir, doi, ecco_version, extra_prints=False):
     status = 'SUCCESS'
 
     # ADD VARIABLE SPECIFIC METADATA TO VARIABLE ATTRIBUTES (DATA ARRAYS)
@@ -594,7 +612,7 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
     if extra_prints: print('\n... getting PODAAC metadata')
     # podaac_dataset_table = read_csv(podaac_dir / 'datasets.csv')
     podaac_dataset_table = read_csv(podaac_dir)
-    podaac_metadata = find_podaac_metadata(podaac_dataset_table, filename)
+    podaac_metadata = find_podaac_metadata(podaac_dataset_table, filename, doi, ecco_version)
 
     # apply podaac metadata based on filename
     if extra_prints: print('\n... applying PODAAC metadata')

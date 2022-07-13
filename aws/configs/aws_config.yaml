@@ -64,7 +64,8 @@ native_3D_time: 0.1
 # Int
 # Override the max number of timestep executions to be processed in each lambda job.
 # This value is used if lower than the calculated max_execs from time.
-override_max_execs: 5
+# This value will be ignored if set to 0.
+override_max_execs: 0
 
 
 # =================================================================================================
@@ -80,11 +81,11 @@ memory_size_3D_latlon: 1536
 
 # Int
 # Memory size for 2D native lambda jobs (MB)
-memory_size_2D_native: 1024
+memory_size_2D_native: 1536
 
 # Int
 # Memory size for 3D native lambda jobs (MB)
-memory_size_3D_native: 1024
+memory_size_3D_native: 1536
 
 # Int
 # Number of batches to process. Overrides calculated value if lower

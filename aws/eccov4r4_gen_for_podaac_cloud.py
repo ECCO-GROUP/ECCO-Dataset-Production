@@ -6,12 +6,10 @@ Adapted from ifenty's "eccov4r4_gen_for_podaac.py"
 
 """
 
-from asyncio.format_helpers import extract_stack
 import os
 import sys
 import json
 import time
-from tkinter import E
 import boto3
 import shutil
 import traceback
@@ -289,6 +287,13 @@ def generate_netcdfs(event):
         # ======================================================================================================================
         # load ECCO grid
         ecco_grid = xr.open_dataset(Path(product_generation_config['ecco_grid_dir']) / product_generation_config['ecco_grid_filename'])
+        ecco_land_mask_c  = ecco_grid.maskC.copy(deep=True)
+        ecco_land_mask_c.values = np.where(ecco_land_mask_c==True, 1, np.nan)
+        ecco_land_mask_w  = ecco_grid.maskW.copy(deep=True)
+        ecco_land_mask_w.values = np.where(ecco_land_mask_w==True, 1, np.nan)
+        ecco_land_mask_s  = ecco_grid.maskS.copy(deep=True)
+        ecco_land_mask_s.values = np.where(ecco_land_mask_s==True, 1, np.nan)
+        ecco_land_masks = (ecco_land_mask_c, ecco_land_mask_w, ecco_land_mask_s)
         if extra_prints: print(ecco_grid)
 
         if extra_prints: print('\nLooping through time levels')
@@ -389,10 +394,10 @@ def generate_netcdfs(event):
                                     print(f'FAIL {cur_ts}')
                                     raise Exception(status)
                             if not data_file_path.exists():
-                                print(f'S3: {source_data_file_path}\nLOCAL: {data_file_path}')
+                                # print(f'S3: {source_data_file_path}\nLOCAL: {data_file_path}')
                                 s3.download_file(model_granule_bucket, str(source_data_file_path), str(data_file_path))
                             if product_type == 'native' and not meta_file_path.exists():
-                                print(f'S3: {source_meta_file_path}\nLOCAL: {meta_file_path}')
+                                # print(f'S3: {source_meta_file_path}\nLOCAL: {meta_file_path}')
                                 s3.download_file(model_granule_bucket, str(source_meta_file_path), str(meta_file_path))
                             s3_download_end_time = time.time()
                             total_download_time += s3_download_end_time-s3_download_start_time
@@ -409,7 +414,7 @@ def generate_netcdfs(event):
                                 raise Exception(status)
                             
                         elif product_type == 'native':
-                            status, F_DS = gen_netcdf_utils.transform_native(ecco, field, ecco_grid, product_generation_config['ecco_grid_dir_mds'], 
+                            status, F_DS = gen_netcdf_utils.transform_native(ecco, field, ecco_land_masks, product_generation_config['ecco_grid_dir_mds'], 
                                                                 data_file_path, output_freq_code, cur_ts, extra_prints=extra_prints)
                             if status != 'SUCCESS':
                                 print(f'FAIL {cur_ts}')
@@ -444,7 +449,10 @@ def generate_netcdfs(event):
                     status, G, netcdf_output_filename, encoding = gen_netcdf_utils.set_metadata(ecco, G, product_type, all_metadata, dataset_dim, 
                                                                                     output_freq_code, netcdf_fill_value, 
                                                                                     grouping, filename_tail, output_dir_freq, 
-                                                                                    dataset_description, podaac_dir, extra_prints=extra_prints)
+                                                                                    dataset_description, podaac_dir, 
+                                                                                    product_generation_config['doi'], 
+                                                                                    product_generation_config['ecco_version'],
+                                                                                    extra_prints=extra_prints)
                     if status != 'SUCCESS':
                         print(f'FAIL {cur_ts}')
                         raise Exception(status)

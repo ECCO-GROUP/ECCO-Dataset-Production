@@ -1,4 +1,3 @@
-from distutils.log import error
 import os
 import ast
 import sys
@@ -12,55 +11,120 @@ from pathlib import Path
 from collections import defaultdict
 
 
-def get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, source_bucket, product_type, time_steps_to_process):
-    if time_steps_to_process != 'all' and not isinstance(time_steps_to_process, int):
-        print(f'Bad time steps provided ("{time_steps_to_process}"). Skipping job.')
+def get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, source_bucket, num_time_steps_to_process):
+    """Create lists of files and timesteps for each field from files present on S3
+
+    Args:
+        s3 (botocore.client.S3): Boto3 S3 client initalized with necessary credentials
+        fields (list): List of field names
+        s3_dir_prefix (str): Prefix of files stored on S3 (i.e. 'V4r4/diags_monthly)
+        period_suffix (str): Period suffix of files (i.e. 'mon_mean')
+        source_bucket (str): Name of S3 bucket
+        num_time_steps_to_process (str/int): String 'all' or an integer specifing the number of time
+                                             steps to process
+
+    Returns:
+        ()
+    """
+
+
+    # num_time_steps_to_process must either be the string 'all' or a number, corresponding to the total number
+    # of time steps to process over all jobs (if using lambda), or overall (when local)
+    if num_time_steps_to_process != 'all' and not isinstance(num_time_steps_to_process, int):
+        print(f'Bad time steps provided ("{num_time_steps_to_process}"). Skipping job.')
         return -1
 
+    # ORIGINAL TECHNIQUE (More complicated and slightly slower (~10%))
+    # # Construct the list of field paths
+    # # i.e. ['aws/temp_model_output/SSH', 'aws/temp_model_output/SSHIBC', ...]
+    # s3_field_paths = []
+    # for field in fields:
+    #     s3_field_paths.append(f'{s3_dir_prefix}/{field}_{period_suffix}')
+
+    # # Get all the files present in the provided S3 bucket and organize them by field
+    # field_files = defaultdict(list)
+    # field_time_steps = defaultdict(list)
+    # all_time_steps_all_vars = []
+    # for i, s3_field_path in enumerate(s3_field_paths):
+    #     start_after = ''
+    #     field = fields[i]
+    #     total_field_files = 0
+    #     while True:
+    #         # List the files present in the source_bucket, that have a prefix corresponding to the current field path
+    #         # There is a limit on the number of objects this can return, so start_after is the last object returned
+    #         # in the previous call of the function.
+    #         source_objects = s3.list_objects_v2(Bucket=source_bucket, Prefix=s3_field_path, StartAfter=start_after)
+
+    #         # If no files are returned
+    #         if 'Contents' not in source_objects:
+    #             break
+
+    #         # only look at .data files for timesteps. Could also look at .meta files, but not both (duplicate time steps would be found)
+    #         file_type = '.data'
+
+    #         file_keys = [key['Key'] for key in source_objects['Contents'] if file_type in key['Key'] and key['Key'] not in field_files[field]]
+            
+    #         # If files were returned (i.e. files were found in the bucket for the field), then add them to the list of files for this field
+    #         if len(file_keys) > 0:
+    #             # if a specific number of time steps is provided, only collect that many for each field
+    #             # since multiple calls to list_objects_v3 is likely required, keeping track of the total number of files
+    #             # and the number of files left is required
+    #             if num_time_steps_to_process != 'all':
+    #                 if total_field_files < num_time_steps_to_process:
+    #                     num_files_left = num_time_steps_to_process - total_field_files
+    #                     if len(file_keys) > num_files_left:
+    #                         file_keys = file_keys[:num_files_left]
+    #                 else:
+    #                     break
+    #             # add all files present in file_keys to the field's list in field_files
+    #             total_field_files += len(file_keys)
+    #             field_files[field].extend(file_keys)
+    #             time_steps = [key.split('.')[-2] for key in file_keys]
+    #             field_time_steps[field].extend(time_steps)
+    #             start_after = file_keys[-1]
+    #             all_time_steps_all_vars.extend(time_steps)
+    #         else:
+    #             break
+        
+    #     # sort lists of field files and timesteps, and all timesteps
+    #     field_files[field] = sorted(field_files[field])
+    #     field_time_steps[field] = sorted(field_time_steps[field])
+    #     all_time_steps_all_vars = sorted(all_time_steps_all_vars)
+
+    # NEWEST TECHNIQUE (simpler and slightly quicker (~10%))
+    # Construct the list of field paths
+    # i.e. ['aws/temp_model_output/SSH', 'aws/temp_model_output/SSHIBC', ...]
     s3_field_paths = []
     for field in fields:
         s3_field_paths.append(f'{s3_dir_prefix}/{field}_{period_suffix}')
 
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(source_bucket)
     field_files = defaultdict(list)
     field_time_steps = defaultdict(list)
     all_time_steps_all_vars = []
+    # loop through each s3_field_path (eg. V4r4/diags_daily/SSH_day_mean, etc.)
     for i, s3_field_path in enumerate(s3_field_paths):
-        start_after = ''
         field = fields[i]
-        total_field_files = 0
-        while True:
-            source_objects = s3.list_objects_v2(Bucket=source_bucket, Prefix=s3_field_path, StartAfter=start_after)
-
-            if 'Contents' not in source_objects:
+        num_time_steps = 0
+        # loop through all the objects in the source_bucket with a prefix matching the s3_field_path
+        for obj in bucket.objects.filter(Prefix=s3_field_path):
+            if num_time_steps == num_time_steps_to_process:
                 break
-
-            file_type = '.data'
-
-            file_keys = [key['Key'] for key in source_objects['Contents'] if file_type in key['Key'] and key['Key'] not in field_files[field]]
-            
-            if len(file_keys) > 0:
-                if time_steps_to_process != 'all':
-                    if total_field_files < time_steps_to_process:
-                        num_files_left = time_steps_to_process - total_field_files
-                        if len(file_keys) > num_files_left:
-                            file_keys = file_keys[:num_files_left]
-                    else:
-                        break
-                total_field_files += len(file_keys)
-                field_files[field].extend(file_keys)
-                time_steps = [key.split('.')[-2] for key in file_keys]
-                field_time_steps[field].extend(time_steps)
-                start_after = file_keys[-1]
-            else:
-                break
-        
+            if '.meta' in obj.key:
+                continue
+            field_files[field].append(obj.key)
+            field_time_steps[field].append(obj.key.split('.')[-2])
+            all_time_steps_all_vars.append(obj.key.split('.')[-2])
+            num_time_steps += 1
         field_files[field] = sorted(field_files[field])
         field_time_steps[field] = sorted(field_time_steps[field])
-        all_time_steps_all_vars.extend(time_steps)
+        all_time_steps_all_vars = sorted(all_time_steps_all_vars)
 
     return (field_files, field_time_steps, all_time_steps_all_vars)
 
 
+# TODO: Remove and replace with updated script Ian and Duncan developed
 def upload_S3(s3, source_path, source_path_folder_name, bucket, check_list=True):
     # Upload provided file to the provided bucket via the provided credentials.
 
@@ -162,6 +226,9 @@ def get_aws_credentials(aws_login_file, aws_region):
     return credentials
 
 
+# ==========================================================================================================================
+# LOGGING UTILS
+# ==========================================================================================================================
 def get_logs(log_client, log_group_names, log_stream_names, start_time=0, end_time=0, filter_pattern='', type=''):
     try:
         if type == 'event':
@@ -244,7 +311,7 @@ def save_logs(job_logs, MB_to_GB, estimated_jobs, start_time, ctr, fn_extra=''):
 
 
 def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs):
-    delete_logs = False
+    delete_logs = True
     key_filter = '?START ?END ?REPORT'
     extra_filter = '?PARTIAL ?SUCCESS ?DURATION ?FILES ?ERROR ?FAILED'
     duration_keys = ['ALL', 'IMPORT', 'RUN', 'TOTAL', 'SCRIPT', 'IO', 'DOWNLOAD', 'NETCDF', 'UPLOAD']
@@ -252,7 +319,6 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
     log_group_names = [lg['logGroupName'] for lg in log_client.describe_log_groups()['logGroups'] if 'ecco_processing' in lg['logGroupName']]
     num_jobs_ended = 0
     estimated_jobs = []
-    last_job_logs = copy.deepcopy(job_logs)
     ctr = -1
 
 
@@ -262,6 +328,7 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
     log_stream_request_ids = defaultdict(list)
 
     try:
+        previous_num_complete = 0
         while True:
             request_id_count = defaultdict(int)
             # intital log
@@ -270,14 +337,13 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
                 total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
                 job_logs['Master Script Total Time (s)'] = total_time
                 job_logs['Number of Lambda Jobs'] = num_jobs
-                last_job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='INITIAL')
-                job_logs = copy.deepcopy(last_job_logs)
+                job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='INITIAL')
+                previous_time = time.time()
 
             print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
             time.sleep(5)
             end_time = int(time.time()/ms_to_sec)
             
-            # TODO: loop through ended_log_stream_names and delete those that did not have an error
             log_stream_names = defaultdict(list)
             total_num_log_streams = 0
             log_streams = get_logs(log_client, log_group_names, [], type='logStream')
@@ -428,6 +494,14 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
                 # write final job_logs to file
                 job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='FINAL')
                 break
+            
+            if (previous_num_complete != num_jobs_ended) and (time.time() - previous_time > 2):
+                ctr += 1
+                total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
+                job_logs['Master Script Total Time (s)'] = total_time
+                job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr)
+                previous_num_complete = copy.deepcopy(num_jobs_ended)
+                previous_time = time.time()
 
     except Exception as e:
         print(f'Error processing logs for lambda jobs')
@@ -435,3 +509,10 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         print(exc_type, fname, exc_tb.tb_lineno)
+        try:
+            total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
+            job_logs['Master Script Total Time (s)'] = total_time
+            # write final job_logs to file
+            job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, fn_extra='FINAL')
+        except:
+            print('Failed saving final log')

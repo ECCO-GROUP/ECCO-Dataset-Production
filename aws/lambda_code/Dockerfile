@@ -15,7 +15,12 @@ COPY ./ecco_v4_py ./ecco_v4_py
 RUN mkdir ./metadata
 COPY ./metadata ./metadata
 RUN mkdir ./mapping_factors
-COPY ./mapping_factors ./mapping_factors
+RUN mkdir ./mapping_factors/land_mask
+RUN mkdir ./mapping_factors/sparse
+RUN mkdir ./mapping_factors/latlon_grid
+COPY ./mapping_factors/sparse ./mapping_factors/sparse
+COPY ./mapping_factors/land_mask ./mapping_factors/land_mask
+COPY ./mapping_factors/latlon_grid ./mapping_factors/latlon_grid
 
 COPY ./lambda_code/Dockerfile .
 COPY ./eccov4r4_gen_for_podaac_cloud.py .
