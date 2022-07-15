@@ -71,6 +71,7 @@ def generate_netcdfs(event):
     local = event['local']
     use_lambda = event['use_lambda']
     credentials = event['credentials']
+    use_workers_to_download = event['use_workers_to_download']
 
     extra_prints = product_generation_config['extra_prints']
 
@@ -285,7 +286,7 @@ def generate_netcdfs(event):
         # ======================================================================================================================
         # PROCESS EACH TIME LEVEL
         # ======================================================================================================================
-        # load ECCO grid
+        # load ECCO grid and land masks
         ecco_grid = xr.open_dataset(Path(product_generation_config['ecco_grid_dir']) / product_generation_config['ecco_grid_filename'])
         ecco_land_mask_c  = ecco_grid.maskC.copy(deep=True)
         ecco_land_mask_c.values = np.where(ecco_land_mask_c==True, 1, np.nan)
@@ -298,6 +299,8 @@ def generate_netcdfs(event):
 
         if extra_prints: print('\nLooping through time levels')
         for cur_ts_i, cur_ts in enumerate(time_steps_to_process):
+            data_file_paths = []
+            meta_file_paths = []
             try:
                 # ==================================================================================================================
                 # CALCULATE TIMES
@@ -358,51 +361,25 @@ def generate_netcdfs(event):
                 F_DS_vars = []
 
                 if not debug_mode:
-                    # Load fields and place them in the dataset
-                    for field in fields_to_load:
-                        source_data_file_path = []
-                        data_files = field_files[field]
-                        for df in data_files:
-                            if cur_ts in df:
-                                source_data_file_path.append(df)
-
-                        if len(source_data_file_path) != 1:
-                            status = f'ERROR Invalid # of data files. Data files: ({source_data_file_path})'
+                    
+                    # Download all files for current time step
+                    if not local:
+                        s3_download_start_time = time.time()
+                        (status, data_file_paths, meta_file_paths, curr_num_downloaded) = gen_netcdf_utils.download_all_files(s3, fields_to_load, field_files, cur_ts, 
+                                                                                                        use_lambda, data_file_paths, meta_file_paths, product_generation_config, product_type, 
+                                                                                                        use_workers_to_download, model_granule_bucket)
+                        num_downloaded += curr_num_downloaded
+                        if status != 'SUCCESS':
+                            gen_netcdf_utils.delete_files(data_file_paths, meta_file_paths, product_generation_config)
                             print(f'FAIL {cur_ts}')
                             raise Exception(status)
-                        else:
-                            source_data_file_path = Path(source_data_file_path[0])
+                        total_download_time += (time.time() - s3_download_start_time)
 
-                        if not use_lambda:
-                            data_file_path = product_generation_config['model_output_dir'] / source_data_file_path
-                        else:
-                            data_file_path = Path(f'/tmp/{source_data_file_path}')
-
-                        meta_file_path = ''
-                        if product_type == 'native':
-                            source_meta_file_path = f'{str(source_data_file_path)[:-5]}.meta'
-                            meta_file_path = Path(f'{str(data_file_path)[:-5]}.meta')
-
-                        # Download data_file from S3
-                        if not local:
-                            s3_download_start_time = time.time()
-                            if not data_file_path.parent.exists():
-                                try:
-                                    data_file_path.parent.mkdir(parents=True, exist_ok=True)
-                                except:
-                                    status = f'ERROR Cannot make {data_file_path}'
-                                    print(f'FAIL {cur_ts}')
-                                    raise Exception(status)
-                            if not data_file_path.exists():
-                                # print(f'S3: {source_data_file_path}\nLOCAL: {data_file_path}')
-                                s3.download_file(model_granule_bucket, str(source_data_file_path), str(data_file_path))
-                            if product_type == 'native' and not meta_file_path.exists():
-                                # print(f'S3: {source_meta_file_path}\nLOCAL: {meta_file_path}')
-                                s3.download_file(model_granule_bucket, str(source_meta_file_path), str(meta_file_path))
-                            s3_download_end_time = time.time()
-                            total_download_time += s3_download_end_time-s3_download_start_time
-                            num_downloaded += 1
-
+                    # Load fields and place them in the dataset
+                    for i, field in enumerate(fields_to_load):
+                        data_file_path = Path(data_file_paths[i])
+                        meta_file_path = Path(meta_file_paths[i])
+                            
                         # Load latlon vs native variable
                         if product_type == 'latlon':
                             status, F_DS = gen_netcdf_utils.transform_latlon(ecco, ecco_grid.Z.values, wet_pts_k, target_grid, 
@@ -410,6 +387,7 @@ def generate_netcdfs(event):
                                                                 dataset_dim, field, output_freq_code, 
                                                                 Path(product_generation_config['mapping_factors_dir']), extra_prints=extra_prints)
                             if status != 'SUCCESS':
+                                gen_netcdf_utils.delete_files(data_file_path, meta_file_path, product_generation_config)
                                 print(f'FAIL {cur_ts}')
                                 raise Exception(status)
                             
@@ -417,23 +395,16 @@ def generate_netcdfs(event):
                             status, F_DS = gen_netcdf_utils.transform_native(ecco, field, ecco_land_masks, product_generation_config['ecco_grid_dir_mds'], 
                                                                 data_file_path, output_freq_code, cur_ts, extra_prints=extra_prints)
                             if status != 'SUCCESS':
+                                gen_netcdf_utils.delete_files(data_file_path, meta_file_path, product_generation_config)
                                 print(f'FAIL {cur_ts}')
                                 raise Exception(status)
 
-
-                        # delete downloaded file from cloud disks
-                        if not local:
-                            if os.path.exists(data_file_path):
-                                os.remove(data_file_path)
-                            if product_type == 'native' and os.path.exists(meta_file_path):
-                                os.remove(meta_file_path)
+                        # delete files
+                        gen_netcdf_utils.delete_files(data_file_path, meta_file_path, product_generation_config)
                         
                         F_DS = gen_netcdf_utils.global_DS_changes(F_DS, output_freq_code, grouping, field,
                                                     array_precision, ecco_grid, depth_bounds, product_type, 
                                                     latlon_bounds, netcdf_fill_value, dataset_dim, record_times, extra_prints=extra_prints)
-
-                        # TODO: Figure out way to not need to append each field DS to a list and merge via xarray. New way should
-                        # do it in less memory
 
                         # add this dataset to F_DS_vars and repeat for next variable
                         F_DS_vars.append(F_DS)
@@ -465,8 +436,7 @@ def generate_netcdfs(event):
                     G.to_netcdf(netcdf_output_filename, encoding=encoding)
                     G.close()
 
-                    netcdf_end_time = time.time()
-                    total_netcdf_time += netcdf_end_time-netcdf_start_time
+                    total_netcdf_time += (time.time() - netcdf_start_time)
                     if extra_prints: print('\n... checking existence of new file: ', netcdf_output_filename.exists())
 
                     # Upload output netcdf to s3
@@ -478,16 +448,17 @@ def generate_netcdfs(event):
                             response = s3.upload_file(str(netcdf_output_filename), processed_data_bucket, name)
                             if extra_prints: print(f'\n... uploaded {netcdf_output_filename} to bucket {processed_data_bucket}')
                         except:
+                            os.remove(netcdf_output_filename)
                             status = f'ERROR Unable to upload file {netcdf_output_filename} to bucket {processed_data_bucket}'
                             print(f'FAIL {cur_ts}')
                             raise status
                         os.remove(netcdf_output_filename)
-                        s3_upload_end_time = time.time()
-                        total_upload_time += s3_upload_end_time-s3_upload_start_time
+                        total_upload_time += (time.time() - s3_upload_start_time)
                         num_uploaded += 1
                 
                 successful_time_steps.append(cur_ts)
             except Exception as e:
+                gen_netcdf_utils.delete_files(data_file_path, meta_file_path, product_generation_config, all=True)
                 exception_type, exception_value, exception_traceback = sys.exc_info()
                 traceback_string = traceback.format_exception(exception_type, exception_value, exception_traceback)
                 err_msg = json.dumps({

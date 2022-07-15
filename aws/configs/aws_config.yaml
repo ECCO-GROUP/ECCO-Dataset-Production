@@ -10,6 +10,15 @@ profile_name: 'saml-pub'
 region: 'us-west-2'
 
 # String
+# Method to use for updating credentials (either 'binary', or 'bash')
+credential_method_type: 'bash'
+
+# String
+# Path to AWS credential updating file (default = ./update_AWS_cred_ecco_production.sh for bash,
+# and ./aws-login.{darwin/linux}.amd64 for binary)
+aws_credential_path: ''
+
+# String
 # Name of S3 bucket to source ECCO model output files
 source_bucket: 'ecco-model-granules'
 
@@ -47,19 +56,19 @@ function_name_prefix: 'ecco_processing'
 # =================================================================================================
 # Float
 # Time to process single 2D latlon vertical level (s)
-latlon_2D_time: 1.0
+latlon_2D_time: 0.75
 
 # Float
 # Time to process single 3D latlon vertical level (s)
-latlon_3D_time: 0.1
+latlon_3D_time: 0.09
 
 # Float
 # Time to process single 2D native vertical level (s)
-native_2D_time: 1.0
+native_2D_time: 0.5
 
 # Float
 # Time to process single 3D native vertical level (s)
-native_3D_time: 0.1
+native_3D_time: 0.04
 
 # Int
 # Override the max number of timestep executions to be processed in each lambda job.

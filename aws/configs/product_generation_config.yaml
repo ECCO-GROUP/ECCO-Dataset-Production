@@ -1,6 +1,10 @@
 # =================================================================================================
 # Metadata, Filenames, and Paths
 # =================================================================================================
+# Boolean
+# Controls whether or not to download files in parallel for the timestep being processed
+use_workers_to_download: True
+
 # String
 # Output dataset DOI (as from PODAAC_datasets metadata file)
 doi: '10.5067'

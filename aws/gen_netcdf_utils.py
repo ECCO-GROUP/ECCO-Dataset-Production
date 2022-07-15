@@ -1,3 +1,5 @@
+import os
+import glob
 import lzma
 import uuid
 import pickle
@@ -7,7 +9,113 @@ import xarray as xr
 from pathlib import Path
 from scipy import sparse
 from pandas import read_csv
+from concurrent import futures
 from collections import OrderedDict
+
+
+# ==========================================================================================================================
+# FILE MANAGEMENT (DOWNLOADING and DELETING)
+# ==========================================================================================================================
+def download_all_files(s3, fields_to_load, field_files, cur_ts, use_lambda, data_file_paths, meta_file_paths, product_generation_config, product_type, use_workers_to_download, model_granule_bucket):
+    status = 'SUCCESS'
+    try:
+        source_data_file_paths = []
+        source_meta_file_paths = []
+        num_downloaded = 0
+        # get all the source and local paths for all .data and .meta files across all fields
+        for field in fields_to_load:
+            for df in field_files[field]:
+                if cur_ts in df:
+                    source_data_file_paths.append(df)
+                    source_meta_file_paths.append(f'{str(df)[:-5]}.meta')
+                    if not use_lambda:
+                        file_path = (product_generation_config['model_output_dir'] / df)
+                    else:
+                        file_path = (Path(f'/tmp/{df}'))
+                    if not file_path.parent.exists():
+                        try:
+                            file_path.parent.mkdir(parents=True, exist_ok=True)
+                        except:
+                            status = f'ERROR Cannot make {file_path}'
+                            return (status, data_file_paths, meta_file_paths, num_downloaded)
+                    data_file_paths.append(str(file_path))
+                    meta_file_paths.append(f'{str(file_path)[:-5]}.meta')
+
+        # create a zipped list of source data file paths and local data file paths
+        # eg. [(S3 bucket path, Local download path), ...]
+        source_local_paths = list(zip(source_data_file_paths, data_file_paths))
+
+        # if the product is native, include the meta paths to the source_local_paths var
+        if product_type == 'native':
+            source_local_meta = list(zip(source_meta_file_paths, meta_file_paths))
+            source_local_paths.extend(source_local_meta)
+
+        # download all the files in parallel using workers, where each worker downloads a different file
+        # where there are as many workers as there are files to download
+        if use_workers_to_download:
+            num_workers = len(source_local_paths)
+            print(f'Using {num_workers} workers to download {len(source_local_paths)} files')
+
+            # download function
+            def fetch(paths):
+                key, file_path = paths
+                s3.download_file(model_granule_bucket, str(key), str(file_path))
+                return str(key)
+
+            # create workers and assign each one a file to download. This paths object is a tuple with the
+            # first value the path on S3, and the second the local path to download to
+            with futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
+                future_to_key = {executor.submit(fetch, paths) for paths in source_local_paths}
+
+                for future in futures.as_completed(future_to_key):
+                    key = future.result()
+                    exception = future.exception()
+                    if exception:
+                        status = f'ERROR downloading file: {key} ({exception})'
+                        return (status, data_file_paths, meta_file_paths, num_downloaded)
+                    else:
+                        print(f'Downloaded: {key}')
+                    num_downloaded += 1
+        else:
+            # download files one at a time from the source_local_paths list
+            for key, df in source_local_paths:
+                df = Path(df)
+                if '.data' in key and not df.exists():
+                    print(f'S3: {key}\tLOCAL: {df}')
+                    s3.download_file(model_granule_bucket, str(key), str(df))
+                    num_downloaded += 1
+                if product_type == 'native' and '.meta' in key and not df.exists():
+                    print(f'S3: {key}\tLOCAL: {df}')
+                    s3.download_file(model_granule_bucket, str(key), str(df))
+                    num_downloaded += 1
+    except Exception as e:
+        print(glob.glob(f'{product_generation_config["model_output_dir"]}/**/*', recursive=True))
+        print(glob.glob(f'{product_generation_config["processed_output_dir_base"]}/**/*', recursive=True))
+        status = f'ERROR Failed to download files "{e}"'
+    return (status, data_file_paths, meta_file_paths, num_downloaded)
+
+
+def delete_files(data_file_paths, meta_file_paths, product_generation_config, all=False):
+    # Make data_file_paths and meta_file_paths lists if they are not
+    if not isinstance(data_file_paths, list):
+        data_file_paths = [data_file_paths]
+    if not isinstance(meta_file_paths, list):
+        meta_file_paths = [meta_file_paths]
+
+    # Create a single list with all the files to delete
+    files_to_delete = []
+    files_to_delete.extend(data_file_paths)
+    files_to_delete.extend(meta_file_paths)
+    print(f'Deleting files: {files_to_delete}')
+    if all:
+        # if all, then include the processed output files as well
+        processed_output_files = glob.glob(f'{product_generation_config["processed_output_dir_base"]}/**/*.nc', recursive=True)
+        files_to_delete.extend(processed_output_files)
+
+    # Go through each file and delete it if it exists
+    for file in files_to_delete:
+        if os.path.exists(file):
+            os.remove(file)
 
 
 # ==========================================================================================================================
@@ -173,18 +281,13 @@ def transform_latlon(ecco, Z, wet_pts_k, target_grid, data_file_path, record_end
 
 def transform_native(ecco, var, ecco_land_masks, ecco_grid_dir_mds, mds_var_dir, output_freq_code, cur_ts, extra_prints=False):
     status = 'SUCCESS'
-    import time
-    native_trans_time = time.time()
 
     # land masks
-    ll_time = time.time()
     ecco_land_mask_c, ecco_land_mask_w, ecco_land_mask_s = ecco_land_masks
-    ll_time = time.time() - ll_time
 
     short_mds_name = mds_var_dir.name.split('.')[0]
     mds_var_dir = mds_var_dir.parent
 
-    load_time = time.time()
     # load specified field files from the provided directory
     # This loads them into the native tile grid
     status, F_DS = ecco.load_ecco_vars_from_mds(mds_var_dir,
@@ -196,12 +299,10 @@ def transform_native(ecco, var, ecco_land_masks, ecco_grid_dir_mds, mds_var_dir,
                                         output_freq_code=output_freq_code,
                                         model_time_steps_to_load=int(cur_ts),
                                         less_output = True)
-    load_time = time.time() - load_time
 
     if status != 'SUCCESS':
         return (status, F_DS)
 
-    extra_time = time.time()
     vars_to_drop = set(F_DS.data_vars).difference(set([var]))
     F_DS.drop_vars(vars_to_drop)
 
@@ -209,9 +310,7 @@ def transform_native(ecco, var, ecco_land_masks, ecco_grid_dir_mds, mds_var_dir,
     all_var_dims = set([])
     for ecco_var in F_DS.data_vars:
         all_var_dims = set.union(all_var_dims, set(F_DS[ecco_var].dims))
-    extra_time = time.time() - extra_time
 
-    mask_time = time.time()
     # mask the data variables
     for data_var in F_DS.data_vars:
         data_var_dims = set(F_DS[data_var].dims)
@@ -250,14 +349,6 @@ def transform_native(ecco, var, ecco_land_masks, ecco_grid_dir_mds, mds_var_dir,
         else:
             status = f'ERROR: Cannot determine dimension of data variable "{data_var}"'
             return (status, F_DS)
-    mask_time = time.time() - mask_time
-
-    native_trans_time = time.time() - native_trans_time
-    print(f'\nNative trans time: {native_trans_time}')
-    print(f'Native load time: {load_time}')
-    print(f'Native mask time: {mask_time}')
-    print(f'Native land mask time: {ll_time}')
-    print(f'Native extra time: {extra_time}\n')
     
     return (status, F_DS)
 

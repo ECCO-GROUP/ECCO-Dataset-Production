@@ -157,6 +157,13 @@ if __name__ == "__main__":
         aws_region_default = 'us-west-2'
         model_granule_bucket_default = 'ecco-model-granules'
         processed_data_bucket_default = 'ecco-processed-data'
+        if aws_config_metadata['credential_method_type'] == 'bash':
+            aws_credential_path_default = './update_AWS_cred_ecco_production.sh'
+        elif aws_config_metadata['credential_method_type'] == 'binary':
+            if 'linux' in platform.platform().lower():
+                aws_credential_path_default = './aws-login.linux.amd64'
+            else:
+                aws_credential_path_default = 'aws-login.darwin.amd64'
 
         if aws_config_metadata['profile_name'] == '':
             aws_config_metadata['profile_name'] = aws_profile_name_default
@@ -166,6 +173,8 @@ if __name__ == "__main__":
             aws_config_metadata['source_bucket'] = model_granule_bucket_default
         if aws_config_metadata['output_bucket'] == '':
             aws_config_metadata['output_bucket'] = processed_data_bucket_default
+        if aws_config_metadata['aws_credential_path'] == '':
+            aws_config_metadata['aws_credential_path'] = aws_credential_path_default
 
         source_bucket = aws_config_metadata['source_bucket']
         source_bucket_folder_name = aws_config_metadata['bucket_subfolder']
@@ -189,27 +198,26 @@ if __name__ == "__main__":
 
         number_of_batches_to_process = aws_config_metadata['number_of_batches_to_process']
 
-        if 'linux' in platform.platform().lower():
-            aws_login_file = './aws-login.linux.amd64'
-        else:
-            aws_login_file = 'aws-login.darwin.amd64'
-
         # Verify credentials
+        credential_method = dict()
+        credential_method['region'] = region
+        credential_method['type'] = aws_config_metadata['credential_method_type']
+        credential_method['aws_credential_path'] = aws_config_metadata['aws_credential_path'] 
         credentials = aws_utils.get_credentials_helper()
         try:
             if force_reconfigure:
                 # Getting new credentials
-                credentials = aws_utils.get_aws_credentials(aws_login_file, region)
+                credentials = aws_utils.get_aws_credentials(credential_method)
             elif credentials != {}:
                 boto3.setup_default_session(profile_name=credentials['profile_name'])
                 try:
                     boto3.client('s3').list_buckets()
                 except:
                     # Present credentials are invalid, try to get new ones
-                    credentials = aws_utils.get_aws_credentials(aws_login_file, region)
+                    credentials = aws_utils.get_aws_credentials(credential_method)
             else:
                 # No credentials present, try to get new ones
-                credentials = aws_utils.get_aws_credentials(aws_login_file, region)
+                credentials = aws_utils.get_aws_credentials(credential_method)
         except Exception as e:
             print(f'Unable to login to AWS. Exiting')
             print(e)
@@ -262,6 +270,7 @@ if __name__ == "__main__":
                     curr_grouping = groupings_for_native_datasets[grouping_to_process]
 
                 fields = curr_grouping['fields'].split(', ')
+                fields = [f.strip() for f in fields]
                 dimension = curr_grouping['dimension']
 
                 if product_type == 'latlon':
@@ -313,8 +322,8 @@ if __name__ == "__main__":
                 period_suffix = 'day_inst'
             else:
                 print('valid options are AVG_DAY, AVG_MON, SNAPSHOT')
-                print('you provided ', output_freq_code)
-                sys.exit()
+                print(f'you provided {output_freq_code}. Skipping job')
+                continue
 
             if not local:
                 s3_dir_prefix = f'{source_bucket_folder_name}/{freq_folder}'
@@ -348,12 +357,15 @@ if __name__ == "__main__":
 
             # check that each field has the same number of times
             all_time_steps = sorted(list(set(all_time_steps_all_vars)))
+            skip_job = False
             for field in fields:
                 if all_time_steps == field_time_steps[field]:
                     continue
                 else:
-                    print(f'Unequal time steps for field "{field}". Exiting')
-                    sys.exit()
+                    print(f'Unequal time steps for field "{field}". Skipping job')
+                    skip_job = True
+            if skip_job:
+                continue
 
 
             # **********
@@ -392,8 +404,8 @@ if __name__ == "__main__":
                 # the lambda job to exceed it's 15min time limit. Work may be required to improve the speed of the algorithms
                 # or to process the problematic timesteps separately.
                 if max_execs == 0:
-                    print(f'Max execs is 0, this means you cannot process a single vertical level in less than 15 minutes.')
-                    sys.exit()
+                    print(f'Max execs is 0, this means you cannot process a single vertical level in less than 15 minutes. Skipping job')
+                    continue
 
                 # If override_max_execs is given, use the lower value between the calculated max_execs
                 # and the provided override_max_execs.
@@ -429,10 +441,10 @@ if __name__ == "__main__":
                 if dict_key_args['require_input']:
                     create_lambdas = input(f'Would like to start executing the lambda jobs (y/n)?\t').lower()
                     if create_lambdas != 'y':
-                        print('Exiting')
-                        sys.exit()
+                        print('Skipping job')
+                        continue
                     print()
-
+                    
                 for i in range(number_of_batches):
                     # create payload for current lambda job
                     payload = {
@@ -447,7 +459,8 @@ if __name__ == "__main__":
                         'local': local,
                         'use_lambda': use_lambda,
                         'credentials': credentials,
-                        'processing_code_filename': product_generation_config['processing_code_filename']
+                        'processing_code_filename': product_generation_config['processing_code_filename'],
+                        'use_workers_to_download': product_generation_config['use_workers_to_download']
                     }
 
                     data_to_process= {
@@ -507,7 +520,8 @@ if __name__ == "__main__":
                     'debug_mode': debug_mode,
                     'local': local,
                     'use_lambda': use_lambda,
-                    'credentials': credentials
+                    'credentials': credentials,
+                    'use_workers_to_download': product_generation_config['use_workers_to_download']
                 }
 
                 generate_netcdfs(payload)
@@ -515,13 +529,13 @@ if __name__ == "__main__":
         # Lambda logging ==========================================================================
         if use_lambda:
             # Call function to process lambda logs until all jobs are finished
-            aws_utils.lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs)
+            aws_utils.lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs, credential_method)
 
             # Delete lambda function
             for function_name in current_functions:
                 if 'ecco_processing' in function_name:
                     print(f'Deleting function: {function_name}')
-                    # lambda_client.delete_function(FunctionName=function_name)
+                    lambda_client.delete_function(FunctionName=function_name)
 
         # **********
         # TODO: Check output S3 bucket for data
