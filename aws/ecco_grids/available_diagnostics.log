@@ -1,4 +1,4 @@
- Total Nb of available Diagnostics: ndiagt=   302
+ Total Nb of available Diagnostics: ndiagt=   320
 ------------------------------------------------------------------------------------
   Num  |<-Name->|Levs|  mate |<- code ->|<--  Units   -->|<- Tile (max=80c)         
 ------------------------------------------------------------------------------------
@@ -34,8 +34,8 @@
     30 |SALT    | 50 |       |SMR     MR|psu             |Salinity
     31 |RELHUM  | 50 |       |SMR     MR|percent         |Relative Humidity
     32 |SALTanom| 50 |       |SMR     MR|psu             |Salt anomaly (=SALT-35; g/kg)
-    33 |UVEL    | 50 |    34 |UUR     MR|m/s             |Zonal Component of Velocity (m/s)
-    34 |VVEL    | 50 |    33 |VVR     MR|m/s             |Meridional Component of Velocity (m/s)
+    33 |UVEL    | 50 |    34 |UUR     MR|m/s             |X-Component of Velocity (m/s) (not necessary eastward)
+    34 |VVEL    | 50 |    33 |VVR     MR|m/s             |Y-Component of Velocity (m/s) (not necessary northward)
     35 |WVEL    | 50 |       |WM      LR|m/s             |Vertical Component of Velocity (r_units/s)
     36 |THETASQ | 50 |       |SMRP    MR|degC^2          |Square of Potential Temperature
     37 |SALTSQ  | 50 |       |SMRP    MR|(psu)^2         |Square of Salinity
@@ -49,17 +49,17 @@
     45 |UV_VEL_Z| 50 |    45 |UZR     MR|m^2/s^2         |Meridional Transport of Zonal Momentum (m^2/s^2)
     46 |WU_VEL  | 50 |       |WU      LR|m.m/s^2         |Vertical Transport of Zonal Momentum
     47 |WV_VEL  | 50 |       |WV      LR|m.m/s^2         |Vertical Transport of Meridional Momentum
-    48 |UVELMASS| 50 |    49 |UUr     MR|m/s             |Zonal Mass-Weighted Comp of Velocity (m/s)
-    49 |VVELMASS| 50 |    48 |VVr     MR|m/s             |Meridional Mass-Weighted Comp of Velocity (m/s)
-    50 |WVELMASS| 50 |       |WM      LR|m/s             |Vertical Mass-Weighted Comp of Velocity
+    48 |UVELMASS| 50 |    49 |UUr     MR|m/s             |X-Comp of Geometry-Weighted Velocity (m/s)
+    49 |VVELMASS| 50 |    48 |VVr     MR|m/s             |Y-Comp of Geometry-Weighted Velocity (m/s)
+    50 |WVELMASS| 50 |       |WM      LR|m/s             |Vertical Comp of Velocity (m/s)
     51 |PhiVEL  | 50 |    48 |SMR P   MR|m^2/s           |Horizontal Velocity Potential (m^2/s)
     52 |PsiVEL  | 50 |    51 |SZ  P   MR|m.m^2/s         |Horizontal Velocity Stream-Function
-    53 |UTHMASS | 50 |    54 |UUr     MR|degC.m/s        |Zonal Mass-Weight Transp of Pot Temp
-    54 |VTHMASS | 50 |    53 |VVr     MR|degC.m/s        |Meridional Mass-Weight Transp of Pot Temp
-    55 |WTHMASS | 50 |       |WM      LR|degC.m/s        |Vertical Mass-Weight Transp of Pot Temp (K.m/s)
-    56 |USLTMASS| 50 |    57 |UUr     MR|psu.m/s         |Zonal Mass-Weight Transp of Salinity
-    57 |VSLTMASS| 50 |    56 |VVr     MR|psu.m/s         |Meridional Mass-Weight Transp of Salinity
-    58 |WSLTMASS| 50 |       |WM      LR|psu.m/s         |Vertical Mass-Weight Transp of Salinity
+    53 |UTHMASS | 50 |    54 |UUr     MR|degC.m/s        |Zonal Geometry-Weight Transp of Pot Temp
+    54 |VTHMASS | 50 |    53 |VVr     MR|degC.m/s        |Meridional Geometry-Weight Transp of Pot Temp
+    55 |WTHMASS | 50 |       |WM      LR|degC.m/s        |Vertical Geometry-Weight Transp of Pot Temp (K.m/s)
+    56 |USLTMASS| 50 |    57 |UUr     MR|psu.m/s         |Zonal Geometry-Weight Transp of Salinity
+    57 |VSLTMASS| 50 |    56 |VVr     MR|psu.m/s         |Meridional Geometry-Weight Transp of Salinity
+    58 |WSLTMASS| 50 |       |WM      LR|psu.m/s         |Vertical Geometry-Weight Transp of Salinity
     59 |UVELTH  | 50 |    60 |UUR     MR|degC.m/s        |Zonal Transport of Pot Temp
     60 |VVELTH  | 50 |    59 |VVR     MR|degC.m/s        |Meridional Transport of Pot Temp
     61 |WVELTH  | 50 |       |WM      LR|degC.m/s        |Vertical Transport of Pot Temp
@@ -239,14 +239,14 @@
    229 |SIarea  |  1 |       |SM      M1|m^2/m^2         |SEAICE fractional ice-covered area [0 to 1]
    230 |SIareaPR|  1 |       |SM      M1|m^2/m^2         |SIarea preceeding ridging process
    231 |SIareaPT|  1 |       |SM      M1|m^2/m^2         |SIarea preceeding thermodynamic growth/melt
-   232 |SIheff  |  1 |       |SM      M1|m               |SEAICE effective ice thickness
+   232 |SIheff  |  1 |       |SM      M1|m               |SEAICE effective ice thickness (avg. within grid cell)
    233 |SIheffPT|  1 |       |SM      M1|m               |SIheff preceeeding thermodynamic growth/melt
    234 |SIhsnow |  1 |       |SM      M1|m               |SEAICE effective snow thickness
    235 |SIhsnoPT|  1 |       |SM      M1|m               |SIhsnow preceeeding thermodynamic growth/melt
    236 |SIhsalt |  1 |       |SM      M1|g/m^2           |SEAICE effective salinity
    237 |SItices |  1 |   229 |SM  C   M1|K               |Surface Temperature over Sea-Ice (area weighted)
-   238 |SIuice  |  1 |   239 |UU      M1|m/s             |SEAICE zonal ice velocity, >0 from West to East
-   239 |SIvice  |  1 |   238 |VV      M1|m/s             |SEAICE merid. ice velocity, >0 from South to North
+   238 |SIuice  |  1 |   239 |UU      M1|m/s             |SEAICE x-dir. ice velocity (m/s)
+   239 |SIvice  |  1 |   238 |VV      M1|m/s             |SEAICE y-dir. ice velocity (m/s)
    240 |SIfu    |  1 |   241 |UU      U1|N/m^2           |SEAICE zonal surface wind stress, >0 increases uVel
    241 |SIfv    |  1 |   240 |VV      U1|N/m^2           |SEAICE merid. surface wind stress, >0 increases vVel
    242 |SIuwind |  1 |   243 |UM      U1|m/s             |SEAICE zonal 10-m wind speed, >0 increases uVel
@@ -313,6 +313,24 @@
    300 |oceSPtnd| 50 |       |SM      MR|g/m^2/s         |salt tendency due to salt plume flux >0 increases salinity
    301 |oceSPflx|  1 |       |SM      U1|g/m^2/s         |net surface Salt flux rejected into the ocean during freezing, (+=down),
    302 |oceSPDep|  1 |       |SM      U1|m               |Salt plume depth based on density criterion (>0)
+   303 |EVEL    | 50 |   304 |UMR     MR|m/s             |Eastward Velocity (m/s) (cell center)
+   304 |NVEL    | 50 |   303 |VMR     MR|m/s             |Northward Velocity (m/s) (cell center)
+   305 |EVELMASS| 50 |   306 |UMR     MR|m/s             |Eastward Geometry-Weighted Velocity (m/s) (cell center)
+   306 |NVELMASS| 50 |   305 |VMR     MR|m/s             |Northward Geometry-Weighted Velocity (m/s) (cell center)
+   307 |UVELSTAR| 50 |   308 |UUR     MR|m/s             |X-Comp of Bolus Velocity (m/s) weighted by hFacW
+   308 |VVELSTAR| 50 |   307 |VVR     MR|m/s             |Y-Comp of Bolus Velocity (m/s) weighted by hFacS
+   309 |WVELSTAR| 50 |       |WM      LR|m/s             |Vertical Component of Bolus Velocity (r_units/s)
+   310 |EVELSTAR| 50 |   311 |UMR     MR|m/s             |Eastward Component of Bolus Velocity (m/s)
+   311 |NVELSTAR| 50 |   310 |VMR     MR|m/s             |Northward Component of Bolus Velocity (m/s)
+   312 |oceTAUE |  1 |   313 |UM      U1|N/m^2           |eastward surface wind stress, >0 increases eVel
+   313 |oceTAUN |  1 |   312 |VM      U1|N/m^2           |northward surf. wind stress, >0 increases nVel
+   314 |EXFtaue |  1 |   315 |UM      U1|N/m^2           |eastward surface wind stress over open water, >0 increases eVel
+   315 |EXFtaun |  1 |   314 |VM      U1|N/m^2           |northward surf. wind stress over open water, >0 increases nVel
+   316 |EXFewind|  1 |   317 |UM      U1|m/s             |eastward 10-m wind velocity over open water, >0 increases eVel
+   317 |EXFnwind|  1 |   316 |VM      U1|m/s             |northward 10-m wind velocity over open water, >0 increases nVel
+   318 |SIeice  |  1 |   319 |UM      M1|m/s             |eastward ice-velocity 
+   319 |SInice  |  1 |   318 |VM      M1|m/s             |northward ice-velocity 
+   320 |SIfwThru|  1 |       |SM      U1|kg/m^2/s        |Freshwater flux through sea-ice to ocean (+=downward)
 ------------------------------------------------------------------------------------
   Num  |<-Name->|Levs|  mate |<- code ->|<--  Units   -->|<- Tile (max=80c)         
 ------------------------------------------------------------------------------------

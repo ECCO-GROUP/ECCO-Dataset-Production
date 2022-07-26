@@ -2,6 +2,20 @@
 # Metadata, Filenames, and Paths
 # =================================================================================================
 # Boolean
+# Controls whether or not to create a checksum for each produced dataset
+create_checksum: False
+
+# Boolean
+# Controls whether or not to download all field files at the same time for each time level instead
+# of one at a time. Setting to true makes downloading quicker, but use more memory and disk space.
+download_all_fields: True
+
+# Boolean
+# Controls whether or not to download the uploaded dataset file and compare it's checksum to the
+# the dataset file before it was uploaded to S3
+compare_checksums: True
+
+# Boolean
 # Controls whether or not to download files in parallel for the timestep being processed
 use_workers_to_download: True
 
@@ -108,6 +122,11 @@ num_vertical_levels: 50
 latlon_grid_resolution: 0.5
 
 # Float
+# Numerical value for effective grid radius for the latlon grid
+# Default: 0.5*111/2*root(2)*1.1
+latlon_effective_grid_radius: 
+
+# Float
 latlon_max_lat: 90.0
 
 # List(Float)
@@ -116,6 +135,10 @@ latlon_grid_area_extent: [-180.0, 90.0, 180.0, -90.0]
 # List(Float)
 # Resolution independent
 latlon_grid_dims: [360, 180]
+
+# Boolean
+# Sets the "read_grid" value for xmitgcm.open_mdsdataset
+read_ecco_grid_for_native_load: True
 
 
 # GROUPINGS

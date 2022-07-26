@@ -12,6 +12,8 @@ import json
 import time
 import boto3
 import shutil
+import hashlib
+import logging
 import traceback
 import numpy as np
 import pandas as pd
@@ -25,32 +27,52 @@ import gen_netcdf_utils as gen_netcdf_utils
 
 
 # ==========================================================================================================================
-def logging_info(time_steps_to_process, successful_time_steps, start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded):
+def logging_info(time_steps_to_process, successful_time_steps, start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded, succeeded_checksums, total_checksum_time, logger, timeout):
     script_time = time.time() - start_time
     script_time -= (total_download_time + total_netcdf_time + total_upload_time)
     IO_time = total_download_time + total_netcdf_time + total_upload_time
     total_time = script_time + IO_time
     print()
     print('='*25 + ' EXECUTION COMPLETE ' + '='*25)
-    print(f'DURATION\tTOTAL\t{total_time}\tseconds')
-    print(f'DURATION\tSCRIPT\t{script_time}\tseconds')
-    print(f'DURATION\tIO\t{IO_time}\tseconds')
-    print(f'DURATION\tDOWNLOAD\t{total_download_time}\tseconds')
-    print(f'DURATION\tNETCDF\t{total_netcdf_time}\tseconds')
-    print(f'DURATION\tUPLOAD\t{total_upload_time}\tseconds')
-    print(f'FILES\tDOWNLOAD\t{num_downloaded}')
-    print(f'FILES\tUPLOAD\t{num_uploaded}')
+    print_messages = []
+    print_messages.append(f'DURATION\tTOTAL\t{total_time}\tseconds')
+    print_messages.append(f'DURATION\tSCRIPT\t{script_time}\tseconds')
+    print_messages.append(f'DURATION\tIO\t{IO_time}\tseconds')
+    print_messages.append(f'DURATION\tDOWNLOAD\t{total_download_time}\tseconds')
+    print_messages.append(f'DURATION\tNETCDF\t{total_netcdf_time}\tseconds')
+    print_messages.append(f'DURATION\tUPLOAD\t{total_upload_time}\tseconds')
+    print_messages.append(f'DURATION\tCHECKSUM\t{total_checksum_time}\tseconds')
+    print_messages.append(f'FILES\tDOWNLOAD\t{num_downloaded}')
+    print_messages.append(f'FILES\tUPLOAD\t{num_uploaded}')
+
+    if timeout:
+        print_messages.append('TIMEOUT')
+
+    print_messages.append(f'SUCCEEDED\t{succeeded_checksums}')
 
     if not time_steps_to_process == successful_time_steps:
         failed_time_steps = list(set(time_steps_to_process) ^ set(successful_time_steps))
-        print(f'FAILED\t{failed_time_steps}')
-        print('PARTIAL')
+        print_messages.append(f'FAILED\t{failed_time_steps}')
+        print_messages.append('PARTIAL')
     else:
-        print('SUCCESS')
+        print_messages.append('SUCCESS')
+
+    print_messages.append('END')
+
+    for msg in print_messages:
+        if logger != False:
+            logger.info(msg)
+        else:
+            print(msg)
+
+
     return
 
 
 def generate_netcdfs(event):
+    job_start_time = time.time()
+    timeout = False
+
     # Logging values
     start_time = time.time()
     total_netcdf_time = 0
@@ -58,6 +80,8 @@ def generate_netcdfs(event):
     num_downloaded = 0
     total_upload_time = 0
     num_uploaded = 0
+    total_checksum_time = 0
+    succeeded_checksums = {}
 
     # Pull variables from "event" argument
     output_freq_code = event['output_freq_code']
@@ -74,6 +98,9 @@ def generate_netcdfs(event):
     use_workers_to_download = event['use_workers_to_download']
 
     extra_prints = product_generation_config['extra_prints']
+
+    # get list of fields to process
+    fields_to_load = list(field_files.keys())
 
     try:
         # Fix paths
@@ -109,7 +136,7 @@ def generate_netcdfs(event):
                 model_granule_bucket, processed_data_bucket = buckets
         elif not local:
             status = f'ERROR No bucket names in aws_metadata:\n{aws_metadata}'
-            raise status
+            raise Exception(status)
 
         # Create processed_output_dir_base directory if using S3 (and not Lambda)
         if not local and not use_lambda:
@@ -133,12 +160,15 @@ def generate_netcdfs(event):
 
         ecco_start_time = np.datetime64(product_generation_config['model_start_time'])
         ecco_end_time   = np.datetime64(product_generation_config['model_end_time'])
-        
-        # get list of fields to process
-        fields_to_load = list(field_files.keys())
 
         # list of successful timesteps, used for logging and job resubmission for lambdas
         successful_time_steps = []
+
+        # if using lambda, setup logger
+        logger = False
+        if use_lambda:
+            logger = logging.getLogger()
+            logger.setLevel(logging.INFO)
 
         # ======================================================================================================================
         # METADATA SETUP
@@ -222,7 +252,7 @@ def generate_netcdfs(event):
             output_dir_type = product_generation_config['processed_output_dir_base'] / 'lat-lon'
             status, (latlon_bounds, depth_bounds, target_grid, wet_pts_k) = gen_netcdf_utils.get_latlon_grid(Path(product_generation_config['mapping_factors_dir']), debug_mode)
         if status != 'SUCCESS':
-            raise status
+            raise Exception(status)
         # ======================================================================================================================
 
 
@@ -263,7 +293,7 @@ def generate_netcdfs(event):
         else:
             status = f'ERROR Invalid output_freq_code provided ("{output_freq_code}")'
             print(f'FAIL ALL')
-            raise status
+            raise Exception(status)
 
         if extra_prints: print('...output_freq_code ', output_freq_code)
 
@@ -276,7 +306,7 @@ def generate_netcdfs(event):
             except:
                 status = f'ERROR Cannot make output directory "{output_dir_freq}"'
                 print(f'FAIL ALL')
-                raise status
+                raise Exception(status)
 
         # create dataset description head
         dataset_description = dataset_description_head + grouping['name'] + dataset_description_tail
@@ -299,9 +329,12 @@ def generate_netcdfs(event):
 
         if extra_prints: print('\nLooping through time levels')
         for cur_ts_i, cur_ts in enumerate(time_steps_to_process):
-            data_file_paths = []
-            meta_file_paths = []
+            data_file_paths = {}
+            meta_file_paths = {}
             try:
+                if use_lambda and time.time() - job_start_time >= aws_metadata['job_timeout']:
+                    timeout = True
+                    raise Exception('TIMEOUT')
                 # ==================================================================================================================
                 # CALCULATE TIMES
                 # ==================================================================================================================
@@ -362,23 +395,78 @@ def generate_netcdfs(event):
 
                 if not debug_mode:
                     
-                    # Download all files for current time step
-                    if not local:
+                    # RANDOM FAILURE (FOR TESTING)
+                    # if np.random.random() < 0.5:
+                    #     print(f'FAIL {cur_ts}')
+                    #     raise Exception('Random failure')
+
+                    # Download field file(s)
+                    # If 'download_all_fields' in product_generation_config.yaml is True, then all field files
+                    # for the current time step will be downloaded, otherwise each field file is downloaded 
+                    # and processed one at a time
+                    if not local and product_generation_config['download_all_fields']:
+                        print(f'Downloading all files for current timestep')
                         s3_download_start_time = time.time()
                         (status, data_file_paths, meta_file_paths, curr_num_downloaded) = gen_netcdf_utils.download_all_files(s3, fields_to_load, field_files, cur_ts, 
                                                                                                         use_lambda, data_file_paths, meta_file_paths, product_generation_config, product_type, 
                                                                                                         use_workers_to_download, model_granule_bucket)
                         num_downloaded += curr_num_downloaded
                         if status != 'SUCCESS':
-                            gen_netcdf_utils.delete_files(data_file_paths, meta_file_paths, product_generation_config)
                             print(f'FAIL {cur_ts}')
                             raise Exception(status)
                         total_download_time += (time.time() - s3_download_start_time)
+                    else:
+                        print(f'Downloading and processing fields one at a time for current timestep')
+
+
+
+                    # ============================== TODO ==============================
+                    # PERFORM VECTOR ROTATION AS NECESSARY
+                    if 'vector_inputs' in grouping:
+                        grouping['vector_inputs'] = ['UVEL', 'VVEL']
+                        # load specified field files from the provided directory
+                        # This loads them into the native tile grid
+                        F_DSs = []
+                        for vec_field in grouping['vector_inputs']:
+                            status, F_DS = ecco.load_ecco_vars_from_mds(Path(data_file_paths[vec_field]).parent,
+                                                                mds_grid_dir = product_generation_config['ecco_grid_dir_mds'],
+                                                                mds_files = Path(data_file_paths[vec_field]).name.split('.')[0],
+                                                                vars_to_load = vec_field,
+                                                                drop_unused_coords = True,
+                                                                grid_vars_to_coords = False,
+                                                                output_freq_code=output_freq_code,
+                                                                model_time_steps_to_load=int(cur_ts),
+                                                                less_output = True,
+                                                                read_grid=product_generation_config['read_ecco_grid_for_native_load'])
+                            print(status)
+                            F_DSs.append(F_DS)
+                    # ============================== TODO ==============================
+
+
+
+
+
 
                     # Load fields and place them in the dataset
-                    for i, field in enumerate(fields_to_load):
-                        data_file_path = Path(data_file_paths[i])
-                        meta_file_path = Path(meta_file_paths[i])
+                    for i, field in enumerate(sorted(fields_to_load)):
+                        if not product_generation_config['download_all_fields']:
+                            s3_download_start_time = time.time()
+                            (status, data_file_paths, meta_file_paths, curr_num_downloaded) = gen_netcdf_utils.download_all_files(s3, [field], field_files, cur_ts, 
+                                                                                                            use_lambda, data_file_paths, meta_file_paths, product_generation_config, product_type, 
+                                                                                                            use_workers_to_download, model_granule_bucket)
+                            num_downloaded += curr_num_downloaded
+                            if status != 'SUCCESS':
+                                print(f'FAIL {cur_ts}')
+                                raise Exception(status)
+                            total_download_time += (time.time() - s3_download_start_time)
+
+                        if use_lambda and time.time() - job_start_time >= aws_metadata['job_timeout']:
+                            timeout = True
+                            raise Exception('TIMEOUT')
+                            
+                        data_file_path = Path(data_file_paths[field])
+                        meta_file_path = Path(meta_file_paths[field])
+
                             
                         # Load latlon vs native variable
                         if product_type == 'latlon':
@@ -387,21 +475,24 @@ def generate_netcdfs(event):
                                                                 dataset_dim, field, output_freq_code, 
                                                                 Path(product_generation_config['mapping_factors_dir']), extra_prints=extra_prints)
                             if status != 'SUCCESS':
-                                gen_netcdf_utils.delete_files(data_file_path, meta_file_path, product_generation_config)
                                 print(f'FAIL {cur_ts}')
                                 raise Exception(status)
                             
                         elif product_type == 'native':
                             status, F_DS = gen_netcdf_utils.transform_native(ecco, field, ecco_land_masks, product_generation_config['ecco_grid_dir_mds'], 
-                                                                data_file_path, output_freq_code, cur_ts, extra_prints=extra_prints)
+                                                                data_file_path, output_freq_code, cur_ts, product_generation_config['read_ecco_grid_for_native_load'],
+                                                                extra_prints=extra_prints)
                             if status != 'SUCCESS':
-                                gen_netcdf_utils.delete_files(data_file_path, meta_file_path, product_generation_config)
                                 print(f'FAIL {cur_ts}')
                                 raise Exception(status)
 
                         # delete files
-                        gen_netcdf_utils.delete_files(data_file_path, meta_file_path, product_generation_config)
-                        
+                        # gen_netcdf_utils.delete_files(data_file_path, meta_file_path, product_generation_config)
+                        if os.path.exists(data_file_path):
+                            os.remove(data_file_path)
+                        if os.path.exists(meta_file_path):
+                            os.remove(meta_file_path)
+
                         F_DS = gen_netcdf_utils.global_DS_changes(F_DS, output_freq_code, grouping, field,
                                                     array_precision, ecco_grid, depth_bounds, product_type, 
                                                     latlon_bounds, netcdf_fill_value, dataset_dim, record_times, extra_prints=extra_prints)
@@ -432,15 +523,24 @@ def generate_netcdfs(event):
                     netcdf_start_time = time.time()
                     print('\n... saving to netcdf ', netcdf_output_filename)
                     G.load()
-
                     G.to_netcdf(netcdf_output_filename, encoding=encoding)
+                    orig_uuid = G.attrs['uuid']
                     G.close()
-
                     total_netcdf_time += (time.time() - netcdf_start_time)
                     if extra_prints: print('\n... checking existence of new file: ', netcdf_output_filename.exists())
 
                     # Upload output netcdf to s3
                     if not local:
+                        # create checksum of netcdf file
+                        if product_generation_config['create_checksum']:
+                            checksum_time = time.time()
+                            hash_md5 = hashlib.md5()
+                            with open(netcdf_output_filename, 'rb') as f:
+                                for chunk in iter(lambda: f.read(4096), b""):
+                                    hash_md5.update(chunk)
+                            orig_checksum = hash_md5.hexdigest()
+                            total_checksum_time += (time.time() - checksum_time)
+
                         s3_upload_start_time = time.time()
                         print('\n... uploading new file to S3 bucket')
                         name = str(netcdf_output_filename).replace(f'{str(product_generation_config["processed_output_dir_base"])}/', '')
@@ -451,14 +551,44 @@ def generate_netcdfs(event):
                             os.remove(netcdf_output_filename)
                             status = f'ERROR Unable to upload file {netcdf_output_filename} to bucket {processed_data_bucket}'
                             print(f'FAIL {cur_ts}')
-                            raise status
-                        os.remove(netcdf_output_filename)
+                            raise Exception(status)
+                        if use_lambda:
+                            os.remove(netcdf_output_filename)
                         total_upload_time += (time.time() - s3_upload_start_time)
                         num_uploaded += 1
+
+                        # create checksum of downloaded dataset from S3 and compare to the checksum created of the
+                        # dataset file uploaded to S3 (in ensure there was no issue uploading the file)
+                        if product_generation_config['compare_checksums'] and product_generation_config['create_checksum']:
+                            checksum_time = time.time()
+                            new_netcdf = netcdf_output_filename.parent / f'new_{netcdf_output_filename.name}'
+                            s3.download_file(processed_data_bucket, str(name), str(new_netcdf))
+                            hash_md5 = hashlib.md5()
+                            with open(new_netcdf, 'rb') as f:
+                                for chunk in iter(lambda: f.read(4096), b""):
+                                    hash_md5.update(chunk)
+                            downloaded_checksum = hash_md5.hexdigest()
+                            total_checksum_time += (time.time() - checksum_time)
+
+                            os.remove(new_netcdf)
+
+                            if orig_checksum != downloaded_checksum:
+                                print(f'Deleting {name} from S3 bucket {processed_data_bucket}')
+                                response = s3.delete_object(Bucket=processed_data_bucket, Key=str(name))
+                                status = f'ERROR uploaded and downloaded netcdf file checksums dont match ({orig_checksum} vs {downloaded_checksum})'
+                                print(f'FAIL {cur_ts}')
+                                raise Exception(status)
+                            else:
+                                print(f'\n... uploaded and downloaded netcdf checksums match')
                 
+                if product_generation_config['create_checksum']:
+                    succeeded_checksums[cur_ts] = {'checksum':orig_checksum, 'uuid':orig_uuid}
+                else:
+                    succeeded_checksums[cur_ts] = {'checksum':'None created', 'uuid':orig_uuid}
                 successful_time_steps.append(cur_ts)
             except Exception as e:
-                gen_netcdf_utils.delete_files(data_file_path, meta_file_path, product_generation_config, all=True)
+                if not timeout:
+                    gen_netcdf_utils.delete_files(data_file_paths, meta_file_paths, product_generation_config, fields_to_load, all=True)
                 exception_type, exception_value, exception_traceback = sys.exc_info()
                 traceback_string = traceback.format_exception(exception_type, exception_value, exception_traceback)
                 err_msg = json.dumps({
@@ -466,7 +596,11 @@ def generate_netcdfs(event):
                     "errorMessage": str(exception_value),
                     "stackTrace": traceback_string
                 })
-                print(f'ERROR\t{cur_ts}\t{err_msg}')
+                error_log = f'ERROR\t{cur_ts}\t{err_msg}'
+                if use_lambda:
+                    logger.info(error_log)
+                else:
+                    print(error_log)
             # ==================================================================================================================
         # =============================================================================================
 
@@ -487,9 +621,94 @@ def generate_netcdfs(event):
             "errorMessage": str(exception_value),
             "stackTrace": traceback_string
         })
-        print(f'ERROR\tALL\t{err_msg}')
+        error_log = f'ERROR\tALL\t{err_msg}'
+        if use_lambda:
+            logger.info(error_log)
+        else:
+            print(error_log)
 
     # LOGGING
-    logging_info(time_steps_to_process, successful_time_steps, start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded)
+    logging_info(time_steps_to_process, successful_time_steps, start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded, succeeded_checksums, total_checksum_time, logger, timeout)
 
     return
+
+
+
+
+#  ================= TESTING FOR VECTOR ROTATION FOR VEL FIELDS ===============================
+import xgcm
+def get_llc_grid(ds,domain='global'):
+    """
+    Define xgcm Grid object for the LLC grid
+    See example usage in the xgcm documentation:
+    https://xgcm.readthedocs.io/en/latest/example_eccov4.html#Spatially-Integrated-Heat-Content-Anomaly
+    Parameters
+    ----------
+    ds : xarray Dataset
+        formed from LLC90 grid, must have the basic coordinates:
+        i,j,i_g,j_g,k,k_l,k_u,k_p1
+    Returns
+    -------
+    grid : xgcm Grid object
+        defines horizontal connections between LLC tiles
+    """
+
+    if 'domain' in ds.attrs:
+        domain = ds.attrs['domain']
+
+    if domain == 'global':
+        # Establish grid topology
+        tile_connections = {'tile':  {
+                0: {'X': ((12, 'Y', False), (3, 'X', False)),
+                    'Y': (None, (1, 'Y', False))},
+                1: {'X': ((11, 'Y', False), (4, 'X', False)),
+                    'Y': ((0, 'Y', False), (2, 'Y', False))},
+                2: {'X': ((10, 'Y', False), (5, 'X', False)),
+                    'Y': ((1, 'Y', False), (6, 'X', False))},
+                3: {'X': ((0, 'X', False), (9, 'Y', False)),
+                    'Y': (None, (4, 'Y', False))},
+                4: {'X': ((1, 'X', False), (8, 'Y', False)),
+                    'Y': ((3, 'Y', False), (5, 'Y', False))},
+                5: {'X': ((2, 'X', False), (7, 'Y', False)),
+                    'Y': ((4, 'Y', False), (6, 'Y', False))},
+                6: {'X': ((2, 'Y', False), (7, 'X', False)),
+                    'Y': ((5, 'Y', False), (10, 'X', False))},
+                7: {'X': ((6, 'X', False), (8, 'X', False)),
+                    'Y': ((5, 'X', False), (10, 'Y', False))},
+                8: {'X': ((7, 'X', False), (9, 'X', False)),
+                    'Y': ((4, 'X', False), (11, 'Y', False))},
+                9: {'X': ((8, 'X', False), None),
+                    'Y': ((3, 'X', False), (12, 'Y', False))},
+                10: {'X': ((6, 'Y', False), (11, 'X', False)),
+                     'Y': ((7, 'Y', False), (2, 'X', False))},
+                11: {'X': ((10, 'X', False), (12, 'X', False)),
+                     'Y': ((8, 'Y', False), (1, 'X', False))},
+                12: {'X': ((11, 'X', False), None),
+                     'Y': ((9, 'Y', False), (0, 'X', False))}
+        }}
+
+        grid = xgcm.Grid(ds,
+                periodic=False,
+                face_connections=tile_connections
+        )
+    elif domain == 'aste':
+        tile_connections = {'tile':{
+                    0:{'X':((5,'Y',False),None),
+                       'Y':(None,(1,'Y',False))},
+                    1:{'X':((4,'Y',False),None),
+                       'Y':((0,'Y',False),(2,'X',False))},
+                    2:{'X':((1,'Y',False),(3,'X',False)),
+                       'Y':(None,(4,'X',False))},
+                    3:{'X':((2,'X',False),None),
+                       'Y':(None,None)},
+                    4:{'X':((2,'Y',False),(5,'X',False)),
+                       'Y':(None,(1,'X',False))},
+                    5:{'X':((4,'X',False),None),
+                       'Y':(None,(0,'X',False))}
+                   }}
+        grid = xgcm.Grid(ds,periodic=False,face_connections=tile_connections)
+    else:
+        raise TypeError(f'Domain {domain} not recognized')
+
+
+    return grid

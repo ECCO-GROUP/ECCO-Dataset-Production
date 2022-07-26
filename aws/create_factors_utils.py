@@ -286,7 +286,13 @@ def create_all_factors(ea, product_generation_config, dataset_dim, debug_mode, e
 
         # calculate effective radius of each target grid cell.  required for the bin
         # averaging
-        target_grid_radius = np.sqrt(lat_lon_grid_area / np.pi).ravel()
+        if product_generation_config['latlon_effective_grid_radius'] != None:
+            target_grid_radius = product_generation_config['latlon_effective_grid_radius']
+        else:
+            if product_generation_config['ecco_version'] == 'V4r4':
+                target_grid_radius = np.sqrt(lat_lon_grid_area / np.pi).ravel()
+            else:
+                target_grid_radius = ((0.5*111.)/2.)*np.sqrt(2)*1.1
 
 
         # CALCULATE GRID-TO-GRID MAPPING FACTORS

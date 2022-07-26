@@ -47,6 +47,7 @@ def load_ecco_vars_from_mds(mds_var_dir,
                             mds_datatype = '>f4',
                             llc_method = 'bigchunks',
                             less_output=True,
+                            read_grid=False,
                             **kwargs):
 
     """
@@ -190,7 +191,7 @@ def load_ecco_vars_from_mds(mds_var_dir,
 
         ecco_dataset = open_mdsdataset(data_dir = mds_var_dir,
                                        grid_dir = mds_grid_dir,
-                                       read_grid = True,
+                                       read_grid = read_grid,
                                        prefix = mds_files,
                                        geometry = 'llc',
                                        iters = 'all',
@@ -212,7 +213,7 @@ def load_ecco_vars_from_mds(mds_var_dir,
         if isinstance(model_time_steps_to_load, list):
             ecco_dataset = open_mdsdataset(data_dir = mds_var_dir,
                                            grid_dir = mds_grid_dir,
-                                           read_grid = True,
+                                           read_grid = read_grid,
                                            prefix = mds_files,
                                            geometry = 'llc',
                                            iters = model_time_steps_to_load,

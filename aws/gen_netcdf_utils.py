@@ -19,15 +19,16 @@ from collections import OrderedDict
 def download_all_files(s3, fields_to_load, field_files, cur_ts, use_lambda, data_file_paths, meta_file_paths, product_generation_config, product_type, use_workers_to_download, model_granule_bucket):
     status = 'SUCCESS'
     try:
-        source_data_file_paths = []
-        source_meta_file_paths = []
+        source_data_file_paths = {}
+        source_meta_file_paths = {}
         num_downloaded = 0
+
         # get all the source and local paths for all .data and .meta files across all fields
         for field in fields_to_load:
             for df in field_files[field]:
                 if cur_ts in df:
-                    source_data_file_paths.append(df)
-                    source_meta_file_paths.append(f'{str(df)[:-5]}.meta')
+                    source_data_file_paths[field] = df
+                    source_meta_file_paths[field] = f'{str(df)[:-5]}.meta'
                     if not use_lambda:
                         file_path = (product_generation_config['model_output_dir'] / df)
                     else:
@@ -38,23 +39,33 @@ def download_all_files(s3, fields_to_load, field_files, cur_ts, use_lambda, data
                         except:
                             status = f'ERROR Cannot make {file_path}'
                             return (status, data_file_paths, meta_file_paths, num_downloaded)
-                    data_file_paths.append(str(file_path))
-                    meta_file_paths.append(f'{str(file_path)[:-5]}.meta')
+                    data_file_paths[field] = str(file_path)
+                    meta_file_paths[field] = f'{str(file_path)[:-5]}.meta'
 
         # create a zipped list of source data file paths and local data file paths
         # eg. [(S3 bucket path, Local download path), ...]
-        source_local_paths = list(zip(source_data_file_paths, data_file_paths))
+        source_local_paths = {}
+        for field in fields_to_load:
+            source_local_paths[field] = [(source_data_file_paths[field], data_file_paths[field])]
 
         # if the product is native, include the meta paths to the source_local_paths var
         if product_type == 'native':
-            source_local_meta = list(zip(source_meta_file_paths, meta_file_paths))
-            source_local_paths.extend(source_local_meta)
+            source_local_meta = {}
+            for field in fields_to_load:
+                source_local_meta[field] = [(source_meta_file_paths[field], meta_file_paths[field])]
+                source_local_paths[field].extend(source_local_meta[field])
+            # source_local_meta = list(zip(source_meta_file_paths, meta_file_paths))
+            # source_local_paths.extend(source_local_meta)
 
         # download all the files in parallel using workers, where each worker downloads a different file
         # where there are as many workers as there are files to download
+        all_files = []
+        for field in fields_to_load:
+            all_files.extend(source_local_paths[field])
+
         if use_workers_to_download:
-            num_workers = len(source_local_paths)
-            print(f'Using {num_workers} workers to download {len(source_local_paths)} files')
+            num_workers = len(all_files)
+            print(f'Using {num_workers} workers to download {len(all_files)} files')
 
             # download function
             def fetch(paths):
@@ -65,7 +76,7 @@ def download_all_files(s3, fields_to_load, field_files, cur_ts, use_lambda, data
             # create workers and assign each one a file to download. This paths object is a tuple with the
             # first value the path on S3, and the second the local path to download to
             with futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
-                future_to_key = {executor.submit(fetch, paths) for paths in source_local_paths}
+                future_to_key = {executor.submit(fetch, paths) for paths in all_files}
 
                 for future in futures.as_completed(future_to_key):
                     key = future.result()
@@ -78,7 +89,7 @@ def download_all_files(s3, fields_to_load, field_files, cur_ts, use_lambda, data
                     num_downloaded += 1
         else:
             # download files one at a time from the source_local_paths list
-            for key, df in source_local_paths:
+            for key, df in all_files:
                 df = Path(df)
                 if '.data' in key and not df.exists():
                     print(f'S3: {key}\tLOCAL: {df}')
@@ -89,23 +100,24 @@ def download_all_files(s3, fields_to_load, field_files, cur_ts, use_lambda, data
                     s3.download_file(model_granule_bucket, str(key), str(df))
                     num_downloaded += 1
     except Exception as e:
-        print(glob.glob(f'{product_generation_config["model_output_dir"]}/**/*', recursive=True))
-        print(glob.glob(f'{product_generation_config["processed_output_dir_base"]}/**/*', recursive=True))
+        # print(glob.glob(f'{product_generation_config["model_output_dir"]}/**/*', recursive=True))
+        # print(glob.glob(f'{product_generation_config["processed_output_dir_base"]}/**/*', recursive=True))
         status = f'ERROR Failed to download files "{e}"'
     return (status, data_file_paths, meta_file_paths, num_downloaded)
 
 
-def delete_files(data_file_paths, meta_file_paths, product_generation_config, all=False):
+def delete_files(data_file_paths, meta_file_paths, product_generation_config, fields, all=False):
     # Make data_file_paths and meta_file_paths lists if they are not
-    if not isinstance(data_file_paths, list):
-        data_file_paths = [data_file_paths]
-    if not isinstance(meta_file_paths, list):
-        meta_file_paths = [meta_file_paths]
+    # if not isinstance(data_file_paths, list):
+    #     data_file_paths = [data_file_paths]
+    # if not isinstance(meta_file_paths, list):
+    #     meta_file_paths = [meta_file_paths]
 
     # Create a single list with all the files to delete
     files_to_delete = []
-    files_to_delete.extend(data_file_paths)
-    files_to_delete.extend(meta_file_paths)
+    for field in fields:
+        files_to_delete.append(data_file_paths[field])
+        files_to_delete.append(meta_file_paths[field])
     print(f'Deleting files: {files_to_delete}')
     if all:
         # if all, then include the processed output files as well
@@ -279,7 +291,7 @@ def transform_latlon(ecco, Z, wet_pts_k, target_grid, data_file_path, record_end
     return (status, F_DS)
 
 
-def transform_native(ecco, var, ecco_land_masks, ecco_grid_dir_mds, mds_var_dir, output_freq_code, cur_ts, extra_prints=False):
+def transform_native(ecco, var, ecco_land_masks, ecco_grid_dir_mds, mds_var_dir, output_freq_code, cur_ts, read_grid, extra_prints=False):
     status = 'SUCCESS'
 
     # land masks
@@ -298,7 +310,8 @@ def transform_native(ecco, var, ecco_land_masks, ecco_grid_dir_mds, mds_var_dir,
                                         grid_vars_to_coords = False,
                                         output_freq_code=output_freq_code,
                                         model_time_steps_to_load=int(cur_ts),
-                                        less_output = True)
+                                        less_output = True,
+                                        read_grid=read_grid)
 
     if status != 'SUCCESS':
         return (status, F_DS)

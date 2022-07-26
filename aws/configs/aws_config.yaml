@@ -52,29 +52,42 @@ function_name_prefix: 'ecco_processing'
 
 
 # =================================================================================================
-# EXECUTION TIMES (2D/3D latlon and 2D/3D native)
+# JOB SETUP AND CONTROL (EXECUTION TIMES, MAX EXECS, TIMEOUT, and RETRY)
 # =================================================================================================
+# Boolean
+# Controls whether or not to invoke each lambda job in parallel
+use_workers_to_invoke: True
+
 # Float
 # Time to process single 2D latlon vertical level (s)
-latlon_2D_time: 0.75
+latlon_2D_time: 0.5
 
 # Float
 # Time to process single 3D latlon vertical level (s)
-latlon_3D_time: 0.09
+latlon_3D_time: 0.075
 
 # Float
 # Time to process single 2D native vertical level (s)
-native_2D_time: 0.5
+native_2D_time: 0.8
 
 # Float
 # Time to process single 3D native vertical level (s)
-native_3D_time: 0.04
+native_3D_time: 0.05
 
 # Int
 # Override the max number of timestep executions to be processed in each lambda job.
 # This value is used if lower than the calculated max_execs from time.
 # This value will be ignored if set to 0.
 override_max_execs: 0
+
+# Float
+# Timeout (in seconds) for each job. Lambda has a timeout of 900s, this value
+# will stop the job and print out necessary logging information, so it should be less than 900s.
+job_timeout: 890.0
+
+# Int
+# Number of times to retry processing a failed timestep
+num_retry: 0
 
 
 # =================================================================================================
@@ -98,4 +111,4 @@ memory_size_3D_native: 1536
 
 # Int
 # Number of batches to process. Overrides calculated value if lower
-number_of_batches_to_process: 1000
+number_of_batches_to_process: 100000
