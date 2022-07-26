@@ -25,12 +25,12 @@ doi: '10.5067'
 
 # String
 # Version number of ECCO output
-ecco_version: 'V4r4'
+ecco_version: 'V4r5'
 
 # String
 # Name of processing code file to import. Assumes it has a function named "generate_netcdfs" which
 # accepts the payload defined in master_script.py
-processing_code_filename: 'ecco_gen_for_podaac_cloud'
+processing_code_filename: 'eccov4r4_gen_for_podaac_cloud'
 
 # Boolean
 # Include extra print statements when processing
@@ -38,11 +38,11 @@ extra_prints: False
 
 # String
 # Tail string for the dataset description for latlon grid
-dataset_description_tail_latlon: ' interpolated to a regular 0.5-degree grid from the ECCO Version 4 revision 4 (V4r4) ocean and sea-ice state estimate.'
+dataset_description_tail_latlon: ' interpolated to a regular 0.5-degree grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate.'
 
 # String
 # Tail string for the dataset description for native grid
-dataset_description_tail_native: ' on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 revision 4 (V4r4) ocean and sea-ice state estimate.'
+dataset_description_tail_native: ' on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate.'
 
 # String
 # Tail string for filename of processed files for latlon grid.
@@ -51,7 +51,7 @@ filename_tail_latlon: '0p50deg.nc'
 
 # String
 # Tail string for filename of processed files for native grid.
-# "_ECCO_{ecco_version}_{grid_type}" will be prepended during processing.
+# "_ECCO_{ecco_version}_{grid_type}_" will be prepended during processing.
 filename_tail_native: 'llc0090.nc'
 
 # String
@@ -66,8 +66,7 @@ model_output_dir: ''
 
 # String
 # Subfolder within model_output_dir to look for model output files
-# Default: {ecco_version}
-model_output_dir_folder_name: ''
+model_output_dir_folder_name: 'V4r5'
 
 # String
 # Absolute directory path string for the metadata directory
@@ -90,7 +89,7 @@ ecco_grid_dir_mds: ''
 
 # String
 # Filename string of the ECCO grid file (must be a NetCDF4 file)
-ecco_grid_filename: 'GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc'
+ecco_grid_filename: 'GRID_GEOMETRY_ECCO_V4r5_native_llc0090.nc'
 
 # String
 # Base absolute directory path string for the processed output files

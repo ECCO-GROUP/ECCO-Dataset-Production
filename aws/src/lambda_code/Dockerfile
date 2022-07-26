@@ -25,7 +25,7 @@ COPY ./aws/mapping_factors/latlon_grid ./mapping_factors/latlon_grid
 COPY ./aws/src/lambda_code/Dockerfile .
 COPY ./aws/src/lambda_code/requirements.txt .
 COPY ./aws/src/lambda_code/app.py .
-COPY ./aws/src/eccov4r4_gen_for_podaac_cloud.py .
+COPY ./aws/src/ecco_gen_for_podaac_cloud.py .
 COPY ./aws/src/utils/gen_netcdf_utils.py .
 
 # install dependencies

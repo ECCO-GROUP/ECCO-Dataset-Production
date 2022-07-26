@@ -24,7 +24,7 @@ source_bucket: 'ecco-model-granules'
 
 # String
 # Subfolder of source_bucket to source ECCO model output files
-bucket_subfolder: 'V4r4'
+bucket_subfolder: 'V4r5'
 
 # String
 # Name of S3 bucket to save processed datasets

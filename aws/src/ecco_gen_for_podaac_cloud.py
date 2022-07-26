@@ -180,9 +180,9 @@ def generate_netcdfs(event):
         # Define tail for dataset description (summary)
         dataset_description_tail_native = product_generation_config['dataset_description_tail_native']
         dataset_description_tail_latlon = product_generation_config['dataset_description_tail_latlon']
-
-        filename_tail_native = product_generation_config['filename_tail_native']
-        filename_tail_latlon = product_generation_config['filename_tail_latlon']
+        
+        filename_tail_native = f'_ECCO_{product_generation_config["ecco_version"]}_native_{product_generation_config["filename_tail_native"]}'
+        filename_tail_latlon = f'_ECCO_{product_generation_config["ecco_version"]}_latlon_{product_generation_config["filename_tail_latlon"]}'
 
         metadata_fields = ['ECCOv4r4_global_metadata_for_all_datasets',
                         'ECCOv4r4_global_metadata_for_latlon_datasets',
@@ -552,7 +552,7 @@ def generate_netcdfs(event):
 
                         s3_upload_start_time = time.time()
                         print('\n... uploading new file to S3 bucket')
-                        name = str(netcdf_output_filename).replace(f'{str(product_generation_config["processed_output_dir_base"])}/', '')
+                        name = str(netcdf_output_filename).replace(f'{str(product_generation_config["processed_output_dir_base"])}/', f'{aws_metadata["bucket_subfolder"]}/')
                         try:
                             response = s3.upload_file(str(netcdf_output_filename), processed_data_bucket, name)
                             if extra_prints: print(f'\n... uploaded {netcdf_output_filename} to bucket {processed_data_bucket}')
@@ -591,9 +591,9 @@ def generate_netcdfs(event):
                                 print(f'\n... uploaded and downloaded netcdf checksums match')
                 
                 if product_generation_config['create_checksum']:
-                    succeeded_checksums[cur_ts] = {'checksum':orig_checksum, 'uuid':orig_uuid}
+                    succeeded_checksums[cur_ts] = {'s3_fname':name, 'checksum':orig_checksum, 'uuid':orig_uuid}
                 else:
-                    succeeded_checksums[cur_ts] = {'checksum':'None created', 'uuid':orig_uuid}
+                    succeeded_checksums[cur_ts] = {'s3_fname':name, 'checksum':'None created', 'uuid':orig_uuid}
                 successful_time_steps.append(cur_ts)
             except Exception as e:
                 if not timeout:
@@ -637,7 +637,7 @@ def generate_netcdfs(event):
             print(error_log)
 
     # LOGGING
-        logging_info(time_steps_to_process, successful_time_steps, start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded, succeeded_checksums, total_checksum_time, logger, timeout)
+    logging_info(time_steps_to_process, successful_time_steps, start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded, succeeded_checksums, total_checksum_time, logger, timeout)
 
     return
 
