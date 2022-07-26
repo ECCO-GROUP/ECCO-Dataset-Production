@@ -14,8 +14,8 @@ region: 'us-west-2'
 credential_method_type: 'bash'
 
 # String
-# Path to AWS credential updating file (default = ./update_AWS_cred_ecco_production.sh for bash,
-# and ./aws-login.{darwin/linux}.amd64 for binary)
+# Path to AWS credential updating file (default = ECCO-Dataset-Production/aws/src/utils/aws_login/update_AWS_cred_ecco_production.sh for bash,
+# and ECCO-Dataset-Production/aws/src/utils/aws_login/aws-login.{darwin/linux}.amd64 for binary)
 aws_credential_path: ''
 
 # String

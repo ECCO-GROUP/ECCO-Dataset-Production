@@ -3,7 +3,7 @@
 # =================================================================================================
 # Boolean
 # Controls whether or not to create a checksum for each produced dataset
-create_checksum: False
+create_checksum: True
 
 # Boolean
 # Controls whether or not to download all field files at the same time for each time level instead
