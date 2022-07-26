@@ -815,7 +815,7 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
                     total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
                     job_logs['Master Script Total Time (s)'] = total_time
                     # write final job_logs to file
-                    job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, log_name, aws_path, fn_extra='FINAL')
+                    job_logs, estimated_jobs = save_logs(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, log_name, aws_path, fn_extra='FINAL_error')
                 except Exception as e:
                     print(f'Failed saving final log too: {e}')
                 return job_logs

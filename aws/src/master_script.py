@@ -14,8 +14,8 @@ import boto3
 import argparse
 import platform
 from pathlib import Path
-from datetime import datetime
 from collections import defaultdict
+from datetime import datetime, timezone
 
 # Local imports
 main_path = Path(__file__).parent.parent.resolve()
@@ -25,7 +25,7 @@ sys.path.append(f'{main_path / "src" / "utils"}')
 import aws_utils as aws_utils
 import ecco_cloud_utils as ea
 import create_factors_utils as create_factors_utils
-from eccov4r4_gen_for_podaac_cloud import generate_netcdfs
+from ecco_gen_for_podaac_cloud import generate_netcdfs
 
 def create_parser():
     parser = argparse.ArgumentParser()
@@ -119,6 +119,8 @@ if __name__ == "__main__":
         product_generation_config['ecco_grid_dir_mds'] = str(Path(ecco_grid_dir_mds_default))
     if product_generation_config['processed_output_dir_base'] == '':
         product_generation_config['processed_output_dir_base'] = str(Path(processed_output_dir_base_default))
+    if product_generation_config['model_output_dir_folder_name'] == '':
+        product_generation_config['model_output_dir_folder_name'] = product_generation_config['ecco_version']
 
     extra_prints = product_generation_config['extra_prints']
 
@@ -301,7 +303,7 @@ if __name__ == "__main__":
                 if 'imageTag' in image and image['imageTag'] == image_tag:
                     image_ids = image
             image_info = ecr_client.describe_images(repositoryName=repo_name, imageIds=[image_ids])
-            image_push_time = image_info['imageDetails'][0]['imagePushedAt']
+            image_push_time = image_info['imageDetails'][0]['imagePushedAt'].astimezone(tz=timezone.utc)
             image_push_time = datetime.strftime(image_push_time, format='%Y-%m-%dT%H:%M:%S')
 
             # get functions that need to be created, and updated
@@ -312,7 +314,7 @@ if __name__ == "__main__":
                 if function_name_prefix in func['FunctionName']:
                     all_functions.append(func['FunctionName'])
                     func_modified = func['LastModified'].split('.')[0]
-                    if func_modified > image_push_time:
+                    if func_modified < image_push_time:
                         functions_to_update.append(func['FunctionName'])
 
             print(f'\nCreating and updating lambda functions')
@@ -352,7 +354,7 @@ if __name__ == "__main__":
                         print(status)
                         sys.exit()
                     functions_to_update.remove(function_name)
-            print(f'\nAll functions up to date!\n')
+            print(f'\nAll necessary functions up to date!\n')
 
 
     # loop through all jobs and either process them locally
@@ -403,7 +405,7 @@ if __name__ == "__main__":
                 field_time_steps = {}
                 all_time_steps_all_vars = []
                 for field in fields:
-                    field_files[field] = sorted(glob.glob(f'{product_generation_config["model_output_dir"]}/{freq_folder}/{field}_{period_suffix}/*.data'))
+                    field_files[field] = sorted(glob.glob(f'{product_generation_config["model_output_dir"]}/{product_generation_config["model_output_dir_folder_name"]}/{freq_folder}/{field}_{period_suffix}/*.data'))
                     time_steps = [key.split('.')[-2] for key in field_files[field]]
                     if num_time_steps_to_process == 'all':
                         field_time_steps[field] = sorted(time_steps)
@@ -545,5 +547,7 @@ if __name__ == "__main__":
         # **********
 
     master_total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
+    if not use_lambda:
+        print(f'\n=== PROCESSING COMPLETE ===')
     print(f'Master script total time: {master_total_time:.2f}s')
     print(f'=== EXECUTION COMPLETE ===')
