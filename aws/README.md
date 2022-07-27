@@ -9,6 +9,7 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
         mapping_factors/
         metadata/
         src/
+        ecr_push.sh
 
 ## **Descriptions**
 ### configs/
@@ -49,17 +50,22 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
     - Contains multiple code files containing utility functions used for pre-processing, processing, and post-processing.
       - ***aws_login/***
         - Contains scripts used to login and get credentials for AWS
-      - ***aws_utils.py***
-        - Contains functions used for AWS processing (lambda function handling, logging, etc.)
+      - ***aws_misc_utils.py***
+        - Misc functions for AWS services (credentials, jobs, etc.)
       - ***create_factors_utils.py***
-        - Contains functions used for the creation of the mapping factors
+        - Contains functions used for the creation and handling of the mapping factors
       - ***gen_netcdf_utils.py***
         - Contains functions used during processing (transformation, metadata handling, etc.)
+      - ***lambda_utils.py***
+        - Contains functions used for creating, updating, and invoking lambda functions
+      - ***logging_utils.py***
+        - Contains functions used for the processing and handling of AWS CloudWatch logs produced for lambda invokations
+      - ***s3_utils.py***
+        - Contains functions for interacting with AWS S3
   - **ecco_gen_for_podaac_cloud.py**
     - The primary code file, responsible for the processing of the job passed to the *generate_netcdfs()* function
   - **master_script.py**
     - The point of interaction between the user and the processing code. This script is how the user starts, controls, etc. all processing.
 
-
-
-
+### ecr_push.sh
+- Shell script to update AWS ECR image with the Docker image built from the Dockerfile in /aws/src/lambda_code/

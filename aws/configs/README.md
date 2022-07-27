@@ -1,0 +1,71 @@
+# **/configs/**
+Contains all the configuration files used to control and modify the processing and production of the ECCO datasets
+- **aws_config.json**
+  - Old, json, configuration file. NOT USED
+- **aws_config.yaml**
+  - Configuration file, containing values pertaining to AWS and its services.
+    - profile_name
+    - region
+    - credential_method_type
+    - aws_credential_path
+    - source_bucket
+    - bucket_subfolder
+    - output_bucket
+    - test_bucket
+    - account_id
+    - image_uri
+    - role
+    - function_name_prefix
+    - use_workers_to_invoke
+    - latlon_2D_time
+    - latlon_3D_time
+    - native_2D_time
+    - native_3D_time
+    - override_max_execs
+    - job_timeout
+    - num_retry
+    - memory_size_2D_latlon
+    - memory_size_3D_latlon
+    - memory_size_2D_native
+    - memory_size_3D_native
+    - number_of_batches_to_process
+- **jobs.txt**
+  - File containing list of jobs to execute. Jobs are defined as: gouping to process, product type, output frequency, number of time steps to process (eg. 0,latlon,AVG_MON,all, or 10,native,AVG_DAY,10)
+  - Optionally, one can have a line that is just "all", and all jobs will be calculated per the groupings metadata file, and executed
+  - A line that is just "done" will cause any jobs listed after to not be executed
+- **product_generation_config.json**
+  - Old, json, configuration file. NOT USED
+- **product_generation_config.yaml**
+  - Configuration file, containing values pertaining to the actual processing and production of ECCO datasets
+    - create_checksum
+    - download_all_fields
+    - compare_checksums
+    - use_workers_to_download
+    - doi
+    - ecco_version
+    - processing_code_filename
+    - extra_prints
+    - dataset_description_tail_latlon
+    - dataset_description_tail_native
+    - filename_tail_latlong
+    - filename_tail_native
+    - mapping_factors_dir
+    - model_output_dir
+    - model_output_dir_folder_name
+    - metadata_dir
+    - podaac_metadata_filename
+    - ecco_grid_dir
+    - ecco_grid_dir_mds
+    - ecco_grid_filename
+    - processed_output_dir_base
+    - binary_fill_value
+    - array_precision
+    - model_start_time
+    - model_end_time
+    - num_vertical_levels
+    - latlon_grid_resolution
+    - latlon_effective_grid_radius
+    - latlon_max_lat
+    - latlon_grid_area_extent
+    - latlon_grid_dims
+    - read_ecco_grid_for_native_load
