@@ -39,10 +39,12 @@ extra_prints: False
 # String
 # Tail string for the dataset description for latlon grid
 dataset_description_tail_latlon: ' interpolated to a regular 0.5-degree grid from the ECCO Version 4 revision 4 (V4r4) ocean and sea-ice state estimate.'
+# dataset_description_tail_latlon: ' interpolated to a regular 0.5-degree grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate.'
 
 # String
 # Tail string for the dataset description for native grid
 dataset_description_tail_native: ' on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 revision 4 (V4r4) ocean and sea-ice state estimate.'
+# dataset_description_tail_native: ' on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate.'
 
 # String
 # Tail string for filename of processed files for latlon grid.

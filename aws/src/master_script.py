@@ -22,8 +22,11 @@ main_path = Path(__file__).parent.parent.resolve()
 sys.path.append(f'{main_path}')
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
-import aws_utils as aws_utils
+import s3_utils as s3_utils
 import ecco_cloud_utils as ea
+import lambda_utils as lambda_utils
+import logging_utils as logging_utils
+import aws_misc_utils as aws_misc_utils
 import create_factors_utils as create_factors_utils
 from ecco_gen_for_podaac_cloud import generate_netcdfs
 
@@ -163,7 +166,7 @@ if __name__ == "__main__":
             if line == 'done':
                 break
             if line == 'all':
-                all_jobs = aws_utils.calculate_all_jobs(groupings_for_latlon_datasets, groupings_for_native_datasets)
+                all_jobs = aws_misc_utils.calculate_all_jobs(groupings_for_latlon_datasets, groupings_for_native_datasets)
                 break
             line_vals = line.split(',')
             if line_vals[3] == 'all':
@@ -223,21 +226,21 @@ if __name__ == "__main__":
         credential_method['region'] = region
         credential_method['type'] = aws_config_metadata['credential_method_type']
         credential_method['aws_credential_path'] = aws_config_metadata['aws_credential_path'] 
-        credentials = aws_utils.get_credentials_helper()
+        credentials = aws_misc_utils.get_credentials_helper()
         try:
             if force_reconfigure:
                 # Getting new credentials
-                credentials = aws_utils.get_aws_credentials(credential_method)
+                credentials = aws_misc_utils.get_aws_credentials(credential_method)
             elif credentials != {}:
                 boto3.setup_default_session(profile_name=credentials['profile_name'])
                 try:
                     boto3.client('s3').list_buckets()
                 except:
                     # Present credentials are invalid, try to get new ones
-                    credentials = aws_utils.get_aws_credentials(credential_method)
+                    credentials = aws_misc_utils.get_aws_credentials(credential_method)
             else:
                 # No credentials present, try to get new ones
-                credentials = aws_utils.get_aws_credentials(credential_method)
+                credentials = aws_misc_utils.get_aws_credentials(credential_method)
         except Exception as e:
             print(f'Unable to login to AWS. Exiting')
             print(e)
@@ -274,7 +277,7 @@ if __name__ == "__main__":
                 # unsure if this works in all cases (i.e. when Cost Information is not an empty dictionary)
                 if curr_job_logs['Cost Information'] == {}:
                     curr_job_logs['Cost Information'] = defaultdict(float)
-                job_logs = aws_utils.lambda_logging(curr_job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs, credential_method, dict_key_args['log_name'], main_path)
+                job_logs = logging_utils.lambda_logging(curr_job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs, credential_method, dict_key_args['log_name'], main_path)
                 sys.exit()
                 
             # job information
@@ -343,13 +346,13 @@ if __name__ == "__main__":
                 # create lambda functions for jobs, or update it if it already exists
                 if function_name not in all_functions:
                     memory_size = memory_sizes[function_name]
-                    status = aws_utils.create_lambda_function(lambda_client, function_name, arn, memory_sizes[function_name], image_uri)
+                    status = lambda_utils.create_lambda_function(lambda_client, function_name, arn, memory_sizes[function_name], image_uri)
                     if status != 'SUCCESS':
                         print(status)
                         sys.exit()
                     all_functions.append(function_name)
                 elif function_name in functions_to_update:
-                    status = aws_utils.update_lambda_function(lambda_client, function_name, image_uri)
+                    status = lambda_utils.update_lambda_function(lambda_client, function_name, image_uri)
                     if status != 'SUCCESS':
                         print(status)
                         sys.exit()
@@ -392,7 +395,7 @@ if __name__ == "__main__":
             if not local:
                 s3_dir_prefix = f'{source_bucket_folder_name}/{freq_folder}'
                 
-                file_time_steps, status = aws_utils.get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, 
+                file_time_steps, status = s3_utils.get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, 
                                                                 source_bucket, num_time_steps_to_process)
                 if status == 'SKIP':
                     print(f'--- Skipping job:\n\tgrouping: {grouping_to_process}\n\tproduct_type: {product_type}\n\toutput_freq_code: {output_freq_code}\n\num_time_steps_to_process: {num_time_steps_to_process}')
@@ -436,7 +439,7 @@ if __name__ == "__main__":
             # CREATE LAMBDA REQUEST FOR EACH "JOB"
             # **********
             if use_lambda:
-                num_jobs += aws_utils.invoke_lambda(lambda_client, job_logs, time_steps, dict_key_args, product_generation_config, aws_config_metadata, current_job, function_name_prefix, dimension, field_files, credentials, num_jobs, debug_mode)
+                num_jobs += lambda_utils.invoke_lambda(lambda_client, job_logs, time_steps, dict_key_args, product_generation_config, aws_config_metadata, current_job, function_name_prefix, dimension, field_files, credentials, num_jobs, debug_mode)
                 print()
             else:
                 # Call local generate_netcdfs function
@@ -463,7 +466,7 @@ if __name__ == "__main__":
         # Lambda logging ==========================================================================
         if use_lambda and dict_key_args['enable_logging']:
             # Call function to process lambda logs until all jobs are finished
-            job_logs = aws_utils.lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs, credential_method, dict_key_args['log_name'], main_path)
+            job_logs = logging_utils.lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs, credential_method, dict_key_args['log_name'], main_path)
 
             if aws_config_metadata['num_retry'] > 0:
                 if len(job_logs['Timesteps failed']) > 0:
@@ -521,7 +524,7 @@ if __name__ == "__main__":
                         
                             s3_dir_prefix = f'{source_bucket_folder_name}/{freq_folder}'
                 
-                            file_time_steps, status = aws_utils.get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, 
+                            file_time_steps, status = s3_utils.get_files_time_steps(s3, fields, s3_dir_prefix, period_suffix, 
                                                                             source_bucket, num_time_steps_to_process)
                             if status == 'SKIP':
                                 print(f'--- Skipping job:\n\tgrouping: {grouping_to_process}\n\tproduct_type: {product_type}\n\toutput_freq_code: {output_freq_code}\n\num_time_steps_to_process: {num_time_steps_to_process}')
@@ -529,9 +532,9 @@ if __name__ == "__main__":
                             else:
                                 field_files, field_time_steps, time_steps = file_time_steps
 
-                            num_jobs += aws_utils.invoke_lambda(lambda_client, retry_job_logs, time_steps, dict_key_args, product_generation_config, aws_config_metadata, current_job, function_name_prefix, dimension, field_files, credentials, debug_mode)
+                            num_jobs += lambda_utils.invoke_lambda(lambda_client, retry_job_logs, time_steps, dict_key_args, product_generation_config, aws_config_metadata, current_job, function_name_prefix, dimension, field_files, credentials, debug_mode)
 
-                        job_logs = aws_utils.lambda_logging(retry_job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs, credential_method, dict_key_args['log_name'], main_path, retry=retry_num)
+                        job_logs = logging_utils.lambda_logging(retry_job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs, credential_method, dict_key_args['log_name'], main_path, retry=retry_num)
 
 
 
