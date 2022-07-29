@@ -521,8 +521,7 @@ def generate_netcdfs(event):
                                                                                     output_freq_code, netcdf_fill_value, 
                                                                                     grouping, filename_tail, output_dir_freq, 
                                                                                     dataset_description, podaac_dir, 
-                                                                                    product_generation_config['doi'], 
-                                                                                    product_generation_config['ecco_version'],
+                                                                                    product_generation_config,
                                                                                     extra_prints=extra_prints)
                     if status != 'SUCCESS':
                         print(f'FAIL {cur_ts}')

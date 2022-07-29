@@ -123,7 +123,7 @@
     "product": "native",
     "filename" : "SEA_ICE_SALT_PLUME_FLUX",
     "dimension" : "2D",
-    "frequency" : "AVG_DAY, AVG_MON, SNAP"
+    "frequency" : "AVG_DAY, AVG_MON"
    },
    {
     "name" : "ocean potential temperature and salinity",
@@ -131,7 +131,7 @@
     "product": "native",
     "filename" : "OCEAN_TEMPERATURE_SALINITY",
     "dimension" : "3D",
-    "frequency" : "AVG_DAY, AVG_MON"
+    "frequency" : "AVG_DAY, AVG_MON, SNAP"
    },
    {
     "name": "ocean density, stratification, and hydrostatic pressure",
@@ -172,7 +172,7 @@
     "fields": "DIFFKR, KAPGM, KAPREDI",
     "product": "native",
     "filename" : "OCEAN_3D_MIXING_COEFFS",
-    "dimension" : "3D-TI",
-    "frequency" : ""
+    "dimension" : "3D",
+    "frequency" : "TI"
    }
 ]

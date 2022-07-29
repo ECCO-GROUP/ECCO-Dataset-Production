@@ -8,13 +8,16 @@ import pyresample as pr
 from pathlib import Path
 from scipy import sparse
 
+# Local imports
+main_path = Path(__file__).parent.parent.resolve()
+sys.path.append(f'{main_path / "src" / "utils"}')
 import gen_netcdf_utils as gen_netcdf_utils
 
 # =================================================================================================
 # GET MAPPING FACTORS
 # =================================================================================================
 def get_mapping_factors(dataset_dim, mapping_factors_dir, factors_to_get, debug_mode=False, extra_prints=False, k=0):
-    status = 1
+    status = 'SUCCESS'
     
     # factors_to_get : factors to load in from the mapping_factors_dir
     # can be 'all', 'k', or 'both'
@@ -47,11 +50,11 @@ def get_mapping_factors(dataset_dim, mapping_factors_dir, factors_to_get, debug_
                         if extra_prints: print(f'... loading ecco_latlon_grid_mappings_{dataset_dim}_{k}.xz')
                         grid_mappings_k = pickle.load(lzma.open(grid_mapping_fname_3D, 'rb'))
             except:
-                print(f'ERROR Unable to load grid mapping factors: {mapping_factors_dir}')
-                return (-1, grid_mappings_all, grid_mappings_k)
+                status = f'ERROR Unable to load grid mapping factors: {mapping_factors_dir}'
+                return (status, grid_mappings_all, grid_mappings_k)
         else:
-            print(f'ERROR Grid mapping factors have not been created or cannot be found: {mapping_factors_dir}')
-            return (-1, grid_mappings_all, grid_mappings_k)
+            status = f'ERROR Grid mapping factors have not been created or cannot be found: {mapping_factors_dir}'
+            return (status, grid_mappings_all, grid_mappings_k)
 
     return (status, grid_mappings_all, grid_mappings_k)
 
@@ -62,7 +65,7 @@ def get_mapping_factors(dataset_dim, mapping_factors_dir, factors_to_get, debug_
 def create_mapping_factors(ea, dataset_dim, mapping_factors_dir, debug_mode, source_grid_all, target_grid, target_grid_radius, source_grid_min_L, source_grid_max_L, source_grid_k, nk):
     print(f'\nCreating Grid Mappings ({dataset_dim})')
 
-    status = 1
+    status = 'SUCCESS'
     grid_mapping_fname_all = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_all.xz'
     grid_mapping_fname_2D = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_2D.xz'
     grid_mapping_fname_3D = Path(mapping_factors_dir) / '3D'
@@ -71,8 +74,8 @@ def create_mapping_factors(ea, dataset_dim, mapping_factors_dir, debug_mode, sou
         try:
             grid_mapping_fname_3D.mkdir()
         except:
-            print(f'ERROR Cannot make grid mappings 3D directory "{grid_mapping_fname_3D}"')
-            return -1
+            status = f'ERROR Cannot make grid mappings 3D directory "{grid_mapping_fname_3D}"'
+            return status
 
     if debug_mode:
         print('...DEBUG MODE -- SKIPPING GRID MAPPINGS')
@@ -109,8 +112,8 @@ def create_mapping_factors(ea, dataset_dim, mapping_factors_dir, debug_mode, sou
                 try:
                     pickle.dump(grid_mappings_all, lzma.open(grid_mapping_fname_all, 'wb'))
                 except:
-                    print(f'ERROR Cannot save grid_mappings_all file "{grid_mapping_fname_all}"')
-                    return -1
+                    status = f'ERROR Cannot save grid_mappings_all file "{grid_mapping_fname_all}"'
+                    return status
 
             # If the dataset is 2D, only compute one level of the mapping factors
             if dataset_dim == '2D':
@@ -134,8 +137,8 @@ def create_mapping_factors(ea, dataset_dim, mapping_factors_dir, debug_mode, sou
                         fname_3D = Path(grid_mapping_fname_3D) / f'ecco_latlon_grid_mappings_3D_{k_i}.xz'
                         pickle.dump(grid_mappings_k, lzma.open(fname_3D, 'wb'))
                 except:
-                    print(f'ERROR Cannot save grid_mappings_k file(s) "{mapping_factors_dir}"')
-                    return -1
+                    status = f'ERROR Cannot save grid_mappings_k file(s) "{mapping_factors_dir}"'
+                    return status
     return status
 
 
@@ -145,7 +148,7 @@ def create_mapping_factors(ea, dataset_dim, mapping_factors_dir, debug_mode, sou
 def create_land_mask(ea, mapping_factors_dir, debug_mode, nk, target_grid_shape, ecco_grid, dataset_dim):
     print(f'\nCreating Land Mask ({dataset_dim})')
 
-    status = 1
+    status = 'SUCCESS'
     ecco_land_mask_c = ecco_grid.maskC.copy(deep=True)
     ecco_land_mask_c.values = np.where(ecco_land_mask_c==True, 1, np.nan)
 
@@ -155,8 +158,8 @@ def create_land_mask(ea, mapping_factors_dir, debug_mode, nk, target_grid_shape,
         try:
             land_mask_fname.mkdir()
         except:
-            print(f'ERROR Cannot make land_mask directory "{land_mask_fname}"')
-            return -1
+            status = f'ERROR Cannot make land_mask directory "{land_mask_fname}"'
+            return status
 
     if debug_mode:
         print('...DEBUG MODE -- SKIPPING LAND MASK')
@@ -181,7 +184,7 @@ def create_land_mask(ea, mapping_factors_dir, debug_mode, nk, target_grid_shape,
             (status, source_indices_within_target_radius_i, \
             nearest_source_index_to_target_index_i), _ = get_mapping_factors(dataset_dim, mapping_factors_dir,
                                                                             'all', debug_mode)
-            if status == -1:
+            if status != 'SUCCESS':
                 return status
 
             for k in range(nk):
@@ -199,8 +202,82 @@ def create_land_mask(ea, mapping_factors_dir, debug_mode, nk, target_grid_shape,
                     fname_mask = Path(land_mask_fname) / f'ecco_latlon_land_mask_{k}.xz'
                     pickle.dump(land_mask_ll.ravel(), lzma.open(fname_mask, 'wb'))
                 except:
-                    print(f'ERROR Cannot save land_mask file "{land_mask_fname}"')
-                    return -1
+                    status = f'ERROR Cannot save land_mask file "{land_mask_fname}"'
+                    return status
+    return status
+
+
+# ====================================================================================================
+# SPARSE MATRIX CREATION
+# ====================================================================================================
+def create_sparse_matrix(product_generation_config, debug_mode=False, extra_prints=False):
+    print(f'\nCreating sparse matrices')
+
+    status = 'SUCCESS'
+
+    mapping_factors_dir = product_generation_config['mapping_factors_dir']
+
+    # get the land mask of the latlon grid
+    nk = product_generation_config['num_vertical_levels']
+
+    # Check if all sparse matrices are already present
+    present_sm_files = list(sorted(os.listdir(f'{mapping_factors_dir}/sparse')))
+    expected_sm_files = list(sorted([f'sparse_matrix_{k}.npz' for k in range(nk)]))
+    if present_sm_files == expected_sm_files:
+        # sparse matrices already made, continuing
+        print('... sparse matrices already created')
+    else:
+        for k in range(nk):
+            sm_path = f'./mapping_factors/sparse/sparse_matrix_{k}.npz'
+            print(f'Level: {k}')
+            
+            status, ll_land_mask = gen_netcdf_utils.get_land_mask(product_generation_config['mapping_factors_dir'], k, extra_prints=extra_prints)
+            if status != 'SUCCESS':
+                return status
+
+            # Create sparse matrix representation of mapping factors
+            for dataset_dim in ['2D', '3D']:
+                if dataset_dim == '2D' and k > 0:
+                    continue
+                status, _, (source_indices_within_target_radius_i, \
+                nearest_source_index_to_target_index_i) = get_mapping_factors(dataset_dim, product_generation_config['mapping_factors_dir'], 'k', k=k)
+                if status != 'SUCCESS':
+                    return status
+
+                status, (_, _, _, wet_pts_k) = gen_netcdf_utils.get_latlon_grid(Path(product_generation_config['mapping_factors_dir']), debug_mode)
+                if status != 'SUCCESS':
+                    return status
+
+                n = len(wet_pts_k[k][0])
+                m = 2*180 * 2*360
+                
+                target_ind_raw = np.where(source_indices_within_target_radius_i != -1)[0]
+                nearest_ind_raw = np.where((nearest_source_index_to_target_index_i != -1) & (source_indices_within_target_radius_i == -1))[0]
+                target_ind = []
+                source_ind = []
+                source_to_target_weights = []
+                for wet_ind in np.where(~np.isnan(ll_land_mask))[0]:
+                    if wet_ind in target_ind_raw:
+                        si_list = source_indices_within_target_radius_i[wet_ind]
+                        for si in si_list:
+                            target_ind.append(wet_ind)
+                            source_ind.append(si)
+                            source_to_target_weights.append(1/len(si_list))
+                    elif wet_ind in nearest_ind_raw:
+                        ni = nearest_source_index_to_target_index_i[wet_ind]
+                        target_ind.append(wet_ind)
+                        source_ind.append(ni)
+                        source_to_target_weights.append(1)
+
+                # create sparse matrix
+                B = sparse.csr_matrix((source_to_target_weights, (source_ind, target_ind)), shape=(n,m))
+
+                # save sparse matrix
+                try:
+                    sparse.save_npz(sm_path, B)
+                except:
+                    status = f'ERROR Cannot save sparse matrix file "{sm_path}"'
+                    return status
     return status
 
 
@@ -208,7 +285,7 @@ def create_land_mask(ea, mapping_factors_dir, debug_mode, nk, target_grid_shape,
 # CREATE ALL FACTORS (MAPPING FACTORS, LAND MASK, LATLON GRID, and SPARSE MATRICES)
 # =================================================================================================
 def create_all_factors(ea, product_generation_config, dataset_dim, debug_mode, extra_prints=False):
-    status = 1
+    status = 'SUCCESS'
     mapping_factors_dir = Path(product_generation_config['mapping_factors_dir'])
     nk = product_generation_config['num_vertical_levels']
     ecco_grid = xr.open_dataset(Path(product_generation_config['ecco_grid_dir']) / product_generation_config['ecco_grid_filename'])
@@ -217,8 +294,8 @@ def create_all_factors(ea, product_generation_config, dataset_dim, debug_mode, e
         try:
             mapping_factors_dir.mkdir()
         except:
-            print(f'ERROR Cannot make mapping factors directory "{mapping_factors_dir}"')
-            return -1
+            status = f'ERROR Cannot make mapping factors directory "{mapping_factors_dir}"'
+            return status
 
     if debug_mode:
         print('...DEBUG MODE -- SKIPPING LATLON GRID')
@@ -302,13 +379,13 @@ def create_all_factors(ea, product_generation_config, dataset_dim, debug_mode, e
             status = create_mapping_factors(ea, dim, mapping_factors_dir, debug_mode, 
                                             source_grid_all, target_grid, target_grid_radius, 
                                             source_grid_min_L, source_grid_max_L, source_grid_k, nk)
-            if status == -1:
+            if status != 'SUCCESS':
                 return status
 
             # make a land mask in lat-lon using hfacC
             status = create_land_mask(ea, mapping_factors_dir, debug_mode, nk, 
                                         target_grid_shape, ecco_grid, dim)
-            if status == -1:
+            if status != 'SUCCESS':
                 return status
 
         ## MAKE LAT AND LON BOUNDS FOR NEW DATA ARRAYS
@@ -349,81 +426,12 @@ def create_all_factors(ea, product_generation_config, dataset_dim, debug_mode, e
             try:
                 pickle.dump(latlon_grid, lzma.open(latlon_grid_name, 'wb'))
             except:
-                print(f'ERROR Cannot save latlon_grid file "{latlon_grid_name}"')
-                return -1
+                status = f'ERROR Cannot save latlon_grid file "{latlon_grid_name}"'
+                return status
 
         # create sparse matrices
-        create_sparse_matrix(product_generation_config, debug_mode=debug_mode, extra_prints=extra_prints)
+        status = create_sparse_matrix(product_generation_config, debug_mode=debug_mode, extra_prints=extra_prints)
+        if status != 'SUCCESS':
+            return status
 
     return status
-
-
-# ====================================================================================================
-# SPARSE MATRIX CREATION
-# ====================================================================================================
-def create_sparse_matrix(product_generation_config, debug_mode=False, extra_prints=False):
-    print(f'\nCreating sparse matrices')
-
-    mapping_factors_dir = product_generation_config['mapping_factors_dir']
-
-    # get the land mask of the latlon grid
-    nk = product_generation_config['num_vertical_levels']
-
-    # Check if all sparse matrices are already present
-    present_sm_files = list(sorted(os.listdir(f'{mapping_factors_dir}/sparse')))
-    expected_sm_files = list(sorted([f'sparse_matrix_{k}.npz' for k in range(nk)]))
-    if present_sm_files == expected_sm_files:
-        # sparse matrices already made, continuing
-        print('... sparse matrices already created')
-    else:
-        for k in range(nk):
-            sm_path = f'./mapping_factors/sparse/sparse_matrix_{k}.npz'
-            print(f'Level: {k}')
-            
-            status, ll_land_mask = gen_netcdf_utils.get_land_mask(product_generation_config['mapping_factors_dir'], k, extra_prints=extra_prints)
-            if status == -1:
-                print(f'Error getting land mask for level k={k}')
-                sys.exit()
-
-            # Create sparse matrix representation of mapping factors
-            for dataset_dim in ['2D', '3D']:
-                if dataset_dim == '2D' and k > 0:
-                    continue
-                status, _, (source_indices_within_target_radius_i, \
-                nearest_source_index_to_target_index_i) = get_mapping_factors(dataset_dim, product_generation_config['mapping_factors_dir'], 'k', k=k)
-                if status == -1:
-                    print(f'Error getting mapping factors for level k={k}')
-                    sys.exit()
-
-                status, (_, _, _, wet_pts_k) = gen_netcdf_utils.get_latlon_grid(Path(product_generation_config['mapping_factors_dir']), debug_mode)
-
-                n = len(wet_pts_k[k][0])
-                m = 2*180 * 2*360
-                
-                target_ind_raw = np.where(source_indices_within_target_radius_i != -1)[0]
-                nearest_ind_raw = np.where((nearest_source_index_to_target_index_i != -1) & (source_indices_within_target_radius_i == -1))[0]
-                target_ind = []
-                source_ind = []
-                source_to_target_weights = []
-                for wet_ind in np.where(~np.isnan(ll_land_mask))[0]:
-                    if wet_ind in target_ind_raw:
-                        si_list = source_indices_within_target_radius_i[wet_ind]
-                        for si in si_list:
-                            target_ind.append(wet_ind)
-                            source_ind.append(si)
-                            source_to_target_weights.append(1/len(si_list))
-                    elif wet_ind in nearest_ind_raw:
-                        ni = nearest_source_index_to_target_index_i[wet_ind]
-                        target_ind.append(wet_ind)
-                        source_ind.append(ni)
-                        source_to_target_weights.append(1)
-
-                # create sparse matrix
-                B = sparse.csr_matrix((source_to_target_weights, (source_ind, target_ind)), shape=(n,m))
-
-                # save sparse matrix
-                try:
-                    sparse.save_npz(sm_path, B)
-                except:
-                    print(f'ERROR Cannot save sparse matrix file "{sm_path}"')
-                    return -1

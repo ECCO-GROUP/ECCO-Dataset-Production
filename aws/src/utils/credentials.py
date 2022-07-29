@@ -1,31 +1,6 @@
 import sys
 import subprocess
 from pathlib import Path
-from collections import defaultdict
-
-
-# ==========================================================================================================================
-# CALCULATE JOBS
-# ==========================================================================================================================
-def calculate_all_jobs(latlon_groupings, native_groupings):
-    all_groupings = {'latlon':latlon_groupings, 'native':native_groupings}
-    jobs = defaultdict(list)
-    for product_type, groupings in all_groupings.items():
-        for i, grouping in enumerate(groupings):
-            freqs = grouping['frequency'].split(', ')
-            for freq in freqs:
-                if grouping['dimension'] == '2D':
-                    jobs[f'2D_{product_type}'].append([i, product_type, freq, 'all'])
-                if grouping['dimension'] == '3D':
-                    jobs[f'3D_{product_type}'].append([i, product_type, freq, 'all'])
-
-    all_jobs = []
-    all_jobs.extend(jobs['3D_native'])
-    all_jobs.extend(jobs['3D_latlon'])
-    all_jobs.extend(jobs['2D_native'])
-    all_jobs.extend(jobs['2D_latlon'])
-
-    return all_jobs
 
 
 # ==========================================================================================================================

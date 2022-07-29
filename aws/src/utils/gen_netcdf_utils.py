@@ -523,8 +523,12 @@ def apply_podaac_metadata(xrds, podaac_metadata):
 
 
 def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_code, netcdf_fill_value,
-                    grouping, filename_tail, output_dir_freq, dataset_description, podaac_dir, doi, ecco_version, extra_prints=False):
+                    grouping, filename_tail, output_dir_freq, dataset_description, podaac_dir, 
+                    product_generation_config, extra_prints=False):
     status = 'SUCCESS'
+
+    doi = product_generation_config['doi']
+    ecco_version = product_generation_config['ecco_version']
 
     # ADD VARIABLE SPECIFIC METADATA TO VARIABLE ATTRIBUTES (DATA ARRAYS)
     if extra_prints: print('\n... adding metadata specific to the variable')
@@ -556,6 +560,12 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
         if extra_prints: print('\n... adding global metadata for native dataset')
         G = ecco.add_global_metadata(all_metadata['global_native'], G, dataset_dim)
 
+    # Add time metadata if dataset has a time coordinate
+    # if so -> add_coordinate_metadata(all_metadata['coord_time'],G) (TO BE MADE)
+    # if not -> keep going
+    if 'time' in G.coords:
+        G = ecco.add_coordinate_metadata(all_metadata['coord_time'], G)
+
     # ADD GLOBAL METADATA ASSOCIATED WITH TIME AND DATE
     if extra_prints: print('\n... adding time / data global attrs')
     if 'AVG' in output_freq_code:
@@ -572,6 +582,16 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
     G.attrs['date_modified'] = current_time
     G.attrs['date_metadata_modified'] = current_time
     G.attrs['date_issued'] = current_time
+
+    # Update G attrs with values from product_generation_config.yaml
+    G.attrs['history'] = product_generation_config['history']
+    G.attrs['geospatial_vertical_min'] = product_generation_config['geospatial_vertical_min']
+    G.attrs['product_time_coverage_start'] = product_generation_config['model_start_time']
+    G.attrs['product_time_coverage_end'] = product_generation_config['model_end_time']
+    G.attrs['product_version'] = product_generation_config['product_version']
+    G.attrs['references'] = product_generation_config['references']
+    G.attrs['source'] = product_generation_config['source']
+    G.attrs['summary'] = product_generation_config['summary']
 
     # add coordinate attributes to the variables
     dv_coordinate_attrs = {}
@@ -626,8 +646,11 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
     # MERGE GCMD KEYWORDS
     if extra_prints: print('\n... merging GCMD keywords')
     common_gcmd_keywords = G.keywords.split(',')
-    gcmd_keywords_list = set(grouping_gcmd_keywords + common_gcmd_keywords)
+    gcmd_keywords_list = list(set(grouping_gcmd_keywords + common_gcmd_keywords))
 
+    gcmd_keywords_list = sorted(gcmd_keywords_list)
+
+    # Takes a list of strings and combines them into a single comma separated string
     gcmd_keyword_str = ''
     for gcmd_keyword in gcmd_keywords_list:
         if len(gcmd_keyword_str) == 0:
@@ -640,7 +663,7 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
 
     ## ADD FINISHING TOUCHES
 
-    # uuic
+    # uuid
     if extra_prints: print('\n... adding uuid')
     G.attrs['uuid'] = str(uuid.uuid1())
 

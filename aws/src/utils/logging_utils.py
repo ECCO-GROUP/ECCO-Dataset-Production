@@ -11,7 +11,7 @@ from collections import defaultdict
 # Local imports
 main_path = Path(__file__).parent.parent.resolve()
 sys.path.append(f'{main_path / "src" / "utils"}')
-import aws_misc_utils as aws_misc_utils
+import credentials as credentials
 
 # ==========================================================================================================================
 # LOGGING UTILS
@@ -156,7 +156,7 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
             if (time.time() - credentials_time) > 600.0:
                 print(f'... time elapsed {time.time() - credentials_time}s')
                 print(f'... getting new credentials!') 
-                _ = aws_misc_utils.get_aws_credentials(credential_method)
+                _ = credentials.get_aws_credentials(credential_method)
                 credentials_time = time.time()
 
             print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
