@@ -150,7 +150,7 @@ def load_ecco_vars_from_mds(mds_var_dir,
     Returns
     =======
 
-    status : Int status value (-1 == failure, 1 == success)
+    status : Int status value ('SUCCESS' or 'ERROR {error})
 
     ecco_dataset : xarray Dataset
 

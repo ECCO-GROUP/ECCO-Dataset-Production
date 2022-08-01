@@ -184,19 +184,19 @@ def generate_netcdfs(event):
         filename_tail_native = f'_ECCO_{product_generation_config["ecco_version"]}_native_{product_generation_config["filename_tail_native"]}'
         filename_tail_latlon = f'_ECCO_{product_generation_config["ecco_version"]}_latlon_{product_generation_config["filename_tail_latlon"]}'
 
-        metadata_fields = ['ECCOv4r4_global_metadata_for_all_datasets',
-                        'ECCOv4r4_global_metadata_for_latlon_datasets',
-                        'ECCOv4r4_global_metadata_for_native_datasets',
-                        'ECCOv4r4_coordinate_metadata_for_1D_datasets',
-                        'ECCOv4r4_coordinate_metadata_for_latlon_datasets',
-                        'ECCOv4r4_coordinate_metadata_for_native_datasets',
-                        'ECCOv4r4_geometry_metadata_for_latlon_datasets',
-                        'ECCOv4r4_geometry_metadata_for_native_datasets',
-                        'ECCOv4r4_groupings_for_1D_datasets',
-                        'ECCOv4r4_groupings_for_latlon_datasets',
-                        'ECCOv4r4_groupings_for_native_datasets',
-                        'ECCOv4r4_variable_metadata',
-                        'ECCOv4r4_variable_metadata_for_latlon_datasets']
+        metadata_fields = ['global_metadata_for_all_datasets',
+                        'global_metadata_for_latlon_datasets',
+                        'global_metadata_for_native_datasets',
+                        'coordinate_metadata_for_1D_datasets',
+                        'coordinate_metadata_for_latlon_datasets',
+                        'coordinate_metadata_for_native_datasets',
+                        'geometry_metadata_for_latlon_datasets',
+                        'geometry_metadata_for_native_datasets',
+                        'groupings_for_1D_datasets',
+                        'groupings_for_latlon_datasets',
+                        'groupings_for_native_datasets',
+                        'variable_metadata',
+                        'variable_metadata_for_latlon_datasets']
 
         # load METADATA
         if extra_prints: print('\nLOADING METADATA')
@@ -209,23 +209,23 @@ def generate_netcdfs(event):
                 metadata[mf] = json.load(fp)
 
         # metadata for different variables
-        global_metadata_for_all_datasets = metadata['ECCOv4r4_global_metadata_for_all_datasets']
-        global_metadata_for_latlon_datasets = metadata['ECCOv4r4_global_metadata_for_latlon_datasets']
-        global_metadata_for_native_datasets = metadata['ECCOv4r4_global_metadata_for_native_datasets']
+        global_metadata_for_all_datasets = metadata['global_metadata_for_all_datasets']
+        global_metadata_for_latlon_datasets = metadata['global_metadata_for_latlon_datasets']
+        global_metadata_for_native_datasets = metadata['global_metadata_for_native_datasets']
 
-        coordinate_metadata_for_1D_datasets = metadata['ECCOv4r4_coordinate_metadata_for_1D_datasets']
-        coordinate_metadata_for_latlon_datasets = metadata['ECCOv4r4_coordinate_metadata_for_latlon_datasets']
-        coordinate_metadata_for_native_datasets = metadata['ECCOv4r4_coordinate_metadata_for_native_datasets']
+        coordinate_metadata_for_1D_datasets = metadata['coordinate_metadata_for_1D_datasets']
+        coordinate_metadata_for_latlon_datasets = metadata['coordinate_metadata_for_latlon_datasets']
+        coordinate_metadata_for_native_datasets = metadata['coordinate_metadata_for_native_datasets']
 
-        geometry_metadata_for_latlon_datasets = metadata['ECCOv4r4_geometry_metadata_for_latlon_datasets']
-        geometry_metadata_for_native_datasets = metadata['ECCOv4r4_geometry_metadata_for_native_datasets']
+        geometry_metadata_for_latlon_datasets = metadata['geometry_metadata_for_latlon_datasets']
+        geometry_metadata_for_native_datasets = metadata['geometry_metadata_for_native_datasets']
 
-        groupings_for_1D_datasets = metadata['ECCOv4r4_groupings_for_1D_datasets']
-        groupings_for_latlon_datasets = metadata['ECCOv4r4_groupings_for_latlon_datasets']
-        groupings_for_native_datasets = metadata['ECCOv4r4_groupings_for_native_datasets']
+        groupings_for_1D_datasets = metadata['groupings_for_1D_datasets']
+        groupings_for_latlon_datasets = metadata['groupings_for_latlon_datasets']
+        groupings_for_native_datasets = metadata['groupings_for_native_datasets']
 
-        variable_metadata_latlon = metadata['ECCOv4r4_variable_metadata_for_latlon_datasets']
-        variable_metadata_default = metadata['ECCOv4r4_variable_metadata']
+        variable_metadata_latlon = metadata['variable_metadata_for_latlon_datasets']
+        variable_metadata_default = metadata['variable_metadata']
 
         variable_metadata_native = variable_metadata_default + geometry_metadata_for_native_datasets
 
@@ -344,6 +344,7 @@ def generate_netcdfs(event):
                 if use_lambda and time.time() - job_start_time >= aws_metadata['job_timeout']:
                     timeout = True
                     raise Exception('TIMEOUT')
+
                 # ==================================================================================================================
                 # CALCULATE TIMES
                 # ==================================================================================================================
@@ -427,6 +428,16 @@ def generate_netcdfs(event):
                     else:
                         print(f'Downloading and processing fields one at a time for current timestep')
 
+                    # Get data_file_paths for files when processing locally
+                    if local:
+                        for field in fields_to_load:
+                            curr_field_files = field_files[field]
+                            for field_file in curr_field_files:
+                                if cur_ts in field_file:
+                                    if '.data' in field_file:
+                                        data_file_paths[field] = field_file
+                                    break
+
 
 
                     # ============================== TODO ==============================
@@ -453,12 +464,9 @@ def generate_netcdfs(event):
 
 
 
-
-
-
                     # Load fields and place them in the dataset
                     for i, field in enumerate(sorted(fields_to_load)):
-                        if not product_generation_config['download_all_fields']:
+                        if not local and not product_generation_config['download_all_fields']:
                             s3_download_start_time = time.time()
                             (status, data_file_paths, meta_file_paths, curr_num_downloaded) = gen_netcdf_utils.download_all_files(s3, [field], field_files, cur_ts, 
                                                                                                             use_lambda, data_file_paths, meta_file_paths, product_generation_config, product_type, 
@@ -474,7 +482,6 @@ def generate_netcdfs(event):
                             raise Exception('TIMEOUT')
                             
                         data_file_path = Path(data_file_paths[field])
-                        meta_file_path = Path(meta_file_paths[field])
 
                             
                         # Load latlon vs native variable
@@ -496,11 +503,10 @@ def generate_netcdfs(event):
                                 raise Exception(status)
 
                         # delete files
-                        # gen_netcdf_utils.delete_files(data_file_path, meta_file_path, product_generation_config)
-                        if os.path.exists(data_file_path):
-                            os.remove(data_file_path)
-                        if os.path.exists(meta_file_path):
-                            os.remove(meta_file_path)
+                        # if os.path.exists(data_file_path):
+                        #     os.remove(data_file_path)
+                        # if os.path.exists(meta_file_path):
+                        #     os.remove(meta_file_path)
 
                         F_DS = gen_netcdf_utils.global_DS_changes(F_DS, output_freq_code, grouping, field,
                                                     array_precision, ecco_grid, depth_bounds, product_type, 
@@ -537,18 +543,18 @@ def generate_netcdfs(event):
                     total_netcdf_time += (time.time() - netcdf_start_time)
                     if extra_prints: print('\n... checking existence of new file: ', netcdf_output_filename.exists())
 
+                    # create checksum of netcdf file
+                    if product_generation_config['create_checksum']:
+                        checksum_time = time.time()
+                        hash_md5 = hashlib.md5()
+                        with open(netcdf_output_filename, 'rb') as f:
+                            for chunk in iter(lambda: f.read(4096), b""):
+                                hash_md5.update(chunk)
+                        orig_checksum = hash_md5.hexdigest()
+                        total_checksum_time += (time.time() - checksum_time)
+
                     # Upload output netcdf to s3
                     if not local:
-                        # create checksum of netcdf file
-                        if product_generation_config['create_checksum']:
-                            checksum_time = time.time()
-                            hash_md5 = hashlib.md5()
-                            with open(netcdf_output_filename, 'rb') as f:
-                                for chunk in iter(lambda: f.read(4096), b""):
-                                    hash_md5.update(chunk)
-                            orig_checksum = hash_md5.hexdigest()
-                            total_checksum_time += (time.time() - checksum_time)
-
                         s3_upload_start_time = time.time()
                         print('\n... uploading new file to S3 bucket')
                         name = str(netcdf_output_filename).replace(f'{str(product_generation_config["processed_output_dir_base"])}/', f'{aws_metadata["bucket_subfolder"]}/')
@@ -589,14 +595,18 @@ def generate_netcdfs(event):
                             else:
                                 print(f'\n... uploaded and downloaded netcdf checksums match')
                 
-                if product_generation_config['create_checksum']:
-                    succeeded_checksums[cur_ts] = {'s3_fname':name, 'checksum':orig_checksum, 'uuid':orig_uuid}
+                if not local:
+                    if product_generation_config['create_checksum']:
+                        succeeded_checksums[cur_ts] = {'s3_fname':name, 'checksum':orig_checksum, 'uuid':orig_uuid}
+                    else:
+                        succeeded_checksums[cur_ts] = {'s3_fname':name, 'checksum':'None created', 'uuid':orig_uuid}
                 else:
-                    succeeded_checksums[cur_ts] = {'s3_fname':name, 'checksum':'None created', 'uuid':orig_uuid}
+                    succeeded_checksums[cur_ts] = {'checksum':orig_checksum, 'uuid':orig_uuid}
+
                 successful_time_steps.append(cur_ts)
             except Exception as e:
                 if not timeout:
-                    gen_netcdf_utils.delete_files(data_file_paths, meta_file_paths, product_generation_config, fields_to_load, all=True)
+                    gen_netcdf_utils.delete_files(data_file_paths, product_generation_config, fields_to_load, all=True)
                 exception_type, exception_value, exception_traceback = sys.exc_info()
                 traceback_string = traceback.format_exception(exception_type, exception_value, exception_traceback)
                 err_msg = json.dumps({
@@ -618,8 +628,8 @@ def generate_netcdfs(event):
         #         shutil.rmtree(product_generation_config['processed_output_dir_base'])
 
         # Remove model output directory
-        if os.path.exists(product_generation_config['model_output_dir']):
-            shutil.rmtree(product_generation_config['model_output_dir'])
+        # if os.path.exists(product_generation_config['model_output_dir']):
+        #     shutil.rmtree(product_generation_config['model_output_dir'])
     
     except Exception as e:
         exception_type, exception_value, exception_traceback = sys.exc_info()

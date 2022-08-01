@@ -87,7 +87,7 @@ job_timeout: 890.0
 
 # Int
 # Number of times to retry processing a failed timestep
-num_retry: 0
+num_retry: 1
 
 
 # =================================================================================================

@@ -120,7 +120,7 @@ def get_files_time_steps_local(fields, grouping_to_process, product_generation_c
     all_time_steps_all_vars = []
     try:
         for field in fields:
-            field_files[field] = sorted(glob.glob(f'{product_generation_config["model_output_dir"]}/{product_generation_config["model_output_dir_folder_name"]}/{freq_folder}/{field}_{period_suffix}/*.data'))
+            field_files[field] = sorted(glob.glob(f'{product_generation_config["model_output_dir"]}/{freq_folder}/{field}_{period_suffix}/*.data'))
             time_steps = [key.split('.')[-2] for key in field_files[field]]
             if num_time_steps_to_process == 'all':
                 field_time_steps[field] = sorted(time_steps)

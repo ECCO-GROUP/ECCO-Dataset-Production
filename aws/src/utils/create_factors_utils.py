@@ -336,7 +336,9 @@ def create_all_factors(ea, product_generation_config, dataset_dim, debug_mode, e
         latlon_grid_resolution = product_generation_config['latlon_grid_resolution']
         latlon_max_lat = product_generation_config['latlon_max_lat']
         latlon_grid_area_extent = product_generation_config['latlon_grid_area_extent']
-        latlon_grid_dims = [int(d/latlon_grid_resolution) for d in product_generation_config['latlon_grid_dims']]
+        latlon_grid_dims = [int(np.abs(latlon_grid_area_extent[2] - latlon_grid_area_extent[0]) / latlon_grid_resolution),
+                            int(np.abs(latlon_grid_area_extent[3] - latlon_grid_area_extent[1]) / latlon_grid_resolution)]
+        # latlon_grid_dims = [int(d/latlon_grid_resolution) for d in product_generation_config['latlon_grid_dims']]
 
         # Grid projection information
         proj_info = {'area_id':'longlat',

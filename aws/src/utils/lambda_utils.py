@@ -67,7 +67,7 @@ def create_lambda_function(client, function_name, role, memory_size, image_uri):
 # ==========================================================================================================================
 # LAMBDA INVOKATION
 # ==========================================================================================================================
-def invoke_lambda(lambda_client, job_logs, time_steps, dict_key_args, product_generation_config, aws_config_metadata, current_job, function_name_prefix, dimension, field_files, credentials, total_num_jobs, debug_mode):
+def invoke_lambda(lambda_client, job_logs, time_steps, dict_key_args, product_generation_config, aws_config_metadata, current_job, function_name_prefix, dimension, field_files, credentials, debug_mode):
     (grouping_to_process, product_type, output_freq_code, time_steps_to_process) = current_job
     num_jobs = 0
     
@@ -232,8 +232,7 @@ def invoke_lambda(lambda_client, job_logs, time_steps, dict_key_args, product_ge
                 job = future.result()
                 exception = future.exception()
                 num_jobs += job[1]
-                total_num_jobs += job[1]
-                print(f'Lambda Job requested: {num_jobs:4} ({total_num_jobs:4})', end='\r')
+                print(f'Lambda Job requested: {num_jobs:0>3}', end='\r')
                 if exception:
                     print(f'ERROR invoking lambda job: {job[0]}, ({exception})')
     else:   
@@ -266,7 +265,7 @@ def invoke_lambda(lambda_client, job_logs, time_steps, dict_key_args, product_ge
 
             # invoke lambda job
             try:
-                print(f'Lambda Job requested: {num_jobs+1:4}', end='\r')
+                print(f'Lambda Job requested: {num_jobs+1:0>4}', end='\r')
                 invoke_response = lambda_client.invoke(
                     FunctionName=function_name,
                     InvocationType='Event',

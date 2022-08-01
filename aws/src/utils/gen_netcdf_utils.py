@@ -29,10 +29,8 @@ def download_all_files(s3, fields_to_load, field_files, cur_ts, use_lambda, data
                 if cur_ts in df:
                     source_data_file_paths[field] = df
                     source_meta_file_paths[field] = f'{str(df)[:-5]}.meta'
-                    if not use_lambda:
-                        file_path = (product_generation_config['model_output_dir'] / df)
-                    else:
-                        file_path = (Path(f'/tmp/{df}'))
+                    df_local = df.replace(f'{product_generation_config["ecco_version"]}/', '')
+                    file_path = product_generation_config['model_output_dir'] / df_local
                     if not file_path.parent.exists():
                         try:
                             file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -106,18 +104,16 @@ def download_all_files(s3, fields_to_load, field_files, cur_ts, use_lambda, data
     return (status, data_file_paths, meta_file_paths, num_downloaded)
 
 
-def delete_files(data_file_paths, meta_file_paths, product_generation_config, fields, all=False):
+def delete_files(data_file_paths, product_generation_config, fields, all=False):
     # Make data_file_paths and meta_file_paths lists if they are not
     # if not isinstance(data_file_paths, list):
     #     data_file_paths = [data_file_paths]
-    # if not isinstance(meta_file_paths, list):
-    #     meta_file_paths = [meta_file_paths]
 
     # Create a single list with all the files to delete
     files_to_delete = []
     for field in fields:
         files_to_delete.append(data_file_paths[field])
-        files_to_delete.append(meta_file_paths[field])
+        files_to_delete.append(f'{data_file_paths[field][:-5]}.meta')
     print(f'Deleting files: {files_to_delete}')
     if all:
         # if all, then include the processed output files as well
@@ -564,7 +560,10 @@ def set_metadata(ecco, G, product_type, all_metadata, dataset_dim, output_freq_c
     # if so -> add_coordinate_metadata(all_metadata['coord_time'],G) (TO BE MADE)
     # if not -> keep going
     if 'time' in G.coords:
-        G = ecco.add_coordinate_metadata(all_metadata['coord_time'], G)
+        if 'coord_time' in all_metadata:
+            G = ecco.add_coordinate_metadata(all_metadata['coord_time'], G)
+        else:
+            print(f'No "coord_time" metadata found')
 
     # ADD GLOBAL METADATA ASSOCIATED WITH TIME AND DATE
     if extra_prints: print('\n... adding time / data global attrs')
