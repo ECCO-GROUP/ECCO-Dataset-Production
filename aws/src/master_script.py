@@ -1,14 +1,25 @@
 """
-Created May 18, 2022
+ECCO Dataset Production Master Script
 
 Author: Duncan Bark
 
+Primary script for all ECCO Processing. From this script, all functions of ECCO Processing can be started including:
+- Create mapping factors, land mask, and sparce matrices
+- Uploading local files to AWS S3 (TODO)
+- Prompt user to create jobs file from available groupings in metadata files
+- Process 2D/3D native/latlon granules, sourced locally, locally
+- Process 2D/3D native/latlon granules, sourced from AWS S3, locally 
+- Process 2D/3D native/latlon granules, sourced from AWS S3, via AWS Lambda
+- Process logs created from Lambda executions
+
 """
+
 import os
 import ast
 import sys
 import json
 import time
+from matplotlib import use
 import yaml
 import boto3
 import argparse
@@ -65,9 +76,6 @@ def create_parser():
     parser.add_argument('--enable_logging', default=False, action='store_true',
                         help='Enables logging for lambda jobs')
 
-    parser.add_argument('--force', default=False, action='store_true',
-                        help='Skips all required user input')
-
     parser.add_argument('--create_jobs', default=False, action='store_true',
                         help='Prompts user on jobs they want to process')
     return parser
@@ -98,7 +106,7 @@ if __name__ == "__main__":
 
     # Verify user does not want to enable logging
     # Logging only happens when processing data via AWS Lambda
-    if (dict_key_args['process_data']) and (dict_key_args['use_lambda']) and (not dict_key_args['enable_logging']) and (not dict_key_args['force']):
+    if (dict_key_args['process_data']) and (dict_key_args['use_lambda']) and (not dict_key_args['enable_logging']):
         logging_check = input(f'Logging has not been enabled, continue? (y/n)\t').lower().strip()
         if logging_check != 'y':
             print(f'Exiting')
@@ -167,6 +175,7 @@ if __name__ == "__main__":
         with open(str(Path(product_generation_config['metadata_dir']) / mf), 'r') as fp:
             metadata[mf] = json.load(fp)
 
+    # Create dictionary containing groupings dictionaries for each product type
     groupings_for_datasets = {}
     for mf_name, mf in metadata.items():
         if '1D' in mf_name:
@@ -187,26 +196,32 @@ if __name__ == "__main__":
     with open(main_path / 'configs' / jobs_filename, 'r') as j:
         for line in j:
             line = line.strip()
+            # comment/blank line, skip
             if '#' in line or line == '':
                 continue
+
+            # "done" line, break out of file, dont add anymore jobs
             if line == 'done':
                 break
+
+            # "all" line, process ALL groupings, for ALL timesteps
             if line == 'all':
                 all_jobs = jobs_utils.calculate_all_jobs(groupings_for_datasets)
                 break
 
+            # if timesteps is a list, evaluate it, otherwise split the job on commas
             if '[' in line:
                 line_vals = ast.literal_eval(line)
             else:
                 line_vals = line.split(',')
 
+            # if the frequency is time invariant, exit as it is not currently tested or supported
             if line_vals[2] == 'TI':
                 print(f'Time-invariant groupings not currently tested/supported. Exiting')
                 sys.exit()
 
-            # if number of time steps to process is all, leave it, otherwise make sure it is an integer
-            # if line_vals[3] == 'all':
-            if not isinstance(line_vals[3], list) and line_vals != 'all':
+            # the the number of time steps is a list or 'all', leave it. Otherwise, make sure it is an int
+            if not isinstance(line_vals[3], list) and line_vals[3] != 'all':
                 all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], int(line_vals[3])])
             else:
                 all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], line_vals[3]])
@@ -218,6 +233,7 @@ if __name__ == "__main__":
     # Includes authentication, lambda function creation
     credentials = {}
     aws_config = {}
+    s3 = None
     if not local:
         # ========== <prepare aws configuration metadata> =========================================
         # Load 'aws_config.yaml'
@@ -300,6 +316,8 @@ if __name__ == "__main__":
 
 
     # ========== <AWS Lambda preparation> =========================================================
+    lambda_client = None
+    job_logs = {}
     if use_lambda:
         lambda_start_time = time.strftime('%Y%m%d:%H%M%S', time.localtime())
 
@@ -431,7 +449,6 @@ if __name__ == "__main__":
 
         # Create inital jobs_log
         num_jobs = 0
-        job_logs = {}
         job_logs['Run Name'] = dict_key_args['log_name']
         job_logs['Run Date'] = time.strftime('%Y%m%d:%H%M%S', master_start_time)
         job_logs['Master Script Total Time (s)'] = 0
@@ -452,7 +469,17 @@ if __name__ == "__main__":
         print(f'\n=== PROCESSING START ===')
         num_jobs = 0
         for current_job in all_jobs:
-            temp_num_jobs, job_logs, status = jobs_utils.run_job(current_job, groupings_for_datasets, dict_key_args, product_generation_config, aws_config, debug_mode, s3=s3, lambda_client=lambda_client, job_logs=job_logs, credentials=credentials)
+            temp_num_jobs, job_logs, status = jobs_utils.run_job(current_job, 
+                                                                 groupings_for_datasets, 
+                                                                 dict_key_args, 
+                                                                 product_generation_config, 
+                                                                 aws_config, 
+                                                                 debug_mode, 
+                                                                 s3=s3, 
+                                                                 lambda_client=lambda_client, 
+                                                                 job_logs=job_logs, 
+                                                                 credentials=credentials)
+            
             num_jobs += temp_num_jobs
             if status != 'SUCCESS':
                 print(f'Skipping job')
@@ -507,7 +534,16 @@ if __name__ == "__main__":
                     for job, ts in retry_jobs.items():
                         current_job = ast.literal_eval(job)
                         current_job.append(ts)
-                        temp_num_jobs, retry_job_logs, status = jobs_utils.run_job(current_job, groupings_for_datasets, dict_key_args, product_generation_config, aws_config, debug_mode, s3=s3, lambda_client=lambda_client, job_logs=retry_job_logs, credentials=credentials)
+                        temp_num_jobs, retry_job_logs, status = jobs_utils.run_job(current_job, 
+                                                                                   groupings_for_datasets, 
+                                                                                   dict_key_args, 
+                                                                                   product_generation_config, 
+                                                                                   aws_config, 
+                                                                                   debug_mode, 
+                                                                                   s3=s3, 
+                                                                                   lambda_client=lambda_client, 
+                                                                                   job_logs=retry_job_logs, 
+                                                                                   credentials=credentials)
                         num_jobs += temp_num_jobs
                         if status != 'SUCCESS':
                             print(f'Skipping job')
@@ -527,13 +563,6 @@ if __name__ == "__main__":
                                                                 retry=retry_num)
             # ========== </Lambda job resubmission> ===============================================
         # ========== </Lambda logging> ============================================================
-
-        # Delete lambda function(s)
-        # if use_lambda:
-        #     for function_name in current_functions:
-        #         if 'ecco_processing' in function_name:
-        #             print(f'Deleting function: {function_name}')
-        #             lambda_client.delete_function(FunctionName=function_name)
     # ========== </Job processing> ================================================================
 
     master_total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec

@@ -1,3 +1,12 @@
+"""
+ECCO Dataset Production file utilities
+
+Author: Duncan Bark
+
+Contains functions for getting the available files either from S3 or from a local directory.
+
+"""
+
 import glob
 import boto3
 from concurrent import futures
@@ -5,95 +14,119 @@ from collections import defaultdict
 
 
 # ==========================================================================================================================
-# S3 FILES
+# GET FILES and TIME STEPS
 # ==========================================================================================================================
-def get_files_time_steps_s3(s3, fields, s3_dir_prefix, period_suffix, source_bucket, time_steps_to_process):
-    """Create lists of files and timesteps for each field from files present on S3
+def get_files_time_steps(fields, period_suffix, time_steps_to_process, freq_folder, local, model_output_dir=None, s3_dir_prefix=None, source_bucket=None):
+    """
+    Create lists of files and timesteps for each field from files present on S3 in source_bucket or local in model_output_dir
 
     Args:
-        s3 (botocore.client.S3): Boto3 S3 client initalized with necessary credentials
         fields (list): List of field names
-        s3_dir_prefix (str): Prefix of files stored on S3 (i.e. 'V4r4/diags_monthly)
         period_suffix (str): Period suffix of files (i.e. 'mon_mean')
-        source_bucket (str): Name of S3 bucket
         time_steps_to_process (str/int/list): String 'all', an integer specifing the number of time
                                                 steps, or a list of time steps to process
+        freq_folder (str): Subfolder name relating to frequency (i.e. 'diags_monthly')
+        local (bool): True/False if processing locally
+        model_output_dir (optional, str): String directory to model output (for local processing)
+        source_bucket (optional, str): Name of S3 bucket
+        s3_dir_prefix (optional, str): Prefix of files stored on S3 (i.e. 'V4r4/diags_monthly)
 
     Returns:
-        ()
+        ((field_files,, time_steps_all_vars), status) (tuple):
+            field_files (defaultdict(list)): Dictionary with field names as keys, and S3/local file paths for each timestep as values
+            time_steps_all_vars (list): List of all unique timesteps to process
+            status (str): String that is either "SUCCESS", "ERROR {error message}" or 'SKIP'
     """
     status = 'SUCCESS'
-
-    # time_steps_to_process must either be the string 'all', a number corresponding to the total number
-    # of time steps to process over all jobs (if using lambda), or overall (when local), or a list of timesteps
-    if time_steps_to_process != 'all' and not isinstance(time_steps_to_process, int) and not isinstance(time_steps_to_process, list):
-        print(f'Bad time steps provided ("{time_steps_to_process}"). Skipping job.')
-        return -1
-
-    print(f'\nGetting timesteps and files for fields: {fields} for {time_steps_to_process} {period_suffix} timesteps')
-
-    # Construct the list of field paths
-    # i.e. ['aws/temp_model_output/SSH', 'aws/temp_model_output/SSHIBC', ...]
-    s3_field_paths = []
-    for field in fields:
-        s3_field_paths.append(f'{s3_dir_prefix}/{field}_{period_suffix}')
-
     field_files = defaultdict(list)
     field_time_steps = defaultdict(list)
     time_steps_all_vars = []
+
+    # time_steps_to_process must either be the string 'all', a number corresponding to the total number
+    # of time steps to process over all jobs (if using lambda) or overall (when local), or a list of timesteps indices
+    if time_steps_to_process != 'all' and not isinstance(time_steps_to_process, int) and not isinstance(time_steps_to_process, list):
+        status = f'ERROR Bad time steps provided ("{time_steps_to_process}")'
+        return ((field_files, time_steps_all_vars), status)
+
+    print(f'\nGetting timesteps and files for fields: {fields} for {time_steps_to_process} {period_suffix} timesteps')
+
+    field_paths = []
+    if not local:
+        # Construct the list of field paths in S3
+        # i.e. ['ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean', 'ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean', ...]
+        for field in fields:
+            field_paths.append(f'{s3_dir_prefix}/{field}_{period_suffix}')
+    else:
+        # Construct the list of field paths for local
+        # i.e. ['aws/tmp/tmp_model_output/V4r4/diags_mothly/SSH_mon_mean', 'aws/tmp/tmp_model_output/V4r4/diags_mothly/SSHIBC_mon_mean', ...]
+        for field in fields:
+            field_paths.append(f'{model_output_dir}/{freq_folder}/{field}_{period_suffix}')
+
+    # ========== <Get files> ==============================================================
     try:
-        s3 = boto3.resource('s3')
-        bucket = s3.Bucket(source_bucket)
-        field_files = defaultdict(list)
-        field_time_steps = defaultdict(list)
-        time_steps_all_vars = []
+        # setup AWS clients
+        if not local:
+            s3 = boto3.resource('s3')
+            bucket = s3.Bucket(source_bucket)
 
-        # THREADED TECHNIQUE
-        if True:
-            num_workers = len(s3_field_paths)
-            print(f'Using {num_workers} workers to get time steps and files for {len(fields)} fields')
+        # Collect files from S3/local for each field, where each field is collected in parallel by a separate worker
+        num_workers = len(field_paths)
+        print(f'Using {num_workers} workers to get time steps and files for {len(fields)} fields')
 
-            # get files function
-            def fetch(s3_field_path):
-                field = s3_field_path.split('/')[-1].split(period_suffix)[0][:-1]
-                num_time_steps = 0
+        # ========== <Workers fetch function> =====================================================
+        # get files function
+        def fetch(field_path):
+            # get field name from field_path
+            field = field_path.split('/')[-1].split(period_suffix)[0][:-1]
+
+            if not local:
                 # loop through all the objects in the source_bucket with a prefix matching the s3_field_path
-                for obj in bucket.objects.filter(Prefix=s3_field_path):
-                    obj_key = obj.key
-                    file_timestep = obj_key.split('.')[-2]
-                    if isinstance(time_steps_to_process, list) and file_timestep not in time_steps_to_process:
+                # and append those with .data to the list of field files (along with the timestep)
+                curr_field_files = []
+                curr_field_time_steps = []
+                for obj in bucket.objects.filter(Prefix=field_path):
+                    filename = obj.key
+                    if '.meta' in filename:
                         continue
-                    if num_time_steps == time_steps_to_process:
-                        break
-                    if isinstance(time_steps_to_process, list) and num_time_steps == len(time_steps_to_process):
-                        break
-                    if '.meta' in obj_key:
-                        continue
-                    field_files[field].append(obj_key)
-                    field_time_steps[field].append(obj_key.split('.')[-2])
-                    time_steps_all_vars.append(obj_key.split('.')[-2])
-                    num_time_steps += 1
-                field_files[field] = sorted(field_files[field])
-                field_time_steps[field] = sorted(field_time_steps[field])
-                return field
+                    curr_field_files.append(filename)
+                    curr_field_time_steps.append(filename.split('.')[-2])
+            else:
+                # Glob all .data files in field_path directory
+                # and get the timesteps from those files
+                curr_field_files = glob.glob(f'{field_path}/*.data')
+                curr_field_time_steps = [key.split('.')[-2] for key in curr_field_files]
 
-            # create workers and assign each one a field to look for times and files for
-            with futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
-                future_to_key = {executor.submit(fetch, path) for path in s3_field_paths}
+            # sort field files and timesteps
+            curr_field_files = sorted(curr_field_files)
+            curr_field_time_steps = sorted(curr_field_time_steps)
 
-                for future in futures.as_completed(future_to_key):
-                    field = future.result()
-                    exception = future.exception()
-                    if exception:
-                        print(f'ERROR getting field times/files: {field} ({exception})')
-                        status = 'ERROR getting field times/files'
-                    else:
-                        print(f'Got times/files: {field}')
-                    
-            if status != 'SUCCESS':
-                return ((field_files, field_time_steps, time_steps_all_vars), status)
+            # collect the requested field files and time steps per time_steps_to_process
+            (field_files[field], field_time_steps[field], curr_time_steps_all_vars) = __get_files_helper(field, time_steps_to_process, curr_field_files, curr_field_time_steps)
+            time_steps_all_vars.extend(curr_time_steps_all_vars)
 
-            time_steps_all_vars = sorted(time_steps_all_vars)
+            return field
+        # ========== </Workers fetch function> ====================================================
+
+        # create workers and assign each one a field to look for times and files for.
+        # Each worker is assigned an S3 prefix pointing to a specific field (i.e. "ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean")
+        # or (if local) a local directory (i.e. "aws/tmp/tmp_model_output/V4r4/diags_mothly/SSH_mon_mean")
+        with futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
+            future_to_key = {executor.submit(fetch, path) for path in field_paths}
+
+            # Go through return values for each completed worker
+            for future in futures.as_completed(future_to_key):
+                field = future.result()
+                exception = future.exception()
+                if exception:
+                    status = f'ERROR getting field times/files: {field} ({exception})'
+                else:
+                    print(f'Got times/files: {field}')
+                
+        if status != 'SUCCESS':
+            return ((field_files, time_steps_all_vars), status)
+
+        # sort list of all timesteps
+        time_steps_all_vars = sorted(time_steps_all_vars)
 
         # check that each field has the same number of times
         time_steps_all_vars = sorted(list(set(time_steps_all_vars)))
@@ -107,46 +140,57 @@ def get_files_time_steps_s3(s3, fields, s3_dir_prefix, period_suffix, source_buc
         if skip_job:
             status = 'SKIP'
     except Exception as e:
-        status = f'ERROR getting S3 files and timesteps for fields {fields}. Error: {e}'
+        status = f'ERROR getting files and timesteps for fields {fields}. Error: {e}'
+    # ========== </Get files> =============================================================
 
-    return ((field_files, field_time_steps, time_steps_all_vars), status)
+    return ((field_files, time_steps_all_vars), status)
 
 
-def get_files_time_steps_local(fields, grouping_to_process, product_generation_config, freq_folder, period_suffix, num_time_steps_to_process, product_type, output_freq_code):
-    status = 'SUCCESS'
+def __get_files_helper(field, time_steps_to_process, curr_field_files, curr_field_time_steps):
+    """
+    Helps get_files_time_steps function. Takes list of files and time steps, and returns
+        dictionaries with fields as keys and files/timesteps as values for time steps specified
+        by time_steps_to_process
 
-    field_files = {}
-    field_time_steps = {}
-    all_time_steps_all_vars = []
-    try:
-        for field in fields:
-            field_files[field] = sorted(glob.glob(f'{product_generation_config["model_output_dir"]}/{freq_folder}/{field}_{period_suffix}/*.data'))
-            time_steps = [key.split('.')[-2] for key in field_files[field]]
-            if num_time_steps_to_process == 'all':
-                field_time_steps[field] = sorted(time_steps)
-                all_time_steps_all_vars.extend(time_steps)
-            elif num_time_steps_to_process > 0:
-                time_steps = sorted(time_steps)[:num_time_steps_to_process]
-                field_files[field] = sorted(field_files[field])[:num_time_steps_to_process]
-                field_time_steps[field] = time_steps
-            else:
-                print(f'Bad time steps provided ("{num_time_steps_to_process}"). Skipping job.')
-                print(f'--- Skipping job:\n\tgrouping: {grouping_to_process}\n\tproduct_type: {product_type}\n\toutput_freq_code: {output_freq_code}\n\tnum_time_steps_to_process: {num_time_steps_to_process}')
-                continue
-            all_time_steps_all_vars.extend(time_steps)
-            
-        # check that each field has the same number of times
-        all_time_steps_all_vars = sorted(list(set(all_time_steps_all_vars)))
-        skip_job = False
-        for field in fields:
-            if all_time_steps_all_vars == field_time_steps[field]:
-                continue
-            else:
-                print(f'Unequal time steps for field "{field}". Skipping job')
-                skip_job = True
-        if skip_job:
-            status = 'SKIP'
-    except Exception as e:
-        status = f'ERROR getting local files and timesteps for fields {fields}. Error: {e}'
-    
-    return ((field_files, field_time_steps, all_time_steps_all_vars), status)
+    Args:
+        field (str): Field name
+        time_steps_to_process (str/int/list): String 'all', an integer specifing the number of time
+                                                steps, or a list of time steps to process
+        curr_field_files (list): List of all files for the current field available in S3 or locally
+        curr_field_time_steps (list): Timesteps of all files for the current field available in S3 or locally
+
+    Returns:
+        ((field_files[field], field_time_steps[field], time_steps) (tuple):
+            field_files[field] (list): List of field files to process according to time_steps_to_process
+            field_time_steps[field] (list): List of field timesteps to process according to time_steps_to_process
+            time_steps (list): List of all unique timesteps to process
+    """
+    field_files = defaultdict(list)
+    field_time_steps = defaultdict(list)
+    time_steps = []
+
+    # if 'all' timesteps are wanted, add all of the file timesteps to field_files and time_steps
+    if time_steps_to_process == 'all':
+        field_files[field] = curr_field_files
+        field_time_steps[field] = curr_field_time_steps
+        time_steps.extend(curr_field_time_steps)
+    # else if time_steps_to_process is an int, add that many files to field_files and time_steps
+    elif isinstance(time_steps_to_process, int):
+        field_files[field] = curr_field_files[:time_steps_to_process]
+        curr_field_time_steps = curr_field_time_steps[:time_steps_to_process]
+        field_time_steps[field] = curr_field_time_steps
+        time_steps.extend(curr_field_time_steps)
+    # else if time_steps_to_process is a list, add the files corresponding to those indicies
+    elif isinstance(time_steps_to_process, list):
+        for ts_ind in time_steps_to_process:
+            if ts_ind >= len(curr_field_files):
+                break
+            field_files[field].append(curr_field_files[ts_ind])
+            field_time_steps[field].append(curr_field_time_steps[ts_ind])
+            time_steps.append(curr_field_time_steps[ts_ind])
+
+    # sort names and timesteps
+    field_files[field] = sorted(field_files[field])
+    field_time_steps[field] = sorted(field_time_steps[field])
+
+    return (field_files[field], field_time_steps[field], time_steps)
