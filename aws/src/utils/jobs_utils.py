@@ -153,9 +153,9 @@ def create_jobs(groupings):
             # Prompt user for which timesteps to process, for each dataset they selected previously
             # Timesteps can be entered as follows:
             # - X (i.e. 5) -> Processes X many timesteps from model start time
-            # - X-Y (i.e. 10-15) -> Processes timesteps X to Y indicies (exclusive) from model start time
+            # - X-Y (i.e. 10-15) -> Processes timesteps X to Y indices (exclusive) from model start time
             # - all -> Processes all available timesteps
-            # - X, Y, W-Z (i.e. 5, 10, 200-300) -> Processes X from start, Y from start, and W to Z timestep indicies. All separate jobs
+            # - X, Y, W-Z (i.e. 5, 10, 200-300) -> Processes X from start, Y from start, and W to Z timestep indices. All separate jobs
             print(f'\n\t\t\tDATASETS')
             for dataset in datasets_to_process:
                 print(f'\t\t\t\t{dataset}')
@@ -216,11 +216,13 @@ def create_jobs(groupings):
             jobs_file.write(jobs_string)
     # ========== </Save new created jobs> =========================================================
 
-
     return jobs_filename
 
 
-def __selected_options_helper(user_input, list_of_options, selection_string, tabs):
+def __selected_options_helper(user_input, 
+                              list_of_options, 
+                              selection_string, 
+                              tabs):
     """
     Helps create jobs to present user with their selected options and confirm it's what they want
 
@@ -273,7 +275,15 @@ def __selected_options_helper(user_input, list_of_options, selection_string, tab
 # ==========================================================================================================================
 # RUN JOBS
 # ==========================================================================================================================
-def run_job(job, groupings_for_datasets, dict_key_args, product_generation_config, aws_config, debug_mode, s3=None, lambda_client=None, job_logs=None, credentials=None):
+def run_job(job, 
+            groupings_for_datasets, 
+            dict_key_args, 
+            product_generation_config, 
+            aws_config, 
+            s3=None, 
+            lambda_client=None, 
+            job_logs=None, 
+            credentials=None):
     """
     Run the job provided either locally or via AWS Lambda
 
@@ -283,7 +293,6 @@ def run_job(job, groupings_for_datasets, dict_key_args, product_generation_confi
         dict_key_args (dict): Dictionary of command line arguments to master_scipt.py
         product_generation_config (dict): Dictionary of product_generation_config.yaml config file
         aws_config (dict): Dictionary of aws_config.yaml config file
-        debug_mode (bool): Boolean to enable debug
         s3 (optional, botocore.client.S3): boto3 client object for AWS S3
         lambda_client (optional, botocore.client.Lambda): boto3 client object for AWS Lambda
         job_logs (optional, dict): Dictionary containing information of each job and processing overall
@@ -375,17 +384,16 @@ def run_job(job, groupings_for_datasets, dict_key_args, product_generation_confi
     # ========== <Start job> ======================================================================
     if use_lambda:
         num_jobs += lambda_utils.invoke_lambda(lambda_client, 
-                                                job_logs, 
-                                                time_steps, 
-                                                dict_key_args, 
-                                                product_generation_config, 
-                                                aws_config, 
-                                                job, 
-                                                function_name_prefix, 
-                                                dimension, 
-                                                field_files, 
-                                                credentials,
-                                                debug_mode)
+                                               job_logs, 
+                                               time_steps, 
+                                               dict_key_args, 
+                                               product_generation_config, 
+                                               aws_config, 
+                                               job, 
+                                               function_name_prefix, 
+                                               dimension, 
+                                               field_files, 
+                                               credentials)
     else:
         # Call local generate_netcdfs function
         # Note: You can update this to utilize parallel processing
@@ -398,17 +406,14 @@ def run_job(job, groupings_for_datasets, dict_key_args, product_generation_confi
             'time_steps_to_process': time_steps,
             'field_files': field_files,
             'product_generation_config': product_generation_config,
-            'aws_metadata': aws_config,
-            'debug_mode': debug_mode,
+            'aws_config': aws_config,
             'local': local,
             'use_lambda': use_lambda,
-            'credentials': credentials,
-            'use_workers_to_download': product_generation_config['use_workers_to_download']
+            'credentials': credentials
         }
 
         generate_netcdfs(payload)
         num_jobs += 1
     # ========== </Start job> =====================================================================
     
-
     return (num_jobs, job_logs, status)

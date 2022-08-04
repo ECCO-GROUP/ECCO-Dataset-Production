@@ -26,7 +26,17 @@ import credentials_utils as credentials_utils
 # ==========================================================================================================================
 # PROCESS LOGS
 # ==========================================================================================================================
-def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lambda_start_time, num_jobs, credential_method, log_name, aws_path, retry=-1):
+def lambda_logging(job_logs, 
+                   start_time, 
+                   ms_to_sec, 
+                   MB_to_GB, 
+                   USD_per_GBsec, 
+                   lambda_start_time, 
+                   num_jobs, 
+                   credential_method, 
+                   log_name, 
+                   aws_path, 
+                   retry=-1):
     """
     Collect, process, and save AWS Lambda logs from AWS CloudWatch
 
@@ -54,7 +64,7 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
     log_client = boto3.client('logs')
     num_jobs_ended = 0
     estimated_jobs = []
-    ctr = -1
+    log_ctr = -1
 
     completed_request_ids = []
     deleted_stream_names = defaultdict(list)
@@ -68,8 +78,8 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
 
     # ========== <Save inital log> ================================================================
     # intital log
-    if ctr == -1:
-        ctr += 1
+    if log_ctr == -1:
+        log_ctr += 1
         total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
         job_logs['Master Script Total Time (s)'] = total_time
         job_logs['Number of Lambda Jobs'] = num_jobs
@@ -77,7 +87,14 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
             fn_extra = f'INITIAL_RETRY_{retry}'
         else:
             fn_extra = 'INITIAL'
-        job_logs, estimated_jobs = __save_logs_helper(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, log_name, aws_path, fn_extra=fn_extra)
+        job_logs, estimated_jobs = __save_logs_helper(job_logs, 
+                                                      MB_to_GB, 
+                                                      estimated_jobs, 
+                                                      lambda_start_time, 
+                                                      log_ctr, 
+                                                      log_name, 
+                                                      aws_path, 
+                                                      fn_extra=fn_extra)
         previous_time = time.time()
     # ========== </Save inital log> ===============================================================
 
@@ -123,8 +140,13 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
             if total_num_log_streams > 0:
                 # Get all events in the logs that have "[INFO]" or "REPORT " in them. Only look at log streams
                 # from the list "log_stream_names" and between "start_time" and "end_time"
-                info_log_events = __get_logs_helper(log_client, log_group_names, log_stream_names, start_time, end_time, log_filter, 'event')
-
+                info_log_events = __get_logs_helper(log_client, 
+                                                    log_group_names, 
+                                                    log_stream_names, 
+                                                    start_time, 
+                                                    end_time, 
+                                                    log_filter, 
+                                                    'event')
 
                 # ========== <Log event loop> =====================================================
                 # Loop through all [INFO] and REPORT events
@@ -223,7 +245,6 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
                             succeeded_timesteps = ast.literal_eval(log_message[4])
                             job_logs['Jobs'][request_id]['timesteps_succeeded'] = succeeded_timesteps
 
-
                         # If a Lambda job request ID has a recorded START, REPORT, and END log event,
                         # then add it to the completed request_ids. Also add it's parent log stream
                         # to a list of completed log streams to go through to delete later
@@ -256,7 +277,8 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
                             if delete_current_log and delete_logs:
                                 # delete current log stream (all requests contained within log stream are complete)
                                 print(f'Deleting log stream: {log_stream_name}')
-                                log_client.delete_log_stream(logGroupName=log_group_name, logStreamName=log_stream_name)
+                                log_client.delete_log_stream(logGroupName=log_group_name, 
+                                                             logStreamName=log_stream_name)
                                 # AWS limits DeleteLogStream to 5 requests per second (at a minimum). This checks to see if 5 calls have been
                                 # made within a second, and waits the amount necessary to exceed 1 second before continuing to delete streams.
                                 delete_ctr += 1
@@ -270,7 +292,7 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
 
             # ========== <Final log> ==============================================================
             if (num_jobs_ended == num_jobs):
-                ctr += 1
+                log_ctr += 1
                 print(f'Processing job logs -- {num_jobs_ended}/{num_jobs}')
                 total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
                 job_logs['Master Script Total Time (s)'] = total_time
@@ -279,7 +301,14 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
                     fn_extra = f'FINAL_RETRY_{retry}'
                 else:
                     fn_extra = 'FINAL'
-                job_logs, estimated_jobs = __save_logs_helper(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, log_name, aws_path, fn_extra=fn_extra)
+                job_logs, estimated_jobs = __save_logs_helper(job_logs, 
+                                                              MB_to_GB, 
+                                                              estimated_jobs, 
+                                                              lambda_start_time, 
+                                                              log_ctr, 
+                                                              log_name, 
+                                                              aws_path, 
+                                                              fn_extra=fn_extra)
                 print(f'\n=== LOGGING COMPLETE ===')
                 break
             # ========== </Final log> =============================================================
@@ -288,14 +317,21 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
             # ========== <Partial log> ============================================================
             # Save a log if it has been longer than 60 seconds since the last log, and new jobs have ended
             if (previous_num_complete != num_jobs_ended) and (time.time() - previous_time > 60):
-                ctr += 1
+                log_ctr += 1
                 total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
                 job_logs['Master Script Total Time (s)'] = total_time
                 if retry != -1:
                     fn_extra = f'RETRY_{retry}'
                 else:
                     fn_extra = ''
-                job_logs, estimated_jobs = __save_logs_helper(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, log_name, aws_path, fn_extra=fn_extra)
+                job_logs, estimated_jobs = __save_logs_helper(job_logs, 
+                                                              MB_to_GB, 
+                                                              estimated_jobs, 
+                                                              lambda_start_time, 
+                                                              log_ctr, 
+                                                              log_name, 
+                                                              aws_path, 
+                                                              fn_extra=fn_extra)
                 previous_num_complete = copy.deepcopy(num_jobs_ended)
                 previous_time = time.time()
             # ========== </Partial log> ===========================================================
@@ -327,17 +363,29 @@ def lambda_logging(job_logs, start_time, ms_to_sec, MB_to_GB, USD_per_GBsec, lam
                     total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
                     job_logs['Master Script Total Time (s)'] = total_time
                     # write final job_logs to file
-                    job_logs, estimated_jobs = __save_logs_helper(job_logs, MB_to_GB, estimated_jobs, lambda_start_time, ctr, log_name, aws_path, fn_extra='FINAL_error')
+                    job_logs, estimated_jobs = __save_logs_helper(job_logs, 
+                                                                  MB_to_GB, 
+                                                                  estimated_jobs, 
+                                                                  lambda_start_time, 
+                                                                  log_ctr, 
+                                                                  log_name, 
+                                                                  aws_path, 
+                                                                  fn_extra='FINAL_error')
                 except Exception as e:
                     print(f'Failed saving final log too: {e}')
                 return job_logs
     # ========== </Main logging loop> =============================================================
 
-
     return job_logs
 
 
-def __get_logs_helper(log_client, log_group_names, log_stream_names, start_time=0, end_time=0, filter_pattern='', type=''):
+def __get_logs_helper(log_client, 
+                      log_group_names, 
+                      log_stream_names, 
+                      start_time=0, 
+                      end_time=0, 
+                      filter_pattern='', 
+                      type=''):
     """
     Get the logs from AWS CloudWatch for the provided log groups, and log streams, within start and end time, using provided filter
 
@@ -378,14 +426,21 @@ def __get_logs_helper(log_client, log_group_names, log_stream_names, start_time=
                     total_logs_checked += len(mod_log_stream_names)
 
                     # filter the (max) 100 log streams to get the events between start and end time, and that match the filter pattern
-                    events_current = log_client.filter_log_events(logGroupName=log_group_name, logStreamNames=mod_log_stream_names, filterPattern=filter_pattern, startTime=start_time, endTime=end_time)
+                    events_current = log_client.filter_log_events(logGroupName=log_group_name, 
+                                                                  logStreamNames=mod_log_stream_names, 
+                                                                  filterPattern=filter_pattern, 
+                                                                  startTime=start_time, 
+                                                                  endTime=end_time)
 
                     time.sleep(0.11) # AWS limits FilterLogEvents to 10 requests per second in US West. This ensures 10 requests dont occur in a second.
                     ret_logs[log_group_name].extend(events_current['events'])
                     # if there are more events left, get those as well (filter_log_events puts a limit to the total number of events returned)
                     while True:
                         if 'nextToken' in events_current.keys():
-                            events_current = log_client.filter_log_events(logGroupName=log_group_name, logStreamNames=mod_log_stream_names, filterPattern=filter_pattern, nextToken=events_current['nextToken'])
+                            events_current = log_client.filter_log_events(logGroupName=log_group_name, 
+                                                                          logStreamNames=mod_log_stream_names, 
+                                                                          filterPattern=filter_pattern, 
+                                                                          nextToken=events_current['nextToken'])
                             time.sleep(0.11) # AWS limits FilterLogEvents to 10 requests per second in US West. This ensures 10 requests dont occur in a second.
                             if events_current['events'] != []:
                                 ret_logs[log_group_name].extend(events_current['events'])
@@ -402,7 +457,8 @@ def __get_logs_helper(log_client, log_group_names, log_stream_names, start_time=
             ret_logs = defaultdict(list)
             # Get all the log streams in each log group
             for log_group_name in log_group_names:
-                log_streams_current = log_client.describe_log_streams(logGroupName=log_group_name, orderBy='LastEventTime')
+                log_streams_current = log_client.describe_log_streams(logGroupName=log_group_name, 
+                                                                      orderBy='LastEventTime')
 
                 time.sleep(0.21) # AWS limits DescribeLogStreams to 5 requests per second in US West. This ensures 5 requests dont occur in a second.
                 ret_logs[log_group_name] = log_streams_current['logStreams']
@@ -410,7 +466,9 @@ def __get_logs_helper(log_client, log_group_names, log_stream_names, start_time=
                 # if there are more log streams left, get those as well (describe_log_streams puts a limit to the total number of log streams returned)
                 while True:
                     if 'nextToken' in log_streams_current.keys():
-                        log_streams_current = log_client.describe_log_streams(logGroupName=log_group_name, orderBy='LastEventTime', nextToken=log_streams_current['nextToken'])
+                        log_streams_current = log_client.describe_log_streams(logGroupName=log_group_name, 
+                                                                              orderBy='LastEventTime', 
+                                                                              nextToken=log_streams_current['nextToken'])
                         time.sleep(0.21) # AWS limits DescribeLogStreams to 5 requests per second in US West. This ensures 5 requests dont occur in a second.
                         if log_streams_current['logStreams'] != []:
                             ret_logs[log_group_name].extend(log_streams_current['logStreams'])
@@ -423,7 +481,14 @@ def __get_logs_helper(log_client, log_group_names, log_stream_names, start_time=
     return ret_logs
 
 
-def __save_logs_helper(job_logs, MB_to_GB, estimated_jobs, start_time, ctr, log_name, aws_path, fn_extra=''):
+def __save_logs_helper(job_logs, 
+                       MB_to_GB, 
+                       estimated_jobs, 
+                       start_time, 
+                       log_ctr, 
+                       log_name, 
+                       aws_path, 
+                       fn_extra=''):
     """
     Save job_logs
 
@@ -431,8 +496,8 @@ def __save_logs_helper(job_logs, MB_to_GB, estimated_jobs, start_time, ctr, log_
         job_logs (dict): Dictionary containing information of each job and processing overall
         MB_to_GB (float): Constant for converting MB to GB and vice versa
         estimated_jobs (list): List of jobs, whos information has been added to job_logs
-        start_time (int): ms since 1970
-        ctr (int): Counter for number of logs saved
+        start_time (int): Time of master script start in ms since 1970
+        log_ctr (int): Counter for number of logs saved
         log_name (str): Name of log (appened to log filename(s), and within logs)
         aws_path (PosixPath): Path to /ECCO-Dataset-Product/aws
         fn_extra (optional, str): Extra string to add on end of log file name
@@ -490,7 +555,7 @@ def __save_logs_helper(job_logs, MB_to_GB, estimated_jobs, start_time, ctr, log_
             os.makedirs(log_path, exist_ok=True)
 
         # Save job_logs
-        with open(f'{log_path}/job_logs_{start_time}_{ctr}_{log_name}{fn_extra}.json', 'w') as f:
+        with open(f'{log_path}/job_logs_{start_time}_{log_ctr}_{log_name}{fn_extra}.json', 'w') as f:
             json.dump(job_logs, f, indent=4)
     except Exception as e:
         print('Error saving logs: ')

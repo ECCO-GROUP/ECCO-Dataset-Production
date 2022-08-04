@@ -16,7 +16,14 @@ from collections import defaultdict
 # ==========================================================================================================================
 # GET FILES and TIME STEPS
 # ==========================================================================================================================
-def get_files_time_steps(fields, period_suffix, time_steps_to_process, freq_folder, local, model_output_dir=None, s3_dir_prefix=None, source_bucket=None):
+def get_files_time_steps(fields, 
+                         period_suffix, 
+                         time_steps_to_process, 
+                         freq_folder, 
+                         local, 
+                         model_output_dir=None, 
+                         s3_dir_prefix=None, 
+                         source_bucket=None):
     """
     Create lists of files and timesteps for each field from files present on S3 in source_bucket or local in model_output_dir
 
@@ -101,7 +108,13 @@ def get_files_time_steps(fields, period_suffix, time_steps_to_process, freq_fold
             curr_field_time_steps = sorted(curr_field_time_steps)
 
             # collect the requested field files and time steps per time_steps_to_process
-            (field_files[field], field_time_steps[field], curr_time_steps_all_vars) = __get_files_helper(field, time_steps_to_process, curr_field_files, curr_field_time_steps)
+            all_files = __get_files_helper(field, 
+                                           time_steps_to_process, 
+                                           curr_field_files, 
+                                           curr_field_time_steps)
+
+            field_files[field], field_time_steps[field], curr_time_steps_all_vars = all_files
+            
             time_steps_all_vars.extend(curr_time_steps_all_vars)
 
             return field
@@ -146,7 +159,10 @@ def get_files_time_steps(fields, period_suffix, time_steps_to_process, freq_fold
     return ((field_files, time_steps_all_vars), status)
 
 
-def __get_files_helper(field, time_steps_to_process, curr_field_files, curr_field_time_steps):
+def __get_files_helper(field, 
+                       time_steps_to_process, 
+                       curr_field_files, 
+                       curr_field_time_steps):
     """
     Helps get_files_time_steps function. Takes list of files and time steps, and returns
         dictionaries with fields as keys and files/timesteps as values for time steps specified
@@ -180,7 +196,7 @@ def __get_files_helper(field, time_steps_to_process, curr_field_files, curr_fiel
         curr_field_time_steps = curr_field_time_steps[:time_steps_to_process]
         field_time_steps[field] = curr_field_time_steps
         time_steps.extend(curr_field_time_steps)
-    # else if time_steps_to_process is a list, add the files corresponding to those indicies
+    # else if time_steps_to_process is a list, add the files corresponding to those indices
     elif isinstance(time_steps_to_process, list):
         for ts_ind in time_steps_to_process:
             if ts_ind >= len(curr_field_files):

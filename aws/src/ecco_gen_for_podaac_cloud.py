@@ -21,23 +21,58 @@ import xarray as xr
 import netCDF4 as nc4
 from pathlib import Path
 
-
+# Local imports
 main_path = Path(__file__).parent.parent.resolve()
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
+import ecco_v4_py as ecco
 import gen_netcdf_utils as gen_netcdf_utils
 
-import ecco_v4_py as ecco
+# =================================================================================================
+# PRINT LOGGING INFO
+# =================================================================================================
+def logging_info(time_steps_to_process, 
+                 successful_time_steps, 
+                 start_time, 
+                 total_download_time, 
+                 num_downloaded, 
+                 total_netcdf_time, 
+                 total_upload_time, 
+                 num_uploaded, 
+                 succeeded_checksums, 
+                 total_checksum_time, 
+                 logger, 
+                 timeout):
+    """
+    Prints all the logging info (time, number of files, successes, fails, etc.)
 
+    Args:
+        time_steps_to_process (list): List of all timesteps sent to the job to process 
+        successful_time_steps (list): List of timesteps successfully processed
+        start_time (int): Time of master script start in ms since 1970
+        total_download_time (float): Total time spent downloading files (sec)
+        num_downloaded (int): Total number of downloaded files
+        total_netcdf_time (float): Total time spent creating netCDF files (sec)
+        total_upload_time (float): Total time spent uploading files to S3 (sec)
+        num_uploaded (int): Total number of files uploaded to S3 
+        succeeded_checksums (dict): Dictionary of key=timestep and value=Dictionary of 's3_fname', 'checksum' and 'uuid'
+        total_checksum_time (float): Total time spent creating and checking checksums (sec) 
+        logger (bool): Boolean for whether or not to use the python logger.info() for the log prints
+        timeout (bool): Boolean for whether or not the current job reached the timeout time
 
-# ==========================================================================================================================
-def logging_info(time_steps_to_process, successful_time_steps, start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded, succeeded_checksums, total_checksum_time, logger, timeout):
+    Returns:
+        None
+    """
+
+    # Calculate total time values
     script_time = time.time() - start_time
     script_time -= (total_download_time + total_netcdf_time + total_upload_time)
     IO_time = total_download_time + total_netcdf_time + total_upload_time
     total_time = script_time + IO_time
     print()
     print('='*25 + ' EXECUTION COMPLETE ' + '='*25)
+
+    # Append each print statement to a list, to be printed out as a batch
     print_messages = []
     print_messages.append(f'DURATION\tTOTAL\t{total_time}\tseconds')
     print_messages.append(f'DURATION\tSCRIPT\t{script_time}\tseconds')
@@ -49,11 +84,15 @@ def logging_info(time_steps_to_process, successful_time_steps, start_time, total
     print_messages.append(f'FILES\tDOWNLOAD\t{num_downloaded}')
     print_messages.append(f'FILES\tUPLOAD\t{num_uploaded}')
 
+    # Include a TIMEOUT print if the job timeout
     if timeout:
         print_messages.append('TIMEOUT')
 
+    # Include a SUCCEEDED print out with the checksums
     print_messages.append(f'SUCCEEDED\t{succeeded_checksums}')
 
+    # If there are timesteps that failed, include a print out for those,
+    # otherwise include a SUCCESS print out
     if not time_steps_to_process == successful_time_steps:
         failed_time_steps = list(set(time_steps_to_process) ^ set(successful_time_steps))
         print_messages.append(f'FAILED\t{failed_time_steps}')
@@ -61,19 +100,41 @@ def logging_info(time_steps_to_process, successful_time_steps, start_time, total
     else:
         print_messages.append('SUCCESS')
 
+    # Include an END printout
     print_messages.append('END')
 
+    # Print the logging messages with the python logger.info() or just to screen
     for msg in print_messages:
         if logger != False:
             logger.info(msg)
         else:
             print(msg)
 
-
     return
 
 
 def generate_netcdfs(event):
+    """
+    Primary processing function. Gathers the metadata, files, transforms granules, and applies metadata
+    for the passed job
+
+    Args:
+        event (dict): Contains all the information required to process the passed job:
+            grouping_to_process (int): Grouping number from groupings json file for current dataset
+            product_type (str): String product type (i.e. 'latlon', 'native')
+            output_freq_code (str): String output frequency code (i.e. 'AVG_MON', 'AVG_DAY', 'SNAP')
+            time_steps_to_process (list): List of timesteps to process for the current job
+            field_files (defaultdict(list)): Dictionary with field names as keys, and S3/local file paths for each timestep as values
+            product_generation_config (dict): Dictionary of product_generation_config.yaml config file
+            aws_config (dict): Dictionary of aws_config.yaml config file
+            local (bool): Boolean for whether or not processing is to occur locally (no S3, no Lambda)
+            use_lambda (bool): Boolean for whether or not processing is to occur on Lambda
+            credentials (dict): Dictionary containaing credentials information for AWS
+            processing_code_filename (only for lambda, str): Name of this file, used to call it from the lambda_code app.py file
+
+    Returns:
+        None
+    """
     job_start_time = time.time()
     timeout = False
 
@@ -88,27 +149,24 @@ def generate_netcdfs(event):
     succeeded_checksums = {}
 
     # Pull variables from "event" argument
-    output_freq_code = event['output_freq_code']
-    product_type = event['product_type']
     grouping_to_process = event['grouping_to_process']
+    product_type = event['product_type']
+    output_freq_code = event['output_freq_code']
     time_steps_to_process = event['time_steps_to_process']
     field_files = event['field_files']
     product_generation_config = event['product_generation_config']
-    aws_metadata = event['aws_metadata']
-    debug_mode = event['debug_mode']
+    aws_config = event['aws_config']
     local = event['local']
     use_lambda = event['use_lambda']
     credentials = event['credentials']
-    use_workers_to_download = event['use_workers_to_download']
-
-    extra_prints = product_generation_config['extra_prints']
 
     # get list of fields to process
     fields_to_load = list(field_files.keys())
 
     try:
-        # Fix paths
+        # Fix paths. Serializing JSON doesnt allow for PosixPath variables, so they need to be remade
         if use_lambda:
+            # Lambda paths are based off of the parent folder
             product_generation_config['mapping_factors_dir'] = Path(__file__).parent / 'mapping_factors'
             product_generation_config['metadata_dir'] = Path(__file__).parent / 'metadata'
             product_generation_config['ecco_grid_dir'] = Path(__file__).parent / 'ecco_grids'
@@ -116,36 +174,45 @@ def generate_netcdfs(event):
             product_generation_config['model_output_dir'] = Path('/tmp') / 'diags_all'
             product_generation_config['processed_output_dir_base'] = Path('/tmp') / 'temp_output'
         else:
+            # Local paths are based off of the passed directories (or defaults)
             product_generation_config['mapping_factors_dir'] = Path(product_generation_config['mapping_factors_dir'])
             product_generation_config['metadata_dir'] = Path(product_generation_config['metadata_dir'])
             product_generation_config['ecco_grid_dir'] = Path(product_generation_config['ecco_grid_dir'])
             product_generation_config['ecco_grid_dir_mds'] = Path(product_generation_config['ecco_grid_dir_mds'])
             product_generation_config['model_output_dir'] = Path(product_generation_config['model_output_dir'])
             product_generation_config['processed_output_dir_base'] = Path(product_generation_config['processed_output_dir_base'])
+        
+        # Prepare variables with values from product_generation_config that are used more than once
+        extra_prints = product_generation_config['extra_prints']
+        create_checksum = product_generation_config['create_checksum']
+        mapping_factors_dir = product_generation_config['mapping_factors_dir']
+        processed_output_dir_base = product_generation_config['processed_output_dir_base']
+        download_all_fields = product_generation_config['download_all_fields']
+        ecco_grid_dir_mds = product_generation_config['ecco_grid_dir_mds']
+        read_ecco_grid = product_generation_config['read_ecco_grid_for_native_load']
 
         print('\nBEGIN generate_netcdfs')
         print('OFC', output_freq_code)
         print('PDT', product_type)
         print('GTP', grouping_to_process)
         print('TSP', time_steps_to_process)
-        print('DBG', debug_mode)
         print('')
 
         # Setup S3
-        if 'source_bucket' in aws_metadata and 'output_bucket' in aws_metadata:
-            buckets = (aws_metadata['source_bucket'], aws_metadata['output_bucket'])
+        if 'source_bucket' in aws_config and 'output_bucket' in aws_config:
+            buckets = (aws_config['source_bucket'], aws_config['output_bucket'])
             if not local and buckets != None and credentials != None:
-                # boto3.setup_default_session(profile_name=aws_metadata['profile_name'])
+                # boto3.setup_default_session(profile_name=aws_config['profile_name'])
                 s3 = boto3.client('s3')
                 model_granule_bucket, processed_data_bucket = buckets
         elif not local:
-            status = f'ERROR No bucket names in aws_metadata:\n{aws_metadata}'
+            status = f'ERROR No bucket names in aws_config:\n{aws_config}'
             raise Exception(status)
 
         # Create processed_output_dir_base directory if using S3 (and not Lambda)
         if not local and not use_lambda:
-            if not os.path.exists(product_generation_config['processed_output_dir_base']):
-                os.makedirs(product_generation_config['processed_output_dir_base'], exist_ok=True)
+            if not os.path.exists(processed_output_dir_base):
+                os.makedirs(processed_output_dir_base, exist_ok=True)
 
         # Define fill values for binary and netcdf
         # ECCO always uses -9999 for missing data.
@@ -174,100 +241,63 @@ def generate_netcdfs(event):
             logger = logging.getLogger()
             logger.setLevel(logging.INFO)
 
-        # ======================================================================================================================
-        # METADATA SETUP
-        # ======================================================================================================================
+
+        # ========== <Metadata setup> =============================================================
         # Define tail for dataset description (summary)
         dataset_description_tail_native = product_generation_config['dataset_description_tail_native']
         dataset_description_tail_latlon = product_generation_config['dataset_description_tail_latlon']
-        
-        filename_tail_native = f'_ECCO_{product_generation_config["ecco_version"]}_native_{product_generation_config["filename_tail_native"]}'
-        filename_tail_latlon = f'_ECCO_{product_generation_config["ecco_version"]}_latlon_{product_generation_config["filename_tail_latlon"]}'
 
-        metadata_fields = ['global_metadata_for_all_datasets',
-                        'global_metadata_for_latlon_datasets',
-                        'global_metadata_for_native_datasets',
-                        'coordinate_metadata_for_1D_datasets',
-                        'coordinate_metadata_for_latlon_datasets',
-                        'coordinate_metadata_for_native_datasets',
-                        'geometry_metadata_for_latlon_datasets',
-                        'geometry_metadata_for_native_datasets',
-                        'groupings_for_1D_datasets',
-                        'groupings_for_latlon_datasets',
-                        'groupings_for_native_datasets',
-                        'variable_metadata',
-                        'variable_metadata_for_latlon_datasets']
+        # Get .json metadata file names from metadata directory for current ecco_version
+        metadata_fields = [f[:-5] for f in os.listdir(product_generation_config['metadata_dir']) if '.json' in f]
 
         # load METADATA
         if extra_prints: print('\nLOADING METADATA')
         metadata = {}
 
+        # Open and load each metadata file into a dictionary where it's key is the filename
         for mf in metadata_fields:
             mf_e = mf + '.json'
             if extra_prints: print(mf_e)
             with open(str(Path(product_generation_config['metadata_dir']) / mf_e), 'r') as fp:
                 metadata[mf] = json.load(fp)
 
-        # metadata for different variables
-        global_metadata_for_all_datasets = metadata['global_metadata_for_all_datasets']
-        global_metadata_for_latlon_datasets = metadata['global_metadata_for_latlon_datasets']
-        global_metadata_for_native_datasets = metadata['global_metadata_for_native_datasets']
+        # collect all metadata files into a single dictionary with simple names as keys
+        variable_metadata_native = metadata['variable_metadata'] + metadata['geometry_metadata_for_native_datasets']
 
-        coordinate_metadata_for_1D_datasets = metadata['coordinate_metadata_for_1D_datasets']
-        coordinate_metadata_for_latlon_datasets = metadata['coordinate_metadata_for_latlon_datasets']
-        coordinate_metadata_for_native_datasets = metadata['coordinate_metadata_for_native_datasets']
-
-        geometry_metadata_for_latlon_datasets = metadata['geometry_metadata_for_latlon_datasets']
-        geometry_metadata_for_native_datasets = metadata['geometry_metadata_for_native_datasets']
-
-        groupings_for_1D_datasets = metadata['groupings_for_1D_datasets']
-        groupings_for_latlon_datasets = metadata['groupings_for_latlon_datasets']
-        groupings_for_native_datasets = metadata['groupings_for_native_datasets']
-
-        variable_metadata_latlon = metadata['variable_metadata_for_latlon_datasets']
-        variable_metadata_default = metadata['variable_metadata']
-
-        variable_metadata_native = variable_metadata_default + geometry_metadata_for_native_datasets
-
-        all_metadata = {'var_native':variable_metadata_native, 
-                        'var_latlon':variable_metadata_latlon, 
-                        'coord_native':coordinate_metadata_for_native_datasets, 
-                        'coord_latlon':coordinate_metadata_for_latlon_datasets, 
-                        'global_all':global_metadata_for_all_datasets, 
-                        'global_native':global_metadata_for_native_datasets, 
-                        'global_latlon':global_metadata_for_latlon_datasets}
-        # ======================================================================================================================
+        all_metadata = {'var_native': variable_metadata_native, 
+                        'var_latlon': metadata['variable_metadata_for_latlon_datasets'], 
+                        'coord_1D': metadata['coordinate_metadata_for_1D_datasets'],
+                        'coord_native': metadata['coordinate_metadata_for_native_datasets'], 
+                        'coord_latlon': metadata['coordinate_metadata_for_latlon_datasets'], 
+                        'global_all': metadata['global_metadata_for_all_datasets'], 
+                        'global_native': metadata['global_metadata_for_native_datasets'], 
+                        'global_latlon': metadata['global_metadata_for_latlon_datasets'],
+                        'geometry_native': metadata['geometry_metadata_for_native_datasets'],
+                        'geometry_latlon': metadata['geometry_metadata_for_latlon_datasets'],
+                        'groupings_1D': metadata['groupings_for_1D_datasets'],
+                        'groupings_native': metadata['groupings_for_native_datasets'],
+                        'groupings_latlon': metadata['groupings_for_latlon_datasets']}
+        # ========== </Metadata setup> ============================================================
 
 
-        # ======================================================================================================================
-        # NATIVE vs LATLON SETUP
-        # ======================================================================================================================
+        # ========== <Native/Latlon setup> ========================================================
         if extra_prints: print('\nproduct type', product_type)
         if product_type == 'native':
             dataset_description_tail = dataset_description_tail_native
-            filename_tail = filename_tail_native
-            groupings = groupings_for_native_datasets
-            output_dir_type = product_generation_config['processed_output_dir_base'] / 'native'
-            status, latlon_grid = gen_netcdf_utils.get_latlon_grid(Path(product_generation_config['mapping_factors_dir']), debug_mode)
+            groupings = all_metadata['groupings_native']
+            output_dir_type = processed_output_dir_base / 'native'
+            status, latlon_grid = gen_netcdf_utils.get_latlon_grid(mapping_factors_dir)
         elif product_type == 'latlon':
             dataset_description_tail = dataset_description_tail_latlon
-            filename_tail = filename_tail_latlon
-            groupings = groupings_for_latlon_datasets
-            output_dir_type = product_generation_config['processed_output_dir_base'] / 'lat-lon'
-            status, latlon_grid = gen_netcdf_utils.get_latlon_grid(Path(product_generation_config['mapping_factors_dir']), debug_mode)
+            groupings = all_metadata['groupings_latlon']
+            output_dir_type = processed_output_dir_base / 'lat-lon'
+            status, latlon_grid = gen_netcdf_utils.get_latlon_grid(mapping_factors_dir)
         if status != 'SUCCESS':
             raise Exception(status)
-
-        if product_type == 'native':
-            (latlon_bounds, depth_bounds, _, _) = latlon_grid
-        elif product_type == 'latlon':
-            (latlon_bounds, depth_bounds, target_grid, wet_pts_k) = latlon_grid
-        # ======================================================================================================================
+        # ========== </Native/Latlon setup> =======================================================
 
 
-        # ======================================================================================================================
-        # GROUPINGS
-        # ======================================================================================================================
+        # ========== <Groupings> ==================================================================
         # determine which grouping to process
         if extra_prints: print('\nDetermining grouping to process')
         grouping = []
@@ -281,12 +311,10 @@ def generate_netcdfs(event):
         # dimension of dataset
         dataset_dim = grouping['dimension']
         if extra_prints: print('... grouping dimension', dataset_dim)
-        # ======================================================================================================================
+        # ========== </Groupings> =================================================================
 
 
-        # ======================================================================================================================
-        # DIRECTORIES & FILE PATHS
-        # ======================================================================================================================
+        # ========== <Directories and File Paths> =================================================
         if extra_prints: print('\nGetting directories for group fields')
         if output_freq_code == 'AVG_DAY':
             period_suffix = 'day_mean'
@@ -319,12 +347,10 @@ def generate_netcdfs(event):
 
         # create dataset description head
         dataset_description = dataset_description_head + grouping['name'] + dataset_description_tail
-        # ======================================================================================================================
+        # ========== </Directories and File Paths> ================================================
 
 
-        # ======================================================================================================================
-        # PROCESS EACH TIME LEVEL
-        # ======================================================================================================================
+        # ========== <Process each time level> ====================================================
         # load ECCO grid and land masks
         ecco_grid = xr.open_dataset(Path(product_generation_config['ecco_grid_dir']) / product_generation_config['ecco_grid_filename'])
         ecco_land_mask_c  = ecco_grid.maskC.copy(deep=True)
@@ -341,13 +367,12 @@ def generate_netcdfs(event):
             data_file_paths = {}
             meta_file_paths = {}
             try:
-                if use_lambda and time.time() - job_start_time >= aws_metadata['job_timeout']:
+                # Check if the current Lambda job execution as reached the user defined timeout time
+                if use_lambda and time.time() - job_start_time >= aws_config['job_timeout']:
                     timeout = True
                     raise Exception('TIMEOUT')
 
-                # ==================================================================================================================
-                # CALCULATE TIMES
-                # ==================================================================================================================
+                # ========== <Calculate times> ====================================================
                 print('\n\n=== TIME LEVEL ===', str(cur_ts_i).zfill(5), cur_ts)
                 if extra_prints: print('\n')
                 time_delta = np.timedelta64(int(cur_ts), 'h')
@@ -355,7 +380,8 @@ def generate_netcdfs(event):
                 times = [pd.to_datetime(str(cur_time))]
 
                 if 'AVG' in output_freq_code:
-                    tb, record_center_time = ecco.make_time_bounds_from_ds64(np.datetime64(times[0]), output_freq_code)
+                    tb, record_center_time = ecco.make_time_bounds_from_ds64(np.datetime64(times[0]), 
+                                                                             output_freq_code)
                     if extra_prints: print('ORIG  tb, ct ', tb, record_center_time)
 
                     # fix beginning of last record
@@ -363,7 +389,7 @@ def generate_netcdfs(event):
                         if extra_prints: print('end time match ')
                         time_delta = np.timedelta64(12,'h')
                         rec_avg_start = tb[0] + time_delta
-                        rec_avg_end   = tb[1]
+                        rec_avg_end = tb[1]
                         rec_avg_delta = rec_avg_end - rec_avg_start
                         rec_avg_middle = rec_avg_start + rec_avg_delta/2
 
@@ -374,7 +400,7 @@ def generate_netcdfs(event):
                     if tb[0].astype('datetime64[D]') == ecco_start_time.astype('datetime64[D]'):
                         if extra_prints: print('start time match ')
                         rec_avg_start = ecco_start_time
-                        rec_avg_end   = tb[1]
+                        rec_avg_end = tb[1]
                         rec_avg_delta = tb[1] - ecco_start_time
                         rec_avg_middle = rec_avg_start + rec_avg_delta/2
 
@@ -395,237 +421,310 @@ def generate_netcdfs(event):
                     record_center_time = np.datetime64(times[0])
 
                 record_times = {'start':record_start_time, 'center':record_center_time, 'end':record_end_time}
-                # ==================================================================================================================
+                # ========== </Calculate times> ===================================================
 
 
-                # ==================================================================================================================
-                # LOOP THROUGH VARIABLES & CREATE DATASET
-                # ==================================================================================================================
+                # ========== <Download files> ==================================================
                 F_DS_vars = []
 
-                if not debug_mode:
-                    
-                    # RANDOM FAILURE (FOR TESTING)
-                    # if np.random.random() < 0.5:
-                    #     print(f'FAIL {cur_ts}')
-                    #     raise Exception('Random failure')
+                # Download field file(s)
+                # If 'download_all_fields' in product_generation_config.yaml is True, then all field files
+                # for the current time step will be downloaded, otherwise each field file is downloaded 
+                # and processed one at a time
+                if not local and download_all_fields:
+                    print(f'Downloading all files for current timestep')
+                    s3_download_start_time = time.time()
+                    (status, (all_files)) = gen_netcdf_utils.download_all_files(s3, 
+                                                                                fields_to_load, 
+                                                                                field_files, 
+                                                                                cur_ts, 
+                                                                                data_file_paths, 
+                                                                                meta_file_paths, 
+                                                                                product_generation_config, 
+                                                                                product_type, 
+                                                                                model_granule_bucket)
 
-                    # Download field file(s)
-                    # If 'download_all_fields' in product_generation_config.yaml is True, then all field files
-                    # for the current time step will be downloaded, otherwise each field file is downloaded 
-                    # and processed one at a time
-                    if not local and product_generation_config['download_all_fields']:
-                        print(f'Downloading all files for current timestep')
+                    data_file_paths, meta_file_paths, curr_num_downloaded = all_files
+                    num_downloaded += curr_num_downloaded
+
+                    if status != 'SUCCESS':
+                        print(f'FAIL {cur_ts}')
+                        raise Exception(status)
+                    total_download_time += (time.time() - s3_download_start_time)
+                else:
+                    print(f'Downloading and processing fields one at a time for current timestep')
+
+                # Get data_file_paths for local files when processing locally
+                if local:
+                    for field in fields_to_load:
+                        curr_field_files = field_files[field]
+                        for field_file in curr_field_files:
+                            if cur_ts in field_file:
+                                if '.data' in field_file:
+                                    data_file_paths[field] = field_file
+                                break
+                # ========== </Download files> ====================================================
+
+
+                # ============================== TODO =============================================
+                # ========== <Vector rotation> ====================================================
+                # PERFORM VECTOR ROTATION AS NECESSARY
+                if 'vector_inputs' in grouping:
+                    grouping['vector_inputs'] = ['UVEL', 'VVEL']
+                    # load specified field files from the provided directory
+                    # This loads them into the native tile grid
+                    F_DSs = []
+                    for vec_field in grouping['vector_inputs']:
+                        status, F_DS = ecco.load_ecco_vars_from_mds(
+                                            Path(data_file_paths[vec_field]).parent,
+                                            mds_grid_dir = download_all_fields,
+                                            mds_files = Path(data_file_paths[vec_field]).name.split('.')[0],
+                                            vars_to_load = vec_field,
+                                            drop_unused_coords = True,
+                                            grid_vars_to_coords = False,
+                                            output_freq_code = output_freq_code,
+                                            model_time_steps_to_load = int(cur_ts),
+                                            less_output = True,
+                                            read_grid = read_ecco_grid)
+                        print(status)
+                        F_DSs.append(F_DS)
+                # ========== </Vector rotation> ===================================================
+                # ============================== TODO =============================================
+
+
+                # ========== <Field transformations> ==============================================
+                # Load fields and place them in the dataset
+                for i, field in enumerate(sorted(fields_to_load)):
+                    if not local and not download_all_fields:
                         s3_download_start_time = time.time()
-                        (status, data_file_paths, meta_file_paths, curr_num_downloaded) = gen_netcdf_utils.download_all_files(s3, fields_to_load, field_files, cur_ts, 
-                                                                                                        use_lambda, data_file_paths, meta_file_paths, product_generation_config, product_type, 
-                                                                                                        use_workers_to_download, model_granule_bucket)
+                        (status, (all_files)) = gen_netcdf_utils.download_all_files(s3, 
+                                                                                    [field], 
+                                                                                    field_files, 
+                                                                                    cur_ts, 
+                                                                                    data_file_paths, 
+                                                                                    meta_file_paths, 
+                                                                                    product_generation_config, 
+                                                                                    product_type, 
+                                                                                    model_granule_bucket)
+                                                                                  
+                        data_file_paths, meta_file_paths, curr_num_downloaded = all_files
                         num_downloaded += curr_num_downloaded
+
                         if status != 'SUCCESS':
                             print(f'FAIL {cur_ts}')
                             raise Exception(status)
                         total_download_time += (time.time() - s3_download_start_time)
-                    else:
-                        print(f'Downloading and processing fields one at a time for current timestep')
 
-                    # Get data_file_paths for files when processing locally
-                    if local:
-                        for field in fields_to_load:
-                            curr_field_files = field_files[field]
-                            for field_file in curr_field_files:
-                                if cur_ts in field_file:
-                                    if '.data' in field_file:
-                                        data_file_paths[field] = field_file
-                                    break
-
-
-
-                    # ============================== TODO ==============================
-                    # PERFORM VECTOR ROTATION AS NECESSARY
-                    if 'vector_inputs' in grouping:
-                        grouping['vector_inputs'] = ['UVEL', 'VVEL']
-                        # load specified field files from the provided directory
-                        # This loads them into the native tile grid
-                        F_DSs = []
-                        for vec_field in grouping['vector_inputs']:
-                            status, F_DS = ecco.load_ecco_vars_from_mds(Path(data_file_paths[vec_field]).parent,
-                                                                mds_grid_dir = product_generation_config['ecco_grid_dir_mds'],
-                                                                mds_files = Path(data_file_paths[vec_field]).name.split('.')[0],
-                                                                vars_to_load = vec_field,
-                                                                drop_unused_coords = True,
-                                                                grid_vars_to_coords = False,
-                                                                output_freq_code=output_freq_code,
-                                                                model_time_steps_to_load=int(cur_ts),
-                                                                less_output = True,
-                                                                read_grid=product_generation_config['read_ecco_grid_for_native_load'])
-                            print(status)
-                            F_DSs.append(F_DS)
-                    # ============================== TODO ==============================
-
-
-
-                    # Load fields and place them in the dataset
-                    for i, field in enumerate(sorted(fields_to_load)):
-                        if not local and not product_generation_config['download_all_fields']:
-                            s3_download_start_time = time.time()
-                            (status, data_file_paths, meta_file_paths, curr_num_downloaded) = gen_netcdf_utils.download_all_files(s3, [field], field_files, cur_ts, 
-                                                                                                            use_lambda, data_file_paths, meta_file_paths, product_generation_config, product_type, 
-                                                                                                            use_workers_to_download, model_granule_bucket)
-                            num_downloaded += curr_num_downloaded
-                            if status != 'SUCCESS':
-                                print(f'FAIL {cur_ts}')
-                                raise Exception(status)
-                            total_download_time += (time.time() - s3_download_start_time)
-
-                        if use_lambda and time.time() - job_start_time >= aws_metadata['job_timeout']:
-                            timeout = True
-                            raise Exception('TIMEOUT')
-                            
-                        data_file_path = Path(data_file_paths[field])
-
-                            
-                        # Load latlon vs native variable
-                        if product_type == 'latlon':
-                            status, F_DS = gen_netcdf_utils.transform_latlon(ecco, ecco_grid.Z.values, wet_pts_k, target_grid, 
-                                                                data_file_path, record_end_time, nk, 
-                                                                dataset_dim, field, output_freq_code, 
-                                                                Path(product_generation_config['mapping_factors_dir']), extra_prints=extra_prints)
-                            if status != 'SUCCESS':
-                                print(f'FAIL {cur_ts}')
-                                raise Exception(status)
-                            
-                        elif product_type == 'native':
-                            status, F_DS = gen_netcdf_utils.transform_native(ecco, field, ecco_land_masks, product_generation_config['ecco_grid_dir_mds'], 
-                                                                data_file_path, output_freq_code, cur_ts, product_generation_config['read_ecco_grid_for_native_load'],
-                                                                extra_prints=extra_prints)
-                            if status != 'SUCCESS':
-                                print(f'FAIL {cur_ts}')
-                                raise Exception(status)
-
-                        # delete files
-                        # if os.path.exists(data_file_path):
-                        #     os.remove(data_file_path)
-                        # if os.path.exists(meta_file_path):
-                        #     os.remove(meta_file_path)
-
-                        F_DS = gen_netcdf_utils.global_DS_changes(F_DS, output_freq_code, grouping, field,
-                                                    array_precision, ecco_grid, depth_bounds, product_type, 
-                                                    latlon_bounds, netcdf_fill_value, dataset_dim, record_times, extra_prints=extra_prints)
-
-                        # add this dataset to F_DS_vars and repeat for next variable
-                        F_DS_vars.append(F_DS)
-
-                    # merge the data arrays to make one DATASET
-                    print('\n... merging F_DS_vars')
-                    G = xr.merge((F_DS_vars))
-
-                    # delete F_DS_vars from memory
-                    del(F_DS_vars)
-
-                    podaac_dir = Path(product_generation_config['metadata_dir']) / product_generation_config['podaac_metadata_filename']
-                    status, G, netcdf_output_filename, encoding = gen_netcdf_utils.set_metadata(ecco, G, product_type, all_metadata, dataset_dim, 
-                                                                                    output_freq_code, netcdf_fill_value, 
-                                                                                    grouping, filename_tail, output_dir_freq, 
-                                                                                    dataset_description, podaac_dir, 
-                                                                                    product_generation_config,
-                                                                                    extra_prints=extra_prints)
+                    # Check if the current Lambda job execution as reached the user defined timeout time
+                    if use_lambda and time.time() - job_start_time >= aws_config['job_timeout']:
+                        timeout = True
+                        raise Exception('TIMEOUT')
+                        
+                    data_file_path = Path(data_file_paths[field])
+                        
+                    # Transform latlon vs native variable
+                    if product_type == 'latlon':
+                        status, F_DS = gen_netcdf_utils.transform_latlon(ecco, 
+                                                                         ecco_grid.Z.values, 
+                                                                         latlon_grid, 
+                                                                         data_file_path, 
+                                                                         record_end_time, 
+                                                                         nk, 
+                                                                         dataset_dim, 
+                                                                         field, 
+                                                                         output_freq_code, 
+                                                                         mapping_factors_dir, 
+                                                                         extra_prints=extra_prints)
+                    elif product_type == 'native':
+                        status, F_DS = gen_netcdf_utils.transform_native(ecco, 
+                                                                         field, 
+                                                                         ecco_land_masks, 
+                                                                         ecco_grid_dir_mds, 
+                                                                         data_file_path, 
+                                                                         output_freq_code, 
+                                                                         cur_ts, 
+                                                                         read_ecco_grid, 
+                                                                         extra_prints=extra_prints)
+                    
+                    # If latlon/native transformation failed, FAIL the current timestep
                     if status != 'SUCCESS':
                         print(f'FAIL {cur_ts}')
                         raise Exception(status)
 
-                    # SAVE DATASET
-                    netcdf_start_time = time.time()
-                    print('\n... saving to netcdf ', netcdf_output_filename)
-                    G.load()
-                    G.to_netcdf(netcdf_output_filename, encoding=encoding)
-                    orig_uuid = G.attrs['uuid']
-                    G.close()
-                    total_netcdf_time += (time.time() - netcdf_start_time)
-                    if extra_prints: print('\n... checking existence of new file: ', netcdf_output_filename.exists())
+                    # Apply global DS changes (coords, values, etc.)
+                    status, F_DS = gen_netcdf_utils.global_DS_changes(F_DS, 
+                                                                      output_freq_code, 
+                                                                      grouping, 
+                                                                      array_precision, 
+                                                                      ecco_grid, 
+                                                                      latlon_grid, 
+                                                                      netcdf_fill_value, 
+                                                                      record_times, 
+                                                                      extra_prints=extra_prints)
+                    if status != 'SUCCESS':
+                        print(f'FAIL {cur_ts}')
+                        raise Exception(status)
 
-                    # create checksum of netcdf file
-                    if product_generation_config['create_checksum']:
+                    # add this dataset to F_DS_vars and repeat for next variable
+                    F_DS_vars.append(F_DS)
+                # ========== </Field transformations> =============================================
+                
+
+                # ========== <Create output dataset> ==============================================
+                # merge the data arrays to make one DATASET
+                print('\n... merging F_DS_vars')
+                G = xr.merge((F_DS_vars))
+
+                # delete F_DS_vars from memory
+                del(F_DS_vars)
+
+                # Set metadata for output dataset
+                status, G, netcdf_filename, encoding = gen_netcdf_utils.set_metadata(ecco, 
+                                                                                     G, 
+                                                                                     all_metadata, 
+                                                                                     output_freq_code, 
+                                                                                     netcdf_fill_value, 
+                                                                                     grouping, 
+                                                                                     output_dir_freq, 
+                                                                                     dataset_description, 
+                                                                                     product_generation_config, 
+                                                                                     extra_prints=extra_prints)
+                if status != 'SUCCESS':
+                    print(f'FAIL {cur_ts}')
+                    raise Exception(status)
+
+                # Save dataset
+                netcdf_start_time = time.time()
+                print('\n... saving to netcdf ', netcdf_filename)
+                G.load()
+                G.to_netcdf(netcdf_filename, 
+                            encoding=encoding)
+                orig_uuid = G.attrs['uuid']
+                G.close()
+                total_netcdf_time += (time.time() - netcdf_start_time)
+                if extra_prints: print('\n... checking existence of new file: ', netcdf_filename.exists())
+
+                # create checksum of processed netcdf file
+                if create_checksum:
+                    checksum_time = time.time()
+                    hash_md5 = hashlib.md5()
+                    with open(netcdf_filename, 'rb') as f:
+                        for chunk in iter(lambda: f.read(4096), b""):
+                            hash_md5.update(chunk)
+                    orig_checksum = hash_md5.hexdigest()
+                    total_checksum_time += (time.time() - checksum_time)
+                # ========== </Create output dataset> =============================================
+
+
+                # ========== <Upload to S3> =======================================================
+                # Upload output netcdf to s3
+                if not local:
+                    s3_upload_start_time = time.time()
+                    print('\n... uploading new file to S3 bucket')
+                    name = str(netcdf_filename).replace(f'{str(processed_output_dir_base)}/', 
+                                                        f'{aws_config["bucket_subfolder"]}/')
+                    try:
+                        # upload "netcdf_filename" to AWS S3 bucket "processed_data_bucket" with name "name"
+                        response = s3.upload_file(str(netcdf_filename), 
+                                                  processed_data_bucket, 
+                                                  name)
+                        if extra_prints: print(f'\n... uploaded {netcdf_filename} to bucket {processed_data_bucket}')
+                    except:
+                        # delete file if it failed to upload, and FAIL the current timestep
+                        os.remove(netcdf_filename)
+                        status = f'ERROR Unable to upload file {netcdf_filename} to bucket {processed_data_bucket} ({response})'
+                        print(f'FAIL {cur_ts}')
+                        raise Exception(status)
+
+                    # delete file from local Lambda environment after uploading
+                    if use_lambda:
+                        os.remove(netcdf_filename)
+
+                    total_upload_time += (time.time() - s3_upload_start_time)
+                    num_uploaded += 1
+
+                    # ========== <Compare checksums> ==============================================
+                    # create checksum of downloaded dataset from S3 and compare to the checksum created of the
+                    # dataset file uploaded to S3 (in ensure there was no issue uploading the file)
+                    if product_generation_config['compare_checksums'] and create_checksum:
                         checksum_time = time.time()
+                        new_netcdf = netcdf_filename.parent / f'new_{netcdf_filename.name}'
+
+                        # download "name" file from AWS S3 bucket "processed_data_bucket" to local "new_netcdf" file
+                        s3.download_file(processed_data_bucket, 
+                                         str(name), 
+                                         str(new_netcdf))
+
+                        # create checksum of downloaded netcdf file
                         hash_md5 = hashlib.md5()
-                        with open(netcdf_output_filename, 'rb') as f:
+                        with open(new_netcdf, 'rb') as f:
                             for chunk in iter(lambda: f.read(4096), b""):
                                 hash_md5.update(chunk)
-                        orig_checksum = hash_md5.hexdigest()
+                        downloaded_checksum = hash_md5.hexdigest()
                         total_checksum_time += (time.time() - checksum_time)
 
-                    # Upload output netcdf to s3
-                    if not local:
-                        s3_upload_start_time = time.time()
-                        print('\n... uploading new file to S3 bucket')
-                        name = str(netcdf_output_filename).replace(f'{str(product_generation_config["processed_output_dir_base"])}/', f'{aws_metadata["bucket_subfolder"]}/')
-                        try:
-                            response = s3.upload_file(str(netcdf_output_filename), processed_data_bucket, name)
-                            if extra_prints: print(f'\n... uploaded {netcdf_output_filename} to bucket {processed_data_bucket}')
-                        except:
-                            os.remove(netcdf_output_filename)
-                            status = f'ERROR Unable to upload file {netcdf_output_filename} to bucket {processed_data_bucket}'
+                        # Delete downloaded netcdf file
+                        os.remove(new_netcdf)
+
+                        # compare checksum of dataset from pre-upload, and the dataset downloaded from S3
+                        if orig_checksum != downloaded_checksum:
+                            # if the checksums dont match, delete the file on S3 (e.g. something is wrong with the uploading or downloading, unknown)
+                            print(f'Deleting {name} from S3 bucket {processed_data_bucket}')
+                            response = s3.delete_object(Bucket=processed_data_bucket,  
+                                                        Key=str(name))
+                            status = f'ERROR uploaded and downloaded netcdf file checksums dont match ({orig_checksum} vs {downloaded_checksum})'
                             print(f'FAIL {cur_ts}')
                             raise Exception(status)
-                        if use_lambda:
-                            os.remove(netcdf_output_filename)
-                        total_upload_time += (time.time() - s3_upload_start_time)
-                        num_uploaded += 1
-
-                        # create checksum of downloaded dataset from S3 and compare to the checksum created of the
-                        # dataset file uploaded to S3 (in ensure there was no issue uploading the file)
-                        if product_generation_config['compare_checksums'] and product_generation_config['create_checksum']:
-                            checksum_time = time.time()
-                            new_netcdf = netcdf_output_filename.parent / f'new_{netcdf_output_filename.name}'
-                            s3.download_file(processed_data_bucket, str(name), str(new_netcdf))
-                            hash_md5 = hashlib.md5()
-                            with open(new_netcdf, 'rb') as f:
-                                for chunk in iter(lambda: f.read(4096), b""):
-                                    hash_md5.update(chunk)
-                            downloaded_checksum = hash_md5.hexdigest()
-                            total_checksum_time += (time.time() - checksum_time)
-
-                            os.remove(new_netcdf)
-
-                            if orig_checksum != downloaded_checksum:
-                                print(f'Deleting {name} from S3 bucket {processed_data_bucket}')
-                                response = s3.delete_object(Bucket=processed_data_bucket, Key=str(name))
-                                status = f'ERROR uploaded and downloaded netcdf file checksums dont match ({orig_checksum} vs {downloaded_checksum})'
-                                print(f'FAIL {cur_ts}')
-                                raise Exception(status)
-                            else:
-                                print(f'\n... uploaded and downloaded netcdf checksums match')
+                        else:
+                            print(f'\n... uploaded and downloaded netcdf checksums match')
+                    # ========== </Compare checksums> =============================================
+                # ========== </Upload to S3> ======================================================
                 
+                # Create succeeded checksum entry for current timestep with s3_fname (if not local),
+                # along with the dataset checksum and uuid
                 if not local:
-                    if product_generation_config['create_checksum']:
+                    if create_checksum:
                         succeeded_checksums[cur_ts] = {'s3_fname':name, 'checksum':orig_checksum, 'uuid':orig_uuid}
                     else:
                         succeeded_checksums[cur_ts] = {'s3_fname':name, 'checksum':'None created', 'uuid':orig_uuid}
                 else:
                     succeeded_checksums[cur_ts] = {'checksum':orig_checksum, 'uuid':orig_uuid}
 
+                # Made it to the end of processing, therefore it was successful
                 successful_time_steps.append(cur_ts)
             except Exception as e:
+                error_log = ''
+
+                # if the code failed for a reason other than a timeout, delete all the files in preparation of the next timestep
                 if not timeout:
-                    gen_netcdf_utils.delete_files(data_file_paths, product_generation_config, fields_to_load, all=True)
+                    status = gen_netcdf_utils.delete_files(data_file_paths, 
+                                                           product_generation_config, 
+                                                           fields_to_load, 
+                                                           all=True)
+                    if status != 'SUCCESS':
+                        error_log += status
                 exception_type, exception_value, exception_traceback = sys.exc_info()
-                traceback_string = traceback.format_exception(exception_type, exception_value, exception_traceback)
+                traceback_string = traceback.format_exception(exception_type, 
+                                                              exception_value, 
+                                                              exception_traceback)
                 err_msg = json.dumps({
                     "errorType": exception_type.__name__,
                     "errorMessage": str(exception_value),
                     "stackTrace": traceback_string
                 })
-                error_log = f'ERROR\t{cur_ts}\t{err_msg}'
+
+                # log current timestep and error message
+                error_log = f'ERROR\t{cur_ts}\t{err_msg} ' + error_log
                 if use_lambda:
                     logger.info(error_log)
                 else:
                     print(error_log)
-            # ==================================================================================================================
-        # =============================================================================================
+        # ========== </Process each time level> ===================================================
 
         # Remove processed_output_dir_base directory
         # if not local and not use_lambda:
-        #     if os.path.exists(product_generation_config['processed_output_dir_base']):
-        #         shutil.rmtree(product_generation_config['processed_output_dir_base'])
+        #     if os.path.exists(processed_output_dir_base):
+        #         shutil.rmtree(processed_output_dir_base)
 
         # Remove model output directory
         # if os.path.exists(product_generation_config['model_output_dir']):
@@ -633,20 +732,35 @@ def generate_netcdfs(event):
     
     except Exception as e:
         exception_type, exception_value, exception_traceback = sys.exc_info()
-        traceback_string = traceback.format_exception(exception_type, exception_value, exception_traceback)
+        traceback_string = traceback.format_exception(exception_type, 
+                                                      exception_value, 
+                                                      exception_traceback)
         err_msg = json.dumps({
             "errorType": exception_type.__name__,
             "errorMessage": str(exception_value),
             "stackTrace": traceback_string
         })
+
+        # log error message (ALL means an error occured independent of any one timestep)
         error_log = f'ERROR\tALL\t{err_msg}'
         if use_lambda:
             logger.info(error_log)
         else:
             print(error_log)
 
-    # LOGGING
-    logging_info(time_steps_to_process, successful_time_steps, start_time, total_download_time, num_downloaded, total_netcdf_time, total_upload_time, num_uploaded, succeeded_checksums, total_checksum_time, logger, timeout)
+    # Print logging information
+    logging_info(time_steps_to_process, 
+                 successful_time_steps, 
+                 start_time, 
+                 total_download_time, 
+                 num_downloaded, 
+                 total_netcdf_time, 
+                 total_upload_time, 
+                 num_uploaded, 
+                 succeeded_checksums, 
+                 total_checksum_time, 
+                 logger, 
+                 timeout)
 
     return
 

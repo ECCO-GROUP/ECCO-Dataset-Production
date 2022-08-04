@@ -15,7 +15,11 @@ from concurrent import futures
 # ==========================================================================================================================
 # CREATE LAMBDA FUNCTION
 # ==========================================================================================================================
-def create_lambda_function(lambda_client, function_name, role, memory_size, image_uri):
+def create_lambda_function(lambda_client, 
+                           function_name, 
+                           role, 
+                           memory_size, 
+                           image_uri):
     """
     Create AWS Lambda function with AWS ECR Docker image and specified memory
 
@@ -63,7 +67,9 @@ def create_lambda_function(lambda_client, function_name, role, memory_size, imag
 # ==========================================================================================================================
 # UPDATE LAMBDA FUNCTION
 # ==========================================================================================================================
-def update_lambda_function(lambda_client, function_name, image_uri):
+def update_lambda_function(lambda_client, 
+                           function_name, 
+                           image_uri):
     """
     Update AWS Lambda function with AWS ECR Docker image
 
@@ -104,7 +110,17 @@ def update_lambda_function(lambda_client, function_name, image_uri):
 # ==========================================================================================================================
 # LAMBDA INVOCATION
 # ==========================================================================================================================
-def invoke_lambda(lambda_client, job_logs, time_steps, dict_key_args, product_generation_config, aws_config, job, function_name_prefix, dimension, field_files, credentials, debug_mode):
+def invoke_lambda(lambda_client, 
+                  job_logs, 
+                  time_steps, 
+                  dict_key_args, 
+                  product_generation_config, 
+                  aws_config, 
+                  job, 
+                  function_name_prefix, 
+                  dimension, 
+                  field_files, 
+                  credentials):
     """
     Invoke the lambda function for the current job
 
@@ -114,13 +130,12 @@ def invoke_lambda(lambda_client, job_logs, time_steps, dict_key_args, product_ge
         time_steps (list): List of raw time steps to process (i.e. ['0000000732', ...])
         dict_key_args (dict): Dictionary of command line arguments to master_scipt.py
         product_generation_config (dict): Dictionary of product_generation_config.yaml config file
-        aws_config (dict): Dictionary of aws_config.yaml config file
+        aws_config (dict): Dictionary of aws_config.yaml config
         job (list): List (grouping_num, product_type, output_frequency, time_steps_to_process) for the current job
         function_name_prefix (str): String of the prefix for the function (i.e. 'ecco_processing')
         dimension (str): Dimension of current job dataset
         field_files (dict): Field files for current job and timesteps
         credentials (dict): Dictionary containaing credentials information for AWS
-        debug_mode (bool): Boolean to enable debug_mode
 
     Returns:
         num_jobs (int): Number of Lambda jobs submitted
@@ -239,13 +254,10 @@ def invoke_lambda(lambda_client, job_logs, time_steps, dict_key_args, product_ge
                 'time_steps_to_process': time_steps,
                 'field_files': field_files,
                 'product_generation_config': product_generation_config,
-                'aws_metadata': aws_config,
-                'debug_mode': debug_mode,
+                'aws_config': aws_config,
                 'local': False,
                 'use_lambda': use_lambda,
-                'credentials': credentials,
-                'processing_code_filename': product_generation_config['processing_code_filename'],
-                'use_workers_to_download': product_generation_config['use_workers_to_download']
+                'credentials': credentials
             }
 
             # define data to process for the current lambda job
@@ -313,8 +325,7 @@ def invoke_lambda(lambda_client, job_logs, time_steps, dict_key_args, product_ge
                 'time_steps_to_process': time_steps_by_batch[i],
                 'field_files': field_files_by_batch[i],
                 'product_generation_config': product_generation_config,
-                'aws_metadata': aws_config,
-                'debug_mode': debug_mode,
+                'aws_config': aws_config,
                 'local': False,
                 'use_lambda': use_lambda,
                 'credentials': credentials,

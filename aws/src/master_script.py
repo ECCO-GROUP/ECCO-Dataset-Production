@@ -38,7 +38,7 @@ import jobs_utils as jobs_utils
 import lambda_utils as lambda_utils
 import logging_utils as logging_utils
 import credentials_utils as credentials_utils
-import create_factors_utils as create_factors_utils
+import mapping_factors_utils as mapping_factors_utils
 
 def create_parser():
     parser = argparse.ArgumentParser()
@@ -51,9 +51,6 @@ def create_parser():
 
     parser.add_argument('--use_lambda', default=False, action='store_true',
                         help='Completes processing via AWS lambda')
-
-    parser.add_argument('--debug', default=False, action='store_true',
-                        help='Sets debug flag (additional print outs and skips processing')
 
     parser.add_argument('--force_reconfigure', default=False, action='store_true',
                         help='Force code to re-run code to get AWS credentials')
@@ -95,7 +92,6 @@ if __name__ == "__main__":
     dict_key_args = {key: value for key, value in args._get_kwargs()}
 
     process_data = dict_key_args['process_data']
-    debug_mode = dict_key_args['debug']
     local = not dict_key_args['use_cloud']
     use_lambda = dict_key_args['use_lambda']
     force_reconfigure = dict_key_args['force_reconfigure']
@@ -152,10 +148,9 @@ if __name__ == "__main__":
     # Not needed unless changes have been made to the factors code and you need
     # to update the factors/mask in the lambda docker image
     if dict_key_args['create_factors']:
-        status = create_factors_utils.create_all_factors(ea, 
+        status = mapping_factors_utils.create_all_factors(ea, 
                                                          product_generation_config, 
-                                                         ['2D', '3D'], 
-                                                         debug_mode=debug_mode, 
+                                                         ['2D', '3D'],
                                                          extra_prints=extra_prints)
         if status != 'SUCCESS':
             print(status)
@@ -288,7 +283,7 @@ if __name__ == "__main__":
         credential_method['region'] = region
         credential_method['type'] = aws_config['credential_method_type']
         credential_method['aws_credential_path'] = aws_config['aws_credential_path'] 
-        credentials = credentials_utils.get_credentials_helper()
+        credentials = credentials_utils.get_aws_credentials()
         try:
             if force_reconfigure:
                 # Getting new credentials
@@ -344,7 +339,7 @@ if __name__ == "__main__":
                     num_jobs += 1
             num_jobs = curr_job_logs['Number of Lambda Jobs'] - num_jobs
             # If Cost Information is empty, make a new defaultdict, otherwise
-            # fill a defaultdict with the current values in Cost Information
+            # fill a new defaultdict with the current values in Cost Information
             if curr_job_logs['Cost Information'] == {}:
                 curr_job_logs['Cost Information'] = defaultdict(float)
             else:
@@ -473,8 +468,7 @@ if __name__ == "__main__":
                                                                  groupings_for_datasets, 
                                                                  dict_key_args, 
                                                                  product_generation_config, 
-                                                                 aws_config, 
-                                                                 debug_mode, 
+                                                                 aws_config,
                                                                  s3=s3, 
                                                                  lambda_client=lambda_client, 
                                                                  job_logs=job_logs, 
@@ -538,8 +532,7 @@ if __name__ == "__main__":
                                                                                    groupings_for_datasets, 
                                                                                    dict_key_args, 
                                                                                    product_generation_config, 
-                                                                                   aws_config, 
-                                                                                   debug_mode, 
+                                                                                   aws_config,
                                                                                    s3=s3, 
                                                                                    lambda_client=lambda_client, 
                                                                                    job_logs=retry_job_logs, 
