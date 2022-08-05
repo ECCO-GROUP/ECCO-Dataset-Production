@@ -8,6 +8,7 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
         logs/
         mapping_factors/
         metadata/
+        misc_scripts/
         src/
         tmp/
         ecr_push.sh
