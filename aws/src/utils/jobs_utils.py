@@ -3,7 +3,7 @@ ECCO Dataset Production jobs utilities
 
 Author: Duncan Bark
 
-Contains functions for creating jobs, calculation jobs, and running jobs for processing.
+Contains functions for creating, calculating, and running jobs for processing.
 
 """
 

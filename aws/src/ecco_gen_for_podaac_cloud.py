@@ -4,6 +4,8 @@ Created May 18, 2022
 Author: Duncan Bark
 Adapted from ifenty's "eccov4r4_gen_for_podaac.py"
 
+Main code file for processing. This file takes a payload specifing timesteps and files to process (among other information), and processes said files to produce output datasets
+
 """
 
 import os

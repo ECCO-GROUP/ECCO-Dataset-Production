@@ -152,7 +152,7 @@ def delete_files(data_file_paths,
                  fields, 
                  all=False):
     """
-    Download the field files for the cur_ts from S3
+    Delete files from data_file_paths or all .nc files within processed output directory
 
     Args:
         data_file_paths (dict): Dictionary where key=field name, value=downloaded data file path at cur_ts for field

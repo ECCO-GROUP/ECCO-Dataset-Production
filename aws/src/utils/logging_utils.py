@@ -3,7 +3,7 @@ ECCO Dataset Production logging utilities
 
 Author: Duncan Bark
 
-Contains functions for getting, processing, and saving AWS Lambda logs
+Contains functions for getting, processing, and saving AWS Lambda logs via AWS CloudWatch
 
 """
 

@@ -292,13 +292,15 @@ def create_land_mask(ea,
 # ====================================================================================================
 # SPARSE MATRIX CREATION
 # ====================================================================================================
-def create_sparse_matrix(product_generation_config, 
+def create_sparse_matrix(mapping_factors_dir,
+                         product_generation_config, 
                          target_grid_shape, 
                          extra_prints=False):
     """
     Create sparse matrix file(s)
 
     Args:
+        mapping_factors_dir (PosixPath): Path to /ECCO-Dataset-Production/aws/mapping_factors/{ecco_version}
         product_generation_config (dict): Dictionary of product_generation_config.yaml config file
         target_grid_shape (tuple): Tuple of the shape of the target grid (i.e. (360, 720))
         extra_prints (optional, bool): Boolean to enable more print statements
@@ -313,6 +315,15 @@ def create_sparse_matrix(product_generation_config,
     mapping_factors_dir = product_generation_config['mapping_factors_dir']
     nk = product_generation_config['num_vertical_levels']
 
+    sm_path = Path(mapping_factors_dir) / 'sparse'
+    # check that the sparse matrix directory exists
+    if not sm_path.exists():
+        try:
+            sm_path.mkdir()
+        except:
+            status = f'ERROR Cannot make sparse matrix directory "{sm_path}"'
+            return status
+
     # Check if all sparse matrices are already present
     present_sm_files = list(sorted(os.listdir(f'{mapping_factors_dir}/sparse')))
     expected_sm_files = list(sorted([f'sparse_matrix_{k}.npz' for k in range(nk)]))
@@ -321,7 +332,7 @@ def create_sparse_matrix(product_generation_config,
         print('... sparse matrices already created')
     else:
         for k in range(nk):
-            sm_path = f'./mapping_factors/sparse/sparse_matrix_{k}.npz'
+            sm_path_fname = Path(sm_path) / f'sparse_matrix_{k}.npz'
             print(f'Level: {k}')
             
             # get the land mask for level k
@@ -392,9 +403,9 @@ def create_sparse_matrix(product_generation_config,
 
                 # save sparse matrix
                 try:
-                    sparse.save_npz(sm_path, B)
+                    sparse.save_npz(sm_path_fname, B)
                 except:
-                    status = f'ERROR Cannot save sparse matrix file "{sm_path}"'
+                    status = f'ERROR Cannot save sparse matrix file "{sm_path_fname}"'
                     return status
     return status
 
@@ -589,7 +600,8 @@ def create_all_factors(ea,
 
     # ========== <Create sparse matrices> =====================================================
     # create sparse matrices
-    status = create_sparse_matrix(product_generation_config, 
+    status = create_sparse_matrix(mapping_factors_dir,
+                                  product_generation_config, 
                                   target_grid_shape, 
                                   extra_prints=extra_prints)
     if status != 'SUCCESS':
