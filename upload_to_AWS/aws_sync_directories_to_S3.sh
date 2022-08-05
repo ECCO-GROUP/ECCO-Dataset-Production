@@ -1,5 +1,14 @@
 #!/bin/bash
 
+cred_type=$1
+cred_file_name=$2
+region=$3
+login_file_dir=$4
+s3_dir=$5
+files_dir=$6
+
+update_AWS_cred_file=../aws/src/utils/aws_login/update_AWS_cred_ecco_production.sh
+
 # note current directory
 cur_dir=`pwd`
 
@@ -14,10 +23,12 @@ num_sub_dirs=`find . -type d -maxdepth 1 |wc -l`
 # use the JPL Github Package "Access-Key-Generation"
 # linked to the ecco_production AWS account
 echo ".. updating credentials, elapsed seconds $SECONDS"
-sh ./update_AWS_cred_ecco_production.sh
+sh $update_AWS_cred_file $cred_type $cred_file_name $region $login_file_dir
 let "time_of_last_cred_update=SECONDS"
 echo "time of last cred update $time_of_last_cred_update"
 
+# make logs dir
+mkdir $cur_dir/logs
 
 # spawn up to max_synchronous_uploads upload jobs
 max_synchronous_uploads=20
@@ -25,7 +36,7 @@ max_synchronous_uploads=20
 # loop through all sub-directories, spawn off
 # upload jobs using "aws sync"
 dir_counter=0
-for dir in *; do
+for dir in $files_dir/*; do
 
   # count number of child processes. each child
   # process is uploading one subdirectory
@@ -49,9 +60,14 @@ for dir in *; do
 
   # now we have an open upload process slot
   echo "$dir"
-  cd $cur_dir/$dir
-  # delete log file
-  rm /tmp/$dir
+  # cd $cur_dir/$dir
+  cd $dir
+
+  # get file dir (i.e. "diags_monthly/SSH_mon_mean")
+  file_dir=$(basename "$(dirname "$dir")")/$(basename "$dir")
+
+  # create current file log dir
+  mkdir -p $cur_dir/logs/$file_dir
 
   # before uploading, update AWS credentials
   # if it's been an hour or more since the last credential update
@@ -59,12 +75,12 @@ for dir in *; do
   if [ $delta -ge 3600 ]
   then
     echo ".. updating credentials, elapased seconds $SECONDS"
-    sh ~/bash-scripts/update_AWS_cred_ecco_production.sh
+    sh $update_AWS_cred_file $cred_type $cred_file_name $region $login_file_dir
     let "time_of_last_cred_update=SECONDS"
   fi
 
   # spawn off a new upload process
-  aws s3 sync . s3://ecco-model-granules/V4r4/diags_inst/$dir --no-progress --profile saml-pub > /tmp/$dir &
+  aws s3 sync . s3://$s3_dir/$file_dir --no-progress --profile saml-pub > $cur_dir/logs/$file_dir/log.txt &
 
   # increment dir_counter by 1
   let "dir_counter=dir_counter+1"

@@ -22,10 +22,11 @@ def get_aws_credentials(credential_method=None):
 
     Args:
         credential_method (optional, dict): Contains information for getting the users credentials including:
+            'bash_filepath': Path to '/aws/src/utils/aws_login/update_AWS_cred_ecco_production.sh'
+            'type': 'binary' or 'python', 'binary' will call the aws-login... binary file, 'python' will call the
+                aws-login.py python file.
+            'aws_login_file': File name of the login script to call (i.e. 'aws-login.py', 'aws-login.darwin.amd64', etc.)
             'region': AWS region
-            'type': 'binary' or 'bash', 'binary' will call the aws-login... binary file, 'bash' will call the
-                update_AWS_cred... shell script.
-            'aws_credential_path': Path to '/aws/src/utils/aws_login/{file to call}'
 
     Returns:
         credentials (dict): Dictionary containing contents of ~/.aws/credentials file
@@ -35,20 +36,21 @@ def get_aws_credentials(credential_method=None):
         credentials = __get_credentials_helper()
     else:
         # credential method is a dict. with the 'region' and 'type'
-        # type is one of binary or bash 
-        # if binary then aws_credential_path needs to point to the binary file
-        # if bash then aws_credential_path needs to point to the bash script
-        aws_region = credential_method['region'] 
-        aws_credential_path = credential_method['aws_credential_path']
+        # type is one of binary or python:
+        # both types call the "update_AWS_cred_ecco_production.sh" shell script,
+        # but that script will call the aws-login.py python file or the "aws-log.{darwin/linux}.amd64"
+        # binary file, depending on the type provided 
+        bash_filepath = credential_method['bash_filepath']
+        cred_type = credential_method['type']
+        aws_login_file = credential_method['aws_login_file']
+        aws_region = credential_method['region']
+        login_file_dir = str(Path(bash_filepath).parent)
         try:
-            if credential_method['type'] == 'binary':
-                subprocess.run([aws_credential_path, '-r', f'{aws_region}'], check=True)
-            elif credential_method['type'] == 'bash':
-                subprocess.run([aws_credential_path], check=True)
+            subprocess.run([bash_filepath, cred_type, aws_login_file, aws_region, login_file_dir], check=True)
 
             credentials = __get_credentials_helper()
         except:
-            print(f'Unable to run script to get credentials ("{aws_credential_path}"). Exiting')
+            print(f'Unable to run script to get credentials ("{bash_filepath}"). Exiting')
             sys.exit()
 
     return credentials

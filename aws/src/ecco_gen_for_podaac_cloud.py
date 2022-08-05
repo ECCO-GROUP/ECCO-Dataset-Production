@@ -336,6 +336,7 @@ def generate_netcdfs(event):
 
         output_dir_freq = output_dir_type / period_suffix
         if extra_prints: print('...making output_dir freq ', output_dir_freq)
+        
         # make output directory
         if not output_dir_freq.exists():
             try:
@@ -693,16 +694,14 @@ def generate_netcdfs(event):
                 # Made it to the end of processing, therefore it was successful
                 successful_time_steps.append(cur_ts)
             except Exception as e:
-                error_log = ''
-
+                delete_log = 'No deletetions'
                 # if the code failed for a reason other than a timeout, delete all the files in preparation of the next timestep
                 if not timeout:
                     status = gen_netcdf_utils.delete_files(data_file_paths, 
                                                            product_generation_config, 
                                                            fields_to_load, 
                                                            all=True)
-                    if status != 'SUCCESS':
-                        error_log += status
+                    delete_log = status
                 exception_type, exception_value, exception_traceback = sys.exc_info()
                 traceback_string = traceback.format_exception(exception_type, 
                                                               exception_value, 
@@ -710,11 +709,12 @@ def generate_netcdfs(event):
                 err_msg = json.dumps({
                     "errorType": exception_type.__name__,
                     "errorMessage": str(exception_value),
-                    "stackTrace": traceback_string
+                    "stackTrace": traceback_string,
+                    "deleteFilesStatus": delete_log
                 })
 
                 # log current timestep and error message
-                error_log = f'ERROR\t{cur_ts}\t{err_msg} ' + error_log
+                error_log = f'ERROR\t{cur_ts}\t{err_msg}'
                 if use_lambda:
                     logger.info(error_log)
                 else:
@@ -763,8 +763,6 @@ def generate_netcdfs(event):
                  timeout)
 
     return
-
-
 
 
 #  ================= TESTING FOR VECTOR ROTATION FOR VEL FIELDS ===============================

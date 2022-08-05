@@ -168,8 +168,9 @@ def delete_files(data_file_paths,
         # Create a single list with all the files to delete
         files_to_delete = []
         for field in fields:
-            files_to_delete.append(data_file_paths[field])
-            files_to_delete.append(f'{data_file_paths[field][:-5]}.meta')
+            if field in data_file_paths:
+                files_to_delete.append(data_file_paths[field])
+                files_to_delete.append(f'{data_file_paths[field][:-5]}.meta')
 
         # if all is True, then include all the .nc files in processed_output_dir
         if all:

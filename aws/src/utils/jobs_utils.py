@@ -368,7 +368,7 @@ def run_job(job,
 
     # Check if status is not "SUCCESS" or if no timesteps were found
     if status != 'SUCCESS':
-        status = f'ERROR grouping: {grouping_to_process}, product_type: {product_type}, output_freq_code: {output_freq_code}, time_steps_to_process: {time_steps_to_process}'
+        status = f'ERROR grouping: {grouping_to_process}, product_type: {product_type}, output_freq_code: {output_freq_code}, time_steps_to_process: {time_steps_to_process}, Error: {status}'
         return (num_jobs, job_logs, status)
     else:
         field_files, time_steps = file_time_steps

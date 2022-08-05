@@ -1,5 +1,17 @@
+# aws_config.yaml
 # =================================================================================================
-# AWS SETUP
+# Contains values that are specific to AWS processing (AWS S3/AWS Lambda)
+# This includes AWS paths and names, job control values, and Lambda function values
+# SOME VALUES ARE SPECIFIC TO EACH VERSION, SO ENSURE VALUES ARE ACCURATE FOR ECCO VERSION
+
+
+# String
+# AWS Account ID
+account_id: '448078824696'
+
+
+# =================================================================================================
+# CREDENTIALS VALUES
 # =================================================================================================
 # String
 # Name of AWS Credential profile to use for authentication
@@ -10,14 +22,18 @@ profile_name: 'saml-pub'
 region: 'us-west-2'
 
 # String
-# Method to use for updating credentials (either 'binary', or 'bash')
-credential_method_type: 'bash'
+# Method to use for updating credentials (either 'binary', or 'python')
+credential_method_type: 'python'
 
 # String
 # Path to AWS credential updating file (default = ECCO-Dataset-Production/aws/src/utils/aws_login/update_AWS_cred_ecco_production.sh for bash,
 # and ECCO-Dataset-Production/aws/src/utils/aws_login/aws-login.{darwin/linux}.amd64 for binary)
-aws_credential_path: ''
+aws_credentials_bash_filepath: ''
 
+
+# =================================================================================================
+# S3 VALUES
+# =================================================================================================
 # String
 # Name of S3 bucket to source ECCO model output files
 source_bucket: 'ecco-model-granules'
@@ -34,10 +50,10 @@ output_bucket: 'ecco-processed-data'
 # Name of S3 bucket to use for testing purposes
 test_bucket: 'ecco-test-lambda'
 
-# String
-# AWS Account ID
-account_id: '448078824696'
 
+# =================================================================================================
+# LAMBDA VALUES
+# =================================================================================================
 # String
 # URI of Docker image to use from AWS Elastic Container Registry (ECR)
 image_uri: '448078824696.dkr.ecr.us-west-2.amazonaws.com/ecco_processing:latest'
@@ -91,7 +107,7 @@ num_retry: 1
 
 
 # =================================================================================================
-# MEMORY SIZES (2D/3D latlon and 2D/3D native)
+# LAMBDA FUNCTION MEMORY SIZES (2D/3D latlon and 2D/3D native)
 # =================================================================================================
 # Int
 # Memory size for 2D latlon lambda jobs (MB)

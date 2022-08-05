@@ -19,11 +19,11 @@ import ast
 import sys
 import json
 import time
-from matplotlib import use
 import yaml
 import boto3
 import argparse
 import platform
+import subprocess
 from pathlib import Path
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -75,6 +75,9 @@ def create_parser():
 
     parser.add_argument('--create_jobs', default=False, action='store_true',
                         help='Prompts user on jobs they want to process')
+
+    parser.add_argument('--push_ecr', default=False, action='store_true',
+                        help='Re-builds Docker image and pushes it to AWS ECR')
     return parser
 
 
@@ -239,13 +242,7 @@ if __name__ == "__main__":
         aws_region_default = 'us-west-2'
         model_granule_bucket_default = 'ecco-model-granules'
         processed_data_bucket_default = 'ecco-processed-data'
-        if aws_config['credential_method_type'] == 'bash':
-            aws_credential_path_default = str(main_path / 'src' / 'utils' / 'aws_login' / 'update_AWS_cred_ecco_production.sh')
-        elif aws_config['credential_method_type'] == 'binary':
-            if 'linux' in platform.platform().lower():
-                aws_credential_path_default = str(main_path / 'src' / 'utils' / 'aws_login' / 'aws-login.linux.amd64')
-            else:
-                aws_credential_path_default = str(main_path / 'src' / 'utils' / 'aws_login' / 'aws-login.darwin.amd64')
+        aws_credentials_bash_filepath_default = str(main_path / 'src' / 'utils' / 'aws_login' / 'update_AWS_cred_ecco_production.sh')
 
         # Set config values to default values if none are included in the config yaml
         if aws_config['profile_name'] == '':
@@ -256,8 +253,8 @@ if __name__ == "__main__":
             aws_config['source_bucket'] = model_granule_bucket_default
         if aws_config['output_bucket'] == '':
             aws_config['output_bucket'] = processed_data_bucket_default
-        if aws_config['aws_credential_path'] == '':
-            aws_config['aws_credential_path'] = aws_credential_path_default
+        if aws_config['aws_credentials_bash_filepath'] == '':
+            aws_config['aws_credentials_bash_filepath'] = aws_credentials_bash_filepath_default
 
         source_bucket = aws_config['source_bucket']
         source_bucket_folder_name = aws_config['bucket_subfolder']
@@ -282,7 +279,18 @@ if __name__ == "__main__":
         credential_method = {}
         credential_method['region'] = region
         credential_method['type'] = aws_config['credential_method_type']
-        credential_method['aws_credential_path'] = aws_config['aws_credential_path'] 
+        credential_method['bash_filepath'] = aws_config['aws_credentials_bash_filepath']
+
+        # get the aws login file name based on the credental method type and operating system
+        if credential_method['type'] == 'python':
+            credential_method['aws_login_file'] = 'aws-login.py'
+        elif credential_method['type'] == 'binary':
+            if 'linux' in platform.platform().lower():
+                credential_method['aws_login_file'] = 'aws-login.linux.amd64'
+            else:
+                credential_method['aws_login_file'] = 'aws-login.darwin.amd64'
+        
+        # get AWS credentials and make sure they are valid
         credentials = credentials_utils.get_aws_credentials()
         try:
             if force_reconfigure:
@@ -361,6 +369,30 @@ if __name__ == "__main__":
         
 
         # ========== <Lambda function creation/updating> ==========================================
+        # if "push_ecr" arugment is passed, then call ecr_pus.sh script to re-build Docker image and
+        # push it to ECR
+        if dict_key_args['push_ecr']:
+            # get the current working directory
+            orig_cwd = os.getcwd()
+
+            # get the container name and tag to use
+            container_name_and_tag = image_uri.split('/')[-1].split(':')
+            container_name = container_name_and_tag[0]
+            image_tag = container_name_and_tag[1]
+            ecr_push_path = str(main_path / 'ecr_push.sh')
+
+            # change working diretory to that of the ecr_push script. This is because when you build
+            # the docker image, all paths within the Dockerfile are relative to the where the script
+            # is run. When using subprocess.run() the working directory does not change to that of the
+            # file being run, so we change the directory.
+            os.chdir(os.path.join(os.path.abspath(sys.path[0]), main_path))
+
+            # run ecr_push.sh
+            subprocess.run([ecr_push_path, container_name, image_tag, ecco_version], check=True)
+
+            # change working directory to original working dierctory (eg. the directory of master_script.py)
+            os.chdir(orig_cwd)
+
         # get ECR image info
         ecr_client = boto3.client('ecr')
 

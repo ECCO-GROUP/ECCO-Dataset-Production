@@ -1,3 +1,11 @@
+# product_generation_config.yaml
+# =================================================================================================
+# Contains values that are specific to product generation, regardless of where the processing
+# takes place (local/AWS Lambda).
+# This includes grid values, processing control values, and dataset metadata
+# MANY VALUES ARE SPECIFIC TO EACH VERSION, SO ENSURE VALUES ARE ACCURATE FOR ECCO VERSION
+
+
 # =================================================================================================
 # Control Values
 # =================================================================================================
@@ -47,6 +55,10 @@ model_end_time: '2017-12-31T12:00:00'
 # Int
 # Maximum number of vertical levels. Assumes only 1 vertical level for 2D files.
 num_vertical_levels: 50
+
+# Double
+# Vertical minimum of 3D fields
+geospatial_vertical_min: -6134.5
 
 # Float
 latlon_grid_resolution: 0.5
@@ -124,10 +136,6 @@ processing_code_filename: 'ecco_gen_for_podaac_cloud'
 # =================================================================================================
 # Metadata
 # =================================================================================================
-# Double
-# Vertical minimum of 3D fields
-geospatial_vertical_min: -6134.5
-
 # String
 # History string to include with global metadata
 history: 'Inaugural release of an ECCO Central Estimate solution to PO.DAAC'

@@ -1,60 +1,68 @@
+"""
+ECCO Dataset Production upload local files to S3
+
+Author: Duncan Bark
+
+Contains functions for large scale file uploading from a "local" directory to an AWS S3 bucket.
+This method uploads one file at a time and can be very slow. See the "aws_sync_directories_to_S3.sh"
+script for a quicker option.
+
+OUTDATED -- DO NOT USE -- WORKS BUT HAS SPECIFIC PATHS AND FILE STRUCTURE REQUIREMENTS NOT GENERALIZED
+
+"""
+
 import sys
 import glob
+import time
 import boto3
+import pprint
 import argparse
 import platform
-import pprint
-import subprocess
-import time
 from pathlib import Path
 
+main_path = Path(__file__).parent.parent.resolve()
+sys.path.append(f'{main_path / "aws" / "src" / "utils"}')
+import credentials_utils as credentials_utils
 
-# Get credentials for AWS from "~/.aws/credentials" file
-def get_credentials_helper():
-    cred_path = Path.home() / '.aws/credentials'
-    credentials = {}
-    if cred_path.exists():
-        with open(cred_path, 'r') as f:
-            for line in f:
-                line = line.strip()
-                if line == '':
-                    break
-                elif line[0] == '#':
-                    credentials['expiration_date'] = line.split(' = ')[-1]
-                elif line[0] == '[':
-                    credentials['profile_name'] = line[1:-1]
-                else:
-                    name, value = line.split(' = ')
-                    credentials[name] = value
-    return credentials
+def create_parser():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--upload', default=False, action='store_true',
+                        help='Upload photos form source_dir to bucket. Not including does a "dry-run".')
+
+    parser.add_argument('--bucket', default=None, required=True,
+                        help='Bucket name to upload files to')
+
+    parser.add_argument('--source_dir', default=None, required=True,
+                        help='Source directory to download photos from (i.e. "/home/data/ECCO-DATA/V4r4")')
+
+    parser.add_argument('--number_of_files', default=0, type=int,
+                        help='Number of files to upload')
+
+    parser.add_argument('--by_field', default=False, action='store_true',
+                        help='Upload "number_of_files" files from EACH field in provided directory')
+
+    parser.add_argument('--force_reconfigure', default=False, action='store_true',
+                        help='Force code to re-run code to get AWS credentials')
+
+    parser.add_argument('--credential_method_type', default='', required=True,
+                        help='either binary or python')
+
+    parser.add_argument('--bash_filepath', default='', required=False, 
+                        help='full path to executable bash script that renews the aws creds')
+
+    parser.add_argument('--region', default='us-west-2',
+                        help='AWS Region')
+    return parser
 
 
-def get_aws_credentials(credential_method): 
-    # credential method is a dict. with the 'region' and 'type'
-    # type is one of binary or bash 
-    # if binary then aws_login_file needs to be included
-    # if bash then bash_filepath needs to be included
-    aws_region = credential_method['region']
-    aws_login_file = credential_method['aws_login_file']
-    bash_file = credential_method['bash_filepath']
-    try:
-        if credential_method['type'] == 'binary':
-           subprocess.run([aws_login_file, '-r', f'{aws_region}'], check=True)
-        elif credential_method['type'] == 'bash':
-           subprocess.run([bash_file], check=True)
-
-        credentials = get_credentials_helper()
-    except:
-        if credential_method['type'] == 'binary':
-            print(f'Unable to run script to get credentials ("{aws_login_file}"). Exiting')
-        elif credential_method['type'] == 'bash':
-            print(f'Unable to run script to get credentials ("{bash_file}"). Exiting')
-
-        sys.exit()
-
-    return credentials
-
-def get_files_on_s3(s3, bucket, prefix, check_list=True):
+# ==========================================================================================================================
+# COLLECT FILES FROM S3
+# ==========================================================================================================================
+def get_files_on_s3(s3, 
+                    bucket, 
+                    prefix, 
+                    check_list=True):
     # Collect files currently on the S3 bucket
     # If, when uploading, the name exists in this list, skip it.
     files_on_s3 = []
@@ -77,13 +85,21 @@ def get_files_on_s3(s3, bucket, prefix, check_list=True):
     return files_on_s3
 
 
-def upload_S3(source_path, bucket, number_of_files, by_field, \
-    credential_method, check_list=True, upload=False):
+# ==========================================================================================================================
+# UPLOAD FILES TO S3
+# ==========================================================================================================================
+def upload_S3(source_path, 
+              bucket, 
+              number_of_files, 
+              by_field, 
+              credential_method, 
+              check_list=True, 
+              upload=False):
     # Upload provided file to the provided bucket via the provided credentials.
 
     #parse the ~/.aws/credentials file and puts values into a
     # dictionary -- DOES NOT MAKE NEW CREDENTIALS
-    credentials = get_credentials_helper()
+    credentials = credentials_utils.get_aws_credentials()
 
     # Setup S3 bucket client via boto3
     boto3.setup_default_session(profile_name=credentials['profile_name'])
@@ -108,6 +124,7 @@ def upload_S3(source_path, bucket, number_of_files, by_field, \
             prefix = 'diags_all' + field_path.split('diags_all')[-1]
             print(f'>>> I think my S3 path is : {prefix}')
            
+            # get the files on S3 in the provided bucket that match this file's prefix
             files_on_s3 = get_files_on_s3(s3, bucket, prefix, check_list=True)
             if len(files_on_s3) > 0:
                print(f'files on S3:\n{files_on_s3[0]}\n{files_on_s3[-1]}')
@@ -141,8 +158,7 @@ def upload_S3(source_path, bucket, number_of_files, by_field, \
                 if tick_tick_tick > 3600.0:
                    print(f'... time elapsed {tick_tick_tick}s')
                    print(f'... getting new credentials!') 
-                   get_aws_credentials(credential_method)
-                   credentials=get_credentials_helper()
+                   credentials = credentials_utils.get_aws_credentials(credential_method)
                    ticking_time_bomb = time.time()
         print('\n' + '='*55)
     else:
@@ -151,38 +167,9 @@ def upload_S3(source_path, bucket, number_of_files, by_field, \
     return 1
 
 
-def create_parser():
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument('--upload', default=False, action='store_true',
-                        help='Upload photos form source_dir to bucket. Not including does a "dry-run".')
-
-    parser.add_argument('--bucket', default=None, required=True,
-                        help='Bucket name to upload files to')
-
-    parser.add_argument('--source_dir', default=None, required=True,
-                        help='Source directory to download photos from')
-
-    parser.add_argument('--number_of_files', default=0, type=int,
-                        help='Number of files to upload')
-
-    parser.add_argument('--by_field', default=False, action='store_true',
-                        help='Upload "number_of_files" files from EACH field in provided directory')
-
-    parser.add_argument('--force_reconfigure', default=False, action='store_true',
-                        help='Force code to re-run code to get AWS credentials')
-
-    parser.add_argument('--credential_method_type', default='', required=True,
-                        help='either binary or bash')
-
-    parser.add_argument('--bash_filepath', default='', required=False,
-                        help='full path to executable bash script that renews the aws creds')
-
-    parser.add_argument('--region', default='us-west-2',
-                        help='AWS Region')
-    return parser
-
-
+# ==========================================================================================================================
+# "MAIN" FUNCTION
+# ==========================================================================================================================
 if __name__ == "__main__":
     # Parse command line arguments
     parser = create_parser()
@@ -199,14 +186,19 @@ if __name__ == "__main__":
     credential_method_type = dict_key_args['credential_method_type']
     bash_filepath = dict_key_args['bash_filepath']
 
+    if bash_filepath == '':
+        bash_filepath = str(main_path / "aws" / "src" / "utils" / "aws_login" / "update_AWS_cred_ecco_production.sh")
 
     if not upload:
         print('\nDoing dry-run of code. Photos will NOT be uploaded')
 
-    if 'linux' in platform.platform().lower():
-        aws_login_file = './aws-login.linux.amd64'
+    if credential_method_type == 'binary':
+        if 'linux' in platform.platform().lower():
+            aws_login_file = 'aws-login.linux.amd64'
+        else:
+            aws_login_file = 'aws-login.darwin.amd64'
     else:
-        aws_login_file = 'aws-login.darwin.amd64'
+        aws_login_file = 'aws-login.py'
 
     credential_method = dict()
     credential_method['region'] = region
@@ -216,22 +208,22 @@ if __name__ == "__main__":
 
     pprint.pprint(credential_method)
     # Verify credentials
-    credentials = get_credentials_helper()
+    credentials = credentials_utils.get_aws_credentials()
     pprint.pprint(credentials)
     try:
         if force_reconfigure:
             # Getting new credentials
-            credentials = get_aws_credentials(credential_method)
+            credentials = credentials_utils.get_aws_credentials(credential_method)
         elif credentials != {}:
             boto3.setup_default_session(profile_name=credentials['profile_name'])
             try:
                 boto3.client('s3').list_buckets()
             except:
                 # Present credentials are invalid, try to get new ones
-                credentials = get_aws_credentials(credential_method)
+                credentials = credentials_utils.get_aws_credentials(credential_method)
         else:
             # No credentials present, try to get new ones
-            credentials = get_aws_credentials(credential_method)
+            credentials = credentials_utils.get_aws_credentials(credential_method)
     except Exception as e:
         print(f'Unable to login to AWS. Exiting')
         print(e)

@@ -113,7 +113,9 @@ def get_files_time_steps(fields,
                                            curr_field_files, 
                                            curr_field_time_steps)
 
-            field_files[field], field_time_steps[field], curr_time_steps_all_vars = all_files
+            field_files[field], field_time_steps[field], curr_time_steps_all_vars, status = all_files
+            if status != 'SUCCESS':
+                raise Exception(status)
             
             time_steps_all_vars.extend(curr_time_steps_all_vars)
 
@@ -176,11 +178,13 @@ def __get_files_helper(field,
         curr_field_time_steps (list): Timesteps of all files for the current field available in S3 or locally
 
     Returns:
-        ((field_files[field], field_time_steps[field], time_steps) (tuple):
+        ((field_files[field], field_time_steps[field], time_steps, status) (tuple):
             field_files[field] (list): List of field files to process according to time_steps_to_process
             field_time_steps[field] (list): List of field timesteps to process according to time_steps_to_process
             time_steps (list): List of all unique timesteps to process
+            status (str): String that is either "SUCCESS" or "ERROR {error message}"
     """
+    status = 'SUCCESS'
     field_files = defaultdict(list)
     field_time_steps = defaultdict(list)
     time_steps = []
@@ -196,9 +200,18 @@ def __get_files_helper(field,
         curr_field_time_steps = curr_field_time_steps[:time_steps_to_process]
         field_time_steps[field] = curr_field_time_steps
         time_steps.extend(curr_field_time_steps)
-    # else if time_steps_to_process is a list, add the files corresponding to those indices
+    # else if time_steps_to_process is a list, add the files corresponding to those indices/values
     elif isinstance(time_steps_to_process, list):
-        for ts_ind in time_steps_to_process:
+        for ts_val in time_steps_to_process:
+            # if the list is a list of raw time values, get the index of the time step
+            if isinstance(ts_val, str):
+                if ts_val in curr_field_time_steps:
+                    ts_ind = curr_field_time_steps.index(ts_val)
+                else:
+                    status = f'ERROR Unable to find timestep {ts_val} in list of time steps'
+                    break
+            else:
+                ts_ind = ts_val
             if ts_ind >= len(curr_field_files):
                 break
             field_files[field].append(curr_field_files[ts_ind])
@@ -209,4 +222,4 @@ def __get_files_helper(field,
     field_files[field] = sorted(field_files[field])
     field_time_steps[field] = sorted(field_time_steps[field])
 
-    return (field_files[field], field_time_steps[field], time_steps)
+    return (field_files[field], field_time_steps[field], time_steps, status)
