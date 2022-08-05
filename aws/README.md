@@ -42,6 +42,13 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
   - **README.md**
     - Provdes more information on the files contained within metadata/
 
+### **misc_scripts/**
+- Contains misc scripts related to ECCO Dataset Production. These scripts have not not been generalized to be be user agnostic, so use at your own risk.
+    - **log_review.py**
+        - Produces plots of time vs cost for provided AWS Lambda log files produced by the processing code
+    - **s3_costs.py**
+        - Simple script that determines the monthly cost for a provided size of data on all S3 options
+
 ### **src/**
 - Contains all the code files required for processing. The files, and structure is as follows:
   - **ecco_v4_py/**
