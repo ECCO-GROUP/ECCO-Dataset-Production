@@ -46,32 +46,29 @@ def create_parser():
     parser.add_argument('--process_data', default=False, action='store_true',
                         help='Starts processing model data using config file values')
 
-    parser.add_argument('--use_cloud', default=False, action='store_true',
-                        help='Process data using AWS cloud services')
+    parser.add_argument('--use_S3', default=False, action='store_true',
+                        help='Source model granules from AWS S3 and save processed files to S3')
 
     parser.add_argument('--use_lambda', default=False, action='store_true',
-                        help='Completes processing via AWS lambda')
+                        help='Completes processing via AWS Lambda')
 
     parser.add_argument('--force_reconfigure', default=False, action='store_true',
                         help='Force code to re-run code to get AWS credentials')
 
     parser.add_argument('--create_factors', default=False, action='store_true',
-                        help='ONLY creates all factors: 2D/3D factors, landmask, latlon_grid fields, and sparse matricies')
+                        help='ONLY creates all factors: 2D/3D factors, landmask, latlon_grid fields, and sparse matrices')
 
     parser.add_argument('--require_input', default=False, action='store_true',
-                        help='Requests approval from user to start executing lambda jobs for each job (eg. 0,latlon,AVG_MON,all)')
-
-    parser.add_argument('--include_all_timesteps', default=False, action='store_true',
-                        help='Includes all timesteps and all submitted time steps for all lambda jobs in logs')
+                        help='Requests approval from user to start executing AWS Lambda jobs for each job (eg. 0,latlon,AVG_MON,all)')
 
     parser.add_argument('--log_name', default='', required=False,
                         help='Name to use in the saved log file(s)')
 
     parser.add_argument('--logs_only', default='', required=False,
-                        help='Only does logging, loads provided log file and gets all logs and creates a job_logs json file for it.')
+                        help='ONLY does logging. Loads provided log file and collects logs from AWS CloudWatch and produces new log file')
     
     parser.add_argument('--enable_logging', default=False, action='store_true',
-                        help='Enables logging for lambda jobs')
+                        help='Enables logging for AWS Lambda jobs')
 
     parser.add_argument('--create_jobs', default=False, action='store_true',
                         help='Prompts user on jobs they want to process')
@@ -95,7 +92,7 @@ if __name__ == "__main__":
     dict_key_args = {key: value for key, value in args._get_kwargs()}
 
     process_data = dict_key_args['process_data']
-    local = not dict_key_args['use_cloud']
+    local = not dict_key_args['use_S3']
     use_lambda = dict_key_args['use_lambda']
     force_reconfigure = dict_key_args['force_reconfigure']
 
@@ -481,9 +478,6 @@ if __name__ == "__main__":
         job_logs['Master Script Total Time (s)'] = 0
         job_logs['Cost Information'] = defaultdict(float)
         job_logs['Number of Lambda Jobs'] = 0
-        if dict_key_args['include_all_timesteps']:
-            job_logs['All timesteps'] = []
-            job_logs['Timesteps submitted'] = []
         job_logs['Timesteps failed'] = []
         job_logs['Jobs'] = {}
     # ========== </AWS Lambda preparation> ========================================================
@@ -541,9 +535,6 @@ if __name__ == "__main__":
                     retry_job_logs['Master Script Total Time (s)'] = 0
                     retry_job_logs['Cost Information'] = defaultdict(float)
                     retry_job_logs['Number of Lambda Jobs'] = 0
-                    if dict_key_args['include_all_timesteps']:
-                        retry_job_logs['All timesteps'] = []
-                        retry_job_logs['Timesteps submitted'] = []
                     retry_job_logs['Timesteps failed'] = []
                     retry_job_logs['Jobs'] = {}
 

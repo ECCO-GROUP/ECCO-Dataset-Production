@@ -96,7 +96,41 @@ Contains all the code files required for processing.
       - Process 2D/3D native/latlon granules, sourced from AWS S3, via AWS Lambda
       - Process logs created from Lambda executions
       - *create_parser()*
-    - *create_parser()*
-      - Creates command line argument arguments. Run 'master_script.py --h' to get a description of all arguments
-    - *main*
-      - Main function, run when script is run. Prepares all values and intitiates processing.
+  - *create_parser()*
+    - Creates command line argument arguments. Run 'master_script.py -h' to get a description of all arguments
+  - *main*
+    - Main function, run when script is run. Prepares all values and intitiates processing.
+  - *master_script.py* Arguments
+    - *--process_data*
+      - "Starts processing model data using config file values"
+      - Required in order to process ECCO model granules into output netCDF datasets. Without this argument, no processing will occur.
+    - *--use_S3*
+      - "Source model granules from AWS S3 and save processed files to S3"
+      - Downloads ECCO model granules from the AWS S3 bucket specified in aws_config.yaml, and uploads processed netCDF datasets to the AWS S3 bucket specified in aws_config.yaml.
+    - *--use_lambda*
+      - "Completes processing via AWS Lambda"
+      - Organizes jobs into batches specified from values within aws_config.yaml, and invokes the job specific AWS Lambda function using the job's batch timesteps and files.
+    - *--force_reconfigure*
+      - "Force code to re-run code to get AWS credentials"
+      - Re-runs aws_login code to ensure use has upto date AWS credentials.
+    - *--create_factors*
+      - "ONLY creates all factors: 2D/3D factors, landmask, latlon_grid files, and sparce matrices"
+      - Will create all factors and save them locally, then exits execution of master_script.py.
+    - *--require_input*
+      - "Requests approval from user to start executing AWS Lambda jobs for each job (eg. 0,latlon,AVG_MON,all)"
+      - Prior to invoking an AWS Lambda job, the user will be prompted for approval for the job to be processed.
+    - *--log_name {LOG NAME}*
+      - "Name to used in saved log file(s)"
+      - String to attach to the end of each saved AWS Lambda log file, and to include as the log file's "Run name" within.
+    - *--logs_only {LOG PATH}*
+      - "ONLY does logging. Loads provided log file and collects logs from AWS CloudWatch and produces new log file"
+      - Code will load the log file provided and then progress as usual (except without invoking any AWS Lambda functions) and read AWS CloudWatch logs to gather the job information and produce a final log file.
+    - *--enable_logging*
+      - "Enables logging for AWS Lambda jobs"
+      - If passed, log files will be saved for AWS Lambda jobs by processing AWS CloudWatch logs.
+    - *--create_jobs*
+      - "Prompts user on jobs they want to process"
+      - Creates "created_jobs.txt" based on user input for what jobs to process. This includes product_type, output_frequency, dataset, and timesteps to process.
+    - *--push_ecr*
+      - "Re-builds Docker image and pushes it to AWS ECR"
+      - Uses the Dockerfile in the *lambda_code* directory for the current ECCO version to re-build the Docker image and push it to the AWS ECR image URI specified in aws_config.yaml.

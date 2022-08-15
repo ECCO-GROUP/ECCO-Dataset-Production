@@ -144,9 +144,6 @@ def invoke_lambda(lambda_client,
     num_jobs = 0
     
     fields = list(field_files.keys())
-
-    if dict_key_args['include_all_timesteps']:
-        job_logs['All timesteps'].extend(time_steps)
     
     time_2D_latlon = aws_config['latlon_2D_time']
     time_2D_native = aws_config['native_2D_time']
@@ -293,9 +290,6 @@ def invoke_lambda(lambda_client,
                     'timesteps_succeeded': {},
                     'error': {}
                 }
-
-                if dict_key_args['include_all_timesteps']:
-                    job_logs['Timesteps submitted'].extend(time_steps_by_batch[i])
             except Exception as e:
                 print(f'Lambda invoke error: {e}')
                 print(f'\tTime Steps: {time_steps}')
@@ -369,9 +363,6 @@ def invoke_lambda(lambda_client,
                     'timesteps_succeeded': {},
                     'error': {}
                 }
-
-                if dict_key_args['include_all_timesteps']:
-                    job_logs['Timesteps submitted'].extend(time_steps_by_batch[i])
         
                 num_jobs += 1
             except Exception as e:

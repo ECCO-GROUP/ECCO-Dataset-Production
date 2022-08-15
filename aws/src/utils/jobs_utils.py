@@ -317,7 +317,7 @@ def run_job(job,
     (grouping_to_process, product_type, output_freq_code, time_steps_to_process) = job
 
     # Get values from args and configs
-    local = not dict_key_args['use_cloud']
+    local = not dict_key_args['use_S3']
     use_lambda = dict_key_args['use_lambda']
 
     if not local:
