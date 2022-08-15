@@ -12,7 +12,7 @@ from pathlib import Path
 from collections import defaultdict
 
 # Local imports
-main_path = Path(__file__).parent.parent.resolve()
+main_path = Path(__file__).parent.parent.parent.resolve()
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
 import file_utils as file_utils
