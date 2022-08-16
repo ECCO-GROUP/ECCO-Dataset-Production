@@ -1,0 +1,136 @@
+# **/src/**
+Contains all the code files required for processing.
+- **ecco_v4_py/**
+  - A collection of files and functions from ECCO_v4_py needed for processing. These have been modified to match the needs and requirements of the processing
+- **lambda_code/**
+  - Files needed to build and initialize the AWS lambda functions, organized by ECCO version
+    - *Dockerfile*
+      - Dockerfile used to create the lambda functions used for processing
+    - *app.py*
+      - Contains the functions each Lambda job first calls and uses to call the main processing script
+    - *entry.sh*
+      - Script called via the Lambda function Dockerfile as the ENTRYPOINT. Determines AWS Lambda run environment (cloud vs runtime emulator)
+    - *requirements.txt*
+      - Python package names required for processing
+- **utils/**
+    - **aws_login/**
+      - Directory containing scripts needed for logging into AWS and getting the necessary AWS credentials. See https://github.jpl.nasa.gov/cloud/Access-Key-Generation for a description of the files used
+      - *update_AWS_cred_ecco_production.sh* is a custom made script (not intended to be run on it's own) that takes in the following arguments and logs the user into AWS:
+        - *credentials type*: Either 'python' or 'binary'. This dictates which aws-login file is called in order to login to AWS (python calls aws-login.py, and binary calls the .amd64 binary file for for system)
+        - *credentials file name*: Name of aws-login file to call ('aws-login.py', 'aws-login.linux.amd64', or 'aws-log.darwin.amd64'), which should match the passed *credentials type*
+        - *region*: AWS region
+        - *login file directory*: Path to the 'aws_login/' directory (or whereever the python login file is located)
+    - **ecco_cloud_utils/**
+      - A collection of files and functions from ECCO-ACCESS. These are only used in the creation of the mapping factors
+    - **credentials_utils.py**
+      - Contains functions necessary for getting the user's AWS credentials
+        - *get_aws_credentials()*
+          - Get AWS credentials from the user via the specified method. If nothing is passed, return the credentials already present.
+    - **file_utils.py**
+      - Contains functions for getting the available files either from S3 or from a local directory
+        - *get_files_time_steps()*
+          - Create lists of files and timesteps for each field from files present on S3 in source_bucket or local in model_output_dir
+    - **gen_netcdf_utils.py**
+      - Contains functions used while processing ECCO granules into netCDFs for PODAAC
+        - *download_all_files()*
+          - Download the field files for the cur_ts from S3
+        - *delete_files()*
+          - Delete files from data_file_paths or all .nc files within processed output directory
+        - *get_land_mask()*
+          - Get land mask from mapping_factors_dir for level k
+        - *get_latlon_grid()*
+          - Get latlon grid values from mapping_factors_dir
+        - *transform_latlon()*
+          - Transform source grid to latlon grid
+        - *transform_native()*
+          - Transform source grid to native grid
+        - *global_DS_changes()*
+          - Apply changes to every transformed Dataset (coords, values, etc.)
+        - *set_metadata()*
+          - Set metadata of the final output Dataset for the current timestep
+    - **jobs_utils.py**
+      - Contains functions for creating, calculating, and running jobs for processing
+        - *calculate_all_jobs()*
+          - Create lists of all jobs to execute according to the groupings metadata files. Executed only if there is a line in jobs.txt that is just 'all'
+        - *create_jobs()*
+          - Create lists of all jobs to execute according to the groupings metadata files
+        - *run_job()*
+          - Run the job provided either locally or via AWS Lambda
+    - **lambda_utils.py**
+      - Contains functions for updating, creating, and invoking AWS Lambda functions
+        - *create_lambda_function()*
+          - Create AWS Lambda function with AWS ECR Docker image and specified memory
+        - *update_lambda_functon()*
+          - Update AWS Lambda function with AWS ECR Docker image
+        - *invoke_lambda()*
+          - Invoke the lambda function for the current job
+    - **logging_utils.py**
+      - Contains functions for getting, processing, and saving AWS Lambda logs via AWS CloudWatch
+        - *lambda_logging()*
+          - Collect, process, and save AWS Lambda logs from AWS CloudWatch
+    - **mapping_factors_utils.py**
+      - Contains functions for creating and getting the mapping factors (factors, land masks, sparse matrices, etc.)
+        - *get_mapping_factors()*
+          - Get mapping factors from mapping_factors_dir for level k and the factors requested (factors_to_get)
+        - *create_mapping_factors()*
+          - Create mapping factors for dataset_dim for nk many vertical levels
+        - *create_land_mask()*
+          - Create land mask file(s) for dataset_dim for nk many vertical levels
+        - *create_sparse_matrix()*
+          - Create sparse matrix file(s)
+        - *create_all_factors()*
+          - Create all factors (mapping factors, land mask, sparse matrices, and latlon_grid)
+- **ecco_gen_for_podaac_cloud.py**
+  - Main code file for processing. This file takes a payload specifing timesteps and files to process (among other information), and processes said files to produce output datasets
+    - *logging_info()*
+      - Prints all the logging info (time, number of files, successes, fails, etc.)
+    - *generate_netcdfs()*
+      - Primary processing function. Gathers the metadata, files, transforms granules, and applies metadata for the passed job
+- **master_script.py**
+  - Primary script for all ECCO Processing. From this script, all functions of ECCO Processing can be started including:
+      - Create mapping factors, land mask, and sparce matrices
+      - Uploading local files to AWS S3 (TODO)
+      - Prompt user to create jobs file from available groupings in metadata files
+      - Process 2D/3D native/latlon granules, sourced locally, locally
+      - Process 2D/3D native/latlon granules, sourced from AWS S3, locally 
+      - Process 2D/3D native/latlon granules, sourced from AWS S3, via AWS Lambda
+      - Process logs created from Lambda executions
+      - *create_parser()*
+  - *create_parser()*
+    - Creates command line argument arguments. Run 'master_script.py -h' to get a description of all arguments
+  - *main*
+    - Main function, run when script is run. Prepares all values and intitiates processing.
+  - *master_script.py* Arguments
+    - *--process_data*
+      - "Starts processing model data using config file values"
+      - Required in order to process ECCO model granules into output netCDF datasets. Without this argument, no processing will occur.
+    - *--use_S3*
+      - "Source model granules from AWS S3 and save processed files to S3"
+      - Downloads ECCO model granules from the AWS S3 bucket specified in aws_config.yaml, and uploads processed netCDF datasets to the AWS S3 bucket specified in aws_config.yaml.
+    - *--use_lambda*
+      - "Completes processing via AWS Lambda"
+      - Organizes jobs into batches specified from values within aws_config.yaml, and invokes the job specific AWS Lambda function using the job's batch timesteps and files.
+    - *--force_reconfigure*
+      - "Force code to re-run code to get AWS credentials"
+      - Re-runs aws_login code to ensure use has upto date AWS credentials.
+    - *--create_factors*
+      - "ONLY creates all factors: 2D/3D factors, landmask, latlon_grid files, and sparce matrices"
+      - Will create all factors and save them locally, then exits execution of master_script.py.
+    - *--require_input*
+      - "Requests approval from user to start executing AWS Lambda jobs for each job (eg. 0,latlon,AVG_MON,all)"
+      - Prior to invoking an AWS Lambda job, the user will be prompted for approval for the job to be processed.
+    - *--log_name {LOG NAME}*
+      - "Name to used in saved log file(s)"
+      - String to attach to the end of each saved AWS Lambda log file, and to include as the log file's "Run name" within.
+    - *--logs_only {LOG PATH}*
+      - "ONLY does logging. Loads provided log file and collects logs from AWS CloudWatch and produces new log file"
+      - Code will load the log file provided and then progress as usual (except without invoking any AWS Lambda functions) and read AWS CloudWatch logs to gather the job information and produce a final log file.
+    - *--enable_logging*
+      - "Enables logging for AWS Lambda jobs"
+      - If passed, log files will be saved for AWS Lambda jobs by processing AWS CloudWatch logs.
+    - *--create_jobs*
+      - "Prompts user on jobs they want to process"
+      - Creates "created_jobs.txt" based on user input for what jobs to process. This includes product_type, output_frequency, dataset, and timesteps to process.
+    - *--push_ecr*
+      - "Re-builds Docker image and pushes it to AWS ECR"
+      - Uses the Dockerfile in the *lambda_code* directory for the current ECCO version to re-build the Docker image and push it to the AWS ECR image URI specified in aws_config.yaml.

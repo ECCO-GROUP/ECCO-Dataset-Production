@@ -1,0 +1,117 @@
+[
+    {
+        "name": "profile_name",
+        "type": "s",
+        "value": "saml-pub"
+     },
+     {
+        "name": "region",
+        "type": "s",
+        "value": "us-west-2"
+     },
+     {
+        "name": "source_bucket",
+        "type": "s",
+        "value": "ecco-model-granules"
+     },
+     {
+        "name": "bucket_subfolder",
+        "type": "s",
+        "value": "V4r4"
+     },
+     {
+        "name": "output_bucket",
+        "type": "s",
+        "value": "ecco-processed-data"
+     },
+     {
+        "name": "account_id",
+        "type": "s",
+        "value": "448078824696"
+     },
+     {
+        "name": "image_uri",
+        "type": "s", 
+        "value": "448078824696.dkr.ecr.us-west-2.amazonaws.com/ecco_processing:latest"
+     },
+     {
+        "name": "function_name_prefix",
+        "type": "s",
+        "value": "ecco_processing"
+     },
+     {
+        "name": "role",
+        "type": "s",
+        "value": "lambda-role"
+     },
+     {
+        "name": "test_bucket",
+        "type": "s",
+        "value": "ecco-test-lambda"
+     },
+     {
+        "name": "max_latlon_exec_1D",
+        "type": "i",
+        "value": 10
+     },
+     {
+        "name": "max_latlon_exec_2D",
+        "type": "i",
+        "value": 9
+     },
+     {
+        "name": "max_latlon_exec_3D",
+        "type": "i",
+        "value": 9
+     },
+     {
+        "name": "max_native_exec_1D",
+        "type": "i",
+        "value": 10
+     },
+     {
+        "name": "max_native_exec_2D",
+        "type": "i",
+        "value": 10
+     },
+     {
+        "name": "max_native_exec_3D",
+        "type": "i",
+        "value": 2
+     },
+     {
+        "name": "memory_size_1D_latlon",
+        "type": "i",
+        "value": 216
+     },
+     {
+        "name": "memory_size_1D_native",
+        "type": "i",
+        "value": 216
+     },
+     {
+        "name": "memory_size_2D_latlon",
+        "type": "i",
+        "value": 1024
+     },
+     {
+        "name": "memory_size_2D_native",
+        "type": "i",
+        "value": 1024
+     },
+     {
+        "name": "memory_size_3D_latlon",
+        "type": "i",
+        "value": 1280
+     },
+     {
+        "name": "memory_size_3D_native",
+        "type": "i",
+        "value": 1024
+     },
+     {
+        "name": "number_of_batches_to_process",
+        "type": "i",
+        "value": 1000
+     }
+]
