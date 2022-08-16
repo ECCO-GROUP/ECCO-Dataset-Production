@@ -161,7 +161,7 @@ if __name__ == "__main__":
     if product_generation_config['ecco_code_dir'] == '':
         product_generation_config['ecco_code_dir'] = ecco_code_dir_default
     # ========== </prepare product generation configuration> ======================================
-    
+
 
     # ========== <create mapping factors> =========================================================
     # Creates mapping_factors (2D and 3D), landmask, latlon_grid, and sparse matrix files
@@ -169,9 +169,9 @@ if __name__ == "__main__":
     # to update the factors/mask in the lambda docker image
     if dict_key_args['create_factors']:
         status = mapping_factors_utils.create_all_factors(ea, 
-                                                         product_generation_config, 
-                                                         ['2D', '3D'],
-                                                         extra_prints=extra_prints)
+                                                          product_generation_config, 
+                                                          ['2D', '3D'],
+                                                          extra_prints=extra_prints)
         if status != 'SUCCESS':
             print(status)
             sys.exit()

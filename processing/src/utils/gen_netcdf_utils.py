@@ -323,12 +323,14 @@ def transform_latlon(ecco,
 
     # Read in model output mds
     if extra_prints: print('... loading mds', data_file_path)
+    data_fname = data_file_path.basename
     F = ecco.read_llc_to_tiles(data_file_path,
-                                llc=90, skip=0, 
-                                nk=nk, nl=1,
-                                filetype='>f',
-                                less_output=True,
-                                use_xmitgcm=False)
+                               data_fname,
+                               llc=90, skip=0, 
+                               nk=nk, nl=1,
+                               filetype='>f',
+                               less_output=True,
+                               use_xmitgcm=False)
 
     # Initialize blank transformed grid with nk vertical levels
     # For 2D, this has shape (1, X, Y)
@@ -427,7 +429,7 @@ def transform_native(ecco,
 
     Args:
         ecco (module 'ecco_v4_py'): ecco_v4_py imported module
-        var (str): String name to assign to created DataArray
+        var (str): String name to assign to created DataAr
         ecco_land_masks (tuple): Tuple of ecco_grid xarray DataArray land_masks (maskC, maskW, maskS)
         ecco_grid_dir_mds (PosixPath): Path to /ECCO-Dataset-Production/aws/ecco_grids/{ecco_version}
         mds_var_dir (PosixPath): Path to /ECCO-Dataset-Production/aws/tmp/tmp_model_output/{ecco_version}/{output_freq}/{field}
@@ -451,16 +453,20 @@ def transform_native(ecco,
 
     # load specified field files from the provided directory
     # This loads them into the native tile grid
-    status, F_DS = ecco.load_ecco_vars_from_mds(mds_var_dir,
-                                                mds_grid_dir = ecco_grid_dir_mds,
-                                                mds_files = short_mds_name,
-                                                vars_to_load = var,
-                                                drop_unused_coords = True,
-                                                grid_vars_to_coords = False,
-                                                output_freq_code=output_freq_code,
-                                                model_time_steps_to_load=int(cur_ts),
-                                                less_output = True,
-                                                read_grid=read_grid)
+    try:
+        status = 'SUCCESS'
+        F_DS = ecco.load_ecco_vars_from_mds(mds_var_dir,
+                                            mds_grid_dir = ecco_grid_dir_mds,
+                                            mds_files = short_mds_name,
+                                            vars_to_load = var,
+                                            drop_unused_coords = True,
+                                            grid_vars_to_coords = False,
+                                            output_freq_code=output_freq_code,
+                                            model_time_steps_to_load=int(cur_ts),
+                                            less_output = True,
+                                            read_grid=read_grid)
+    except:
+        status = 'ERROR Failed to load ECCO vars from mds'
 
     if status != 'SUCCESS':
         return (status, F_DS)
