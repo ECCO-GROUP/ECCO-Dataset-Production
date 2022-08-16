@@ -10,9 +10,9 @@ WORKDIR ${FUNCTION_DIR}
 RUN mkdir ./ecco_grids
 COPY ./ecco_grids/V4r4 ./ecco_grids
 
-# copy ecco_v4_py files
-RUN mkdir ./ecco_v4_py
-COPY ./src/ecco_v4_py ./ecco_v4_py
+# copy ecco_code (ecco_v4_py) files
+RUN mkdir ./ecco_code
+COPY ./src/ecco_code ./ecco_code
 
 # copy metadata files
 RUN mkdir ./metadata

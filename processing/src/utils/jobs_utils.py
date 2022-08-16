@@ -317,10 +317,10 @@ def run_job(job,
     (grouping_to_process, product_type, output_freq_code, time_steps_to_process) = job
 
     # Get values from args and configs
-    local = not dict_key_args['use_S3']
     use_lambda = dict_key_args['use_lambda']
+    use_S3 = dict_key_args['use_S3'] or use_lambda
 
-    if not local:
+    if use_S3:
         source_bucket = aws_config['source_bucket']
         function_name_prefix = aws_config['function_name_prefix']
         source_bucket_folder_name = aws_config['bucket_subfolder']
@@ -346,7 +346,7 @@ def run_job(job,
     
 
     # ========== <Get files/timesteps> ============================================================
-    if not local:
+    if use_S3:
         s3_dir_prefix = f'{source_bucket_folder_name}/{freq_folder}'
 
         # Get files and timesteps using S3
@@ -354,7 +354,7 @@ def run_job(job,
                                                                   period_suffix, 
                                                                   time_steps_to_process, 
                                                                   freq_folder, 
-                                                                  local, 
+                                                                  use_S3, 
                                                                   s3_dir_prefix=s3_dir_prefix, 
                                                                   source_bucket=source_bucket)
     else:
@@ -363,7 +363,7 @@ def run_job(job,
                                                                   period_suffix, 
                                                                   time_steps_to_process, 
                                                                   freq_folder, 
-                                                                  local, 
+                                                                  use_S3, 
                                                                   model_output_dir=product_generation_config['model_output_dir'])
 
     # Check if status is not "SUCCESS" or if no timesteps were found
@@ -373,7 +373,7 @@ def run_job(job,
     else:
         field_files, time_steps = file_time_steps
         if len(time_steps) == 0:
-            if not local:
+            if use_S3:
                 status = f'ERROR No files found in bucket {source_bucket} for fields {fields}'
             else:
                 status = f'ERROR No files found in local directory {product_generation_config["model_output_dir"]} for fields {fields}, for time steps: {time_steps_to_process}'
@@ -407,7 +407,7 @@ def run_job(job,
             'field_files': field_files,
             'product_generation_config': product_generation_config,
             'aws_config': aws_config,
-            'local': local,
+            'use_S3': use_S3,
             'use_lambda': use_lambda,
             'credentials': credentials
         }

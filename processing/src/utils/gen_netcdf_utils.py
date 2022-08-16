@@ -323,8 +323,8 @@ def transform_latlon(ecco,
 
     # Read in model output mds
     if extra_prints: print('... loading mds', data_file_path)
-    data_fname = data_file_path.basename
-    F = ecco.read_llc_to_tiles(data_file_path,
+    data_fname = data_file_path.name
+    F = ecco.read_llc_to_tiles(data_file_path.parent,
                                data_fname,
                                llc=90, skip=0, 
                                nk=nk, nl=1,

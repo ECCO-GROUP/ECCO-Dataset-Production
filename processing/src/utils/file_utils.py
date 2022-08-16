@@ -20,7 +20,7 @@ def get_files_time_steps(fields,
                          period_suffix, 
                          time_steps_to_process, 
                          freq_folder, 
-                         local, 
+                         use_S3, 
                          model_output_dir=None, 
                          s3_dir_prefix=None, 
                          source_bucket=None):
@@ -33,7 +33,7 @@ def get_files_time_steps(fields,
         time_steps_to_process (str/int/list): String 'all', an integer specifing the number of time
                                                 steps, or a list of time steps to process
         freq_folder (str): Subfolder name relating to frequency (i.e. 'diags_monthly')
-        local (bool): True/False if processing locally
+        use_S3 (bool): True/False if processing using AWS S3
         model_output_dir (optional, str): String directory to model output (for local processing)
         source_bucket (optional, str): Name of S3 bucket
         s3_dir_prefix (optional, str): Prefix of files stored on S3 (i.e. 'V4r4/diags_monthly)
@@ -58,7 +58,7 @@ def get_files_time_steps(fields,
     print(f'\nGetting timesteps and files for fields: {fields} for {time_steps_to_process} {period_suffix} timesteps')
 
     field_paths = []
-    if not local:
+    if use_S3:
         # Construct the list of field paths in S3
         # i.e. ['ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean', 'ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean', ...]
         for field in fields:
@@ -72,7 +72,7 @@ def get_files_time_steps(fields,
     # ========== <Get files> ==============================================================
     try:
         # setup AWS clients
-        if not local:
+        if use_S3:
             s3 = boto3.resource('s3')
             bucket = s3.Bucket(source_bucket)
 
@@ -86,7 +86,7 @@ def get_files_time_steps(fields,
             # get field name from field_path
             field = field_path.split('/')[-1].split(period_suffix)[0][:-1]
 
-            if not local:
+            if use_S3:
                 # loop through all the objects in the source_bucket with a prefix matching the s3_field_path
                 # and append those with .data to the list of field files (along with the timestep)
                 curr_field_files = []

@@ -14,13 +14,11 @@ Primary script for all ECCO Processing. From this script, all functions of ECCO 
 
 """
 
-from doctest import ELLIPSIS_MARKER
 import os
 import ast
 import sys
 import json
 import time
-from sklearn.model_selection import ShuffleSplit
 import yaml
 import boto3
 import shutil
@@ -36,7 +34,6 @@ main_path = Path(__file__).parent.parent.resolve()
 sys.path.append(f'{main_path}')
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
-import ecco_cloud_utils as ea
 import jobs_utils as jobs_utils
 import lambda_utils as lambda_utils
 import logging_utils as logging_utils
@@ -95,13 +92,10 @@ if __name__ == "__main__":
     dict_key_args = {key: value for key, value in args._get_kwargs()}
 
     process_data = dict_key_args['process_data']
-    local = not dict_key_args['use_S3']
+    use_S3 = dict_key_args['use_S3']
     use_lambda = dict_key_args['use_lambda']
+    push_ecr = dict_key_args['push_ecr']
     force_reconfigure = dict_key_args['force_reconfigure']
-
-    # if use lambda, then local is False (only use S3 for data)
-    if use_lambda:
-        local = False
 
     # Verify user does not want to enable logging
     # Logging only happens when processing data via AWS Lambda
@@ -163,13 +157,43 @@ if __name__ == "__main__":
     # ========== </prepare product generation configuration> ======================================
 
 
-    # ========== <create mapping factors> =========================================================
+    # ========== <prepare ecco_cloud_utils and ecco_code> =========================================
+    # copy files from ECCO-ACCESS/ecco_cloud_utils to ECCO-Dataset-Production/processing/src/utils/ecco_cloud_utils
+    ecco_access_dir = main_path.parent.parent.resolve() / 'ECCO-ACCESS'
+    ecco_cloud_utils_dir = ecco_access_dir / 'ecco-cloud-utils' / 'ecco_cloud_utils'
+    new_ecco_cloud_utils_file_dir = main_path / 'src' / 'utils' / 'ecco_cloud_utils'
+    if not os.path.exists(new_ecco_cloud_utils_file_dir):
+        os.makedirs(new_ecco_cloud_utils_file_dir, exist_ok=True)
+
+    # copy code files from ECCO-ACCESS/ecco-cloud-utils/ecco_cloud_utils to ECCO-Dataset-Production
+    # /processing/src/utils/ecco_cloud_utils
+    for ecco_cloud_utils_file in os.listdir(ecco_cloud_utils_dir):
+        if ecco_cloud_utils_file != '__init__.py' and '.py' in ecco_cloud_utils_file:
+            ecu_file_path = ecco_cloud_utils_dir / ecco_cloud_utils_file
+            new_ecu_file_path = new_ecco_cloud_utils_file_dir / ecco_cloud_utils_file
+            shutil.copyfile(ecu_file_path, new_ecu_file_path)
+
+    # copy files from ECCOvX-py/ecco_vX_py to ECCO-Dataset-Production/processing/ecco_code
+    new_ecco_code_file_dir = main_path / 'src' / 'ecco_code'
+    if not os.path.exists(new_ecco_code_file_dir):
+        os.makedirs(new_ecco_code_file_dir, exist_ok=True)
+
+    # copy code files from ECCOvX-py/ecco_vX_py/ to ECCO-Dataset-Production/processing/src/ecco_code
+    ecco_code_dir = Path(product_generation_config['ecco_code_dir']) / f'ecco_{ecco_version[:2].lower()}_py'
+    for ecco_code_file in os.listdir(ecco_code_dir):
+        if ecco_code_file != '__init__.py' and '.py' in ecco_code_file:
+            ec_file_path = ecco_code_dir / ecco_code_file
+            new_ec_file_path = new_ecco_code_file_dir / ecco_code_file
+            shutil.copyfile(ec_file_path, new_ec_file_path)
+    # ========== </prepare ecco_cloud_utils and ecco_code> ========================================
+
+
+    # ========== <create mapping factors> ========================================================
     # Creates mapping_factors (2D and 3D), landmask, latlon_grid, and sparse matrix files
     # Not needed unless changes have been made to the factors code and you need
     # to update the factors/mask in the lambda docker image
     if dict_key_args['create_factors']:
-        status = mapping_factors_utils.create_all_factors(ea, 
-                                                          product_generation_config, 
+        status = mapping_factors_utils.create_all_factors(product_generation_config, 
                                                           ['2D', '3D'],
                                                           extra_prints=extra_prints)
         if status != 'SUCCESS':
@@ -187,7 +211,7 @@ if __name__ == "__main__":
 
     # get metadata from ECCO-ACCESS/metadata and save it to the metadata directory in product_generation_config
     # assumes ECCO-ACCESS/ exists on the same level as ECCO-Dataset-Production
-    ea_metadata_dir = main_path.parent.parent.resolve() / 'ECCO-ACCESS' / 'metadata' / f'ECCO{ecco_version.lower()}_metadata_json'
+    ea_metadata_dir = ecco_access_dir / 'metadata' / f'ECCO{ecco_version.lower()}_metadata_json'
     ea_metadata_files = os.listdir(ea_metadata_dir)
     for metadata_file in ea_metadata_files:
         # Only get .json files and the PODAAC csv metadata file
@@ -273,7 +297,7 @@ if __name__ == "__main__":
     credentials = {}
     aws_config = {}
     s3 = None
-    if not local:
+    if use_S3 or use_lambda or push_ecr:
         # ========== <prepare aws configuration metadata> =========================================
         # Load 'aws_config.yaml'
         aws_config = yaml.safe_load(open(main_path / 'configs' / 'aws_config.yaml'))
@@ -360,6 +384,30 @@ if __name__ == "__main__":
 
 
     # ========== <AWS Lambda preparation> =========================================================
+    # if "push_ecr" arugment is passed, then call ecr_pus.sh script to re-build Docker image and
+    # push it to ECR
+    if push_ecr:
+        # get the current working directory
+        orig_cwd = os.getcwd()
+
+        # get the container name and tag to use
+        container_name_and_tag = image_uri.split('/')[-1].split(':')
+        container_name = container_name_and_tag[0]
+        image_tag = container_name_and_tag[1]
+        ecr_push_path = str(main_path / 'ecr_push.sh')
+
+        # change working diretory to that of the ecr_push script. This is because when you build
+        # the docker image, all paths within the Dockerfile are relative to the where the script
+        # is run. When using subprocess.run() the working directory does not change to that of the
+        # file being run, so we change the directory.
+        os.chdir(os.path.join(os.path.abspath(sys.path[0]), main_path))
+
+        # run ecr_push.sh
+        subprocess.run([ecr_push_path, container_name, image_tag, ecco_version], check=True)
+
+        # change working directory to original working dierctory (eg. the directory of master_script.py)
+        os.chdir(orig_cwd)  
+    
     lambda_client = None
     job_logs = {}
     if use_lambda:
@@ -410,30 +458,6 @@ if __name__ == "__main__":
         
 
         # ========== <Lambda function creation/updating> ==========================================
-        # if "push_ecr" arugment is passed, then call ecr_pus.sh script to re-build Docker image and
-        # push it to ECR
-        if dict_key_args['push_ecr']:
-            # get the current working directory
-            orig_cwd = os.getcwd()
-
-            # get the container name and tag to use
-            container_name_and_tag = image_uri.split('/')[-1].split(':')
-            container_name = container_name_and_tag[0]
-            image_tag = container_name_and_tag[1]
-            ecr_push_path = str(main_path / 'ecr_push.sh')
-
-            # change working diretory to that of the ecr_push script. This is because when you build
-            # the docker image, all paths within the Dockerfile are relative to the where the script
-            # is run. When using subprocess.run() the working directory does not change to that of the
-            # file being run, so we change the directory.
-            os.chdir(os.path.join(os.path.abspath(sys.path[0]), main_path))
-
-            # run ecr_push.sh
-            subprocess.run([ecr_push_path, container_name, image_tag, ecco_version], check=True)
-
-            # change working directory to original working dierctory (eg. the directory of master_script.py)
-            os.chdir(orig_cwd)
-
         # get ECR image info
         ecr_client = boto3.client('ecr')
 

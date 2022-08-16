@@ -27,7 +27,7 @@ from pathlib import Path
 main_path = Path(__file__).parent.parent.resolve()
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
-import ecco_v4_py as ecco
+import ecco_code as ecco
 import gen_netcdf_utils as gen_netcdf_utils
 
 # =================================================================================================
@@ -129,7 +129,7 @@ def generate_netcdfs(event):
             field_files (defaultdict(list)): Dictionary with field names as keys, and S3/local file paths for each timestep as values
             product_generation_config (dict): Dictionary of product_generation_config.yaml config file
             aws_config (dict): Dictionary of aws_config.yaml config file
-            local (bool): Boolean for whether or not processing is to occur locally (no S3, no Lambda)
+            use_S3 (bool): Boolean for whether or not files are accessed via AWS S3 or locally
             use_lambda (bool): Boolean for whether or not processing is to occur on Lambda
             credentials (dict): Dictionary containaing credentials information for AWS
             processing_code_filename (only for lambda, str): Name of this file, used to call it from the lambda_code app.py file
@@ -158,7 +158,7 @@ def generate_netcdfs(event):
     field_files = event['field_files']
     product_generation_config = event['product_generation_config']
     aws_config = event['aws_config']
-    local = event['local']
+    use_S3 = event['use_S3']
     use_lambda = event['use_lambda']
     credentials = event['credentials']
 
@@ -203,16 +203,16 @@ def generate_netcdfs(event):
         # Setup S3
         if 'source_bucket' in aws_config and 'output_bucket' in aws_config:
             buckets = (aws_config['source_bucket'], aws_config['output_bucket'])
-            if not local and buckets != None and credentials != None:
+            if use_S3 and buckets != None and credentials != None:
                 # boto3.setup_default_session(profile_name=aws_config['profile_name'])
                 s3 = boto3.client('s3')
                 model_granule_bucket, processed_data_bucket = buckets
-        elif not local:
+        elif use_S3:
             status = f'ERROR No bucket names in aws_config:\n{aws_config}'
             raise Exception(status)
 
-        # Create processed_output_dir_base directory if using S3 (and not Lambda)
-        if not local and not use_lambda:
+        # Create processed_output_dir_base directory if using S3 (and not AWS Lambda)
+        if use_S3 and not use_lambda:
             if not os.path.exists(processed_output_dir_base):
                 os.makedirs(processed_output_dir_base, exist_ok=True)
 
@@ -434,7 +434,7 @@ def generate_netcdfs(event):
                 # If 'download_all_fields' in product_generation_config.yaml is True, then all field files
                 # for the current time step will be downloaded, otherwise each field file is downloaded 
                 # and processed one at a time
-                if not local and download_all_fields:
+                if use_S3 and download_all_fields:
                     print(f'Downloading all files for current timestep')
                     s3_download_start_time = time.time()
                     (status, (all_files)) = gen_netcdf_utils.download_all_files(s3, 
@@ -458,7 +458,7 @@ def generate_netcdfs(event):
                     print(f'Downloading and processing fields one at a time for current timestep')
 
                 # Get data_file_paths for local files when processing locally
-                if local:
+                if not use_S3:
                     for field in fields_to_load:
                         curr_field_files = field_files[field]
                         for field_file in curr_field_files:
@@ -498,7 +498,7 @@ def generate_netcdfs(event):
                 # ========== <Field transformations> ==============================================
                 # Load fields and place them in the dataset
                 for i, field in enumerate(sorted(fields_to_load)):
-                    if not local and not download_all_fields:
+                    if use_S3 and not download_all_fields:
                         s3_download_start_time = time.time()
                         (status, (all_files)) = gen_netcdf_utils.download_all_files(s3, 
                                                                                     [field], 
@@ -621,7 +621,7 @@ def generate_netcdfs(event):
 
                 # ========== <Upload to S3> =======================================================
                 # Upload output netcdf to s3
-                if not local:
+                if use_S3:
                     s3_upload_start_time = time.time()
                     print('\n... uploading new file to S3 bucket')
                     name = str(netcdf_filename).replace(f'{str(processed_output_dir_base)}/', 
@@ -683,9 +683,9 @@ def generate_netcdfs(event):
                     # ========== </Compare checksums> =============================================
                 # ========== </Upload to S3> ======================================================
                 
-                # Create succeeded checksum entry for current timestep with s3_fname (if not local),
+                # Create succeeded checksum entry for current timestep with s3_fname (if use_S3),
                 # along with the dataset checksum and uuid
-                if not local:
+                if use_S3:
                     if create_checksum:
                         succeeded_checksums[cur_ts] = {'s3_fname':name, 'checksum':orig_checksum, 'uuid':orig_uuid}
                     else:
@@ -724,7 +724,7 @@ def generate_netcdfs(event):
         # ========== </Process each time level> ===================================================
 
         # Remove processed_output_dir_base directory
-        # if not local and not use_lambda:
+        # if use_S3 and not use_lambda:
         #     if os.path.exists(processed_output_dir_base):
         #         shutil.rmtree(processed_output_dir_base)
 

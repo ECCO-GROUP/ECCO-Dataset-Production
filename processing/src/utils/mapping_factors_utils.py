@@ -20,6 +20,7 @@ from scipy import sparse
 # Local imports
 main_path = Path(__file__).parent.parent.resolve()
 sys.path.append(f'{main_path / "src" / "utils"}')
+import ecco_cloud_utils as ea
 import gen_netcdf_utils as gen_netcdf_utils
 
 # =================================================================================================
@@ -94,8 +95,7 @@ def get_mapping_factors(dataset_dim,
 # =================================================================================================
 # CREATE MAPPING FACTORS
 # =================================================================================================
-def create_mapping_factors(ea, 
-                           dataset_dim, 
+def create_mapping_factors(dataset_dim, 
                            mapping_factors_dir, 
                            source_grid_all, 
                            target_grid, 
@@ -160,11 +160,11 @@ def create_mapping_factors(ea,
         if ~(grid_mapping_fname_all.is_file()):
             # find the mapping between all points of the ECCO grid and the target grid.
             grid_mappings_all = \
-                ea.find_mappings_from_source_to_target(source_grid_all,
-                                                        target_grid,
-                                                        target_grid_radius,
-                                                        source_grid_min_L,
-                                                        source_grid_max_L)
+                ea.find_mappings_from_source_to_target_for_processing(source_grid_all,
+                                                                      target_grid,
+                                                                      target_grid_radius,
+                                                                      source_grid_min_L,
+                                                                      source_grid_max_L)
 
             # Save grid_mappings_all
             try:
@@ -182,11 +182,11 @@ def create_mapping_factors(ea,
         for k_i in range(nk):
             print(k_i)
             grid_mappings_k = \
-                ea.find_mappings_from_source_to_target(source_grid_k[k_i],
-                                                        target_grid,
-                                                        target_grid_radius,
-                                                        source_grid_min_L,
-                                                        source_grid_max_L)
+                ea.find_mappings_from_source_to_target_for_processing(source_grid_k[k_i],
+                                                                      target_grid,
+                                                                      target_grid_radius,
+                                                                      source_grid_min_L,
+                                                                      source_grid_max_L)
 
             try:
                 # if the dataset dim is 2D, save the factors using the 2D name, otherwise
@@ -205,8 +205,7 @@ def create_mapping_factors(ea,
 # =================================================================================================
 # CREATE LAND MASK
 # =================================================================================================
-def create_land_mask(ea, 
-                     mapping_factors_dir, 
+def create_land_mask(mapping_factors_dir, 
                      nk, 
                      target_grid_shape, 
                      ecco_grid, 
@@ -273,11 +272,11 @@ def create_land_mask(ea,
             source_field = ecco_land_mask_c.values[k,:].ravel()
 
             # create land mask for level k
-            land_mask_ll = ea.transform_to_target_grid(source_indices_within_target_radius_i,
-                                                        nearest_source_index_to_target_index_i,
-                                                        source_field, target_grid_shape,
-                                                        operation='nearest', 
-                                                        allow_nearest_neighbor=True)
+            land_mask_ll = ea.transform_to_target_grid_for_processing(source_indices_within_target_radius_i,
+                                                                      nearest_source_index_to_target_index_i,
+                                                                      source_field, target_grid_shape,
+                                                                      operation='nearest', 
+                                                                      allow_nearest_neighbor=True)
 
             try:
                 # save land mask with level {k}
@@ -413,8 +412,7 @@ def create_sparse_matrix(mapping_factors_dir,
 # =================================================================================================
 # CREATE ALL FACTORS (MAPPING FACTORS, LAND MASK, LATLON GRID, and SPARSE MATRICES)
 # =================================================================================================
-def create_all_factors(ea, 
-                       product_generation_config, 
+def create_all_factors(product_generation_config, 
                        dataset_dim, 
                        extra_prints=False):
     """
@@ -524,8 +522,7 @@ def create_all_factors(ea,
     if not isinstance(dataset_dim, list):
         dataset_dim = [dataset_dim]
     for dim in dataset_dim:
-        status = create_mapping_factors(ea, 
-                                        dim, 
+        status = create_mapping_factors(dim, 
                                         mapping_factors_dir, 
                                         source_grid_all, 
                                         target_grid, 
@@ -538,8 +535,7 @@ def create_all_factors(ea,
             return status
 
         # make a land mask in lat-lon using hfacC
-        status = create_land_mask(ea, 
-                                  mapping_factors_dir, 
+        status = create_land_mask(mapping_factors_dir, 
                                   nk, 
                                   target_grid_shape, 
                                   ecco_grid, 
@@ -583,7 +579,10 @@ def create_all_factors(ea,
     latlon_grid = [latlon_bounds, depth_bounds, target_grid_dict, wet_pts_k]
 
     print('\nCreating latlon grid')
-    latlon_grid_name = Path(mapping_factors_dir) / 'latlon_grid' / f'latlon_grid.xz'
+    latlon_grid_dir = Path(mapping_factors_dir) / 'latlon_grid'
+    if not os.path.exists(latlon_grid_dir):
+        os.makedirs(latlon_grid_dir, exist_ok=True)
+    latlon_grid_name = latlon_grid_dir / 'latlon_grid.xz'
     if latlon_grid_name.is_file():
         # latlon grid already made, continuing
         print('... latlon grid already created')
