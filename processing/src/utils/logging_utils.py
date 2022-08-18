@@ -20,6 +20,7 @@ from collections import defaultdict
 # Local imports
 main_path = Path(__file__).parent.parent.resolve()
 sys.path.append(f'{main_path / "src" / "utils"}')
+from print_utils import printc
 import credentials_utils as credentials_utils
 
 
@@ -354,11 +355,10 @@ def lambda_logging(job_logs,
             # Otherwise, continue processing the logs. Logic has been implemented to prevent a ThrottlingException to occur,
             # but this exists as a backup in case it does.
             if 'ThrottlingException' not in str(e):
-                print(f'Error processing logs for lambda jobs')
-                print(e)
+                printc(f'Error processing logs for lambda jobs: {e}', 'red')
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                print(exc_type, fname, exc_tb.tb_lineno)
+                printc(f'{exc_type}, {fname}, {exc_tb.tb_lineno}', 'red')
                 try:
                     total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
                     job_logs['Master Script Total Time (s)'] = total_time
@@ -372,7 +372,7 @@ def lambda_logging(job_logs,
                                                                   aws_path, 
                                                                   fn_extra='FINAL_error')
                 except Exception as e:
-                    print(f'Failed saving final log too: {e}')
+                    printc(f'Failed saving final log: {e}', 'red')
                 return job_logs
     # ========== </Main logging loop> =============================================================
 
@@ -475,8 +475,7 @@ def __get_logs_helper(log_client,
                     else:
                         break
     except Exception as e:
-        print('Error accessing logs: ')
-        print(e)
+        printc(f'Error accessing logs: {e}', 'red')
 
     return ret_logs
 
@@ -558,8 +557,7 @@ def __save_logs_helper(job_logs,
         with open(f'{log_path}/job_logs_{start_time}_{log_ctr}_{log_name}{fn_extra}.json', 'w') as f:
             json.dump(job_logs, f, indent=4)
     except Exception as e:
-        print('Error saving logs: ')
-        print(e)
+        printc(f'Error saving logs: {e}', 'red')
     # ========== </Save job logs> =================================================================
     
     return job_logs, estimated_jobs

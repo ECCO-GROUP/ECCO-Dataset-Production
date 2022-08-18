@@ -55,7 +55,7 @@ def get_files_time_steps(fields,
         status = f'ERROR Bad time steps provided ("{time_steps_to_process}")'
         return ((field_files, time_steps_all_vars), status)
 
-    print(f'\nGetting timesteps and files for fields: {fields} for {time_steps_to_process} {period_suffix} timesteps')
+    print(f'Getting timesteps and files for fields: {fields} for {time_steps_to_process} {period_suffix} timesteps')
 
     field_paths = []
     if use_S3:

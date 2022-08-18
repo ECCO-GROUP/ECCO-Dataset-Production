@@ -11,6 +11,7 @@ import sys
 import subprocess
 from pathlib import Path
 
+from print_utils import printc
 
 # ==========================================================================================================================
 # GET CREDENTIALS
@@ -50,7 +51,7 @@ def get_aws_credentials(credential_method=None):
 
             credentials = __get_credentials_helper()
         except:
-            print(f'Unable to run script to get credentials ("{bash_filepath}"). Exiting')
+            printc(f'Unable to run script to get credentials ("{bash_filepath}"). Exiting', 'red')
             sys.exit()
 
     return credentials

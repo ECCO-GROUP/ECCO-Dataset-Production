@@ -15,6 +15,7 @@ from collections import defaultdict
 main_path = Path(__file__).parent.parent.parent.resolve()
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
+from print_utils import printc
 import file_utils as file_utils
 import lambda_utils as lambda_utils
 from ecco_gen_for_podaac_cloud import generate_netcdfs
@@ -41,8 +42,8 @@ def calculate_all_jobs(groupings):
             freqs = grouping['frequency'].split(', ')
             for freq in freqs:
                 if freq == 'TI':
-                    print(f'Time-invariant groupings not currently tested/supported. Exiting')
-                    sys.exit()
+                    printc(f'\tTime-invariant groupings not currently tested/supported. Skipping', 'red')
+                    continue
                 if grouping['dimension'] == '1D':
                     jobs[f'1D'].append([i, product_type, freq, 'all'])
                 if grouping['dimension'] == '2D':
@@ -64,15 +65,16 @@ def calculate_all_jobs(groupings):
 # ==========================================================================================================================
 # CREATE JOBS
 # ==========================================================================================================================
-def create_jobs(groupings):
+def create_jobs(groupings, jobs_filename):
     """
     Create lists of all jobs to execute according to the groupings metadata files
 
     Args:
         groupings (dict): Dictionary of groupings. Key = name of grouping (i.e. 'latlon', 'native'), Value = grouping dict
+        jobs_filename (str): String name to save the jobs file as
 
     Returns:
-        jobs_filename (str): FIlename of the create jobs text file (Default: 'create_jobs.txt')
+        None
     """
     all_jobs = []
     raw_jobs = {}
@@ -108,7 +110,7 @@ def create_jobs(groupings):
                                                                 'You selected the following products to view: ', 
                                                                 '')
     if user_continue == 'n' or products_to_view == []:
-        print(f'Exiting')
+        printc(f'Exiting', 'red')
         sys.exit()
     # ========== </Product prompt> ================================================================
 
@@ -132,7 +134,7 @@ def create_jobs(groupings):
                                                                        'You selected the following frequencies to view: ', 
                                                                        '\t')
         if user_continue == 'n' or frequencies_to_view == []:
-            print(f'Exiting')
+            printc(f'Exiting', 'red')
             sys.exit()
 
         # Prompt user for which datasets to process, for each frequency they selected previously
@@ -140,14 +142,14 @@ def create_jobs(groupings):
             datasets = menu[product][freq]
             print(f'\n\t\t{freq}')
             for i, ds in enumerate(datasets):
-                print(f'\t\t\t{i} -- {ds[-1]}')
+                print(f'\t\t\t{i} -- {ds[-1]} ({ds[1]})')
             datasets_input = input(f'\t\tPlease select which datasets you would like process: ')
             user_continue, datasets_to_process = __selected_options_helper(datasets_input, 
                                                                            datasets, 
                                                                            'You selected the following datasets to process: ', 
                                                                            '\t\t')
             if user_continue == 'n' or datasets_to_process == []:
-                print(f'Exiting')
+                printc(f'Exiting', 'red')
                 sys.exit()
 
             # Prompt user for which timesteps to process, for each dataset they selected previously
@@ -193,7 +195,7 @@ def create_jobs(groupings):
     #                 freq = cur_options[selected_option][3]
     #                 raw_jobs[product][dim][freq].append(group_num)
     #         else:
-    #             print(f'Exiting')
+    #             printc(f'Exiting', 'red')
     #             sys.exit()
 
     # all_jobs = []
@@ -206,7 +208,7 @@ def create_jobs(groupings):
 
 
     # ========== <Save new created jobs> ==========================================================
-    jobs_filename = 'created_jobs.txt'
+    jobs_filename = 'jobs.txt'
     jobs_path = main_path / 'configs' / jobs_filename
     print(f'\nWriting to {jobs_path} with selected jobs\n')
     with open(jobs_path, 'w') as jobs_file:
@@ -216,7 +218,7 @@ def create_jobs(groupings):
             jobs_file.write(jobs_string)
     # ========== </Save new created jobs> =========================================================
 
-    return jobs_filename
+    return
 
 
 def __selected_options_helper(user_input, 

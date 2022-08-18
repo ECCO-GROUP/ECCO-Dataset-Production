@@ -11,6 +11,7 @@ import json
 import time
 from concurrent import futures
 
+from print_utils import printc
 
 # ==========================================================================================================================
 # CREATE LAMBDA FUNCTION
@@ -186,7 +187,7 @@ def invoke_lambda(lambda_client,
     # the lambda job to exceed it's 15min time limit. Work may be required to improve the speed of the algorithms
     # or to process the problematic timesteps separately.
     if max_execs == 0:
-        print(f'Max execs is 0, this means you cannot process a single vertical level in less than 15 minutes. Skipping job')
+        printc(f'Max execs is 0, this means you cannot process a single vertical level in less than 15 minutes. Skipping job', 'red')
         # continue
         return num_jobs
 
@@ -291,8 +292,8 @@ def invoke_lambda(lambda_client,
                     'error': {}
                 }
             except Exception as e:
-                print(f'Lambda invoke error: {e}')
-                print(f'\tTime Steps: {time_steps}')
+                printc(f'Lambda invoke error: {e}', 'red')
+                printc(f'\tTime Steps: {time_steps}', 'red')
                 return (times_and_fields, 0)
             return (times_and_fields, 1)
 
@@ -308,7 +309,7 @@ def invoke_lambda(lambda_client,
                 num_jobs += job[1]
                 print(f'Lambda Job requested: {num_jobs:0>3}', end='\r')
                 if exception:
-                    print(f'ERROR invoking lambda job: {job[0]}, ({exception})')
+                    printc(f'ERROR invoking lambda job: {job[0]}, ({exception})', 'red')
     else:
         for i in range(number_of_batches):
             # create payload for current lambda job
@@ -366,8 +367,8 @@ def invoke_lambda(lambda_client,
         
                 num_jobs += 1
             except Exception as e:
-                print(f'Lambda invoke error: {e}')
-                print(f'\tTime Steps: {time_steps}')
+                printc(f'Lambda invoke error: {e}', 'red')
+                printc(f'\tTime Steps: {time_steps}', 'red')
     # ========== </Invoke Lambda job> =============================================================
 
     return num_jobs
