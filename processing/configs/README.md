@@ -68,6 +68,7 @@ Contains all the configuration files used to control and modify the processing a
     - local_file_dir_to_upload
     - processed_output_dir_base
     - ecco_grid_filename
+    - filename_tail_1D
     - filename_tail_latlon
     - filename_tail_native
     - podaac_metadata_filename
@@ -79,5 +80,6 @@ Contains all the configuration files used to control and modify the processing a
     - doi
     - ecco_version
     - product_version
+    - dataset_description_tail_1D
     - dataset_description_tail_latlon
     - dataset_description_tail_native

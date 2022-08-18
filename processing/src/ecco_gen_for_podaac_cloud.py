@@ -246,6 +246,7 @@ def generate_netcdfs(event):
 
         # ========== <Metadata setup> =============================================================
         # Define tail for dataset description (summary)
+        dataset_description_tail_1D = product_generation_config['dataset_description_tail_1D']
         dataset_description_tail_native = product_generation_config['dataset_description_tail_native']
         dataset_description_tail_latlon = product_generation_config['dataset_description_tail_latlon']
 
@@ -284,7 +285,12 @@ def generate_netcdfs(event):
 
         # ========== <Native/Latlon setup> ========================================================
         if extra_prints: print('\nproduct type', product_type)
-        if product_type == 'native':
+        if product_type == '1D':
+            dataset_description_tail = dataset_description_tail_1D
+            groupings = all_metadata['groupings_1D']
+            output_dir_type = processed_output_dir_base / '1D'
+            status = 'SUCCESS'
+        elif product_type == 'native':
             dataset_description_tail = dataset_description_tail_native
             groupings = all_metadata['groupings_native']
             output_dir_type = processed_output_dir_base / 'native'
@@ -321,11 +327,9 @@ def generate_netcdfs(event):
         if output_freq_code == 'AVG_DAY':
             period_suffix = 'day_mean'
             dataset_description_head = 'This dataset contains daily-averaged '
-
         elif output_freq_code == 'AVG_MON':
             period_suffix = 'mon_mean'
             dataset_description_head = 'This dataset contains monthly-averaged '
-
         elif output_freq_code == 'SNAPSHOT':
             period_suffix = 'day_inst'
             dataset_description_head = 'This dataset contains instantaneous '
@@ -351,6 +355,25 @@ def generate_netcdfs(event):
         # create dataset description head
         dataset_description = dataset_description_head + grouping['name'] + dataset_description_tail
         # ========== </Directories and File Paths> ================================================
+
+
+        # ========== <Process 1D dataset> =========================================================
+        if product_type == '1D':
+            # Code to process 1D datasets
+            print('Processing 1D datasets not currently supported. Continuing')
+
+            # Apply global DS changes (coords, values, etc.)
+            status, F_DS = gen_netcdf_utils.global_DS_changes(F_DS, 
+                                                              output_freq_code, 
+                                                              grouping, 
+                                                              array_precision, 
+                                                              ecco_grid, 
+                                                              [], 
+                                                              netcdf_fill_value, 
+                                                              record_times, 
+                                                              extra_prints=extra_prints)
+
+        # ========== </Process 1D dataset> ========================================================
 
 
         # ========== <Process each time level> ====================================================

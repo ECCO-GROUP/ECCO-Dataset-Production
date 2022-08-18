@@ -1,1 +1,1 @@
-[0,'latlon','AVG_DAY',1]
+[0,'1D','AVG_MON',10]

@@ -558,7 +558,8 @@ def global_DS_changes(F_DS,
     # get data variable name from F_DS
     var = list(F_DS.keys())[0]
 
-    (latlon_bounds, depth_bounds, _, _) = latlon_grid
+    if grouping['product'] in ['native', 'latlon']:
+        (latlon_bounds, depth_bounds, _, _) = latlon_grid
 
     try:
         # Specify time bounds values for the dataset
@@ -583,7 +584,6 @@ def global_DS_changes(F_DS,
         for data_var in F_DS.data_vars:
             if F_DS[data_var].values.dtype != array_precision:
                 F_DS[data_var].values = F_DS[data_var].astype(array_precision)
-
 
         # set valid min and max, and replace nan with fill values
         for data_var in F_DS.data_vars:
