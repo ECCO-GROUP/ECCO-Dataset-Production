@@ -33,10 +33,9 @@ Contains all the configuration files used to control and modify the processing a
   - File containing list of jobs to execute. Jobs are defined as: gouping to process, product type, output frequency, number of time steps to process (e.g. 0,latlon,AVG_MON,all, or 10,native,AVG_DAY,10).
   - Optionally, one can have a line that is just "all", and all jobs will be calculated per the groupings metadata file, and executed.
   - A line that is just "done" will cause any jobs listed after to not be executed.
-- **created_jobs.txt**
-  - While "jobs.txt" is created manually, "create_jobs.txt" is created automatically from user prompts when the user passes the "--create_jobs" argument to "master_script.py".
-  - The user is prompted to select product types, frequencies, datasets, and timesteps that they would like to process. These selections are then modified in order to match the "job" format, and all of these jobs are saved as a separate job file, "created_jobs.txt".
-  - Note: Once created, this file should not be modified (outside of removing lines), just re-run "master_script.py" with the "--create_jobs" argument to make the file with your new choices.
+  - This file can be created automatically from user prompts when the user passes the "--create_jobs" argument to "master_script.py".
+    - The user is prompted to select product types, frequencies, datasets, and timesteps that they would like to process. These selections are then modified in order to match the "job" format, and all of these jobs are saved as a separate job file, "created_jobs.txt".
+    - Note: Once created, this file should not be modified (outside of removing lines), just re-run "master_script.py" with the "--create_jobs" argument to make the file with your new choices.
 - **product_generation_config.json**
   - Old, json, configuration file. NOT USED
 - **product_generation_config.yaml**
@@ -60,6 +59,9 @@ Contains all the configuration files used to control and modify the processing a
     - ecco_grid_dir
     - ecco_grid_dir_mds
     - mapping_factors_dir
+    - ecco_code_name
+    - ecco_code_dir
+    - ecco_access_dir
     - metadata_dir
     - model_output_dir
     - processed_output_dir_base
