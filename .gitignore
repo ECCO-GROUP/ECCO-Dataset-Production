@@ -1,8 +1,8 @@
-*.nc
+*/tmp/**/*.nc
 *.dump
 *.diff
-*.meta
-*.data
+*/tmp/**/*.meta
+*/tmp/**/*.data
 *.pyc
 *job_logs*
 *.DS_Store
