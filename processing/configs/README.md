@@ -13,6 +13,7 @@ Contains all the configuration files used to control and modify the processing a
     - bucket_subfolder
     - output_bucket
     - test_bucket
+    - upload_to_S3_path
     - image_uri
     - role
     - function_name_prefix
@@ -64,6 +65,7 @@ Contains all the configuration files used to control and modify the processing a
     - ecco_access_dir
     - metadata_dir
     - model_output_dir
+    - local_file_dir_to_upload
     - processed_output_dir_base
     - ecco_grid_filename
     - filename_tail_latlon

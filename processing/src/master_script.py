@@ -5,7 +5,7 @@ Author: Duncan Bark
 
 Primary script for all ECCO Processing. From this script, all functions of ECCO Processing can be started including:
 - Create mapping factors, land mask, and sparce matrices
-- Uploading local files to AWS S3 (TODO)
+- Uploading local files to AWS S3
 - Prompt user to create jobs file from available groupings in metadata files
 - Process 2D/3D native/latlon granules, sourced locally, locally
 - Process 2D/3D native/latlon granules, sourced from AWS S3, locally 
@@ -77,6 +77,12 @@ def create_parser():
 
     parser.add_argument('--push_ecr', default=False, action='store_true',
                         help='Re-builds Docker image and pushes it to AWS ECR')
+
+    parser.add_argument('--upload_to_S3', default=False, action='store_true',
+                        help='ONLY uploads files from "local_file_dir_to_upload" in product_generation_config.yaml, to "upload_to_S3_path" in aws_config.yaml. Exits when complete')
+    
+    parser.add_argument('--dryrun', default=False, action='store_true',
+                        help='Does a dryrun of uploading files to S3 (TODO: dryrun of all processing code)')
     return parser
 
 
@@ -99,6 +105,7 @@ if __name__ == "__main__":
     use_lambda = dict_key_args['use_lambda']
     push_ecr = dict_key_args['push_ecr']
     force_reconfigure = dict_key_args['force_reconfigure']
+    upload_to_S3 = dict_key_args['upload_to_S3']
 
     # Verify user does not want to enable logging
     # Logging only happens when processing data via AWS Lambda
@@ -313,7 +320,7 @@ if __name__ == "__main__":
     credentials = {}
     aws_config = {}
     s3 = None
-    if use_S3 or use_lambda or push_ecr:
+    if use_S3 or use_lambda or push_ecr or upload_to_S3:
         printc(f'\nPreparing AWS', 'blue')
         # ========== <prepare aws configuration metadata> =========================================
         # Load 'aws_config.yaml'
@@ -345,6 +352,10 @@ if __name__ == "__main__":
         role = aws_config['role']
         account_id = aws_config['account_id']
         region = aws_config['region']
+
+        upload_to_S3_path_default = f'{source_bucket}/{source_bucket_folder_name}'
+        if aws_config['upload_to_S3_path'] == '':
+            aws_config['upload_to_S3_path'] = upload_to_S3_path_default
 
         # Memory sizes dictionary where key is the function name and the value is the memory for it
         memory_sizes = {
@@ -400,6 +411,33 @@ if __name__ == "__main__":
     # ========== </non-local processing preparation> ==============================================
 
 
+    # ========== <Upload local files to AWS S3> ===================================================
+    local_file_dir = product_generation_config['local_file_dir_to_upload']
+    upload_s3_bucket_dir = aws_config['upload_to_S3_path']
+    if upload_to_S3:
+        printc('Uploading files to S3', 'blue')
+        if local_file_dir != '':
+            if os.path.exists(local_file_dir):
+                upload_to_AWS_path = main_path.parent.resolve() / 'upload_to_AWS'
+                aws_sync_script_path = upload_to_AWS_path / 'aws_sync_directories_to_S3.sh'
+                
+                # get the current working directory
+                orig_cwd = os.getcwd()
+
+                # change the working directory to that of the aws_sync script, so that the log files
+                # saved from within the script are saved to the upload_to_AWS/logs/ directory
+                os.chdir(os.path.join(os.path.abspath(sys.path[0]), upload_to_AWS_path))
+
+                # run uploading script
+                subprocess.run([aws_sync_script_path, credential_method['type'], credential_method['aws_login_file'], region, str(Path(credential_method['bash_filepath']).parent), upload_s3_bucket_dir, local_file_dir, credential_method['bash_filepath'], str(dict_key_args['dryrun'])])
+                
+                # change working directory to original working directory (eg. the directory of master_script.py)
+                os.chdir(orig_cwd)
+        printc('Uploading files to S3 -- DONE', 'green')
+        sys.exit()
+    # ========== </Upload local files to AWS S3> ==================================================
+
+
     # ========== <AWS Lambda preparation> =========================================================
     # if "push_ecr" arugment is passed, then call ecr_pus.sh script to re-build Docker image and
     # push it to ECR
@@ -414,7 +452,7 @@ if __name__ == "__main__":
         image_tag = container_name_and_tag[1]
         ecr_push_path = str(main_path / 'ecr_push.sh')
 
-        # change working diretory to that of the ecr_push script. This is because when you build
+        # change working directory to that of the ecr_push script. This is because when you build
         # the docker image, all paths within the Dockerfile are relative to the where the script
         # is run. When using subprocess.run() the working directory does not change to that of the
         # file being run, so we change the directory.
@@ -423,7 +461,7 @@ if __name__ == "__main__":
         # run ecr_push.sh
         subprocess.run([ecr_push_path, container_name, image_tag, ecco_version], check=True)
 
-        # change working directory to original working dierctory (eg. the directory of master_script.py)
+        # change working directory to original working directory (eg. the directory of master_script.py)
         os.chdir(orig_cwd)
         printc(f'Pushing to AWS ECR -- DONE', 'green')
     

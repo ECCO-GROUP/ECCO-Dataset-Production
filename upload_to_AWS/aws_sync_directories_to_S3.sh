@@ -6,8 +6,10 @@ region=$3
 login_file_dir=$4
 s3_dir=$5
 files_dir=$6
+update_AWS_cred_file=$7
+dryrun=$8
 
-update_AWS_cred_file=../aws/src/utils/aws_login/update_AWS_cred_ecco_production.sh
+# update_AWS_cred_file=../processing/src/utils/aws_login/update_AWS_cred_ecco_production.sh
 
 # note current directory
 cur_dir=`pwd`
@@ -16,7 +18,8 @@ cur_dir=`pwd`
 bash_pid=$$
 
 # count number of sub-directories here
-num_sub_dirs=`find . -type d -maxdepth 1 |wc -l`
+# num_sub_dirs=`find . -type d -maxdepth 1 | wc -l`
+num_sub_dirs=`find $files_dir/* -type d -maxdepth 0 | wc -l`
 
 # update AWS credentials 
 # there are many ways to do this.  Here we
@@ -80,12 +83,17 @@ for dir in $files_dir/*; do
   fi
 
   # spawn off a new upload process
-  aws s3 sync . s3://$s3_dir/$file_dir --no-progress --profile saml-pub > $cur_dir/logs/$file_dir/log.txt &
+  if [ $dryrun = "True" ]; then
+    aws s3 sync . s3://$s3_dir/$file_dir --dryrun --no-progress --profile saml-pub > $cur_dir/logs/$file_dir/log.txt &
+  else
+    aws s3 sync . s3://$s3_dir/$file_dir --no-progress --profile saml-pub > $cur_dir/logs/$file_dir/log.txt &
+  fi
+
 
   # increment dir_counter by 1
   let "dir_counter=dir_counter+1"
 
-  echo "spawned transfer of $dir_counter of $num_sub_dirs directories"
+  echo "spawned transfer $dir_counter of $num_sub_dirs directories"
   echo "total elapsed time $SECONDS"
 # end loop through all sub-directories
 done

@@ -50,6 +50,11 @@ output_bucket: 'ecco-processed-data'
 # Name of S3 bucket to use for testing purposes
 test_bucket: 'ecco-test-lambda'
 
+# String
+# String path to upload files from local to AWS S3
+# Default: {source_bucket}/{bucket_subfolder}
+upload_to_S3_path: ''
+
 
 # =================================================================================================
 # LAMBDA VALUES

@@ -126,6 +126,12 @@ metadata_dir: ''
 model_output_dir: ''
 
 # String
+# Absolute directory path string for local files to upload to AWS S3
+# Default: None. No uploading is done unless a path is supplied.
+# Note: This path should point to an output frequency folder (i.e. data/V4r4/mon_mean)
+local_file_dir_to_upload: '/Users/bark/Documents/ECCO_GROUP/ECCO-Dataset-Production/processing/tmp/tmp_model_output/V4r4/diags_daily'
+
+# String
 # Base absolute directory path string for the processed output files
 # Default: /processing/tmp/tmp_output/{ecco_version}/
 processed_output_dir_base: ''

@@ -134,3 +134,9 @@ Contains all the code files required for processing.
     - *--push_ecr*
       - "Re-builds Docker image and pushes it to AWS ECR"
       - Uses the Dockerfile in the *lambda_code* directory for the current ECCO version to re-build the Docker image and push it to the AWS ECR image URI specified in aws_config.yaml.
+    - *--upload_to_S3*
+      - "ONLY uploads files from "local_file_dir_to_upload" in product_generation_config.yaml, to "upload_to_S3_path" in aws_config yaml. Exits when complete"
+      - Allows the user to rapidly upload files from a local directory to a specified location on AWS S3. Produces log files in ECCO-Dataset-Production/upload_to_AWS/logs/
+    - *--dryrun*
+      - "Does a dryrun of uploading files to S3 (TODO: dryrun of all processing code)"
+      - Passes the '--dryrun' argument to AWS CLI "sync" when uploading files from local to S3. Additional work is needed to apply the same logic to the processing code as a whole.
