@@ -1,7 +1,7 @@
 # **/src/**
 Contains all the code files required for processing.
-- **ecco_v4_py/**
-  - A collection of files and functions from ECCO_v4_py needed for processing. These have been modified to match the needs and requirements of the processing
+- **ecco_code/**
+  - A collection of files and functions from ECCO python (i.e. ECCOv4-py) needed for processing. These files (except for the __init__.py and .gitignore files) are copied from the local ECCO python repository pointed to by the ecco_code_dir and ecco_code_name values in product_generation_config.yaml.
 - **lambda_code/**
   - Files needed to build and initialize the AWS lambda functions, organized by ECCO version
     - *Dockerfile*
@@ -21,7 +21,7 @@ Contains all the code files required for processing.
         - *region*: AWS region
         - *login file directory*: Path to the 'aws_login/' directory (or whereever the python login file is located)
     - **ecco_cloud_utils/**
-      - A collection of files and functions from ECCO-ACCESS. These are only used in the creation of the mapping factors
+      - A collection of files and functions from ECCO-ACCESS. These are only used in the creation of the mapping factors via master_script.py. These files (except for the __init__.py and .gitignore files) are copied from the local ECCO-ACCESS repository pointed to by the ecco_access_dir value in product_generation_config.yaml.
     - **credentials_utils.py**
       - Contains functions necessary for getting the user's AWS credentials
         - *get_aws_credentials()*

@@ -1,8 +1,8 @@
-# **/aws/**
-Contains all the code, data, metadata, config, etc. files necessary for processing of ECCO datasets.
+# **/processing/**
+Contains all the code, data, metadata, config, etc. files necessary for processing of ECCO datasets either locally (with local files or AWS S3 sourced files) or via AWS Lambda.
 
 ## **Structure**
-    /aws/
+    /processing/
         configs/
         ecco_grids/
         logs/
@@ -22,7 +22,7 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
     - General processing control and option values (paths, grid, etc.)
   - **jobs.txt**
     - List of jobs to process, includes grouping number, product type, frequency, and number of timesteps to process (eg. 0,latlon,AVG_MON,all)
-  - **create_jobs.txt**
+  - **created_jobs.txt**
     - Jobs file created automatically from user prompts when the user passes the "--create_jobs" argument to "master_script.py"
   - **README.md**
     - Provides more information on the files contained within configs/
@@ -52,8 +52,8 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
 
 ### **src/**
 - Contains all the code files required for processing. The files, and structure is as follows:
-  - **ecco_v4_py/**
-    - ECCO_v4_py functions needed for processing. This has been modified in a similar fashion to *ecco_cloud_utils*
+  - **ecco_code/**
+    - ECCO python functions needed for processing. These files (except for __init__.py and .gitignore) have been copied from the ecco_code_dir with ecco_code_name values given in product_generation_config.yaml.
   - **lambda_code/**
     - *Dockerfile*, *app.py*, *entry.sh*, *requirements.txt* files needed to build and initialize the AWS lambda functions.
   - **utils**
@@ -61,7 +61,7 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
     - **aws_login/**
       - Directory containing scripts needed for logging into AWS and getting the necessary AWS credentials. See https://github.jpl.nasa.gov/cloud/Access-Key-Generation for a description of the files used
     - **ecco_cloud_utils/**
-      - A collection of files and functions from ECCO-ACCESS. These are only used in the creation of the mapping factors
+      - A collection of files and functions from ECCO-ACCESS. These are only used in the creation of the mapping factors via master_script.py. These files (except for the __init__.py and .gitignore files) are copied from the local ECCO-ACCESS repository pointed to by the ecco_access_dir value in product_generation_config.yaml.
     - **credentials_utils.py**
       - Contains functions necessary for getting the user's AWS credentials
     - **file_utils.py**
@@ -87,4 +87,4 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
 - Contains all the temporary model granule files and processed netCDF datasets when running locally. This directory may not be present at all times.
 
 ### **ecr_push.sh**
-- Shell script to update AWS ECR image with the Docker image built from the Dockerfile in /aws/src/lambda_code/
+- Shell script to update AWS ECR image with the Docker image built from the Dockerfile in /processing/src/lambda_code/{ecco_version}/

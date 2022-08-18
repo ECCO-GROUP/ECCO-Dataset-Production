@@ -4,7 +4,7 @@ Repo with codes to turn raw model output into glorious self-describing granules 
 Developed by Duncan Bark, in collaboration with Dr. Ian Fenty, in Summer 2022
 
 ## **Structure**
-    /aws/
+    /processing/
         configs/
         ecco_grids/
         logs/
@@ -16,9 +16,9 @@ Developed by Duncan Bark, in collaboration with Dr. Ian Fenty, in Summer 2022
     /upload_to_AWS/
 
 ## **Descriptions**
-### **aws/**
+### **processing/**
 - Contains all the code, data, metadata, config, etc. files necessary for processing of ECCO datasets.
-- See the README.md in aws/ for more information on the directories and files within.
+- See the README.md in processing/ for more information on the directories and files within.
 
 ### **upload_to_AWS/**
 - Contains scripts that allow the user to easily upload files from a local directory to an AWS S3 bucket.
