@@ -412,12 +412,17 @@ if __name__ == "__main__":
 
 
     # ========== <Upload local files to AWS S3> ===================================================
-    local_file_dir = product_generation_config['local_file_dir_to_upload']
-    upload_s3_bucket_dir = aws_config['upload_to_S3_path']
     if upload_to_S3:
         printc('Uploading files to S3', 'blue')
+        local_file_dir = product_generation_config['local_file_dir_to_upload']
+        upload_s3_bucket_dir = aws_config['upload_to_S3_path']
         if local_file_dir != '':
             if os.path.exists(local_file_dir):
+                if not dict_key_args['dryrun']:
+                    user_resp = input(f'No dryrun argument passed, continue with uploading files to AWS S3? (y/n)\t')
+                    if user_resp.lower().strip() != 'y':
+                        printc('EXITING', 'red')
+                        sys.exit()
                 upload_to_AWS_path = main_path.parent.resolve() / 'upload_to_AWS'
                 aws_sync_script_path = upload_to_AWS_path / 'aws_sync_directories_to_S3.sh'
                 
