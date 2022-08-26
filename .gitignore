@@ -5,5 +5,5 @@
 */tmp/**/*.data
 /upload_to_AWS/logs
 *.pyc
-# job_logs*.json
+job_logs*.json
 *.DS_Store
