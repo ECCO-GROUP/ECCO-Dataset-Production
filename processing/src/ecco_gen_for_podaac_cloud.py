@@ -201,6 +201,8 @@ def generate_netcdfs(event):
         print('')
 
         # Setup S3
+        s3 = None
+        model_granule_bucket = ''
         if 'source_bucket' in aws_config and 'output_bucket' in aws_config:
             buckets = (aws_config['source_bucket'], aws_config['output_bucket'])
             if use_S3 and buckets != None and credentials != None:
@@ -358,9 +360,28 @@ def generate_netcdfs(event):
 
 
         # ========== <Process 1D dataset> =========================================================
+        # NOTE: ALL CODE RELATED TO 1D PROCESSING IS UNTESTED
         if product_type == '1D':
-            # Code to process 1D datasets
-            print('Processing 1D datasets not currently supported. Continuing')
+            # Download 1D field files
+            (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = gen_netcdf_utils.get_files(use_S3,
+                                                                                                       download_all_fields,
+                                                                                                       fields_to_load,
+                                                                                                       field_files,
+                                                                                                       cur_ts,
+                                                                                                       data_file_paths,
+                                                                                                       meta_file_paths,
+                                                                                                       product_generation_config,
+                                                                                                       product_type,
+                                                                                                       model_granule_bucket,
+                                                                                                       s3=s3)
+            num_downloaded += num_dl
+            total_download_time += dl_time
+            if status != 'SUCCESS':
+                print(f'FAIL {cur_ts}')
+                raise Exception(status)
+
+            # Transform 1D field
+            status, F_DS = gen_netcdf_utils.transform_1D()
 
             # Apply global DS changes (coords, values, etc.)
             status, F_DS = gen_netcdf_utils.global_DS_changes(F_DS, 
@@ -450,45 +471,24 @@ def generate_netcdfs(event):
                 # ========== </Calculate times> ===================================================
 
 
-                # ========== <Download files> ==================================================
-                F_DS_vars = []
+                # ========== <Download files> =====================================================
+                (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = gen_netcdf_utils.get_files(use_S3,
+                                                                                                           download_all_fields,
+                                                                                                           fields_to_load,
+                                                                                                           field_files,
+                                                                                                           cur_ts,
+                                                                                                           data_file_paths,
+                                                                                                           meta_file_paths,
+                                                                                                           product_generation_config,
+                                                                                                           product_type,
+                                                                                                           model_granule_bucket,
+                                                                                                           s3=s3)
+                num_downloaded += num_dl
+                total_download_time += dl_time
+                if status != 'SUCCESS':
+                    print(f'FAIL {cur_ts}')
+                    raise Exception(status)
 
-                # Download field file(s)
-                # If 'download_all_fields' in product_generation_config.yaml is True, then all field files
-                # for the current time step will be downloaded, otherwise each field file is downloaded 
-                # and processed one at a time
-                if use_S3 and download_all_fields:
-                    print(f'Downloading all files for current timestep')
-                    s3_download_start_time = time.time()
-                    (status, (all_files)) = gen_netcdf_utils.download_all_files(s3, 
-                                                                                fields_to_load, 
-                                                                                field_files, 
-                                                                                cur_ts, 
-                                                                                data_file_paths, 
-                                                                                meta_file_paths, 
-                                                                                product_generation_config, 
-                                                                                product_type, 
-                                                                                model_granule_bucket)
-
-                    data_file_paths, meta_file_paths, curr_num_downloaded = all_files
-                    num_downloaded += curr_num_downloaded
-
-                    if status != 'SUCCESS':
-                        print(f'FAIL {cur_ts}')
-                        raise Exception(status)
-                    total_download_time += (time.time() - s3_download_start_time)
-                else:
-                    print(f'Downloading and processing fields one at a time for current timestep')
-
-                # Get data_file_paths for local files when processing locally
-                if not use_S3:
-                    for field in fields_to_load:
-                        curr_field_files = field_files[field]
-                        for field_file in curr_field_files:
-                            if cur_ts in field_file:
-                                if '.data' in field_file:
-                                    data_file_paths[field] = field_file
-                                break
                 # ========== </Download files> ====================================================
 
 
@@ -519,27 +519,31 @@ def generate_netcdfs(event):
 
 
                 # ========== <Field transformations> ==============================================
-                # Load fields and place them in the dataset
-                for i, field in enumerate(sorted(fields_to_load)):
-                    if use_S3 and not download_all_fields:
-                        s3_download_start_time = time.time()
-                        (status, (all_files)) = gen_netcdf_utils.download_all_files(s3, 
-                                                                                    [field], 
-                                                                                    field_files, 
-                                                                                    cur_ts, 
-                                                                                    data_file_paths, 
-                                                                                    meta_file_paths, 
-                                                                                    product_generation_config, 
-                                                                                    product_type, 
-                                                                                    model_granule_bucket)
-                                                                                  
-                        data_file_paths, meta_file_paths, curr_num_downloaded = all_files
-                        num_downloaded += curr_num_downloaded
+                F_DS_vars = []
 
+                # Load fields and place them in the dataset
+                for field in sorted(fields_to_load):
+                    # If download_all_fields is False, then download each field as needed instead of 
+                    # all at once. Note: There is no local version of this since all files should 
+                    # already be present locally. The previous code in the "<Download files>"
+                    # section gets the file paths of all the local files, which are then used to get them
+                    if use_S3 and not download_all_fields:
+                        (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = gen_netcdf_utils.get_files(use_S3,
+                                                                                                                   download_all_fields,
+                                                                                                                   [field],
+                                                                                                                   field_files,
+                                                                                                                   cur_ts,
+                                                                                                                   data_file_paths,
+                                                                                                                   meta_file_paths,
+                                                                                                                   product_generation_config,
+                                                                                                                   product_type,
+                                                                                                                   model_granule_bucket,
+                                                                                                                   s3=s3)
+                        num_downloaded += num_dl
+                        total_download_time += dl_time
                         if status != 'SUCCESS':
                             print(f'FAIL {cur_ts}')
                             raise Exception(status)
-                        total_download_time += (time.time() - s3_download_start_time)
 
                     # Check if the current Lambda job execution as reached the user defined timeout time
                     if use_lambda and time.time() - job_start_time >= aws_config['job_timeout']:

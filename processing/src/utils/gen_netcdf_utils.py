@@ -10,6 +10,7 @@ Contains functions used while processing ECCO granules into netCDFs for PODAAC
 import os
 import glob
 import lzma
+import time
 import uuid
 import pickle
 import datetime
@@ -20,6 +21,92 @@ from scipy import sparse
 from pandas import read_csv
 from concurrent import futures
 from collections import OrderedDict
+
+
+# =================================================================================================
+# GET FILES FROM S3 or LOCALLY
+# =================================================================================================
+def get_files(use_S3, 
+              download_all_fields, 
+              fields_to_load, 
+              field_files, 
+              cur_ts, 
+              data_file_paths, 
+              meta_file_paths, 
+              product_generation_config, 
+              product_type, 
+              model_granule_bucket, 
+              s3=None):
+    """
+    Get the files fo the current fields either from S3 or from a local directory.
+    If it is from S3 (use_S3 is True), the files are downloaded from the specified S3 bucket.
+
+    Args:
+        use_S3 (bool): Specifies whether or not to source files from and AWS S3 bucket
+        download_all_fields (bool): Specifies whether or not to download all files for all fields for the current
+            timestep at once, or do it one field at a time. If this is False, the downloading takes place in the field loop
+            in generate_netcdfs() in ecco_gen_for_podaac_cloud.py.
+        fields_to_load (list): List of field names
+        field_files (defaultdict(list)): Dictionary with field names as keys, and S3/local file paths for each timestep as values
+        cur_ts (str): String of the current timestep (i.e. '0000000732')
+        data_file_paths (dict): Dictionary where key=field name, value=downloaded data file path at cur_ts for field
+        meta_file_paths (dict): Dictionary where key=field name, value=downloaded meta file path at cur_ts for field
+        product_generation_config (dict): Dictionary of product_generation_config.yaml config file
+        product_type (str): String product type (i.e. 'latlon', 'native')
+        model_granule_bucket (str): String name of the AWS S3 bucket for model granules
+        s3 (botocore.client.S3): boto3 client object for AWS S3
+
+    Returns:
+        (status, (data_file_paths, meta_file_paths, curr_num_downloaded, download_time)) (tuple):
+            status (str): String that is either "SUCCESS" or "ERROR {error message}"
+            data_file_paths (dict): Dictionary where key=field name, value=downloaded data file path at cur_ts for field
+            meta_file_paths (dict): Dictionary where key=field name, value=downloaded meta file path at cur_ts for field
+            curr_num_downloaded (int): Number of files downloaded (to be added to the total number of downloaded files),
+                considered to be 0 for local processing
+            download_time (float): The time spent downloading files from S3, considered to be 0 for local processing
+    """
+    download_time = 0
+    curr_num_downloaded = 0
+    status = 'SUCCESS'
+
+    # Download field file(s)
+    # If 'download_all_fields' in product_generation_config.yaml is True, then all field files
+    # for the current time step will be downloaded, otherwise each field file is downloaded 
+    # and processed one at a time
+    if use_S3 and download_all_fields:
+        print(f'Downloading all files for current timestep')
+        s3_download_start_time = time.time()
+        (status, (all_files)) = download_all_files(s3, 
+                                                   fields_to_load, 
+                                                   field_files, 
+                                                   cur_ts, 
+                                                   data_file_paths, 
+                                                   meta_file_paths, 
+                                                   product_generation_config, 
+                                                   product_type, 
+                                                   model_granule_bucket)
+
+        data_file_paths, meta_file_paths, curr_num_downloaded = all_files
+        download_time = (time.time() - s3_download_start_time)
+
+        if status != 'SUCCESS':
+            return (status, (data_file_paths, meta_file_paths, curr_num_downloaded, download_time))
+    elif use_S3 and not download_all_fields:
+        print(f'Downloading and processing fields one at a time for current timestep')
+
+    # Get data_file_paths for local files when processing locally
+    if not use_S3:
+        print('Gathering local field files for processing')
+        for field in fields_to_load:
+            curr_field_files = field_files[field]
+            for field_file in curr_field_files:
+                if cur_ts in field_file:
+                    if '.data' in field_file:
+                        data_file_paths[field] = field_file
+                        meta_file_paths[field] = f'{field_file[:-5]}.meta'
+                    break
+    
+    return (status, (data_file_paths, meta_file_paths, curr_num_downloaded, download_time))
 
 
 # =================================================================================================
@@ -275,6 +362,30 @@ def get_latlon_grid(mapping_factors_dir,
         return (status, latlon_grid)
 
     return (status, latlon_grid)
+
+
+# =================================================================================================
+# TRANSFORM 1D
+# =================================================================================================
+def transform_1D():
+    """
+    Transform source 1D fields to target 1D field
+
+    Args:
+
+    Returns:
+        (status, F_DS) (tuple):
+            status (str): String that is either "SUCCESS" or "ERROR {error message}"
+            F_DS (xarray.Dataset): xarray Dataset of the ECCO granule
+    """
+    status = 'SUCCESS'
+    F_DS = None
+
+    # Code to transform/process 1D fields
+    # NOTE: 1D processing is not currently supported
+    print('Processing 1D datasets not currently supported. Continuing')
+
+    return (status, F_DS)
 
 
 # =================================================================================================
