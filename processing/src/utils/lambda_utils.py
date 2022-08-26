@@ -237,8 +237,9 @@ def invoke_lambda(lambda_client,
 
     # ========== <Invoke Lambda job> ==============================================================
     if aws_config['use_workers_to_invoke']:
-        # Invoke Lambda job batches using groups of 10 workers, invoking in parallel
-        num_workers = 10
+        # Invoke Lambda job batches using a worker for each batch, or 10 workers if there
+        # are more than 10 batches, all invoking in parallel
+        num_workers = min(number_of_batches, 10)
         times_and_fields_all = list(zip(time_steps_by_batch, field_files_by_batch.values()))
         times_and_fields_all = times_and_fields_all[:number_of_batches]
         print(f'Using {num_workers} workers to invoke {number_of_batches} lambda jobs')
@@ -256,7 +257,7 @@ def invoke_lambda(lambda_client,
                 'field_files': field_files,
                 'product_generation_config': product_generation_config,
                 'aws_config': aws_config,
-                'local': False,
+                'use_S3': True,
                 'use_lambda': use_lambda,
                 'credentials': credentials
             }
@@ -313,6 +314,7 @@ def invoke_lambda(lambda_client,
                 print(f'Lambda Job requested: {num_jobs:0>3}', end='\r')
                 if exception:
                     printc(f'ERROR invoking lambda job: {job[0]}, ({exception})', 'red')
+            print()
     else:
         for i in range(number_of_batches):
             # create payload for current lambda job
@@ -324,7 +326,7 @@ def invoke_lambda(lambda_client,
                 'field_files': field_files_by_batch[i],
                 'product_generation_config': product_generation_config,
                 'aws_config': aws_config,
-                'local': False,
+                'use_S3': True,
                 'use_lambda': use_lambda,
                 'credentials': credentials,
                 'processing_code_filename': product_generation_config['processing_code_filename'],
