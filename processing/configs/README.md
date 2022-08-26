@@ -66,6 +66,8 @@ Contains all the configuration files used to control and modify the processing a
     - ecco_code_name
     - ecco_code_dir
     - ecco_access_dir
+    - ecco_configurations_name
+    - ecco_configurations_subfolder
     - metadata_dir
     - model_output_dir
     - local_file_dir_to_upload

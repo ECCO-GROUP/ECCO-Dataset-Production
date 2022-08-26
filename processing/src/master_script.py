@@ -166,6 +166,16 @@ if __name__ == "__main__":
     ecco_code_dir_default = str(main_path.parent.parent.resolve() / product_generation_config['ecco_code_name'])
     if product_generation_config['ecco_code_dir'] == '':
         product_generation_config['ecco_code_dir'] = ecco_code_dir_default
+
+    # ECCO Configuration values
+    ecco_configurations_name_default = f'ECCO-{ecco_version[:2].lower()}-Configurations'
+    ecco_configurations_subfolder_default = f'ECCO{ecco_version[:2].lower()} Release {ecco_version[-1]}'
+    if product_generation_config['ecco_configurations_name'] == '':
+        product_generation_config['ecco_configurations_name'] = ecco_configurations_name_default
+    if product_generation_config['ecco_configurations_subfolder'] == '':
+        product_generation_config['ecco_configurations_subfolder'] = ecco_configurations_subfolder_default
+    ecco_configuration_dir = main_path.parent.parent.resolve() / product_generation_config['ecco_configurations_name']
+
     printc('Preparing product_generation_config -- DONE', 'green')
     # ========== </prepare product generation configuration> ======================================
 
@@ -226,11 +236,12 @@ if __name__ == "__main__":
     if not os.path.exists(Path(product_generation_config['metadata_dir'])):
         os.makedirs(Path(product_generation_config['metadata_dir']), exist_ok=True)
 
-    # get metadata from ECCO-ACCESS/metadata and save it to the metadata directory in product_generation_config
-    # assumes ECCO-ACCESS/ exists on the same level as ECCO-Dataset-Production
-    ea_metadata_dir = ecco_access_dir / 'metadata' / f'ECCO{ecco_version.lower()}_metadata_json'
-    ea_metadata_files = os.listdir(ea_metadata_dir)
-    for metadata_file in ea_metadata_files:
+    # get metadata from {ecco_configuration_name}/{ecco_configurations_subfolder}/metadata/ and save it to 
+    # the metadata directory in product_generation_config.
+    # assumes {ecco_configurations_name}/ exists on the same level as ECCO-Dataset-Production
+    ec_metadata_dir = ecco_configuration_dir / product_generation_config['ecco_configurations_subfolder'] / 'metadata'
+    ec_metadata_files = os.listdir(ec_metadata_dir)
+    for metadata_file in ec_metadata_files:
         # Only get .json files and the PODAAC csv metadata file
         if '.json' in metadata_file or metadata_file == product_generation_config['podaac_metadata_filename']:
             # clean up the name if it has ECCOv4r4_ (or similar) in the name
@@ -239,12 +250,14 @@ if __name__ == "__main__":
             else:
                 new_metadata_file = metadata_file
 
-            # get ECCO-ACCESS file path, and the new ECCO-Dataset-Production filepath
-            ea_metadata_file_path = ea_metadata_dir / metadata_file
+            # get ECCO Configurations file path, and the new ECCO-Dataset-Production filepath
+            ec_metadata_file_path = ec_metadata_dir / metadata_file
             processing_metadata_file_path = Path(product_generation_config['metadata_dir']) / new_metadata_file
 
-            # copy .json (or PODAAC csv) metadata file from ECCO-ACCESS to a local ECCO-Dataset-Production directory
-            shutil.copyfile(ea_metadata_file_path, processing_metadata_file_path)
+            # copy .json (or PODAAC csv) metadata file from ECCO Configurations to a local ECCO-Dataset-Production directory
+            shutil.copyfile(ec_metadata_file_path, processing_metadata_file_path)
+
+    import pdb; pdb.set_trace()
 
     # Get grouping information
     groupings_metadata = [f for f in os.listdir(product_generation_config['metadata_dir']) if 'groupings' in f]

@@ -114,9 +114,19 @@ ecco_code_dir: ''
 ecco_access_dir: ''
 
 # String
+# Name of ECCO Configurations folder that is present in same directory as ECCO-Dataset-Production
+# Default: 'ECCO-{ecco_version version only}-Configurations' (e.g. 'ECCO-v4-Configurations')
+ecco_configurations_name: ''
+
+# String
+# Name of subfolder within ECCO Configurations to look for metadata in
+# Default: 'ECCO{ecco_version version only} Release {ecco_version release only}' (e.g. 'ECCOv4 Release 4')
+ecco_configurations_subfolder: ''
+
+# String
 # Absolute directory path string for the metadata directory
 # Default: /processing/metadata/{ecco_version}
-# Files from ECCO-ACCESS/metadata/ directory are copied over to 
+# Files from {ecco_configuration_name}/{ecco_configurations_subfolder}/metadata/ directory are copied over to 
 # ECCO-Dataset-Production/processing/metadata/{ecco_version}
 metadata_dir: ''
 
