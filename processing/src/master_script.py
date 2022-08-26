@@ -400,6 +400,11 @@ if __name__ == "__main__":
             else:
                 # No credentials present, try to get new ones
                 credentials = credentials_utils.get_aws_credentials(credential_method)
+
+            # test credentials to verify they are valid. If they are not valid, this will
+            # produce an error which is then caught and execution is ended.
+            boto3.setup_default_session(profile_name=credentials['profile_name'])
+            boto3.client('s3').list_buckets()
         except Exception as e:
             printc(f'Unable to login to AWS ({e}). Exiting', 'red')
             sys.exit()
