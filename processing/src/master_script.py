@@ -257,8 +257,6 @@ if __name__ == "__main__":
             # copy .json (or PODAAC csv) metadata file from ECCO Configurations to a local ECCO-Dataset-Production directory
             shutil.copyfile(ec_metadata_file_path, processing_metadata_file_path)
 
-    import pdb; pdb.set_trace()
-
     # Get grouping information
     groupings_metadata = [f for f in os.listdir(product_generation_config['metadata_dir']) if 'groupings' in f]
 
