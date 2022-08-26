@@ -471,6 +471,33 @@ def generate_netcdfs(event):
                 # ========== </Calculate times> ===================================================
 
 
+                # ============================== TODO =============================================
+                # ========== <Vector rotation> ====================================================
+                # PERFORM VECTOR ROTATION AS NECESSARY
+                if 'vector_inputs' in grouping:
+                    grouping['vector_inputs'] = ['UVEL', 'VVEL']
+                    # load specified field files from the provided directory
+                    # This loads them into the native tile grid
+                    F_DSs = []
+                    vec_fields = ['UVEL', 'VVEL']
+                    for vec_field in grouping['vector_inputs']:
+                        status, F_DS = ecco.load_ecco_vars_from_mds(
+                                            Path(data_file_paths[vec_field]).parent,
+                                            mds_grid_dir = download_all_fields,
+                                            mds_files = Path(data_file_paths[vec_field]).name.split('.')[0],
+                                            vars_to_load = vec_field,
+                                            drop_unused_coords = True,
+                                            grid_vars_to_coords = False,
+                                            output_freq_code = output_freq_code,
+                                            model_time_steps_to_load = int(cur_ts),
+                                            less_output = True,
+                                            read_grid = read_ecco_grid)
+                        print(status)
+                        F_DSs.append(F_DS)
+                # ========== </Vector rotation> ===================================================
+                # ============================== TODO =============================================
+
+
                 # ========== <Download files> =====================================================
                 (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = gen_netcdf_utils.get_files(use_S3,
                                                                                                            download_all_fields,
@@ -488,34 +515,7 @@ def generate_netcdfs(event):
                 if status != 'SUCCESS':
                     print(f'FAIL {cur_ts}')
                     raise Exception(status)
-
                 # ========== </Download files> ====================================================
-
-
-                # ============================== TODO =============================================
-                # ========== <Vector rotation> ====================================================
-                # PERFORM VECTOR ROTATION AS NECESSARY
-                if 'vector_inputs' in grouping:
-                    grouping['vector_inputs'] = ['UVEL', 'VVEL']
-                    # load specified field files from the provided directory
-                    # This loads them into the native tile grid
-                    F_DSs = []
-                    for vec_field in grouping['vector_inputs']:
-                        status, F_DS = ecco.load_ecco_vars_from_mds(
-                                            Path(data_file_paths[vec_field]).parent,
-                                            mds_grid_dir = download_all_fields,
-                                            mds_files = Path(data_file_paths[vec_field]).name.split('.')[0],
-                                            vars_to_load = vec_field,
-                                            drop_unused_coords = True,
-                                            grid_vars_to_coords = False,
-                                            output_freq_code = output_freq_code,
-                                            model_time_steps_to_load = int(cur_ts),
-                                            less_output = True,
-                                            read_grid = read_ecco_grid)
-                        print(status)
-                        F_DSs.append(F_DS)
-                # ========== </Vector rotation> ===================================================
-                # ============================== TODO =============================================
 
 
                 # ========== <Field transformations> ==============================================
