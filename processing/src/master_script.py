@@ -359,6 +359,7 @@ if __name__ == "__main__":
 
         # Memory sizes dictionary where key is the function name and the value is the memory for it
         memory_sizes = {
+            f'{function_name_prefix}_1D': aws_config['memory_size_1D'],
             f'{function_name_prefix}_2D_latlon': aws_config['memory_size_2D_latlon'],
             f'{function_name_prefix}_2D_native': aws_config['memory_size_2D_native'],
             f'{function_name_prefix}_3D_latlon': aws_config['memory_size_3D_latlon'],
@@ -560,7 +561,9 @@ if __name__ == "__main__":
 
             # define the function name using the configuration function_name_prefix,
             # the job's dimension, and product type
-            if product_type == 'latlon':
+            if product_type == '1D':
+                function_name = f'{function_name_prefix}_1D'
+            elif product_type == 'latlon':
                 if dimension == '2D':
                     function_name = f'{function_name_prefix}_2D_latlon'
                 elif dimension == '3D':

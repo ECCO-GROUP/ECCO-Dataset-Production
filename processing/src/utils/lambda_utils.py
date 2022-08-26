@@ -146,6 +146,7 @@ def invoke_lambda(lambda_client,
     
     fields = list(field_files.keys())
     
+    time_1D = aws_config['1D_time']
     time_2D_latlon = aws_config['latlon_2D_time']
     time_2D_native = aws_config['native_2D_time']
     time_3D_latlon = aws_config['latlon_3D_time']
@@ -156,7 +157,10 @@ def invoke_lambda(lambda_client,
     use_lambda = dict_key_args['use_lambda']
 
     # group number of time steps and files to process based on time to execute
-    if product_type == 'latlon':
+    if product_type == '1D':
+        exec_time_per_vl = time_1D
+        function_name = f'{function_name_prefix}_1D'
+    elif product_type == 'latlon':
         if dimension == '2D':
             exec_time_per_vl = time_2D_latlon
             function_name = f'{function_name_prefix}_2D_latlon'
@@ -188,7 +192,6 @@ def invoke_lambda(lambda_client,
     # or to process the problematic timesteps separately.
     if max_execs == 0:
         printc(f'Max execs is 0, this means you cannot process a single vertical level in less than 15 minutes. Skipping job', 'red')
-        # continue
         return num_jobs
 
     # If override_max_execs is given, use the lower value between the calculated max_execs

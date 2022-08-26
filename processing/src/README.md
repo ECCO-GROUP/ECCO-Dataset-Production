@@ -32,6 +32,8 @@ Contains all the code files required for processing.
           - Create lists of files and timesteps for each field from files present on S3 in source_bucket or local in model_output_dir
     - **gen_netcdf_utils.py**
       - Contains functions used while processing ECCO granules into netCDFs for PODAAC
+        - *get_files()*
+          - Get the files for the current fields either from S3 or from a local directory
         - *download_all_files()*
           - Download the field files for the cur_ts from S3
         - *delete_files()*
@@ -40,6 +42,8 @@ Contains all the code files required for processing.
           - Get land mask from mapping_factors_dir for level k
         - *get_latlon_grid()*
           - Get latlon grid values from mapping_factors_dir
+        - *transform_1D()*
+          - Transform source 1D fields to target 1D field
         - *transform_latlon()*
           - Transform source grid to latlon grid
         - *transform_native()*

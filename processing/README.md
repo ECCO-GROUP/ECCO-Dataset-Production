@@ -22,7 +22,6 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
     - General processing control and option values (paths, grid, etc.)
   - **jobs.txt**
     - List of jobs to process, includes grouping number, product type, frequency, and number of timesteps to process (eg. 0,latlon,AVG_MON,all)
-  - **created_jobs.txt**
     - Jobs file created automatically from user prompts when the user passes the "--create_jobs" argument to "master_script.py"
   - **README.md**
     - Provides more information on the files contained within configs/
@@ -55,11 +54,11 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
   - **ecco_code/**
     - ECCO python functions needed for processing. These files (except for __init__.py and .gitignore) have been copied from the ecco_code_dir with ecco_code_name values given in product_generation_config.yaml.
   - **lambda_code/**
-    - *Dockerfile*, *app.py*, *entry.sh*, *requirements.txt* files needed to build and initialize the AWS lambda functions.
+    - *Dockerfile*, *app.py*, *entry.sh*, *requirements.txt* files needed to build and initialize the AWS lambda functions. Organized by ECCO version.
   - **utils**
     - Contains multiple code files containing utility functions used for pre-processing, processing, and post-processing.
     - **aws_login/**
-      - Directory containing scripts needed for logging into AWS and getting the necessary AWS credentials. See https://github.jpl.nasa.gov/cloud/Access-Key-Generation for a description of the files used
+      - Directory containing scripts needed for logging into AWS and getting the necessary AWS credentials. See https://github.jpl.nasa.gov/cloud/Access-Key-Generation for a description of the files used.
     - **ecco_cloud_utils/**
       - A collection of files and functions from ECCO-ACCESS. These are only used in the creation of the mapping factors via master_script.py. These files (except for the __init__.py and .gitignore files) are copied from the local ECCO-ACCESS repository pointed to by the ecco_access_dir value in product_generation_config.yaml.
     - **credentials_utils.py**
@@ -76,6 +75,8 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
       - Contains functions for getting, processing, and saving AWS Lambda logs via AWS CloudWatch
     - **mapping_factors_utils.py**
       - Contains functions for creating and getting the mapping factors (factors, land masks, sparse matrices, etc.)
+    - **print_utils.py**
+      - Contains a print function (*printc()*) which is used to make print statements with a regular format and with specific colors. Not used in all places.
   - **ecco_gen_for_podaac_cloud.py**
     - The primary code file, responsible for the processing of the job passed to the *generate_netcdfs()* function
   - **master_script.py**

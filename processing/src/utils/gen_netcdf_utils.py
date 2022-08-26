@@ -35,10 +35,10 @@ def get_files(use_S3,
               meta_file_paths, 
               product_generation_config, 
               product_type, 
-              model_granule_bucket, 
+              model_granule_bucket='', 
               s3=None):
     """
-    Get the files fo the current fields either from S3 or from a local directory.
+    Get the files for the current fields either from S3 or from a local directory.
     If it is from S3 (use_S3 is True), the files are downloaded from the specified S3 bucket.
 
     Args:

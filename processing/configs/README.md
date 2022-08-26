@@ -9,6 +9,7 @@ Contains all the configuration files used to control and modify the processing a
     - region
     - credential_method_type
     - aws_credential_path
+    - aws_credentials_bash_filepath
     - source_bucket
     - bucket_subfolder
     - output_bucket
@@ -18,6 +19,7 @@ Contains all the configuration files used to control and modify the processing a
     - role
     - function_name_prefix
     - use_workers_to_invoke
+    - 1D_time
     - latlon_2D_time
     - latlon_3D_time
     - native_2D_time
@@ -25,6 +27,7 @@ Contains all the configuration files used to control and modify the processing a
     - override_max_execs
     - job_timeout
     - num_retry
+    - memory_size_1D
     - memory_size_2D_latlon
     - memory_size_3D_latlon
     - memory_size_2D_native
