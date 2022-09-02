@@ -43,6 +43,10 @@ source_bucket: 'ecco-model-granules'
 bucket_subfolder: 'V4r4'
 
 # String
+# Derived products bucket to source/save any vector rotated products
+derived_bucket: 'ecco-derived-products'
+
+# String
 # Name of S3 bucket to save processed datasets
 output_bucket: 'ecco-processed-data'
 

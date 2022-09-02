@@ -357,8 +357,10 @@ def run_job(job,
                                                                   time_steps_to_process, 
                                                                   freq_folder, 
                                                                   use_S3, 
+                                                                  curr_grouping,
                                                                   s3_dir_prefix=s3_dir_prefix, 
-                                                                  source_bucket=source_bucket)
+                                                                  source_bucket=source_bucket,
+                                                                  derived_bucket=aws_config['derived_bucket'])
     else:
         # Get files and timesteps from a local directory
         file_time_steps, status = file_utils.get_files_time_steps(fields, 
@@ -366,6 +368,7 @@ def run_job(job,
                                                                   time_steps_to_process, 
                                                                   freq_folder, 
                                                                   use_S3, 
+                                                                  curr_grouping,
                                                                   model_output_dir=product_generation_config['model_output_dir'])
 
     # Check if status is not "SUCCESS" or if no timesteps were found

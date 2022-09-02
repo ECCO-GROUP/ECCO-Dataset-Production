@@ -7,6 +7,7 @@ Contains functions for getting the available files either from S3 or from a loca
 
 """
 
+import ast
 import glob
 import boto3
 from concurrent import futures
@@ -21,9 +22,11 @@ def get_files_time_steps(fields,
                          time_steps_to_process, 
                          freq_folder, 
                          use_S3, 
+                         curr_grouping,
                          model_output_dir=None, 
                          s3_dir_prefix=None, 
-                         source_bucket=None):
+                         source_bucket=None,
+                         derived_bucket=None):
     """
     Create lists of files and timesteps for each field from files present on S3 in source_bucket or local in model_output_dir
 
@@ -34,9 +37,11 @@ def get_files_time_steps(fields,
                                                 steps, or a list of time steps to process
         freq_folder (str): Subfolder name relating to frequency (i.e. 'diags_monthly')
         use_S3 (bool): True/False if processing using AWS S3
+        curr_grouping (dict): Dictionary containing the grouping information for the current dataset from its goupings.json metadata file
         model_output_dir (optional, str): String directory to model output (for local processing)
-        source_bucket (optional, str): Name of S3 bucket
         s3_dir_prefix (optional, str): Prefix of files stored on S3 (i.e. 'V4r4/diags_monthly)
+        source_bucket (optional, str): Name of S3 bucket
+        derived_bucket (optional, str): Name of S3 bucket for derived products
 
     Returns:
         ((field_files,, time_steps_all_vars), status) (tuple):
@@ -57,12 +62,47 @@ def get_files_time_steps(fields,
 
     print(f'Getting timesteps and files for fields: {fields} for {time_steps_to_process} {period_suffix} timesteps')
 
+    # get the fields to rotate, and the rotated fields from the curr_gouping if present
+    # create a list of fields to source from source_bucket, and a list of all fields.
+    # Those fields not in "fields" to source from source_bucket, will instead be sourced
+    # from derived_bucket if present. If they are not present, they will be created during the job.
+    fields_to_rotate = []
+    rotated_fields = []
+    all_fields = fields
+    vector_rotate = False
+    if 'vector_inputs' in curr_grouping:
+        vector_rotate = True
+        vector_inputs = curr_grouping['vector_inputs']
+        for field, vector_fields in vector_inputs.items():
+            fields_to_rotate.append(field)
+            for vfield in vector_fields:
+                if vfield not in rotated_fields:
+                    rotated_fields.append(vfield)
+
+        all_fields = []
+        new_fields = []
+        for field in fields:
+            if field not in rotated_fields:
+                new_fields.append(field)
+            all_fields.append(field)
+        for field in fields_to_rotate:
+            if field not in new_fields:
+                new_fields.append(field)
+            all_fields.append(field)
+        fields = sorted(new_fields)
+        all_fields = sorted(all_fields)
+
     field_paths = []
+    field_paths_derived = []
     if use_S3:
         # Construct the list of field paths in S3
-        # i.e. ['ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean', 'ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean', ...]
-        for field in fields:
-            field_paths.append(f'{s3_dir_prefix}/{field}_{period_suffix}')
+        # i.e. ['V4r4/diags_monthly/SSH_mon_mean', 'V4r4/diags_monthly/SSHIBC_mon_mean', ...]
+        for field in all_fields:
+            # field_paths.append(f'{s3_dir_prefix}/{field}_{period_suffix}')
+            if field in fields:
+                field_paths.append(f'{s3_dir_prefix}/{field}_{period_suffix}')
+            elif field in rotated_fields:
+                field_paths_derived.append(f'{s3_dir_prefix}/{field}_{period_suffix}')
     else:
         # Construct the list of field paths for local
         # i.e. ['aws/tmp/tmp_model_output/V4r4/diags_mothly/SSH_mon_mean', 'aws/tmp/tmp_model_output/V4r4/diags_mothly/SSHIBC_mon_mean', ...]
@@ -74,69 +114,23 @@ def get_files_time_steps(fields,
         # setup AWS clients
         if use_S3:
             s3 = boto3.resource('s3')
-            bucket = s3.Bucket(source_bucket)
+            source_bucket = s3.Bucket(source_bucket)
+            derived_bucket = s3.Bucket(derived_bucket)
 
-        # Collect files from S3/local for each field, where each field is collected in parallel by a separate worker
-        num_workers = len(field_paths)
-        print(f'Using {num_workers} workers to get time steps and files for {len(fields)} fields')
-
-        # ========== <Workers fetch function> =====================================================
-        # get files function
-        def fetch(field_path):
-            # get field name from field_path
-            field = field_path.split('/')[-1].split(period_suffix)[0][:-1]
-
-            if use_S3:
-                # loop through all the objects in the source_bucket with a prefix matching the s3_field_path
-                # and append those with .data to the list of field files (along with the timestep)
-                curr_field_files = []
-                curr_field_time_steps = []
-                for obj in bucket.objects.filter(Prefix=field_path):
-                    filename = obj.key
-                    if '.meta' in filename:
-                        continue
-                    curr_field_files.append(filename)
-                    curr_field_time_steps.append(filename.split('.')[-2])
-            else:
-                # Glob all .data files in field_path directory
-                # and get the timesteps from those files
-                curr_field_files = glob.glob(f'{field_path}/*.data')
-                curr_field_time_steps = [key.split('.')[-2] for key in curr_field_files]
-
-            # sort field files and timesteps
-            curr_field_files = sorted(curr_field_files)
-            curr_field_time_steps = sorted(curr_field_time_steps)
-
-            # collect the requested field files and time steps per time_steps_to_process
-            all_files = __get_files_helper(field, 
-                                           time_steps_to_process, 
-                                           curr_field_files, 
-                                           curr_field_time_steps)
-
-            field_files[field], field_time_steps[field], curr_time_steps_all_vars, status = all_files
+        # get files for roated_fields if present in the "derived_bucket" on S3
+        if vector_rotate:
+            all_files, status = __get_files_from_field_path(fields, use_S3, field_paths_derived, time_steps_to_process)
+            field_files[field] = all_files['field_files']
+            field_time_steps[field] = all_files['field_time_steps']
+            time_steps_all_vars.extend(all_files['time_steps'])
             if status != 'SUCCESS':
-                raise Exception(status)
-            
-            time_steps_all_vars.extend(curr_time_steps_all_vars)
+                return ((field_files, time_steps_all_vars), status)
 
-            return field
-        # ========== </Workers fetch function> ====================================================
-
-        # create workers and assign each one a field to look for times and files for.
-        # Each worker is assigned an S3 prefix pointing to a specific field (i.e. "ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean")
-        # or (if local) a local directory (i.e. "aws/tmp/tmp_model_output/V4r4/diags_mothly/SSH_mon_mean")
-        with futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
-            future_to_key = {executor.submit(fetch, path) for path in field_paths}
-
-            # Go through return values for each completed worker
-            for future in futures.as_completed(future_to_key):
-                field = future.result()
-                exception = future.exception()
-                if exception:
-                    status = f'ERROR getting field times/files: {field} ({exception})'
-                else:
-                    print(f'Got times/files: {field}')
-                
+        # get files for fields if present either locally or via the "source_bucket" in S3 
+        all_files, status = __get_files_from_field_path(fields, use_S3, field_paths, time_steps_to_process)
+        field_files[field] = all_files['field_files']
+        field_time_steps[field] = all_files['field_time_steps']
+        time_steps_all_vars.extend(all_files['time_steps'])
         if status != 'SUCCESS':
             return ((field_files, time_steps_all_vars), status)
 
@@ -159,6 +153,81 @@ def get_files_time_steps(fields,
     # ========== </Get files> =============================================================
 
     return ((field_files, time_steps_all_vars), status)
+
+
+def __get_files_from_field_path(fields, use_S3, field_paths, time_steps_to_process):
+    status = 'SUCCESS'
+
+    # Collect files from S3/local for each field, where each field is collected in parallel by a separate worker
+    num_workers = len(fields)
+    print(f'Using {num_workers} workers to get time steps and files for {len(fields)} fields')
+
+    # ========== <Workers fetch function> =====================================================
+    # get files function
+    def fetch(field_path):
+        # get field name from field_path
+        field = field_path.split('/')[-1].split('_')[0]
+
+        if use_S3:
+            # loop through all the objects in the source_bucket with a prefix matching the s3_field_path
+            # and append those with .data to the list of field files (along with the timestep)
+            curr_field_files = []
+            curr_field_time_steps = []
+            for obj in source_bucket.objects.filter(Prefix=field_path):
+                filename = obj.key
+                if '.meta' in filename:
+                    continue
+                curr_field_files.append(filename)
+                curr_field_time_steps.append(filename.split('.')[-2])
+        else:
+            # Glob all .data files in field_path directory
+            # and get the timesteps from those files
+            curr_field_files = glob.glob(f'{field_path}/*.data')
+            curr_field_time_steps = [key.split('.')[-2] for key in curr_field_files]
+
+        # sort field files and timesteps
+        curr_field_files = sorted(curr_field_files)
+        curr_field_time_steps = sorted(curr_field_time_steps)
+
+        # collect the requested field files and time steps per time_steps_to_process
+        all_files = __get_files_helper(field, 
+                                        time_steps_to_process, 
+                                        curr_field_files, 
+                                        curr_field_time_steps)
+
+        # field_files[field], field_time_steps[field], curr_time_steps_all_vars, status = all_files
+        # if status != 'SUCCESS':
+        #     raise Exception(status)
+        
+        # time_steps_all_vars.extend(curr_time_steps_all_vars)
+
+        # return field
+        return (all_files, field)
+    # ========== </Workers fetch function> ====================================================
+
+    # create workers and assign each one a field to look for times and files for.
+    # Each worker is assigned an S3 prefix pointing to a specific field (i.e. "V4r4/diags_monthly/SSH_mon_mean")
+    # or (if local) a local directory (i.e. "aws/tmp/tmp_model_output/V4r4/diags_mothly/SSH_mon_mean")
+    with futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
+        future_to_key = {executor.submit(fetch, path) for path in field_paths}
+
+        # Go through return values for each completed worker
+        for future in futures.as_completed(future_to_key):
+            (all_files, field) = future.result()
+            exception = future.exception()
+            if exception:
+                status = f'ERROR getting field times/files: {field} ({all_files["status"]})'
+            else:
+                print(f'Got times/files: {field}')
+                # field_files[field] = all_fields['field_files']
+                # field_time_steps[field] = all_fields['field_time_steps']
+                # time_steps_all_vars.extend(all_fields['time_steps'])
+    
+    return all_files, status
+                
+
+
+
 
 
 def __get_files_helper(field, 
@@ -222,4 +291,10 @@ def __get_files_helper(field,
     field_files[field] = sorted(field_files[field])
     field_time_steps[field] = sorted(field_time_steps[field])
 
-    return (field_files[field], field_time_steps[field], time_steps, status)
+    all_files = {'field_files': field_files[field],
+                 'field_time_steps': field_time_steps[field],
+                 'time_steps': time_steps,
+                 'status': status}
+
+    # return (field_files[field], field_time_steps[field], time_steps, status)
+    return all_files
