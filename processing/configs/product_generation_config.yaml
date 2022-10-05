@@ -69,7 +69,7 @@ latlon_grid_resolution: 0.5
 
 # Float
 # Numerical value for effective grid radius for the latlon grid
-# Default: 0.5*111/2*root(2)*1.1
+# Default (for V4r5): latlon_grid_resolution*111/2*root(2)*1.1
 latlon_effective_grid_radius: 
 
 # Float
@@ -78,6 +78,41 @@ latlon_max_lat: 90.0
 # List(Float)
 # [lon_min, lat_max, lon_max, lat_min]
 latlon_grid_area_extent: [-180.0, 90.0, 180.0, -90.0]
+
+
+# =================================================================================================
+# Custom Factors Information
+# =================================================================================================
+# Boolean
+# Controls whether or not to create factors from an already present ecco_grid file, or from
+# provided XC, YC, RAC, hFaaC, and Depth data files available in {grid_files_dir}
+custom_grid_and_factors: True
+
+# String
+# Absolute directory path string to the directory containing the necessary grid files (XC, YC, RAC, hFaaC. Depth)
+# Must be inlcuded if {custom_grid_and_factors} is False
+grid_files_dir: '/Users/bark/Documents/ECCO_GROUP/ECCO-Dataset-Production/processing/mapping_factors/generalized_factors/new_grids'
+
+# Int
+# LLC number for new ecco_grid (if grid is an LLC grid)
+llc_num: 270
+
+# Float
+# 
+source_grid_min_L: -180
+
+# Float
+# 
+source_grid_max_L: 180
+
+
+# String
+# 
+source_grid_ftype: '>f'
+
+# String
+# 
+target_grid_ftype: '>f'
 
 
 # =================================================================================================

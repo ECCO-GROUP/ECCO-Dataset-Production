@@ -8,6 +8,7 @@ Contains functions for creating and getting the mapping factors (factors, land m
 """
 
 import os
+import ast
 import sys
 import lzma
 import pickle
@@ -22,6 +23,8 @@ main_path = Path(__file__).parent.parent.resolve()
 sys.path.append(f'{main_path / "src" / "utils"}')
 import ecco_cloud_utils as ea
 import gen_netcdf_utils as gen_netcdf_utils
+
+from ecco_code import read_bin_gen
 
 # =================================================================================================
 # GET MAPPING FACTORS
@@ -419,7 +422,6 @@ def create_all_factors(product_generation_config,
     Create all factors (mapping factors, land mask, sparse matrices, and latlon_grid)
 
     Args:
-        ea (module 'ecco_cloud_utils'): ecco_cloud_utils imported module
         product_generation_config (dict): Dictionary of product_generation_config.yaml config file
         dataset_dim (str): Dimension of the dataset to create factors for
         extra_prints (optional, bool): Boolean to enable more print statements
@@ -429,91 +431,180 @@ def create_all_factors(product_generation_config,
     """           
     status = 'SUCCESS'
 
-    mapping_factors_dir = Path(product_generation_config['mapping_factors_dir'])
-    nk = product_generation_config['num_vertical_levels']
-    ecco_grid = xr.open_dataset(Path(product_generation_config['ecco_grid_dir']) / product_generation_config['ecco_grid_filename'])
+    # GENERALIZED MAPPING FACTORS
+    if product_generation_config['custom_grid_and_factors']:
+        mapping_factors_dir = Path(product_generation_config['mapping_factors_dir']) / 'custom'
+        grid_file_path = product_generation_config['grid_files_dir']
+        llc_num = product_generation_config['llc_num']
 
-    # check that the mapping_factors/ dir exists
-    if not mapping_factors_dir.exists():
-        try:
-            mapping_factors_dir.mkdir()
-        except:
-            status = f'ERROR Cannot make mapping factors directory "{mapping_factors_dir}"'
-            return status
-            
-    wet_pts_k = {}
-    xc_wet_k = {}
-    yc_wet_k = {}
+        # Read the .meta files in the grid_file_path dir
+        # and make a dictionary where the key is the name of the grid file
+        # and the value is all the values contained within the .meta file organized by name
+        # ex. grid_meta = {'XC': {'nDims': [2], 'dimList': array([[ 270, 1, 270], [3510, 1, 3510]])}}
+        grid_meta = {}
+        for meta_file in os.listdir(grid_file_path):
+            if '.meta' in meta_file:
+                meta_name = meta_file.split('.meta')[0]
+                grid_meta[meta_name] = {}
 
-    # ========== <Prepare grid values> ========================================================
-    # Dictionary of pyresample 'grids' for each level of the ECCO grid where
-    # there are wet points.  Used for the bin-averaging.  We don't want to bin
-    # average dry points.
-    source_grid_k = {}
-    if extra_prints: print('\nSwath Definitions')
-    if extra_prints: print('... making swath definitions for latlon grid levels 1..nk')
-    for k in range(nk):
-        wet_pts_k[k] = np.where(ecco_grid.hFacC[k,:] > 0)
-        xc_wet_k[k] = ecco_grid.XC.values[wet_pts_k[k]]
-        yc_wet_k[k] = ecco_grid.YC.values[wet_pts_k[k]]
-
-        source_grid_k[k] = pr.geometry.SwathDefinition(lons=xc_wet_k[k], lats=yc_wet_k[k])
-
-
-    # The pyresample 'grid' information for the 'source' (ECCO grid) defined using
-    # all XC and YC points, even land.  Used to create the land mask
-    source_grid_all =  pr.geometry.SwathDefinition(lons=ecco_grid.XC.values.ravel(),
-                                                    lats=ecco_grid.YC.values.ravel())
-
-    # the largest and smallest length of grid cell size in the ECCO grid.  Used
-    # to determine how big of a lookup table we need to do the bin-average interp.
-    source_grid_min_L = np.min([float(ecco_grid.dyG.min().values), float(ecco_grid.dxG.min().values)])
-    source_grid_max_L = np.max([float(ecco_grid.dyG.max().values), float(ecco_grid.dxG.max().values)])
-
-
-    # Define the TARGET GRID -- a lat lon grid
-    ## create target grid.
-    product_name = ''
-
-    latlon_grid_resolution = product_generation_config['latlon_grid_resolution']
-    latlon_max_lat = product_generation_config['latlon_max_lat']
-    latlon_grid_area_extent = product_generation_config['latlon_grid_area_extent']
-    latlon_grid_dims = [int(np.abs(latlon_grid_area_extent[2] - latlon_grid_area_extent[0]) / latlon_grid_resolution),
-                        int(np.abs(latlon_grid_area_extent[3] - latlon_grid_area_extent[1]) / latlon_grid_resolution)]
-    # latlon_grid_dims = [int(d/latlon_grid_resolution) for d in product_generation_config['latlon_grid_dims']]
-
-    # Grid projection information
-    proj_info = {'area_id':'longlat',
-                    'area_name':'Plate Carree',
-                    'proj_id':'EPSG:4326',
-                    'proj4_args':'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'}
-
-    _, _, target_grid, target_grid_lons, target_grid_lats = ea.generalized_grid_product(product_name,
-                                                                                        latlon_grid_resolution,
-                                                                                        latlon_max_lat,
-                                                                                        latlon_grid_area_extent,
-                                                                                        latlon_grid_dims,
-                                                                                        proj_info)
-
-    # pull out just the lats and lons (1D arrays)
-    target_grid_lons_1D = target_grid_lons[0,:]
-    target_grid_lats_1D = target_grid_lats[:,0]
-
-    # calculate the areas of the lat-lon grid
-    ea_area = ea.area_of_latlon_grid(-180, 180, -90, 90, latlon_grid_resolution, latlon_grid_resolution, less_output=True)
-    lat_lon_grid_area = ea_area['area']
-    target_grid_shape = lat_lon_grid_area.shape
+                # Create a single string with all the values from .meta
+                fstring = ''
+                with open(f'{grid_file_path}/{meta_file}', 'r') as mf:
+                    for line in mf:
+                        fstring += line
+                
+                # Loop through each value in the .meta file, parse it, and add it to the grid_meta dict
+                meta_values = fstring.split(';')
+                for meta_value in meta_values:
+                    if '=' not in meta_value:
+                        continue
+                    meta_data = ast.literal_eval(meta_value.split('=')[-1].replace(' ', '').replace(';', ''))
+                    if 'nDims' in meta_value:
+                        nDims = meta_data
+                        grid_meta[meta_name]['nDims'] = nDims
+                    if 'dimList' in meta_value:
+                        dimList = np.reshape(np.array(meta_data), (nDims[0], len(meta_data)//nDims[0]))
+                        grid_meta[meta_name]['dimList'] = dimList
+                    if 'dataprec' in meta_value:
+                        dataprec = meta_data
+                        grid_meta[meta_name]['dataprec'] = dataprec
+                    if 'nrecords' in meta_value:
+                        nrecords = meta_data
+                        grid_meta[meta_name]['nrecords'] = nrecords
+                    if 'timeStepNumber' in meta_value:
+                        timeStepNumber = meta_data
+                        grid_meta[meta_name]['timeStepNumber'] = timeStepNumber
 
 
-    # calculate effective radius of each target grid cell.  required for the bin
-    # averaging
-    if product_generation_config['latlon_effective_grid_radius'] != None:
-        target_grid_radius = product_generation_config['latlon_effective_grid_radius']
+        # Read the binary data from each grid file and save it, by name,
+        # into the grid_data dictionary
+        grid_data = {}
+        for data_file in os.listdir(grid_file_path):
+            # read via load_binary_array in read_bin_gen.py
+            if '.data' in data_file:
+                data_name = data_file.split('.data')[0]
+
+                # if the file is 2D (nDims = 2), nk = 1
+                # otherwise, get the nk from the last dim in dimList
+                if grid_meta[data_name]['nDims'][0] == 2:
+                    nk = 1
+                else:
+                    nk = grid_meta[data_name]['dimList'][-1][0]
+
+                # Load in ni and nj dims from meta
+                # ni, nj are the lengths of the array dimensions
+                ni = grid_meta[data_name]['dimList'][0][0]
+                nj = grid_meta[data_name]['dimList'][1][0]
+
+                # read binary data array and save it in the grid_data dict
+                data = read_bin_gen.load_binary_array(grid_file_path, 
+                                                      data_file, 
+                                                      ni, 
+                                                      nj, 
+                                                      nk, 
+                                                      less_output=False)
+                grid_data[data_name] = data
+        
+        source_grid_all = pr.geometry.SwathDefinition(lons=grid_data['XC'].ravel(),
+                                                        lats=grid_data['YC'].ravel())
+
+        # provided source_grid_min_L and source_grid_max_L via config
+        # source_grid_min_L = np.min([float(old_ecco_grid.dyG.min().values), float(old_ecco_grid.dxG.min().values)])
+        # source_grid_max_L = np.max([float(old_ecco_grid.dyG.max().values), float(old_ecco_grid.dxG.max().values)])
+        source_grid_min_L = float(product_generation_config['source_grid_min_L'])
+        source_grid_max_L = float(product_generation_config['source_grid_max_L'])
+
+        # get number of vertical levels of the grid from product_generation_config
+        nk = product_generation_config['num_vertical_levels']
+        
+        import pdb; pdb.set_trace()
     else:
-        if product_generation_config['ecco_version'] == 'V4r4':
-            target_grid_radius = np.sqrt(lat_lon_grid_area / np.pi).ravel()
+        mapping_factors_dir = Path(product_generation_config['mapping_factors_dir'])
+        ecco_grid = xr.open_dataset(Path(product_generation_config['ecco_grid_dir']) / product_generation_config['ecco_grid_filename'])
+    
+        nk = product_generation_config['num_vertical_levels']
+
+        # check that the mapping_factors/ dir exists
+        if not mapping_factors_dir.exists():
+            try:
+                mapping_factors_dir.mkdir(parents=True, exist_ok=True)
+            except:
+                status = f'ERROR Cannot make mapping factors directory "{mapping_factors_dir}"'
+                return status
+                
+        wet_pts_k = {}
+        xc_wet_k = {}
+        yc_wet_k = {}
+
+        # ========== <Prepare grid values> ========================================================
+        # Dictionary of pyresample 'grids' for each level of the ECCO grid where
+        # there are wet points.  Used for the bin-averaging.  We don't want to bin
+        # average dry points.
+        source_grid_k = {}
+        if extra_prints: print('\nSwath Definitions')
+        if extra_prints: print('... making swath definitions for latlon grid levels 1..nk')
+        for k in range(nk):
+            wet_pts_k[k] = np.where(ecco_grid.hFacC[k,:] > 0)
+            xc_wet_k[k] = ecco_grid.XC.values[wet_pts_k[k]]
+            yc_wet_k[k] = ecco_grid.YC.values[wet_pts_k[k]]
+
+            source_grid_k[k] = pr.geometry.SwathDefinition(lons=xc_wet_k[k], lats=yc_wet_k[k])
+
+
+        # The pyresample 'grid' information for the 'source' (ECCO grid) defined using
+        # all XC and YC points, even land.  Used to create the land mask
+        source_grid_all =  pr.geometry.SwathDefinition(lons=ecco_grid.XC.values.ravel(),
+                                                        lats=ecco_grid.YC.values.ravel())
+
+        # the largest and smallest length of grid cell size in the ECCO grid.  Used
+        # to determine how big of a lookup table we need to do the bin-average interp.
+        source_grid_min_L = np.min([float(ecco_grid.dyG.min().values), float(ecco_grid.dxG.min().values)])
+        source_grid_max_L = np.max([float(ecco_grid.dyG.max().values), float(ecco_grid.dxG.max().values)])
+
+
+        # Define the TARGET GRID -- a lat lon grid
+        ## create target grid.
+        product_name = ''
+
+        latlon_grid_resolution = product_generation_config['latlon_grid_resolution']
+        latlon_max_lat = product_generation_config['latlon_max_lat']
+        latlon_grid_area_extent = product_generation_config['latlon_grid_area_extent']
+        latlon_grid_dims = [int(np.abs(latlon_grid_area_extent[2] - latlon_grid_area_extent[0]) / latlon_grid_resolution),
+                            int(np.abs(latlon_grid_area_extent[3] - latlon_grid_area_extent[1]) / latlon_grid_resolution)]
+        # latlon_grid_dims = [int(d/latlon_grid_resolution) for d in product_generation_config['latlon_grid_dims']]
+
+        # Grid projection information
+        proj_info = {'area_id':'longlat',
+                        'area_name':'Plate Carree',
+                        'proj_id':'EPSG:4326',
+                        'proj4_args':'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'}
+
+        _, _, target_grid, target_grid_lons, target_grid_lats = ea.generalized_grid_product(product_name,
+                                                                                            latlon_grid_resolution,
+                                                                                            latlon_max_lat,
+                                                                                            latlon_grid_area_extent,
+                                                                                            latlon_grid_dims,
+                                                                                            proj_info)
+
+        # pull out just the lats and lons (1D arrays)
+        target_grid_lons_1D = target_grid_lons[0,:]
+        target_grid_lats_1D = target_grid_lats[:,0]
+
+        # calculate the areas of the lat-lon grid
+        ea_area = ea.area_of_latlon_grid(-180, 180, -90, 90, latlon_grid_resolution, latlon_grid_resolution, less_output=True)
+        lat_lon_grid_area = ea_area['area']
+        target_grid_shape = lat_lon_grid_area.shape
+
+
+        # calculate effective radius of each target grid cell.  required for the bin
+        # averaging
+        if product_generation_config['latlon_effective_grid_radius'] != None:
+            target_grid_radius = product_generation_config['latlon_effective_grid_radius']
         else:
-            target_grid_radius = ((0.5*111.)/2.)*np.sqrt(2)*1.1
+            if product_generation_config['ecco_version'] == 'V4r4':
+                target_grid_radius = np.sqrt(lat_lon_grid_area / np.pi).ravel()
+            else:
+                target_grid_radius = ((latlon_grid_resolution*111.)/2.)*np.sqrt(2)*1.1
     # ========== </Prepare grid values> =======================================================
 
 
