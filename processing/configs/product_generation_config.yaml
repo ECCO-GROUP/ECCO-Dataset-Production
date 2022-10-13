@@ -89,29 +89,32 @@ latlon_grid_area_extent: [-180.0, 90.0, 180.0, -90.0]
 custom_grid_and_factors: True
 
 # String
-# Absolute directory path string to the directory containing the necessary grid files (XC, YC, RAC, hFaaC. Depth)
-# Must be inlcuded if {custom_grid_and_factors} is False
-grid_files_dir: '/Users/bark/Documents/ECCO_GROUP/ECCO-Dataset-Production/processing/mapping_factors/generalized_factors/new_grids'
-
-# Int
-# LLC number for new ecco_grid (if grid is an LLC grid)
-llc_num: 270
-
-# Float
-# 
-source_grid_min_L: -180
-
-# Float
-# 
-source_grid_max_L: 180
-
+# Absolute directory path string to the directory containing the necessary grid files (XC, YC, RAC, hFaaC, eff_grid_radius, Depth)
+# There should be two directories located in this path: "source_grids", and "target_grids", where each both contain
+# the XC, YC, RAC, hFaaC, eff_grid_radius, and Depth .data files for the source_grid and target_grid respectively.
+# Must be inlcuded if {custom_grid_and_factors} is True
+grid_files_dir: ''
 
 # String
-# 
+# Absolute directory path string to the directory to save (or contains) the mapping factors for the custom grid
+# End folder should be the "mappings" folder (i.e. '/parents/mappings/')
+# Must be inlcuded if {custom_grid_and_factors} is True
+custom_factors_dir: ''
+
+# Float
+# Source grid minimum length [m]
+source_grid_min_L: 
+
+# Float
+# Source grid maximum length [m]
+source_grid_max_L: 
+
+# String
+# ftype for source grid
 source_grid_ftype: '>f'
 
 # String
-# 
+# ftype for target grid
 target_grid_ftype: '>f'
 
 

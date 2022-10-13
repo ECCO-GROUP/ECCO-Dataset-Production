@@ -150,6 +150,12 @@ if __name__ == "__main__":
 
     extra_prints = product_generation_config['extra_prints']
 
+    # If using custom factors, replace 'mapping_factors_dir' with the 'custom_factors_dir' path provided.
+    # This makes it so all future references to the factors (when doing any mapping) is done so with
+    # the custom factors that get, or are already, made.
+    if product_generation_config['custom_grid_and_factors']:
+        product_generation_config['mapping_factors_dir'] = product_generation_config['custom_factors_dir']
+
     # ECCO-ACCESS and ECCO code directories
     ecco_code_name_default = f'ECCO{ecco_version[:2].lower()}-py'
     if product_generation_config['ecco_code_name'] == '':

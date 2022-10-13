@@ -301,7 +301,16 @@ def get_land_mask(mapping_factors_dir,
     land_mask_ll = []
 
     # check to see if you have already calculated the land mask
-    land_mask_fname = Path(mapping_factors_dir) / 'land_mask' / f'ecco_latlon_land_mask_{k}.xz'
+    land_mask_fdir = Path(mapping_factors_dir) / 'land_mask'
+    land_mask_fname = ''
+    for lm_file in os.listdir(land_mask_fdir):
+        if f'_{k}.xz' in lm_file:
+            land_mask_fname = land_mask_fdir / lm_file
+            break
+    if land_mask_fname == '':
+        status = f'ERROR Land mask has not been created or cannot be found "{land_mask_fname}"'
+        return (status, land_mask_ll)
+
 
     # if so, load
     if land_mask_fname.is_file():

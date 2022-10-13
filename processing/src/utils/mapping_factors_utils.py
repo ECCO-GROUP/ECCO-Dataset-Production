@@ -135,7 +135,7 @@ def create_mapping_factors(dataset_dim,
     # check that the 3D directory exists
     if not grid_mapping_fname_3D.exists():
         try:
-            grid_mapping_fname_3D.mkdir()
+            grid_mapping_fname_3D.mkdir(parents=True, exist_ok=True)
         except:
             status = f'ERROR Cannot make grid mappings 3D directory "{grid_mapping_fname_3D}"'
             return status
@@ -238,7 +238,7 @@ def create_land_mask(mapping_factors_dir,
     # check that the land mask directory exists
     if not land_mask_fname.exists():
         try:
-            land_mask_fname.mkdir()
+            land_mask_fname.mkdir(parents=True, exist_ok=True)
         except:
             status = f'ERROR Cannot make land_mask directory "{land_mask_fname}"'
             return status
@@ -296,7 +296,8 @@ def create_land_mask(mapping_factors_dir,
 # ====================================================================================================
 def create_sparse_matrix(mapping_factors_dir,
                          product_generation_config, 
-                         target_grid_shape, 
+                         target_grid_shape,
+                         wet_pts_k, 
                          extra_prints=False):
     """
     Create sparse matrix file(s)
@@ -305,6 +306,7 @@ def create_sparse_matrix(mapping_factors_dir,
         mapping_factors_dir (PosixPath): Path to /ECCO-Dataset-Production/aws/mapping_factors/{ecco_version}
         product_generation_config (dict): Dictionary of product_generation_config.yaml config file
         target_grid_shape (tuple): Tuple of the shape of the target grid (i.e. (360, 720))
+        wet_pts_k (optional, dict): Dictionary of wet point indices where keys are vertical levels
         extra_prints (optional, bool): Boolean to enable more print statements
 
     Returns:
@@ -314,14 +316,13 @@ def create_sparse_matrix(mapping_factors_dir,
 
     status = 'SUCCESS'
 
-    mapping_factors_dir = product_generation_config['mapping_factors_dir']
     nk = product_generation_config['num_vertical_levels']
 
     sm_path = Path(mapping_factors_dir) / 'sparse'
     # check that the sparse matrix directory exists
     if not sm_path.exists():
         try:
-            sm_path.mkdir()
+            sm_path.mkdir(parents=True, exist_ok=True)
         except:
             status = f'ERROR Cannot make sparse matrix directory "{sm_path}"'
             return status
@@ -338,9 +339,9 @@ def create_sparse_matrix(mapping_factors_dir,
             print(f'Level: {k}')
             
             # get the land mask for level k
-            status, ll_land_mask = gen_netcdf_utils.get_land_mask(mapping_factors_dir, 
-                                                                  k, 
-                                                                  extra_prints=extra_prints)
+            status, land_mask = gen_netcdf_utils.get_land_mask(mapping_factors_dir, 
+                                                               k, 
+                                                               extra_prints=extra_prints)
             if status != 'SUCCESS':
                 return status
 
@@ -359,13 +360,16 @@ def create_sparse_matrix(mapping_factors_dir,
                 if status != 'SUCCESS':
                     return status
 
-                # get the latlon grid object, and only use the wet_pts_k list
-                status, (_, _, _, wet_pts_k) = gen_netcdf_utils.get_latlon_grid(Path(mapping_factors_dir))
-                if status != 'SUCCESS':
-                    return status
+                # # If not using a custom grid and factors, then get the wet_pts_k form the latlon_grid object
+                # if not product_generation_config['custom_grid_and_factors']:
+                #     # get the latlon grid object, and only use the wet_pts_k list
+                #     status, (_, _, _, wet_pts_k) = gen_netcdf_utils.get_latlon_grid(Path(mapping_factors_dir))
+                #     if status != 'SUCCESS':
+                #         return status
 
                 # get the length of the first dimension of wet_pts_k at vertical level k
                 n = len(wet_pts_k[k][0])
+
                 # get the total number of target grid cells
                 m = target_grid_shape[0] * target_grid_shape[1]
             
@@ -382,7 +386,7 @@ def create_sparse_matrix(mapping_factors_dir,
                 target_ind = []
                 source_ind = []
                 source_to_target_weights = []
-                for wet_ind in np.where(~np.isnan(ll_land_mask))[0]:
+                for wet_ind in np.where(~np.isnan(land_mask))[0]:
                     if wet_ind in target_ind_raw:
                         si_list = source_indices_within_target_radius_i[wet_ind]
                         for si in si_list:
@@ -413,230 +417,310 @@ def create_sparse_matrix(mapping_factors_dir,
 
 
 # =================================================================================================
-# CREATE ALL FACTORS (MAPPING FACTORS, LAND MASK, LATLON GRID, and SPARSE MATRICES)
+# PREPARE CUSTOM GRID VALUES
 # =================================================================================================
-def create_all_factors(product_generation_config, 
-                       dataset_dim, 
-                       extra_prints=False):
+def create_custom_grid_values(product_generation_config,
+                               mapping_factors_dir):
+
+    # Create relevant paths
+    source_grid_path = f'{Path(product_generation_config["grid_files_dir"]) / "source_grids"}'
+    target_grid_path = f'{Path(product_generation_config["grid_files_dir"]) / "target_grids"}'
+
+    # get number of vertical levels of the grid from product_generation_config
+    nk = product_generation_config['num_vertical_levels']
+
+    # ========== <Prepare source grid information> ============================================
+    # Get the source grid meta and data
+    print(f'Preparing Source Grid')
+    _, source_grid_data = __get_meta_data(source_grid_path)
+    
+    # Create source swath defintion using the XC and YC values from the .data files in source_grids
+    source_grid = pr.geometry.SwathDefinition(lons=source_grid_data['XC'].ravel(),
+                                                lats=source_grid_data['YC'].ravel())
+
+    # Get source_grid_min_L and source_grid_max_L
+    # If they are not provided in the config, calculate it from source_grid_data['RAC']
+    source_grid_radius = np.sqrt(source_grid_data['RAC'] / np.pi) * np.sqrt(2) * 1.1
+    if product_generation_config['source_grid_min_L'] == None:
+        source_grid_min_L = np.nanmin(source_grid_radius[np.where(source_grid_radius > 0)])
+    else:
+        source_grid_min_L = float(product_generation_config['source_grid_min_L'])
+    if product_generation_config['source_grid_max_L'] == None:
+        source_grid_max_L = np.nanmax(source_grid_radius[np.where(source_grid_radius > 0)])
+    else:
+        source_grid_max_L = float(product_generation_config['source_grid_max_L'])
+    
+    # create land mask from source
+    wet_pts_k = {}
+    xc_wet_k = {}
+    yc_wet_k = {}
+    source_grid_k = {}
+    for k in range(nk):
+        wet_pts_k[k] = np.where(source_grid_data['hFacC'][k,:] > 0)
+        xc_wet_k[k] = source_grid_data['XC'][wet_pts_k[k]]
+        yc_wet_k[k] = source_grid_data['YC'][wet_pts_k[k]]
+
+        source_grid_k[k] = pr.geometry.SwathDefinition(lons=xc_wet_k[k],
+                                                        lats=yc_wet_k[k])
+    # ========== </Prepare source grid information> ============================================
+
+
+    # ========== <Prepare target grid information> ============================================
+    # Get the target grid meta and data
+    print(f'Preparing Target Grid')
+    _, target_grid_data = __get_meta_data(target_grid_path)
+
+    # Create target swath defintion using the XC and YC values from the .data files in target_grids
+    target_grid = pr.geometry.SwathDefinition(lons=target_grid_data['XC'].ravel(),
+                                                lats=target_grid_data['YC'].ravel())
+
+    # Get target_grid_radius from provided eff_grid_radius.data file
+    if 'effective_grid_radius' in target_grid_data:
+        target_grid_radius = target_grid_data['effective_grid_radius'].ravel()
+    else:
+        target_grid_radius = (np.sqrt(target_grid_data['RAC'] / np.pi) * np.sqrt(2) * 1.1).ravel()
+
+    # Create target_grid_shape from target XC shape
+    target_grid_shape = target_grid_data['XC'].shape
+
+    land_mask_fname = Path(mapping_factors_dir) / 'land_mask'
+    # check that the land mask directory exists
+    if not land_mask_fname.exists():
+        try:
+            land_mask_fname.mkdir(parents=True, exist_ok=True)
+        except:
+            status = f'ERROR Cannot make land_mask directory "{land_mask_fname}"'
+            return status
+
+    # If hFacC is not provided, make the mask all 1s
+    if 'hFacC' not in target_grid_data:
+        target_grid_data['hFacC'] = []
+        for k in range(nk):
+            target_grid_data['hFacC'].append(np.ones(target_grid_shape))
+        target_grid_data['hFacC'] = np.array(target_grid_data['hFacC'])
+
+    print(f'\nCreating Land Mask (2D, 3D)')
+
+    # Create target_grid land mask from target_grid hFaaC
+    land_mask_fnames = [Path(land_mask_fname) / f'land_mask_{k}.xz' for k in range(nk)]
+
+    # Check if land masks have already been made
+    all_mask = True
+    for fname_mask in land_mask_fnames:
+        if not os.path.exists(fname_mask):
+            all_mask = False
+            break
+
+    if all_mask:
+        # Land mask already made, continuing
+        print('... land mask already created')
+    else:
+        # if not, recalculate.
+        for i, fname_mask in enumerate(land_mask_fnames):
+            # Create name to save the land mask as, check if it exists and continue if it does
+            if os.path.exists(fname_mask):
+                continue
+            land_mask = np.where(target_grid_data['hFacC'][k] == 1, 1, np.nan)
+            try:
+                # save land mask with level {k}
+                pickle.dump(land_mask.ravel(), lzma.open(fname_mask, 'wb'))
+            except:
+                status = f'ERROR Cannot save land_mask file "{land_mask_fname}"'
+                return status
+    # ========== </Prepare target grid information> ============================================
+
+    custom_grid_values = {'source_grid': source_grid, 
+                          'target_grid': target_grid, 
+                          'target_grid_radius': target_grid_radius, 
+                          'target_grid_shape': target_grid_shape, 
+                          'source_grid_min_L': source_grid_min_L, 
+                          'source_grid_max_L': source_grid_max_L, 
+                          'source_grid_k': source_grid_k, 
+                          'wet_pts_k': wet_pts_k, 
+                          'nk': nk}
+
+    return custom_grid_values
+
+
+def __get_meta_data(grid_path):
     """
-    Create all factors (mapping factors, land mask, sparse matrices, and latlon_grid)
+    Get the information from the .meta and .data files for the provided directory.
+    This is used for custom grids to create the grid factors.
 
     Args:
-        product_generation_config (dict): Dictionary of product_generation_config.yaml config file
-        dataset_dim (str): Dimension of the dataset to create factors for
-        extra_prints (optional, bool): Boolean to enable more print statements
+        grid_path (str): Path to the directory for source/target grid files
 
     Returns:
-        status (str): String that is either "SUCCESS" or "ERROR {error message}"
+        grid_meta (dict): Dictionary with keys corresponding to each .meta file in the directory,
+                          and the information contained within. (i.e. {'hFaaC': {'nDims': [3]}})
+        grid_data (dict): Dictionary with keys corresponding to each .data file in the directory,
+                          and the information contained within. (i.e. {'XC': [data]})
     """           
-    status = 'SUCCESS'
+    # Read the .meta files in the grid_file_path dir
+    # and make a dictionary where the key is the name of the grid file
+    # and the value is all the values contained within the .meta file organized by name
+    # ex. grid_meta = {'XC': {'nDims': [2], 'dimList': array([[ 270, 1, 270], [3510, 1, 3510]])}}
+    grid_meta = {}
+    for meta_file in os.listdir(grid_path):
+        if '.meta' in meta_file:
+            meta_name = meta_file.split('.meta')[0]
+            grid_meta[meta_name] = {}
 
-    # GENERALIZED MAPPING FACTORS
-    if product_generation_config['custom_grid_and_factors']:
-        mapping_factors_dir = Path(product_generation_config['mapping_factors_dir']) / 'custom'
-        grid_file_path = product_generation_config['grid_files_dir']
-        llc_num = product_generation_config['llc_num']
+            # Create a single string with all the values from .meta
+            fstring = ''
+            with open(f'{grid_path}/{meta_file}', 'r') as mf:
+                for line in mf:
+                    fstring += line
+            
+            # Loop through each value in the .meta file, parse it, and add it to the grid_meta dict
+            meta_values = fstring.split(';')
+            for meta_value in meta_values:
+                if '=' not in meta_value:
+                    continue
+                meta_data = ast.literal_eval(meta_value.split('=')[-1].replace(' ', '').replace(';', ''))
+                if 'nDims' in meta_value:
+                    nDims = meta_data
+                    grid_meta[meta_name]['nDims'] = nDims
+                if 'dimList' in meta_value:
+                    dimList = np.reshape(np.array(meta_data), (nDims[0], len(meta_data)//nDims[0]))
+                    grid_meta[meta_name]['dimList'] = dimList
+                if 'dataprec' in meta_value:
+                    dataprec = meta_data
+                    grid_meta[meta_name]['dataprec'] = dataprec
+                if 'nrecords' in meta_value:
+                    nrecords = meta_data
+                    grid_meta[meta_name]['nrecords'] = nrecords
+                if 'timeStepNumber' in meta_value:
+                    timeStepNumber = meta_data
+                    grid_meta[meta_name]['timeStepNumber'] = timeStepNumber
 
-        # Read the .meta files in the grid_file_path dir
-        # and make a dictionary where the key is the name of the grid file
-        # and the value is all the values contained within the .meta file organized by name
-        # ex. grid_meta = {'XC': {'nDims': [2], 'dimList': array([[ 270, 1, 270], [3510, 1, 3510]])}}
-        grid_meta = {}
-        for meta_file in os.listdir(grid_file_path):
-            if '.meta' in meta_file:
-                meta_name = meta_file.split('.meta')[0]
-                grid_meta[meta_name] = {}
+    # Read the binary data from each grid file and save it, by name,
+    # into the grid_data dictionary
+    grid_data = {}
+    for data_file in os.listdir(grid_path):
+        # read via load_binary_array in read_bin_gen.py
+        if '.data' in data_file:
+            data_name = data_file.split('.data')[0]
 
-                # Create a single string with all the values from .meta
-                fstring = ''
-                with open(f'{grid_file_path}/{meta_file}', 'r') as mf:
-                    for line in mf:
-                        fstring += line
-                
-                # Loop through each value in the .meta file, parse it, and add it to the grid_meta dict
-                meta_values = fstring.split(';')
-                for meta_value in meta_values:
-                    if '=' not in meta_value:
-                        continue
-                    meta_data = ast.literal_eval(meta_value.split('=')[-1].replace(' ', '').replace(';', ''))
-                    if 'nDims' in meta_value:
-                        nDims = meta_data
-                        grid_meta[meta_name]['nDims'] = nDims
-                    if 'dimList' in meta_value:
-                        dimList = np.reshape(np.array(meta_data), (nDims[0], len(meta_data)//nDims[0]))
-                        grid_meta[meta_name]['dimList'] = dimList
-                    if 'dataprec' in meta_value:
-                        dataprec = meta_data
-                        grid_meta[meta_name]['dataprec'] = dataprec
-                    if 'nrecords' in meta_value:
-                        nrecords = meta_data
-                        grid_meta[meta_name]['nrecords'] = nrecords
-                    if 'timeStepNumber' in meta_value:
-                        timeStepNumber = meta_data
-                        grid_meta[meta_name]['timeStepNumber'] = timeStepNumber
-
-
-        # Read the binary data from each grid file and save it, by name,
-        # into the grid_data dictionary
-        grid_data = {}
-        for data_file in os.listdir(grid_file_path):
-            # read via load_binary_array in read_bin_gen.py
-            if '.data' in data_file:
-                data_name = data_file.split('.data')[0]
-
-                # if the file is 2D (nDims = 2), nk = 1
-                # otherwise, get the nk from the last dim in dimList
-                if grid_meta[data_name]['nDims'][0] == 2:
-                    nk = 1
-                else:
-                    nk = grid_meta[data_name]['dimList'][-1][0]
-
-                # Load in ni and nj dims from meta
-                # ni, nj are the lengths of the array dimensions
-                ni = grid_meta[data_name]['dimList'][0][0]
-                nj = grid_meta[data_name]['dimList'][1][0]
-
-                # read binary data array and save it in the grid_data dict
-                data = read_bin_gen.load_binary_array(grid_file_path, 
-                                                      data_file, 
-                                                      ni, 
-                                                      nj, 
-                                                      nk, 
-                                                      less_output=False)
-                grid_data[data_name] = data
-        
-        source_grid_all = pr.geometry.SwathDefinition(lons=grid_data['XC'].ravel(),
-                                                        lats=grid_data['YC'].ravel())
-
-        # provided source_grid_min_L and source_grid_max_L via config
-        # source_grid_min_L = np.min([float(old_ecco_grid.dyG.min().values), float(old_ecco_grid.dxG.min().values)])
-        # source_grid_max_L = np.max([float(old_ecco_grid.dyG.max().values), float(old_ecco_grid.dxG.max().values)])
-        source_grid_min_L = float(product_generation_config['source_grid_min_L'])
-        source_grid_max_L = float(product_generation_config['source_grid_max_L'])
-
-        # get number of vertical levels of the grid from product_generation_config
-        nk = product_generation_config['num_vertical_levels']
-        
-        import pdb; pdb.set_trace()
-    else:
-        mapping_factors_dir = Path(product_generation_config['mapping_factors_dir'])
-        ecco_grid = xr.open_dataset(Path(product_generation_config['ecco_grid_dir']) / product_generation_config['ecco_grid_filename'])
-    
-        nk = product_generation_config['num_vertical_levels']
-
-        # check that the mapping_factors/ dir exists
-        if not mapping_factors_dir.exists():
-            try:
-                mapping_factors_dir.mkdir(parents=True, exist_ok=True)
-            except:
-                status = f'ERROR Cannot make mapping factors directory "{mapping_factors_dir}"'
-                return status
-                
-        wet_pts_k = {}
-        xc_wet_k = {}
-        yc_wet_k = {}
-
-        # ========== <Prepare grid values> ========================================================
-        # Dictionary of pyresample 'grids' for each level of the ECCO grid where
-        # there are wet points.  Used for the bin-averaging.  We don't want to bin
-        # average dry points.
-        source_grid_k = {}
-        if extra_prints: print('\nSwath Definitions')
-        if extra_prints: print('... making swath definitions for latlon grid levels 1..nk')
-        for k in range(nk):
-            wet_pts_k[k] = np.where(ecco_grid.hFacC[k,:] > 0)
-            xc_wet_k[k] = ecco_grid.XC.values[wet_pts_k[k]]
-            yc_wet_k[k] = ecco_grid.YC.values[wet_pts_k[k]]
-
-            source_grid_k[k] = pr.geometry.SwathDefinition(lons=xc_wet_k[k], lats=yc_wet_k[k])
-
-
-        # The pyresample 'grid' information for the 'source' (ECCO grid) defined using
-        # all XC and YC points, even land.  Used to create the land mask
-        source_grid_all =  pr.geometry.SwathDefinition(lons=ecco_grid.XC.values.ravel(),
-                                                        lats=ecco_grid.YC.values.ravel())
-
-        # the largest and smallest length of grid cell size in the ECCO grid.  Used
-        # to determine how big of a lookup table we need to do the bin-average interp.
-        source_grid_min_L = np.min([float(ecco_grid.dyG.min().values), float(ecco_grid.dxG.min().values)])
-        source_grid_max_L = np.max([float(ecco_grid.dyG.max().values), float(ecco_grid.dxG.max().values)])
-
-
-        # Define the TARGET GRID -- a lat lon grid
-        ## create target grid.
-        product_name = ''
-
-        latlon_grid_resolution = product_generation_config['latlon_grid_resolution']
-        latlon_max_lat = product_generation_config['latlon_max_lat']
-        latlon_grid_area_extent = product_generation_config['latlon_grid_area_extent']
-        latlon_grid_dims = [int(np.abs(latlon_grid_area_extent[2] - latlon_grid_area_extent[0]) / latlon_grid_resolution),
-                            int(np.abs(latlon_grid_area_extent[3] - latlon_grid_area_extent[1]) / latlon_grid_resolution)]
-        # latlon_grid_dims = [int(d/latlon_grid_resolution) for d in product_generation_config['latlon_grid_dims']]
-
-        # Grid projection information
-        proj_info = {'area_id':'longlat',
-                        'area_name':'Plate Carree',
-                        'proj_id':'EPSG:4326',
-                        'proj4_args':'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'}
-
-        _, _, target_grid, target_grid_lons, target_grid_lats = ea.generalized_grid_product(product_name,
-                                                                                            latlon_grid_resolution,
-                                                                                            latlon_max_lat,
-                                                                                            latlon_grid_area_extent,
-                                                                                            latlon_grid_dims,
-                                                                                            proj_info)
-
-        # pull out just the lats and lons (1D arrays)
-        target_grid_lons_1D = target_grid_lons[0,:]
-        target_grid_lats_1D = target_grid_lats[:,0]
-
-        # calculate the areas of the lat-lon grid
-        ea_area = ea.area_of_latlon_grid(-180, 180, -90, 90, latlon_grid_resolution, latlon_grid_resolution, less_output=True)
-        lat_lon_grid_area = ea_area['area']
-        target_grid_shape = lat_lon_grid_area.shape
-
-
-        # calculate effective radius of each target grid cell.  required for the bin
-        # averaging
-        if product_generation_config['latlon_effective_grid_radius'] != None:
-            target_grid_radius = product_generation_config['latlon_effective_grid_radius']
-        else:
-            if product_generation_config['ecco_version'] == 'V4r4':
-                target_grid_radius = np.sqrt(lat_lon_grid_area / np.pi).ravel()
+            # if the file is 2D (nDims = 2), nk = 1
+            # otherwise, get the nk from the last dim in dimList
+            if grid_meta[data_name]['nDims'][0] == 2:
+                nk = 1
             else:
-                target_grid_radius = ((latlon_grid_resolution*111.)/2.)*np.sqrt(2)*1.1
-    # ========== </Prepare grid values> =======================================================
+                nk = grid_meta[data_name]['dimList'][-1][0]
+
+            # Load in ni and nj dims from meta
+            # ni, nj are the lengths of the array dimensions
+            ni = grid_meta[data_name]['dimList'][0][0]
+            nj = grid_meta[data_name]['dimList'][1][0]
+
+            # read binary data array and save it in the grid_data dict
+            print(f'\tLoading {data_file}', end='\r')
+            data = read_bin_gen.load_binary_array(grid_path, 
+                                                  data_file, 
+                                                  ni, 
+                                                  nj, 
+                                                  nk, 
+                                                  less_output=True)
+            grid_data[data_name] = data
+            print(f'\tLoading {data_file} -- DONE')
+    
+    return grid_meta, grid_data
 
 
-    # ========== <Create mapping factors and land mask> =======================================
-    # CALCULATE GRID-TO-GRID MAPPING FACTORS
-    if not isinstance(dataset_dim, list):
-        dataset_dim = [dataset_dim]
-    for dim in dataset_dim:
-        status = create_mapping_factors(dim, 
-                                        mapping_factors_dir, 
-                                        source_grid_all, 
-                                        target_grid, 
-                                        target_grid_radius, 
-                                        source_grid_min_L, 
-                                        source_grid_max_L, 
-                                        source_grid_k, 
-                                        nk)
-        if status != 'SUCCESS':
+# =================================================================================================
+# PREPARE ECCO GRID VALUES
+# =================================================================================================
+def create_ecco_grid_values(product_generation_config,
+                            mapping_factors_dir,
+                            extra_prints):
+
+    ecco_grid = xr.open_dataset(Path(product_generation_config['ecco_grid_dir']) / product_generation_config['ecco_grid_filename'])
+    
+    nk = product_generation_config['num_vertical_levels']
+
+    # check that the mapping_factors/ dir exists
+    if not mapping_factors_dir.exists():
+        try:
+            mapping_factors_dir.mkdir(parents=True, exist_ok=True)
+        except:
+            status = f'ERROR Cannot make mapping factors directory "{mapping_factors_dir}"'
             return status
+            
+    wet_pts_k = {}
+    xc_wet_k = {}
+    yc_wet_k = {}
 
-        # make a land mask in lat-lon using hfacC
-        status = create_land_mask(mapping_factors_dir, 
-                                  nk, 
-                                  target_grid_shape, 
-                                  ecco_grid, 
-                                  dim)
-        if status != 'SUCCESS':
-            return status
-    # ========== </Create mapping factors and land mask> ======================================
+    # ========== <Prepare grid values> ========================================================
+    # Dictionary of pyresample 'grids' for each level of the ECCO grid where
+    # there are wet points.  Used for the bin-averaging.  We don't want to bin
+    # average dry points.
+    source_grid_k = {}
+    if extra_prints: print('\nSwath Definitions')
+    if extra_prints: print('... making swath definitions for latlon grid levels 1..nk')
+    for k in range(nk):
+        wet_pts_k[k] = np.where(ecco_grid.hFacC[k,:] > 0)
+        xc_wet_k[k] = ecco_grid.XC.values[wet_pts_k[k]]
+        yc_wet_k[k] = ecco_grid.YC.values[wet_pts_k[k]]
+
+        source_grid_k[k] = pr.geometry.SwathDefinition(lons=xc_wet_k[k], lats=yc_wet_k[k])
 
 
-    # ========== <Create latlon grid> =========================================================
+    # The pyresample 'grid' information for the 'source' (ECCO grid) defined using
+    # all XC and YC points, even land.  Used to create the land mask
+    source_grid =  pr.geometry.SwathDefinition(lons=ecco_grid.XC.values.ravel(),
+                                                lats=ecco_grid.YC.values.ravel())
+
+    # the largest and smallest length of grid cell size in the ECCO grid.  Used
+    # to determine how big of a lookup table we need to do the bin-average interp.
+    source_grid_min_L = np.min([float(ecco_grid.dyG.min().values), float(ecco_grid.dxG.min().values)])
+    source_grid_max_L = np.max([float(ecco_grid.dyG.max().values), float(ecco_grid.dxG.max().values)])
+
+
+    # Define the TARGET GRID -- a lat lon grid
+    ## create target grid.
+    product_name = ''
+
+    latlon_grid_resolution = product_generation_config['latlon_grid_resolution']
+    latlon_max_lat = product_generation_config['latlon_max_lat']
+    latlon_grid_area_extent = product_generation_config['latlon_grid_area_extent']
+    latlon_grid_dims = [int(np.abs(latlon_grid_area_extent[2] - latlon_grid_area_extent[0]) / latlon_grid_resolution),
+                        int(np.abs(latlon_grid_area_extent[3] - latlon_grid_area_extent[1]) / latlon_grid_resolution)]
+    # latlon_grid_dims = [int(d/latlon_grid_resolution) for d in product_generation_config['latlon_grid_dims']]
+
+    # Grid projection information
+    proj_info = {'area_id':'longlat',
+                    'area_name':'Plate Carree',
+                    'proj_id':'EPSG:4326',
+                    'proj4_args':'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'}
+
+    _, _, target_grid, target_grid_lons, target_grid_lats = ea.generalized_grid_product(product_name,
+                                                                                        latlon_grid_resolution,
+                                                                                        latlon_max_lat,
+                                                                                        latlon_grid_area_extent,
+                                                                                        latlon_grid_dims,
+                                                                                        proj_info)
+
+    # pull out just the lats and lons (1D arrays)
+    target_grid_lons_1D = target_grid_lons[0,:]
+    target_grid_lats_1D = target_grid_lats[:,0]
+
+    # calculate the areas of the lat-lon grid
+    ea_area = ea.area_of_latlon_grid(-180, 180, -90, 90, latlon_grid_resolution, latlon_grid_resolution, less_output=True)
+    lat_lon_grid_area = ea_area['area']
+    target_grid_shape = lat_lon_grid_area.shape
+
+    # calculate effective radius of each target grid cell.  required for the bin averaging
+    if product_generation_config['latlon_effective_grid_radius'] != None:
+        target_grid_radius = product_generation_config['latlon_effective_grid_radius']
+    else:
+        if product_generation_config['ecco_version'] == 'V4r4':
+            target_grid_radius = np.sqrt(lat_lon_grid_area / np.pi).ravel()
+        else:
+            target_grid_radius = ((latlon_grid_resolution*111.)/2.)*np.sqrt(2)*1.1
+    
+
+    # ========== <Create latlon grid> =============================================================
     # latlon grid is a list of values describing the latlon grid which includes:
     #   - latlon_bounds: Contains the lat and lon bounds for each grid cell
     #   - depth_bounds: Contains the vertical bounds for each vertical level
@@ -685,17 +769,93 @@ def create_all_factors(product_generation_config,
         except:
             status = f'ERROR Cannot save latlon_grid file "{latlon_grid_name}"'
             return status
-    # ========== </Create latlon grid> ========================================================
+    # ========== </Create latlon grid> ============================================================
+
+    ecco_grid_values = {'source_grid': source_grid, 
+                        'target_grid': target_grid, 
+                        'target_grid_radius': target_grid_radius, 
+                        'target_grid_shape': target_grid_shape, 
+                        'ecco_grid': ecco_grid, 
+                        'source_grid_min_L': source_grid_min_L, 
+                        'source_grid_max_L': source_grid_max_L, 
+                        'source_grid_k': source_grid_k, 
+                        'wet_pts_k': wet_pts_k, 
+                        'nk': nk}
+
+    return ecco_grid_values
 
 
-    # ========== <Create sparse matrices> =====================================================
+# =================================================================================================
+# CREATE ALL FACTORS (MAPPING FACTORS, LAND MASK, LATLON GRID, and SPARSE MATRICES)
+# =================================================================================================
+def create_all_factors(product_generation_config, 
+                       dataset_dim, 
+                       extra_prints=False):
+    """
+    Create all factors (mapping factors, land mask, sparse matrices, and latlon_grid)
+
+    Args:
+        product_generation_config (dict): Dictionary of product_generation_config.yaml config file
+        dataset_dim (str): Dimension of the dataset to create factors for
+        extra_prints (optional, bool): Boolean to enable more print statements
+
+    Returns:
+        status (str): String that is either "SUCCESS" or "ERROR {error message}"
+    """           
+    status = 'SUCCESS'
+    mapping_factors_dir = Path(product_generation_config['mapping_factors_dir'])
+
+
+    # ========== <Prepare grid values> ===========================================================
+    # Create custom or ecco grid values
+    if product_generation_config['custom_grid_and_factors']:
+        grid_values = create_custom_grid_values(product_generation_config,
+                                                mapping_factors_dir)
+    else:
+        grid_values = create_ecco_grid_values(product_generation_config, 
+                                              mapping_factors_dir, 
+                                              extra_prints)
+    # ========== </Prepare grid values> ===========================================================
+
+
+    # ========== <Create mapping factors and land mask> ===========================================
+    # CALCULATE GRID-TO-GRID MAPPING FACTORS
+    if not isinstance(dataset_dim, list):
+        dataset_dim = [dataset_dim]
+    for dim in dataset_dim:
+        status = create_mapping_factors(dim, 
+                                        mapping_factors_dir, 
+                                        grid_values['source_grid'], 
+                                        grid_values['target_grid'], 
+                                        grid_values['target_grid_radius'], 
+                                        grid_values['source_grid_min_L'], 
+                                        grid_values['source_grid_max_L'], 
+                                        grid_values['source_grid_k'], 
+                                        grid_values['nk'])
+        if status != 'SUCCESS':
+            return status
+
+        if not product_generation_config['custom_grid_and_factors']:
+            # make a land mask in lat-lon using hfacC
+            status = create_land_mask(mapping_factors_dir, 
+                                      grid_values['nk'], 
+                                      grid_values['target_grid_shape'], 
+                                      grid_values['ecco_grid'], 
+                                      dim)
+        if status != 'SUCCESS':
+            return status
+    # ========== </Create mapping factors and land mask> ==========================================
+
+
+    # ========== <Create sparse matrices> =========================================================
     # create sparse matrices
     status = create_sparse_matrix(mapping_factors_dir,
                                   product_generation_config, 
-                                  target_grid_shape, 
+                                  grid_values['target_grid_shape'], 
+                                  grid_values['wet_pts_k'],
                                   extra_prints=extra_prints)
     if status != 'SUCCESS':
         return status
-    # ========== </Create sparse matrices> ====================================================
+    # ========== </Create sparse matrices> ========================================================
 
     return status
