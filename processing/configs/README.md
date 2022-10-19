@@ -88,3 +88,8 @@ Contains all the configuration files used to control and modify the processing a
     - dataset_description_tail_1D
     - dataset_description_tail_latlon
     - dataset_description_tail_native
+- **requirements.txt.**
+  - Contains all the packages and version numbers for each required package to run any, and all, aspect of the dataset production code.
+  - There may be extra/extraneous packages included, however all the necessary ones are included.
+  - This file can be used to create a conda environment by using the following command, where "env" is the name of the environment to create:
+    - conda create --name "env" --file requirements.txt
