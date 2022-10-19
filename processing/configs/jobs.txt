@@ -1,0 +1,1 @@
+[11,'latlon','AVG_MON',1]

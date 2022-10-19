@@ -1,0 +1,259 @@
+# product_generation_config.yaml
+# =================================================================================================
+# Contains values that are specific to product generation, regardless of where the processing
+# takes place (local/AWS Lambda).
+# This includes grid values, processing control values, and dataset metadata
+# MANY VALUES ARE SPECIFIC TO EACH VERSION, SO ENSURE VALUES ARE ACCURATE FOR ECCO VERSION
+
+
+# =================================================================================================
+# Control Values
+# =================================================================================================
+# Boolean
+# Controls whether or not to create a checksum for each produced dataset
+create_checksum: True
+
+# Boolean
+# Controls whether or not to download all field files at the same time for each time level instead
+# of one at a time. Setting to true makes downloading quicker, but use more memory and disk space.
+download_all_fields: True
+
+# Boolean
+# Controls whether or not to download the uploaded dataset file and compare it's checksum to the
+# the dataset file before it was uploaded to S3
+compare_checksums: True
+
+# Boolean
+# Controls whether or not to download files in parallel for the timestep being processed
+use_workers_to_download: True
+
+# Boolean
+# Sets the "read_grid" value for xmitgcm.open_mdsdataset
+read_ecco_grid_for_native_load: True
+
+# Boolean
+# Include extra print statements when processing
+extra_prints: False
+
+
+# =================================================================================================
+# Model Values
+# =================================================================================================
+# Int
+binary_fill_value: -9999
+
+# String
+array_precision: 'float32'
+
+# String
+model_start_time: '1992-01-01T12:00:00'
+
+# String
+model_end_time: '2017-12-31T12:00:00'
+# NOTE: Should this be 2018-01-01 instead?? It was in global_metadata
+
+
+# =================================================================================================
+# Grid Values
+# =================================================================================================
+# Int
+# Maximum number of vertical levels. Assumes only 1 vertical level for 2D files.
+num_vertical_levels: 50
+
+# Double
+# Vertical minimum of 3D fields
+geospatial_vertical_min: -6134.5
+
+# Float
+latlon_grid_resolution: 0.5
+
+# Float
+# Numerical value for effective grid radius for the latlon grid
+# Default (for V4r5): latlon_grid_resolution*111/2*root(2)*1.1
+latlon_effective_grid_radius: 
+
+# Float
+latlon_max_lat: 90.0
+
+# List(Float)
+# [lon_min, lat_max, lon_max, lat_min]
+latlon_grid_area_extent: [-180.0, 90.0, 180.0, -90.0]
+
+
+# =================================================================================================
+# Custom Factors Information
+# =================================================================================================
+# Boolean
+# Controls whether or not to create factors from an already present ecco_grid file, or from
+# provided XC, YC, RAC, hFaaC, and Depth data files available in {grid_files_dir}
+custom_grid_and_factors: True
+
+# String
+# Absolute directory path string to the directory containing the necessary grid files (XC, YC, RAC, hFaaC, eff_grid_radius, Depth)
+# There should be two directories located in this path: "source_grids", and "target_grids", where each both contain
+# the XC, YC, RAC, hFaaC, eff_grid_radius, and Depth .data files for the source_grid and target_grid respectively.
+# Must be inlcuded if {custom_grid_and_factors} is True
+grid_files_dir: ''
+
+# String
+# Absolute directory path string to the directory to save (or contains) the mapping factors for the custom grid
+# End folder should be the "mappings" folder (i.e. '/parents/mappings/')
+# Must be inlcuded if {custom_grid_and_factors} is True
+custom_factors_dir: ''
+
+# Float
+# Source grid minimum length [m]
+source_grid_min_L: 
+
+# Float
+# Source grid maximum length [m]
+source_grid_max_L: 
+
+# String
+# ftype for source grid
+source_grid_ftype: '>f'
+
+# String
+# ftype for target grid
+target_grid_ftype: '>f'
+
+
+# =================================================================================================
+# Paths and Filenames
+# =================================================================================================
+# String
+# Absolute directory path string for the ECCO grid directory (must include all necessary grids and files)
+# Default: /processing/ecco_grids/{ecco_version}/
+ecco_grid_dir: ''
+
+# String
+# Absolute directory path string for the ECCO grid mds directory (must include all necessary grids and files)
+# Default: /processing/ecco_grids/{ecco_version}/
+ecco_grid_dir_mds: ''
+
+# String
+# Absolute directory path string for the mapping factors directory
+# Default: /processing/mapping_factors/{ecco_version}/
+mapping_factors_dir: ''
+
+# String
+# Name of ECCO code to use for processing (i.e. ECCOv4-py)
+# Default: base directory of {ecco_code_dir} or ECCO{ecco_version version only}-py
+ecco_code_name: ''
+
+# String
+# Absolute directory path string for ECCOvX-py repo
+# Default: Same level as ECCO-Dataset-Production: /{ecco_code_name}/
+ecco_code_dir: ''
+
+# String
+# Absolute directory path string for ECCO-ACCESS repo
+# Default: Same level as ECCO-Dataset-Production
+ecco_access_dir: ''
+
+# String
+# Name of ECCO Configurations folder that is present in same directory as ECCO-Dataset-Production
+# Default: 'ECCO-{ecco_version version only}-Configurations' (e.g. 'ECCO-v4-Configurations')
+ecco_configurations_name: ''
+
+# String
+# Name of subfolder within ECCO Configurations to look for metadata in
+# Default: 'ECCO{ecco_version version only} Release {ecco_version release only}' (e.g. 'ECCOv4 Release 4')
+ecco_configurations_subfolder: ''
+
+# String
+# Absolute directory path string for the metadata directory
+# Default: /processing/metadata/{ecco_version}
+# Files from {ecco_configuration_name}/{ecco_configurations_subfolder}/metadata/ directory are copied over to 
+# ECCO-Dataset-Production/processing/metadata/{ecco_version}
+metadata_dir: ''
+
+# String
+# Absolute directory path string for the model output directory
+# Default: /processing/tmp/tmp_model_output/{ecco_version}/
+model_output_dir: ''
+
+# String
+# Absolute directory path string for local files to upload to AWS S3
+# Default: None. No uploading is done unless a path is supplied.
+# Note: This path should point to an output frequency folder (i.e. data/V4r4/mon_mean)
+local_file_dir_to_upload: ''
+
+# String
+# Base absolute directory path string for the processed output files
+# Default: /processing/tmp/tmp_output/{ecco_version}/
+processed_output_dir_base: ''
+
+# String
+# Filename string of the ECCO grid file (must be a NetCDF4 file). Assumes file exists in /processing/ecco_grids/{ecco_version}/
+ecco_grid_filename: 'GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc'
+
+# String
+# Tail string for filename of processed files for 1D grid.
+# "_ECCO_{ecco_version}_{grid_type}" will be prepeded during processing
+filename_tail_1D: ''
+
+# String
+# Tail string for filename of processed files for latlon grid.
+# "_ECCO_{ecco_version}_{grid_type}_" will be prepended during processing.
+filename_tail_latlon: '0p50deg.nc'
+
+# String
+# Tail string for filename of processed files for native grid.
+# "_ECCO_{ecco_version}_{grid_type}" will be prepended during processing.
+filename_tail_native: 'llc0090.nc'
+
+# String
+# Filename string of the PODAAC metadata to use (must be a CSV). Assumes file exists in /processing/metadata/{ecco_version}/
+podaac_metadata_filename: 'PODAAC_datasets-revised_20210226.5.csv'
+
+# String
+# Name of processing code file to import. Assumes it has a function named "generate_netcdfs" which
+# accepts the payload defined in master_script.py
+processing_code_filename: 'ecco_gen_for_podaac_cloud'
+
+
+# =================================================================================================
+# Metadata
+# =================================================================================================
+# String
+# History string to include with global metadata
+history: 'Inaugural release of an ECCO Central Estimate solution to PO.DAAC'
+
+# String
+# References string to include with global metadata
+references: 'ECCO Consortium, Fukumori, I., Wang, O., Fenty, I., Forget, G., Heimbach, P., & Ponte, R. M. 2020. Synopsis of the ECCO Central Production Global Ocean and Sea-Ice State Estimate (Version 4 Release 4). doi:10.5281/zenodo.3765928'
+
+# String
+# Source string to include with global metadata
+source: 'The ECCO V4r4 state estimate was produced by fitting a free-running solution of the MITgcm (checkpoint 66g) to satellite and in situ observational data in a least squares sense using the adjoint method.'
+
+# String
+# Summary string to include with global metadata
+summary: 'Estimating the Circulation and Climate of the Ocean (ECCO) state estimates are dynamically and kinematically-consistent reconstructions of the three-dimensional, time-evolving ocean, sea-ice, and surface atmospheric states. ECCO V4r4 is a free-running solution of a global, nominally 1-degree configuration of the MIT general circulation model (MITgcm) that has been fit to observations in a least-squares sense. Observational data constraints used in V4r4 include sea surface height (SSH) from satellite altimeters [ERS-1/2, TOPEX/Poseidon, GFO, ENVISAT, Jason-1,2,3, CryoSat-2, and SARAL/AltiKa]; sea surface temperature (SST) from satellite radiometers [AVHRR], sea surface salinity (SSS) from the Aquarius satellite radiometer/scatterometer, ocean bottom pressure (OBP) from the GRACE satellite gravimeter; sea-ice concentration from satellite radiometers [SSM/I and SSMIS], and in-situ ocean temperature and salinity measured with conductivity-temperature-depth (CTD) sensors and expendable bathythermographs (XBTs) from several programs [e.g., WOCE, GO-SHIP, Argo, and others] and platforms [e.g., research vessels, gliders, moorings, ice-tethered profilers, and instrumented pinnipeds]. V4r4 covers the period 1992-01-01T12:00:00 to 2018-01-01T00:00:00.'
+
+# String
+# Output dataset DOI (as from PODAAC_datasets metadata file)
+doi: '10.5067'
+
+# String
+# Version number of ECCO output
+ecco_version: 'V4r4'
+
+# String
+# Word representation of version
+product_version: 'Version 4, Release 4'
+
+# String
+# Tail string for the dataset description for 1D grid
+dataset_description_tail_1D: ''
+
+# String
+# Tail string for the dataset description for latlon grid
+dataset_description_tail_latlon: ' interpolated to a regular 0.5-degree grid from the ECCO Version 4 revision 4 (V4r4) ocean and sea-ice state estimate.'
+# dataset_description_tail_latlon: ' interpolated to a regular 0.5-degree grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate.'
+
+# String
+# Tail string for the dataset description for native grid
+dataset_description_tail_native: ' on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 revision 4 (V4r4) ocean and sea-ice state estimate.'
+# dataset_description_tail_native: ' on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate.'

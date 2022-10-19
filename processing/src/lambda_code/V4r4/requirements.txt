@@ -1,0 +1,8 @@
+numpy
+scipy
+pandas
+xarray
+xmitgcm
+xgcm
+netCDF4
+boto3
