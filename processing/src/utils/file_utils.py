@@ -50,8 +50,8 @@ def get_files_time_steps(fields,
             status (str): String that is either "SUCCESS", "ERROR {error message}" or 'SKIP'
     """
     status = 'SUCCESS'
-    field_files = defaultdict(list)
-    field_time_steps = defaultdict(list)
+    field_files = {}
+    field_time_steps = {}
     time_steps_all_vars = []
 
     # time_steps_to_process must either be the string 'all', a number corresponding to the total number
@@ -116,20 +116,24 @@ def get_files_time_steps(fields,
             s3 = boto3.resource('s3')
             source_bucket = s3.Bucket(source_bucket)
             derived_bucket = s3.Bucket(derived_bucket)
+        else:
+            s3 = None
+            source_bucket = None
+            derived_bucket = None
 
         # get files for roated_fields if present in the "derived_bucket" on S3
         if vector_rotate:
-            all_files, status = __get_files_from_field_path(fields, use_S3, field_paths_derived, time_steps_to_process)
-            field_files[field] = all_files['field_files']
-            field_time_steps[field] = all_files['field_time_steps']
+            all_files, status = __get_files_from_field_path(fields, source_bucket, field_paths_derived, time_steps_to_process)
+            field_files = all_files['field_files']
+            field_time_steps = all_files['field_time_steps']
             time_steps_all_vars.extend(all_files['time_steps'])
             if status != 'SUCCESS':
                 return ((field_files, time_steps_all_vars), status)
 
         # get files for fields if present either locally or via the "source_bucket" in S3 
-        all_files, status = __get_files_from_field_path(fields, use_S3, field_paths, time_steps_to_process)
-        field_files[field] = all_files['field_files']
-        field_time_steps[field] = all_files['field_time_steps']
+        all_files, status = __get_files_from_field_path(fields, source_bucket, field_paths, time_steps_to_process)
+        field_files = all_files['field_files']
+        field_time_steps = all_files['field_time_steps']
         time_steps_all_vars.extend(all_files['time_steps'])
         if status != 'SUCCESS':
             return ((field_files, time_steps_all_vars), status)
@@ -155,12 +159,17 @@ def get_files_time_steps(fields,
     return ((field_files, time_steps_all_vars), status)
 
 
-def __get_files_from_field_path(fields, use_S3, field_paths, time_steps_to_process):
+def __get_files_from_field_path(fields, bucket, field_paths, time_steps_to_process):
     status = 'SUCCESS'
 
     # Collect files from S3/local for each field, where each field is collected in parallel by a separate worker
     num_workers = len(fields)
     print(f'Using {num_workers} workers to get time steps and files for {len(fields)} fields')
+
+    # Define dictionary for field files and timesteps
+    field_files = {}
+    field_time_steps = {}
+    time_steps_all_vars = []
 
     # ========== <Workers fetch function> =====================================================
     # get files function
@@ -168,12 +177,12 @@ def __get_files_from_field_path(fields, use_S3, field_paths, time_steps_to_proce
         # get field name from field_path
         field = field_path.split('/')[-1].split('_')[0]
 
-        if use_S3:
+        if bucket:
             # loop through all the objects in the source_bucket with a prefix matching the s3_field_path
             # and append those with .data to the list of field files (along with the timestep)
             curr_field_files = []
             curr_field_time_steps = []
-            for obj in source_bucket.objects.filter(Prefix=field_path):
+            for obj in bucket.objects.filter(Prefix=field_path):
                 filename = obj.key
                 if '.meta' in filename:
                     continue
@@ -195,14 +204,13 @@ def __get_files_from_field_path(fields, use_S3, field_paths, time_steps_to_proce
                                         curr_field_files, 
                                         curr_field_time_steps)
 
-        # field_files[field], field_time_steps[field], curr_time_steps_all_vars, status = all_files
-        # if status != 'SUCCESS':
-        #     raise Exception(status)
+        field_files[field], field_time_steps[field], curr_time_steps_all_vars, status = all_files
+        if status != 'SUCCESS':
+            raise Exception(status)
         
-        # time_steps_all_vars.extend(curr_time_steps_all_vars)
+        time_steps_all_vars.extend(curr_time_steps_all_vars)
 
-        # return field
-        return (all_files, field)
+        return field, status
     # ========== </Workers fetch function> ====================================================
 
     # create workers and assign each one a field to look for times and files for.
@@ -213,22 +221,22 @@ def __get_files_from_field_path(fields, use_S3, field_paths, time_steps_to_proce
 
         # Go through return values for each completed worker
         for future in futures.as_completed(future_to_key):
-            (all_files, field) = future.result()
+            (field, status) = future.result()
             exception = future.exception()
             if exception:
-                status = f'ERROR getting field times/files: {field} ({all_files["status"]})'
+                status = f'ERROR getting field times/files: {field} ({status})'
             else:
                 print(f'Got times/files: {field}')
                 # field_files[field] = all_fields['field_files']
                 # field_time_steps[field] = all_fields['field_time_steps']
                 # time_steps_all_vars.extend(all_fields['time_steps'])
     
+    all_files = {'field_files': field_files,
+                 'field_time_steps': field_time_steps,
+                 'time_steps': time_steps_all_vars}
+    
     return all_files, status
                 
-
-
-
-
 
 def __get_files_helper(field, 
                        time_steps_to_process, 
@@ -291,10 +299,10 @@ def __get_files_helper(field,
     field_files[field] = sorted(field_files[field])
     field_time_steps[field] = sorted(field_time_steps[field])
 
-    all_files = {'field_files': field_files[field],
-                 'field_time_steps': field_time_steps[field],
-                 'time_steps': time_steps,
-                 'status': status}
+    # all_files = {'field_files': field_files[field],
+    #              'field_time_steps': field_time_steps[field],
+    #              'time_steps': time_steps,
+    #              'status': status}
 
-    # return (field_files[field], field_time_steps[field], time_steps, status)
-    return all_files
+    return (field_files[field], field_time_steps[field], time_steps, status)
+    # return all_files

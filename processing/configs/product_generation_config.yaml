@@ -86,7 +86,7 @@ latlon_grid_area_extent: [-180.0, 90.0, 180.0, -90.0]
 # Boolean
 # Controls whether or not to create factors from an already present ecco_grid file, or from
 # provided XC, YC, RAC, hFaaC, and Depth data files available in {grid_files_dir}
-custom_grid_and_factors: True
+custom_grid_and_factors: False
 
 # String
 # Absolute directory path string to the directory containing the necessary grid files (XC, YC, RAC, hFaaC, eff_grid_radius, Depth)

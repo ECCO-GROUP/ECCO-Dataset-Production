@@ -59,6 +59,11 @@ def lambda_logging(job_logs,
     """
     print(f'\n=== LOGGING START ===')
 
+    # Dont do logging if no jobs were submitted
+    if num_jobs == 0:
+        print(f'No jobs submitted, exiting\n')
+        return job_logs
+
     delete_logs = True
     log_filter = '?"[INFO]" ?"REPORT "'
     duration_keys = ['ALL', 'IMPORT', 'RUN', 'TOTAL', 'SCRIPT', 'IO', 'DOWNLOAD', 'NETCDF', 'UPLOAD']
