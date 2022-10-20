@@ -7,3 +7,5 @@ from .read_bin_llc import load_ecco_vars_from_mds
 from .ecco_utils import add_global_metadata
 from .ecco_utils import add_coordinate_metadata
 from .ecco_utils import add_variable_metadata
+
+from .vector_calc import UEVNfromUXVY

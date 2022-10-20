@@ -36,7 +36,8 @@ def get_files(use_S3,
               product_generation_config, 
               product_type, 
               model_granule_bucket='', 
-              s3=None):
+              s3=None,
+              vector_rotate=False):
     """
     Get the files for the current fields either from S3 or from a local directory.
     If it is from S3 (use_S3 is True), the files are downloaded from the specified S3 bucket.
@@ -55,6 +56,7 @@ def get_files(use_S3,
         product_type (str): String product type (i.e. 'latlon', 'native')
         model_granule_bucket (str): String name of the AWS S3 bucket for model granules
         s3 (botocore.client.S3): boto3 client object for AWS S3
+        vector_rotate (bool): Boolean specifying if the current grouping needs vector rotation. If True, then .meta files are downloaded
 
     Returns:
         (status, (data_file_paths, meta_file_paths, curr_num_downloaded, download_time)) (tuple):
@@ -84,7 +86,8 @@ def get_files(use_S3,
                                                    meta_file_paths, 
                                                    product_generation_config, 
                                                    product_type, 
-                                                   model_granule_bucket)
+                                                   model_granule_bucket,
+                                                   vector_rotate)
 
         data_file_paths, meta_file_paths, curr_num_downloaded = all_files
         download_time = (time.time() - s3_download_start_time)
@@ -120,7 +123,8 @@ def download_all_files(s3,
                        meta_file_paths, 
                        product_generation_config, 
                        product_type, 
-                       model_granule_bucket):
+                       model_granule_bucket,
+                       vector_rotate):
     """
     Download the field files for the cur_ts from S3
 
@@ -134,6 +138,7 @@ def download_all_files(s3,
         product_generation_config (dict): Dictionary of product_generation_config.yaml config file
         product_type (str): String product type (i.e. 'latlon', 'native')
         model_granule_bucket (str): String name of the AWS S3 bucket for model granules
+        vector_rotate (bool): Boolean specifying if the current grouping needs vector rotation. If True, then .meta files are downloaded
 
     Returns:
         (status, (data_file_paths, meta_file_paths, num_downloaded)) (tuple):
@@ -177,8 +182,8 @@ def download_all_files(s3,
         for field in fields_to_load:
             source_local_paths[field] = [(source_data_file_paths[field], data_file_paths[field])]
 
-        # if the product is native, include the meta paths to the source_local_paths var
-        if product_type == 'native':
+        # if the product is native, or vector rotation is necessary, include the meta paths to the source_local_paths var
+        if product_type == 'native' or vector_rotate:
             source_local_meta = {}
             for field in fields_to_load:
                 source_local_meta[field] = [(source_meta_file_paths[field], meta_file_paths[field])]

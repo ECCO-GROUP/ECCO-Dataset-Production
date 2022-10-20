@@ -73,18 +73,25 @@ def get_files_time_steps(fields,
     if 'vector_inputs' in curr_grouping:
         vector_rotate = True
         vector_inputs = curr_grouping['vector_inputs']
+
+        # Get list of fields that are used in a rotation (fields_to_rotate)
+        # Get list of fields that need to be created from a rotation (rotated_fields)
         for field, vector_fields in vector_inputs.items():
             fields_to_rotate.append(field)
             for vfield in vector_fields:
                 if vfield not in rotated_fields:
                     rotated_fields.append(vfield)
 
+        # Get list of fields that dont need to be made from a rotation
+        # and add it to the list of fields to use when processing (new_fields)
         all_fields = []
         new_fields = []
         for field in fields:
             if field not in rotated_fields:
                 new_fields.append(field)
             all_fields.append(field)
+
+        # Get list of fields from fields_to_rotate to use when processing (new_fields)
         for field in fields_to_rotate:
             if field not in new_fields:
                 new_fields.append(field)
@@ -123,7 +130,7 @@ def get_files_time_steps(fields,
 
         # get files for roated_fields if present in the "derived_bucket" on S3
         if vector_rotate:
-            all_files, status = __get_files_from_field_path(fields, source_bucket, field_paths_derived, time_steps_to_process)
+            all_files, status = __get_files_from_field_path(fields, derived_bucket, field_paths_derived, time_steps_to_process)
             field_files = all_files['field_files']
             field_time_steps = all_files['field_time_steps']
             time_steps_all_vars.extend(all_files['time_steps'])
@@ -305,4 +312,3 @@ def __get_files_helper(field,
     #              'status': status}
 
     return (field_files[field], field_time_steps[field], time_steps, status)
-    # return all_files

@@ -471,34 +471,14 @@ def generate_netcdfs(event):
                 # ========== </Calculate times> ===================================================
 
 
-                # ============================== TODO =============================================
-                # ========== <Vector rotation> ====================================================
-                # PERFORM VECTOR ROTATION AS NECESSARY
-                if 'vector_inputs' in grouping:
-                    grouping['vector_inputs'] = ['UVEL', 'VVEL']
-                    # load specified field files from the provided directory
-                    # This loads them into the native tile grid
-                    F_DSs = []
-                    vec_fields = ['UVEL', 'VVEL']
-                    for vec_field in grouping['vector_inputs']:
-                        status, F_DS = ecco.load_ecco_vars_from_mds(
-                                            Path(data_file_paths[vec_field]).parent,
-                                            mds_grid_dir = download_all_fields,
-                                            mds_files = Path(data_file_paths[vec_field]).name.split('.')[0],
-                                            vars_to_load = vec_field,
-                                            drop_unused_coords = True,
-                                            grid_vars_to_coords = False,
-                                            output_freq_code = output_freq_code,
-                                            model_time_steps_to_load = int(cur_ts),
-                                            less_output = True,
-                                            read_grid = read_ecco_grid)
-                        print(status)
-                        F_DSs.append(F_DS)
-                # ========== </Vector rotation> ===================================================
-                # ============================== TODO =============================================
-
-
                 # ========== <Download files> =====================================================
+                # If vector rotation is necessary, you must have all the field files for the current
+                # timestep downloaded and available
+                vector_rotate = False
+                if 'vector_inputs' in grouping:
+                    vector_rotate = True
+                    download_all_fields = True
+
                 (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = gen_netcdf_utils.get_files(use_S3,
                                                                                                            download_all_fields,
                                                                                                            fields_to_load,
@@ -509,13 +489,90 @@ def generate_netcdfs(event):
                                                                                                            product_generation_config,
                                                                                                            product_type,
                                                                                                            model_granule_bucket,
-                                                                                                           s3=s3)
+                                                                                                           s3=s3,
+                                                                                                           vector_rotate=vector_rotate)
                 num_downloaded += num_dl
                 total_download_time += dl_time
                 if status != 'SUCCESS':
                     print(f'FAIL {cur_ts}')
                     raise Exception(status)
                 # ========== </Download files> ====================================================
+
+
+                # ============================== TODO =============================================
+                # ========== <Vector rotation> ====================================================
+                # PERFORM VECTOR ROTATION AS NECESSARY
+                if vector_rotate:
+                    vector_inputs = list(grouping['vector_inputs'].keys())
+
+                    # load specified field files from the provided directory
+                    # This loads them into the native tile grid
+                    F_DSs = []
+                    for source_field in vector_inputs:
+                        mds_var_dir = Path(data_file_paths[source_field])
+                        short_mds_name = mds_var_dir.name.split('.')[0]
+                        mds_var_dir = mds_var_dir.parent
+                        F_DS = ecco.load_ecco_vars_from_mds(mds_var_dir,
+                                                            mds_grid_dir = ecco_grid_dir_mds,
+                                                            mds_files = short_mds_name,
+                                                            vars_to_load = source_field,
+                                                            drop_unused_coords = True,
+                                                            grid_vars_to_coords = False,
+                                                            output_freq_code = output_freq_code,
+                                                            model_time_steps_to_load = int(cur_ts),
+                                                            less_output = True,
+                                                            read_grid = read_ecco_grid)
+                        F_DSs.append(F_DS)
+                    
+                    # Make sure data for each fields DataArray is a numpy.array
+                    for i, F_DS in enumerate(F_DSs):
+                        F_DSs[i][vector_inputs[i]].data = np.array(F_DS[vector_inputs[i]].data)
+
+                    # Vector rotate
+                    east_DS, north_DS = ecco.UEVNfromUXVY(F_DSs[0][vector_inputs[0]], F_DSs[1][vector_inputs[1]], ecco_grid)
+
+                    # Place correct direction DS for corresponding field
+                    rotated_F_DS = {}
+                    for vector_output, direction in grouping['vector_outputs'].items():
+                        if direction == 'EAST':
+                            rotated_F_DS[vector_output] = east_DS
+                        elif direction == 'NORTH':
+                            rotated_F_DS[vector_output] = north_DS
+
+                    # Download vector rotated field locally, and upload to S3 derived_bucket if using S3
+                    for field, DS in rotated_F_DS.items():
+                        derived_filepath = output_dir_freq / f'{field}_derived'
+                        if not os.path.exists(derived_filepath):
+                            os.makedirs(derived_filepath, exist_ok = True)
+                        derived_filename_nc = derived_filepath / f'{field}_{period_suffix}.{cur_ts}.nc'
+
+                        print('\n... saving to netcdf ', derived_filename_nc)
+                        DS.load()
+                        DS.to_netcdf(derived_filename_nc)
+                        DS.close()
+
+                        # Upload vector rotated netcdf to S3
+                        if use_S3:
+                            print('\n... uploading new vector rotated file to derived S3 bucket')
+                            derived_name = str(derived_filename_nc).replace(f'{str(processed_output_dir_base)}/', 
+                                                                            f'{aws_config["bucket_subfolder"]}/')
+
+                            try:
+                                # upload "derived_filename_nc" to AWS S3 bucket "aws_config["derived_bucket"]" with name "derived_name"
+                                response = s3.upload_file(str(derived_filename_nc), 
+                                                        aws_config["derived_bucket"], 
+                                                        derived_name)
+                                if extra_prints: print(f'\n... uploaded {netcdf_filename} to bucket {processed_data_bucket}')
+                            except:
+                                # delete file if it failed to upload, and FAIL the current timestep
+                                os.remove(netcdf_filename)
+                                status = f'ERROR Unable to upload file {netcdf_filename} to bucket {processed_data_bucket} ({response})'
+                                print(f'FAIL {cur_ts}')
+                                raise Exception(status)
+
+                    import pdb; pdb.set_trace()
+                # ========== </Vector rotation> ===================================================
+                # ============================== TODO =============================================
 
 
                 # ========== <Field transformations> ==============================================
@@ -792,84 +849,3 @@ def generate_netcdfs(event):
                  timeout)
 
     return
-
-
-#  ================= TESTING FOR VECTOR ROTATION FOR VEL FIELDS ===============================
-import xgcm
-
-
-def get_llc_grid(ds,domain='global'):
-    """
-    Define xgcm Grid object for the LLC grid
-    See example usage in the xgcm documentation:
-    https://xgcm.readthedocs.io/en/latest/example_eccov4.html#Spatially-Integrated-Heat-Content-Anomaly
-    Parameters
-    ----------
-    ds : xarray Dataset
-        formed from LLC90 grid, must have the basic coordinates:
-        i,j,i_g,j_g,k,k_l,k_u,k_p1
-    Returns
-    -------
-    grid : xgcm Grid object
-        defines horizontal connections between LLC tiles
-    """
-
-    if 'domain' in ds.attrs:
-        domain = ds.attrs['domain']
-
-    if domain == 'global':
-        # Establish grid topology
-        tile_connections = {'tile':  {
-                0: {'X': ((12, 'Y', False), (3, 'X', False)),
-                    'Y': (None, (1, 'Y', False))},
-                1: {'X': ((11, 'Y', False), (4, 'X', False)),
-                    'Y': ((0, 'Y', False), (2, 'Y', False))},
-                2: {'X': ((10, 'Y', False), (5, 'X', False)),
-                    'Y': ((1, 'Y', False), (6, 'X', False))},
-                3: {'X': ((0, 'X', False), (9, 'Y', False)),
-                    'Y': (None, (4, 'Y', False))},
-                4: {'X': ((1, 'X', False), (8, 'Y', False)),
-                    'Y': ((3, 'Y', False), (5, 'Y', False))},
-                5: {'X': ((2, 'X', False), (7, 'Y', False)),
-                    'Y': ((4, 'Y', False), (6, 'Y', False))},
-                6: {'X': ((2, 'Y', False), (7, 'X', False)),
-                    'Y': ((5, 'Y', False), (10, 'X', False))},
-                7: {'X': ((6, 'X', False), (8, 'X', False)),
-                    'Y': ((5, 'X', False), (10, 'Y', False))},
-                8: {'X': ((7, 'X', False), (9, 'X', False)),
-                    'Y': ((4, 'X', False), (11, 'Y', False))},
-                9: {'X': ((8, 'X', False), None),
-                    'Y': ((3, 'X', False), (12, 'Y', False))},
-                10: {'X': ((6, 'Y', False), (11, 'X', False)),
-                     'Y': ((7, 'Y', False), (2, 'X', False))},
-                11: {'X': ((10, 'X', False), (12, 'X', False)),
-                     'Y': ((8, 'Y', False), (1, 'X', False))},
-                12: {'X': ((11, 'X', False), None),
-                     'Y': ((9, 'Y', False), (0, 'X', False))}
-        }}
-
-        grid = xgcm.Grid(ds,
-                periodic=False,
-                face_connections=tile_connections
-        )
-    elif domain == 'aste':
-        tile_connections = {'tile':{
-                    0:{'X':((5,'Y',False),None),
-                       'Y':(None,(1,'Y',False))},
-                    1:{'X':((4,'Y',False),None),
-                       'Y':((0,'Y',False),(2,'X',False))},
-                    2:{'X':((1,'Y',False),(3,'X',False)),
-                       'Y':(None,(4,'X',False))},
-                    3:{'X':((2,'X',False),None),
-                       'Y':(None,None)},
-                    4:{'X':((2,'Y',False),(5,'X',False)),
-                       'Y':(None,(1,'X',False))},
-                    5:{'X':((4,'X',False),None),
-                       'Y':(None,(0,'X',False))}
-                   }}
-        grid = xgcm.Grid(ds,periodic=False,face_connections=tile_connections)
-    else:
-        raise TypeError(f'Domain {domain} not recognized')
-
-
-    return grid
