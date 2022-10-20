@@ -1,7 +1,7 @@
 # **/upload_to_AWS/**
 Contains scripts that allow the user to easily upload files from a local directory to an AWS S3 bucket.
 
-- **aws_sync_directoryies_to_S3.sh**
+- **aws_sync_directories_to_S3.sh**
   - Bash script to mass upload files to S3. Utilizes the AWS CLI *sync* command to upload large number of files quickly to S3. Takes in the following arguments:
     - *credentials type*: Either 'python' or 'binary'. This dictates which aws-login file is called in order to login to AWS (python calls aws-login.py, and binary calls the .amd64 binary file for for system)
     - *credentials file name*: Name of aws-login file to call ('aws-login.py', 'aws-login.linux.amd64', or 'aws-log.darwin.amd64'), which should match the passed *credentials type*
