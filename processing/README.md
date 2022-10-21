@@ -100,6 +100,6 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
       - ./ecr_push.sh ecco_processing latest V4r4
     - When running it via master_script.py, the code uses the "image_uri" value in aws_config.yaml for the image to create/update
 - Note: When running this script (either manually or via master_script.py) you MUST have Docker running on your computer
-  - If you do not, an error message will be produced that says something along the lines of "If the docker daemon running?"
-- Running this script (either manually or via master_script.py) will take about a minute (or a few) to run and when successful will "Building" progress first, then show many lines and either "Pushed" or "Layer already exists" after showing numerous progress bars.
+  - If you do not, an error message will be produced that says something along the lines of "Is the docker daemon running?"
+- Running this script (either manually or via master_script.py) will take about a minute (or a few) to run and when successful will show "Building" progress first, then many lines and either "Pushed" or "Layer already exists" after showing numerous progress bars.
   - To double check it worked, check the image on AWS ECR to see it has been updated.
