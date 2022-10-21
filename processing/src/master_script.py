@@ -83,6 +83,9 @@ def create_parser():
     
     parser.add_argument('--dryrun', default=False, action='store_true',
                         help='Does a dryrun of uploading files to S3 (TODO: dryrun of all processing code)')
+
+    parser.add_argument('--dont_delete_local', default=False, action='store_true',
+                        help='Prevents deletion of any files downloaded locally (model granules and processed files). Files local to Lambdas are still deleted.')
     return parser
 
 

@@ -33,8 +33,8 @@ COPY ./src/lambda_code/V4r4/Dockerfile .
 COPY ./src/lambda_code/V4r4/requirements.txt .
 COPY ./src/lambda_code/V4r4/app.py .
 
-# copy main code files (ecco_gen_for_podaac_cloud.py and gen_netcdf_utils.py)
-COPY ./src/ecco_gen_for_podaac_cloud.py .
+# copy main code files (ecco_gen_for_podaac.py and gen_netcdf_utils.py)
+COPY ./src/ecco_gen_for_podaac.py .
 COPY ./src/utils/gen_netcdf_utils.py .
 # ========== </Copy files> ========================================================================
 

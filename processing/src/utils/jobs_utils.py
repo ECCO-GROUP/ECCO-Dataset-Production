@@ -18,7 +18,7 @@ sys.path.append(f'{main_path / "src" / "utils"}')
 from print_utils import printc
 import file_utils as file_utils
 import lambda_utils as lambda_utils
-from ecco_gen_for_podaac_cloud import generate_netcdfs
+from ecco_gen_for_podaac import generate_netcdfs
 
 
 # ==========================================================================================================================
@@ -321,6 +321,7 @@ def run_job(job,
     # Get values from args and configs
     use_lambda = dict_key_args['use_lambda']
     use_S3 = dict_key_args['use_S3'] or use_lambda
+    delete_local = not dict_key_args['dont_delete_local']
 
     if use_S3:
         source_bucket = aws_config['source_bucket']
@@ -414,6 +415,7 @@ def run_job(job,
             'aws_config': aws_config,
             'use_S3': use_S3,
             'use_lambda': use_lambda,
+            'delete_local': delete_local,
             'credentials': credentials
         }
 

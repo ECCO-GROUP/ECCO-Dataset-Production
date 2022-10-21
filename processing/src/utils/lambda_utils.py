@@ -72,7 +72,8 @@ def update_lambda_function(lambda_client,
                            function_name, 
                            image_uri):
     """
-    Update AWS Lambda function with AWS ECR Docker image
+    Update AWS Lambda function with AWS ECR Docker image. 
+    Only functions that will be used for the current jobs list are updated.
 
     Args:
         lambda_client (botocore.client.Lambda): boto3 client object for AWS Lambda
@@ -259,6 +260,7 @@ def invoke_lambda(lambda_client,
                 'aws_config': aws_config,
                 'use_S3': True,
                 'use_lambda': use_lambda,
+                'delete_local': False,
                 'credentials': credentials
             }
 
@@ -328,6 +330,7 @@ def invoke_lambda(lambda_client,
                 'aws_config': aws_config,
                 'use_S3': True,
                 'use_lambda': use_lambda,
+                'delete_local': False,
                 'credentials': credentials,
                 'processing_code_filename': product_generation_config['processing_code_filename'],
                 'use_workers_to_download': product_generation_config['use_workers_to_download']

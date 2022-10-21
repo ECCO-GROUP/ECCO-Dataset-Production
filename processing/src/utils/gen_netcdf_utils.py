@@ -46,7 +46,7 @@ def get_files(use_S3,
         use_S3 (bool): Specifies whether or not to source files from and AWS S3 bucket
         download_all_fields (bool): Specifies whether or not to download all files for all fields for the current
             timestep at once, or do it one field at a time. If this is False, the downloading takes place in the field loop
-            in generate_netcdfs() in ecco_gen_for_podaac_cloud.py.
+            in generate_netcdfs() in ecco_gen_for_podaac.py.
         fields_to_load (list): List of field names
         field_files (defaultdict(list)): Dictionary with field names as keys, and S3/local file paths for each timestep as values
         cur_ts (str): String of the current timestep (i.e. '0000000732')

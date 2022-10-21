@@ -77,7 +77,7 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
       - Contains functions for creating and getting the mapping factors (factors, land masks, sparse matrices, etc.)
     - **print_utils.py**
       - Contains a print function (*printc()*) which is used to make print statements with a regular format and with specific colors. Not used in all places.
-  - **ecco_gen_for_podaac_cloud.py**
+  - **ecco_gen_for_podaac.py**
     - The primary code file, responsible for the processing of the job passed to the *generate_netcdfs()* function
   - **master_script.py**
     - The point of interaction between the user and the processing code. This script is how the user starts, controls, etc. all processing.
@@ -88,4 +88,18 @@ Contains all the code, data, metadata, config, etc. files necessary for processi
 - Contains all the temporary model granule files and processed netCDF datasets when running locally. This directory may not be present at all times.
 
 ### **ecr_push.sh**
-- Shell script to update AWS ECR image with the Docker image built from the Dockerfile in /processing/src/lambda_code/{ecco_version}/
+- Shell script to create/update AWS ECR image with the Docker image built from the Dockerfile in /processing/src/lambda_code/{ecco_version}/
+- Note: This script must run in order to update the AWS Lambda functions with the most recent code.
+  - Run either manually, or by passing the arugument "--push_ecr" to master_script.py
+    - Takes the following arguments (in order):
+      - {repository_name}: String that is the name of the AWS ECR respository to push to. Usually "ecco_processing".
+      - {tag}: String that is the image tag to create the new image with. Usually "latest".
+      - {ecco_version}: String that is the current ECCO version (i.e. "V4r4"). This is used to find the Dockerfile to use within src/lambda_code/{ecco_version}/
+      - Not an argument, but a value used. {region}: Hardcoded string to "us-west-2".
+    - Example manual ecr_push.sh run:
+      - ./ecr_push.sh ecco_processing latest V4r4
+    - When running it via master_script.py, the code uses the "image_uri" value in aws_config.yaml for the image to create/update
+- Note: When running this script (either manually or via master_script.py) you MUST have Docker running on your computer
+  - If you do not, an error message will be produced that says something along the lines of "If the docker daemon running?"
+- Running this script (either manually or via master_script.py) will take about a minute (or a few) to run and when successful will "Building" progress first, then show many lines and either "Pushed" or "Layer already exists" after showing numerous progress bars.
+  - To double check it worked, check the image on AWS ECR to see it has been updated.

@@ -210,7 +210,7 @@ podaac_metadata_filename: 'PODAAC_datasets-revised_20210226.5.csv'
 # String
 # Name of processing code file to import. Assumes it has a function named "generate_netcdfs" which
 # accepts the payload defined in master_script.py
-processing_code_filename: 'ecco_gen_for_podaac_cloud'
+processing_code_filename: 'ecco_gen_for_podaac'
 
 
 # =================================================================================================

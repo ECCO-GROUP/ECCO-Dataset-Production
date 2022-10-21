@@ -84,7 +84,7 @@ Contains all the code files required for processing.
           - Create sparse matrix file(s)
         - *create_all_factors()*
           - Create all factors (mapping factors, land mask, sparse matrices, and latlon_grid)
-- **ecco_gen_for_podaac_cloud.py**
+- **ecco_gen_for_podaac.py**
   - Main code file for processing. This file takes a payload specifing timesteps and files to process (among other information), and processes said files to produce output datasets
     - *logging_info()*
       - Prints all the logging info (time, number of files, successes, fails, etc.)
@@ -144,3 +144,8 @@ Contains all the code files required for processing.
     - *--dryrun*
       - "Does a dryrun of uploading files to S3 (TODO: dryrun of all processing code)"
       - Passes the '--dryrun' argument to AWS CLI "sync" when uploading files from local to S3. Additional work is needed to apply the same logic to the processing code as a whole.
+    - *--dont_delete_local*
+      - "Prevents deletion of any files downloaded locally (model granules and processed files). Files local to Lambdas are still deleted."
+      - Does not remove any model granules, or produced files, from your local directory (even when using AWS S3).
+        - When using S3, a copy of the file from S3 is downloaded and compared to the uploaded file to ensure they match. This downloaded file has the prefix "S3_{filename}".
+      - Note: To ensure space availability, files local to Lambda jobs are still removed (this argument is set to False when using Lambda)

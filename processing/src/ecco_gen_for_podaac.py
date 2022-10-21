@@ -131,6 +131,7 @@ def generate_netcdfs(event):
             aws_config (dict): Dictionary of aws_config.yaml config file
             use_S3 (bool): Boolean for whether or not files are accessed via AWS S3 or locally
             use_lambda (bool): Boolean for whether or not processing is to occur on Lambda
+            dont_delete_local (bool): Boolean for whether or not to delete local files when done processing
             credentials (dict): Dictionary containaing credentials information for AWS
             processing_code_filename (only for lambda, str): Name of this file, used to call it from the lambda_code app.py file
 
@@ -160,6 +161,7 @@ def generate_netcdfs(event):
     aws_config = event['aws_config']
     use_S3 = event['use_S3']
     use_lambda = event['use_lambda']
+    delete_local = event['delete_local']
     credentials = event['credentials']
 
     # get list of fields to process
@@ -565,7 +567,8 @@ def generate_netcdfs(event):
                                 if extra_prints: print(f'\n... uploaded {netcdf_filename} to bucket {processed_data_bucket}')
                             except:
                                 # delete file if it failed to upload, and FAIL the current timestep
-                                os.remove(netcdf_filename)
+                                if delete_local:
+                                    os.remove(netcdf_filename)
                                 status = f'ERROR Unable to upload file {netcdf_filename} to bucket {processed_data_bucket} ({response})'
                                 print(f'FAIL {cur_ts}')
                                 raise Exception(status)
@@ -718,7 +721,8 @@ def generate_netcdfs(event):
                         if extra_prints: print(f'\n... uploaded {netcdf_filename} to bucket {processed_data_bucket}')
                     except:
                         # delete file if it failed to upload, and FAIL the current timestep
-                        os.remove(netcdf_filename)
+                        if delete_local:
+                            os.remove(netcdf_filename)
                         status = f'ERROR Unable to upload file {netcdf_filename} to bucket {processed_data_bucket} ({response})'
                         print(f'FAIL {cur_ts}')
                         raise Exception(status)
@@ -735,7 +739,7 @@ def generate_netcdfs(event):
                     # dataset file uploaded to S3 (in ensure there was no issue uploading the file)
                     if product_generation_config['compare_checksums'] and create_checksum:
                         checksum_time = time.time()
-                        new_netcdf = netcdf_filename.parent / f'new_{netcdf_filename.name}'
+                        new_netcdf = netcdf_filename.parent / f'S3_{netcdf_filename.name}'
 
                         # download "name" file from AWS S3 bucket "processed_data_bucket" to local "new_netcdf" file
                         s3.download_file(processed_data_bucket, 
@@ -751,7 +755,8 @@ def generate_netcdfs(event):
                         total_checksum_time += (time.time() - checksum_time)
 
                         # Delete downloaded netcdf file
-                        os.remove(new_netcdf)
+                        if delete_local:
+                            os.remove(new_netcdf)
 
                         # compare checksum of dataset from pre-upload, and the dataset downloaded from S3
                         if orig_checksum != downloaded_checksum:
@@ -807,14 +812,16 @@ def generate_netcdfs(event):
                     print(error_log)
         # ========== </Process each time level> ===================================================
 
-        # Remove processed_output_dir_base directory
-        # if use_S3 and not use_lambda:
-        #     if os.path.exists(processed_output_dir_base):
-        #         shutil.rmtree(processed_output_dir_base)
+        # Remove files if applicable
+        if delete_local:
+            # Remove processed_output_dir_base directory
+            if use_S3 and not use_lambda:
+                if os.path.exists(processed_output_dir_base):
+                    shutil.rmtree(processed_output_dir_base)
 
-        # Remove model output directory
-        # if os.path.exists(product_generation_config['model_output_dir']):
-        #     shutil.rmtree(product_generation_config['model_output_dir'])
+            # Remove model output directory
+            if os.path.exists(product_generation_config['model_output_dir']):
+                shutil.rmtree(product_generation_config['model_output_dir'])
     
     except Exception as e:
         exception_type, exception_value, exception_traceback = sys.exc_info()
