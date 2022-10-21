@@ -8,10 +8,10 @@ Contains all the configuration files used to control and modify the processing a
     - profile_name
     - region
     - credential_method_type
-    - aws_credential_path
     - aws_credentials_bash_filepath
     - source_bucket
     - bucket_subfolder
+    - derived_bucket
     - output_bucket
     - test_bucket
     - upload_to_S3_path
@@ -34,12 +34,12 @@ Contains all the configuration files used to control and modify the processing a
     - memory_size_3D_native
     - number_of_batches_to_process
 - **jobs.txt**
-  - File containing list of jobs to execute. Jobs are defined as: gouping to process, product type, output frequency, number of time steps to process (e.g. 0,latlon,AVG_MON,all, or 10,native,AVG_DAY,10).
+  - File containing list of jobs to execute. Jobs are defined as: gouping to process, product type, output frequency, number of time steps to process (e.g. [0,'latlon','AVG_MON','all'], or [10,'native','AVG_DAY',10]).
   - Optionally, one can have a line that is just "all", and all jobs will be calculated per the groupings metadata file, and executed.
   - A line that is just "done" will cause any jobs listed after to not be executed.
   - This file can be created automatically from user prompts when the user passes the "--create_jobs" argument to "master_script.py".
-    - The user is prompted to select product types, frequencies, datasets, and timesteps that they would like to process. These selections are then modified in order to match the "job" format, and all of these jobs are saved as a separate job file, "created_jobs.txt".
-    - Note: Once created, this file should not be modified (outside of removing lines), just re-run "master_script.py" with the "--create_jobs" argument to make the file with your new choices.
+    - The user is prompted to select product types, frequencies, datasets, and timesteps that they would like to process. These selections are then modified in order to match the "job" format, and all of these jobs are saved the job file, "jobs.txt".
+    - Note: Once created, this file should be modified at your own risk or just re-run "master_script.py" with the "--create_jobs" argument to make the file with your new choices.
 - **product_generation_config.json**
   - Old, json, configuration file. NOT USED
 - **product_generation_config.yaml**
@@ -60,6 +60,13 @@ Contains all the configuration files used to control and modify the processing a
     - latlon_effective_grid_radius
     - latlon_max_lat
     - latlon_grid_area_extent
+    - custom_grid_and_factors
+    - grid_files_dir
+    - custom_factors_dir
+    - source_grid_min_L
+    - source_grid_max_L
+    - source_grid_ftype
+    - target_grid_ftype
     - ecco_grid_dir
     - ecco_grid_dir_mds
     - mapping_factors_dir

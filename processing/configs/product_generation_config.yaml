@@ -50,7 +50,6 @@ model_start_time: '1992-01-01T12:00:00'
 
 # String
 model_end_time: '2017-12-31T12:00:00'
-# NOTE: Should this be 2018-01-01 instead?? It was in global_metadata
 
 
 # =================================================================================================
