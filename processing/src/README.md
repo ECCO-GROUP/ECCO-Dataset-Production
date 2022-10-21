@@ -149,3 +149,24 @@ Contains all the code files required for processing.
       - Does not remove any model granules, or produced files, from your local directory (even when using AWS S3).
         - When using S3, a copy of the file from S3 is downloaded and compared to the uploaded file to ensure they match. This downloaded file has the prefix "S3_{filename}".
       - Note: To ensure space availability, files local to Lambda jobs are still removed (this argument is set to False when using Lambda)
+  - *Example commands*
+    - Below is a number of example runs of master_script.py one can do. This is not exhaustive, and attempts to show some key functionalities and features of the processing code.
+    - python master_script.py --process_data --dont_delete_local
+      - Process local model granules locally, and save the processed output locally
+    - python master_script.py --process_data --use_S3
+      - Process S3 sourced model granules locally, sand save the processed output locally and on S3
+    - python master_script.py --process_data --use_lambda
+      - Process S3 sourced model granules via AWS Lambda, and do not save any logs
+    - python master_script.py --process_data --use_lambda --enable_logging
+      - Process S3 sourced model granules via AWS Lambda, and save logs from Lambda jobs
+    - python master_script.py --push_ecr
+      - Update/create AWS ECR image specifed by "image_uri" in aws_config.yaml
+    - python master_script.py --create_factors
+      - Create all mapping factors and exit
+    - python master_script.py --logs_only "{path to log file to use as base}"
+      - Takes the provided log file and reviews all the logs on AWS CloudWatch to create a new updated log file
+      - Useful if logging fails part way through Lambda jobs. Provide this command with the most recent saved log file and it will continue to update it with progress from logs in AWS CloudWatch.
+    - python master_script.py upload_to_S3
+      - Uploads files located in "local_file_dir_to_upload" in product_generation_config.yaml, to the specified S3 path "upload_to_S3_path" in aws_config.yaml and exit
+    - python master_script.py --process_data --use_S3 --create_jobs
+      - Prompts user to create new jobs.txt file and then processes said jobs using S3 sourced granules and local processing
