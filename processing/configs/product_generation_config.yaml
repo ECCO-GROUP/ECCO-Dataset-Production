@@ -101,11 +101,11 @@ grid_files_dir: ''
 custom_factors_dir: ''
 
 # Float
-# Source grid minimum length [m]
+# Source grid cell minimum length [m]
 source_grid_min_L: 
 
 # Float
-# Source grid maximum length [m]
+# Source grid cell maximum length [m]
 source_grid_max_L: 
 
 # String
