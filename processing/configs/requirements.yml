@@ -53,7 +53,7 @@ dependencies:
   - libedit=3.1.20210910
   - libev=4.33
   - libffi=3.3
-  - libgfortran=3.0.1
+  - libgfortran
   - libiconv=1.16
   - libnetcdf=4.8.1
   - libnghttp2=1.46.0
