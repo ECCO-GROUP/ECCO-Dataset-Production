@@ -108,6 +108,7 @@ Contains all the code files required for processing.
     - *--process_data*
       - "Starts processing model data using config file values"
       - Required in order to process ECCO model granules into output netCDF datasets. Without this argument, no processing will occur.
+      - Note: The default (without any other argument passed) is to process locally.
     - *--use_S3*
       - "Source model granules from AWS S3 and save processed files to S3"
       - Downloads ECCO model granules from the AWS S3 bucket specified in aws_config.yaml, and uploads processed netCDF datasets to the AWS S3 bucket specified in aws_config.yaml.
