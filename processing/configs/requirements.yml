@@ -131,4 +131,3 @@ dependencies:
   - zipp=3.8.0
   - zlib=1.2.12
   - zstd=1.5.2
-prefix: /Users/bark/opt/anaconda3/envs/ecco_processing
