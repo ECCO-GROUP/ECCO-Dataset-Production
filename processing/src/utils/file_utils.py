@@ -180,9 +180,9 @@ def __get_files_from_field_path(fields, bucket, field_paths, time_steps_to_proce
 
     # ========== <Workers fetch function> =====================================================
     # get files function
-    def fetch(field_path):
-        # get field name from field_path
-        field = field_path.split('/')[-1].split('_')[0]
+    def fetch(field_info):
+        # get the field name and field path from field_info
+        field, field_path = field_info
 
         if bucket:
             # loop through all the objects in the source_bucket with a prefix matching the s3_field_path
@@ -221,10 +221,11 @@ def __get_files_from_field_path(fields, bucket, field_paths, time_steps_to_proce
     # ========== </Workers fetch function> ====================================================
 
     # create workers and assign each one a field to look for times and files for.
-    # Each worker is assigned an S3 prefix pointing to a specific field (i.e. "V4r4/diags_monthly/SSH_mon_mean")
+    # Each worker is assigned a field name, and an S3 prefix pointing to a specific field (i.e. "V4r4/diags_monthly/SSH_mon_mean")
     # or (if local) a local directory (i.e. "aws/tmp/tmp_model_output/V4r4/diags_mothly/SSH_mon_mean")
+    # field info = (field name, field_path)
     with futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
-        future_to_key = {executor.submit(fetch, path) for path in field_paths}
+        future_to_key = {executor.submit(fetch, field_info) for field_info in zip(fields, field_paths)}
 
         # Go through return values for each completed worker
         for future in futures.as_completed(future_to_key):
