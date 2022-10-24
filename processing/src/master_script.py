@@ -30,11 +30,12 @@ from collections import defaultdict
 from datetime import datetime, timezone
 
 # Local imports
-main_path = Path(__file__).parent.parent.resolve()
+main_path = Path(__file__).parent.resolve().parent.resolve()
 sys.path.append(f'{main_path}')
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
 # from print_utils import printc
+import pdb; pdb.set_trace()
 import print_utils as print_utils
 import jobs_utils as jobs_utils
 import lambda_utils as lambda_utils
@@ -173,7 +174,7 @@ if __name__ == "__main__":
             else:
                 product_generation_config['ecco_code_name'] = split_dir[-1]
     
-    ecco_code_dir_default = str(main_path.parent.parent.resolve() / product_generation_config['ecco_code_name'])
+    ecco_code_dir_default = str(main_path.parent.resolve().parent.resolve() / product_generation_config['ecco_code_name'])
     if product_generation_config['ecco_code_dir'] == '':
         product_generation_config['ecco_code_dir'] = ecco_code_dir_default
 
@@ -184,7 +185,7 @@ if __name__ == "__main__":
         product_generation_config['ecco_configurations_name'] = ecco_configurations_name_default
     if product_generation_config['ecco_configurations_subfolder'] == '':
         product_generation_config['ecco_configurations_subfolder'] = ecco_configurations_subfolder_default
-    ecco_configuration_dir = main_path.parent.parent.resolve() / product_generation_config['ecco_configurations_name']
+    ecco_configuration_dir = main_path.parent.resolve().parent.resolve() / product_generation_config['ecco_configurations_name']
 
     print_utils.printc('Preparing product_generation_config -- DONE', 'green')
     # ========== </prepare product generation configuration> ======================================
@@ -193,7 +194,7 @@ if __name__ == "__main__":
     # ========== <prepare ecco_cloud_utils and ecco_code> =========================================
     print_utils.printc(f'\nPreparing ecco_cloud_utils and ecco_code', 'blue')
     # copy files from ECCO-ACCESS/ecco_cloud_utils to ECCO-Dataset-Production/processing/src/utils/ecco_cloud_utils
-    ecco_access_dir = main_path.parent.parent.resolve() / 'ECCO-ACCESS'
+    ecco_access_dir = main_path.parent.resolve().parent.resolve() / 'ECCO-ACCESS'
     ecco_cloud_utils_dir = ecco_access_dir / 'ecco-cloud-utils' / 'ecco_cloud_utils'
     new_ecco_cloud_utils_file_dir = main_path / 'src' / 'utils' / 'ecco_cloud_utils'
     if not os.path.exists(new_ecco_cloud_utils_file_dir):

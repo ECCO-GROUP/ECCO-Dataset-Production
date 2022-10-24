@@ -24,7 +24,7 @@ import netCDF4 as nc4
 from pathlib import Path
 
 # Local imports
-main_path = Path(__file__).parent.parent.resolve()
+main_path = Path(__file__).parent.resolve().parent.resolve()
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
 import ecco_code as ecco

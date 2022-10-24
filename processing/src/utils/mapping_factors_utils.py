@@ -19,7 +19,7 @@ from pathlib import Path
 from scipy import sparse
 
 # Local imports
-main_path = Path(__file__).parent.parent.resolve()
+main_path = Path(__file__).parent.resolve().parent.resolve()
 sys.path.append(f'{main_path / "src" / "utils"}')
 import ecco_cloud_utils as ea
 import gen_netcdf_utils as gen_netcdf_utils

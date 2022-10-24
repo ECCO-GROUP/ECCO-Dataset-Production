@@ -18,7 +18,7 @@ from pathlib import Path
 from collections import defaultdict
 
 # Local imports
-main_path = Path(__file__).parent.parent.resolve()
+main_path = Path(__file__).parent.resolve().parent.resolve()
 sys.path.append(f'{main_path / "src" / "utils"}')
 from print_utils import printc
 import credentials_utils as credentials_utils

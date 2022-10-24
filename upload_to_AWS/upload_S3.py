@@ -20,7 +20,7 @@ import argparse
 import platform
 from pathlib import Path
 
-main_path = Path(__file__).parent.parent.resolve()
+main_path = Path(__file__).parent.resolve().parent.resolve()
 sys.path.append(f'{main_path / "aws" / "src" / "utils"}')
 import credentials_utils as credentials_utils
 
