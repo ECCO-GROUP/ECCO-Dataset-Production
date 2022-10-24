@@ -19,13 +19,13 @@ create_checksum: True
 download_all_fields: True
 
 # Boolean
+# Controls whether or not to download files in parallel for the timestep being processed
+use_workers_to_download: True
+
+# Boolean
 # Controls whether or not to download the uploaded dataset file and compare it's checksum to the
 # the dataset file before it was uploaded to S3
 compare_checksums: True
-
-# Boolean
-# Controls whether or not to download files in parallel for the timestep being processed
-use_workers_to_download: True
 
 # Boolean
 # Sets the "read_grid" value for xmitgcm.open_mdsdataset
@@ -39,6 +39,14 @@ extra_prints: False
 # =================================================================================================
 # Model Values
 # =================================================================================================
+# String
+# Version number of ECCO output
+ecco_version: 'V4r4'
+
+# String
+# Word representation of version
+product_version: 'Version 4, Release 4'
+
 # Int
 binary_fill_value: -9999
 
@@ -53,7 +61,7 @@ model_end_time: '2017-12-31T12:00:00'
 
 
 # =================================================================================================
-# Grid Values
+# Grid Values (For Transformation to Latlon)
 # =================================================================================================
 # Int
 # Maximum number of vertical levels. Assumes only 1 vertical level for 2D files.
@@ -80,17 +88,17 @@ latlon_grid_area_extent: [-180.0, 90.0, 180.0, -90.0]
 
 
 # =================================================================================================
-# Custom Factors Information
+# Custom Factors Information (For Grid Transformation)
 # =================================================================================================
 # Boolean
 # Controls whether or not to create factors from an already present ecco_grid file, or from
-# provided XC, YC, RAC, hFaaC, and Depth data files available in {grid_files_dir}
+# provided XC, YC, RAC, hFacC, and Depth data files available in {grid_files_dir}
 custom_grid_and_factors: False
 
 # String
-# Absolute directory path string to the directory containing the necessary grid files (XC, YC, RAC, hFaaC, eff_grid_radius, Depth)
+# Absolute directory path string to the directory containing the necessary grid files (XC, YC, RAC, hFacC, eff_grid_radius, Depth)
 # There should be two directories located in this path: "source_grids", and "target_grids", where each both contain
-# the XC, YC, RAC, hFaaC, eff_grid_radius, and Depth .data files for the source_grid and target_grid respectively.
+# the XC, YC, RAC, hFacC, eff_grid_radius, and Depth .data files for the source_grid and target_grid respectively.
 # Must be inlcuded if {custom_grid_and_factors} is True
 grid_files_dir: ''
 
@@ -234,14 +242,6 @@ summary: 'Estimating the Circulation and Climate of the Ocean (ECCO) state estim
 # String
 # Output dataset DOI (as from PODAAC_datasets metadata file)
 doi: '10.5067'
-
-# String
-# Version number of ECCO output
-ecco_version: 'V4r4'
-
-# String
-# Word representation of version
-product_version: 'Version 4, Release 4'
 
 # String
 # Tail string for the dataset description for 1D grid

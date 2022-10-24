@@ -7,11 +7,13 @@
 
 # String
 # AWS Account ID
+# AWS Account (role): ecco-production-aws (448078824696)
+# https://sso3.jpl.nasa.gov/awsconsole
 account_id: '448078824696'
 
 
 # =================================================================================================
-# CREDENTIALS VALUES
+# CREDENTIALS VALUES (https://github.jpl.nasa.gov/cloud/Access-Key-Generation)
 # =================================================================================================
 # String
 # Name of AWS Credential profile to use for authentication
@@ -26,13 +28,13 @@ region: 'us-west-2'
 credential_method_type: 'python'
 
 # String
-# Path to AWS credential updating file (default = ECCO-Dataset-Production/aws/src/utils/aws_login/update_AWS_cred_ecco_production.sh for bash,
-# and ECCO-Dataset-Production/aws/src/utils/aws_login/aws-login.{darwin/linux}.amd64 for binary)
+# Path to AWS credential updating file
+# Default: ECCO-Dataset-Production/processing/src/utils/aws_login/update_AWS_cred_ecco_production.sh
 aws_credentials_bash_filepath: ''
 
 
 # =================================================================================================
-# S3 VALUES
+# AWS S3 Information
 # =================================================================================================
 # String
 # Name of S3 bucket to source ECCO model output files
@@ -43,16 +45,12 @@ source_bucket: 'ecco-model-granules'
 bucket_subfolder: 'V4r4'
 
 # String
-# Derived products bucket to source/save any vector rotated products
+# Derived products bucket to source/save any vector rotated products. Saves files to the subfolder {ecco_version}
 derived_bucket: 'ecco-derived-products'
 
 # String
-# Name of S3 bucket to save processed datasets
+# Name of S3 bucket to save processed datasets. Saves files to the subfolder {ecco_version}
 output_bucket: 'ecco-processed-data'
-
-# String
-# Name of S3 bucket to use for testing purposes
-test_bucket: 'ecco-test-lambda'
 
 # String
 # String path to upload files from local to AWS S3
@@ -61,7 +59,7 @@ upload_to_S3_path: ''
 
 
 # =================================================================================================
-# LAMBDA VALUES
+# AWS LAMBDA Information
 # =================================================================================================
 # String
 # URI of Docker image to use from AWS Elastic Container Registry (ECR)
@@ -106,7 +104,7 @@ native_3D_time: 0.05
 # Int
 # Override the max number of timestep executions to be processed in each lambda job.
 # This value is used if lower than the calculated max_execs from time.
-# This value will be ignored if set to 0.
+# This value will be ignored if set to 0
 override_max_execs: 0
 
 # Float
@@ -117,6 +115,10 @@ job_timeout: 890.0
 # Int
 # Number of times to retry processing a failed timestep
 num_retry: 1
+
+# Int
+# Number of batches to process. Overrides calculated value if lower
+number_of_batches_to_process: 10000
 
 
 # =================================================================================================
@@ -141,7 +143,3 @@ memory_size_2D_native: 1536
 # Int
 # Memory size for 3D native lambda jobs (MB)
 memory_size_3D_native: 1536
-
-# Int
-# Number of batches to process. Overrides calculated value if lower
-number_of_batches_to_process: 100000

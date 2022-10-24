@@ -1,7 +1,5 @@
 # **/configs/**
 Contains all the configuration files used to control and modify the processing and production of the ECCO datasets
-- **aws_config.json**
-  - Old, json, configuration file. NOT USED
 - **aws_config.yaml**
   - Configuration file, containing values pertaining to AWS and its services.
     - account_id
@@ -13,7 +11,6 @@ Contains all the configuration files used to control and modify the processing a
     - bucket_subfolder
     - derived_bucket
     - output_bucket
-    - test_bucket
     - upload_to_S3_path
     - image_uri
     - role
@@ -40,8 +37,6 @@ Contains all the configuration files used to control and modify the processing a
   - This file can be created automatically from user prompts when the user passes the "--create_jobs" argument to "master_script.py".
     - The user is prompted to select product types, frequencies, datasets, and timesteps that they would like to process. These selections are then modified in order to match the "job" format, and all of these jobs are saved the job file, "jobs.txt".
     - Note: Once created, this file should be modified at your own risk or just re-run "master_script.py" with the "--create_jobs" argument to make the file with your new choices.
-- **product_generation_config.json**
-  - Old, json, configuration file. NOT USED
 - **product_generation_config.yaml**
   - Configuration file, containing values pertaining to the actual processing and production of ECCO datasets
     - create_checksum

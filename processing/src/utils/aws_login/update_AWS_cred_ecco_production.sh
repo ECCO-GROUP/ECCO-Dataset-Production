@@ -8,7 +8,7 @@ cred_file_name=$2
 region=$3
 login_file_dir=$4
 
-# Create credentials using python (aws-login.py) file
+# Create credentials using python ($cred_file_name = aws-login.py) file
 if [[ $cred_type == "python" ]]; then
     python3 $login_file_dir/$cred_file_name -r $region
 fi

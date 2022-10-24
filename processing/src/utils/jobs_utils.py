@@ -15,7 +15,8 @@ from collections import defaultdict
 main_path = Path(__file__).parent.parent.parent.resolve()
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
-from print_utils import printc
+# from print_utils import printc
+import print_utils as print_utils
 import file_utils as file_utils
 import lambda_utils as lambda_utils
 from ecco_gen_for_podaac import generate_netcdfs
@@ -42,7 +43,7 @@ def calculate_all_jobs(groupings):
             freqs = grouping['frequency'].split(', ')
             for freq in freqs:
                 if freq == 'TI':
-                    printc(f'\tTime-invariant groupings not currently tested/supported. Skipping', 'red')
+                    print_utils.printc(f'\tTime-invariant groupings not currently tested/supported. Skipping', 'red')
                     continue
                 if grouping['dimension'] == '1D':
                     jobs[f'1D'].append([i, product_type, freq, 'all'])
@@ -110,7 +111,7 @@ def create_jobs(groupings, jobs_filename):
                                                                 'You selected the following products to view: ', 
                                                                 '')
     if user_continue == 'n' or products_to_view == []:
-        printc(f'Exiting', 'red')
+        print_utils.printc(f'Exiting', 'red')
         sys.exit()
     # ========== </Product prompt> ================================================================
 
@@ -134,7 +135,7 @@ def create_jobs(groupings, jobs_filename):
                                                                        'You selected the following frequencies to view: ', 
                                                                        '\t')
         if user_continue == 'n' or frequencies_to_view == []:
-            printc(f'Exiting', 'red')
+            print_utils.printc(f'Exiting', 'red')
             sys.exit()
 
         # Prompt user for which datasets to process, for each frequency they selected previously
@@ -149,7 +150,7 @@ def create_jobs(groupings, jobs_filename):
                                                                            'You selected the following datasets to process: ', 
                                                                            '\t\t')
             if user_continue == 'n' or datasets_to_process == []:
-                printc(f'Exiting', 'red')
+                print_utils.printc(f'Exiting', 'red')
                 sys.exit()
 
             # Prompt user for which timesteps to process, for each dataset they selected previously
@@ -195,7 +196,7 @@ def create_jobs(groupings, jobs_filename):
     #                 freq = cur_options[selected_option][3]
     #                 raw_jobs[product][dim][freq].append(group_num)
     #         else:
-    #             printc(f'Exiting', 'red')
+    #             print_utils.printc(f'Exiting', 'red')
     #             sys.exit()
 
     # all_jobs = []

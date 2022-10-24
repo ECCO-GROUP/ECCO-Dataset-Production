@@ -34,7 +34,8 @@ main_path = Path(__file__).parent.parent.resolve()
 sys.path.append(f'{main_path}')
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
-from print_utils import printc
+# from print_utils import printc
+import print_utils as print_utils
 import jobs_utils as jobs_utils
 import lambda_utils as lambda_utils
 import logging_utils as logging_utils
@@ -98,7 +99,7 @@ if __name__ == "__main__":
 
 
     # ========== <parse command line arguments> ===================================================
-    printc(f'Parsing arguments', 'blue')
+    print_utils.printc(f'Parsing arguments', 'blue')
     parser = create_parser()
     args = parser.parse_args()
     dict_key_args = {key: value for key, value in args._get_kwargs()}
@@ -115,14 +116,14 @@ if __name__ == "__main__":
     if (dict_key_args['process_data']) and (dict_key_args['use_lambda']) and (not dict_key_args['enable_logging']):
         logging_check = input(f'Logging has not been enabled, continue? (y/n)\t').lower().strip()
         if logging_check != 'y':
-            printc('EXITING', 'red')
+            print_utils.printc('EXITING', 'red')
             sys.exit()
-    printc('Parsing arguments -- DONE', 'green')
+    print_utils.printc('Parsing arguments -- DONE', 'green')
     # ========== </parse command line arguments> ==================================================
 
 
     # ========== <prepare product generation configuration> =======================================
-    printc(f'\nPreparing product_generation_config', 'blue')
+    print_utils.printc(f'\nPreparing product_generation_config', 'blue')
     # Load 'product_generation_config.yaml'
     product_generation_config = yaml.safe_load(open(main_path / 'configs' / 'product_generation_config.yaml'))
 
@@ -185,12 +186,12 @@ if __name__ == "__main__":
         product_generation_config['ecco_configurations_subfolder'] = ecco_configurations_subfolder_default
     ecco_configuration_dir = main_path.parent.parent.resolve() / product_generation_config['ecco_configurations_name']
 
-    printc('Preparing product_generation_config -- DONE', 'green')
+    print_utils.printc('Preparing product_generation_config -- DONE', 'green')
     # ========== </prepare product generation configuration> ======================================
 
 
     # ========== <prepare ecco_cloud_utils and ecco_code> =========================================
-    printc(f'\nPreparing ecco_cloud_utils and ecco_code', 'blue')
+    print_utils.printc(f'\nPreparing ecco_cloud_utils and ecco_code', 'blue')
     # copy files from ECCO-ACCESS/ecco_cloud_utils to ECCO-Dataset-Production/processing/src/utils/ecco_cloud_utils
     ecco_access_dir = main_path.parent.parent.resolve() / 'ECCO-ACCESS'
     ecco_cloud_utils_dir = ecco_access_dir / 'ecco-cloud-utils' / 'ecco_cloud_utils'
@@ -218,7 +219,7 @@ if __name__ == "__main__":
             ec_file_path = ecco_code_dir / ecco_code_file
             new_ec_file_path = new_ecco_code_file_dir / ecco_code_file
             shutil.copyfile(ec_file_path, new_ec_file_path)
-    printc('Preparing ecco_cloud_utils and ecco_code -- DONE', 'green')
+    print_utils.printc('Preparing ecco_cloud_utils and ecco_code -- DONE', 'green')
     # ========== </prepare ecco_cloud_utils and ecco_code> ========================================
 
 
@@ -227,21 +228,21 @@ if __name__ == "__main__":
     # Not needed unless changes have been made to the factors code and you need
     # to update the factors/mask in the lambda docker image
     if dict_key_args['create_factors']:
-        printc('\nCreating factors', 'blue')
+        print_utils.printc('\nCreating factors', 'blue')
         status = mapping_factors_utils.create_all_factors(product_generation_config, 
                                                           ['2D', '3D'],
                                                           extra_prints=extra_prints)
         if status != 'SUCCESS':
-            printc(status, 'red')
+            print_utils.printc(status, 'red')
             sys.exit()
-        printc('Creating factors -- DONE', 'green')
+        print_utils.printc('Creating factors -- DONE', 'green')
         sys.exit()
     # ========== </create mapping factors> ========================================================
 
 
     # ========== <process metadata and jobs> ======================================================
     # make sure processing metadata folder(s) exists
-    printc(f'\nPreparing metadata', 'blue')
+    print_utils.printc(f'\nPreparing metadata', 'blue')
     if not os.path.exists(Path(product_generation_config['metadata_dir'])):
         os.makedirs(Path(product_generation_config['metadata_dir']), exist_ok=True)
 
@@ -284,9 +285,9 @@ if __name__ == "__main__":
             groupings_for_datasets['latlon'] = mf
         elif 'native' in mf_name:
             groupings_for_datasets['native'] = mf
-    printc('Preparing metadata -- DONE', 'green')
+    print_utils.printc('Preparing metadata -- DONE', 'green')
 
-    printc(f'\nProcessing jobs', 'blue')
+    print_utils.printc(f'\nProcessing jobs', 'blue')
     # Call create_jobs which prompts user to select datasets to process
     jobs_filename = 'jobs.txt'
     if dict_key_args['create_jobs']:
@@ -315,14 +316,14 @@ if __name__ == "__main__":
                 try:
                     line_vals = ast.literal_eval(line)
                 except:
-                    printc(f'Unable to parse job: {line} (line {i+1}). Skipping.', 'red')
+                    print_utils.printc(f'Unable to parse job: {line} (line {i+1}). Skipping.', 'red')
                     continue
             else:
                 line_vals = line.split(',')
 
             # if the frequency is time invariant, exit as it is not currently tested or supported
             if line_vals[2] == 'TI':
-                printc(f'Time-invariant groupings not currently tested/supported. Skipping', 'red')
+                print_utils.printc(f'Time-invariant groupings not currently tested/supported. Skipping', 'red')
                 continue
 
             # the the number of time steps is a list or 'all', leave it. Otherwise, make sure it is an int
@@ -330,7 +331,8 @@ if __name__ == "__main__":
                 all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], int(line_vals[3])])
             else:
                 all_jobs.append([int(line_vals[0]), line_vals[1], line_vals[2], line_vals[3]])
-    printc('Processing jobs -- DONE', 'green')
+
+    print_utils.printc('Processing jobs -- DONE', 'green')
     # ========== </process metadata and jobs> =====================================================
 
 
@@ -341,7 +343,7 @@ if __name__ == "__main__":
     aws_config = {}
     s3 = None
     if use_S3 or use_lambda or push_ecr or upload_to_S3:
-        printc(f'\nPreparing AWS', 'blue')
+        print_utils.printc(f'\nPreparing AWS', 'blue')
         # ========== <prepare aws configuration metadata> =========================================
         # Load 'aws_config.yaml'
         aws_config = yaml.safe_load(open(main_path / 'configs' / 'aws_config.yaml'))
@@ -426,20 +428,20 @@ if __name__ == "__main__":
             boto3.setup_default_session(profile_name=credentials['profile_name'])
             boto3.client('s3').list_buckets()
         except Exception as e:
-            printc(f'Unable to login to AWS ({e}). Exiting', 'red')
+            print_utils.printc(f'Unable to login to AWS ({e}). Exiting', 'red')
             sys.exit()
 
         # Setup AWS session and S3 client
         boto3.setup_default_session(profile_name=credentials['profile_name'])
         s3 = boto3.client('s3')
         # ========== </verify AWS credentials =====================================================
-        printc(f'Preparing AWS -- DONE', 'green')
+        print_utils.printc(f'Preparing AWS -- DONE', 'green')
     # ========== </non-local processing preparation> ==============================================
 
 
     # ========== <Upload local files to AWS S3> ===================================================
     if upload_to_S3:
-        printc('Uploading files to S3', 'blue')
+        print_utils.printc('Uploading files to S3', 'blue')
         local_file_dir = product_generation_config['local_file_dir_to_upload']
         upload_s3_bucket_dir = aws_config['upload_to_S3_path']
         if local_file_dir != '':
@@ -447,7 +449,7 @@ if __name__ == "__main__":
                 if not dict_key_args['dryrun']:
                     user_resp = input(f'No dryrun argument passed, continue with uploading files to AWS S3? (y/n)\t')
                     if user_resp.lower().strip() != 'y':
-                        printc('EXITING', 'red')
+                        print_utils.printc('EXITING', 'red')
                         sys.exit()
                 upload_to_AWS_path = main_path.parent.resolve() / 'upload_to_AWS'
                 aws_sync_script_path = upload_to_AWS_path / 'aws_sync_directories_to_S3.sh'
@@ -464,7 +466,7 @@ if __name__ == "__main__":
                 
                 # change working directory to original working directory (eg. the directory of master_script.py)
                 os.chdir(orig_cwd)
-        printc('Uploading files to S3 -- DONE', 'green')
+        print_utils.printc('Uploading files to S3 -- DONE', 'green')
         sys.exit()
     # ========== </Upload local files to AWS S3> ==================================================
 
@@ -473,7 +475,7 @@ if __name__ == "__main__":
     # if "push_ecr" arugment is passed, then call ecr_pus.sh script to re-build Docker image and
     # push it to ECR
     if push_ecr:
-        printc(f'\nPushing to AWS ECR', 'blue')
+        print_utils.printc(f'\nPushing to AWS ECR', 'blue')
         # get the current working directory
         orig_cwd = os.getcwd()
 
@@ -494,12 +496,12 @@ if __name__ == "__main__":
 
         # change working directory to original working directory (eg. the directory of master_script.py)
         os.chdir(orig_cwd)
-        printc(f'Pushing to AWS ECR -- DONE', 'green')
+        print_utils.printc(f'Pushing to AWS ECR -- DONE', 'green')
     
     lambda_client = None
     job_logs = {}
     if use_lambda:
-        printc(f'\nPreparing AWS Lambda', 'blue')
+        print_utils.printc(f'\nPreparing AWS Lambda', 'blue')
         lambda_start_time = time.strftime('%Y%m%d:%H%M%S', time.localtime())
 
         # Create arn
@@ -594,7 +596,7 @@ if __name__ == "__main__":
                 elif dimension == '3D':
                     function_name = f'{function_name_prefix}_3D_latlon'
                 else:
-                    printc(f'Dimension ({dimension}) not currently supported for Lambda. Exiting.', 'red')
+                    print_utils.printc(f'Dimension ({dimension}) not currently supported for Lambda. Exiting.', 'red')
                     sys.exit()
             elif product_type == 'native':
                 if dimension == '2D':
@@ -602,7 +604,7 @@ if __name__ == "__main__":
                 elif dimension == '3D':
                     function_name = f'{function_name_prefix}_3D_native'
                 else:
-                    printc(f'Dimension ({dimension}) not currently supported for Lambda. Exiting.', 'red')
+                    print_utils.printc(f'Dimension ({dimension}) not currently supported for Lambda. Exiting.', 'red')
                     sys.exit()
             
             # create lambda functions for jobs, or update it if it already exists
@@ -615,7 +617,7 @@ if __name__ == "__main__":
                                                              memory_sizes[function_name], 
                                                              image_uri)
                 if status != 'SUCCESS':
-                    printc(status, 'red')
+                    print_utils.printc(status, 'red')
                     sys.exit()
                 all_functions.append(function_name)
             elif function_name in functions_to_update:
@@ -624,7 +626,7 @@ if __name__ == "__main__":
                                                              function_name, 
                                                              image_uri)
                 if status != 'SUCCESS':
-                    printc(status, 'red')
+                    print_utils.printc(status, 'red')
                     sys.exit()
                 functions_to_update.remove(function_name)
         print(f'\nAll necessary functions up to date!\n')
@@ -640,7 +642,7 @@ if __name__ == "__main__":
         job_logs['Timesteps failed'] = []
         job_logs['Jobs'] = {}
 
-        printc(f'Preparing AWS Lambda -- DONE', 'green')
+        print_utils.printc(f'Preparing AWS Lambda -- DONE', 'green')
     # ========== </AWS Lambda preparation> ========================================================
 
 
@@ -648,7 +650,7 @@ if __name__ == "__main__":
     # loop through all jobs and run them. If using lambda and logging is enabled, then lambda logs are
     # saved and automatic job resubmission occurs if the number of retries in aws_config is > 0
     if process_data:
-        printc(f'\n=== PROCESSING START ===', 'blue')
+        print_utils.printc(f'\n=== PROCESSING START ===', 'blue')
         num_jobs = 0
         for current_job in all_jobs:
             temp_num_jobs, job_logs, status = jobs_utils.run_job(current_job, 
@@ -663,7 +665,7 @@ if __name__ == "__main__":
             
             num_jobs += temp_num_jobs
             if status != 'SUCCESS':
-                printc(f'\tSKIPPING JOB ({status})', 'red')
+                print_utils.printc(f'\tSKIPPING JOB ({status})', 'red')
             print(f'Total number of jobs: {num_jobs}')
 
         # ========== <Lambda logging> =============================================================
@@ -722,7 +724,7 @@ if __name__ == "__main__":
                                                                                    credentials=credentials)
                         num_jobs += temp_num_jobs
                         if status != 'SUCCESS':
-                            printc(f'\tSKIPPING JOB ({status})', 'red')
+                            print_utils.printc(f'\tSKIPPING JOB ({status})', 'red')
                         print(f'Total number of Lambda jobs: {num_jobs}')
                     
                     last_job_logs = logging_utils.lambda_logging(retry_job_logs, 
@@ -741,6 +743,6 @@ if __name__ == "__main__":
     # ========== </Job processing> ================================================================
 
     master_total_time = (int(time.time()/ms_to_sec)-start_time) * ms_to_sec
-    printc(f'=== PROCESSING COMPLETE ===', 'green')
+    print_utils.printc(f'=== PROCESSING COMPLETE ===', 'green')
     print(f'Master script total time: {master_total_time:.2f}s')
-    printc(f'=== EXECUTION COMPLETE ===', 'green')
+    print_utils.printc(f'=== EXECUTION COMPLETE ===', 'green')
