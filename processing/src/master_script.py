@@ -34,8 +34,6 @@ main_path = Path(__file__).parent.resolve().parent.resolve()
 sys.path.append(f'{main_path}')
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
-# from print_utils import printc
-import pdb; pdb.set_trace()
 import print_utils as print_utils
 import jobs_utils as jobs_utils
 import lambda_utils as lambda_utils
