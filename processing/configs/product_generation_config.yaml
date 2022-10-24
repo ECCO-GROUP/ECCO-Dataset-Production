@@ -90,6 +90,10 @@ latlon_grid_area_extent: [-180.0, 90.0, 180.0, -90.0]
 # =================================================================================================
 # Custom Factors Information (For Grid Transformation)
 # =================================================================================================
+
+# The parameters in this section are only needed if the SOURCE grid is not a standard ECCO-GRID file
+# or the TARGET grid is not a standard lat-lon 
+
 # Boolean
 # Controls whether or not to create factors from an already present ecco_grid file, or from
 # provided XC, YC, RAC, hFacC, and Depth data files available in {grid_files_dir}
