@@ -283,7 +283,9 @@ def generate_netcdfs(event):
                         'geometry_latlon': metadata['geometry_metadata_for_latlon_datasets'],
                         'groupings_1D': metadata['groupings_for_1D_datasets'],
                         'groupings_native': metadata['groupings_for_native_datasets'],
-                        'groupings_latlon': metadata['groupings_for_latlon_datasets']}
+                        'groupings_latlon': metadata['groupings_for_latlon_datasets'],
+                        'coord_time': metadata['time_coordinate_metadata']}
+                        
         # ========== </Metadata setup> ============================================================
 
 
