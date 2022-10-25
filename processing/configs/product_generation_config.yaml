@@ -136,17 +136,17 @@ target_grid_ftype: '>f'
 # =================================================================================================
 # String
 # Absolute directory path string for the ECCO grid directory (must include all necessary grids and files)
-# Default: /processing/ecco_grids/{ecco_version}/
+# Default: ECCO-Dataset-Production/processing/ecco_grids/{ecco_version}/
 ecco_grid_dir: ''
 
 # String
 # Absolute directory path string for the ECCO grid mds directory (must include all necessary grids and files)
-# Default: /processing/ecco_grids/{ecco_version}/
+# Default: ECCO-Dataset-Production/processing/ecco_grids/{ecco_version}/
 ecco_grid_dir_mds: ''
 
 # String
 # Absolute directory path string for the mapping factors directory
-# Default: /processing/mapping_factors/{ecco_version}/
+# Default: ECCO-Dataset-Production/processing/mapping_factors/{ecco_version}/
 mapping_factors_dir: ''
 
 # String
@@ -176,14 +176,14 @@ ecco_configurations_subfolder: ''
 
 # String
 # Absolute directory path string for the metadata directory
-# Default: /processing/metadata/{ecco_version}
+# Default: ECCO-Dataset-Production/processing/metadata/{ecco_version}
 # Files from {ecco_configuration_name}/{ecco_configurations_subfolder}/metadata/ directory are copied over to 
 # ECCO-Dataset-Production/processing/metadata/{ecco_version}
 metadata_dir: ''
 
 # String
 # Absolute directory path string for the model output directory
-# Default: /processing/tmp/tmp_model_output/{ecco_version}/
+# Default: ECCO-Dataset-Production/processing/tmp/tmp_model_output/{ecco_version}/
 model_output_dir: ''
 
 # String
@@ -194,7 +194,7 @@ local_file_dir_to_upload: ''
 
 # String
 # Base absolute directory path string for the processed output files
-# Default: /processing/tmp/tmp_output/{ecco_version}/
+# Default: ECCO-Dataset-Production/processing/tmp/tmp_output/{ecco_version}/
 processed_output_dir_base: ''
 
 # String

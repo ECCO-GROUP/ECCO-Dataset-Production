@@ -219,7 +219,11 @@ def invoke_lambda(lambda_client,
                 field_files_by_batch[batch_number] = {}
             field_files_by_batch[batch_number][field] = batch_field_files
 
-    number_of_batches = min([number_of_batches_to_process, number_of_batches])
+    if number_of_batches_to_process != -1 and number_of_batches_to_process <= number_of_batches:
+        number_of_batches = number_of_batches_to_process
+    if number_of_batches == 0:
+        print(f'No batches to process (number_of_batches = 0). Exiting.')
+        return num_jobs
     print(f'Job information -- {grouping_to_process}, {product_type}, {output_freq_code}, {time_steps_to_process}')
     print(f'Number of batches: {number_of_batches}')
     print(f'Number of time steps per batch: {len(field_files_by_batch[0][fields[0]])}')

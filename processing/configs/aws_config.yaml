@@ -117,8 +117,16 @@ job_timeout: 890.0
 num_retry: 1
 
 # Int
-# Number of batches to process. Overrides calculated value if lower
-number_of_batches_to_process: 10000
+# Number of batches to process.
+# Number of batches is how many Lambda jobs are submitted for each grouping
+# e.g. If there are 100 timesteps for a job, and each Lambda job is assigned 5 timesteps (max_execs)
+# then there would be 20 Lambda jobs and 20 batches. If you set number_of_batches_to_process
+# to 5, then only the first 5 Lambda jobs would be submitted, so only the first 25 time steps would
+# be processed. 
+# This helps to limit the number of Lambda jobs when there are a lot of jobs listed in the jobs.txt file.
+# Default: -1 (does not limit the number of Lambda jobs submitted)
+# A value of 0 means no batches will be processed.
+number_of_batches_to_process: -1
 
 
 # =================================================================================================

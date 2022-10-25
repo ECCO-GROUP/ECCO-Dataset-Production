@@ -1,1 +1,5 @@
-[1,'latlon','AVG_MON',10]
+[0,'native','AVG_MON','all']
+[1,'native','AVG_MON','all']
+[2,'native','AVG_MON','all']
+[3,'native','AVG_MON','all']
+[4,'native','AVG_MON','all']

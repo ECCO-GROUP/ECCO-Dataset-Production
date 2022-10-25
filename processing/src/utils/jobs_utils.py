@@ -100,112 +100,118 @@ def create_jobs(groupings, jobs_filename):
     
 
     # ========== <Product prompt> =================================================================
-    # Prompt the user for which products they want to view. Options are 1D, latlon, and/or native
-    product_order = ['1D', 'latlon', 'native']
-    print(f'\nPRODUCT_TYPE')
-    for i, product in enumerate(product_order):
-        print(f'\t{i} -- {product}')
-    product_input = input(f'Please select what products to view: ')
-    user_continue, products_to_view = __selected_options_helper(product_input, 
-                                                                product_order, 
-                                                                'You selected the following products to view: ', 
-                                                                '')
-    if user_continue == 'n' or products_to_view == []:
-        print_utils.printc(f'Exiting', 'red')
-        sys.exit()
-    # ========== </Product prompt> ================================================================
-
-
-    # ========== <Freqs, Datasets, and Timesteps> =================================================
-    # Prompt user for which frequencies to view, for each product they selected previously
-    frequency_order = ['SNAP', 'AVG_DAY', 'AVG_MON', 'TI']
-    for product in products_to_view:
-        print(f'\n{product}')
-        product_freq_raw = menu[product].keys()
-        product_freqs = []
-        for freq in frequency_order:
-            if freq in product_freq_raw:
-                product_freqs.append(freq)
-        print(f'\tOUTPUT_FREQUENCY')
-        for i, freq in enumerate(product_freqs):
-            print(f'\t\t{i} -- {freq}')
-        frequency_input = input(f'\tPlease select what frequencies to view: ')
-        user_continue, frequencies_to_view = __selected_options_helper(frequency_input, 
-                                                                       product_freqs, 
-                                                                       'You selected the following frequencies to view: ', 
-                                                                       '\t')
-        if user_continue == 'n' or frequencies_to_view == []:
+    # Prompt the user if they want to process all possible jobs
+    print(f'\nEVERYTHING')
+    everything_input = input(f'Would like to create all possible jobs? (y/n) ')
+    if everything_input.lower().strip() == 'y':
+        all_jobs = calculate_all_jobs(groupings)
+    else:
+        # Prompt the user for which products they want to view. Options are 1D, latlon, and/or native
+        product_order = ['1D', 'latlon', 'native']
+        print(f'\nPRODUCT_TYPE')
+        for i, product in enumerate(product_order):
+            print(f'\t{i} -- {product}')
+        product_input = input(f'Please select what products to view: ')
+        user_continue, products_to_view = __selected_options_helper(product_input, 
+                                                                    product_order, 
+                                                                    'You selected the following products to view: ', 
+                                                                    '')
+        if user_continue == 'n' or products_to_view == []:
             print_utils.printc(f'Exiting', 'red')
             sys.exit()
+        # ========== </Product prompt> ================================================================
 
-        # Prompt user for which datasets to process, for each frequency they selected previously
-        for freq in frequencies_to_view:
-            datasets = menu[product][freq]
-            print(f'\n\t\t{freq}')
-            for i, ds in enumerate(datasets):
-                print(f'\t\t\t{i} -- {ds[-1]} ({ds[1]})')
-            datasets_input = input(f'\t\tPlease select which datasets you would like process: ')
-            user_continue, datasets_to_process = __selected_options_helper(datasets_input, 
-                                                                           datasets, 
-                                                                           'You selected the following datasets to process: ', 
-                                                                           '\t\t')
-            if user_continue == 'n' or datasets_to_process == []:
+
+        # ========== <Freqs, Datasets, and Timesteps> =================================================
+        # Prompt user for which frequencies to view, for each product they selected previously
+        frequency_order = ['SNAP', 'AVG_DAY', 'AVG_MON', 'TI']
+        for product in products_to_view:
+            print(f'\n{product}')
+            product_freq_raw = menu[product].keys()
+            product_freqs = []
+            for freq in frequency_order:
+                if freq in product_freq_raw:
+                    product_freqs.append(freq)
+            print(f'\tOUTPUT_FREQUENCY')
+            for i, freq in enumerate(product_freqs):
+                print(f'\t\t{i} -- {freq}')
+            frequency_input = input(f'\tPlease select what frequencies to view (e.g. 0 or 0,1,2 or all): ')
+            user_continue, frequencies_to_view = __selected_options_helper(frequency_input, 
+                                                                        product_freqs, 
+                                                                        'You selected the following frequencies to view: ', 
+                                                                        '\t')
+            if user_continue == 'n' or frequencies_to_view == []:
                 print_utils.printc(f'Exiting', 'red')
                 sys.exit()
 
-            # Prompt user for which timesteps to process, for each dataset they selected previously
-            # Timesteps can be entered as follows:
-            # - X (i.e. 5) -> Processes X many timesteps from model start time
-            # - X-Y (i.e. 10-15) -> Processes timesteps X to Y indices (exclusive) from model start time
-            # - all -> Processes all available timesteps
-            # - X, Y, W-Z (i.e. 5, 10, 200-300) -> Processes X from start, Y from start, and W to Z timestep indices. All separate jobs
-            print(f'\n\t\t\tDATASETS')
-            for dataset in datasets_to_process:
-                print(f'\t\t\t\t{dataset}')
-                timesteps = []
-                timesteps_input = input(f'\t\t\tPlease enter what timesteps to process for the above dataset: ')
-                raw_input = timesteps_input.lower().strip().replace(' ', '').split(',')
-                for timestep_input in raw_input:
-                    if '-' in timestep_input:
-                        timestep_input = timestep_input.split('-')
-                        timesteps.append([ts for ts in range(int(timestep_input[0]), int(timestep_input[1]))])
-                    else:
-                        timesteps.append(timestep_input)
+            # Prompt user for which datasets to process, for each frequency they selected previously
+            for freq in frequencies_to_view:
+                datasets = menu[product][freq]
+                print(f'\n\t\t{freq}')
+                for i, ds in enumerate(datasets):
+                    print(f'\t\t\t{i} -- {ds[-1]} ({ds[1]})')
+                datasets_input = input(f'\t\tPlease select which datasets you would like process (e.g. 0 or 0,1,2 or all): ')
+                user_continue, datasets_to_process = __selected_options_helper(datasets_input, 
+                                                                            datasets, 
+                                                                            'You selected the following datasets to process: ', 
+                                                                            '\t\t')
+                if user_continue == 'n' or datasets_to_process == []:
+                    print_utils.printc(f'Exiting', 'red')
+                    sys.exit()
 
-                grouping_number = dataset[0]
-                for timesteps_for_job in timesteps:
-                    all_jobs.append([grouping_number, product, freq, timesteps_for_job])
-    # ========== </Freqs, Datasets, and Timesteps> ================================================
+                # Prompt user for which timesteps to process, for each dataset they selected previously
+                # Timesteps can be entered as follows:
+                # - X (i.e. 5) -> Processes X many timesteps from model start time
+                # - X-Y (i.e. 10-15) -> Processes timesteps X to Y indices (exclusive) from model start time
+                # - all -> Processes all available timesteps
+                # - X, Y, W-Z (i.e. 5, 10, 200-300) -> Processes X from start, Y from start, and W to Z timestep indices. All separate jobs
+                print(f'\n\t\t\tDATASETS')
+                for dataset in datasets_to_process:
+                    print(f'\t\t\t\t{dataset}')
+                    timesteps = []
+                    timesteps_input = input(f'\t\t\tPlease enter what TIMESTEPS to process for the above dataset (i.e. all or 5 (for first 5 timesteps) or [15],[16] (for time index 15 and 16) or 10-15 (for time indexes 10-15 exclusive)): ')
+                    raw_input = timesteps_input.lower().strip().replace(' ', '').split(',')
+                    for timestep_input in raw_input:
+                        if '-' in timestep_input:
+                            timestep_input = timestep_input.split('-')
+                            timesteps.append([ts for ts in range(int(timestep_input[0]), int(timestep_input[1]))])
+                        else:
+                            timesteps.append(timestep_input)
+
+                    grouping_number = dataset[0]
+                    for timesteps_for_job in timesteps:
+                        all_jobs.append([grouping_number, product, freq, timesteps_for_job])
+        # ========== </Freqs, Datasets, and Timesteps> ================================================
 
 
-    # ========== <Old Technique (less granular)> ==================================================
-    # for product in product_order:
-    #     for frequency in frequency_order:
-    #         cur_options = menu[product][frequency]
-    #         print(f'\n{menu_opt}')
-    #         for i, option in enumerate(cur_options):
-    #             print(f'\t{i} -- {option[-1]}')
-    #         selected_options = input(f'Please select which datasets you would like process: ')
+        # ========== <Old Technique (less granular)> ==================================================
+        # for product in product_order:
+        #     for frequency in frequency_order:
+        #         cur_options = menu[product][frequency]
+        #         print(f'\n{menu_opt}')
+        #         for i, option in enumerate(cur_options):
+        #             print(f'\t{i} -- {option[-1]}')
+        #         selected_options = input(f'Please select which datasets you would like process: ')
 
 
-    #         if user_continue == 'y':
-    #             for selected_option in selected_options:
-    #                 group_num = cur_options[selected_option][0]
-    #                 dim = cur_options[selected_option][1]
-    #                 product = cur_options[selected_option][2]
-    #                 freq = cur_options[selected_option][3]
-    #                 raw_jobs[product][dim][freq].append(group_num)
-    #         else:
-    #             print_utils.printc(f'Exiting', 'red')
-    #             sys.exit()
+        #         if user_continue == 'y':
+        #             for selected_option in selected_options:
+        #                 group_num = cur_options[selected_option][0]
+        #                 dim = cur_options[selected_option][1]
+        #                 product = cur_options[selected_option][2]
+        #                 freq = cur_options[selected_option][3]
+        #                 raw_jobs[product][dim][freq].append(group_num)
+        #         else:
+        #             print_utils.printc(f'Exiting', 'red')
+        #             sys.exit()
 
-    # all_jobs = []
-    # for product, dim_groups in raw_jobs.items():
-    #     for _, freq_groups in dim_groups.items():
-    #         for frequency, groupings in freq_groups.items():
-    #             for grouping in groupings:
-    #                 all_jobs.append([grouping, product, frequency, 'all'])
-    # ========== </Old technique (less granule) ===================================================
+        # all_jobs = []
+        # for product, dim_groups in raw_jobs.items():
+        #     for _, freq_groups in dim_groups.items():
+        #         for frequency, groupings in freq_groups.items():
+        #             for grouping in groupings:
+        #                 all_jobs.append([grouping, product, frequency, 'all'])
+        # ========== </Old technique (less granular) ===================================================
 
 
     # ========== <Save new created jobs> ==========================================================
