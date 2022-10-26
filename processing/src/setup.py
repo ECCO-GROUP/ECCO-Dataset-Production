@@ -97,7 +97,7 @@ def retrieve_outside_code_files():
     # copy files from ECCO-ACCESS/ecco_cloud_utils to ECCO-Dataset-Production/processing/src/ecco_code
     ecco_access_dir = main_path.parent.resolve().parent.resolve() / 'ECCO-ACCESS'
     ecco_cloud_utils_dir = ecco_access_dir / 'ecco-cloud-utils' / 'ecco_cloud_utils'
-    new_ecco_cloud_utils_file_dir = main_path / 'src' / 'ecco_code'
+    new_ecco_cloud_utils_file_dir = main_path / 'src' / 'utils' / 'ecco_utils' / 'ecco_cloud_utils'
     if not os.path.exists(new_ecco_cloud_utils_file_dir):
         os.makedirs(new_ecco_cloud_utils_file_dir, exist_ok=True)
 
@@ -108,7 +108,7 @@ def retrieve_outside_code_files():
             shutil.copyfile(ecu_file_path, new_ecu_file_path)
 
     # copy code files from ECCOvX-py/ecco_vX_py/ to ECCO-Dataset-Production/processing/src/ecco_code
-    new_ecco_code_file_dir = main_path / 'src' / 'ecco_code'
+    new_ecco_code_file_dir = main_path / 'src' / 'utils' / 'ecco_utils' / 'ecco_code'
     if not os.path.exists(new_ecco_code_file_dir):
         os.makedirs(new_ecco_code_file_dir, exist_ok=True)
 
@@ -118,7 +118,7 @@ def retrieve_outside_code_files():
             ec_file_path = ecco_code_dir / ecco_code_file
             new_ec_file_path = new_ecco_code_file_dir / ecco_code_file
             shutil.copyfile(ec_file_path, new_ec_file_path)
-            
+
     print_utils.printc('Preparing ecco_cloud_utils and ecco_code -- DONE', 'green')
     # ========== </prepare ecco_cloud_utils and ecco_code> ========================================
 

@@ -22,10 +22,11 @@ from scipy import sparse
 main_path = Path(__file__).parent.resolve().parent.resolve()
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
-import ecco_code as ecco
+sys.path.append(f'{main_path / "src" / "utils" / "ecco_utils"}')
 import gen_netcdf_utils as gen_netcdf_utils
+from ecco_utils.ecco_code import read_bin_gen
+from ecco_utils import ecco_cloud_utils as ea
 
-from ecco_code import read_bin_gen
 
 # =================================================================================================
 # GET MAPPING FACTORS
@@ -163,7 +164,7 @@ def create_mapping_factors(dataset_dim,
         if ~(grid_mapping_fname_all.is_file()):
             # find the mapping between all points of the ECCO grid and the target grid.
             grid_mappings_all = \
-                ecco.find_mappings_from_source_to_target_for_processing(source_grid_all,
+                ea.find_mappings_from_source_to_target_for_processing(source_grid_all,
                                                                       target_grid,
                                                                       target_grid_radius,
                                                                       source_grid_min_L,
@@ -185,7 +186,7 @@ def create_mapping_factors(dataset_dim,
         for k_i in range(nk):
             print(k_i)
             grid_mappings_k = \
-                ecco.find_mappings_from_source_to_target_for_processing(source_grid_k[k_i],
+                ea.find_mappings_from_source_to_target_for_processing(source_grid_k[k_i],
                                                                       target_grid,
                                                                       target_grid_radius,
                                                                       source_grid_min_L,
@@ -274,7 +275,7 @@ def create_land_mask(mapping_factors_dir,
             source_field = ecco_land_mask_c.values[k,:].ravel()
 
             # create land mask for level k
-            land_mask_ll = ecco.transform_to_target_grid_for_processing(source_indices_within_target_radius_i,
+            land_mask_ll = ea.transform_to_target_grid_for_processing(source_indices_within_target_radius_i,
                                                                       nearest_source_index_to_target_index_i,
                                                                       source_field, target_grid_shape,
                                                                       operation='nearest', 
@@ -693,7 +694,7 @@ def create_ecco_grid_values(product_generation_config,
                     'proj_id':'EPSG:4326',
                     'proj4_args':'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'}
 
-    _, _, target_grid, target_grid_lons, target_grid_lats = ecco.generalized_grid_product(product_name,
+    _, _, target_grid, target_grid_lons, target_grid_lats = ea.generalized_grid_product(product_name,
                                                                                         latlon_grid_resolution,
                                                                                         latlon_max_lat,
                                                                                         latlon_grid_area_extent,
@@ -705,7 +706,7 @@ def create_ecco_grid_values(product_generation_config,
     target_grid_lats_1D = target_grid_lats[:,0]
 
     # calculate the areas of the lat-lon grid
-    ea_area = ecco.area_of_latlon_grid(-180, 180, -90, 90, latlon_grid_resolution, latlon_grid_resolution, less_output=True)
+    ea_area = ea.area_of_latlon_grid(-180, 180, -90, 90, latlon_grid_resolution, latlon_grid_resolution, less_output=True)
     lat_lon_grid_area = ea_area['area']
     target_grid_shape = lat_lon_grid_area.shape
 

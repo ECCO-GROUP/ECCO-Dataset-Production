@@ -36,7 +36,8 @@ def lambda_logging(job_logs,
                    num_jobs, 
                    credential_method, 
                    log_name, 
-                   aws_path, 
+                   aws_path,
+                   dont_delete_cloudwatch,
                    retry=-1):
     """
     Collect, process, and save AWS Lambda logs from AWS CloudWatch
@@ -52,6 +53,7 @@ def lambda_logging(job_logs,
         credential_method (dict): Dictionary containing values for getting AWS credentials (region, path, etc.)
         log_name (str): Name of log (appened to log filename(s), and within logs)
         aws_path (PosixPath): Path to /ECCO-Dataset-Product/aws
+        dont_delete_cloudwatch (bool): Controls whether or not to delete AWS CloudWatch logs
         retry (optional, int): Number indicating current retry number. This is appended to log filename if not -1
 
     Returns:
@@ -282,9 +284,10 @@ def lambda_logging(job_logs,
                             # delete the log stream
                             if delete_current_log and delete_logs:
                                 # delete current log stream (all requests contained within log stream are complete)
-                                print(f'Deleting log stream: {log_stream_name}')
-                                log_client.delete_log_stream(logGroupName=log_group_name, 
-                                                             logStreamName=log_stream_name)
+                                if not dont_delete_cloudwatch:
+                                    print(f'Deleting log stream: {log_stream_name}')
+                                    log_client.delete_log_stream(logGroupName=log_group_name, 
+                                                                logStreamName=log_stream_name)
                                 # AWS limits DeleteLogStream to 5 requests per second (at a minimum). This checks to see if 5 calls have been
                                 # made within a second, and waits the amount necessary to exceed 1 second before continuing to delete streams.
                                 delete_ctr += 1

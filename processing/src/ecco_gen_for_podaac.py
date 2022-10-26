@@ -25,9 +25,15 @@ from pathlib import Path
 
 # Local imports
 main_path = Path(__file__).parent.resolve().parent.resolve()
+
+# If processing on AWS Lambda, include '/app/' in the main_path
+if os.path.exists(f'{main_path / "app"}'):
+    main_path = main_path / 'app'
+
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
-import ecco_code as ecco
+sys.path.append(f'{main_path / "src" / "utils" / "ecco_utils"}')
+from ecco_utils import ecco_code as ecco
 import gen_netcdf_utils as gen_netcdf_utils
 
 # =================================================================================================

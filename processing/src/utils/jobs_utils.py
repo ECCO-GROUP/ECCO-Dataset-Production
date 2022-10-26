@@ -15,9 +15,9 @@ from collections import defaultdict
 main_path = Path(__file__).parent.resolve().parent.resolve().parent.resolve()
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
-# from print_utils import printc
-import print_utils as print_utils
+
 import file_utils as file_utils
+import print_utils as print_utils
 import lambda_utils as lambda_utils
 from ecco_gen_for_podaac import generate_netcdfs
 
@@ -111,7 +111,7 @@ def create_jobs(groupings, jobs_filename):
         print(f'\nPRODUCT_TYPE')
         for i, product in enumerate(product_order):
             print(f'\t{i} -- {product}')
-        product_input = input(f'Please select what products to view: ')
+        product_input = input(f'Please select what products to view (e.g. 0 or 0,1,2 or all): ')
         user_continue, products_to_view = __selected_options_helper(product_input, 
                                                                     product_order, 
                                                                     'You selected the following products to view: ', 

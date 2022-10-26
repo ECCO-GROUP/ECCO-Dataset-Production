@@ -11,8 +11,13 @@ RUN mkdir ./ecco_grids
 COPY ./ecco_grids/V4r4 ./ecco_grids
 
 # copy ecco_code (ecco_v4_py) files
-RUN mkdir ./ecco_code
-COPY ./src/ecco_code ./ecco_code
+RUN mkdir ./src/
+RUN mkdir ./src/utils/
+RUN mkdir ./src/utils/ecco_utils/
+COPY ./src/utils/ecco_utils/__init__.py ./src/utils/ecco_utils/__init__.py
+
+RUN mkdir ./src/utils/ecco_utils/ecco_code
+COPY ./src/utils/ecco_utils/ecco_code ./src/utils/ecco_utils/ecco_code
 
 # copy metadata files
 RUN mkdir ./metadata

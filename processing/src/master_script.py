@@ -44,7 +44,7 @@ try:
     import credentials_utils as credentials_utils
     import mapping_factors_utils as mapping_factors_utils
 except Exception as e:
-    print(f'Error importing code files. Have you run setup.py? (Error: {e})')
+    print(f'Error importing code files. Have you run setup.py? (Error: {e}, {repr(e)})')
     sys.exit()
 
 
@@ -92,6 +92,9 @@ def create_parser():
 
     parser.add_argument('--dont_delete_local', default=False, action='store_true',
                         help='Prevents deletion of any files downloaded locally (model granules and processed files). Files local to Lambdas are still deleted.')
+
+    parser.add_argument('--dont_delete_cloudwatch', default=False, action='store_true',
+                        help='Prevents deletion of any AWS CloudWatch log files during AWS Lambda logging.')
     return parser
 
 
@@ -592,7 +595,8 @@ if __name__ == "__main__":
                                                     num_jobs, 
                                                     credential_method, 
                                                     dict_key_args['log_name'], 
-                                                    main_path)
+                                                    main_path,
+                                                    dict_key_args['dont_delete_cloudwatch'])
 
             # ========== <Lambda job resubmission> ================================================
             # Automatically resubmit jobs if num_retry > 0 and 1 or more timesteps failed
@@ -649,6 +653,7 @@ if __name__ == "__main__":
                                                                 credential_method, 
                                                                 dict_key_args['log_name'], 
                                                                 main_path, 
+                                                                dict_key_args['dont_delete_cloudwatch'],
                                                                 retry=retry_num)
             # ========== </Lambda job resubmission> ===============================================
         # ========== </Lambda logging> ============================================================
