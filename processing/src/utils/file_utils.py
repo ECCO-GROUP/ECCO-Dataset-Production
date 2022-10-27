@@ -159,6 +159,11 @@ def get_files_time_steps(fields,
                 skip_job = True
         if skip_job:
             status = 'SKIP'
+
+        # Compare number of found time steps and requested time steps. Error out if they are not equal
+        if len(time_steps_all_vars) < time_steps_to_process:
+            status = f'Found unequal number of files for requested jobs {time_steps_all_vars} vs {time_steps_to_process} requested'
+
     except Exception as e:
         status = f'ERROR getting files and timesteps for fields {fields}. Error: {e}'
     # ========== </Get files> =============================================================
