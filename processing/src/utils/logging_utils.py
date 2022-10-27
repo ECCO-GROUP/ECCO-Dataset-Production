@@ -59,7 +59,7 @@ def lambda_logging(job_logs,
     Returns:
         job_logs (dict): Dictionary containing information of each job and processing overall
     """
-    print(f'\n=== LOGGING START ===')
+    printc(f'\n=== LOGGING START ===', 'blue')
 
     # Dont do logging if no jobs were submitted
     if num_jobs == 0:
@@ -318,7 +318,7 @@ def lambda_logging(job_logs,
                                                               log_name, 
                                                               aws_path, 
                                                               fn_extra=fn_extra)
-                print(f'\n=== LOGGING COMPLETE ===')
+                printc(f'\n=== LOGGING COMPLETE ===', 'green')
                 break
             # ========== </Final log> =============================================================
 
