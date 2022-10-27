@@ -53,7 +53,6 @@ Contains all the configuration files used to control and modify the processing a
     - geospatial_vertical_min
     - latlon_grid_resolution
     - latlon_effective_grid_radius
-    - latlon_max_lat
     - latlon_grid_area_extent
     - custom_grid_and_factors
     - grid_files_dir

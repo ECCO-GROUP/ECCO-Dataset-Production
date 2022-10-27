@@ -684,6 +684,10 @@ def create_ecco_grid_values(product_generation_config,
     latlon_grid_resolution = product_generation_config['latlon_grid_resolution']
     latlon_max_lat = product_generation_config['latlon_max_lat']
     latlon_grid_area_extent = product_generation_config['latlon_grid_area_extent']
+
+    # latlon_grid_area_extent is # [lon_min, lat_max, lon_max, lat_min]
+    latlon_max_lat = latlon_grid_area_extent[1]
+
     latlon_grid_dims = [int(np.abs(latlon_grid_area_extent[2] - latlon_grid_area_extent[0]) / latlon_grid_resolution),
                         int(np.abs(latlon_grid_area_extent[3] - latlon_grid_area_extent[1]) / latlon_grid_resolution)]
     # latlon_grid_dims = [int(d/latlon_grid_resolution) for d in product_generation_config['latlon_grid_dims']]
@@ -717,6 +721,9 @@ def create_ecco_grid_values(product_generation_config,
         if product_generation_config['ecco_version'] == 'V4r4':
             target_grid_radius = np.sqrt(lat_lon_grid_area / np.pi).ravel()
         else:
+            # use 111 km per degree everywhere, even at high latitudes
+            # as a consequence, at higher latitudes the effective grid area
+            # will be the sameas latitudes
             target_grid_radius = ((latlon_grid_resolution*111.)/2.)*np.sqrt(2)*1.1
     
 
