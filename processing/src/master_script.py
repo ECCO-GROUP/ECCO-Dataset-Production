@@ -95,7 +95,7 @@ def create_parser():
 
     parser.add_argument('--dont_delete_cloudwatch', default=False, action='store_true',
                         help='Prevents deletion of any AWS CloudWatch log files during AWS Lambda logging.')
-                        
+
     return parser
 
 
@@ -429,7 +429,7 @@ if __name__ == "__main__":
 
         # values for cost estimation
         MB_to_GB = 0.0009765625
-        USD_per_GBsec = 0.0000166667
+        USD_per_GBsec = aws_config['USD_per_GBms'] * 1000.
 
 
         # ========== <only logging> ===============================================================

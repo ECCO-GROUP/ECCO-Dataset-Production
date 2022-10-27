@@ -61,6 +61,10 @@ upload_to_S3_path: ''
 # =================================================================================================
 # AWS LAMBDA Information
 # =================================================================================================
+# Float
+# Current cost for 1ms at 1024MB (1GB) memory for AWS Lambda
+USD_per_GBms: 0.0000000167
+
 # String
 # URI of Docker image to use from AWS Elastic Container Registry (ECR)
 image_uri: '448078824696.dkr.ecr.us-west-2.amazonaws.com/ecco_processing:latest'
