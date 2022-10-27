@@ -34,7 +34,7 @@ aws_credentials_bash_filepath: ''
 
 
 # =================================================================================================
-# AWS S3 Information
+# AWS S3 Information and Control Values
 # =================================================================================================
 # String
 # Name of S3 bucket to source ECCO model output files
@@ -56,6 +56,23 @@ output_bucket: 'ecco-processed-data'
 # String path to upload files from local to AWS S3
 # Default: {source_bucket}/{bucket_subfolder}
 upload_to_S3_path: ''
+
+# Boolean
+# Controls whether or not to download all field files from S3 at the same time for each time level 
+# instead of one at a time. Setting to true makes downloading quicker, but uses more memory and disk 
+# space.
+download_all_mds_for_timestep: True
+
+# Boolean
+# Controls whether or not to download files from S3 in parallel for the timestep being processed
+# If {download_all_mds_for_timestep} is False, this wont change anything since files would be downloaded
+# one at a time regardless (since youre downloading each field as you process it)
+use_workers_to_download: True
+
+# Boolean
+# Verify the checksum of new datasets uploaded to S3
+# only used for lambda jobs when the new granules are uploaded to S3
+compare_checksums: True
 
 
 # =================================================================================================

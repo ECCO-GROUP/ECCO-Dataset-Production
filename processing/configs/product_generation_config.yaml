@@ -23,27 +23,6 @@ extra_prints: False
 
 
 # =================================================================================================
-# Lambda Job Parameters
-# =================================================================================================
-
-# Boolean
-# Controls whether or not to download all field files at the same time for each time level instead
-# of one at a time. Setting to true makes downloading quicker, but use more memory and disk space.
-# only used for lambda jobs
-download_all_fields: True
-
-# Boolean
-# Controls whether or not to download files from S3 in parallel for the timestep being processed
-# only used for lambda jobs 
-use_workers_to_download: True
-
-# Boolean
-# Verify the checksum of new datasets uploaded to S3
-# only used for lambda jobs when the new granules are uploaded to S3
-compare_checksums: True
-
-
-# =================================================================================================
 # Model Values
 # =================================================================================================
 # String

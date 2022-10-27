@@ -34,6 +34,7 @@ def get_files(use_S3,
               data_file_paths, 
               meta_file_paths, 
               product_generation_config, 
+              aws_config,
               product_type, 
               model_granule_bucket='', 
               s3=None,
@@ -53,6 +54,7 @@ def get_files(use_S3,
         data_file_paths (dict): Dictionary where key=field name, value=downloaded data file path at cur_ts for field
         meta_file_paths (dict): Dictionary where key=field name, value=downloaded meta file path at cur_ts for field
         product_generation_config (dict): Dictionary of product_generation_config.yaml config file
+        aws_config (dict): Dictionary of aws_config.yaml config file
         product_type (str): String product type (i.e. 'latlon', 'native')
         model_granule_bucket (str): String name of the AWS S3 bucket for model granules
         s3 (botocore.client.S3): boto3 client object for AWS S3
@@ -85,6 +87,7 @@ def get_files(use_S3,
                                                    data_file_paths, 
                                                    meta_file_paths, 
                                                    product_generation_config, 
+                                                   aws_config,
                                                    product_type, 
                                                    model_granule_bucket,
                                                    vector_rotate)
@@ -121,7 +124,8 @@ def download_all_files(s3,
                        cur_ts, 
                        data_file_paths, 
                        meta_file_paths, 
-                       product_generation_config, 
+                       product_generation_config,
+                       aws_config,
                        product_type, 
                        model_granule_bucket,
                        vector_rotate):
@@ -136,6 +140,7 @@ def download_all_files(s3,
         data_file_paths (dict): Dictionary where key=field name, value=downloaded data file path at cur_ts for field
         meta_file_paths (dict): Dictionary where key=field name, value=downloaded meta file path at cur_ts for field
         product_generation_config (dict): Dictionary of product_generation_config.yaml config file
+        aws_config (dict): Dictionary of aws_config.yaml config file
         product_type (str): String product type (i.e. 'latlon', 'native')
         model_granule_bucket (str): String name of the AWS S3 bucket for model granules
         vector_rotate (bool): Boolean specifying if the current grouping needs vector rotation. If True, then .meta files are downloaded
@@ -196,7 +201,7 @@ def download_all_files(s3,
 
         # download all the files in parallel using workers, where each worker downloads a different file
         # where there are as many workers as there are files to download
-        if product_generation_config['use_workers_to_download']:
+        if aws_config['use_workers_to_download']:
             num_workers = len(all_files)
             print(f'Using {num_workers} workers to download {len(all_files)} files')
 
