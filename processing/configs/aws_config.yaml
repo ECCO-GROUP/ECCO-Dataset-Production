@@ -53,9 +53,9 @@ derived_bucket: 'ecco-derived-products'
 output_bucket: 'ecco-processed-data'
 
 # String
-# String path to upload files from local to AWS S3
+# String path for location on S3 to upload local files to when uploading local files
 # Default: {source_bucket}/{bucket_subfolder}
-upload_to_S3_path: ''
+S3_upload_path: ''
 
 # Boolean
 # Controls whether or not to download all field files from S3 at the same time for each time level 
