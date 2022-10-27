@@ -53,7 +53,7 @@ derived_bucket: 'ecco-derived-products'
 output_bucket: 'ecco-processed-data'
 
 # String
-# String path for location on S3 to upload local files to when uploading local files
+# Path on S3 where local files  are to be uploaded
 # Default: {source_bucket}/{bucket_subfolder}
 S3_upload_path: ''
 
@@ -79,7 +79,7 @@ compare_checksums: True
 # AWS LAMBDA Information
 # =================================================================================================
 # Float
-# Current cost for 1ms at 1024MB (1GB) memory for AWS Lambda
+# Current cost for 1 millisecond (ms) at 1024MB (1GB) memory for AWS Lambda
 USD_per_GBms: 0.0000000167
 
 # String

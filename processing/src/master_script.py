@@ -562,6 +562,7 @@ if __name__ == "__main__":
                     sys.exit()
                 functions_to_update.remove(function_name)
         print(f'\nAll necessary functions up to date!\n')
+        import pdb; pdb.set_trace()
         # ========== </Lambda function creation/updating> =========================================
 
         # Create inital jobs_log

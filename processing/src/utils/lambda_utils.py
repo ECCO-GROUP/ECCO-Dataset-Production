@@ -53,11 +53,11 @@ def create_lambda_function(lambda_client,
     # Get function info for the current function until the State is "Active"
     print(f'\tVerifying lambda function creation ({function_name})...')
     while True:
-        status = lambda_client.get_function_configuration(FunctionName=function_name)['State']
-        if status == "Failed":
+        func_status = lambda_client.get_function_configuration(FunctionName=function_name)['State']
+        if func_status == "Failed":
             status = f'\t\tFailed to create function ({function_name}). Try again'
             return status
-        elif status == 'Active':
+        elif func_status == 'Active':
             print(f'\t\tFunction created successfully')
             break
         # Sleep for 2 seconds to not bombard the AWS API and to give time for the function to finish being created
@@ -90,6 +90,8 @@ def update_lambda_function(lambda_client,
     try:
         lambda_client.update_function_code(FunctionName=function_name,
                                            ImageUri=image_uri)
+        # lambda_client.update_function_configuration(FunctionName=function_name,
+        #                                             MemorySize=new_memory_size)
     except Exception as e:
         status = f'ERROR updating lambda function ({function_name})\n\terror: {e}'
         return status
@@ -268,7 +270,7 @@ def invoke_lambda(lambda_client,
                 'credentials': credentials
             }
 
-            # define data to process for the current lambda job
+            # define data to process for the current lambda job used in logging
             data_to_process= {
                 'grouping_to_process': grouping_to_process,
                 'product_type': product_type,
