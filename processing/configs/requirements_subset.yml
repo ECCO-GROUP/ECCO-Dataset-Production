@@ -1,0 +1,15 @@
+name: ecco_processing
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - boto3
+  - numpy
+  - xarray
+  - netcdf4
+  - pandas
+  - scipy
+  - pyresample
+  - beautifulsoup4
+  - pytz
+  - lxml
