@@ -441,11 +441,11 @@ def create_custom_grid_values(product_generation_config,
     # Get source_grid_min_L and source_grid_max_L
     # If they are not provided in the config, calculate it from source_grid_data['RAC']
     source_grid_radius = np.sqrt(source_grid_data['RAC'] / np.pi) * np.sqrt(2) * 1.1
-    if product_generation_config['source_grid_min_L'] == None:
+    if product_generation_config['source_grid_min_L'] == -1:
         source_grid_min_L = np.nanmin(source_grid_radius[np.where(source_grid_radius > 0)])
     else:
         source_grid_min_L = float(product_generation_config['source_grid_min_L'])
-    if product_generation_config['source_grid_max_L'] == None:
+    if product_generation_config['source_grid_max_L'] == -1:
         source_grid_max_L = np.nanmax(source_grid_radius[np.where(source_grid_radius > 0)])
     else:
         source_grid_max_L = float(product_generation_config['source_grid_max_L'])

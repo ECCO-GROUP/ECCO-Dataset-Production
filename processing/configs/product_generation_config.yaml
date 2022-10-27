@@ -126,12 +126,18 @@ custom_factors_dir: ''
 # Float
 # Source grid cell minimum length [m]
 # Only needed if you are not providing the grid file with dxG and dyG (i.e. in GRID_GEOMETRIES_ECCO)
-source_grid_min_L: 
+# Default: -1
+# If not provided (and {custom_grid_and_factors} is True) the code uses the minimum of source_grid_radius
+# where source_grid_radius > 0
+source_grid_min_L: -1
 
 # Float
 # Source grid cell maximum length [m]
 # Only needed if you are not providing the grid file with dxG and dyG (i.e. in GRID_GEOMETRIES_ECCO)
-source_grid_max_L: 
+# Default: -1
+# If not provided (and {custom_grid_and_factors} is True) the code uses the maximum of source_grid_radius
+# where source_grid_radius > 0
+source_grid_max_L: -1
 
 # String
 # ftype for source grid
