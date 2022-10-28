@@ -516,7 +516,7 @@ def generate_netcdfs(event):
                 # ========== </Download files> ====================================================
 
 
-                # ========== <Vector rotation (NOT FINISHED)> =====================================
+                # ========== <Vector rotation> =====================================
                 # PERFORM VECTOR ROTATION AS NECESSARY
                 vector_fields = []
                 if vector_rotate:
@@ -590,7 +590,7 @@ def generate_netcdfs(event):
                                 status = f'ERROR Unable to upload file {netcdf_filename} to bucket {processed_data_bucket} ({response})'
                                 print(f'FAIL {cur_ts}')
                                 raise Exception(status)
-                # ========== </Vector rotation (NOT FINISHED)> ====================================
+                # ========== </Vector rotation> ====================================
 
 
                 # ========== <Field transformations> ==============================================
