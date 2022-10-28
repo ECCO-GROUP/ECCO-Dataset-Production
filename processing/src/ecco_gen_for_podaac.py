@@ -228,7 +228,7 @@ def generate_netcdfs(event):
             if not os.path.exists(processed_output_dir_base):
                 os.makedirs(processed_output_dir_base, exist_ok=True)
 
-        # Define fill values for binary and netcdf
+        # Define fill values for binary and netcdf based on provided array_precision
         # ECCO always uses -9999 for missing data.
         if product_generation_config['array_precision'] == 'float32':
             # binary_output_dtype = '>f4'

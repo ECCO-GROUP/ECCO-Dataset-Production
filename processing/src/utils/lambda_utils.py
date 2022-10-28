@@ -70,15 +70,20 @@ def create_lambda_function(lambda_client,
 # ==========================================================================================================================
 def update_lambda_function(lambda_client, 
                            function_name, 
-                           image_uri):
+                           lambda_memory=None,
+                           image_uri=None):
     """
     Update AWS Lambda function with AWS ECR Docker image. 
     Only functions that will be used for the current jobs list are updated.
+    Either lambda_memory and/or image_uri must be provided. If lambda_memory is provided, then the memory of the function
+    is updated to this value, if image_uri is provided then the function's image is updated to this image, and both can
+    provided to update both.
 
     Args:
         lambda_client (botocore.client.Lambda): boto3 client object for AWS Lambda
         function_name (str): Name of function to update
-        image_uri (str): URI of Docker image on AWS ECR to use to update function
+        lambda_memory (optional, int): Amount of memory for the Lambda function (integer number of MB, from aws_config.yaml)
+        image_uri (optional, str): URI of Docker image on AWS ECR to use to update function
 
     Returns:
         status (str): String that is either "SUCCESS" or "ERROR {error message}"
@@ -86,28 +91,51 @@ def update_lambda_function(lambda_client,
     status = 'SUCCESS'
 
     # Update lambda_function with current image_uri
-    print(f'\n\tUpdating lambda function ({function_name})')
-    try:
-        lambda_client.update_function_code(FunctionName=function_name,
-                                           ImageUri=image_uri)
-        # lambda_client.update_function_configuration(FunctionName=function_name,
-        #                                             MemorySize=new_memory_size)
-    except Exception as e:
-        status = f'ERROR updating lambda function ({function_name})\n\terror: {e}'
-        return status
-
-    # Get function info for the current function until the LastUpdateStatus is "Successful"
-    print(f'\tVerifying lambda function update ({function_name})...')
-    while True:
-        last_update_status = lambda_client.get_function_configuration(FunctionName=function_name)['LastUpdateStatus']
-        if last_update_status == "Failed":
-            status = f'\t\tFailed to update function ({function_name}). Try again'
+    if image_uri is not None:
+        print(f'\n\tUpdating lambda function image ({function_name})')
+        try:
+            lambda_client.update_function_code(FunctionName=function_name,
+                                            ImageUri=image_uri)
+        except Exception as e:
+            status = f'ERROR updating lambda function image ({function_name})\n\terror: {e}'
             return status
-        elif last_update_status == 'Successful':
-            print(f'\t\tFunction updated successfully')
-            break
-        # Sleep for 2 seconds to not bombard the AWS API and to give time for the function to finish updating
-        time.sleep(2)
+
+        # Get function info for the current function until the LastUpdateStatus is "Successful"
+        print(f'\tVerifying lambda function image update ({function_name})...')
+        while True:
+            last_update_status = lambda_client.get_function_configuration(FunctionName=function_name)['LastUpdateStatus']
+            if last_update_status == "Failed":
+                status = f'\t\tFailed to update function image ({function_name}). Try again'
+                return status
+            elif last_update_status == 'Successful':
+                print(f'\t\tFunction image updated successfully')
+                break
+            # Sleep for 2 seconds to not bombard the AWS API and to give time for the function to finish updating
+            time.sleep(2)
+
+    # Update lambda function memory
+    if lambda_memory is not None:
+        print(f'\n\tUpdating lambda function memory ({function_name})')
+        try:
+            lambda_client.update_function_configuration(FunctionName=function_name,
+                                                        MemorySize=lambda_memory)
+        except Exception as e:
+            status = f'ERROR updating lambda function memory ({function_name})\n\terror: {e}'
+            return status
+
+        # Get function info for the current function until the LastUpdateStatus is "Successful"
+        print(f'\tVerifying lambda function memory update ({function_name})...')
+        while True:
+            last_update_status = lambda_client.get_function_configuration(FunctionName=function_name)['LastUpdateStatus']
+            if last_update_status == "Failed":
+                status = f'\t\tFailed to update function memory ({function_name}). Try again'
+                return status
+            elif last_update_status == 'Successful':
+                print(f'\t\tFunction memory updated successfully')
+                break
+            # Sleep for 2 seconds to not bombard the AWS API and to give time for the function to finish updating
+            time.sleep(2)
+    
     return status
 
 

@@ -495,18 +495,31 @@ if __name__ == "__main__":
         image_info = ecr_client.describe_images(repositoryName=repo_name, imageIds=[image_ids])
         image_push_time = image_info['imageDetails'][0]['imagePushedAt'].astimezone(tz=timezone.utc)
         image_push_time = datetime.strftime(image_push_time, format='%Y-%m-%dT%H:%M:%S')
+        image_sha = image_info['imageDetails'][0]['imageDigest'].split(':')[-1]
 
         # Compare each function's last modified time to the ECR image's last push time
         # and add the function to the functions_to_update list if an update is needed
         all_functions = []
-        functions_to_update = []
+        functions_code_to_update = []
+        functions_memory_to_update = []
         lambda_functions = lambda_client.list_functions()['Functions']
         for func in lambda_functions:
             if function_name_prefix in func['FunctionName']:
                 all_functions.append(func['FunctionName'])
+
+                # Get function information values
                 func_modified = func['LastModified'].split('.')[0]
-                if func_modified < image_push_time:
-                    functions_to_update.append(func['FunctionName'])
+                func_memory = func['MemorySize']
+                func_product_type_and_freq = func['FunctionName'].split(f'{function_name_prefix}_')[-1]
+                func_image_sha = func['CodeSha256']
+
+                # If updating the image to use for the function, add it to the list for function code updates
+                if (func_modified < image_push_time) or (func_image_sha != image_sha):
+                    functions_code_to_update.append(func['FunctionName'])
+
+                # If updating the memory for the lambda job, add it to the list for function memory updates
+                if (func_memory != aws_config[f'memory_size_{func_product_type_and_freq}']):
+                    functions_memory_to_update.append(func['FunctionName'])
 
         print(f'\nCreating and updating lambda functions')
         for (grouping_to_process, product_type, output_freq_code, num_time_steps_to_process) in all_jobs:
@@ -525,16 +538,20 @@ if __name__ == "__main__":
             elif product_type == 'latlon':
                 if dimension == '2D':
                     function_name = f'{function_name_prefix}_2D_latlon'
+                    lambda_memory = aws_config['memory_size_2D_latlon']
                 elif dimension == '3D':
                     function_name = f'{function_name_prefix}_3D_latlon'
+                    lambda_memory = aws_config['memory_size_3D_latlon']
                 else:
                     print_utils.printc(f'Dimension ({dimension}) not currently supported for Lambda. Exiting.', 'red')
                     sys.exit()
             elif product_type == 'native':
                 if dimension == '2D':
                     function_name = f'{function_name_prefix}_2D_native'
+                    lambda_memory = aws_config['memory_size_2D_native']
                 elif dimension == '3D':
                     function_name = f'{function_name_prefix}_3D_native'
+                    lambda_memory = aws_config['memory_size_3D_native']
                 else:
                     print_utils.printc(f'Dimension ({dimension}) not currently supported for Lambda. Exiting.', 'red')
                     sys.exit()
@@ -552,15 +569,34 @@ if __name__ == "__main__":
                     print_utils.printc(status, 'red')
                     sys.exit()
                 all_functions.append(function_name)
-            elif function_name in functions_to_update:
-                # update function using newest ECR image
+            else:
+                # Check to see if the function needs its memory or image updated
+                # Set the other to none if only one of them are to be updated
+                # i.e. if youre only updating the image, set the lambda_memory to none
+                #       so that the update_lambda_function knows not to update the memory.
+                update_code = function_name in functions_code_to_update
+                update_memory = function_name in functions_memory_to_update
+                if update_code and not update_memory:
+                    lambda_memory = None
+                elif not update_code and update_memory:
+                    image_uri = None
+
+                # update function using ECR image and memory value
                 status = lambda_utils.update_lambda_function(lambda_client, 
-                                                             function_name, 
-                                                             image_uri)
+                                                            function_name, 
+                                                            lambda_memory,
+                                                            image_uri)
+
                 if status != 'SUCCESS':
                     print_utils.printc(status, 'red')
                     sys.exit()
-                functions_to_update.remove(function_name)
+                
+                # Remove the function name from list of functions to update
+                if update_code:
+                    functions_code_to_update.remove(function_name)
+                if update_memory:
+                    functions_memory_to_update.remove(function_name)
+                    
         print(f'\nAll necessary functions up to date!\n')
         import pdb; pdb.set_trace()
         # ========== </Lambda function creation/updating> =========================================
