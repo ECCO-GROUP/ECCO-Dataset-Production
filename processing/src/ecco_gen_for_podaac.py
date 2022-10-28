@@ -516,9 +516,9 @@ def generate_netcdfs(event):
                 # ========== </Download files> ====================================================
 
 
-                # ============================== TODO =============================================
-                # ========== <Vector rotation> ====================================================
+                # ========== <Vector rotation (NOT FINISHED)> =====================================
                 # PERFORM VECTOR ROTATION AS NECESSARY
+                vector_fields = []
                 if vector_rotate:
                     vector_inputs = list(grouping['vector_inputs'].keys())
 
@@ -563,6 +563,9 @@ def generate_netcdfs(event):
                             os.makedirs(derived_filepath, exist_ok = True)
                         derived_filename_nc = derived_filepath / f'{field}_{period_suffix}.{cur_ts}.nc'
 
+                        data_file_paths[field] = derived_filename_nc
+                        vector_fields.append(field)
+
                         print('\n... saving to netcdf ', derived_filename_nc)
                         DS.load()
                         DS.to_netcdf(derived_filename_nc)
@@ -587,14 +590,15 @@ def generate_netcdfs(event):
                                 status = f'ERROR Unable to upload file {netcdf_filename} to bucket {processed_data_bucket} ({response})'
                                 print(f'FAIL {cur_ts}')
                                 raise Exception(status)
-
-                    import pdb; pdb.set_trace()
-                # ========== </Vector rotation> ===================================================
-                # ============================== TODO =============================================
+                # ========== </Vector rotation (NOT FINISHED)> ====================================
 
 
                 # ========== <Field transformations> ==============================================
                 F_DS_vars = []
+
+                # Update fields to load to be the, now, vector rotated fields, not the source fields
+                if vector_rotate:
+                    fields_to_load = grouping['fields'].split(', ')
 
                 # Load fields and place them in the dataset
                 for field in sorted(fields_to_load):
@@ -625,7 +629,7 @@ def generate_netcdfs(event):
                     if use_lambda and time.time() - job_start_time >= aws_config['job_timeout']:
                         timeout = True
                         raise Exception('TIMEOUT')
-                        
+
                     data_file_path = Path(data_file_paths[field])
                         
                     # Transform latlon vs native variable
@@ -650,6 +654,7 @@ def generate_netcdfs(event):
                                                                          output_freq_code, 
                                                                          cur_ts, 
                                                                          read_ecco_grid, 
+                                                                         vector_fields,
                                                                          extra_prints=extra_prints)
                     
                     # If latlon/native transformation failed, FAIL the current timestep

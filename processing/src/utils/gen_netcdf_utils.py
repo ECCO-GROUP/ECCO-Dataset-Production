@@ -452,15 +452,20 @@ def transform_latlon(ecco,
         nk = 1
 
     # Read in model output mds
-    if extra_prints: print('... loading mds', data_file_path)
-    data_fname = data_file_path.name
-    F = ecco.read_llc_to_tiles(data_file_path.parent,
-                               data_fname,
-                               llc=90, skip=0, 
-                               nk=nk, nl=1,
-                               filetype='>f',
-                               less_output=True,
-                               use_xmitgcm=False)
+    # If the data_file_path is an mds .data file, read it in via ecco.read_llc_to_tiles
+    # otherwise, load the dataarray pointed to by data_file_path
+    if '.nc' not in str(data_file_path):
+        if extra_prints: print('... loading mds', data_file_path)
+        data_fname = data_file_path.name
+        F = ecco.read_llc_to_tiles(data_file_path.parent,
+                                data_fname,
+                                llc=90, skip=0, 
+                                nk=nk, nl=1,
+                                filetype='>f',
+                                less_output=True,
+                                use_xmitgcm=False)
+    else:
+        F = xr.load_dataarray(data_file_path).data[0]
 
     # Initialize blank transformed grid with nk vertical levels
     # For 2D, this has shape (1, X, Y)
@@ -552,7 +557,8 @@ def transform_native(ecco,
                      mds_var_dir, 
                      output_freq_code, 
                      cur_ts, 
-                     read_grid, 
+                     read_grid,
+                     vector_fields,
                      extra_prints=False):
     """
     Transform source grid to native grid
@@ -566,6 +572,7 @@ def transform_native(ecco,
         output_freq_code (str): String output frequency code (i.e. 'AVG_MON', 'AVG_DAY', 'SNAP')
         cur_ts (str): String of the current timestep (i.e. '0000000732')
         read_grid (bool): Boolean option from product_generation_config.yaml config file controls xmitgcm reading of grid file
+        vector_fields (list): List of fields that have been vector rotated (empty if there is no vector rotation)
         extra_prints (optional, bool): Boolean to enable more print statements
 
     Returns:
@@ -585,18 +592,24 @@ def transform_native(ecco,
     # This loads them into the native tile grid
     try:
         status = 'SUCCESS'
-        F_DS = ecco.load_ecco_vars_from_mds(mds_var_dir,
-                                            mds_grid_dir = ecco_grid_dir_mds,
-                                            mds_files = short_mds_name,
-                                            vars_to_load = var,
-                                            drop_unused_coords = True,
-                                            grid_vars_to_coords = False,
-                                            output_freq_code=output_freq_code,
-                                            model_time_steps_to_load=int(cur_ts),
-                                            less_output = True,
-                                            read_grid=read_grid)
+        if var not in vector_fields:
+            F_DS = ecco.load_ecco_vars_from_mds(mds_var_dir,
+                                                mds_grid_dir = ecco_grid_dir_mds,
+                                                mds_files = short_mds_name,
+                                                vars_to_load = var,
+                                                drop_unused_coords = True,
+                                                grid_vars_to_coords = False,
+                                                output_freq_code=output_freq_code,
+                                                model_time_steps_to_load=int(cur_ts),
+                                                less_output = True,
+                                                read_grid=read_grid)
+        else:
+            data_file = f'{mds_var_dir}/{short_mds_name}.{cur_ts}.nc'
+            F_DS = xr.load_dataset(data_file)
+            F_DS_var_name = list(F_DS.keys())[0]
+            F_DS = F_DS.rename({F_DS_var_name: var})
     except:
-        status = 'ERROR Failed to load ECCO vars from mds'
+        status = 'ERROR Failed to load ECCO vars data'
 
     if status != 'SUCCESS':
         return (status, F_DS)
@@ -694,6 +707,10 @@ def global_DS_changes(F_DS,
     try:
         # Specify time bounds values for the dataset
         if 'AVG' in output_freq_code:
+            if 'time_bnds' not in F_DS:
+                F_DS['time_bnds'] = []
+            if 'time' not in F_DS:
+                F_DS['time'] = []
             F_DS.time_bnds.values[0][0] = record_times['start']
             F_DS.time_bnds.values[0][1] = record_times['end']
             F_DS.time.values[0] = record_times['center']
