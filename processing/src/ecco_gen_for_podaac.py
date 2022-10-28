@@ -230,7 +230,6 @@ def generate_netcdfs(event):
 
         # Define fill values for binary and netcdf
         # ECCO always uses -9999 for missing data.
-        binary_fill_value = product_generation_config['binary_fill_value']
         if product_generation_config['array_precision'] == 'float32':
             # binary_output_dtype = '>f4'
             array_precision = np.float32

@@ -45,7 +45,6 @@ Contains all the configuration files used to control and modify the processing a
     - use_workers_to_download
     - read_ecco_grid_for_native_load
     - extra_prints
-    - binary_fill_value
     - array_precision
     - model_start_time
     - model_end_time
