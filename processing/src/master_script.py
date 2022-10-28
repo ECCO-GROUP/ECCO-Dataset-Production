@@ -85,7 +85,7 @@ def create_parser():
                         help='Re-builds Docker image and pushes it to AWS ECR')
 
     parser.add_argument('--upload_to_S3', default=False, action='store_true',
-                        help='ONLY uploads files from "local_file_dir_to_upload" in product_generation_config.yaml, to "upload_to_S3_path" in aws_config.yaml. Exits when complete')
+                        help='ONLY uploads files from "local_file_dir_to_upload" in product_generation_config.yaml, to "S3_upload_path" in aws_config.yaml. Exits when complete')
     
     parser.add_argument('--dryrun', default=False, action='store_true',
                         help='Does a dryrun of uploading files to S3 (TODO: dryrun of all processing code)')
@@ -95,6 +95,7 @@ def create_parser():
 
     parser.add_argument('--dont_delete_cloudwatch', default=False, action='store_true',
                         help='Prevents deletion of any AWS CloudWatch log files during AWS Lambda logging.')
+
     return parser
 
 
@@ -290,9 +291,9 @@ if __name__ == "__main__":
         account_id = aws_config['account_id']
         region = aws_config['region']
 
-        upload_to_S3_path_default = f'{source_bucket}/{source_bucket_folder_name}'
-        if aws_config['upload_to_S3_path'] == '':
-            aws_config['upload_to_S3_path'] = upload_to_S3_path_default
+        S3_upload_path_default = f'{source_bucket}/{source_bucket_folder_name}'
+        if aws_config['S3_upload_path'] == '':
+            aws_config['S3_upload_path'] = S3_upload_path_default
 
         # Memory sizes dictionary where key is the function name and the value is the memory for it
         memory_sizes = {
@@ -358,7 +359,6 @@ if __name__ == "__main__":
     if upload_to_S3:
         print_utils.printc('Uploading files to S3', 'blue')
         local_file_dir = product_generation_config['local_file_dir_to_upload']
-        upload_s3_bucket_dir = aws_config['upload_to_S3_path']
         if local_file_dir != '':
             if os.path.exists(local_file_dir):
                 if not dict_key_args['dryrun']:
@@ -377,7 +377,24 @@ if __name__ == "__main__":
                 os.chdir(os.path.join(os.path.abspath(sys.path[0]), upload_to_AWS_path))
 
                 # run uploading script
-                subprocess.run([aws_sync_script_path, credential_method['type'], credential_method['aws_login_file'], region, str(Path(credential_method['bash_filepath']).parent), upload_s3_bucket_dir, local_file_dir, credential_method['bash_filepath'], str(dict_key_args['dryrun'])])
+                # Arguments are as follows:
+                # cred_type=$1
+                # cred_file_name=$2
+                # region=$3
+                # login_file_dir=$4
+                # s3_dir=$5
+                # files_dir=$6
+                # update_AWS_cred_file=$7
+                # dryrun=$8
+                subprocess.run([aws_sync_script_path, 
+                                credential_method['type'], 
+                                credential_method['aws_login_file'], 
+                                region, 
+                                str(Path(credential_method['bash_filepath']).parent), 
+                                aws_config['S3_upload_path'], 
+                                local_file_dir, 
+                                credential_method['bash_filepath'], 
+                                str(dict_key_args['dryrun'])])
                 
                 # change working directory to original working directory (eg. the directory of master_script.py)
                 os.chdir(orig_cwd)
@@ -428,7 +445,7 @@ if __name__ == "__main__":
 
         # values for cost estimation
         MB_to_GB = 0.0009765625
-        USD_per_GBsec = 0.0000166667
+        USD_per_GBsec = aws_config['USD_per_GBms'] * 1000.
 
 
         # ========== <only logging> ===============================================================
@@ -545,6 +562,7 @@ if __name__ == "__main__":
                     sys.exit()
                 functions_to_update.remove(function_name)
         print(f'\nAll necessary functions up to date!\n')
+        import pdb; pdb.set_trace()
         # ========== </Lambda function creation/updating> =========================================
 
         # Create inital jobs_log

@@ -197,7 +197,6 @@ def generate_netcdfs(event):
         create_checksum = product_generation_config['create_checksum']
         mapping_factors_dir = product_generation_config['mapping_factors_dir']
         processed_output_dir_base = product_generation_config['processed_output_dir_base']
-        download_all_fields = product_generation_config['download_all_fields']
         ecco_grid_dir_mds = product_generation_config['ecco_grid_dir_mds']
         read_ecco_grid = product_generation_config['read_ecco_grid_for_native_load']
 
@@ -220,6 +219,9 @@ def generate_netcdfs(event):
         elif use_S3:
             status = f'ERROR No bucket names in aws_config:\n{aws_config}'
             raise Exception(status)
+
+        # Get download value from aws_config
+        download_all_mds_for_timestep = aws_config['download_all_mds_for_timestep']
 
         # Create processed_output_dir_base directory if using S3 (and not AWS Lambda)
         if use_S3 and not use_lambda:
@@ -374,13 +376,14 @@ def generate_netcdfs(event):
         if product_type == '1D':
             # Download 1D field files
             (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = gen_netcdf_utils.get_files(use_S3,
-                                                                                                       download_all_fields,
+                                                                                                       download_all_mds_for_timestep,
                                                                                                        fields_to_load,
                                                                                                        field_files,
                                                                                                        cur_ts,
                                                                                                        data_file_paths,
                                                                                                        meta_file_paths,
                                                                                                        product_generation_config,
+                                                                                                       aws_config,
                                                                                                        product_type,
                                                                                                        model_granule_bucket,
                                                                                                        s3=s3)
@@ -483,29 +486,34 @@ def generate_netcdfs(event):
 
                 # ========== <Download files> =====================================================
                 # If vector rotation is necessary, you must have all the field files for the current
-                # timestep downloaded and available
+                # timestep downloaded and available. If using S3, this will download all the mds files for the
+                # current timestep at once, to make them all available. Otherwise, they need to all
+                # exist locally.
                 vector_rotate = False
                 if 'vector_inputs' in grouping:
                     vector_rotate = True
-                    download_all_fields = True
+                    download_all_mds_for_timestep = True
 
-                (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = gen_netcdf_utils.get_files(use_S3,
-                                                                                                           download_all_fields,
-                                                                                                           fields_to_load,
-                                                                                                           field_files,
-                                                                                                           cur_ts,
-                                                                                                           data_file_paths,
-                                                                                                           meta_file_paths,
-                                                                                                           product_generation_config,
-                                                                                                           product_type,
-                                                                                                           model_granule_bucket,
-                                                                                                           s3=s3,
-                                                                                                           vector_rotate=vector_rotate)
-                num_downloaded += num_dl
-                total_download_time += dl_time
-                if status != 'SUCCESS':
-                    print(f'FAIL {cur_ts}')
-                    raise Exception(status)
+                # Download all fields (outside of fields loop) from S3 only if download_all_mds_for_timestep is true and using S3
+                if use_S3 and download_all_mds_for_timestep:
+                    (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = gen_netcdf_utils.get_files(use_S3,
+                                                                                                               download_all_mds_for_timestep,
+                                                                                                               fields_to_load,
+                                                                                                               field_files,
+                                                                                                               cur_ts,
+                                                                                                               data_file_paths,
+                                                                                                               meta_file_paths,
+                                                                                                               product_generation_config,
+                                                                                                               aws_config,
+                                                                                                               product_type,
+                                                                                                               model_granule_bucket,
+                                                                                                               s3=s3,
+                                                                                                               vector_rotate=vector_rotate)
+                    num_downloaded += num_dl
+                    total_download_time += dl_time
+                    if status != 'SUCCESS':
+                        print(f'FAIL {cur_ts}')
+                        raise Exception(status)
                 # ========== </Download files> ====================================================
 
 
@@ -591,19 +599,20 @@ def generate_netcdfs(event):
 
                 # Load fields and place them in the dataset
                 for field in sorted(fields_to_load):
-                    # If download_all_fields is False, then download each field as needed instead of 
+                    # If download_all_mds_for_timestep is False, then download each field as needed instead of 
                     # all at once. Note: There is no local version of this since all files should 
                     # already be present locally. The previous code in the "<Download files>"
                     # section gets the file paths of all the local files, which are then used to get them
-                    if use_S3 and not download_all_fields:
+                    if use_S3 and not download_all_mds_for_timestep:
                         (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = gen_netcdf_utils.get_files(use_S3,
-                                                                                                                   download_all_fields,
+                                                                                                                   download_all_mds_for_timestep,
                                                                                                                    [field],
                                                                                                                    field_files,
                                                                                                                    cur_ts,
                                                                                                                    data_file_paths,
                                                                                                                    meta_file_paths,
                                                                                                                    product_generation_config,
+                                                                                                                   aws_config,
                                                                                                                    product_type,
                                                                                                                    model_granule_bucket,
                                                                                                                    s3=s3)
@@ -745,7 +754,7 @@ def generate_netcdfs(event):
                     # ========== <Compare checksums> ==============================================
                     # create checksum of downloaded dataset from S3 and compare to the checksum created of the
                     # dataset file uploaded to S3 (in ensure there was no issue uploading the file)
-                    if product_generation_config['compare_checksums'] and create_checksum:
+                    if aws_config['compare_checksums'] and create_checksum:
                         checksum_time = time.time()
                         new_netcdf = netcdf_filename.parent / f'S3_{netcdf_filename.name}'
 

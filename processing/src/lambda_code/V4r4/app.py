@@ -19,12 +19,12 @@ logger.setLevel(logging.INFO)
 # ==========================================================================================================================
 # RUN SCRIPT
 # ==========================================================================================================================
-def run_script(event):
+def run_script(payload):
     """
-    Import processing function and call with using the passed event payload
+    Import processing function and call with using the passed the dictionary payload
 
     Args:
-        event (dict): Contains all the information required to process the passed job:
+        payload (dict): Contains all the information required to process the passed job:
             grouping_to_process (int): Grouping number from groupings json file for current dataset
             product_type (str): String product type (i.e. 'latlon', 'native')
             output_freq_code (str): String output frequency code (i.e. 'AVG_MON', 'AVG_DAY', 'SNAP')
@@ -41,15 +41,15 @@ def run_script(event):
         None
     """
     # Import processing file and time how long it takes
-    processing_file = event['product_generation_config']['processing_code_filename']
+    processing_file = payload['product_generation_config']['processing_code_filename']
     print(f'Importing file: {processing_file}')
     im_st = time.time()
     script = importlib.import_module(processing_file)
     logger.info(f'DURATION\tIMPORT\t{time.time() - im_st}\tseconds')
 
-    # Run processing function with the "event" payload and time how long it takes
+    # Run processing function with the dictionary "payload"  and time how long it takes
     run_st = time.time()
-    script.generate_netcdfs(event)
+    script.generate_netcdfs(payload)
     logger.info(f'DURATION\tRUN\t{time.time() - run_st}\tseconds')
 
     return
@@ -58,12 +58,12 @@ def run_script(event):
 # ==========================================================================================================================
 # LAMBDA HANDLER
 # ==========================================================================================================================
-def handler(event, context):
+def handler(payload, context):
     """
-    Import processing function and call with using the passed event payload
+    Import processing function and call with using the passed the dictionary called payload
 
     Args:
-        event (dict): Contains all the information required to process the passed job:
+        payload (dict): Contains all the information required to process the passed job:
             grouping_to_process (int): Grouping number from groupings json file for current dataset
             product_type (str): String product type (i.e. 'latlon', 'native')
             output_freq_code (str): String output frequency code (i.e. 'AVG_MON', 'AVG_DAY', 'SNAP')
@@ -75,6 +75,7 @@ def handler(event, context):
             use_lambda (bool): Boolean for whether or not processing is to occur on Lambda
             credentials (dict): Dictionary containaing credentials information for AWS
             processing_code_filename (only for lambda, str): Name of this file, used to call it from the lambda_code app.py file
+        
         context (AWS Lambda context object): AWS Lambda context, ignored
 
     Returns:
@@ -83,9 +84,9 @@ def handler(event, context):
     logger.info('START')
     print('Inside handler')
 
-    # Call run_script() function with "event" payload, and time how long it takes
+    # Call run_script() function with dictionary called payload, and time how long it takes
     all_st = time.time()
-    run_script(event)
+    run_script(payload)
     logger.info(f'DURATION\tALL\t{time.time() - all_st}\tseconds')
 
     return

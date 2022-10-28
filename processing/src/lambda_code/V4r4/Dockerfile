@@ -1,6 +1,9 @@
 FROM python:3.10.4
 
-# set a directory for the app
+# Set a bunch of commands that are to be run on the virutal lambda machine
+
+# set the home directory for the program on the virtual lambda machine
+# /home/app may be the default for lambda jobs
 ARG FUNCTION_DIR="/home/app/"
 WORKDIR ${FUNCTION_DIR}
 
