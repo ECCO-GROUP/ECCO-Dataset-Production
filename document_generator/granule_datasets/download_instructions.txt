@@ -1,0 +1,18 @@
+1. Create a file called .netrc in your home directory (linux, Mac):
+    /home/<username>/.netrc
+or _netrc (Windows):
+    C:\Users\<username>\_netrc
+    
+
+2. The netrc file must have the following structure and must include your Earthdata account login name and password:
+    machine urs.earthdata.nasa.gov
+        login <your username>
+        password <your password>
+
+
+3. Set permissions on your netrc file to be readable only by the current user. If not, you will receive the error "netrc access too permissive."
+    $ chmod 0600 ~/.netrc
+
+4.  Create an urs_cookies "cookie" file. This will be used to persist sessions across individual wget calls, making it more efficient.
+  > cd ~
+  > touch .urs_cookies

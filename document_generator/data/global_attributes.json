@@ -1,0 +1,250 @@
+[
+    {
+        "Name": "acknowledgement",
+        "Format": "string",
+        "Description": "A place to acknowledge various types of support for the project that produced this data.",
+        "Source": "ACDD"    
+    },
+    {
+        "Name": "cdm_data_type",
+        "Format": "string",
+        "Description": "The data type, as derived from Unidata's Common Data Model Scientific Data types and understood by THREDDS. (This is a THREDDS \"dataType\", and is different from the CF NetCDF attribute 'featureType', which indicates a Discrete Sampling Geometry file in CF.)",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "comment",
+        "Format": "string",
+        "Description": "Miscellaneous information about the data, not captured elsewhere. This attribute is defined in the CF Conventions.",
+        "Source": "CF, ACDD"},
+    {
+        "Name": "conventions",
+        "Format": "string",
+        "Description": "A text string identifying the netCDF conventions followed (e.g., CF-1.4, ACDD 1-3)."
+    },
+    {
+        "Name": "creator_email",
+        "Format": "string",
+        "Description": "The email address of the person (or other creator type specified by the creator_type attribute) principally responsible for creating this data.",
+        "Source": "ACDD"},
+    {
+        "Name": "creator_name",
+        "Format": "string",
+        "Description": "The name of the person (or other creator type specified by the creator_type attribute) principally responsible for creating this data.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "creator_url",
+        "Format": "string",
+        "Description": "The URL of the of the person (or other creator type specified by the creator_type attribute) principally responsible for creating this data.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "date_created",
+        "Format": "string",
+        "Description": "The date on which this version of the data was created.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "easternmost_longitude",
+        "Format": "float",
+        "Description": "Decimal degrees east, range -180 to +180. This is equivalent to ACDD geospatial_lon_max.",
+        "Source":"podaac"
+    },
+    {
+        "Name": "geospatial_lat_resolution",
+        "Format": "float",
+        "Description": "Latitude Resolution in units matching geospatial_lat_units.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "geospatial_lat_units",
+        "Format": "string",
+        "Description": "Units of the latitudinal resolution. Typically \"degrees_north\"",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "geospatial_lon_resolution",
+        "Format": "float",
+        "Description": "Longitude Resolution in units matching geospatial_lon_resolution",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "geospatial_lon_units",
+        "Format": "string",
+        "Description": "Units of the longitudinal resolution. Typically \"degrees_east\"",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "history",
+        "Format": "string",
+        "Description": "The name of the institution principally responsible for originating this data. This attribute is recommended by the CF convention.",
+        "Source": "CF, ACDD"
+    },
+    {
+        "Name": "id",
+        "Format": "string",
+        "Description": "An identifier for the data set, provided by and unique within its naming authority. The combination of the \"naming authority\" and the \"id\" should be globally unique, but the id can be globally unique by itself also. IDs can be URLs, URNs, DOIs, meaningful text strings, a local key, or any other unique string of characters. The id should not include white space characters.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "institutions",
+        "Format": "string",
+        "Description": "The name of the institution principally responsible for originating this data. This attribute is recommended by the CF convention.",
+        "Source": "CF, ACDD"
+    },
+    {
+        "Name": "keywords",
+        "Format": "string",
+        "Description": "GCMD Science Keyword(s)",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "keywords_vocabulary",
+        "Format": "string",
+        "Description": "The unique name or identifier of the vocabulary from which keywords are taken. e.g., the NASA Global Change Master Directory (GCMD) Science Keywords.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "license",
+        "Format": "string",
+        "Description": "Provide the URL to a standard or specific license, enter \"Freely Distributed\" or \"None\", or describe any restrictions to data access and distribution in free text.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "Metadata_Conventions",
+        "Format": "string",
+        "Description": "A comma-separated list of the conventions that are followed by the dataset. ",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "metadata_link",
+        "Format": "string",
+        "Description": "Link to collection metadata record at archive",
+        "Source": "ACDD"},
+    {
+        "Name": "naming_authority",
+        "Format": "string",
+        "Description": "The organization that provides the initial id (see above) for the dataset. The naming authority should be uniquely specified by this attribute via reverse-DNS naming convention.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "netcdf_version_id ",
+        "Format": "string",
+        "Description": "Version of netCDF libraries used to create this file. For example, \"4.1.1\"",
+        "Source": "GDS"
+    },
+    {
+        "Name": "northernmost_latitude",
+        "Format": "float",
+        "Description": "Decimal degrees north, range -90 to +90. This is equivalent to ACDD geospatial_lat_max.",
+        "Source": "GDS"
+    },
+    {
+        "Name": "processing_level",
+        "Format": "string",
+        "Description": "A textual description of the processing (or quality control) level of the data.",
+        "Source": "ACDD & GDS"
+    },
+    {
+        "Name": "product_version",
+        "Format": "string",
+        "Description": "The product version of this data file",
+        "Source": "GDS"
+    },
+    {
+        "Name": "project",
+        "Format": "string",
+        "Description": "The name of the project(s) principally responsible for originating this data.",
+        "Source":"ACDD"
+    },
+    {
+        "Name": "publisher_email",
+        "Format": "string",
+        "Description": "The email address of the person (or other entity specified by the publisher_type attribute) responsible for publishing the data file or product to users, with its current metadata and format.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "publisher_name",
+        "Format": "string",
+        "Description": "The name of the person (or other entity specified by the publisher_type attribute) responsible for publishing the data file or product to users, with its current metadata and format.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "publisher_url",
+        "Format": "string",
+        "Description": "The URL of the person (or other entity specified by the publisher_type attribute) responsible for publishing the data file or product to users, with its current metadata and format.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "references",
+        "Format": "string",
+        "Description": "Published or web-based references that describe the data or methods used to produce it. Recommend URIs (such as a URL or DOI) for papers or other references. This attribute is defined in the CF conventions.", 
+        "Source": "ACDD"
+    },
+    {
+        "Name": "source",
+        "Format": "string",
+        "Description": "Method of production of the original data.",
+        "Source":"CF"
+    },
+    {
+        "Name": "sourthernmost_latitude",
+        "Format": "float",
+        "Description": "Decimal degrees north, range -90 to +90. This is equivalent to ACDD geospatial_lat_min.",
+        "Source": "GDS"},
+    {
+        "Name": "spatial_resolution",
+        "Format": "string",
+        "Description": "A string describing the approximate resolution of the product.",
+        "Source": "GDS"
+    },
+    {
+        "Name": "standard_name_vocabulary",
+        "Format": "string",
+        "Description": "The name and version of the controlled vocabulary from which variable standard names are taken.",
+        "Source": "ACDD"},
+    {
+        "Name": "start_time",
+        "Format": "string",
+        "Description": "Representative date and time of the end of the granule in the ISO 8601 compliant format of \"yyyymmddThhmmssZ\".",
+        "Source": "GDS"},
+    {
+        "Name": "stop_time",
+        "Format": "string",
+        "Description": "Representative date and time of the end of the granule in the ISO 8601 compliant format of \"yyyymmddThhmmssZ\".",
+        "Source": "GDS"
+    },
+    {
+        "Name": "summary",
+        "Format": "string",
+        "Description": "A paragraph describing the dataset, analogous to an abstract for a paper.",
+        "Source": "ACDD"},
+    {
+        "Name": "time_coverage_end",
+        "Format": "string",
+        "Description": "Identical to stop_time. Included for increased ACDD compliance.",
+        "Source": "ACDD"},
+    {
+        "Name": "time_coverage_start",
+        "Format": "string",
+        "Description": "Identical to start_time. Included for increased ACDD compliance.",
+        "Source": "ACDD"},
+    {
+        "Name": "title",
+        "Format": "string",
+        "Description": "A short phrase or sentence describing the dataset. In many discovery systems, the title will be displayed in the results list from a search, and therefore should be human readable and reasonable to display in a list of such names. This attribute is recommended by the NetCDF Users Guide (NUG) and the CF conventions.",
+        "Source": "CF, ACDD"
+    },
+    {
+        "Name": "uuid",
+        "Format": "string",
+        "Description": "A Universally Unique Identifier (UUID). Numerous, simple tools can be used to create a UUID, which is inserted as the value of this attribute. See http://en.wikipedia.org/wiki/Universally_Unique_Identifier for more information and tools.",
+        "Source": "GDS"
+    },
+    {
+        "Name": "westernmost_longitude",
+        "Format": "float",
+        "Description": "Decimal degrees east, range -180 to +180. This is equivalent to ACDD geospatial_lon_min.",
+        "Source": "GDS"
+    }
+]

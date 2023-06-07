@@ -1,0 +1,405 @@
+\pagebreak
+\section{GDS 2.0 Filenames and Supporting Conventions}
+
+Striving to achieve a flexible naming convention that maintains consistency across processing levels
+and better serves user needs, the GDS 2.0 uses a single form for all GHRSST data files. An overview
+of the format is presented below in Section 7.1 along with example filenames. Details on each of the
+filename convention components are provided in Sections 7.2 through 7.8.
+\par
+In addition, a best practice has been established for creating character strings used to describe
+GHRSST SST products and sources of ancillary data. These strings, and associated numeric codes
+for the SST products, are used within some GHRSST data files but are not part of the filename
+convention itself. The best practice is described in Section 7.9.
+\par
+
+\subsection{1 Overview of Filename Convention and Example Filenames}
+The filenaming convention for the GDS 2.0 is shown below. 
+\par \vspace{0.25in}
+
+\texttt{<Indicative Date><Indicative Time>-<RDAC>-<Processing Level>\_GHRSST-<SST Type>-
+<Product String>-<Additional Segregator>-v<GDS Version>-fv<File Version>.<File Type>}
+\par \vspace{0.25in}
+
+The variable components within braces (“< >”) are summarized in Table 7-1 below and detailed in the
+\textbf{should not} be used in any GHRSST code or the <Additional Segregator> element. Example
+filenames are given later in this section. While no strict limit to filename length is mandated, RDACs
+are encouraged to keep the length to less than 240 characters to increase readability and usability.
+
+%Table 7-1. GDS 2.0 Filenaming convention components
+\begin{longtable}{|p{0.2\textwidth}|p{0.3\textwidth}|p{0.5\textwidth}|}
+\caption{GDS 2.0 Filenaming convention components}
+\label{tab:filenaming conventions}
+\\ \hline
+\rowcolor{lightgray}
+\textbf{Name} & \textbf{Definition} & \textbf{Description} \\ \hline 
+\endfirsthead
+<Indicative Date> & YYYYMMDD & The identifying date for this data set. See Section 7.2. \\ \hline
+<Indicative Time> & HHMMSS & The identifying time for this data set. The time used is dependent on the <Processing Level> of
+the data set: L2P: start time of granule 
+\begin{itemize}
+ \item{L3U: start time of granule}
+ \item{L3C and L3S: centre time of the collation window}
+ \item{L4 and GMPE: nominal time of analysis}
+\end{itemize}
+All times should be given in UTC. See Section 7.3. \\ \hline
+<RDAC> & The RDAC where the file was created & The Regional Data Assembly Centre (RDAC)code, listed in Section 7.4. \\ \hline
+<Processing Level> & The data processing level code (L2P, L3U, L3C, L3S, or L4) & 
+The data processing level code, defined in Section 7.5. \\ \hline
+<SST Type> & The type of SST data included in the file. & 
+Conforms to the GHRSST definitions for SST, defined in Section 7.6 \\ \hline
+
+<Product String> &
+A character string identifying the
+SST product set. The string is
+used uniquely within an RDAC
+but may be shared across
+RDACs. & 
+The unique “name” within an RDAC of the
+product line. See Section 7.7 for the product
+string lists, one each for L2P, L3, L4, and GMPE
+products. See Section 7.7. \\ \hline
+
+<Additional Segregator> &
+Optional text to distinguish
+between files with the same
+<Product String>. Dashes are
+not allowed within this element. &
+This text is used since the other filename
+components are sometimes insufficient to
+uniquely identify a file. For example, in L2P or
+L3U (un-collated) products this is often the
+original file name or processing algorithm. Note,
+underscores should be used, not dashes. For L4
+files, this element should begin with the
+appropriate regional code as defined in Section 7.8. This component is optional but must be used
+in those cases were non-unique filenames would otherwise result. \\ \hline
+
+<GDS Version> & nn.n & Version number of the GDS used to process the file. For example, GDS 2.0 = “02.0”. \\ \hline
+<File Version> & xx.x & Version number for the file, for example, “01.0”. \\ \hline
+
+<File Type> & netCDF data file suffix (nc) or ISO metadata file suffix (xml) & 
+Indicates this is a netCDF file containing data or its corresponding ISO-19115 metadata record in XML.\\ \hline
+
+\end{longtable}
+
+\subsubsection{L2\_GHRSST Filename Example}
+20070503132300-NAVO-L2P\_GHRSST-SSTblend-AVHRR17\_L-SST\_s0123\_e0135-v02.0-fv01.0.nc \par
+The above file contains GHRSST L2P blended SST data for 03 May 2007, from AVHRR LAC data
+collected from the NOAA-17 platform. The granule begins at 13:23:00 hours. It is version 1.0 of the
+file and was produced by the NAVO RDAC in accordance with the GDS 2.0. The <Additional
+Segregator> text is “SST\_s0123\_e0135”. \par
+
+\subsubsection{L3\_GHRSST Filename Example}
+20070503110153-REMSS-L3C\_GHRSST-SSTsubskin-TMI-tmi\_20070503rt-v02.0-fv01.0.nc \par
+The above file was produced by the REMSS RDAC and contains collated L3 sub-skin SST data from
+the TMI instrument for 03 May 2007. The collated file has a centre time of at 11:01:53 hours. It is
+version 1.0 of the file and was produced according to GDS 2.0 specifications. Its <Additional
+Segregator> text is “tmi\_20070503rt”. \par
+
+\subsubsection{L4\_GHRSST Filename Example}
+20070503120000-UKMO-L4\_GHRSST-SSTfnd-OSTIA-GLOB-v02.0-fv01.0.nc \par
+The above file contains L4 foundation SST data produced at the UKMO RDAC using the OSTIA
+system. It is global coverage, contains data for 03 May 2007, was produced to GDS 2.0 specifications
+and is version 1.0 of the file. The nominal time of the OSTIA analysis is 12:00:00 hours. \par
+
+
+\subsection{<Indicative Date>}
+The identifying date for this data set, using the format YYYYMMDD, where YYYY is the four-digit year,
+MM is the two-digit month from 01 to 12, and DD is the two-digit day of month from 01 to 31. The date
+used should best represent the observation date for the dataset. \par
+
+\subsection{<Indicative Time>}
+The identifying time for this data set in UTC, using the format HHMMSS, where HH is the two-digit
+hour from 00 to 23, MM is the two-digit minute from 00 to 59, and SS is the two-digit second from 00 to
+59. The time used is dependent on the <Processing Level> of the data set: \par \vspace{0.5in}
+
+L2P: start time of granule \\
+L3U: start time of granule \\ 
+L3C and L3S: centre time of the collation window \\ 
+L4 and GMPE: nominal time of analysis \par \vspace{0.1in}
+All times should be given in UTC and should be chosen to best represent the observation time for this
+dataset. Note: RDACs should ensure the applications they use to determine UTC proprerly account
+for leap seconds.
+
+\subsection{<RDAC>}
+Codes used for GHRSST Regional Data Assembly Centres (RDACs) are provided in the table below.
+New codes are assigned by the GHRSST Data And Systems Technical Advisory Group (DAS-TAG)
+and entered into the table upon agreement by the GDAC, LTSRF, and relevant RDACs. \par
+
+
+% Table 7-2: Regional Data Assembly Centre (RDAC) code table.
+\begin{table}[h]
+\centering
+\caption{Regional Data Assembly Centre (RDAC) code table}
+\label{tab:RDAC code table}
+\begin{tabular}{|p{0.2\textwidth}|p{0.8\textwidth}|}
+\hline
+\rowcolor{lightgray}
+RDAC Code & GHRSST RDAC Name \\ \hline
+ABOM & Australian Bureau of Meteorology \\ \hline
+CMC & Canadian Meteorological Centre \\ \hline
+DMI & Danish Meteorological Institute \\ \hline
+EUR & European RDAC \\ \hline
+GOS & Gruppo di Oceanografia da Satellite \\ \hline
+JPL & JPL Physical Oceanography Distributed Active Archive Center \\ \hline
+JPL\_OUROCEAN & JPL OurOcean Project \\ \hline
+METNO & Norwegian Meteorological Institute \\ \hline
+MYO & MyOcean \\ \hline
+NAVO & Naval Oceanographic Office \\ \hline
+NCDC & NOAA National Climatic Data Center \\ \hline
+NEODAAS & NERC Observation Data Acquisition and Analysis Service \\ \hline
+NOC & National Oceanography Centre, Southampton \\ \hline
+NODC & NOAA National Oceanographic Data Center \\ \hline
+OSDPD & NOAA Office of Satellite Data Processing and Distribution \\ \hline
+OSISAF & EUMETSAT Ocean and Sea Ice Satellite Applications Facility \\ \hline
+REMSS & Remote Sensing Systems, CA, USA \\ \hline
+RSMAS & University of Miami, RSMAS \\ \hline
+UKMO & UK Meteorological Office \\ \hline
+UPA & United Kingdom Multi-Mission Processing and Archiving Facility \\ \hline
+ESACCI & ESA SST Climate Change Initiative \\ \hline
+JAXA & Japan Aerospace Exploration Agency \\ \hline
+New codes & Please contact the GHRSST international Project Office if you require new
+codes to be included in future revisions of the GDS. \\ \hline
+
+\end{tabular}
+\end{table}
+
+
+\subsection{<Processing Level>}
+Satellite data processing level definitions can lead to ambiguous situations, especially regarding the
+distinction between L3 and L4 products. GHRSST identified the use of analysis procedures to fill gaps
+where no observations exist to resolve this ambiguity. Within GHRSST filenames, the <Processing
+Level> codes are shown below in Table 7-3. GHRSST currently establishes standards for L2P, L3U,
+L3C, L3S, and L4 (GHRSST Multi-Product Ensembles known as GMPE are a special kind of L4
+product for which GHRSST also provides standards). \par
+
+% Table 7-3:  GHRSST Processing Level Conventions and Codes
+\begin{table}[h]
+%\centering
+\caption{GHRSST Processing Level Conventions and Codes}
+\label{tab:GHRSST Processing Level Conventions and Codes}
+\begin{tabular}{|p{0.1\textwidth}|p{0.15\textwidth}|p{0.75\textwidth}|}
+\hline
+\rowcolor{lightgray}
+\textbf{Level} & \textbf{<Processing Level> Code} & \textbf{Description} \\ \hline
+
+Level 0 & L0 &
+Unprocessed instrument and payload data at full resolution. GHRSST
+does not make recommendations regarding formats or content for data
+at this processing level. \\ \hline
+
+Level 1A & L1A & 
+Reconstructed unprocessed instrument data at full resolution, time
+referenced, and annotated with ancillary information, including
+radiometric and geometric calibration coefficients and geo-referencing
+parameters, computed and appended, but not applied, to L0 data.
+GHRSST does not make recommendations regarding formats or
+content for data at this processing level. \\ \hline
+
+Level 1B & L1B & 
+Level 1A data that have been processed to sensor units. GHRSST
+does not currently make recommendations regarding formats or content
+for L1B data. \\ \hline
+
+Level 2 & Preprocessed L2P &
+Geophysical variables derived from Level 1 source data at the same
+resolution and location as the Level 1 data, typically in a satellite
+projection with geographic information. These data form the
+fundamental basis for higher-level GHRSST products and require
+ancillary data and uncertainty estimates. \\ \hline
+
+Level 3 & L3U L3C L3S & Level 2 variables mapped on a defined grid with reduced requirements for ancillary data. 
+Uncertainty estimates are still mandatory. Three
+types of L3 products are defined:
+\begin{itemize}
+\item{Un-collated (L3U): L2 data granules remapped to a space grid without combining any observations from overlapping orbits}
+\item {Collated (L3C): observations combined from a single instrument into a space-time grid}
+\item {Super-collated (L3S): observations combined from multiple instruments into a space-time grid.}
+\end{itemize}
+Note that L3 GHRSST products do not use analysis or interpolation
+procedures to fill gaps where no observations are available. \\ \hline
+
+Level 4 & L4 &
+Data sets created from the analysis of lower level data that result in
+gridded, gap-free products. SST data generated from multiple sources
+of satellite data using optimal interpolation are an example of L4
+GHRSST products. GMPE products are a type of L4 dataset. \\  \hline
+
+Note that within GHRSST, all L2P files require a full set of extensive ancillary data such as wind
+speeds and times of observation that are provided as \'dynamic flags\' that users can manipulate to
+filter data according to their own quality criteria. L2P files form the basis of higher-level products and
+are often the best level products for data assimilation. The requirement for dynamic flags is particularly
+important in this context. Higher-level L3 products are often intended for general use or created for
+input to Level 4 analysis systems so the requirement for extensive ancillary data is reduced. Since
+some GHRSST RDACs only process data natively on grids (especially in the case of geostationary
+platform observations), the GDS 2.0 L3 specification is flexible enough to allow for the creation of L3
+files which meet all the content requirements of a L2P file. In all L2P and L3 cases, bias and standard
+deviation uncertainty estimates are mandatory. \par
+
+The distinction between L3 GHRSST and L4 GHRSST data is made primarily on whether or not any
+gap-filling techniques are employed, not on whether data from multiple instruments is used in the L3
+product. If no gap filling procedure (such as optimal interpolation) is used, then the product remains a
+L3 GHRSST product. GHRSST defines three kinds of L3 files: un-collated (L3U), collated (L3C), and
+super-collated (L3S). If gap filling is used to fill all observations gaps, then the resulting gap-free data
+are considered L4 GHRSST data products. \par
+\end{tabular}
+\end{table}
+
+
+
+
+
+% \subsection{<SST Type>}
+% In conjunction with the NetCDF Climate and Forecast (CF) community [AD-9] the GHRSST Science
+% Team agreed on the CF standard names for “SST” shown in the following figure and described in
+% more detail below. The names were first included in CF-1.3, and the current version (CF-1.4) of the
+% standard name table that can be found in [AD-8]. In addition, the GHRSST Science Team agreed to
+% use the CF Naming Convention [AD-3] for variable names that do not already exist as part of the CF
+% Convention. CF definitions are used in the GDS and across GHRSST and are shown schematically in
+% Figure 7-1. The different kinds of SST are detailed later in this section and the relevant <SST Type>
+% codes to be used in the filenames are provided. \par \vspace{1in}
+
+% % Figure 7-1. Overview of SST measurement types used within GHRSST
+% \begin{figure}[h]
+%     \caption{Overview of SST measurment types used within GHRSST}
+%     \label{fig:Overview of SST measurment types used within GHRSST}
+% \end{figure}
+% \textbf{Figure 7-1. Overview of SST measurement types used within GHRSST.} \par
+% CF Definition: \emph{sea\_surface\_temperature is usually abbreviated as "SST". It is the temperature of sea
+% water near the surface (including the part under sea-ice, if any), and not the interface temperature,
+% whose standard name is surface\_temperature. For the temperature of sea water at a particular depth
+% or layer, a data variable of sea\_water\_temperature with a vertical coordinate axis should be used.} \par
+% Additional Details: The sea surface skin temperature (SSTskin) as defined above represents the
+% actual temperature of the water across a very small depth of approximately 20 micrometers. This
+% definition is chosen for consistency with the majority of infrared satellite and ship mounted radiometer
+% measurements. \par
+
+% \textbf{Sea\_surface\_subskin\_temperature (GHRSST <SST Type>: SSTsubskin):}\par
+% CF Definition: \emph{The surface called "surface" means the lower boundary of the atmosphere. The sea
+% surface subskin temperature is the temperature at the base of the conductive laminar sub-layer of the
+% ocean surface, that is, at a depth of approximately 1 - 1.5 millimetres below the air-sea interface. For
+% practical purposes, this quantity can be well approximated to the measurement of surface temperature
+% by a microwave radiometer operating in the 6 - 11 gigahertz frequency range, but the relationship is
+% neither direct nor invariant to changing physical conditions or to the specific geometry of the
+% microwave measurements. Measurements of this quantity are subject to a large potential diurnal cycle
+% due to thermal stratification of the upper ocean layer in low wind speed high solar irradiance
+% conditions.}\par
+% Additional Details: The sea surface subskin temperature (SSTsubskin) represents the temperature at
+% the base of the thermal skin layer. The difference between SSTint and SSTsubskin is related to the
+% net flux of heat through the thermal skin layer. SSTsubskin is the temperature of a layer approximately
+% 1 mm thick at the ocean surface.\par
+
+% \textbf{Sea\_water\_temperature (GHRSST <SST Type>: SSTdepth or SSTz):}\par
+% CF Definition: \emph{The general term, "bulk" sea surface temperature, has the standard name
+% sea\_surface\_temperature with no associated vertical coordinate axis. The temperature of sea water at
+% a particular depth (other than the foundation level) should be reported using the standard name
+% sea\_water\_temperature and, wherever possible, supplying a vertical coordinate axis or scalar
+% coordinate variable.}\par
+% Additional Details: Sea water temperature (SSTdepth or SSTz, for example SST1.5m) is the terminology
+% adopted by GHRSST to represent in situ measurements near the surface of the ocean that have
+% traditionally been reported simply as SST or "bulk" SST. For example SST6m would refer to an SST
+% measurement made at a depth of 6 m. Without a clear statement of the precise depth at which the
+% SST measurement was made, and the circumstances surrounding the measurement, such a sample
+% lacks the information needed for comparison with, or validation of satellite-derived estimates of SST
+% using other data sources. The terminology has been introduced to encourage the reporting of depth
+% (z) along with the temperature.\par
+% All measurements of water temperature beneath the SSTsubskin are obtained from a wide variety of
+% sensors such as drifting buoys having single temperature sensors attached to their hull, moored buoys
+% that sometimes include deep thermistor chains at depths ranging from a few meters to a few thousand
+% meters, thermosalinograph (TSG) systems aboard ships recording at a fixed depth while the vessel is 
+% underway, Conductivity Temperature and Depth (CTD) systems providing detailed vertical profiles of
+% the thermohaline structure used during hydrographic surveys and to considerable depths of several
+% thousand meters, and various expendable bathythermograph systems (XBT). In all cases, these
+% temperature observations are distinct from those obtained using remote sensing techniques and
+% measurements at a given depth should be referred to as sea\_water\_temperature qualified by a depth
+% in meters rather than sea surface temperatures. The situation is complicated further when one
+% considers ocean model outputs for which the SST may be the mean SST over a layer of the ocean
+% several tens of meters thick.\par
+
+% \textbf{Sea\_surface\_foundation\_temperature (GHRSST <SST Type>: SSTfnd):}\par
+% CF Definition: \emph{The surface called "surface" means the lower boundary of the atmosphere. The sea
+% surface foundation temperature is the water temperature that is not influenced by a thermally stratified
+% layer of diurnal temperature variability (either by daytime warming or nocturnal cooling). The
+% foundation temperature is named to indicate that it is the temperature from which the growth of the
+% diurnal thermocline develops each day, noting that on some occasions with a deep mixed layer there
+% is no clear foundation temperature in the surface layer. In general, sea surface foundation temperature
+% will be similar to a night-time minimum or pre-dawn value at depths of between approximately 1 and 5
+% meters. In the absence of any diurnal signal, the foundation temperature is considered equivalent to
+% the quantity with standard name sea\_surface\_subskin\_temperature. The sea surface foundation
+% temperature defines a level in the upper water column that varies in depth, space, and time depending
+% on the local balance between thermal stratification and turbulent energy and is expected to change
+% slowly over the course of a day. If possible, a data variable with the standard name
+% sea\_surface\_foundation\_temperature should be used with a scalar vertical coordinate variable to
+% specify the depth of the foundation level. Sea surface foundation temperature is measured at the base
+% of the diurnal thermocline or as close to the water surface as possible in the absence of thermal
+% stratification. Only in situ contact thermometry is able to measure the sea surface foundation
+% temperature. Analysis procedures must be used to estimate sea surface foundation temperature value
+% from radiometric satellite measurements of the quantities with standard names
+% sea\_surface\_skin\_temperature and sea\_surface\_subskin\_temperature. Sea surface foundation
+% temperature provides a connection with the historical concept of a "bulk" sea surface temperature
+% considered representative of the oceanic mixed layer temperature that is typically represented by any
+% sea temperature measurement within the upper ocean over a depth range of 1 to approximately 20
+% meters. The general term, "bulk" sea surface temperature, has the standard name
+% sea\_surface\_temperature with no associated vertical coordinate axis. Sea surface foundation
+% temperature provides a more precise, well-defined quantity than "bulk" sea surface temperature and,
+% consequently, is more representative of the mixed layer temperature. The temperature of sea water at
+% a particular depth (other than the foundation level) should be reported using the standard name
+% sea\_water\_temperature and, wherever possible, supplying a vertical coordinate axis or scalar
+% coordinate variable.}\par
+% Additional Details: Through the definition of the CF standard names, GHRSST is attempting to
+% discourage the use of the term “bulk SST”, replacing it instead with sea\_water\_temperature
+% (SSTdepth) and a depth coordinate, or sea\_surface\_foundation\_temperature (SSTfnd) and a depth
+% coordinate if possible, if the observation comes from the base of the diurnal thermocline.\par
+
+% \textbf{Blended SST (GHRSST <SST Type>: SSTblend):}\par
+% In addition to the CF standard names defined above, GHRSST also uses the term “Blended SST” for
+% ambiguous cases when the depth or type of SST is not well known. This ambiguity in depth may arise
+% in some L4 analysis products that merge multiple types of SST from satellite and in situ observations.
+% Note, however, that many L4 analysis systems do attempt to specifically create a sea surface
+% foundation temperature, SSTfnd.\par
+% The SST codes and CF standard names defined above and used within GHRSST are summarized
+% along with their key characteristics in Table 7-4.\par
+
+% %Table 7-4. GHRSST <SST Type> code and summary table
+% \begin{table}[h]
+%     \caption{ECCO <SST Type> code and summary table}
+%     \label{tab:ECCO <SST Type> code and summary table}
+%     \begin{tabular}{|p{0.1\textwidth}|p{0.65\textwidth}|p{0.1\textwidth}|p{0.15\textwidth}|}
+%     \rowcolor{lightgray}
+%     \textbf{ECCO <SST Type>} & \textbf{CF Standard Name} & \textbf{Approximate Depth} & \textbf{Typically Observed
+%     by...} \\ \hline
+%     SSTint & \texttt{sea\_surface\_temperature} &  0 meters & Not presently measureable \\ \hline
+%     SSTskin & \texttt{sea\_surface\_skin\_temperature} & 10 - 20 micrometers & Infrared radiometers
+%     operating in a range
+%     of wavelengths form
+%     3.7 to 12
+%     micrometers \\ \hline
+
+%     SSTsubskin & \texttt{sea\_surface\_subskin\_temperature} & 1 - 1.5 millimeters & Microwave radiometers operating in a range
+%     of frequencies from
+%     6-11 gigahertz \\ \hline
+
+%     SSTdepth & \texttt{sea\_water\_temperature} & Specified by
+%     vertical
+%     coordinate
+%     (e.g., SST\_{5m}) & In situ observing systems \\ \hline
+
+%     SSTfnd & \texttt{sea\_surface\_foundation\_temperature} & 1-5 meters pre-dawn & 
+%     In situ observing systems \\ \hline
+
+%     SSTblend & None &  Unknown & Blend of satellite and in situ observations \\ \hline
+    
+%     \end{tabular}
+% \end{table}
+
+
+% \subsection{<Product String>}
+% The current set of GHRSST product strings is listed in tables below, in one table each for L2P (Table
+% 7-5), L3 (Table 7-6), L4 (Table 7-7) and GMPE (Table 7-8) products. Included in the L2P table are
+% also codes for satellite platforms and sensors. New strings are entered into the tables upon
+% registration by the DAS-TAG and agreement by the GDAC, LTSRF, and relevant RDACs. These
+% product strings are used within the GHRSST filename convention and within the GHRSST unique data
+% set codes described in Section 7.9. The satellite platform and satellite sensor entries are also used in
+% the netCDF global attributes, \texttt{platform} and \texttt{sensor}, for all GHRSST product files. See Section 8.2
+% for more information on the required \texttt{global attributes}. \par
+

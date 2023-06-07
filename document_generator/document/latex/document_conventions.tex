@@ -1,0 +1,78 @@
+\pagebreak
+\section{Document Conventions}
+The following sub-sections describe the notation conventions and data storage types that are used
+throughout this GDS 2.0 Technical Specification. Implementation projects are expected to adhere to
+the nomenclature and style of the GDS 2.0 in their own documentation as much as possible to
+facilitate international coordination of documentation describing the data products and services within
+the GHRSST R/GTS framework [RD-2].
+
+\subsection{Use of text types}
+The following text types are used throughout this document:
+\begin{table}[h]
+\centering
+\caption{Definition of text styles used in the GDS}
+\label{tab:table-label}
+\begin{tabular}{|p{2.5cm}|>{\raggedright}p{5.5cm}|p{3cm}|}
+\hline \rowcolor{lightgray}
+\textbf{Text Type} & \textbf{Meaning} & \textbf{Example} \\
+\hline
+Bold Courier font & Denotes a variable name & \texttt{dt\_analysis} \\
+\hline
+Bold Courier font & Denotes a netCDF attribute name & \texttt{gds\_version\_id} \\
+\hline
+Arial & Denotes regular text. & This is normal text. \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Use of colour in tables}
+The colours defined in Table 4-2 are used throughout the GDS.
+\begin{table}[h]
+\centering
+\caption{Definition of colour styles used in the GDS}
+\label{tab:color-styles}
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor{lightgray} \textbf{Colour} & \textbf{Meaning} & \textbf{Example}\\
+\hline
+Grey & Denotes a table column name & \cellcolor{lightgray} \texttt{Variable}\\
+\hline
+Blue & Denotes a mandatory item & \cellcolor{cyan} \texttt{analysed\_sst}\\
+\hline
+Violet & Denotes an item mandatory for only certain situations & \cellcolor{Thistle} \texttt{dt\_analysis}\\
+\hline
+Yellow & Denotes an optional item & \cellcolor{Goldenrod} \texttt{experimental\_field}\\
+\hline
+Green & Denotes grid dimensions & \cellcolor{YellowGreen} \texttt{ni=1024}\\
+\hline
+Pink & Denotes grid coordinates & \cellcolor{Apricot} \texttt{float lat(nj, ni)}\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Definitions of storage types within the GDS 2.0}
+Computer storage types referred to in the GDS are defined in Table 4-3 and follow those used in
+netCDF.
+
+\begin{table}[h]
+\centering
+\caption{Storage type definitions used in the GDS}
+\label{tab:storage-definitions}
+\begin{tabular}{|l|l|}
+\hline
+\rowcolor{lightgray} \textbf{Name} & \textbf{Storage Type}\\
+\hline
+byte & 8 bit signed integer\\
+\hline
+short & 16 bit signed integer\\
+\hline
+int (or long) & 32 bit signed integer\\
+\hline
+float & 32 bit floating point\\
+\hline
+double & 64 bit floating point\\
+\hline
+string & Character string\\
+\hline
+\end{tabular}
+\end{table}

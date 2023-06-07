@@ -1,0 +1,109 @@
+#import cdf_reader as cr
+import utils as s
+import json
+import cdf_extract
+import cdf_plotter
+
+def data_products(filePath:str, directory:str, imageDirectory:str, section:str='native')->list:
+    """
+
+    Generates a list of LaTeX lines for the Data Products section of the report.
+    Parameters:
+        filePath (str): The path to the JSON file containing the data products.
+        directory (str): The directory in which to search for the NetCDF files.
+        imageDirectory (str): The directory in which to search for the images.
+        section (str): The section of the report to generate.
+            accepted values: "Native", "Latlon", "1D" , default="natives"
+    Returns:
+        list: A list of LaTeX lines for the Data Products section of the report.
+
+    """
+    is_coord = False
+    if 'Coordinate' in section:
+        is_coord = True
+    if section != '1D':
+        section = section.capitalize()
+    
+    l = []
+
+    # Load the JSON data
+    with open(filePath, 'r') as json_file:
+        data = json.load(json_file)
+
+
+    #coord_list = create_coord_section(data, filePath, directory, imageDirectory, section)
+    # Iterate through the JSON objects
+    for item in data:
+        filename = item["filename"]
+        netCDF_ds = s.sanitize(filename)
+        l.append(r'\pagebreak') # Page break -- added
+        l.append(r'\subsection{'+ f'{section}' + ' NetCDF '+ f'{netCDF_ds}' + r'}')
+        #l.append(r'\par\vspace{0.5cm}')
+        l.append(r'\newp')
+        
+        fields, ds = cdf_extract.search_and_extract(filename, directory, is_coord)
+        # insert table function for each field in ds here ! 
+        l.extend(cdf_extract.fieldTable(ds, is_coord))
+        for field in fields:
+            attrs = cdf_extract.extract_field_info(field)
+            #l.extend(newLines)
+
+            # Create latex table for each variable
+            fieldName = attrs['Variable Name']
+            cleanName = s.sanitize(fieldName)
+            l.append(r'\pagebreak') # Page break -- added 
+            l.append(fr'\subsubsection{{{section} Variable {cleanName}}}')
+            dataVarTable = cdf_extract.data_var_table(fieldName, attrs, filename)
+            l.extend(dataVarTable)    
+
+            # Create latex plot for each variable
+            dataVarPlot = cdf_plotter.data_var_plot(ds, ds[fieldName], imageDirectory, True, is_coord)
+            l.append(r'\begin{figure}[H]')
+            l.append(r'\centering')
+            l.append(dataVarPlot) #testing right here
+            l.append(fr"\caption{{\\Dataset: {s.sanitize(filename)}\\Variable: {s.sanitize(fieldName)}}}") #Just 
+            l.append(fr'\label{{tab:table-{filename}_{fieldName}-Plot}}')
+            l.append(r'\end{figure}')
+        # if is_coord:
+        #     break
+
+    return l
+
+
+############################################################################################################
+#                                   Helper functions                
+############################################################################################################
+# def create_coord_section(data, filePath:str, directory:str, imageDirectory:str, section:str)->list[str]:
+#     # Iterate through the JSON objects
+#     for item in data:
+#         filename = item["filename"]
+#         netCDF_ds = s.sanitize(filename)
+#         l.append(r'\pagebreak') # Page break -- added
+#         l.append(r'\subsection{'+ f'{section}' + ' NetCDF '+ f'{netCDF_ds}' + r'}')
+#         #l.append(r'\par\vspace{0.5cm}')
+#         l.append(r'\newp')
+        
+#         fields, ds = cdf_extract.search_and_extract(filename, directory)
+#         # insert table function for each field in ds here ! 
+#         l.extend(cdf_extract.fieldTable(ds))
+#         for field in fields:
+#             attrs = cdf_extract.extract_field_info(field)
+#             #l.extend(newLines)
+
+#             # Create latex table for each variable
+#             fieldName = attrs['Variable Name']
+#             cleanName = s.sanitize(fieldName)
+#             l.append(r'\pagebreak') # Page break -- added 
+#             l.append(fr'\subsubsection{{{section} Variable {cleanName}}}')
+#             dataVarTable = cdf_extract.data_var_table(fieldName, attrs, filename)
+#             l.extend(dataVarTable)    
+
+#             # Create latex plot for each variable
+#             dataVarPlot = cdf_plotter.data_var_plot(ds, ds[fieldName], imageDirectory)
+#             l.append(r'\begin{figure}[H]')
+#             l.append(r'\centering')
+#             l.append(dataVarPlot) #testing right here
+#             l.append(fr"\caption{{\\Dataset: {s.sanitize(filename)}\\Variable: {s.sanitize(fieldName)}}}") #Just 
+#             l.append(fr'\label{{tab:table-{filename}_{fieldName}-Plot}}')
+#             l.append(r'\end{figure}')
+#     return l

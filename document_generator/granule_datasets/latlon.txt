@@ -1,0 +1,13 @@
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SSH_05DEG_DAILY_V4R4/SEA_SURFACE_HEIGHT_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OBP_05DEG_DAILY_V4R4/OCEAN_BOTTOM_PRESSURE_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_FRESH_FLUX_05DEG_DAILY_V4R4/OCEAN_AND_ICE_SURFACE_FW_FLUX_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_HEAT_FLUX_05DEG_DAILY_V4R4/OCEAN_AND_ICE_SURFACE_HEAT_FLUX_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_ATM_STATE_05DEG_DAILY_V4R4/ATM_SURFACE_TEMP_HUM_WIND_PRES_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_MIXED_LAYER_DEPTH_05DEG_DAILY_V4R4/OCEAN_MIXED_LAYER_DEPTH_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_STRESS_05DEG_DAILY_V4R4/OCEAN_AND_ICE_SURFACE_STRESS_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SEA_ICE_CONC_THICKNESS_05DEG_DAILY_V4R4/SEA_ICE_CONC_THICKNESS_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SEA_ICE_VELOCITY_05DEG_DAILY_V4R4/SEA_ICE_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_TEMP_SALINITY_05DEG_DAILY_V4R4/OCEAN_TEMPERATURE_SALINITY_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_DENS_STRAT_PRESS_05DEG_DAILY_V4R4/OCEAN_DENS_STRAT_PRESS_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_VEL_05DEG_DAILY_V4R4/OCEAN_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_BOLUS_05DEG_DAILY_V4R4/OCEAN_BOLUS_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
