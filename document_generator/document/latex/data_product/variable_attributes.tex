@@ -1,0 +1,103 @@
+% Table 8-2 Variable attributes for GDS 2.0 netCDF data files
+\begin{longtable}{|p{0.168\textwidth}|p{0.20\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}
+\caption{Table 8-2. Variable attributes for GDS 2.0 netCDF data files}
+\label{tab:variable-attributes} \\ 
+\hline \endhead
+\hline \endfoot
+\rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline
+\rowcolor{LightCyan} \_FillValue & Must be the same as the variable type & A value used to indicate array elements containing no valid data. This value must be of the same type as the storage (packed) type; should be set as the minimum value for this type. Note that some netCDF readers are unable to cope with signed bytes and may, in these cases, report fill as 128. Some cases will be reported as unsigned bytes 0 to 255. Required for the majority of variables except mask and l2p\_flags. & CF \\ \hline
+
+\rowcolor{LightCyan} units & string & Text description of the units, preferably S.I., and must be compatible with the Unidata UDUNITS-2 package [AD-5]. For a given variable (e.g. wind speed), these must be the same for each dataset. Required for the majority of variables except mask, quality\_level, and l2p\_flags. & CF, ACDD \\ \hline
+
+\rowcolor{LightCyan} scale\_factor & Must be expressed in the unpacked data type & To be multiplied by the variable to recover the
+original value. Defined by the producing
+RDAC. Valid values within \texttt\{value\_min\} and
+\texttt\{valid\_max\} should be transformed by
+\texttt\{scale\_factor\} and \texttt\{add\_offset\}, otherwise
+skipped to avoid floating point errors. & CF \\ \hline
+
+\rowcolor{LightCyan} add\_offset & Must be expressed in the unpacked data type & To be added to the variable after multiplying by the scale factor to recover the original value. If only one of \texttt\{scale\_factor\} or \texttt\{add\_offset\} is needed, then both should be included anyway to avoid ambiguity, with \texttt\{scale\_factor\} defaulting to 1.0 and add\_offset defaulting to 0.0. Defined by the producing RDAC. & CF \\ \hline
+
+\rowcolor{LightCyan} long\_name & string & A free-text descriptive variable name. & CF, ACDD \\ \hline
+
+\rowcolor{LightCyan} valid\_min & Expressed in same data type as variable & Minimum valid value for this variable once they are packed (in storage type). The fill value should be outside this valid range. Note that some netCDF readers are unable to cope with signed bytes and may, in these cases, report valid min as 129. Some cases as unsigned bytes 0 to 255. Values outside of \texttt\{valid\_min\} and \texttt\{valid\_max\} will be treated as missing values. Required for all variables except variable time. & CF \\ \hline
+
+\rowcolor{LightCyan} valid\_max & Expressed in same data type as variable & Maximum valid value for this variable once
+they are packed (in storage type). The fill
+value should be outside this valid range. Note
+that some netCDF readers are unable to cope
+with signed bytes and may, in these cases,
+report valid min as 127. Required for all
+variables except variable time. & CF \\ \hline
+
+\rowcolor{LightCyan} standard\_name & string & Where defined, a standard and unique
+description of a physical quantity. For the
+complete list of standard name strings, see
+[AD-8]. \textbf\{Do not\} include this attribute if no
+\texttt\{standard\_name\} exists. & CF, ACDD \\ \hline
+
+\rowcolor{LightCyan} comment & string & Miscellaneous information about the variable or the methods used to produce it. & CF \\ \hline
+
+\rowcolor{LightCyan} source & string & \textbf\{For L2P and L3 files\}: For a data variable with
+a single source, use the GHRSST unique
+string listed in Table 7-10 if the source is a
+GHRSST SST product. For other sources,
+following the best practice described in
+Section 7.9 to create the character string.
+
+If the data variable contains multiple sources,
+set this string to be the relevant “sources of”
+variable name. For example, if multiple wind
+speed sources are used, set \texttt\{source =\}
+sources\_of\_wind\_speed.
+
+\textbf\{For L4 and GMPE files\}: follow the \texttt\{source\}
+convention used for the global attribute of the
+same name, but provide in the commaseparated list only the sources relevant to this
+variable. & CF \\ \hline
+
+\rowcolor{LightCyan} references & string & Published or web-based references that describe the data or methods used to produce it. Note that while at least one reference is required in the global attributes (See Table 8-1), references to this specific data variable may also be given. & CF \\ \hline
+
+\rowcolor{LightCyan} axis & String & For use with coordinate variables only. The attribute 'axis' may be attached to a coordinate variable and given one of the values “X”, “Y”, “Z”, or “T”, which stand for a longitude, latitude, vertical, or time axis respectively. See: \url{http://cfpcmdi.llnl.gov/documents/cfconventions/1.4/cfconventions.html#coordinate-types} & CF \\ \hline
+
+\rowcolor{LightCyan} positive & String & For use with a vertical coordinate variables
+only. May have the value “up” or “down”. For
+example, if an oceanographic netCDF file
+encodes the depth of the surface as 0 and the
+depth of 1000 meters as 1000 then the axis
+would set positive to “down”. If a depth of
+1000 meters was encoded as -1000, then
+positive would be set to “up”. See the section
+on vertical-coordinate in [AD-3] & CF \\ \hline
+
+\rowcolor{LightCyan} coordinates & String & Identifies auxiliary coordinate variables, label variables, and alternate coordinate variables. See the section on coordinate-system in [AD3]. This attribute must be provided if the data are on a non-regular lat/lon grid (map projection or swath data). & CF \\ \hline
+
+\rowcolor{LightCyan} grid\_mapping & String & Use this for data variables that are on a projected grid. The attribute takes a string value that is the name of another variable in the file that provides the description of the mapping via a collection of attached attributes. That named variable is called a grid mapping variable and is of arbitrary type since it contains no data. Its purpose is to act as a container for the attributes that define the mapping. See the section on mappings-andprojections in [AD-3] & CF \\ \hline
+
+\rowcolor{LightCyan} flag\_mappings & String & Space-separated list of text descriptions associated in strict order with conditions set by either flag\_values or flag\_masks. Words within a phrase should be connected with underscores. & CF \\ \hline
+
+\rowcolor{LightCyan} flag\_values & Must be the same as
+the variable type & Comma-separated array of valid, mutually exclusive variable values (required when the bit field contains enumerated values; i.e., a “list” of conditions). Used primarily for \texttt\{quality\_level\} and “\texttt\{sources\_of\_xxx\}” variables. & CF \\ \hline
+
+\rowcolor{LightCyan} flag\_masks & Must be the same as the variable type & Comma-separated array of valid variable
+masks (required when the bit field contains
+independent Boolean conditions; i.e., a bit
+“mask”). Used primarily for \texttt\{l2p\_flags\}
+variable.
+
+\emph\{Note: CF allows the use of both flag\_masks
+and flag\_values attributes in a single variable
+to create sets of masks that each have their
+own list of flag\_values (see \url{http://cfpcmdi.llnl.gov/documents/cfconventions/1.5/ch03s05.html#id2710752} for
+examples), but this practice is discouraged.\} & CF \\ \hline
+
+\rowcolor{LightCyan} depth & String & Use this to indicate the depth for which the
+SST data are valid. & GDS \\ \hline
+
+\rowcolor{LightCyan} height & String & Use this to indicate the height for which the wind data are specified. & GDS \\ \hline
+
+\rowcolor{LightCyan} time\_offset & Must be expressed in
+the unpacked data
+type & Difference in hours between an ancillary field such as \texttt\{wind\_speed\} and the SST observation time & GDS \\ \hline
+
+\end{longtable}

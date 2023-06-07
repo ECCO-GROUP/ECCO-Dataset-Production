@@ -1,0 +1,94 @@
+% Table 8-1 Mandatory global attributes for GDS 2.0 netCDF data files
+\begin{longtable}{|p{0.276\textwidth}|p{0.092\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}
+\caption{Mandatory global attributes for GDS 2.0 netCDF data files}
+\label{tab:global-attributes} \\ 
+\hline \endhead
+\hline \endfoot
+\rowcolor{lightgray} \textbf{Global Attribute Name} & \textbf{Type} & \textbf{Description} & \textbf{Source} \\ \hline
+\rowcolor{LightCyan} acknowledgement & string & A place to acknowledge various types of support for the project that produced this data. & ACDD \\ \hline
+
+\rowcolor{LightCyan} cdm\_data\_type & string & The data type, as derived from Unidata's Common Data Model Scientific Data types and understood by THREDDS. (This is a THREDDS "dataType", and is different from the CF NetCDF attribute 'featureType', which indicates a Discrete Sampling Geometry file in CF.) & ACDD \\ \hline
+
+\rowcolor{LightCyan} comment & string & Miscellaneous information about the data, not captured elsewhere. This attribute is defined in the CF Conventions. & CF, ACDD \\ \hline
+
+\rowcolor{LightCyan} conventions & string & A text string identifying the netCDF conventions followed (e.g., CF-1.4, ACDD 1-3). &  \\ \hline
+
+\rowcolor{LightCyan} creator\_email & string & The email address of the person (or other creator type specified by the creator\_type attribute) principally responsible for creating this data. & ACDD \\ \hline
+
+\rowcolor{LightCyan} creator\_name & string & The name of the person (or other creator type specified by the creator\_type attribute) principally responsible for creating this data. & ACDD \\ \hline
+
+\rowcolor{LightCyan} creator\_url & string & The URL of the of the person (or other creator type specified by the creator\_type attribute) principally responsible for creating this data. & ACDD \\ \hline
+
+\rowcolor{LightCyan} date\_created & string & The date on which this version of the data was created. & ACDD \\ \hline
+
+\rowcolor{LightCyan} easternmost\_longitude & float & Decimal degrees east, range -180 to +180. This is equivalent to ACDD geospatial\_lon\_max. & podaac \\ \hline
+
+\rowcolor{LightCyan} geospatial\_lat\_resolution & float & Latitude Resolution in units matching geospatial\_lat\_units. & ACDD \\ \hline
+
+\rowcolor{LightCyan} geospatial\_lat\_units & string & Units of the latitudinal resolution. Typically "degrees\_north" & ACDD \\ \hline
+
+\rowcolor{LightCyan} geospatial\_lon\_resolution & float & Longitude Resolution in units matching geospatial\_lon\_resolution & ACDD \\ \hline
+
+\rowcolor{LightCyan} geospatial\_lon\_units & string & Units of the longitudinal resolution. Typically "degrees\_east" & ACDD \\ \hline
+
+\rowcolor{LightCyan} history & string & The name of the institution principally responsible for originating this data. This attribute is recommended by the CF convention. & CF, ACDD \\ \hline
+
+\rowcolor{LightCyan} id & string & An identifier for the data set, provided by and unique within its naming authority. The combination of the "naming authority" and the "id" should be globally unique, but the id can be globally unique by itself also. IDs can be URLs, URNs, DOIs, meaningful text strings, a local key, or any other unique string of characters. The id should not include white space characters. & ACDD \\ \hline
+
+\rowcolor{LightCyan} institutions & string & The name of the institution principally responsible for originating this data. This attribute is recommended by the CF convention. & CF, ACDD \\ \hline
+
+\rowcolor{LightCyan} keywords & string & GCMD Science Keyword(s) & ACDD \\ \hline
+
+\rowcolor{LightCyan} keywords\_vocabulary & string & The unique name or identifier of the vocabulary from which keywords are taken. e.g., the NASA Global Change Master Directory (GCMD) Science Keywords. & ACDD \\ \hline
+
+\rowcolor{LightCyan} license & string & Provide the URL to a standard or specific license, enter "Freely Distributed" or "None", or describe any restrictions to data access and distribution in free text. & ACDD \\ \hline
+
+\rowcolor{LightCyan} Metadata\_Conventions & string & A comma-separated list of the conventions that are followed by the dataset.  & ACDD \\ \hline
+
+\rowcolor{LightCyan} metadata\_link & string & Link to collection metadata record at archive & ACDD \\ \hline
+
+\rowcolor{LightCyan} naming\_authority & string & The organization that provides the initial id (see above) for the dataset. The naming authority should be uniquely specified by this attribute via reverse-DNS naming convention. & ACDD \\ \hline
+
+\rowcolor{LightCyan} netcdf\_version\_id  & string & Version of netCDF libraries used to create this file. For example, "4.1.1" & GDS \\ \hline
+
+\rowcolor{LightCyan} northernmost\_latitude & float & Decimal degrees north, range -90 to +90. This is equivalent to ACDD geospatial\_lat\_max. & GDS \\ \hline
+
+\rowcolor{LightCyan} processing\_level & string & A textual description of the processing (or quality control) level of the data. & ACDD \& GDS \\ \hline
+
+\rowcolor{LightCyan} product\_version & string & The product version of this data file & GDS \\ \hline
+
+\rowcolor{LightCyan} project & string & The name of the project(s) principally responsible for originating this data. & ACDD \\ \hline
+
+\rowcolor{LightCyan} publisher\_email & string & The email address of the person (or other entity specified by the publisher\_type attribute) responsible for publishing the data file or product to users, with its current metadata and format. & ACDD \\ \hline
+
+\rowcolor{LightCyan} publisher\_name & string & The name of the person (or other entity specified by the publisher\_type attribute) responsible for publishing the data file or product to users, with its current metadata and format. & ACDD \\ \hline
+
+\rowcolor{LightCyan} publisher\_url & string & The URL of the person (or other entity specified by the publisher\_type attribute) responsible for publishing the data file or product to users, with its current metadata and format. & ACDD \\ \hline
+
+\rowcolor{LightCyan} references & string & Published or web-based references that describe the data or methods used to produce it. Recommend URIs (such as a URL or DOI) for papers or other references. This attribute is defined in the CF conventions. & ACDD \\ \hline
+
+\rowcolor{LightCyan} source & string & Method of production of the original data. & CF \\ \hline
+
+\rowcolor{LightCyan} sourthernmost\_latitude & float & Decimal degrees north, range -90 to +90. This is equivalent to ACDD geospatial\_lat\_min. & GDS \\ \hline
+
+\rowcolor{LightCyan} spatial\_resolution & string & A string describing the approximate resolution of the product. & GDS \\ \hline
+
+\rowcolor{LightCyan} standard\_name\_vocabulary & string & The name and version of the controlled vocabulary from which variable standard names are taken. & ACDD \\ \hline
+
+\rowcolor{LightCyan} start\_time & string & Representative date and time of the end of the granule in the ISO 8601 compliant format of "yyyymmddThhmmssZ". & GDS \\ \hline
+
+\rowcolor{LightCyan} stop\_time & string & Representative date and time of the end of the granule in the ISO 8601 compliant format of "yyyymmddThhmmssZ". & GDS \\ \hline
+
+\rowcolor{LightCyan} summary & string & A paragraph describing the dataset, analogous to an abstract for a paper. & ACDD \\ \hline
+
+\rowcolor{LightCyan} time\_coverage\_end & string & Identical to stop\_time. Included for increased ACDD compliance. & ACDD \\ \hline
+
+\rowcolor{LightCyan} time\_coverage\_start & string & Identical to start\_time. Included for increased ACDD compliance. & ACDD \\ \hline
+
+\rowcolor{LightCyan} title & string & A short phrase or sentence describing the dataset. In many discovery systems, the title will be displayed in the results list from a search, and therefore should be human readable and reasonable to display in a list of such names. This attribute is recommended by the NetCDF Users Guide (NUG) and the CF conventions. & CF, ACDD \\ \hline
+
+\rowcolor{LightCyan} uuid & string & A Universally Unique Identifier (UUID). Numerous, simple tools can be used to create a UUID, which is inserted as the value of this attribute. See http://en.wikipedia.org/wiki/Universally\_Unique\_Identifier for more information and tools. & GDS \\ \hline
+
+\rowcolor{LightCyan} westernmost\_longitude & float & Decimal degrees east, range -180 to +180. This is equivalent to ACDD geospatial\_lon\_min. & GDS \\ \hline
+
+\end{longtable}
