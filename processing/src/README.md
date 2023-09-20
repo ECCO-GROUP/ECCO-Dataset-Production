@@ -92,7 +92,7 @@ Contains all the code files required for processing.
       - Primary processing function. Gathers the metadata, files, transforms granules, and applies metadata for the passed job
 - **master_script.py**
   - Primary script for all ECCO Processing. From this script, all functions of ECCO Processing can be started including:
-      - Create mapping factors, land mask, and sparce matrices
+      - Create mapping factors, land mask, and sparse matrices
       - Uploading local files to AWS S3 (TODO)
       - Prompt user to create jobs file from available groupings in metadata files
       - Process 2D/3D native/latlon granules, sourced locally, locally
@@ -119,7 +119,7 @@ Contains all the code files required for processing.
       - "Force code to re-run code to get AWS credentials"
       - Re-runs aws_login code to ensure use has upto date AWS credentials.
     - *--create_factors*
-      - "ONLY creates all factors: 2D/3D factors, landmask, latlon_grid files, and sparce matrices"
+      - "ONLY creates all factors: 2D/3D factors, landmask, latlon_grid files, and sparse matrices"
       - Will create all factors and save them locally, then exits execution of master_script.py.
     - *--require_input*
       - "Requests approval from user to start executing AWS Lambda jobs for each job (eg. 0,latlon,AVG_MON,all)"

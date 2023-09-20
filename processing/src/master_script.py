@@ -4,7 +4,7 @@ ECCO Dataset Production Master Script
 Author: Duncan Bark
 
 Primary script for all ECCO Processing. From this script, all functions of ECCO Processing can be started including:
-- Create mapping factors, land mask, and sparce matrices
+- Create mapping factors, land mask, and sparse matrices
 - Uploading local files to AWS S3
 - Prompt user to create jobs file from available groupings in metadata files
 - Process 2D/3D native/latlon granules, sourced locally, locally
