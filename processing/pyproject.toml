@@ -1,0 +1,31 @@
+[build-system]
+requires = ['setuptools']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'ecco_production'
+version = '1.0'
+dependencies = [
+    'boto3',
+    #'ecco_cloud_utils',
+    'numpy',
+    'pyresample',
+    'scipy',
+    'xarray',
+]
+
+[tool.setuptools]
+packages=[
+    'ecco_production',
+    'ecco_cloud_utils',
+    'ecco_v4_py'
+]
+
+[tool.setuptools.package-dir]
+ecco_production='src/ecco_production'
+ecco_cloud_utils='../ECCO-ACCESS/ecco_cloud_utils/ecco_cloud_utils'
+ecco_v4_py='../ECCOv4-py/ecco_v4_py'
+
+[project.scripts]
+ecco_production = 'ecco_production.bin.master_script:main'
+
