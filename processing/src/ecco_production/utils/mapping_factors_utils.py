@@ -18,14 +18,16 @@ import pyresample as pr
 from pathlib import Path
 from scipy import sparse
 
-# Local imports
-main_path = Path(__file__).parent.resolve().parent.resolve()
-sys.path.append(f'{main_path / "src"}')
-sys.path.append(f'{main_path / "src" / "utils"}')
-sys.path.append(f'{main_path / "src" / "utils" / "ecco_utils"}')
-import gen_netcdf_utils as gen_netcdf_utils
-from ecco_utils.ecco_code import read_bin_gen
-from ecco_utils import ecco_cloud_utils as ea
+import ecco_v4_py
+
+## Local imports
+#main_path = Path(__file__).parent.resolve().parent.resolve()
+#sys.path.append(f'{main_path / "src"}')
+#sys.path.append(f'{main_path / "src" / "utils"}')
+#sys.path.append(f'{main_path / "src" / "utils" / "ecco_utils"}')
+#import gen_netcdf_utils as gen_netcdf_utils
+#from ecco_utils.ecco_code import read_bin_gen
+#from ecco_utils import ecco_cloud_utils as ea
 
 
 # =================================================================================================
@@ -616,7 +618,8 @@ def __get_meta_data(grid_path):
 
             # read binary data array and save it in the grid_data dict
             print(f'\tLoading {data_file}', end='\r')
-            data = read_bin_gen.load_binary_array(grid_path, 
+            data = ecco_v4_py.read_bin_gen.load_binary_array(grid_path, 
+            #data = read_bin_gen.load_binary_array(grid_path, 
                                                   data_file, 
                                                   ni, 
                                                   nj, 
