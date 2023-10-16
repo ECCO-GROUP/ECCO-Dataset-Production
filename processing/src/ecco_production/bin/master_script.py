@@ -17,12 +17,19 @@ Primary script for all ECCO Processing. From this script, all functions of ECCO 
 """
 
 import argparse
+import logging
+import os
 import sys
 import textwrap
 import time
+import yaml
 
+from ..configuration import ECCOProductionConfig
 from ..utils import mapping_factors_utils
 from ..utils import print_utils
+
+PRODUCT_GENERATION_CFGFILE  = 'product_generation_config.yaml'
+AWS_CFGFILE                 = 'aws_config.yaml'
 
 #!import os
 #!import ast
@@ -111,9 +118,9 @@ def create_parser():
     parser.add_argument('--push_ecr', action='store_true', help="""
         Re-builds Docker image and pushes it to AWS ECR""")
 
-    parser.add_argument('--upload_to_S3', action='store_true', help="""
+    parser.add_argument('--upload_to_S3', action='store_true', help=f"""
         ONLY uploads files from "local_file_dir_to_upload" in
-        product_generation_config.yaml, to "S3_upload_path" in aws_config.yaml.
+        {PRODUCT_GENERATION_CFGFILE}, to "S3_upload_path" in {AWS_CFGFILE}.
         Exits when complete""")
 
     parser.add_argument('--dryrun', action='store_true', help="""
@@ -128,11 +135,40 @@ def create_parser():
         Prevents deletion of any AWS CloudWatch log files during AWS Lambda
         logging.""")
 
+    parser.add_argument('--cfgdir', required=True, help=f"""
+        Configuration file directory containing, e.g.,
+        {PRODUCT_GENERATION_CFGFILE}, {AWS_CFGFILE}, etc.""")
+
+    parser.add_argument('--workingdir', default='.', help="""
+        Top-level directory in which intermediate data and final results will be
+        organized (default: current working directory)""")
+
+    parser.add_argument('-l','--log', dest='log_level',
+        choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],
+        default='INFO',
+        help="""Set logging level (default: %(default)s).""")
+
     return parser
 
 
 def master_script(
-    create_factors=False):
+    create_factors, cfgdir, workingdir, log_level):
+
+    # configuration and logging:
+
+    logging.basicConfig(
+        format = '%(levelname)-10s %(asctime)s %(message)s',
+        level=log_level)
+
+    log = logging.getLogger('ecco_dataset_production')
+    log.info('ecco_production called with the following arguments:')
+    log.info('create_factors: %s', create_factors)
+    log.info('cfgdir:         %s', cfgdir)
+
+    log.info('Setting up configuration parameters...')
+    cfg = ECCOProductionConfig(cfgfile=os.path.join(cfgdir, PRODUCT_GENERATION_CFGFILE))
+    cfg.set_default_paths(workingdir)
+    log.info('...done setting up configuration parameters.')
 
     # ========== <create intial time values> ======================================================
     ms_to_sec = 0.001
@@ -165,12 +201,12 @@ def master_script(
 #!    # ========== </parse command line arguments> ==================================================
 
 
-#!    # ========== <prepare product generation configuration> =======================================
-#!    product_generation_config = setup.prepare_product_generation_config()
-#!    extra_prints = product_generation_config['extra_prints']
-#!    ecco_version = product_generation_config['ecco_version']
-#!    ecco_configuration_dir = main_path.parent.resolve().parent.resolve() / product_generation_config['ecco_configurations_name']
-#!    # ========== </prepare product generation configuration> ======================================
+#gm-    # ========== <prepare product generation configuration> =======================================
+#gm-    product_generation_config = setup.prepare_product_generation_config()
+#gm-    extra_prints = product_generation_config['extra_prints']
+#gm-    ecco_version = product_generation_config['ecco_version']
+#gm-    ecco_configuration_dir = main_path.parent.resolve().parent.resolve() / product_generation_config['ecco_configurations_name']
+#gm-    # ========== </prepare product generation configuration> ======================================
 
 
     # ========== <create mapping factors> ========================================================
@@ -178,14 +214,13 @@ def master_script(
     # Not needed unless changes have been made to the factors code and you need
     # to update the factors/mask in the lambda docker image
     if create_factors:
-    #if dict_key_args['create_factors']:
-        print_utils.printc('\nCreating factors', 'blue')
-        status = mapping_factors_utils.create_all_factors(
-            product_generation_config, ['2D', '3D'], extra_prints=extra_prints)
-        if status != 'SUCCESS':
-            print_utils.printc(status, 'red')
-            sys.exit()
-        print_utils.printc('Creating factors -- DONE', 'green')
+        log.info('Creating mapping factors...')
+        try:
+            mapping_factors_utils.create_all_factors(
+                cfg, ['2D', '3D'])
+            log.info('...done creating mapping factors')
+        except:
+            log.warning('Could not create mapping factors')
         sys.exit()
     # ========== </create mapping factors> ========================================================
 
@@ -766,7 +801,7 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
     master_script(
-        args.create_factors)
+        args.create_factors, args.cfgdir, args.workingdir, args.log_level)
 
 
 if __name__=='__main__':
