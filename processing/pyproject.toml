@@ -33,4 +33,5 @@ ecco_v4_py='../ECCOv4-py/ecco_v4_py'
 
 [project.scripts]
 ecco_production = 'ecco_production.bin.master_script:main'
+aws_s3_sync = 'ecco_production.bin.aws_s3_sync:main'
 
