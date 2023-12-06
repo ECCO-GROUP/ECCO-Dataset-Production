@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-"""A Python multiprocess wrapper for AWS CLI S3 sync operations.  Supports all
-sync modes: local-remote, remote-local, and remote-remote."""
+"""A Python wrapper for AWS CLI S3 sync operations.  Supports all sync modes:
+local-remote, remote-local, and remote-remote. Mulitprocessing is supported for
+local-remote operations."""
 
 import argparse
 import logging
@@ -13,6 +14,8 @@ import time
 
 SLEEP_SECONDS = 5
 
+log = logging.getLogger('ecco_dataset_production')
+
 
 def create_parser():
     """Set up list of command-line arguments to aws_s3_sync.
@@ -22,13 +25,19 @@ def create_parser():
 
     """
     parser = argparse.ArgumentParser(
-        description="""A Python multiprocess wrapper for AWS CLI S3 sync operations""")
+        description="""A Python wrapper for AWS CLI S3 sync operations.
+        Supports all sync modes: local-remote, remote-local, and remote-remote.
+        Mulitprocessing is supported for local-remote operations.""",
+        epilog="""Note: The values provided by the --src and --dest arguments
+        must exist, as they will not be created by %(prog)s.  In other words, if
+        either is a local directory, it must exist and, if it is an AWS S3 URI,
+        that bucket must have been created by, e.g. 'aws s3 mb'.""")
     parser.add_argument('--src', default='.', help="""
         Source location (local path or AWS S3 URI) (default: "%(default)s")""")
     parser.add_argument('--dest', default='.', help="""
         Destination location (local path or AWS S3 URI) (default: "%(default)s")""")
     parser.add_argument('--nproc', type=int, default=1, help="""
-        Maximum number of sync processes (default: %(default)s)""")
+        Maximum number of local-remote sync processes (default: %(default)s)""")
     parser.add_argument('--keygen', help="""
         JPL federated login key generation script (e.g.,
         /usr/local/bin/aws-login-pub.darwin.amd64)""")
@@ -57,11 +66,9 @@ def is_s3_uri(path_or_uri_str):
 
 
 def sync_local_to_remote( src, dest, nproc, keygen, dryrun):
-    """Functional wrapper for 'aws s3 sync <local> <s3uri>'
+    """Functional wrapper for multiprocess 'aws s3 sync <local> <s3uri>'
 
     """
-    log = logging.getLogger('ecco_dataset_production')
-
     # update login credentials:
     log.info('updating credentials...')
     subprocess.run(keygen)
@@ -118,7 +125,8 @@ def sync_local_to_remote( src, dest, nproc, keygen, dryrun):
 
             if running_procs<nproc and not blocking_procs>0:
 
-                # there's room in the queue, and no subdirectory syncs are running; submit:
+                # there's room in the queue, and no subdirectory syncs are
+                # running; submit:
 
                 cmd = [ 'aws', 's3', 'sync',
                     dirpath,                # "source"
@@ -132,20 +140,53 @@ def sync_local_to_remote( src, dest, nproc, keygen, dryrun):
                 this_proc_is_running = True
 
             else:
+
                 # the queue is either full, or a subdirectory sync is blocking,
                 # wait for a bit:
                 time.sleep(SLEEP_SECONDS)
 
             if this_proc_is_running:
+
                 # try for the next:
                 break
 
+    # wait for all sync processes to complete and produce final diagnostics:
+
     for p in proclist:
-        print(p.returncode)
-        print(p.args)
+        p.wait()
         stdout,stderr = p.communicate()
-        print(stdout)
-        print(stderr)
+        log.info('sync process %s:', p.args)
+        log.info('   rtn:    %d', p.returncode)
+        log.info('   stdout: %s', bytes.decode(stdout))
+        log.info('   stderr: %s', bytes.decode(stderr))
+
+
+def sync_remote_to_remote_or_local(  src, dest, keygen, dryrun):
+    """Functional wrapper for either 'aws s3 sync <s3uri> <s3uri>' or
+    'aws s3 sync <s3uri> <local>'
+
+    """
+    # update login credentials:
+    log.info('updating credentials...')
+    subprocess.run(keygen)
+    log.info('...done')
+
+    cmd = [ 'aws', 's3', 'sync', src, dest,
+        '--profile','saml-pub']
+    if dryrun:
+        cmd.append('--dryrun')
+
+    log.info('invoking subprocess: %s', cmd)
+    p = subprocess.Popen( cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    rtn = p.wait()
+    log.info('subprocess returned %d', rtn)
+
+    if not rtn:
+        # normal termination:
+        log.info('%s', bytes.decode(p.stdout.read()))
+    else:
+        # error return:
+        log.info('%s', bytes.decode(p.stderr.read()))
 
 
 def aws_s3_sync(
@@ -153,7 +194,6 @@ def aws_s3_sync(
     """Top-level functional wrapper for 'aws s3 sync' operations.
 
     """
-    log = logging.getLogger('ecco_dataset_production')
     log.info('aws_s3_sync called with the following arguments:')
     log.info('src: %s', src)
     log.info('dest: %s', dest)
@@ -166,12 +206,22 @@ def aws_s3_sync(
         sys.exit(errstr)
 
     if not is_s3_uri(src) and is_s3_uri(dest):
-        # AWS S3 upload:
-        ## locally-sourced data implies AWS S3 upload:
+        # upload:
         sync_local_to_remote( src, dest, nproc, keygen, dryrun)
 
-    # TODO: remote-local, remote-remote options.
+    elif is_s3_uri(src) and is_s3_uri(dest):
+        # remote sync:
+        sync_remote_to_remote_or_local( src, dest, keygen, dryrun)
 
+    elif is_s3_uri(src) and not is_s3_uri(dest):
+        # download:
+        sync_remote_to_remote_or_local( src, dest, keygen, dryrun)
+
+    else:
+        errstr = f'cannot sync {src} to {dest}'
+        log.error(errstr)
+        sys.exit(errstr)
+ 
 
 def main():
     """Command-line entry point.
