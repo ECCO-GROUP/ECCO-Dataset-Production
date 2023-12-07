@@ -136,7 +136,10 @@ def sync_local_to_remote( src, dest, nproc, keygen, dryrun):
                     cmd.append('--dryrun')
                 log.info('invoking subprocess: %s', cmd)
                 proclist.append(subprocess.Popen(
-                    cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE))
+                    cmd
+                    #stdout=subprocess.PIPE,    <- buffer overflows and hangs
+                    #stderr=subprocess.PIPE     <- for "real" ecco syncs
+                    ))
                 this_proc_is_running = True
 
             else:
@@ -154,11 +157,13 @@ def sync_local_to_remote( src, dest, nproc, keygen, dryrun):
 
     for p in proclist:
         p.wait()
-        stdout,stderr = p.communicate()
+        # as per above comment, pipe buffers overflow for large sync operations;
+        # just rely on regular sys output.
+        #stdout,stderr = p.communicate()     # read to eof and wait for returncode
         log.info('sync process %s:', p.args)
         log.info('   rtn:    %d', p.returncode)
-        log.info('   stdout: %s', bytes.decode(stdout))
-        log.info('   stderr: %s', bytes.decode(stderr))
+        #log.info('   stdout: %s', bytes.decode(stdout))
+        #log.info('   stderr: %s', bytes.decode(stderr))
 
 
 def sync_remote_to_remote_or_local(  src, dest, keygen, dryrun):
