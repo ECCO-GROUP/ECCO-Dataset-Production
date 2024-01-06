@@ -8,7 +8,6 @@ version = '1.0'
 dependencies = [
     'boto3',
     'cartopy',
-    #'ecco_cloud_utils',
     'matplotlib',
     'netCDF4',
     'numpy',
@@ -17,21 +16,19 @@ dependencies = [
     'xarray',
     'xmitgcm',
     'xgcm',
+    'ecco_cloud_utils @ git+https://github.com/ECCO-GROUP/ECCO-ACCESS/#subdirectory=ecco-cloud-utils',
 ]
 
 [tool.setuptools]
 packages=[
     'ecco_production',
-    'ecco_cloud_utils',
-    'ecco_v4_py'
 ]
 
 [tool.setuptools.package-dir]
-ecco_production='src/ecco_production'
-ecco_cloud_utils='../ECCO-ACCESS/ecco-cloud-utils/ecco_cloud_utils'
-ecco_v4_py='../ECCOv4-py/ecco_v4_py'
+ecco_production     = 'src/ecco_production'
 
 [project.scripts]
-ecco_production = 'ecco_production.bin.master_script:main'
-aws_s3_sync = 'ecco_production.bin.aws_s3_sync:main'
+ecco_production     = 'ecco_production.bin.master_script:main'
+ep_aws_s3_sync      = 'ecco_production.bin.aws_s3_sync:main'
+ep_create_factors   = 'ecco_production.bin.create_factors:main'
 
