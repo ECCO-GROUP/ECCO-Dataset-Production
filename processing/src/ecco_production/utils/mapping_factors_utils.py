@@ -3,22 +3,29 @@ ECCO Dataset Production AWS mapping factors utilities
 
 Author: Duncan Bark
 
-Contains functions for creating and getting the mapping factors (factors, land masks, sparse matricies, etc.)
+Contains functions for creating and getting the mapping factors (factors, land masks, sparse matrices, etc.)
 
 """
 
-import os
 import ast
-import sys
+import inspect
+import logging
 import lzma
-import pickle
 import numpy as np
-import xarray as xr
-import pyresample as pr
+import os
 from pathlib import Path
+import pickle
+import pyresample as pr
 from scipy import sparse
+import sys
+import xarray as xr
 
-import ecco_v4_py
+#import ecco_v4_py
+
+import ecco_cloud_utils
+from . import gen_netcdf_utils
+
+log = logging.getLogger('ecco_dataset_production')
 
 ## Local imports
 #main_path = Path(__file__).parent.resolve().parent.resolve()
@@ -36,28 +43,47 @@ import ecco_v4_py
 def get_mapping_factors(dataset_dim, 
                         mapping_factors_dir, 
                         factors_to_get,
-                        extra_prints=False, 
+#                        extra_prints=False, 
                         k=0):
     """
-    Get mapping factors from mapping_factors_dir for level k and the factors requested (factors_to_get)
+    Get mapping factors from mapping_factors_dir for level k and the factors
+    requested (factors_to_get)
 
     Args:
         dataset_dim (str): Dimension of the dataset to get factors for
-        mapping_factors_dir (PosixPath): Path to /ECCO-Dataset-Production/aws/mapping_factors/{ecco_version}
-        factors_to_get (str): String, 'all'=grid_mappings_all, 'k'=grid_mappings_{k}, or 'both'=grid_mappings_all and grid_mappings_{k}
-            (grid_mappings_all includes dry points factors)
-        extra_prints (optional, bool): Boolean to enable more print statements
-        k (optional, int): Integer vertical level index to retrieve mapping factors for (0-{num_vertical_levels})
+        mapping_factors_dir (PosixPath): Path to
+            /ECCO-Dataset-Production/aws/mapping_factors/{ecco_version}
+
+        factors_to_get (str): 'all'=grid_mappings_all, 'k'=grid_mappings_{k}, or
+            'both'=grid_mappings_all and grid_mappings_{k} (grid_mappings_all
+            includes dry points factors)
+
+#        extra_prints (optional, bool): Boolean to enable more print statements
+
+        k (optional, int): Integer vertical level index to retrieve mapping
+            factors for (0-{num_vertical_levels})
 
     Returns:
         (status, grid_mappings_all, grid_mappings_k) (tuple):
             status (str): String that is either "SUCCESS" or "ERROR {error message}"
-            grid_mappings_all (tuple): Contains two lists: source_indices_within_target_radius_i and nearest_source_index_to_target_index_i
-            grid_mappings_k (tuple): Contains two lists: source_indices_within_target_radius_i and nearest_source_index_to_target_index_i
-                source_indices_within_target_radius_i: list where index is target index, and value is -1 if no source indices in target radius,
-                    or a list of source indices within target radius
-                nearest_source_index_to_target_index_i: list where index is the target index, and value is the nearest source index to target index
+
+            grid_mappings_all (tuple): Contains two lists:
+                source_indices_within_target_radius_i and
+                nearest_source_index_to_target_index_i
+
+            grid_mappings_k (tuple): Contains two lists:
+                source_indices_within_target_radius_i and
+                nearest_source_index_to_target_index_i
+
+                source_indices_within_target_radius_i: list where index is
+                    target index, and value is -1 if no source indices in target
+                    radius, or a list of source indices within target radius
+
+                nearest_source_index_to_target_index_i: list where index is the
+                    target index, and value is the nearest source index to
+                    target index
     """
+
     status = 'SUCCESS'
     
     # factors_to_get : factors to load in from the mapping_factors_dir
@@ -65,18 +91,20 @@ def get_mapping_factors(dataset_dim,
     grid_mappings_all = []
     grid_mappings_k = []
 
-    if extra_prints: print('\nGetting Grid Mappings')
+    log.info('Getting Grid Mappings')
     grid_mapping_fname_all = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_all.xz'
     grid_mapping_fname_2D = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_2D.xz'
     grid_mapping_fname_3D = Path(mapping_factors_dir) / '3D' / f'ecco_latlon_grid_mappings_3D_{k}.xz'
 
     # Check to see that the mapping factors have been made
-    if (dataset_dim == '2D' and grid_mapping_fname_2D.is_file()) or (dataset_dim == '3D' and grid_mapping_fname_3D.is_file()):
+    if  (dataset_dim == '2D' and grid_mapping_fname_2D.is_file()) \
+        or \
+        (dataset_dim == '3D' and grid_mapping_fname_3D.is_file()):
         # if so, load
         try:
             # if factors_to_get is just 'all' or 'both' then load grid_mappings_all
             if factors_to_get == 'all' or factors_to_get == 'both':
-                if extra_prints: print(f'... loading ecco_latlon_grid_mappings_all.xz')
+                log.info('... loading ecco_latlon_grid_mappings_all.xz')
                 grid_mappings_all = pickle.load(lzma.open(grid_mapping_fname_all, 'rb'))
 
             # if factors_to_get is just 'k' or 'both' then load the grid_mappings_k file for the corresponding
@@ -84,10 +112,10 @@ def get_mapping_factors(dataset_dim,
             # it doesnt matter what value k is since 2D only has 1 vertical level.
             if factors_to_get == 'k' or factors_to_get == 'both':
                 if dataset_dim == '2D':
-                    if extra_prints: print(f'... loading ecco_latlon_grid_mappings_{dataset_dim}.xz')
+                    log.info('... loading ecco_latlon_grid_mappings_{dataset_dim}.xz')
                     grid_mappings_k = pickle.load(lzma.open(grid_mapping_fname_2D, 'rb'))
                 elif dataset_dim == '3D':
-                    if extra_prints: print(f'... loading ecco_latlon_grid_mappings_{dataset_dim}_{k}.xz')
+                    log.info(f'loading ecco_latlon_grid_mappings_{dataset_dim}_{k}.xz ...')
                     grid_mappings_k = pickle.load(lzma.open(grid_mapping_fname_3D, 'rb'))
         except:
             status = f'ERROR Unable to load grid mapping factors: {mapping_factors_dir}'
@@ -166,11 +194,12 @@ def create_mapping_factors(dataset_dim,
         if ~(grid_mapping_fname_all.is_file()):
             # find the mapping between all points of the ECCO grid and the target grid.
             grid_mappings_all = \
-                ea.find_mappings_from_source_to_target_for_processing(source_grid_all,
-                                                                      target_grid,
-                                                                      target_grid_radius,
-                                                                      source_grid_min_L,
-                                                                      source_grid_max_L)
+                ecco_cloud_utils.mapping.find_mappings_from_source_to_target_for_processing(
+                    source_grid_all,
+                    target_grid,
+                    target_grid_radius,
+                    source_grid_min_L,
+                    source_grid_max_L)
 
             # Save grid_mappings_all
             try:
@@ -188,12 +217,12 @@ def create_mapping_factors(dataset_dim,
         for k_i in range(nk):
             print(k_i)
             grid_mappings_k = \
-                ea.find_mappings_from_source_to_target_for_processing(source_grid_k[k_i],
-                                                                      target_grid,
-                                                                      target_grid_radius,
-                                                                      source_grid_min_L,
-                                                                      source_grid_max_L)
-
+                ecco_cloud_utils.mapping.find_mappings_from_source_to_target_for_processing(
+                    source_grid_k[k_i],
+                    target_grid,
+                    target_grid_radius,
+                    source_grid_min_L,
+                    source_grid_max_L)
             try:
                 # if the dataset dim is 2D, save the factors using the 2D name, otherwise
                 # save it with the 3D name, and with level {k}
@@ -277,12 +306,13 @@ def create_land_mask(mapping_factors_dir,
             source_field = ecco_land_mask_c.values[k,:].ravel()
 
             # create land mask for level k
-            land_mask_ll = ea.transform_to_target_grid_for_processing(source_indices_within_target_radius_i,
-                                                                      nearest_source_index_to_target_index_i,
-                                                                      source_field, target_grid_shape,
-                                                                      operation='nearest', 
-                                                                      allow_nearest_neighbor=True)
-
+            land_mask_ll = \
+                ecco_cloud_utils.mapping.transform_to_target_grid_for_processing(
+                    source_indices_within_target_radius_i,
+                    nearest_source_index_to_target_index_i,
+                    source_field, target_grid_shape,
+                    operation='nearest', 
+                    allow_nearest_neighbor=True)
             try:
                 # save land mask with level {k}
                 fname_mask = Path(land_mask_fname) / f'ecco_latlon_land_mask_{k}.xz'
@@ -296,11 +326,11 @@ def create_land_mask(mapping_factors_dir,
 # ====================================================================================================
 # SPARSE MATRIX CREATION
 # ====================================================================================================
-def create_sparse_matrix(mapping_factors_dir,
-                         product_generation_config, 
-                         target_grid_shape,
-                         wet_pts_k, 
-                         extra_prints=False):
+def create_sparse_matrix(
+    mapping_factors_dir, product_generation_config, 
+    target_grid_shape, wet_pts_k 
+#                         extra_prints=False):
+    ):
     """
     Create sparse matrix file(s)
 
@@ -314,7 +344,7 @@ def create_sparse_matrix(mapping_factors_dir,
     Returns:
         status (str): String that is either "SUCCESS" or "ERROR {error message}"
     """       
-    print(f'\nCreating sparse matrices')
+    log.info('Creating sparse matrices')
 
     status = 'SUCCESS'
 
@@ -338,14 +368,19 @@ def create_sparse_matrix(mapping_factors_dir,
     else:
         for k in range(nk):
             sm_path_fname = Path(sm_path) / f'sparse_matrix_{k}.npz'
-            print(f'Level: {k}')
+            log.info('Level: %d', k)
             
             # get the land mask for level k
-            status, land_mask = gen_netcdf_utils.get_land_mask(mapping_factors_dir, 
-                                                               k, 
-                                                               extra_prints=extra_prints)
+            status, land_mask = gen_netcdf_utils.get_land_mask(
+#               mapping_factors_dir,
+                product_generation_config, k
+#               extra_prints=extra_prints)
+            )
             if status != 'SUCCESS':
-                return status
+                # stick with this for now (TODO: Pythonic mods to get_land_mask):
+                # return status
+                log.error(status)
+                sys.exit(status)
 
             # Create sparse matrix representation of mapping factors
             for dataset_dim in ['2D', '3D']:
@@ -485,7 +520,8 @@ def create_custom_grid_values(product_generation_config,
     # Create target_grid_shape from target XC shape
     target_grid_shape = target_grid_data['XC'].shape
 
-    land_mask_fname = Path(mapping_factors_dir) / 'land_mask'
+    land_mask_fname = Path(product_generation_config['land_mask_dir'])
+    #land_mask_fname = Path(mapping_factors_dir) / 'land_mask'
     # check that the land mask directory exists
     if not land_mask_fname.exists():
         try:
@@ -634,12 +670,36 @@ def __get_meta_data(grid_path):
 # =================================================================================================
 # PREPARE ECCO GRID VALUES
 # =================================================================================================
-def create_ecco_grid_values(product_generation_config,
-                            mapping_factors_dir,
-                            extra_prints):
+def create_ecco_grid_values(
+    product_generation_config, mapping_factors_dir
+#                            extra_prints):
+    ):
+    """
+    Create ECCO source and target grid data used in subsequent mapping
+    coefficient routines.
 
-    ecco_grid = xr.open_dataset(Path(product_generation_config['ecco_grid_dir']) / product_generation_config['ecco_grid_filename'])
-    
+    Args:
+        product_generation_config (dict): Configuration data, generally
+            originating from product_generation_config.yaml, with defaults
+            applied.
+
+    Returns:
+        Dictionary of ECCO source and target grid data.
+
+    Note:
+        ECCO grid data are implicit input, and are located via reference to the
+        'ecco_grid_dir' and 'ecco_grid_filename' fields in product_generation_config.
+
+    """
+    try:
+        print(f'product_generation_config["ecco_grid_dir"]: {product_generation_config["ecco_grid_dir"]}')
+        ecco_grid = xr.open_dataset(
+            Path( product_generation_config['ecco_grid_dir'],
+                product_generation_config['ecco_grid_filename']))
+    except Exception as e:
+        log.exception(f'Exception in %s: %s', inspect.currentframe().f_code.co_name, e)
+        #log.error(f'error in %s: %s', inspect.currentframe().f_code.co_name, e)
+
     nk = product_generation_config['num_vertical_levels']
 
     # check that the mapping_factors/ dir exists
@@ -647,9 +707,10 @@ def create_ecco_grid_values(product_generation_config,
         try:
             mapping_factors_dir.mkdir(parents=True, exist_ok=True)
         except:
-            status = f'ERROR Cannot make mapping factors directory "{mapping_factors_dir}"'
-            return status
-            
+            errstr = f'Cannot make mapping factors directory "{mapping_factors_dir}"'
+            log.exception(errstr)
+            sys.exit(errstr)
+
     wet_pts_k = {}
     xc_wet_k = {}
     yc_wet_k = {}
@@ -659,33 +720,32 @@ def create_ecco_grid_values(product_generation_config,
     # there are wet points.  Used for the bin-averaging.  We don't want to bin
     # average dry points.
     source_grid_k = {}
-    if extra_prints: print('\nSwath Definitions')
-    if extra_prints: print('... making swath definitions for latlon grid levels 1..nk')
+    log.info('Swath Definitions')
+    log.info('... making swath definitions for latlon grid levels 1..nk')
     for k in range(nk):
         wet_pts_k[k] = np.where(ecco_grid.hFacC[k,:] > 0)
         xc_wet_k[k] = ecco_grid.XC.values[wet_pts_k[k]]
         yc_wet_k[k] = ecco_grid.YC.values[wet_pts_k[k]]
-
-        source_grid_k[k] = pr.geometry.SwathDefinition(lons=xc_wet_k[k], lats=yc_wet_k[k])
-
+        source_grid_k[k] = pr.geometry.SwathDefinition(
+            lons=xc_wet_k[k], lats=yc_wet_k[k])
 
     # The pyresample 'grid' information for the 'source' (ECCO grid) defined using
     # all XC and YC points, even land.  Used to create the land mask
-    source_grid =  pr.geometry.SwathDefinition(lons=ecco_grid.XC.values.ravel(),
-                                                lats=ecco_grid.YC.values.ravel())
+    source_grid = pr.geometry.SwathDefinition(
+        lons=ecco_grid.XC.values.ravel(),
+        lats=ecco_grid.YC.values.ravel())
 
     # the largest and smallest length of grid cell size in the ECCO grid.  Used
     # to determine how big of a lookup table we need to do the bin-average interp.
     source_grid_min_L = np.min([float(ecco_grid.dyG.min().values), float(ecco_grid.dxG.min().values)])
     source_grid_max_L = np.max([float(ecco_grid.dyG.max().values), float(ecco_grid.dxG.max().values)])
 
-
     # Define the TARGET GRID -- a lat lon grid
     ## create target grid.
     product_name = ''
 
     latlon_grid_resolution = product_generation_config['latlon_grid_resolution']
-    latlon_max_lat = product_generation_config['latlon_max_lat']
+    #latlon_max_lat = product_generation_config['latlon_max_lat']
     latlon_grid_area_extent = product_generation_config['latlon_grid_area_extent']
 
     # latlon_grid_area_extent is # [lon_min, lat_max, lon_max, lat_min]
@@ -696,24 +756,29 @@ def create_ecco_grid_values(product_generation_config,
     # latlon_grid_dims = [int(d/latlon_grid_resolution) for d in product_generation_config['latlon_grid_dims']]
 
     # Grid projection information
-    proj_info = {'area_id':'longlat',
-                    'area_name':'Plate Carree',
-                    'proj_id':'EPSG:4326',
-                    'proj4_args':'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'}
+    proj_info = {
+        'area_id':'longlat',
+        'area_name':'Plate Carree',
+        'proj_id':'EPSG:4326',
+        'proj4_args':'+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'}
 
-    _, _, target_grid, target_grid_lons, target_grid_lats = ea.generalized_grid_product(product_name,
-                                                                                        latlon_grid_resolution,
-                                                                                        latlon_max_lat,
-                                                                                        latlon_grid_area_extent,
-                                                                                        latlon_grid_dims,
-                                                                                        proj_info)
+    _, _, target_grid, target_grid_lons, target_grid_lats = \
+        ecco_cloud_utils.generalized_functions.generalized_grid_product(
+            product_name,
+            latlon_grid_resolution,
+            latlon_max_lat,
+            latlon_grid_area_extent,
+            latlon_grid_dims,
+            proj_info)
 
     # pull out just the lats and lons (1D arrays)
     target_grid_lons_1D = target_grid_lons[0,:]
     target_grid_lats_1D = target_grid_lats[:,0]
 
     # calculate the areas of the lat-lon grid
-    ea_area = ea.area_of_latlon_grid(-180, 180, -90, 90, latlon_grid_resolution, latlon_grid_resolution, less_output=True)
+    ea_area = ecco_cloud_utils.geometry.area_of_latlon_grid(
+        -180, 180, -90, 90, latlon_grid_resolution, latlon_grid_resolution,
+        less_output=True)
     lat_lon_grid_area = ea_area['area']
     target_grid_shape = lat_lon_grid_area.shape
 
@@ -781,16 +846,17 @@ def create_ecco_grid_values(product_generation_config,
             return status
     # ========== </Create latlon grid> ============================================================
 
-    ecco_grid_values = {'source_grid': source_grid, 
-                        'target_grid': target_grid, 
-                        'target_grid_radius': target_grid_radius, 
-                        'target_grid_shape': target_grid_shape, 
-                        'ecco_grid': ecco_grid, 
-                        'source_grid_min_L': source_grid_min_L, 
-                        'source_grid_max_L': source_grid_max_L, 
-                        'source_grid_k': source_grid_k, 
-                        'wet_pts_k': wet_pts_k, 
-                        'nk': nk}
+    ecco_grid_values = {
+        'source_grid': source_grid, 
+        'target_grid': target_grid, 
+        'target_grid_radius': target_grid_radius, 
+        'target_grid_shape': target_grid_shape, 
+        'ecco_grid': ecco_grid, 
+        'source_grid_min_L': source_grid_min_L, 
+        'source_grid_max_L': source_grid_max_L, 
+        'source_grid_k': source_grid_k, 
+        'wet_pts_k': wet_pts_k, 
+        'nk': nk}
 
     return ecco_grid_values
 
@@ -799,32 +865,36 @@ def create_ecco_grid_values(product_generation_config,
 # CREATE ALL FACTORS (MAPPING FACTORS, LAND MASK, LATLON GRID, and SPARSE MATRICES)
 # =================================================================================================
 def create_all_factors(product_generation_config, 
-                       dataset_dim, 
-                       extra_prints=False):
+                       dataset_dim 
+#                       extra_prints=False):
+    ):
     """
-    Create all factors (mapping factors, land mask, sparse matrices, and latlon_grid)
+    Generates 2- and/or 3-D mapping factors including land masks, and lon/lat
+    grid files.
 
     Args:
-        product_generation_config (dict): Dictionary of product_generation_config.yaml config file
-        dataset_dim (str): Dimension of the dataset to create factors for
-        extra_prints (optional, bool): Boolean to enable more print statements
+        product_generation_config (dict): Configuration data, generally
+            originating from product_generation_config.yaml, with defaults
+            applied.
+        dataset_dim (list of str): Dimension(s) of desired mapping factor
+            datasets (e.g., ['2D','3D'] for both 2- and 3-D factors)
 
     Returns:
-        status (str): String that is either "SUCCESS" or "ERROR {error message}"
+        ECCO grid mapping factors written to 'mapping_factors_dir' specified in
+            product_generation_config.
     """           
-    status = 'SUCCESS'
     mapping_factors_dir = Path(product_generation_config['mapping_factors_dir'])
-
 
     # ========== <Prepare grid values> ===========================================================
     # Create custom or ecco grid values
     if product_generation_config['custom_grid_and_factors']:
-        grid_values = create_custom_grid_values(product_generation_config,
-                                                mapping_factors_dir)
+        grid_values = create_custom_grid_values(
+            product_generation_config, mapping_factors_dir)
     else:
-        grid_values = create_ecco_grid_values(product_generation_config, 
-                                              mapping_factors_dir, 
-                                              extra_prints)
+        grid_values = create_ecco_grid_values(
+            product_generation_config, mapping_factors_dir
+#           extra_prints)
+            )
     # ========== </Prepare grid values> ===========================================================
 
 
@@ -833,39 +903,33 @@ def create_all_factors(product_generation_config,
     if not isinstance(dataset_dim, list):
         dataset_dim = [dataset_dim]
     for dim in dataset_dim:
-        status = create_mapping_factors(dim, 
-                                        mapping_factors_dir, 
-                                        grid_values['source_grid'], 
-                                        grid_values['target_grid'], 
-                                        grid_values['target_grid_radius'], 
-                                        grid_values['source_grid_min_L'], 
-                                        grid_values['source_grid_max_L'], 
-                                        grid_values['source_grid_k'], 
-                                        grid_values['nk'])
-        if status != 'SUCCESS':
-            return status
-
+        create_mapping_factors(
+            dim, 
+            mapping_factors_dir, 
+            grid_values['source_grid'], 
+            grid_values['target_grid'], 
+            grid_values['target_grid_radius'], 
+            grid_values['source_grid_min_L'], 
+            grid_values['source_grid_max_L'], 
+            grid_values['source_grid_k'], 
+            grid_values['nk'])
         if not product_generation_config['custom_grid_and_factors']:
             # make a land mask in lat-lon using hfacC
-            status = create_land_mask(mapping_factors_dir, 
-                                      grid_values['nk'], 
-                                      grid_values['target_grid_shape'], 
-                                      grid_values['ecco_grid'], 
-                                      dim)
-        if status != 'SUCCESS':
-            return status
+            create_land_mask(
+                mapping_factors_dir, 
+                grid_values['nk'], 
+                grid_values['target_grid_shape'], 
+                grid_values['ecco_grid'], 
+                dim)
     # ========== </Create mapping factors and land mask> ==========================================
 
 
     # ========== <Create sparse matrices> =========================================================
     # create sparse matrices
-    status = create_sparse_matrix(mapping_factors_dir,
-                                  product_generation_config, 
-                                  grid_values['target_grid_shape'], 
-                                  grid_values['wet_pts_k'],
-                                  extra_prints=extra_prints)
-    if status != 'SUCCESS':
-        return status
+    create_sparse_matrix(
+        mapping_factors_dir, product_generation_config, 
+        grid_values['target_grid_shape'], grid_values['wet_pts_k']
+#                                  extra_prints=extra_prints)
+        )
     # ========== </Create sparse matrices> ========================================================
 
-    return status

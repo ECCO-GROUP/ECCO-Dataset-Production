@@ -7,14 +7,15 @@ Contains functions used while processing ECCO granules into netCDFs for PODAAC
 
 """
 
-import os
+import datetime
 import glob
+import logging
 import lzma
+import numpy as np
+import os
+import pickle
 import time
 import uuid
-import pickle
-import datetime
-import numpy as np
 import xarray as xr
 from pathlib import Path
 from scipy import sparse
@@ -22,6 +23,7 @@ from pandas import read_csv
 from concurrent import futures
 from collections import OrderedDict
 
+log = logging.getLogger('ecco_dataset_production')
 
 # =================================================================================================
 # GET FILES FROM S3 or LOCALLY
@@ -289,29 +291,34 @@ def delete_files(data_file_paths,
 # =================================================================================================
 # GET LAND MASK
 # =================================================================================================
-def get_land_mask(mapping_factors_dir, 
-                  k=0, 
-                  extra_prints=False):
+def get_land_mask(
+    #mapping_factors_dir,
+    product_generation_config, k=0
+    #extra_prints=False):
+    ):
     """
     Get land mask from mapping_factors_dir for level k
 
     Args:
-        mapping_factors_dir (PosixPath): Path to /ECCO-Dataset-Production/aws/mapping_factors/{ecco_version}
+        #mapping_factors_dir (PosixPath): Path to /ECCO-Dataset-Production/aws/mapping_factors/{ecco_version}
+        #extra_prints (optional, bool): Boolean to enable more print statements
+        product_generation_config (dict): Configuration data, with runtime defaults applied.
         k (optional, int): Integer vertical level index to retrieve land mask for (0-{num_vertical_levels})
-        extra_prints (optional, bool): Boolean to enable more print statements
 
     Returns:
         (status, land_mask_ll) (tuple):
             status (str): String that is either "SUCCESS" or "ERROR {error message}"
             land_mask_ll (list): Flat list mask where nan indicates a dry point, and a 1 indicates a wet point
     """
-    if extra_prints: print('\nGetting Land Mask')
+    log.info('Getting land mask from %s ...', product_generation_config['land_mask_dir'])
+    #if extra_prints: print('\nGetting Land Mask')
 
     status = 'SUCCESS'
     land_mask_ll = []
 
-    # check to see if you have already calculated the land mask
-    land_mask_fdir = Path(mapping_factors_dir) / 'land_mask'
+    # check to see if land mask has already been calculated:
+    land_mask_fdir = Path(product_generation_config['land_mask_dir'])
+    #land_mask_fdir = Path(mapping_factors_dir) / 'land_mask'
     land_mask_fname = ''
     for lm_file in os.listdir(land_mask_fdir):
         if f'_{k}.xz' in lm_file:
@@ -321,11 +328,9 @@ def get_land_mask(mapping_factors_dir,
         status = f'ERROR Land mask has not been created or cannot be found "{land_mask_fname}"'
         return (status, land_mask_ll)
 
-
     # if so, load
     if land_mask_fname.is_file():
-        if extra_prints: print('.... loading land_mask_ll')
-
+        log.info('loading %s ...', land_mask_fname.name)
         try:
             land_mask_ll = pickle.load(lzma.open(land_mask_fname, 'rb'))
         except:
