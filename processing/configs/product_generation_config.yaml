@@ -164,6 +164,10 @@ ecco_grid_dir_mds: ''
 # String
 mapping_factors_dir: ''
 
+# Absolute directory path string for land mask data
+# Default: ['mapping_factors_dir']/land_mask
+land_mask_dir: ''
+
 # Name of ECCO code to use for processing (i.e. ECCOv4-py)
 # Default: base directory of {ecco_code_dir} or ECCO{ecco_version version only}-py
 # String

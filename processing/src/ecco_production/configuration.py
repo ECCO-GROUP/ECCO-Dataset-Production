@@ -42,27 +42,35 @@ class ECCOProductionConfig(dict):
 
 
     def set_default_paths( self, workingdir='.'):
-        """If otherwise unspecified via configuation input, set some default
-        runtime paths:
+        """If otherwise unspecified via configuation file definition, set some
+        default runtime paths as follows:
 
-            workingdir/
-                ecco_grids/
-                    ecco_version
-                mapping_factors/
-                    ecco_version/
-                metadata/
-                    ecco_version/
-                tmp/
-                    tmp_model_output/
-                        ecco_version/
-                    tmp_output/
-                        ecco_version
+        directory structure:            corresponding (full path) keys:
+        --------------------            -------------------------------
+
+        workingdir/
+            ecco_grids/
+                ecco_version            'ecco_grid_dir', 'ecco_grid_dir_mds'
+            mapping_factors/
+                ecco_version/           'mapping_factors_dir' (opt: 'custom_factors_dir')
+                    land_mask/          'land_mask_dir'
+            metadata/
+                ecco_version/           'metadata_dir'
+            tmp/
+                tmp_model_output/
+                    ecco_version/       'model_output_dir'
+                tmp_output/
+                    ecco_version        'processed_output_dir_base'
 
         Args:
             workingdir (str): Path (absolute or relative) to ECCO Production
             top-level working directory.
-        """
 
+        Note:
+            Current implementation adheres to product_generation_conifg.yaml
+            convention of absolute directory path definitions (hence
+            'workingdir' input).
+        """
         try:
             ecco_version = self.__getitem__('ecco_version')
 
@@ -86,6 +94,11 @@ class ECCOProductionConfig(dict):
                     'mapping_factors_dir',
                     os.path.join(workingdir,'mapping_factors',ecco_version))
 
+            if not self.__getitem__('land_mask_dir'):
+                self.__setitem__(
+                    'land_mask_dir',
+                    os.path.join(workingdir,self.__getitem__('mapping_factors_dir'),'land_mask'))
+
             if not self.__getitem__('metadata_dir'):
                 self.__setitem__(
                     'metadata_dir',
@@ -106,6 +119,6 @@ class ECCOProductionConfig(dict):
             # 'ecco_configurations_name', 'ecco_configurations_subfolder'
 
         except:
-            log.error('Configuration data (cfgfile) have not been provided.')
+            log.error('Configuration data (cfgfile) have not been provided or are inconsistent.')
             sys.exit(1)
 
