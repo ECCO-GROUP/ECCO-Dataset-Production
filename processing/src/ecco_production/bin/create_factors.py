@@ -37,8 +37,8 @@ def create_parser():
         help="""(Path and) filename of ECCO Production configuration file
         (default: '%(default)s')""")
     parser.add_argument('--workingdir', default='.', help="""
-        If any path data are unassigned, --workingdir will be used to set
-        default path root values (default: '%(default)s')""")
+        If any configuration path data are unassigned, --workingdir will be used
+        to set default path root values (default: '%(default)s')""")
     parser.add_argument('--dims', nargs='+', help="""
         Dimension(s) of mapping factors to be generated, e.g., --dims 2 3 if
         both two- and three-dimensional mapping factors are to be created.""")
@@ -50,21 +50,41 @@ def create_parser():
 
 
 def create_factors( cfgfile=None, workingdir=None, dims=None, log_level=None):
-    """
-        mapping_factors_dir
-        custom_grid_and_factors
-        num_vertical_levels
-        grid_files_dir
-        source_grid_min_L
-        source_grid_max_L
-        ecco_grid_dir
-        ecco_grid_filename (GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc)
-        latlon_grid_resolution
-        latlon_max_lat
-        latlon_grid_area_extent
-        latlon_grid_dims
-        latlon_effective_grid_radius
-        ecco_version
+    """Convenience wrapper for call to
+    ecco_production.utils.mapping_factors_utils.create_all_factors.
+
+    Args:
+        cfgfile (str): (Path and) filename of ECCO Production configuration
+            file.
+        workingdir (str): Working directory path definition default if explicit
+            path definitions are otherwise unassigned in cfgfile.
+        dims (str): List of dimensions for which mapping factors are to be
+            generated (e.g., ['2','3'] for both two- and three-dimensional
+            mapping).
+        log_level (str): log_level choices per Python logging module
+            ('DEBUG','INFO','WARNING','ERROR' or 'CRITICAL').
+
+    Returns:
+        Indirectly, 2- and/or 3-D grid mapping factors in directory defined by
+        configuration variables ['mapping_factors_dir']/['ecco_version'].
+
+    Note:
+        Configuration parameters referenced by this, and all called routines,
+        include:
+            custom_grid_and_factors
+            ecco_grid_dir
+            ecco_grid_filename
+            ecco_version
+            grid_files_dir
+            latlon_effective_grid_radius
+            latlon_grid_area_extent
+            latlon_grid_dims
+            latlon_grid_resolution
+            latlon_max_lat
+            mapping_factors_dir
+            num_vertical_levels
+            source_grid_min_L
+            source_grid_max_L
     """
     log.info('Initializing configuration parameters...')
     cfg = ecco_production.configuration.ECCOProductionConfig(cfgfile=cfgfile)

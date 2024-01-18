@@ -786,14 +786,14 @@ def create_ecco_grid_values(
     if product_generation_config['latlon_effective_grid_radius'] != None:
         target_grid_radius = product_generation_config['latlon_effective_grid_radius']
     else:
-        if product_generation_config['ecco_version'] == 'V4r4':
-            target_grid_radius = np.sqrt(lat_lon_grid_area / np.pi).ravel()
-        else:
-            # use 111 km per degree everywhere, even at high latitudes
-            # as a consequence, at higher latitudes the effective grid area
-            # will be the sameas latitudes
-            target_grid_radius = ((latlon_grid_resolution*111.)/2.)*np.sqrt(2)*1.1
-    
+        target_grid_radius = (np.ones(lat_lon_grid_area.shape)*(111/2*np.sqrt(2))).ravel()
+        #if product_generation_config['ecco_version'] == 'V4r4':
+        #    target_grid_radius = np.sqrt(lat_lon_grid_area / np.pi).ravel()
+        #else:
+        #    # use 111 km per degree everywhere, even at high latitudes
+        #    # as a consequence, at higher latitudes the effective grid area
+        #    # will be the sameas latitudes
+        #    target_grid_radius = ((latlon_grid_resolution*111.)/2.)*np.sqrt(2)*1.1
 
     # ========== <Create latlon grid> =============================================================
     # latlon grid is a list of values describing the latlon grid which includes:
