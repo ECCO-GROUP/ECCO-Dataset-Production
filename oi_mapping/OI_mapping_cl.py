@@ -274,7 +274,7 @@ if __name__ == "__main__":
     sgrid_dir = json_data['sgrid_dir']
     out_dir = json_data['out_dir']
 
-    if 's3://' in mapping_factors_dir: 
+    if 's3://' in str(mapping_factors_dir): 
         print('processing on s3')
         ecco_s3_fs = s3fs.S3FileSystem(profile='saml-pub')
     else:
