@@ -119,9 +119,11 @@ def proc_band(band_idx, slat0, name, src_field_flat_shape, verbose=False):
     if (verbose):
         print('masksub_src shape: ',src_field.shape,  masksub_src.shape)
     src_tapered = np.copy(src_field[0:nrec_chunk,masksub_src])
-            
-    K = K_dict[band_idx][0]                 
-    
+
+    # load K for the current latitudinal band    
+    K_dict=load_K(band_idx)            
+    K = K_dict[band_idx][0] 
+
     if(True): # tappering    
         disttmp = earthrad*np.deg2rad(sgrid_y[masksub_src]-lat_mid)
         # taperdist0 is actually 
@@ -198,18 +200,18 @@ def load_grid(grid_nm, grid_dir='./', local_or_s3='local'):
     return grid_shape, grid_flat_shape, grid_size, grid_y
 
 #%%
-def load_K():
+def load_K(band_idx):
     # have a shared dictionary
     manager = Manager()
     K_dict = manager.dict()
-
-    for band_idx, band in enumerate(band_ind_all):
-        slat0 = slat0_all[band_idx]
-        slat1 = slat0 + dlatcell 
-        OI_mapping_fname = mapping_factors_dir / \
-            (fnprefix + f"_{band_idx:d}_{slat0:d}_{slat1:d}.p" )    
-        K_dict[band_idx] = pickle.load(open(OI_mapping_fname, 'rb'))
-    print('Matrices are now loaded.')
+        
+    slat0 = slat0_all[band_idx]
+    slat1 = slat0 + dlatcell 
+    OI_mapping_fname = mapping_factors_dir / \
+        (fnprefix + f"_{band_idx:d}_{slat0:d}_{slat1:d}.p" )    
+    K_dict[band_idx] = pickle.load(open(OI_mapping_fname, 'rb'))
+    print('Matrix is now loaded for latitudinal band '+\
+          f'{band_idx+1:d} ({slat0} to {slat1})')
 
     return K_dict
 
@@ -319,10 +321,6 @@ if __name__ == "__main__":
     slat0_all = np.asarray(slat0_all)
     
     band_ind_all = np.arange(len(slat0_all))  
-
-#%% 
-# load matrices   
-    K_dict = load_K()
    
 #%% 
     # default shared memory array size and shape
