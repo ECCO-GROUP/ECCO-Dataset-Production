@@ -156,8 +156,8 @@ def proc_band(band_idx, slat0, name, src_field_flat_shape, verbose=False):
                   f'{time.time()-time_bf_matrix_a:.4f}')  
         return masksub_dest,dest_field_flat_sub.T
 #%%
-def load_grid(sgrid_nm, grid_dir='./', local_or_s3='local'):
-    if sgrid_nm == 'merra2':
+def load_grid(grid_nm, grid_dir='./', local_or_s3='local'):
+    if grid_nm == 'merra2':
         # grid: MERRA2 
         nx = 576
         ny = 361
@@ -165,37 +165,37 @@ def load_grid(sgrid_nm, grid_dir='./', local_or_s3='local'):
         dlon = 5/8
         x=[x0 + dlon*i for i in range(nx)]
         y=[y0 + dlat*i for i in range(ny)]
-        sgrid_x, sgrid_y = np.meshgrid(x, y)
+        grid_x, grid_y = np.meshgrid(x, y)
 
-    elif sgrid_nm == 'llc90':
+    elif grid_nm == 'llc90':
         # grid: llc90
         if local_or_s3 == 'local':
-            fsgrid = 'ECCO-GRID.nc'
-            sgrid_ds = xr.open_dataset(grid_dir + '/' +fsgrid)
+            fgrid = 'ECCO-GRID.nc'
+            grid_ds = xr.open_dataset(grid_dir + '/' +fgrid)
         elif local_or_s3 == 's3':
-            fsgrid = 'GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc'
-            ecco_s3_v4r4_grid_path = grid_dir + fsgrid
+            fgrid = 'GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc'
+            ecco_s3_v4r4_grid_path = grid_dir + fgrid
             print(ecco_s3_v4r4_grid_path)
             grid_file = ecco_s3_fs.open(ecco_s3_v4r4_grid_path)
-            sgrid_ds = xr.open_dataset(grid_file).load()
+            grid_ds = xr.open_dataset(grid_file).load()
 
-        sgrid_x = np.copy(sgrid_ds.XC.values)
-        sgrid_y = np.copy(sgrid_ds.YC.values)
+        grid_x = np.copy(grid_ds.XC.values)
+        grid_y = np.copy(grid_ds.YC.values)
 
-    elif sgrid_nm == 'llc270':
+    elif grid_nm == 'llc270':
         # grid: llc270 
-        fsgrid = 'ECCO-GRID.nc'
-        sgrid_ds = xr.open_dataset(grid_dir + '/' +fsgrid)
-        sgrid_x = np.copy(sgrid_ds.XC.values)
-        sgrid_y = np.copy(sgrid_ds.YC.values) 
+        fgrid = 'ECCO-GRID.nc'
+        grid_ds = xr.open_dataset(grid_dir + '/' +fgrid)
+        grid_x = np.copy(grid_ds.XC.values)
+        grid_y = np.copy(grid_ds.YC.values) 
 
     else:
-        print('Error! Grid can only be merra2, llc90, or llc270: ', sgrid_nm)
-    sgrid_shape = sgrid_x.shape
-    sgrid_flat_shape = sgrid_x.ravel().shape
-    sgrid_size = np.prod(sgrid_shape)        
+        print('Error! Grid can only be merra2, llc90, or llc270: ', grid_nm)
+    grid_shape = grid_x.shape
+    grid_flat_shape = grid_x.ravel().shape
+    grid_size = np.prod(grid_shape)        
       
-    return sgrid_shape, sgrid_flat_shape, sgrid_size, sgrid_y
+    return grid_shape, grid_flat_shape, grid_size, grid_y
 
 #%%
 def load_K():
@@ -341,7 +341,7 @@ if __name__ == "__main__":
             nrec_chunk = nrec_src-chunk_start
         chunk_end = chunk_start + nrec_chunk
         
-        out_fn =src_fn + '_'+mappingtype+'_'+f'{chunk_start:d}_{chunk_end:d}'        
+        out_fn =src_fn + '_'+mappingtype+'_'+f'{chunk_start+1:05d}_{chunk_end:05d}'        
         src_field, src_field_flat_shape = load_src_field_chunk(chunk_start, 
                                                                 nrec_chunk)
         dest_field = np.zeros((nrec_chunk,)+dgrid_shape)
