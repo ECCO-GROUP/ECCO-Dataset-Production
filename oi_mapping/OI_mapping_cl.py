@@ -40,11 +40,11 @@ def create_parser():
         epilog="""Note: Currently, the following mapping is implemented: 
         merra2 to llc90, merra2 to llc270, and llc90 to llc270.""")        
     parser.add_argument('--json_dir', default='./', help="""
-        Directory of input json file (default: "%(default)")""")        
+        Directory of input json file (default: "%(default)s")""")
     parser.add_argument('--src', default='merra2', help="""
-        Source grid (default: "%(default)")""")
+        Source grid (default: "%(default)s")""")
     parser.add_argument('--dest', default='llc90', help="""
-        Destination grid (default: "%(default)")""")
+        Destination grid (default: "%(default)s")""")
     parser.add_argument('--NUM_WORKERS', type=int, default=1, help="""
         Number of processes (default: %(default)s)""")
     parser.add_argument('--variable', default='TAUX', help="""
