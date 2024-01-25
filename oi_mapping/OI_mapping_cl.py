@@ -55,6 +55,10 @@ def create_parser():
         Start record number (default: %(default)s)""")
     parser.add_argument('--rec1', type=int, default=4, help="""
         End record number (default: %(default)s)""")        
+    parser.add_argument('--src_fn', default='', help="""
+        Source filename (default: %(default)s)""")         
+    parser.add_argument('--iternum', type=int, default=0, help="""
+        Iternation number (default: %(default)s)""")
 # =============================================================================
 #     # Python >= 3.9
 #     parser.add_argument('--fill_dry_points', 
@@ -88,12 +92,21 @@ def release_shared(name):
     shm.unlink()  # Free and release the shared memory block
     
 #%% load source field (by chunk)
-def load_src_field_chunk(chunk_start, nrec_chunk):
-    src_field_tmp = np.fromfile(src_dir+src_fn,dtype='>f4',
-                                count = nrec_chunk*sgrid_size,
-                              offset=chunk_start*sgrid_size*src_precision)
-    src_field_flat_shape = src_field_tmp.shape
-    src_field = np.reshape(src_field_tmp,(nrec_chunk,)+sgrid_shape)
+def load_src_field_chunk(src, chunk_start, nrec_chunk):
+    if(src=='merra2'):
+        src_field_tmp = np.fromfile(src_dir+src_fn,dtype='>f4',
+                                    count = nrec_chunk*sgrid_size,
+                                  offset=chunk_start*sgrid_size*src_precision)
+        src_field = np.reshape(src_field_tmp,(nrec_chunk,)+sgrid_shape)
+    elif src=='llc90' or src=='llc270':
+        llc=int(src[-1:])
+        src_field = ecco.read_llc_to_tiles(src_dir, src_fn, 
+                                           nk = nrec_chunk,
+                                           skip=chunk_start,
+                                           llc=llc,
+                                           less_output=True)  
+        src_field_tmp = src_field.ravel()
+    src_field_flat_shape = src_field_tmp.shape    
     shm = create_shared_memory_nparray(src_field_tmp,
                                        ARRAY_SHAPE=src_field_flat_shape)     
     return src_field, src_field_flat_shape
@@ -259,6 +272,8 @@ if __name__ == "__main__":
     year = args.year
     rec0 = args.rec0
     rec1 = args.rec1
+    src_fn = args.src_fn
+    iternum = args.iternum
     fill_dry_points = args.fill_dry_points
     
     mappingtype=src+'to'+dest
@@ -276,8 +291,12 @@ if __name__ == "__main__":
     
     chunk_start = rec0-1
     nrec_chunk = rec1-rec0+1
-    
-    src_fn = variable +f'_{1992:d}'
+
+    if src_fn == '':
+        if src == 'merra2':
+            src_fn = variable +f'_{1992:d}'
+        else: 
+            src_fn = 'xx_'+variable +f'.{iternum:010d}.data'
 
 #%%
 # parameters (no need to change them)   
@@ -389,8 +408,8 @@ if __name__ == "__main__":
         chunk_end = chunk_start + nrec_chunk
         
         out_fn =src_fn + '_'+mappingtype+'_'+f'{chunk_start+1:05d}_{chunk_end:05d}'        
-        src_field, src_field_flat_shape = load_src_field_chunk(chunk_start, 
-                                                                nrec_chunk)
+        src_field, src_field_flat_shape = \
+            load_src_field_chunk(src, chunk_start, nrec_chunk)
         dest_field = np.zeros((nrec_chunk,)+dgrid_shape)
 
         # do the mapping              
