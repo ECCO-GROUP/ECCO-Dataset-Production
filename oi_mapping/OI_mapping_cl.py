@@ -269,6 +269,10 @@ if __name__ == "__main__":
         print('Variable mappingtype has to be one of the following:')
         print('merra2tollc90, merra2tollc270, or llc90tollc270')
         sys.exit()
+
+    if NUM_WORKERS>=6:
+        print(f"""WARNING! Using NUM_WORKERS larger than 6 might 
+              require much larger memory! NUM_WORKERS = {NUM_WORKERS}""")
     
     chunk_start = rec0-1
     nrec_chunk = rec1-rec0+1
@@ -359,6 +363,22 @@ if __name__ == "__main__":
     NP_DATA_TYPE = np.float32 
     
     start_map_time = time.time()
+
+    # Because the size of matrices for high-latitudes bands is 
+    # generally much larger than those for lower-latitudes bands, 
+    # one way to reduce memory load is not to multiple load 
+    # high-latitude matrices at the same time. So, instead of 
+    # loading the matrices sequentially, we would selectively 
+    # load only one high-latitude matrix, along with other 
+    # lower-latitude matrices.
+    nband_inagp = 3
+    ngp = int((nband-1)/nband_inagp)+1
+    if nband_inagp*ngp<nband:
+        print(f"""ERROR! The product of nband_inagp ({nband_inagp}) and 
+              ngp ({ngp}) is smaller than the total number of bands 
+              ({nband})').""")
+        sys.exit()
+
     band_ind_all = np.arange(len(slat0_all))   
 
     # each job will only do one chunk.    
@@ -376,15 +396,16 @@ if __name__ == "__main__":
         # do the mapping              
         futures=[]        
         with ProcessPoolExecutor(max_workers=NUM_WORKERS) as executor:
-            #for i in range(0, NUM_WORKERS):
-            for i in range(len(slat0_all)):
-            #for i in range(2):
-                band_ind = band_ind_all[i]
-                slat0 = slat0_all[i]
-                futures.append(executor.submit(proc_band, band_ind, slat0, 
-                                               NP_SHARED_NAME, 
-                                               src_field_flat_shape,
-                                               fill_dry_points))
+            for iband_inagp in range(nband_inagp):
+                for igp in range(ngp):            
+                    band_idx = igp * nband_inagp + iband_inagp
+                    if(band_idx>=nband):
+                        continue                    
+                    slat0 = slat0_all[band_idx]
+                    futures.append(executor.submit(proc_band, band_idx, slat0, 
+                                                   NP_SHARED_NAME, 
+                                                   src_field_flat_shape,
+                                                   fill_dry_points))
         # generate the mapped field                 
         for fut in concurrent.futures.as_completed(futures):
             fut_res_mask = fut.result()[0]
