@@ -55,6 +55,19 @@ def create_parser():
         Start record number (default: %(default)s)""")
     parser.add_argument('--rec1', type=int, default=4, help="""
         End record number (default: %(default)s)""")        
+# =============================================================================
+#     # Python >= 3.9
+#     parser.add_argument('--fill_dry_points', 
+#                         action=argparse.BooleanOptionalAction, help="""
+#                         Fill dry points with the nearest wet point""")    
+# =============================================================================
+    # Python < 3.9
+    parser.add_argument('--fill_dry_points', action='store_true', help="""
+                        Fill dry points with the nearest wet point""")
+    parser.add_argument('--no-fill_dry_points', dest='fill_dry_points', 
+                        action='store_false', help="""
+                        Do not fill dry points with the nearest wet point""")
+    parser.set_defaults(fill_dry_points=False)
     return parser
 
 #%% shared memory
@@ -92,7 +105,8 @@ def load_json_data(file_path):
     return data
 
 #%% process one latitudinal band  
-def proc_band(band_idx, slat0, name, src_field_flat_shape, verbose=False):
+def proc_band(band_idx, slat0, name, src_field_flat_shape, fill_dry_points,
+              verbose=False):
     if(verbose):
         time_bf_matrix_a = time.time() 
 
@@ -102,6 +116,10 @@ def proc_band(band_idx, slat0, name, src_field_flat_shape, verbose=False):
         print('shape of src_field_flat: ',src_field_flat.shape)
 
     src_field = src_field_flat.reshape((nrec_chunk,)+sgrid_shape)
+
+    if(fill_dry_points==True):
+        src_field[:, sgrid_drypnts] = \
+            np.copy(src_field.reshape((nrec_chunk,-1))[:,closest_idx][:,sgrid_drypnts]) 
 
     slat1 = slat0 + dlatcell
     lat_mid = slat0+(slat1-slat0)/2
@@ -241,6 +259,7 @@ if __name__ == "__main__":
     year = args.year
     rec0 = args.rec0
     rec1 = args.rec1
+    fill_dry_points = args.fill_dry_points
     
     mappingtype=src+'to'+dest
     if(mappingtype!='merra2tollc90' and 
@@ -275,6 +294,9 @@ if __name__ == "__main__":
     dgrid_dir = json_data['dgrid_dir']
     sgrid_dir = json_data['sgrid_dir']
     out_dir = json_data['out_dir']
+    if fill_dry_points:
+        nearest_wet_points_indices_dir = \
+            json_data['nearest_wet_points_indices_dir']
 
     if 's3://' in str(mapping_factors_dir): 
         print('processing on s3')
@@ -288,6 +310,13 @@ if __name__ == "__main__":
         load_grid(src, sgrid_dir)
     dgrid_shape, dgrid_flat_shape, dgrid_size, dgrid_y = \
         load_grid(dest, dgrid_dir)    
+
+#%%
+    if fill_dry_points:       
+        nearest_wet_points_indices_fn = src + '_nearest_wet_points_indices.p'
+        [sgrid_oceanpnts, sgrid_drypnts, closest_idx] = \
+            pickle.load(open(nearest_wet_points_indices_dir+\
+                             nearest_wet_points_indices_fn, 'rb'))
 
 #%%    
     dlathilo = 0 # source and destination grids are over the same region
@@ -354,7 +383,8 @@ if __name__ == "__main__":
                 slat0 = slat0_all[i]
                 futures.append(executor.submit(proc_band, band_ind, slat0, 
                                                NP_SHARED_NAME, 
-                                               src_field_flat_shape))
+                                               src_field_flat_shape,
+                                               fill_dry_points))
         # generate the mapped field                 
         for fut in concurrent.futures.as_completed(futures):
             fut_res_mask = fut.result()[0]
