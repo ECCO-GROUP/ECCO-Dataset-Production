@@ -151,7 +151,7 @@ def proc_band(band_idx, slat0, name, src_field_flat_shape, fill_dry_points,
         print('masksub_src shape: ',src_field.shape,  masksub_src.shape)
     src_tapered = np.copy(src_field[0:nrec_chunk,masksub_src])
 
-    # load K for the current latitudinal band    
+    # load mapping matrix for a particular latitudinal band
     K_dict=load_K(band_idx)            
     K = K_dict[band_idx][0] 
 
@@ -372,7 +372,8 @@ if __name__ == "__main__":
             break
     slat0_all = np.asarray(slat0_all)
     
-    band_ind_all = np.arange(len(slat0_all))  
+    nband = len(slat0_all)
+    band_ind_all = np.arange(nband)
    
 #%% 
     # default shared memory array size and shape
@@ -397,8 +398,6 @@ if __name__ == "__main__":
               ngp ({ngp}) is smaller than the total number of bands 
               ({nband})').""")
         sys.exit()
-
-    band_ind_all = np.arange(len(slat0_all))   
 
     # each job will only do one chunk.    
     for ichunk in range(1):
