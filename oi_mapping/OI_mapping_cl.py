@@ -78,8 +78,18 @@ def create_parser():
 def create_shared_memory_nparray(data,
                                  ARRAY_SHAPE=(), 
                                  NP_SHARED_NAME='src_field_shm'):
-    d_size = np.dtype(NP_DATA_TYPE).itemsize * np.prod(ARRAY_SHAPE)
 
+    # destory shared memory NP_SHARED_NAME if it exists 
+    # (likely beacuse a previous run didn't stop properly).
+    try:
+        _ = shared_memory.SharedMemory(name=NP_SHARED_NAME)
+        # If it exists, unlink it
+        release_shared(NP_SHARED_NAME)
+    except FileNotFoundError:
+        # This means the shared memory does not exist
+        pass
+
+    d_size = np.dtype(NP_DATA_TYPE).itemsize * np.prod(ARRAY_SHAPE)
     shm = shared_memory.SharedMemory(create=True, size=d_size, name=NP_SHARED_NAME)
     # numpy array on shared memory buffer
     dst = np.ndarray(shape=ARRAY_SHAPE, dtype=NP_DATA_TYPE, buffer=shm.buf)
