@@ -55,6 +55,9 @@ def create_parser():
         Start record number (default: %(default)s)""")
     parser.add_argument('--rec1', type=int, default=4, help="""
         End record number (default: %(default)s)""")        
+    parser.add_argument('--nchunk', type=int, default=1, help="""
+        Number of chunnks to split and process the record range 
+        from rec0 to rec1 into (default: %(default)s)""")
     parser.add_argument('--src_fn', default='', help="""
         Source filename (default: %(default)s)""")         
     parser.add_argument('--iternum', type=int, default=0, help="""
@@ -282,9 +285,14 @@ if __name__ == "__main__":
     year = args.year
     rec0 = args.rec0
     rec1 = args.rec1
+    nchunk = args.nchunk
     src_fn = args.src_fn
     iternum = args.iternum
     fill_dry_points = args.fill_dry_points
+    if(nchunk<=0):
+        print('Error!')
+        print(f'nchunk has an integer that is larger than 0: {nchunk}')
+        sys.exit()
     
     mappingtype=src+'to'+dest
     if(mappingtype!='merra2tollc90' and 
@@ -299,9 +307,6 @@ if __name__ == "__main__":
         print(f"""WARNING! Using NUM_WORKERS larger than 6 might 
               require much larger memory! NUM_WORKERS = {NUM_WORKERS}""")
     
-    chunk_start = rec0-1
-    nrec_chunk = rec1-rec0+1
-
     if src_fn == '':
         if src == 'merra2':
             src_fn = variable +f'_{1992:d}'
@@ -387,8 +392,6 @@ if __name__ == "__main__":
    
 #%% 
     # default shared memory array size and shape
-    ARRAY_SIZE = int(nrec_chunk*sgrid_size)
-    ARRAY_SHAPE = (ARRAY_SIZE,)
     NP_SHARED_NAME = 'src_field_shm'
     NP_DATA_TYPE = np.float32 
     
@@ -410,16 +413,23 @@ if __name__ == "__main__":
         sys.exit()
 
     # each job will only do one chunk.    
-    for ichunk in range(1):
+    chunk_start = rec0-1
+    if rec1>nrec_src:
+        rec1 = nrec_src
+    nrec_chunk = int(((rec1-rec0+1)-1)/nchunk)+1
+    for ichunk in range(nchunk):
     ## for debugging purpose    
-        if((nrec_src-chunk_start)<nrec_chunk):
-            nrec_chunk = nrec_src-chunk_start
+        if((rec1-chunk_start)<nrec_chunk):
+            nrec_chunk = rec1-chunk_start
         chunk_end = chunk_start + nrec_chunk
-        
+
+        # array size and shape of shared memory
+        # Put them inside the loop because nrec_chunk may change       
+        ARRAY_SIZE = int(nrec_chunk*sgrid_size)
+        ARRAY_SHAPE = (ARRAY_SIZE,)
         out_fn =src_fn + '_'+mappingtype+'_'+f'{chunk_start+1:05d}_{chunk_end:05d}'        
         src_field, src_field_flat_shape = \
             load_src_field_chunk(src, chunk_start, nrec_chunk)
-        dest_field = np.zeros((nrec_chunk,)+dgrid_shape)
 
         # do the mapping              
         futures=[]        
@@ -438,14 +448,25 @@ if __name__ == "__main__":
         for fut in concurrent.futures.as_completed(futures):
             fut_res_mask = fut.result()[0]
             fut_res_value = fut.result()[1]        
+
+            if os.path.isfile(out_dir+out_fn):       
+                dest_field = ecco.read_llc_to_tiles(out_dir, out_fn, 
+                                                    nk = nrec_chunk,
+                                                    less_output=True,
+                                                    llc=llc)
+            else:
+                print('New dest_field: '+out_dir+out_fn)
+                dest_field = np.zeros((nrec_chunk,)+dgrid_shape)
+
             dest_field[0:nrec_chunk,fut_res_mask] = + \
                 dest_field[0:nrec_chunk,fut_res_mask] + fut_res_value
-
         # output
         write_mapped_field_to_file(dest_field)
 
         # release shared memory            
         release_shared(NP_SHARED_NAME)
+        # update chunk_start
+        chunk_start = chunk_end
           
     print('exec time (s): ',time.time()-start_time,
           time.time()-start_map_time)
