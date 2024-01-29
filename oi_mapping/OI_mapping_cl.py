@@ -112,7 +112,6 @@ def load_src_field_chunk(src, chunk_start, nrec_chunk):
                                   offset=chunk_start*sgrid_size*src_precision)
         src_field = np.reshape(src_field_tmp,(nrec_chunk,)+sgrid_shape)
     elif src=='llc90' or src=='llc270':
-        llc=int(src[3:])
         src_field = ecco.read_llc_to_tiles(src_dir, src_fn, 
                                            nk = nrec_chunk,
                                            skip=chunk_start,
@@ -302,6 +301,8 @@ if __name__ == "__main__":
         print('Variable mappingtype has to be one of the following:')
         print('merra2tollc90, merra2tollc270, or llc90tollc270')
         sys.exit()
+
+    llc = int(dest[3:])
 
     if NUM_WORKERS>=6:
         print(f"""WARNING! Using NUM_WORKERS larger than 6 might 
