@@ -445,24 +445,26 @@ if __name__ == "__main__":
                                                    NP_SHARED_NAME, 
                                                    src_field_flat_shape,
                                                    fill_dry_points))
-        # generate the mapped field                 
-        for fut in concurrent.futures.as_completed(futures):
-            fut_res_mask = fut.result()[0]
-            fut_res_value = fut.result()[1]        
-
-            if os.path.isfile(out_dir+out_fn):       
-                dest_field = ecco.read_llc_to_tiles(out_dir, out_fn, 
-                                                    nk = nrec_chunk,
-                                                    less_output=True,
-                                                    llc=llc)
-            else:
-                print('New dest_field: '+out_dir+out_fn)
-                dest_field = np.zeros((nrec_chunk,)+dgrid_shape)
-
-            dest_field[0:nrec_chunk,fut_res_mask] = + \
-                dest_field[0:nrec_chunk,fut_res_mask] + fut_res_value
-        # output
-        write_mapped_field_to_file(dest_field)
+            # generate the mapped field             
+            for fut in concurrent.futures.as_completed(futures):
+                fut_res_mask = fut.result()[0]
+                fut_res_value = fut.result()[1] 
+            
+                if os.path.isfile(out_dir+out_fn):       
+                    dest_field = ecco.read_llc_to_tiles(out_dir, out_fn, 
+                                                        nk = nrec_chunk,
+                                                        less_output=True,
+                                                        llc=llc)
+                else:
+                    print('New dest_field: '+out_dir+out_fn)
+        
+                    dest_field = np.zeros((nrec_chunk,)+dgrid_shape)
+                                  
+                dest_field[0:nrec_chunk,fut_res_mask] = + \
+                    dest_field[0:nrec_chunk,fut_res_mask] + fut_res_value
+        
+                # output
+                write_mapped_field_to_file(dest_field)
 
         # release shared memory            
         release_shared(NP_SHARED_NAME)
