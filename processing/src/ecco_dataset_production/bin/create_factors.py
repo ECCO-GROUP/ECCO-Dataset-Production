@@ -8,8 +8,10 @@ import argparse
 import logging
 import sys
 
-import ecco_production.configuration
-import ecco_production.utils
+from .. import configuration
+from .. import utils
+#import ecco_production.configuration
+#import ecco_production.utils
 
 log = logging.getLogger('ecco_dataset_production')
 
