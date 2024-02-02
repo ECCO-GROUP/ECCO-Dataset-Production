@@ -109,7 +109,7 @@ def release_shared(name):
     shm.unlink()  # Free and release the shared memory block
     
 #%% load source field (by chunk)
-def load_src_field_chunk(src, chunk_start, nrec_chunk):
+def load_src_field_chunk(src, chunk_start, nrec_chunk, use_shared_mem=False):
     if(src=='merra2'):
         src_field_tmp = np.fromfile(src_dir+src_fn,dtype='>f4',
                                     count = nrec_chunk*sgrid_size,
@@ -123,8 +123,9 @@ def load_src_field_chunk(src, chunk_start, nrec_chunk):
                                            less_output=True)  
         src_field_tmp = src_field.ravel()
     src_field_flat_shape = src_field_tmp.shape    
-    shm = create_shared_memory_nparray(src_field_tmp,
-                                       ARRAY_SHAPE=src_field_flat_shape)     
+    if use_shared_mem:
+        shm = create_shared_memory_nparray(src_field_tmp,
+                                           ARRAY_SHAPE=src_field_flat_shape)     
     return src_field, src_field_flat_shape
 
 #%% load json file 
@@ -137,11 +138,13 @@ def load_json_data(file_path):
 def proc_band(band_idx, slat0, name, src_field_flat_shape, fill_dry_points,
               out_fn, nrec_chunk,
               src_field='',
+              use_shared_mem=False,
               verbose=False):
     if(verbose):
         time_bf_matrix_a = time.time() 
 
-    shm = shared_memory.SharedMemory(name=name)    
+    if use_shared_mem:
+        shm = shared_memory.SharedMemory(name=name)    
     src_field_flat = np.ndarray(src_field_flat_shape, dtype=NP_DATA_TYPE, buffer=shm.buf)
     if (verbose):
         print('shape of src_field_flat: ',src_field_flat.shape)
@@ -250,9 +253,12 @@ def load_grid(grid_nm, grid_dir='./', local_or_s3='local'):
 
 #%%
 def load_K(band_idx):
-    # have a shared dictionary
-    manager = Manager()
-    K_dict = manager.dict()
+    if use_shared_mem:
+        # have a shared dictionary
+        manager = Manager()
+        K_dict = manager.dict()
+    else:
+        K_dict={}
         
     slat0 = slat0_all[band_idx]
     slat1 = slat0 + dlatcell 
@@ -311,6 +317,12 @@ if __name__ == "__main__":
         sys.exit()
 
     llc = int(dest[3:])
+
+    use_shared_mem=False
+    if use_shared_mem:
+        print("""ERROR! use_shared_mem has to be set to False, as each worker
+              now processes one chunk of data for one latitudinal band.""")
+        sys.exit()
 
     if NUM_WORKERS>=6:
         print(f"""WARNING! Using NUM_WORKERS larger than 6 might 
@@ -427,10 +439,11 @@ if __name__ == "__main__":
                 nrec_chunk = rec1-chunk_start
             chunk_end = chunk_start + nrec_chunk
 
-            # array size and shape of shared memory
-            # Put them inside the loop because nrec_chunk may change       
-            ARRAY_SIZE = int(nrec_chunk*sgrid_size)
-            ARRAY_SHAPE = (ARRAY_SIZE,)
+            if use_shared_mem:
+                # array size and shape of shared memory
+                # Put them inside the loop because nrec_chunk may change       
+                ARRAY_SIZE = int(nrec_chunk*sgrid_size)
+                ARRAY_SHAPE = (ARRAY_SIZE,)
             out_fn =src_fn + '_'+mappingtype+'_'+\
                 f'{chunk_start+1:05d}_{chunk_end:05d}_{band0:02d}_{band1:02d}' 
             src_field, src_field_flat_shape = \
@@ -441,12 +454,26 @@ if __name__ == "__main__":
                     continue                    
                 slat0 = slat0_all[band_idx] 
 
-                futures.append(executor.submit(proc_band, band_idx, slat0, 
-                                               NP_SHARED_NAME, 
-                                               src_field_flat_shape,
-                                               fill_dry_points,
-                                               out_fn, nrec_chunk,
-                                               src_field=src_field))  
+                if use_shared_mem:            
+                    futures.append(executor.submit(proc_band, band_idx, slat0, 
+                                                   NP_SHARED_NAME, 
+                                                   src_field_flat_shape,
+                                                   fill_dry_points,
+                                                   out_fn, nrec_chunk))
+                else:
+                    futures.append(executor.submit(proc_band, band_idx, slat0, 
+                                                   NP_SHARED_NAME, 
+                                                   src_field_flat_shape,
+                                                   fill_dry_points,
+                                                   out_fn, nrec_chunk,
+                                                   src_field=src_field))
+
+            if use_shared_mem:
+                # release shared memory            
+                release_shared(NP_SHARED_NAME)
+            # update chunk_start
+            chunk_start = chunk_end
+
         # generate the mapped field             
         for fut in concurrent.futures.as_completed(futures):
             fut_res_mask = fut.result()[0]
@@ -469,10 +496,5 @@ if __name__ == "__main__":
             # output
             write_mapped_field_to_file(dest_field, fut_res_out_fn)
 
-            # release shared memory            
-            release_shared(NP_SHARED_NAME)
-            # update chunk_start
-            chunk_start = chunk_end
-          
     print('exec time (s): ',time.time()-start_time,
           time.time()-start_map_time)
