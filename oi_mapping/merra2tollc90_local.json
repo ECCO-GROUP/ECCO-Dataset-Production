@@ -1,0 +1,9 @@
+{
+    "mapping_factors_dir_str": "/mnt/extraid/ifraid8/data10/owang/Ecco_data/multigrid_optim/Processed/interpolation/merra2/OI_mat_v15_band_K_Kinv_merra2tollc90/",
+    "fnprefix": "OI_ecco_merra2tollc90_mappings",
+    "sgrid_dir": "",
+    "dgrid_dir": "/mnt/extraid/ifraid8/data07/owang/Ecco_data/v4/JPL/input/grid/V4r5/nctiles_grid/",
+    "src_dir": "/mnt/extraid/ifraid8/data07/owang/Ecco_data/v4/JPL/input/forcing/merra2/",
+    "out_dir": "/mnt/extraid/ifraid8/data07/owang/Ecco_data/v4/JPL/input/forcing/merra2/mappingtrash/",
+    "json_dir": "/mnt/extraid/ifraid8/data10/owang/Ecco_data/multigrid_optim/Processed/interpolation/merra2/json_dir/"
+}
