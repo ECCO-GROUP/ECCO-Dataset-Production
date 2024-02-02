@@ -487,6 +487,8 @@ if __name__ == "__main__":
                                                     nk = fut_res_nrec_chunk,
                                                     less_output=True,
                                                     llc=llc)
+                if fut_res_nrec_chunk == 1:
+                      dest_field = np.expand_dims(dest_field, axis=0)
             else:
                 print('New dest_field: '+out_dir+fut_res_out_fn)
                 dest_field = np.zeros((fut_res_nrec_chunk,)+dgrid_shape)
