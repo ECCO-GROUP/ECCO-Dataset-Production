@@ -145,11 +145,11 @@ def proc_band(band_idx, slat0, name, src_field_flat_shape, fill_dry_points,
 
     if use_shared_mem:
         shm = shared_memory.SharedMemory(name=name)    
-    src_field_flat = np.ndarray(src_field_flat_shape, dtype=NP_DATA_TYPE, buffer=shm.buf)
-    if (verbose):
-        print('shape of src_field_flat: ',src_field_flat.shape)
+        src_field_flat = np.ndarray(src_field_flat_shape, dtype=NP_DATA_TYPE, buffer=shm.buf)
+        if (verbose):
+            print('shape of src_field_flat: ',src_field_flat.shape)
 
-    src_field = src_field_flat.reshape((nrec_chunk,)+sgrid_shape)
+        src_field = src_field_flat.reshape((nrec_chunk,)+sgrid_shape)
 
     if(fill_dry_points==True):
         src_field[:, sgrid_drypnts] = \
