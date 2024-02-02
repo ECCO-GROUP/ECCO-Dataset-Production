@@ -283,6 +283,16 @@ if __name__ == "__main__":
     """Command-line entry point.
     
     """
+#%%
+# parameters (no need to change them)   
+    earthrad = 6371000. # earth radius in m
+    # do the mappling for the whole globe
+    x0 = -180
+    xmax = 180
+    y0 = -90
+    ymax = 90
+    nband_max = 19
+    
     parser = create_parser()
     args = parser.parse_args()    
     
@@ -341,15 +351,6 @@ if __name__ == "__main__":
         else: 
             src_fn = 'xx_'+variable +f'.{iternum:010d}.data'
 
-#%%
-# parameters (no need to change them)   
-    earthrad = 6371000. # earth radius in m
-    # do the mappling for the whole globe
-    x0 = -180
-    xmax = 180
-    y0 = -90
-    ymax = 90
-    
 #%%
 # load some parameters from json file
     json_fn = mappingtype+".json"
