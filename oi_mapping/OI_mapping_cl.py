@@ -131,6 +131,8 @@ def load_json_data(file_path):
 
 #%% process one latitudinal band  
 def proc_band(band_idx, slat0, name, src_field_flat_shape, fill_dry_points,
+              out_fn, nrec_chunk,
+              src_field='',
               verbose=False):
     if(verbose):
         time_bf_matrix_a = time.time() 
@@ -199,7 +201,7 @@ def proc_band(band_idx, slat0, name, src_field_flat_shape, fill_dry_points,
         if (verbose):              
             print(f'exec time (s) for band: ,{band_idx:3d}', 
                   f'{time.time()-time_bf_matrix_a:.4f}')  
-        return masksub_dest,dest_field_flat_sub.T
+        return masksub_dest, dest_field_flat_sub.T, out_fn, nrec_chunk
 #%%
 def load_grid(grid_nm, grid_dir='./', local_or_s3='local'):
     if grid_nm == 'merra2':
@@ -418,23 +420,23 @@ if __name__ == "__main__":
     if rec1>nrec_src:
         rec1 = nrec_src
     nrec_chunk = int(((rec1-rec0+1)-1)/nchunk)+1
-    for ichunk in range(nchunk):
-    ## for debugging purpose    
-        if((rec1-chunk_start)<nrec_chunk):
-            nrec_chunk = rec1-chunk_start
-        chunk_end = chunk_start + nrec_chunk
 
-        # array size and shape of shared memory
-        # Put them inside the loop because nrec_chunk may change       
-        ARRAY_SIZE = int(nrec_chunk*sgrid_size)
-        ARRAY_SHAPE = (ARRAY_SIZE,)
-        out_fn =src_fn + '_'+mappingtype+'_'+f'{chunk_start+1:05d}_{chunk_end:05d}'        
-        src_field, src_field_flat_shape = \
-            load_src_field_chunk(src, chunk_start, nrec_chunk)
+    # do the mapping           
+    futures=[]
+    with ProcessPoolExecutor(max_workers=NUM_WORKERS) as executor:          
+        for ichunk in range(nchunk):   
+            if((rec1-chunk_start)<nrec_chunk):
+                nrec_chunk = rec1-chunk_start
+            chunk_end = chunk_start + nrec_chunk
 
-        # do the mapping              
-        futures=[]        
-        with ProcessPoolExecutor(max_workers=NUM_WORKERS) as executor:
+            # array size and shape of shared memory
+            # Put them inside the loop because nrec_chunk may change       
+            ARRAY_SIZE = int(nrec_chunk*sgrid_size)
+            ARRAY_SHAPE = (ARRAY_SIZE,)
+            out_fn =src_fn + '_'+mappingtype+'_'+f'{chunk_start+1:05d}_{chunk_end:05d}'
+            src_field, src_field_flat_shape = \
+                load_src_field_chunk(src, chunk_start, nrec_chunk)
+
             for iband_inagp in range(nband_inagp):
                 for igp in range(ngp):            
                     band_idx = igp * nband_inagp + iband_inagp
@@ -444,32 +446,35 @@ if __name__ == "__main__":
                     futures.append(executor.submit(proc_band, band_idx, slat0, 
                                                    NP_SHARED_NAME, 
                                                    src_field_flat_shape,
-                                                   fill_dry_points))
-            # generate the mapped field             
-            for fut in concurrent.futures.as_completed(futures):
-                fut_res_mask = fut.result()[0]
-                fut_res_value = fut.result()[1] 
-            
-                if os.path.isfile(out_dir+out_fn):       
-                    dest_field = ecco.read_llc_to_tiles(out_dir, out_fn, 
-                                                        nk = nrec_chunk,
-                                                        less_output=True,
-                                                        llc=llc)
-                else:
-                    print('New dest_field: '+out_dir+out_fn)
-        
-                    dest_field = np.zeros((nrec_chunk,)+dgrid_shape)
-                                  
-                dest_field[0:nrec_chunk,fut_res_mask] = + \
-                    dest_field[0:nrec_chunk,fut_res_mask] + fut_res_value
-        
-                # output
-                write_mapped_field_to_file(dest_field)
+                                                   fill_dry_points,
+                                                   out_fn, nrec_chunk,
+                                                   src_field=src_field))  
+        # generate the mapped field             
+        for fut in concurrent.futures.as_completed(futures):
+            fut_res_mask = fut.result()[0]
+            fut_res_value = fut.result()[1] 
+            fut_res_out_fn = fut.result()[2] 
+            fut_res_nrec_chunk = fut.result()[3]
+       
+            if os.path.isfile(out_dir+fut_res_out_fn):
+                dest_field = ecco.read_llc_to_tiles(out_dir, fut_res_out_fn,
+                                                    nk = fut_res_nrec_chunk,
+                                                    less_output=True,
+                                                    llc=llc)
+            else:
+                print('New dest_field: '+out_dir+fut_res_out_fn)
+                dest_field = np.zeros((fut_res_nrec_chunk,)+dgrid_shape)
+                              
+            dest_field[0:fut_res_nrec_chunk,fut_res_mask] = + \
+                dest_field[0:fut_res_nrec_chunk,fut_res_mask] + fut_res_value
+    
+            # output
+            write_mapped_field_to_file(dest_field, fut_res_out_fn)
 
-        # release shared memory            
-        release_shared(NP_SHARED_NAME)
-        # update chunk_start
-        chunk_start = chunk_end
+            # release shared memory            
+            release_shared(NP_SHARED_NAME)
+            # update chunk_start
+            chunk_start = chunk_end
           
     print('exec time (s): ',time.time()-start_time,
           time.time()-start_map_time)
