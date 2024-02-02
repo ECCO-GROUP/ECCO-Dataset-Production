@@ -58,6 +58,10 @@ def create_parser():
     parser.add_argument('--nchunk', type=int, default=1, help="""
         Number of chunnks to split and process the record range 
         from rec0 to rec1 into (default: %(default)s)""")
+    parser.add_argument('--band0', type=int, default=1, help="""
+        Start band index (default: %(default)s)""")
+    parser.add_argument('--band1', type=int, default=1, help="""
+        End band index (default: %(default)s)""")
     parser.add_argument('--src_fn', default='', help="""
         Source filename (default: %(default)s)""")         
     parser.add_argument('--iternum', type=int, default=0, help="""
@@ -261,7 +265,7 @@ def load_K(band_idx):
     return K_dict
 
 #%%
-def write_mapped_field_to_file(dest_field):
+def write_mapped_field_to_file(dest_field, out_fn):
     dest_field_c= ecco.llc_tiles_to_compact(dest_field, 
                                            less_output=True)
         
@@ -287,6 +291,8 @@ if __name__ == "__main__":
     rec0 = args.rec0
     rec1 = args.rec1
     nchunk = args.nchunk
+    band0 = args.band0
+    band1 = args.band1
     src_fn = args.src_fn
     iternum = args.iternum
     fill_dry_points = args.fill_dry_points
@@ -309,6 +315,13 @@ if __name__ == "__main__":
     if NUM_WORKERS>=6:
         print(f"""WARNING! Using NUM_WORKERS larger than 6 might 
               require much larger memory! NUM_WORKERS = {NUM_WORKERS}""")
+
+    # cap band0 and band1 at nband_max;
+    # note that they are counted staring from 1. 
+    if(band0>nband_max):
+        band0 = nband_max        
+    if(band1>nband_max):
+        band1 = nband_max
     
     if src_fn == '':
         if src == 'merra2':
@@ -400,21 +413,6 @@ if __name__ == "__main__":
     
     start_map_time = time.time()
 
-    # Because the size of matrices for high-latitudes bands is 
-    # generally much larger than those for lower-latitudes bands, 
-    # one way to reduce memory load is not to multiple load 
-    # high-latitude matrices at the same time. So, instead of 
-    # loading the matrices sequentially, we would selectively 
-    # load only one high-latitude matrix, along with other 
-    # lower-latitude matrices.
-    nband_inagp = 3
-    ngp = int((nband-1)/nband_inagp)+1
-    if nband_inagp*ngp<nband:
-        print(f"""ERROR! The product of nband_inagp ({nband_inagp}) and 
-              ngp ({ngp}) is smaller than the total number of bands 
-              ({nband})').""")
-        sys.exit()
-
     # each job will only do one chunk.    
     chunk_start = rec0-1
     if rec1>nrec_src:
@@ -433,22 +431,22 @@ if __name__ == "__main__":
             # Put them inside the loop because nrec_chunk may change       
             ARRAY_SIZE = int(nrec_chunk*sgrid_size)
             ARRAY_SHAPE = (ARRAY_SIZE,)
-            out_fn =src_fn + '_'+mappingtype+'_'+f'{chunk_start+1:05d}_{chunk_end:05d}'
+            out_fn =src_fn + '_'+mappingtype+'_'+\
+                f'{chunk_start+1:05d}_{chunk_end:05d}_{band0:02d}_{band1:02d}' 
             src_field, src_field_flat_shape = \
                 load_src_field_chunk(src, chunk_start, nrec_chunk)
 
-            for iband_inagp in range(nband_inagp):
-                for igp in range(ngp):            
-                    band_idx = igp * nband_inagp + iband_inagp
-                    if(band_idx>=nband):
-                        continue                    
-                    slat0 = slat0_all[band_idx]
-                    futures.append(executor.submit(proc_band, band_idx, slat0, 
-                                                   NP_SHARED_NAME, 
-                                                   src_field_flat_shape,
-                                                   fill_dry_points,
-                                                   out_fn, nrec_chunk,
-                                                   src_field=src_field))  
+            for band_idx in range(band0-1, band1):        
+                if(band_idx>=nband):
+                    continue                    
+                slat0 = slat0_all[band_idx] 
+
+                futures.append(executor.submit(proc_band, band_idx, slat0, 
+                                               NP_SHARED_NAME, 
+                                               src_field_flat_shape,
+                                               fill_dry_points,
+                                               out_fn, nrec_chunk,
+                                               src_field=src_field))  
         # generate the mapped field             
         for fut in concurrent.futures.as_completed(futures):
             fut_res_mask = fut.result()[0]
