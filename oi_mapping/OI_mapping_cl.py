@@ -287,12 +287,16 @@ def load_K(mapping_factors_dir, fnprefix, band_idx, slat0, slat1):
     return K_dict
 
 #%%
-def write_mapped_field_to_file(out_dir, out_fn, dest_field):
-    dest_field_c= ecco.llc_tiles_to_compact(dest_field, 
-                                           less_output=True)
-        
+def write_mapped_field_to_file(out_dir, out_fn, dest_field,
+                               OutputGlobalField=False):
+    if OutputGlobalField:
+        dest_field_tmp= ecco.llc_tiles_to_compact(dest_field, 
+                                               less_output=True)
+    else:
+        # make dest_field_tmp a copy of dest_field to avoid error in writing
+        dest_field_tmp = dest_field.copy()
     with open(out_dir+'/'+out_fn, "wb") as file:
-        file.write(dest_field_c.astype('>f4'))
+        file.write(dest_field_tmp.astype('>f4'))        
     return
 
 #%%
@@ -380,6 +384,10 @@ def prep_proc():
     
     llc = int(dest[3:])
 
+    # output a global field or just one band    
+    OutputGlobalField=False
+
+    # used shared memory or not
     use_shared_mem=False
     
     if use_shared_mem:
@@ -458,6 +466,7 @@ def prep_proc():
             fill_dry_points,
             closest_idx,
             sgrid_drypnts,
+            OutputGlobalField,
             use_shared_mem]
 
 #%% process all chunks for all bands 
@@ -472,6 +481,7 @@ def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
              out_dir, llc,
              dgrid_shape,
              fill_dry_points, closest_idx, sgrid_drypnts               ,
+             OutputGlobalField=False,
              use_shared_mem=False,
              NP_SHARED_NAME='src_field_shm',             
              NP_DATA_TYPE = np.float32,
@@ -504,14 +514,9 @@ def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
                     nrec_chunk = rec1-chunk_start
                 chunk_end = chunk_start + nrec_chunk
     
-                # output filename (one file for bands between band0 and band1)
+                # output filename (one file for one band    
                 out_fn =src_fn + '_'+mappingtype+'_'+\
-                    f'{chunk_start+1:05d}_{chunk_end:05d}_{band0:02d}_{band1:02d}'
-# =============================================================================
-#                 # output filename (one file for one band    
-#                 out_fn =src_fn + '_'+mappingtype+'_'+\
-#                     f'{chunk_start+1:05d}_{chunk_end:05d}_{band_idx+1:02d}_{band_idx+1:02d}' 
-# =============================================================================
+                    f'{chunk_start+1:05d}_{chunk_end:05d}_{band_idx+1:02d}_{band_idx+1:02d}'
                     
                 src_field, src_field_flat_shape = \
                     load_src_field_chunk(src, src_dir, src_fn, 
@@ -559,21 +564,27 @@ def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
                 fut_res_out_fn = fut.result()[2] 
                 fut_res_nrec_chunk = fut.result()[3] 
                 
-                if os.path.isfile(out_dir+fut_res_out_fn):       
-                    dest_field = ecco.read_llc_to_tiles(out_dir, fut_res_out_fn, 
-                                                        nk = fut_res_nrec_chunk,
-                                                        less_output=True,
-                                                        llc=llc)
-                    if fut_res_nrec_chunk == 1:
-                          dest_field = np.expand_dims(dest_field, axis=0)
+                if OutputGlobalField:                
+                    if os.path.isfile(out_dir+fut_res_out_fn):       
+                        dest_field = ecco.read_llc_to_tiles(out_dir, fut_res_out_fn, 
+                                                            nk = fut_res_nrec_chunk,
+                                                            less_output=True,
+                                                            llc=llc)
+                        if fut_res_nrec_chunk == 1:
+                              dest_field = np.expand_dims(dest_field, axis=0)
+                    else:
+                        print('New dest_field: '+out_dir+fut_res_out_fn)
+                        dest_field = np.zeros((fut_res_nrec_chunk,)+dgrid_shape)
+    
+                    dest_field[0:fut_res_nrec_chunk,fut_res_mask] = + \
+                        dest_field[0:fut_res_nrec_chunk,fut_res_mask] + fut_res_value 
                 else:
-                    print('New dest_field: '+out_dir+fut_res_out_fn)
-                    dest_field = np.zeros((fut_res_nrec_chunk,)+dgrid_shape)
+                    dest_field = fut_res_value
 
-                dest_field[0:fut_res_nrec_chunk,fut_res_mask] = + \
-                    dest_field[0:fut_res_nrec_chunk,fut_res_mask] + fut_res_value    
                 # output
-                write_mapped_field_to_file(out_dir, fut_res_out_fn, dest_field)
+                write_mapped_field_to_file(out_dir, fut_res_out_fn, 
+                                           dest_field, 
+                                           OutputGlobalField=OutputGlobalField)
 
 #%%    
 def main(verbose=False):
@@ -611,6 +622,7 @@ def main(verbose=False):
             fill_dry_points,
             closest_idx,
             sgrid_drypnts,
+            OutputGlobalField,
             use_shared_mem] = prep_proc()
     
     # processing
@@ -628,6 +640,7 @@ def main(verbose=False):
              fill_dry_points,
              closest_idx,
              sgrid_drypnts,
+             OutputGlobalField=OutputGlobalField,
              use_shared_mem=use_shared_mem)
     
     print('exec time (s): ',time.time()-start_time,
