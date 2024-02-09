@@ -79,7 +79,10 @@ def create_parser():
     parser.add_argument('--no-fill_dry_points', dest='fill_dry_points', 
                         action='store_false', help="""
                         Do not fill dry points with the nearest wet point""")
-    parser.set_defaults(fill_dry_points=False)            
+    parser.set_defaults(fill_dry_points=False)
+    parser.add_argument('--verbose', action='store_true')
+    parser.add_argument('--no-verbose', dest='feature', action='store_false')
+    parser.set_defaults(feature=False)
     return parser
 
 #%% shared memory
@@ -160,8 +163,8 @@ def proc_band(src, src_dir, src_fn,
               verbose=False):
     if(verbose):
         time_bf_matrix_a = time.time()
-        print(f''''PROC_BAND starts -- chunk_start, nrec_chunk: 
-              {chunk_start}, {nrec_chunk}''')
+        print('PROC_BAND starts -- chunk_start, nrec_chunk: '+\
+              f'{chunk_start}, {nrec_chunk}')
         
     # load one chunk of source field
     src_field, src_field_flat_shape = \
@@ -234,8 +237,8 @@ def proc_band(src, src_dir, src_fn,
         dest_field_flat_sub = K_dict[band_idx] @ src_tapered.T
 
         if (verbose):            
-            print(f'''  PROC_BAND ends -- exec time for band: {band_idx+1:3d},
-                  {time.time()-time_bf_matrix_a:.4f} (s)''')
+            print(f'  PROC_BAND ends -- exec time for band: {band_idx+1:3d}, '+
+                  f'{time.time()-time_bf_matrix_a:.4f} (s)')
         return masksub_dest, dest_field_flat_sub.T, out_fn, nrec_chunk
 
 #%%
@@ -367,6 +370,7 @@ def prep_proc():
     src_fn = args.src_fn
     iternum = args.iternum    
     fill_dry_points = args.fill_dry_points
+    verbose = args.verbose
     if(nchunk<=0):
         print('Error!')
         print(f'nchunk has an integer that is larger than 0: {nchunk}')
@@ -466,7 +470,8 @@ def prep_proc():
             closest_idx,
             sgrid_drypnts,
             OutputGlobalField,
-            use_shared_mem]
+            use_shared_mem,
+            verbose]
 
 #%% process all chunks for all bands 
 def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
@@ -531,7 +536,8 @@ def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
                                                    sgrid_shape,
                                                    closest_idx=closest_idx,
                                                    sgrid_drypnts=
-                                                   sgrid_drypnts))
+                                                   sgrid_drypnts,
+                                                   verbose=verbose))
                 else:
                     futures.append(executor.submit(proc_band,
                                                    src, src_dir, src_fn,
@@ -545,7 +551,8 @@ def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
                                                    sgrid_shape,
                                                    closest_idx=closest_idx,
                                                    sgrid_drypnts=
-                                                   sgrid_drypnts))
+                                                   sgrid_drypnts,
+                                                   verbose=verbose))
 
                 if use_shared_mem:
                     # release shared memory            
@@ -632,7 +639,8 @@ def main(verbose=False):
             closest_idx,
             sgrid_drypnts,
             OutputGlobalField,
-            use_shared_mem] = prep_proc()
+            use_shared_mem,
+            verbose] = prep_proc()
     
     # processing
     start_map_time = time.time()
@@ -650,7 +658,8 @@ def main(verbose=False):
              closest_idx,
              sgrid_drypnts,
              OutputGlobalField=OutputGlobalField,
-             use_shared_mem=use_shared_mem)
+             use_shared_mem=use_shared_mem,
+             verbose=verbose)
     
     print('exec time (s): ',time.time()-start_time,
           time.time()-start_map_time)
