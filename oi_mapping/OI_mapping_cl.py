@@ -145,29 +145,36 @@ def get_band_mask(grid_y, lat0, lat1):
     return ((grid_y>=lat0) & (grid_y<lat1))
 
 #%% process one latitudinal band
-def proc_band(sgrid_y, dgrid_y,
-              band_idx, slat0, 
-              K, name, src_field_flat_shape, 
+def proc_band(src, src_dir, src_fn,
+              sgrid_size, sgrid_y, dgrid_y,
+              band_idx, slat0,
+              name, 
               fill_dry_points,
-              out_fn, nrec_chunk,
+              out_fn,
+              chunk_start, nrec_chunk,
               sgrid_shape,
               NP_DATA_TYPE=np.float32,
-              src_field='',
               closest_idx=np.nan,
               sgrid_drypnts=np.nan,              
               use_shared_mem=False,
               verbose=False):
     if(verbose):
-        time_bf_matrix_a = time.time() 
+        time_bf_matrix_a = time.time()
+        print(f''''PROC_BAND starts -- chunk_start, nrec_chunk: 
+              {chunk_start}, {nrec_chunk}''')
+        
+    # load one chunk of source field
+    src_field, src_field_flat_shape = \
+        load_src_field_chunk(src, src_dir, src_fn,
+                             sgrid_size, sgrid_shape,
+                             chunk_start, nrec_chunk)        
+
     earthrad = grid_params.earthrad
     twodlattap = 2*K_params.dlattap
     dlattap_inmeters = grid_params.earthrad * np.deg2rad(K_params.dlattap)
     if use_shared_mem:
         shm = shared_memory.SharedMemory(name=name)    
         src_field_flat = np.ndarray(src_field_flat_shape, dtype=NP_DATA_TYPE, buffer=shm.buf)
-        if (verbose):
-            print('shape of src_field_flat: ',src_field_flat.shape)
-    
         src_field = src_field_flat.reshape((nrec_chunk,)+sgrid_shape)
             
     if(fill_dry_points==True):
@@ -177,8 +184,10 @@ def proc_band(sgrid_y, dgrid_y,
     slat1 = slat0 + K_params.dlatcell
     lat_mid = slat0+(slat1-slat0)/2
                     
-    if (verbose):
-        print('Processing latitudial band: ',slat0,slat1)
+# =============================================================================
+#     if (verbose):
+#         print('Processing latitudial band: ',slat0,slat1)
+# =============================================================================
     
     tlat0 = slat0-K_params.dlathilo
     tlat1 = slat1+K_params.dlathilo   
@@ -187,8 +196,8 @@ def proc_band(sgrid_y, dgrid_y,
     masksub_src = get_band_mask(sgrid_y, slat0, slat1)
     masksub_dest = get_band_mask(dgrid_y, tlat0, tlat1)
  
-    if (verbose):
-        print('masksub_src shape: ',src_field.shape,  masksub_src.shape)
+#    if (verbose):
+#        print('masksub_src shape: ',src_field.shape,  masksub_src.shape)
     src_tapered = np.copy(src_field[0:nrec_chunk,masksub_src])                 
     
     if(True): # tappering    
@@ -222,12 +231,13 @@ def proc_band(sgrid_y, dgrid_y,
             idxtaperdist4 = taperdist3<=disttmp
             src_tapered[0:nrec_chunk,idxtaperdist4] = 0. #*src_tapered[idxtaperdist4]    
 
-        dest_field_flat_sub = K @ src_tapered.T
+        dest_field_flat_sub = K_dict[band_idx] @ src_tapered.T
 
-        if (verbose):              
-            print(f'exec time (s) for band: ,{band_idx:3d}', 
-                  f'{time.time()-time_bf_matrix_a:.4f}')  
+        if (verbose):            
+            print(f'''  PROC_BAND ends -- exec time for band: {band_idx+1:3d},
+                  {time.time()-time_bf_matrix_a:.4f} (s)''')
         return masksub_dest, dest_field_flat_sub.T, out_fn, nrec_chunk
+
 #%%
 def load_grid(grid_params, grid_nm, grid_dir='./', local_or_s3='local'):
     if grid_nm == 'merra2':
@@ -272,19 +282,9 @@ def load_grid(grid_params, grid_nm, grid_dir='./', local_or_s3='local'):
 
 #%%
 def load_K(mapping_factors_dir, fnprefix, band_idx, slat0, slat1):
-# =============================================================================
-# # May have to use a shared dictionary if memory load is too large.
-# # Using shared dictionary reduces performance. 
-#     manager = Manager()
-#     K_dict = manager.dict()
-# =============================================================================
-
-    K_dict = {}
-
     OI_mapping_fname = mapping_factors_dir / \
-        (fnprefix + f"_{band_idx:d}_{slat0:d}_{slat1:d}.p" )    
-    K_dict[band_idx] = pickle.load(open(OI_mapping_fname, 'rb'))
-    return K_dict
+        (fnprefix + f"_{band_idx:d}_{slat0:d}_{slat1:d}.p")
+    return pickle.load(open(OI_mapping_fname, 'rb'))[0]
 
 #%%
 def write_mapped_field_to_file(out_dir, out_fn, dest_field,
@@ -324,7 +324,6 @@ def load_params_from_json(json_dir, json_fn, fill_dry_points=False):
     return mapping_factors_dir, fnprefix, src_dir, \
         dgrid_dir, sgrid_dir, out_dir, \
         nearest_wet_points_indices_dir, ecco_s3_fs
-        
 
 #%% set global parameters
 def glob_params():
@@ -480,7 +479,7 @@ def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
              sgrid_y, dgrid_y,
              out_dir, llc,
              dgrid_shape,
-             fill_dry_points, closest_idx, sgrid_drypnts               ,
+             fill_dry_points, closest_idx, sgrid_drypnts,
              OutputGlobalField=False,
              use_shared_mem=False,
              NP_SHARED_NAME='src_field_shm',             
@@ -494,10 +493,11 @@ def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
         slat1 = slat0 + K_params.dlatcell
       
         # load mapping matrix for a particular latitudinal band
-        K_dict=load_K(mapping_factors_dir, fnprefix, band_idx, slat0, slat1)            
-        K = K_dict[band_idx][0]
         if(verbose):
-            print('Matrix is now loaded for latitudinal band '+\
+            print(f'Loading K for latitudinal band {band_idx+1}')
+        K_dict[band_idx]=load_K(mapping_factors_dir, fnprefix, band_idx, slat0, slat1)            
+        if(verbose):
+            print('K is now loaded for latitudinal band '+\
                   f'{band_idx+1:d} ({slat0} to {slat1})')        
 
         chunk_start = rec0-1
@@ -517,39 +517,35 @@ def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
                 # output filename (one file for one band    
                 out_fn =src_fn + '_'+mappingtype+'_'+\
                     f'{chunk_start+1:05d}_{chunk_end:05d}_{band_idx+1:02d}_{band_idx+1:02d}'
-                    
-                src_field, src_field_flat_shape = \
-                    load_src_field_chunk(src, src_dir, src_fn, 
-                                         sgrid_size, sgrid_shape,
-                                         chunk_start, nrec_chunk)        
-                  
+
                 if use_shared_mem:                    
                     futures.append(executor.submit(proc_band,
-                                                   sgrid_y,
+                                                   src, src_dir, src_fn,
+                                                   sgrid_size, sgrid_y,
                                                    dgrid_y,
                                                    band_idx, slat0,
-                                                   K, NP_SHARED_NAME, 
-                                                   src_field_flat_shape,
+                                                   NP_SHARED_NAME, 
                                                    fill_dry_points,
-                                                   out_fn, nrec_chunk,
+                                                   out_fn,
+                                                   chunk_start, nrec_chunk,
                                                    sgrid_shape,
                                                    closest_idx=closest_idx,
                                                    sgrid_drypnts=
                                                    sgrid_drypnts))
                 else:
                     futures.append(executor.submit(proc_band,
-                                                   sgrid_y,
+                                                   src, src_dir, src_fn,
+                                                   sgrid_size, sgrid_y,
                                                    dgrid_y,
                                                    band_idx, slat0,
-                                                   K, NP_SHARED_NAME, 
-                                                   src_field_flat_shape,
+                                                   NP_SHARED_NAME,
                                                    fill_dry_points,
-                                                   out_fn, nrec_chunk,
+                                                   out_fn,
+                                                   chunk_start, nrec_chunk,
                                                    sgrid_shape,
                                                    closest_idx=closest_idx,
                                                    sgrid_drypnts=
-                                                   sgrid_drypnts,
-                                                   src_field=src_field))                
+                                                   sgrid_drypnts))
 
                 if use_shared_mem:
                     # release shared memory            
@@ -560,9 +556,9 @@ def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
             # generate the mapped field             
             for fut in concurrent.futures.as_completed(futures):
                 fut_res_mask = fut.result()[0]
-                fut_res_value = fut.result()[1] 
-                fut_res_out_fn = fut.result()[2] 
-                fut_res_nrec_chunk = fut.result()[3] 
+                fut_res_value = fut.result()[1]
+                fut_res_out_fn = fut.result()[2]
+                fut_res_nrec_chunk = fut.result()[3]
                 
                 if OutputGlobalField:                
                     if os.path.isfile(out_dir+fut_res_out_fn):       
@@ -585,12 +581,25 @@ def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
                 write_mapped_field_to_file(out_dir, fut_res_out_fn, 
                                            dest_field, 
                                            OutputGlobalField=OutputGlobalField)
+        # for safety, reset K_dict[band_idx] to None
+        K_dict[band_idx]=None
 
 #%%    
 def main(verbose=False):
     # define parameters
     [grid_params, K_params] = glob_params()
+    # declare and initialize global variable 'K' as a mapping matrix.
+    global K_dict
+    K_dict = {}
 
+# =============================================================================
+#     # using shared dictionary does not improve performance 
+#     # and use more memory. something is not right.
+#     # do not use shared dictionary for the time being. 
+#     global manager, K_dict
+#     manager = Manager()
+#     K_dict = manager.dict()
+# =============================================================================
 #%%    
     start_time = time.time()
 # =============================================================================
