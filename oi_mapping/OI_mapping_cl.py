@@ -49,9 +49,11 @@ def create_parser():
     parser.add_argument('--NUM_WORKERS', type=int, default=1, help="""
         Number of processes (default: %(default)s)""")
     parser.add_argument('--variable', default='TAUX', help="""
-        Variable name (default: %(default)s)""")        
-    parser.add_argument('--year', type=int, default=1992, help="""
-        Year (default: %(default)s)""")
+        Variable name (default: %(default)s)""")
+    parser.add_argument('--year0', type=int, default=1992, help="""
+        Start year (default: %(default)s)""")
+    parser.add_argument('--year1', type=int, default=1992, help="""
+        End year (default: %(default)s)""")        
     parser.add_argument('--rec0', type=int, default=1, help="""
         Start record number (default: %(default)s)""")
     parser.add_argument('--rec1', type=int, default=4, help="""
@@ -62,9 +64,7 @@ def create_parser():
     parser.add_argument('--band0', type=int, default=1, help="""
         Start band index (default: %(default)s)""")
     parser.add_argument('--band1', type=int, default=1, help="""
-        End band index (default: %(default)s)""")                
-    parser.add_argument('--src_fn', default='', help="""
-        Source filename (default: %(default)s)""")         
+        End band index (default: %(default)s)""")        
     parser.add_argument('--iternum', type=int, default=0, help="""
         Iternation number (default: %(default)s)""")        
 # =============================================================================
@@ -331,7 +331,7 @@ def load_params_from_json(json_dir, json_fn, fill_dry_points=False):
 #%% set global parameters
 def glob_params():
 # parameters (no need to change them)  
-    global grid_params, K_params
+    global grid_params, K_params, file_params
     GridParameters = namedtuple('GridParameters',
                                 ['earthrad', 'x0', 'xmax', 'y0', 'ymax']) 
     grid_params = GridParameters(6371000, -180, 180, -90, 90)
@@ -347,7 +347,11 @@ def glob_params():
     KParameters = namedtuple('KParameters', 
                              ['nband_max', 'dlathilo', 'dlatcell', 'dlattap'])
     K_params = KParameters(19, 0, 18, 3)
-    return [grid_params, K_params]
+    
+    fileParameters = namedtuple('fileParameters',
+                                ['src_precision'])
+    file_params = fileParameters(4)
+    return [grid_params, K_params, file_params]
 
 #%% preparation
 def prep_proc():
@@ -361,13 +365,13 @@ def prep_proc():
     
     NUM_WORKERS = args.NUM_WORKERS
     variable = args.variable
-    year = args.year
+    year0 = args.year0
+    year1 = args.year1
     rec0 = args.rec0
     rec1 = args.rec1
     nchunk = args.nchunk
     band0 = args.band0
-    band1 = args.band1    
-    src_fn = args.src_fn
+    band1 = args.band1
     iternum = args.iternum    
     fill_dry_points = args.fill_dry_points
     verbose = args.verbose
@@ -409,11 +413,15 @@ def prep_proc():
     if(band1>K_params.nband_max):
         band1 = K_params.nband_max 
         
-    if src_fn == '':
-        if src == 'merra2':
-            src_fn = variable +f'_{year:d}'
-        else: 
-            src_fn = 'xx_'+variable +f'.{iternum:010d}.data'
+    if src == 'merra2':
+        src_fn = variable +f'_{year0:d}'
+    else: 
+        src_fn = 'xx_'+variable +f'.{iternum:010d}.data'
+
+    if src=='llc90' or src=='llc270':
+        if year0!=year1:
+            print('If src=='+src+', year0 and year1 have to be the same: '+\
+                  f'{year0} vs. {year1}')
 
 #%%    
     json_fn = mappingtype+".json"
@@ -440,9 +448,9 @@ def prep_proc():
         
 #%%
 # input/source file information       
-    src_precision = 4 # 4 bytes for single precision
     file_stats = os.stat(src_dir+src_fn)
-    nrec_src = int((file_stats.st_size+1e-5)/sgrid_size/src_precision)
+    nrec_src = int((file_stats.st_size+1e-5)/sgrid_size/\
+                   file_params.src_precision)
 
 #%% create latitudinal bands
     # slat0_all is the southern boundary of each band.
@@ -457,8 +465,8 @@ def prep_proc():
             break
     slat0_all = np.asarray(slat0_all)    
 
-    return [band0, band1, rec0, rec1, nchunk, nrec_src,
-            slat0_all, mapping_factors_dir, fnprefix, 
+    return [band0, band1, year0, year1, rec0, rec1, nchunk, nrec_src,
+            slat0_all, mapping_factors_dir, variable, fnprefix, 
             NUM_WORKERS,
             src, src_dir,
             src_fn, sgrid_shape, sgrid_size, 
@@ -474,9 +482,9 @@ def prep_proc():
             verbose]
 
 #%% process all chunks for all bands 
-def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
+def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk, nrec_src,
              slat0_all,
-             mapping_factors_dir, fnprefix,
+             mapping_factors_dir, variable, fnprefix,
              NUM_WORKERS,
              src, src_dir,
              src_fn, sgrid_shape, sgrid_size, 
@@ -490,7 +498,7 @@ def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
              NP_SHARED_NAME='src_field_shm',             
              NP_DATA_TYPE = np.float32,
              verbose=False):
-    
+
     for band_idx in range(band0-1, band1):        
         if(band_idx>=K_params.nband_max):
             continue                    
@@ -505,96 +513,104 @@ def proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
             print('K is now loaded for latitudinal band '+\
                   f'{band_idx+1:d} ({slat0} to {slat1})')        
 
-        chunk_start = rec0-1
-        if rec1>nrec_src:
-            rec1 = nrec_src
-        nrec_chunk = int(((rec1-rec0+1)-1)/nchunk)+1
+        for year in range(year0, year1+1):            
+            if src == 'merra2':
+                src_fn = variable +f'_{year:d}'           
+            # input/source file information       
+            file_stats = os.stat(src_dir+src_fn)
+            nrec_src = int((file_stats.st_size+1e-5)/sgrid_size/\
+                           file_params.src_precision)
+            chunk_start = rec0-1
+            if rec1>nrec_src:
+                rec1 = nrec_src
+            nrec_chunk_orig = int(((rec1-rec0+1)-1)/nchunk)+1
+            
+            # do the mapping           
+            futures=[]
+            with ProcessPoolExecutor(max_workers=NUM_WORKERS) as executor:          
+                # each job will only do one chunk.
+                for ichunk in range(nchunk):
+                    nrec_chunk = nrec_chunk_orig
+                    if((rec1-chunk_start)<nrec_chunk):
+                        nrec_chunk = rec1-chunk_start
+                    chunk_end = chunk_start + nrec_chunk
         
-        # do the mapping           
-        futures=[]
-        with ProcessPoolExecutor(max_workers=NUM_WORKERS) as executor:          
-            # each job will only do one chunk.
-            for ichunk in range(nchunk):   
-                if((rec1-chunk_start)<nrec_chunk):
-                    nrec_chunk = rec1-chunk_start
-                chunk_end = chunk_start + nrec_chunk
+                    # output filename (one file for one band    
+                    out_fn =src_fn + '_'+mappingtype+'_'+\
+                        f'{chunk_start+1:05d}_{chunk_end:05d}_{band_idx+1:02d}_{band_idx+1:02d}'
     
-                # output filename (one file for one band    
-                out_fn =src_fn + '_'+mappingtype+'_'+\
-                    f'{chunk_start+1:05d}_{chunk_end:05d}_{band_idx+1:02d}_{band_idx+1:02d}'
-
-                if use_shared_mem:                    
-                    futures.append(executor.submit(proc_band,
-                                                   src, src_dir, src_fn,
-                                                   sgrid_size, sgrid_y,
-                                                   dgrid_y,
-                                                   band_idx, slat0,
-                                                   NP_SHARED_NAME, 
-                                                   fill_dry_points,
-                                                   out_fn,
-                                                   chunk_start, nrec_chunk,
-                                                   sgrid_shape,
-                                                   closest_idx=closest_idx,
-                                                   sgrid_drypnts=
-                                                   sgrid_drypnts,
-                                                   verbose=verbose))
-                else:
-                    futures.append(executor.submit(proc_band,
-                                                   src, src_dir, src_fn,
-                                                   sgrid_size, sgrid_y,
-                                                   dgrid_y,
-                                                   band_idx, slat0,
-                                                   NP_SHARED_NAME,
-                                                   fill_dry_points,
-                                                   out_fn,
-                                                   chunk_start, nrec_chunk,
-                                                   sgrid_shape,
-                                                   closest_idx=closest_idx,
-                                                   sgrid_drypnts=
-                                                   sgrid_drypnts,
-                                                   verbose=verbose))
-
-                if use_shared_mem:
-                    # release shared memory            
-                    release_shared(NP_SHARED_NAME)
-                # update chunk_start
-                chunk_start = chunk_end
-        
-            # generate the mapped field             
-            for fut in concurrent.futures.as_completed(futures):
-                fut_res_mask = fut.result()[0]
-                fut_res_value = fut.result()[1]
-                fut_res_out_fn = fut.result()[2]
-                fut_res_nrec_chunk = fut.result()[3]
-                
-                if OutputGlobalField:                
-                    if os.path.isfile(out_dir+fut_res_out_fn):       
-                        dest_field = ecco.read_llc_to_tiles(out_dir, fut_res_out_fn, 
-                                                            nk = fut_res_nrec_chunk,
-                                                            less_output=True,
-                                                            llc=llc)
-                        if fut_res_nrec_chunk == 1:
-                              dest_field = np.expand_dims(dest_field, axis=0)
+                    if use_shared_mem:                    
+                        futures.append(executor.submit(proc_band,
+                                                       src, src_dir, src_fn,
+                                                       sgrid_size, sgrid_y,
+                                                       dgrid_y,
+                                                       band_idx, slat0,
+                                                       NP_SHARED_NAME, 
+                                                       fill_dry_points,
+                                                       out_fn,
+                                                       chunk_start, nrec_chunk,
+                                                       sgrid_shape,
+                                                       closest_idx=closest_idx,
+                                                       sgrid_drypnts=
+                                                       sgrid_drypnts,
+                                                       verbose=verbose))
                     else:
-                        print('New dest_field: '+out_dir+fut_res_out_fn)
-                        dest_field = np.zeros((fut_res_nrec_chunk,)+dgrid_shape)
+                        futures.append(executor.submit(proc_band,
+                                                       src, src_dir, src_fn,
+                                                       sgrid_size, sgrid_y,
+                                                       dgrid_y,
+                                                       band_idx, slat0,
+                                                       NP_SHARED_NAME,
+                                                       fill_dry_points,
+                                                       out_fn,
+                                                       chunk_start, nrec_chunk,
+                                                       sgrid_shape,
+                                                       closest_idx=closest_idx,
+                                                       sgrid_drypnts=
+                                                       sgrid_drypnts,
+                                                       verbose=verbose))
     
-                    dest_field[0:fut_res_nrec_chunk,fut_res_mask] = + \
-                        dest_field[0:fut_res_nrec_chunk,fut_res_mask] + fut_res_value 
-                else:
-                    dest_field = fut_res_value
-
-                # output
-                write_mapped_field_to_file(out_dir, fut_res_out_fn, 
-                                           dest_field, 
-                                           OutputGlobalField=OutputGlobalField)
+                    if use_shared_mem:
+                        # release shared memory            
+                        release_shared(NP_SHARED_NAME)
+                    # update chunk_start
+                    chunk_start = chunk_end
+            
+                # generate the mapped field             
+                for fut in concurrent.futures.as_completed(futures):
+                    fut_res_mask = fut.result()[0]
+                    fut_res_value = fut.result()[1]
+                    fut_res_out_fn = fut.result()[2]
+                    fut_res_nrec_chunk = fut.result()[3]
+                    
+                    if OutputGlobalField:                
+                        if os.path.isfile(out_dir+fut_res_out_fn):       
+                            dest_field = ecco.read_llc_to_tiles(out_dir, fut_res_out_fn, 
+                                                                nk = fut_res_nrec_chunk,
+                                                                less_output=True,
+                                                                llc=llc)
+                            if fut_res_nrec_chunk == 1:
+                                  dest_field = np.expand_dims(dest_field, axis=0)
+                        else:
+                            print('New dest_field: '+out_dir+fut_res_out_fn)
+                            dest_field = np.zeros((fut_res_nrec_chunk,)+dgrid_shape)
+        
+                        dest_field[0:fut_res_nrec_chunk,fut_res_mask] = + \
+                            dest_field[0:fut_res_nrec_chunk,fut_res_mask] + fut_res_value 
+                    else:
+                        dest_field = fut_res_value
+    
+                    # output
+                    write_mapped_field_to_file(out_dir, fut_res_out_fn, 
+                                               dest_field, 
+                                               OutputGlobalField=OutputGlobalField)
         # for safety, reset K_dict[band_idx] to None
         K_dict[band_idx]=None
 
 #%%    
 def main(verbose=False):
     # define parameters
-    [grid_params, K_params] = glob_params()
+    [grid_params, K_params, file_params] = glob_params()
     # declare and initialize global variable 'K' as a mapping matrix.
     global K_dict
     K_dict = {}
@@ -626,8 +642,8 @@ def main(verbose=False):
 #         sys.exit()
 # =============================================================================
     # preparition
-    [band0, band1, rec0, rec1, nchunk, nrec_src,
-            slat0_all, mapping_factors_dir, fnprefix, 
+    [band0, band1, year0, year1, rec0, rec1, nchunk, nrec_src,
+            slat0_all, mapping_factors_dir, variable, fnprefix, 
             NUM_WORKERS,
             src, src_dir,
             src_fn, sgrid_shape, sgrid_size, 
@@ -644,9 +660,9 @@ def main(verbose=False):
     
     # processing
     start_map_time = time.time()
-    proc_all(band0, band1, rec0, rec1, nchunk, nrec_src,
+    proc_all(band0, band1, year0, year1, rec0, rec1, nchunk, nrec_src,
              slat0_all,
-             mapping_factors_dir, fnprefix,
+             mapping_factors_dir, variable, fnprefix,
              NUM_WORKERS,
              src, src_dir,
              src_fn, sgrid_shape, sgrid_size, 
