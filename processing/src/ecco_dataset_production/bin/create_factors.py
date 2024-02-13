@@ -13,8 +13,6 @@ from .. import utils
 #import ecco_production.configuration
 #import ecco_production.utils
 
-log = logging.getLogger('ecco_dataset_production')
-
 
 def create_parser():
     """Set up list of command-line arguments to create_factors.
@@ -46,7 +44,7 @@ def create_parser():
         both two- and three-dimensional mapping factors are to be created.""")
     parser.add_argument('-l','--log', dest='log_level',
         choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],
-        default='INFO', help="""
+        default='WARNING', help="""
         Set logging level (default: %(default)s)""")
     return parser
 
@@ -56,15 +54,15 @@ def create_factors( cfgfile=None, workingdir=None, dims=None, log_level=None):
     ecco_production.utils.mapping_factors_utils.create_all_factors.
 
     Args:
-        cfgfile (str): (Path and) filename of ECCO Production configuration
-            file.
+        cfgfile (str): (Path and) filename of ECCO Dataset Production
+            configuration file.
         workingdir (str): Working directory path definition default if explicit
             path definitions are otherwise unassigned in cfgfile.
         dims (str): List of dimensions for which mapping factors are to be
             generated (e.g., ['2','3'] for both two- and three-dimensional
             mapping).
         log_level (str): log_level choices per Python logging module
-            ('DEBUG','INFO','WARNING','ERROR' or 'CRITICAL').
+            ('DEBUG','INFO','WARNING','ERROR' or 'CRITICAL'; default='WARNING').
 
     Returns:
         Indirectly, 2- and/or 3-D grid mapping factors in directory defined by
@@ -88,8 +86,13 @@ def create_factors( cfgfile=None, workingdir=None, dims=None, log_level=None):
             source_grid_min_L
             source_grid_max_L
     """
+    logging.basicConfig(
+        format = '%(levelname)-10s %(asctime)s %(message)s',
+        level=log_level)
+    log = logging.getLogger('ecco_dataset_production')
+
     log.info('Initializing configuration parameters...')
-    cfg = ecco_production.configuration.ECCOProductionConfig(cfgfile=cfgfile)
+    cfg = configuration.ECCODatasetProductionConfig(cfgfile=cfgfile)
     cfg.set_default_paths(workingdir)
     log.info('Configuration key value pairs:')
     for k,v in cfg.items():
@@ -103,7 +106,7 @@ def create_factors( cfgfile=None, workingdir=None, dims=None, log_level=None):
         errstr = f'{sys._getframe().f_code.co_name} "dims" input error'
         log.exception('%s', errstr)
 
-    ecco_production.utils.mapping_factors_utils.create_all_factors(
+    utils.mapping_factors_utils.create_all_factors(
         cfg, dims)
 
 
@@ -113,10 +116,6 @@ def main():
     """
     parser = create_parser()
     args = parser.parse_args()
-
-    logging.basicConfig(
-        format = '%(levelname)-10s %(asctime)s %(message)s',
-        level=args.log_level)
 
     create_factors( args.cfgfile, args.workingdir, args.dims, args.log_level)
     

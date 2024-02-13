@@ -7,7 +7,7 @@ import sys
 log = logging.getLogger('ecco_dataset_production')
 
 
-class ECCOProductionConfig(dict):
+class ECCODatasetProductionConfig(dict):
     """Wrapper class for storage of, and basic operations on, ECCO Production
     configuration data.
 
@@ -54,8 +54,9 @@ class ECCOProductionConfig(dict):
             mapping_factors/
                 ecco_version/           'mapping_factors_dir' (opt: 'custom_factors_dir')
                     land_mask/          'land_mask_dir'
-            metadata/
-                ecco_version/           'metadata_dir'
+            # metadata are now package data
+            #metadata/
+            #    ecco_version/           'metadata_dir'
             tmp/
                 tmp_model_output/
                     ecco_version/       'model_output_dir'
@@ -99,10 +100,10 @@ class ECCOProductionConfig(dict):
                     'land_mask_dir',
                     os.path.join(workingdir,self.__getitem__('mapping_factors_dir'),'land_mask'))
 
-            if not self.__getitem__('metadata_dir'):
-                self.__setitem__(
-                    'metadata_dir',
-                    os.path.join(workingdir,'metadata',ecco_version))
+            #if not self.__getitem__('metadata_dir'):
+            #    self.__setitem__(
+            #        'metadata_dir',
+            #        os.path.join(workingdir,'metadata',ecco_version))
 
             if not self.__getitem__('model_output_dir'):
                 self.__setitem__(

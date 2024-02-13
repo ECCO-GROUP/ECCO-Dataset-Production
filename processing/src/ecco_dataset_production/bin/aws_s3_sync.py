@@ -14,8 +14,6 @@ import time
 
 SLEEP_SECONDS = 5
 
-log = logging.getLogger('ecco_dataset_production')
-
 
 def create_parser():
     """Set up list of command-line arguments to aws_s3_sync.
@@ -45,7 +43,7 @@ def create_parser():
         Set AWS S3 CLI argument '--dryrun'""")
     parser.add_argument('-l','--log', dest='log_level',
         choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],
-        default='INFO', help="""
+        default='WARNING', help="""
         Set logging level (default: %(default)s)""")
     return parser
 
@@ -198,7 +196,16 @@ def aws_s3_sync(
     src=None, dest=None, nproc=None, keygen=None, dryrun=None, log_level=None):
     """Top-level functional wrapper for 'aws s3 sync' operations.
 
+    Args:
+        log_level (str): log_level choices per Python logging module
+            ('DEBUG','INFO','WARNING','ERROR' or 'CRITICAL'; default='WARNING').
+
     """
+    logging.basicConfig(
+        format = '%(levelname)-10s %(asctime)s %(message)s',
+        level=log_level)
+    log = logging.getLogger('ecco_dataset_production')
+
     log.info('aws_s3_sync called with the following arguments:')
     log.info('src: %s', src)
     log.info('dest: %s', dest)
@@ -234,10 +241,6 @@ def main():
     """
     parser = create_parser()
     args = parser.parse_args()
-
-    logging.basicConfig(
-        format = '%(levelname)-10s %(asctime)s %(message)s',
-        level=args.log_level)
 
     aws_s3_sync(
         args.src, args.dest, args.nproc, args.keygen, args.dryrun, args.log_level)

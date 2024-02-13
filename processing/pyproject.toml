@@ -19,8 +19,20 @@ dependencies = [
     'ecco_cloud_utils @ git+https://github.com/ECCO-GROUP/ECCO-ACCESS/#subdirectory=ecco-cloud-utils',
 ]
 
+#[tool.setuptools]
+# By default, include-package-data is true in pyproject.toml, so the following
+# need not be specified:
+#include-package-data = true
+
+#[tool.setuptools.packages.find]
+# namespace package support is true by default so the following isn't really
+# necessary:
+#namespaces = true
+#where = ["src"]
+
 [project.scripts]
-edp                 = 'ecco_dataset_production.bin.master_script:main'
+#edp                = 'ecco_dataset_production.bin.master_script:main'
+edp_local           = 'ecco_dataset_production.bin.ecco_dataset_production_local:main'
 edp_aws_s3_sync     = 'ecco_dataset_production.bin.aws_s3_sync:main'
 edp_create_factors  = 'ecco_dataset_production.bin.create_factors:main'
 

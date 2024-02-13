@@ -13,7 +13,8 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
  && unzip awscliv2.zip \
  && ./aws/install
 
-# build ECCO Dataset Production client in a virtual environment:
+# build ECCO Dataset Production client in a virtual environment (debian
+# requirement):
 WORKDIR ecco_dataset_production
 COPY ./processing/pyproject.toml .
 COPY ./processing/src/ecco_dataset_production ./src/ecco_dataset_production
