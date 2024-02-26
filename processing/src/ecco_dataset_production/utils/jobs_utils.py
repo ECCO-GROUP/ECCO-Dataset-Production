@@ -16,15 +16,18 @@ main_path = Path(__file__).parent.resolve().parent.resolve().parent.resolve()
 sys.path.append(f'{main_path / "src"}')
 sys.path.append(f'{main_path / "src" / "utils"}')
 
-import file_utils as file_utils
+from . import file_utils
+
+#import file_utils as file_utils
 import print_utils as print_utils
 import lambda_utils as lambda_utils
 from ecco_gen_for_podaac import generate_netcdfs
 
 
-# ==========================================================================================================================
+# ==============================================================================
 # CALCULATE ALL JOBS
-# ==========================================================================================================================
+# ==============================================================================
+
 def calculate_all_jobs(groupings):
     """
     Create lists of all jobs to execute according to the groupings metadata files. Executed only if there is a line
@@ -63,25 +66,32 @@ def calculate_all_jobs(groupings):
     return all_jobs
 
 
-# ==========================================================================================================================
+# ==============================================================================
 # CREATE JOBS
-# ==========================================================================================================================
-def create_jobs(groupings, jobs_filename):
-    """
-    Create lists of all jobs to execute according to the groupings metadata files
+# ==============================================================================
+
+def create_jobs(groupings, jobs_filename=None):
+    """Create lists of all jobs to execute according to the groupings metadata files.
 
     Args:
-        groupings (dict): Dictionary of groupings. Key = name of grouping (i.e. 'latlon', 'native'), Value = grouping dict
-        jobs_filename (str): String name to save the jobs file as
+        groupings (dict): Dictionary of groupings. Key = name of grouping (i.e.
+            'latlon', 'native'), Value = grouping dict
+        jobs_filename (str): Name of generated jobs file (default='jobs.txt').
 
     Returns:
-        None
+        jobs_filename populated with job control data
+
     """
+    if not jobs_filename:
+        jobs_filename = 'jobs.txt'
+
     all_jobs = []
     raw_jobs = {}
     menu = {}
 
-    # Create menu, where menu is a collection of all products, their datasets and dimensions, and their supported frequencies
+    # Create menu, where menu is a collection of all products, their datasets
+    # and dimensions, and their supported frequencies
+
     # menu = {product: {freq: [(grouping_num, dimension, product, freq, dataset_name)]}}
     # i.e. {'latlon': {'AVG_DAY': [(0, 2D, 'latlon', 'AVG_DAY', 'dynamic sea surface height')]}}
     for grouping in groupings.values():
@@ -112,10 +122,8 @@ def create_jobs(groupings, jobs_filename):
         for i, product in enumerate(product_order):
             print(f'\t{i} -- {product}')
         product_input = input(f'Please select what products to view (e.g. 0 or 0,1,2 or all): ')
-        user_continue, products_to_view = __selected_options_helper(product_input, 
-                                                                    product_order, 
-                                                                    'You selected the following products to view: ', 
-                                                                    '')
+        user_continue, products_to_view = __selected_options_helper(
+            product_input, product_order, 'You selected the following products to view: ', '')
         if user_continue == 'n' or products_to_view == []:
             print_utils.printc(f'Exiting', 'red')
             sys.exit()
@@ -136,10 +144,8 @@ def create_jobs(groupings, jobs_filename):
             for i, freq in enumerate(product_freqs):
                 print(f'\t\t{i} -- {freq}')
             frequency_input = input(f'\tPlease select what frequencies to view (e.g. 0 or 0,1,2 or all): ')
-            user_continue, frequencies_to_view = __selected_options_helper(frequency_input, 
-                                                                        product_freqs, 
-                                                                        'You selected the following frequencies to view: ', 
-                                                                        '\t')
+            user_continue, frequencies_to_view = __selected_options_helper(
+                frequency_input, product_freqs, 'You selected the following frequencies to view: ', '\t')
             if user_continue == 'n' or frequencies_to_view == []:
                 print_utils.printc(f'Exiting', 'red')
                 sys.exit()
@@ -150,11 +156,10 @@ def create_jobs(groupings, jobs_filename):
                 print(f'\n\t\t{freq}')
                 for i, ds in enumerate(datasets):
                     print(f'\t\t\t{i} -- {ds[-1]} ({ds[1]})')
-                datasets_input = input(f'\t\tPlease select which datasets you would like process (e.g. 0 or 0,1,2 or all): ')
-                user_continue, datasets_to_process = __selected_options_helper(datasets_input, 
-                                                                            datasets, 
-                                                                            'You selected the following datasets to process: ', 
-                                                                            '\t\t')
+                datasets_input = input(
+                    f'\t\tPlease select which datasets you would like process (e.g. 0 or 0,1,2 or all): ')
+                user_continue, datasets_to_process = __selected_options_helper(
+                    datasets_input, datasets, 'You selected the following datasets to process: ', '\t\t')
                 if user_continue == 'n' or datasets_to_process == []:
                     print_utils.printc(f'Exiting', 'red')
                     sys.exit()
@@ -162,9 +167,12 @@ def create_jobs(groupings, jobs_filename):
                 # Prompt user for which timesteps to process, for each dataset they selected previously
                 # Timesteps can be entered as follows:
                 # - X (i.e. 5) -> Processes X many timesteps from model start time
-                # - X-Y (i.e. 10-15) -> Processes timesteps X to Y indices (exclusive) from model start time
+                # - X-Y (i.e. 10-15) -> Processes timesteps X to Y indices
+                #   (exclusive) from model start time
                 # - all -> Processes all available timesteps
-                # - X, Y, W-Z (i.e. 5, 10, 200-300) -> Processes X from start, Y from start, and W to Z timestep indices. All separate jobs
+                # - X, Y, W-Z (i.e. 5, 10, 200-300) -> Processes X from start, Y
+                #   from start, and W to Z timestep indices. All separate jobs
+
                 print(f'\n\t\t\tDATASETS')
                 for dataset in datasets_to_process:
                     print(f'\t\t\t\t{dataset}')
@@ -215,7 +223,6 @@ def create_jobs(groupings, jobs_filename):
 
 
     # ========== <Save new created jobs> ==========================================================
-    jobs_filename = 'jobs.txt'
     jobs_path = main_path / 'configs' / jobs_filename
     print(f'\nWriting to {jobs_path} with selected jobs\n')
     with open(jobs_path, 'w') as jobs_file:
@@ -281,23 +288,28 @@ def __selected_options_helper(user_input,
     return user_continue, selected_options
 
 
-# ==========================================================================================================================
+# ==============================================================================
 # RUN JOBS
-# ==========================================================================================================================
-def run_job(job, 
-            groupings_for_datasets, 
-            dict_key_args, 
-            product_generation_config, 
-            aws_config, 
-            s3=None, 
-            lambda_client=None, 
-            job_logs=None, 
-            credentials=None):
+# ==============================================================================
+
+def run_job(
+    job, 
+    groupings_for_datasets, 
+    dict_key_args, 
+    product_generation_config, 
+    aws_config, 
+    s3=None, 
+    lambda_client=None, 
+    job_logs=None, 
+    credentials=None):
     """
     Run the job provided either locally or via AWS Lambda
 
     Args:
-        job (list): List (grouping_num, product_type, output_frequency, time_steps_to_process) for the current job
+        job (list): Current (single) job specification consisting of
+            [grouping_num, product_type, output_frequency,
+            time_steps_to_process]
+
         groupings_for_dataset (dict): Dictionary of groupings. Key = name of grouping (i.e. 'latlon', 'native'), Value = grouping dict
         dict_key_args (dict): Dictionary of command line arguments to master_scipt.py
         product_generation_config (dict): Dictionary of product_generation_config.yaml config file
