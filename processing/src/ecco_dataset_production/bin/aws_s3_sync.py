@@ -14,6 +14,11 @@ import time
 
 SLEEP_SECONDS = 5
 
+# enable basic logging at all levels:
+logging.basicConfig(
+    format = '%(levelname)-10s %(asctime)s %(message)s')
+log = logging.getLogger(__name__)
+
 
 def create_parser():
     """Set up list of command-line arguments to aws_s3_sync.
@@ -63,13 +68,21 @@ def is_s3_uri(path_or_uri_str):
         return False
 
 
-def sync_local_to_remote( src, dest, nproc, keygen, dryrun):
+def sync_local_to_remote( src, dest, nproc, keygen, dryrun, log_level=None):
     """Functional wrapper for multiprocess 'aws s3 sync <local> <s3uri>'
 
     """
+    log = logging.getLogger(__name__)
+    if log_level:
+        log.setLevel(log_level)
+
     # update login credentials:
     log.info('updating credentials...')
-    subprocess.run(keygen)
+    try:
+        subprocess.run(keygen,check=True)
+    except subprocess.CalledProcessError as e:
+        log.error(e)
+        sys.exit(1)
     log.info('...done')
 
     # list of submitted processes:
@@ -164,14 +177,22 @@ def sync_local_to_remote( src, dest, nproc, keygen, dryrun):
         #log.info('   stderr: %s', bytes.decode(stderr))
 
 
-def sync_remote_to_remote_or_local(  src, dest, keygen, dryrun):
+def sync_remote_to_remote_or_local(  src, dest, keygen, dryrun, log_level=None):
     """Functional wrapper for either 'aws s3 sync <s3uri> <s3uri>' or
     'aws s3 sync <s3uri> <local>'
 
     """
+    log = logging.getLogger(__name__)
+    if log_level:
+        log.setLevel(log_level)
+
     # update login credentials:
     log.info('updating credentials...')
-    subprocess.run(keygen)
+    try:
+        subprocess.run(keygen,check=True)
+    except subprocess.CalledProcessError as e:
+        log.error(e)
+        sys.exit(1)
     log.info('...done')
 
     cmd = [ 'aws', 's3', 'sync', src, dest,
@@ -201,10 +222,9 @@ def aws_s3_sync(
             ('DEBUG','INFO','WARNING','ERROR' or 'CRITICAL'; default='WARNING').
 
     """
-    logging.basicConfig(
-        format = '%(levelname)-10s %(asctime)s %(message)s',
-        level=log_level)
-    log = logging.getLogger('ecco_dataset_production')
+    log = logging.getLogger(__name__)
+    if log_level:
+        log.setLevel(log_level)
 
     log.info('aws_s3_sync called with the following arguments:')
     log.info('src: %s', src)

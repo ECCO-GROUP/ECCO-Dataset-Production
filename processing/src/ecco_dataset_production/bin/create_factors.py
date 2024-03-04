@@ -13,6 +13,11 @@ from .. import utils
 #import ecco_production.configuration
 #import ecco_production.utils
 
+# enable basic logging at all levels:
+logging.basicConfig(
+    format = '%(levelname)-10s %(asctime)s %(message)s')
+log = logging.getLogger(__name__)
+
 
 def create_parser():
     """Set up list of command-line arguments to create_factors.
@@ -86,10 +91,9 @@ def create_factors( cfgfile=None, workingdir=None, dims=None, log_level=None):
             source_grid_min_L
             source_grid_max_L
     """
-    logging.basicConfig(
-        format = '%(levelname)-10s %(asctime)s %(message)s',
-        level=log_level)
-    log = logging.getLogger('ecco_dataset_production')
+    log = logging.getLogger(__name__)
+    if log_level:
+        log.setLevel(log_level)
 
     log.info('Initializing configuration parameters...')
     cfg = configuration.ECCODatasetProductionConfig(cfgfile=cfgfile)
