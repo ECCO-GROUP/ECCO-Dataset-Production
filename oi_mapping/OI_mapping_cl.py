@@ -446,12 +446,6 @@ def prep_proc():
         closest_idx=np.nan
         sgrid_drypnts=np.nan
         
-#%%
-# input/source file information       
-    file_stats = os.stat(src_dir+src_fn)
-    nrec_src = int((file_stats.st_size+1e-5)/sgrid_size/\
-                   file_params.src_precision)
-
 #%% create latitudinal bands
     # slat0_all is the southern boundary of each band.
     # from one band to the next, the latitude is shifted by dlatshift.
@@ -465,7 +459,7 @@ def prep_proc():
             break
     slat0_all = np.asarray(slat0_all)    
 
-    return [band0, band1, year0, year1, rec0, rec1, nchunk, nrec_src,
+    return [band0, band1, year0, year1, rec0, rec1, nchunk,
             slat0_all, mapping_factors_dir, variable, fnprefix, 
             NUM_WORKERS,
             src, src_dir,
@@ -482,7 +476,7 @@ def prep_proc():
             verbose]
 
 #%% process all chunks for all bands 
-def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk, nrec_src,
+def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk,
              slat0_all,
              mapping_factors_dir, variable, fnprefix,
              NUM_WORKERS,
@@ -521,9 +515,14 @@ def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk, nrec_src,
             nrec_src = int((file_stats.st_size+1e-5)/sgrid_size/\
                            file_params.src_precision)
             chunk_start = rec0-1
+            # rec1 is the end record number from input
+            # rec1_capped is the same as rec1 but capped at the number of 
+            # record in the input file.
             if rec1>nrec_src:
-                rec1 = nrec_src
-            nrec_chunk_orig = int(((rec1-rec0+1)-1)/nchunk)+1
+                rec1_capped = nrec_src
+            else:
+                rec1_capped = rec1
+            nrec_chunk_orig = int(((rec1_capped-rec0+1)-1)/nchunk)+1
             
             # do the mapping           
             futures=[]
@@ -531,8 +530,8 @@ def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk, nrec_src,
                 # each job will only do one chunk.
                 for ichunk in range(nchunk):
                     nrec_chunk = nrec_chunk_orig
-                    if((rec1-chunk_start)<nrec_chunk):
-                        nrec_chunk = rec1-chunk_start
+                    if((rec1_capped-chunk_start)<nrec_chunk):
+                        nrec_chunk = rec1_capped-chunk_start
                     chunk_end = chunk_start + nrec_chunk
         
                     # output filename (one file for one band    
@@ -642,7 +641,7 @@ def main(verbose=False):
 #         sys.exit()
 # =============================================================================
     # preparition
-    [band0, band1, year0, year1, rec0, rec1, nchunk, nrec_src,
+    [band0, band1, year0, year1, rec0, rec1, nchunk,
             slat0_all, mapping_factors_dir, variable, fnprefix, 
             NUM_WORKERS,
             src, src_dir,
@@ -660,7 +659,7 @@ def main(verbose=False):
     
     # processing
     start_map_time = time.time()
-    proc_all(band0, band1, year0, year1, rec0, rec1, nchunk, nrec_src,
+    proc_all(band0, band1, year0, year1, rec0, rec1, nchunk,
              slat0_all,
              mapping_factors_dir, variable, fnprefix,
              NUM_WORKERS,
