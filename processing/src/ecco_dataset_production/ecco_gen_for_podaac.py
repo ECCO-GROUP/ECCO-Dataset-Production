@@ -4,7 +4,9 @@ Created May 18, 2022
 Author: Duncan Bark
 Adapted from ifenty's "eccov4r4_gen_for_podaac.py"
 
-Main code file for processing. This file takes a payload specifing timesteps and files to process (among other information), and processes said files to produce output datasets
+Main code file for processing. This file takes a payload specifing timesteps and
+files to process (among other information), and processes said files to produce
+output datasets.
 
 """
 
@@ -23,18 +25,25 @@ import xarray as xr
 import netCDF4 as nc4
 from pathlib import Path
 
-# Local imports
-main_path = Path(__file__).parent.resolve().parent.resolve()
+# import ecco python utilities which, in spite of the 'v4' designator, are
+# actually general purpose:
+import ecco_v4_py
 
+from . import utils
+
+## Local imports
+#main_path = Path(__file__).parent.resolve().parent.resolve()
+
+# TODO:
 # If processing on AWS Lambda, include '/app/' in the main_path
-if os.path.exists(f'{main_path / "app"}'):
-    main_path = main_path / 'app'
+#if os.path.exists(f'{main_path / "app"}'):
+#    main_path = main_path / 'app'
 
-sys.path.append(f'{main_path / "src"}')
-sys.path.append(f'{main_path / "src" / "utils"}')
-sys.path.append(f'{main_path / "src" / "utils" / "ecco_utils"}')
-from ecco_utils import ecco_code as ecco
-import gen_netcdf_utils as gen_netcdf_utils
+#sys.path.append(f'{main_path / "src"}')
+#sys.path.append(f'{main_path / "src" / "utils"}')
+#sys.path.append(f'{main_path / "src" / "utils" / "ecco_utils"}')
+#from ecco_utils import ecco_code as ecco
+#import gen_netcdf_utils as gen_netcdf_utils
 
 # =================================================================================================
 # PRINT LOGGING INFO
@@ -55,18 +64,23 @@ def logging_info(time_steps_to_process,
     Prints all the logging info (time, number of files, successes, fails, etc.)
 
     Args:
-        time_steps_to_process (list): List of all timesteps sent to the job to process 
-        successful_time_steps (list): List of timesteps successfully processed
-        start_time (int): Time of master script start in ms since 1970
-        total_download_time (float): Total time spent downloading files (sec)
-        num_downloaded (int): Total number of downloaded files
-        total_netcdf_time (float): Total time spent creating netCDF files (sec)
-        total_upload_time (float): Total time spent uploading files to S3 (sec)
-        num_uploaded (int): Total number of files uploaded to S3 
-        succeeded_checksums (dict): Dictionary of key=timestep and value=Dictionary of 's3_fname', 'checksum' and 'uuid'
-        total_checksum_time (float): Total time spent creating and checking checksums (sec) 
-        logger (bool): Boolean for whether or not to use the python logger.info() for the log prints
-        timeout (bool): Boolean for whether or not the current job reached the timeout time
+        time_steps_to_process (list): List of all timesteps sent to the job to
+            process.
+        successful_time_steps (list): List of timesteps successfully processed.
+        start_time (int): Time of master script start in ms since 1970.
+        total_download_time (float): Total time spent downloading files (sec).
+        num_downloaded (int): Total number of downloaded files.
+        total_netcdf_time (float): Total time spent creating netCDF files (sec).
+        total_upload_time (float): Total time spent uploading files to S3 (sec).
+        num_uploaded (int): Total number of files uploaded to S3.
+        succeeded_checksums (dict): Dictionary of key=timestep and
+            value=Dictionary of 's3_fname', 'checksum' and 'uuid'.
+        total_checksum_time (float): Total time spent creating and checking
+            checksums (sec).
+        logger (bool): Boolean for whether or not to use the python
+            logger.info() for the log prints.
+        timeout (bool): Boolean for whether or not the current job reached the
+            timeout time.
 
     Returns:
         None
@@ -123,26 +137,38 @@ def logging_info(time_steps_to_process,
 
 def generate_netcdfs(event):
     """
-    Primary processing function. Gathers the metadata, files, transforms granules, and applies metadata
-    for the passed job
+    Primary processing function. Gathers the metadata, files, transforms
+    granules, and applies metadata for the passed job.
 
     Args:
-        event (dict): Contains all the information required to process the passed job:
-            grouping_to_process (int): Grouping number from groupings json file for current dataset
-            product_type (str): String product type (i.e. 'latlon', 'native')
-            output_freq_code (str): String output frequency code (i.e. 'AVG_MON', 'AVG_DAY', 'SNAP')
-            time_steps_to_process (list): List of timesteps to process for the current job
-            field_files (defaultdict(list)): Dictionary with field names as keys, and S3/local file paths for each timestep as values
-            product_generation_config (dict): Dictionary of product_generation_config.yaml config file
-            aws_config (dict): Dictionary of aws_config.yaml config file
-            use_S3 (bool): Boolean for whether or not files are accessed via AWS S3 or locally
-            use_lambda (bool): Boolean for whether or not processing is to occur on Lambda
-            dont_delete_local (bool): Boolean for whether or not to delete local files when done processing
-            credentials (dict): Dictionary containaing credentials information for AWS
-            processing_code_filename (only for lambda, str): Name of this file, used to call it from the lambda_code app.py file
+        event (dict): Contains all the information required to process the
+            passed job, including:
+            grouping_to_process (int): Grouping number from groupings json file
+                for current dataset.
+            product_type (str): String product type (i.e. 'latlon', 'native').
+            output_freq_code (str): String output frequency code (i.e.
+                'AVG_MON', 'AVG_DAY', 'SNAP').
+            time_steps_to_process (list): List of timesteps to process for the
+                current job.
+            field_files (defaultdict(list)): Dictionary with field names as
+                keys, and S3/local file paths for each timestep as values.
+            product_generation_config (dict): Dictionary of
+                product_generation_config.yaml config file.
+            aws_config (dict): Dictionary of aws_config.yaml config file.
+            use_S3 (bool): Boolean for whether or not files are accessed via AWS
+                S3 or locally.
+            use_lambda (bool): Boolean for whether or not processing is to occur
+                on Lambda.
+            dont_delete_local (bool): Boolean for whether or not to delete local
+                files when done processing.
+            credentials (dict): Dictionary containaing credentials information
+                for AWS.
+            processing_code_filename (only for lambda, str): Name of this file,
+                used to call it from the lambda_code app.py file.
 
     Returns:
         None
+
     """
     job_start_time = time.time()
     timeout = False
@@ -307,12 +333,12 @@ def generate_netcdfs(event):
             dataset_description_tail = dataset_description_tail_native
             groupings = all_metadata['groupings_native']
             output_dir_type = processed_output_dir_base / 'native'
-            status, latlon_grid = gen_netcdf_utils.get_latlon_grid(mapping_factors_dir)
+            status, latlon_grid = utils.gen_netcdf_utils.get_latlon_grid(mapping_factors_dir)
         elif product_type == 'latlon':
             dataset_description_tail = dataset_description_tail_latlon
             groupings = all_metadata['groupings_latlon']
             output_dir_type = processed_output_dir_base / 'lat-lon'
-            status, latlon_grid = gen_netcdf_utils.get_latlon_grid(mapping_factors_dir)
+            status, latlon_grid = utils.gen_netcdf_utils.get_latlon_grid(mapping_factors_dir)
         if status != 'SUCCESS':
             raise Exception(status)
         # ========== </Native/Latlon setup> =======================================================
@@ -374,18 +400,20 @@ def generate_netcdfs(event):
         # NOTE: ALL CODE RELATED TO 1D PROCESSING IS UNTESTED
         if product_type == '1D':
             # Download 1D field files
-            (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = gen_netcdf_utils.get_files(use_S3,
-                                                                                                       download_all_mds_for_timestep,
-                                                                                                       fields_to_load,
-                                                                                                       field_files,
-                                                                                                       cur_ts,
-                                                                                                       data_file_paths,
-                                                                                                       meta_file_paths,
-                                                                                                       product_generation_config,
-                                                                                                       aws_config,
-                                                                                                       product_type,
-                                                                                                       model_granule_bucket,
-                                                                                                       s3=s3)
+            (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = \
+                utils.gen_netcdf_utils.get_files(
+                    use_S3,
+                    download_all_mds_for_timestep,
+                    fields_to_load,
+                    field_files,
+                    cur_ts,
+                    data_file_paths,
+                    meta_file_paths,
+                    product_generation_config,
+                    aws_config,
+                    product_type,
+                    model_granule_bucket,
+                    s3=s3)
             num_downloaded += num_dl
             total_download_time += dl_time
             if status != 'SUCCESS':
@@ -393,18 +421,19 @@ def generate_netcdfs(event):
                 raise Exception(status)
 
             # Transform 1D field
-            status, F_DS = gen_netcdf_utils.transform_1D()
+            status, F_DS = utils.gen_netcdf_utils.transform_1D()
 
             # Apply global DS changes (coords, values, etc.)
-            status, F_DS = gen_netcdf_utils.global_DS_changes(F_DS, 
-                                                              output_freq_code, 
-                                                              grouping, 
-                                                              array_precision, 
-                                                              ecco_grid, 
-                                                              [], 
-                                                              netcdf_fill_value, 
-                                                              record_times, 
-                                                              extra_prints=extra_prints)
+            status, F_DS = utils.gen_netcdf_utils.global_DS_changes(
+                F_DS, 
+                output_freq_code, 
+                grouping, 
+                array_precision, 
+                ecco_grid, 
+                [], 
+                netcdf_fill_value, 
+                record_times, 
+                extra_prints=extra_prints)
 
         # ========== </Process 1D dataset> ========================================================
 
@@ -439,8 +468,10 @@ def generate_netcdfs(event):
                 times = [pd.to_datetime(str(cur_time))]
 
                 if 'AVG' in output_freq_code:
-                    tb, record_center_time = ecco.make_time_bounds_from_ds64(np.datetime64(times[0]), 
-                                                                             output_freq_code)
+                    tb, record_center_time = \
+                        ecco_v4_py.ecco_utils.make_time_bounds_from_ds64(
+                            np.datetime64(times[0]), output_freq_code)
+
                     if extra_prints: print('ORIG  tb, ct ', tb, record_center_time)
 
                     # fix beginning of last record
@@ -493,21 +524,25 @@ def generate_netcdfs(event):
                     vector_rotate = True
                     download_all_mds_for_timestep = True
 
-                # Download all fields (outside of fields loop) from S3 only if download_all_mds_for_timestep is true and using S3
+                # Download all fields (outside of fields loop) from S3 only if
+                # download_all_mds_for_timestep is true and using S3
+
                 if use_S3 and download_all_mds_for_timestep:
-                    (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = gen_netcdf_utils.get_files(use_S3,
-                                                                                                               download_all_mds_for_timestep,
-                                                                                                               fields_to_load,
-                                                                                                               field_files,
-                                                                                                               cur_ts,
-                                                                                                               data_file_paths,
-                                                                                                               meta_file_paths,
-                                                                                                               product_generation_config,
-                                                                                                               aws_config,
-                                                                                                               product_type,
-                                                                                                               model_granule_bucket,
-                                                                                                               s3=s3,
-                                                                                                               vector_rotate=vector_rotate)
+                    (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = \
+                        utils.gen_netcdf_utils.get_files(
+                            use_S3,
+                            download_all_mds_for_timestep,
+                            fields_to_load,
+                            field_files,
+                            cur_ts,
+                            data_file_paths,
+                            meta_file_paths,
+                            product_generation_config,
+                            aws_config,
+                            product_type,
+                            model_granule_bucket,
+                            s3=s3,
+                            vector_rotate=vector_rotate)
                     num_downloaded += num_dl
                     total_download_time += dl_time
                     if status != 'SUCCESS':
@@ -529,16 +564,17 @@ def generate_netcdfs(event):
                         mds_var_dir = Path(data_file_paths[source_field])
                         short_mds_name = mds_var_dir.name.split('.')[0]
                         mds_var_dir = mds_var_dir.parent
-                        F_DS = ecco.load_ecco_vars_from_mds(mds_var_dir,
-                                                            mds_grid_dir = ecco_grid_dir_mds,
-                                                            mds_files = short_mds_name,
-                                                            vars_to_load = source_field,
-                                                            drop_unused_coords = True,
-                                                            grid_vars_to_coords = False,
-                                                            output_freq_code = output_freq_code,
-                                                            model_time_steps_to_load = int(cur_ts),
-                                                            less_output = True,
-                                                            read_grid = read_ecco_grid)
+                        F_DS = ecco_v4_py.read_bin_llc.load_ecco_vars_from_mds(
+                            mds_var_dir,
+                            mds_grid_dir = ecco_grid_dir_mds,
+                            mds_files = short_mds_name,
+                            vars_to_load = source_field,
+                            drop_unused_coords = True,
+                            grid_vars_to_coords = False,
+                            output_freq_code = output_freq_code,
+                            model_time_steps_to_load = int(cur_ts),
+                            less_output = True,
+                            read_grid = read_ecco_grid)
                         F_DSs.append(F_DS)
                     
                     # Make sure data for each fields DataArray is a numpy.array
@@ -546,7 +582,9 @@ def generate_netcdfs(event):
                         F_DSs[i][vector_inputs[i]].data = np.array(F_DS[vector_inputs[i]].data)
 
                     # Vector rotate
-                    east_DS, north_DS = ecco.UEVNfromUXVY(F_DSs[0][vector_inputs[0]], F_DSs[1][vector_inputs[1]], ecco_grid)
+                    east_DS, north_DS = ecco_v4_py.vector_calc.UEVNfromUXVY(
+                        F_DSs[0][vector_inputs[0]], F_DSs[1][vector_inputs[1]],
+                        ecco_grid)
 
                     # Place correct direction DS for corresponding field
                     rotated_F_DS = {}
@@ -607,18 +645,20 @@ def generate_netcdfs(event):
                     # already be present locally. The previous code in the "<Download files>"
                     # section gets the file paths of all the local files, which are then used to get them
                     if use_S3 and not download_all_mds_for_timestep:
-                        (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = gen_netcdf_utils.get_files(use_S3,
-                                                                                                                   download_all_mds_for_timestep,
-                                                                                                                   [field],
-                                                                                                                   field_files,
-                                                                                                                   cur_ts,
-                                                                                                                   data_file_paths,
-                                                                                                                   meta_file_paths,
-                                                                                                                   product_generation_config,
-                                                                                                                   aws_config,
-                                                                                                                   product_type,
-                                                                                                                   model_granule_bucket,
-                                                                                                                   s3=s3)
+                        (status, (data_file_paths, meta_file_paths, num_dl, dl_time)) = \
+                            utils.gen_netcdf_utils.get_files(
+                                use_S3,
+                                download_all_mds_for_timestep,
+                                [field],
+                                field_files,
+                                cur_ts,
+                                data_file_paths,
+                                meta_file_paths,
+                                product_generation_config,
+                                aws_config,
+                                product_type,
+                                model_granule_bucket,
+                                s3=s3)
                         num_downloaded += num_dl
                         total_download_time += dl_time
                         if status != 'SUCCESS':
@@ -634,28 +674,30 @@ def generate_netcdfs(event):
                         
                     # Transform latlon vs native variable
                     if product_type == 'latlon':
-                        status, F_DS = gen_netcdf_utils.transform_latlon(ecco, 
-                                                                         ecco_grid.Z.values, 
-                                                                         latlon_grid, 
-                                                                         data_file_path, 
-                                                                         record_end_time, 
-                                                                         nk, 
-                                                                         dataset_dim, 
-                                                                         field, 
-                                                                         output_freq_code, 
-                                                                         mapping_factors_dir, 
-                                                                         extra_prints=extra_prints)
+                        status, F_DS = utils.gen_netcdf_utils.transform_latlon(
+                            ecco, 
+                            ecco_grid.Z.values, 
+                            latlon_grid, 
+                            data_file_path, 
+                            record_end_time, 
+                            nk, 
+                            dataset_dim, 
+                            field, 
+                            output_freq_code, 
+                            mapping_factors_dir, 
+                            extra_prints=extra_prints)
                     elif product_type == 'native':
-                        status, F_DS = gen_netcdf_utils.transform_native(ecco, 
-                                                                         field, 
-                                                                         ecco_land_masks, 
-                                                                         ecco_grid_dir_mds, 
-                                                                         data_file_path, 
-                                                                         output_freq_code, 
-                                                                         cur_ts, 
-                                                                         read_ecco_grid, 
-                                                                         vector_fields,
-                                                                         extra_prints=extra_prints)
+                        status, F_DS = utils.gen_netcdf_utils.transform_native(
+                            ecco, 
+                            field, 
+                            ecco_land_masks, 
+                            ecco_grid_dir_mds, 
+                            data_file_path, 
+                            output_freq_code, 
+                            cur_ts, 
+                            read_ecco_grid, 
+                            vector_fields,
+                            extra_prints=extra_prints)
                     
                     # If latlon/native transformation failed, FAIL the current timestep
                     if status != 'SUCCESS':
@@ -663,15 +705,16 @@ def generate_netcdfs(event):
                         raise Exception(status)
 
                     # Apply global DS changes (coords, values, etc.)
-                    status, F_DS = gen_netcdf_utils.global_DS_changes(F_DS, 
-                                                                      output_freq_code, 
-                                                                      grouping, 
-                                                                      array_precision, 
-                                                                      ecco_grid, 
-                                                                      latlon_grid, 
-                                                                      netcdf_fill_value, 
-                                                                      record_times, 
-                                                                      extra_prints=extra_prints)
+                    status, F_DS = utils.gen_netcdf_utils.global_DS_changes(
+                        F_DS, 
+                        output_freq_code, 
+                        grouping, 
+                        array_precision, 
+                        ecco_grid, 
+                        latlon_grid, 
+                        netcdf_fill_value, 
+                        record_times, 
+                        extra_prints=extra_prints)
                     if status != 'SUCCESS':
                         print(f'FAIL {cur_ts}')
                         raise Exception(status)
@@ -690,16 +733,18 @@ def generate_netcdfs(event):
                 del(F_DS_vars)
 
                 # Set metadata for output dataset
-                status, G, netcdf_filename, encoding = gen_netcdf_utils.set_metadata(ecco, 
-                                                                                     G, 
-                                                                                     all_metadata, 
-                                                                                     output_freq_code, 
-                                                                                     netcdf_fill_value, 
-                                                                                     grouping, 
-                                                                                     output_dir_freq, 
-                                                                                     dataset_description, 
-                                                                                     product_generation_config, 
-                                                                                     extra_prints=extra_prints)
+                status, G, netcdf_filename, encoding = \
+                    utils.gen_netcdf_utils.set_metadata(
+                        ecco, 
+                        G, 
+                        all_metadata, 
+                        output_freq_code, 
+                        netcdf_fill_value, 
+                        grouping, 
+                        output_dir_freq, 
+                        dataset_description, 
+                        product_generation_config, 
+                        extra_prints=extra_prints)
                 if status != 'SUCCESS':
                     print(f'FAIL {cur_ts}')
                     raise Exception(status)
@@ -807,12 +852,15 @@ def generate_netcdfs(event):
                 successful_time_steps.append(cur_ts)
             except Exception as e:
                 delete_log = 'No deletetions'
-                # if the code failed for a reason other than a timeout, delete all the files in preparation of the next timestep
+                # if the code failed for a reason other than a timeout, delete
+                # all the files in preparation of the next timestep
+
                 if not timeout:
-                    status = gen_netcdf_utils.delete_files(data_file_paths, 
-                                                           product_generation_config, 
-                                                           fields_to_load, 
-                                                           all=True)
+                    status = utils.gen_netcdf_utils.delete_files(
+                        data_file_paths, 
+                        product_generation_config, 
+                        fields_to_load, 
+                        all=True)
                     delete_log = status
                 exception_type, exception_value, exception_traceback = sys.exc_info()
                 traceback_string = traceback.format_exception(exception_type, 

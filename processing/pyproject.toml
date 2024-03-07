@@ -17,16 +17,17 @@ dependencies = [
     'xmitgcm',
     'xgcm',
     'ecco_cloud_utils @ git+https://github.com/ECCO-GROUP/ECCO-ACCESS/#subdirectory=ecco-cloud-utils',
+    'ecco_v4_py @ git+https://github.com/ECCO-GROUP/ECCOv4-py',
 ]
 
 #[tool.setuptools]
-# By default, include-package-data is true in pyproject.toml, so the following
-# need not be specified:
+# include-package-data is true by default, so the following need not be
+# specified and is listed here only for reference:
 #include-package-data = true
 
 #[tool.setuptools.packages.find]
-# namespace package support is true by default so the following isn't really
-# necessary:
+# namespace package support is true by default, so the following need not be
+# specified and is listed here only for reference:
 #namespaces = true
 #where = ["src"]
 
