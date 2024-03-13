@@ -81,8 +81,12 @@ def create_parser():
                         Do not fill dry points with the nearest wet point""")
     parser.set_defaults(fill_dry_points=False)
     parser.add_argument('--verbose', action='store_true')
-    parser.add_argument('--no-verbose', dest='feature', action='store_false')
-    parser.set_defaults(feature=False)
+    parser.add_argument('--no-verbose', dest='verbose', action='store_false')
+    parser.set_defaults(verbose=False)
+    parser.add_argument('--taper_dest', action='store_true')
+    parser.add_argument('--no-taper_dest', dest='taper_dest', action='store_false')
+    parser.set_defaults(taper_dest=True)    
+    
     return parser
 
 #%% shared memory
@@ -151,7 +155,8 @@ def get_band_mask(grid_y, lat0, lat1):
 def proc_band(src, src_dir, src_fn,
               sgrid_size, sgrid_y, dgrid_y,
               band_idx, slat0,
-              name, 
+              name,
+              taper_dest,
               fill_dry_points,
               out_fn,
               chunk_start, nrec_chunk,
@@ -235,6 +240,17 @@ def proc_band(src, src_dir, src_fn,
             src_tapered[0:nrec_chunk,idxtaperdist4] = 0. #*src_tapered[idxtaperdist4]    
 
         dest_field_flat_sub = K_dict[band_idx] @ src_tapered.T
+        
+        if taper_dest:
+            disttmp_dest = earthrad*np.deg2rad(dgrid_y[masksub_dest]-lat_mid)
+            
+            if(tlat0>grid_params.y0):
+                idxtaperdist0 = disttmp_dest<taperdist0    
+                dest_field_flat_sub[idxtaperdist0,:nrec_chunk] = 0.                    
+                    
+            if(tlat1<grid_params.ymax):                    
+                idxtaperdist4 = taperdist3<=disttmp_dest
+                dest_field_flat_sub[idxtaperdist4,0:nrec_chunk] = 0.            
 
         if (verbose):            
             print(f'  PROC_BAND ends -- exec time for band: {band_idx+1:3d}, '+
@@ -375,6 +391,7 @@ def prep_proc():
     iternum = args.iternum    
     fill_dry_points = args.fill_dry_points
     verbose = args.verbose
+    taper_dest = args.taper_dest
     if(nchunk<=0):
         print('Error!')
         print(f'nchunk has an integer that is larger than 0: {nchunk}')
@@ -468,6 +485,7 @@ def prep_proc():
             sgrid_y, dgrid_y,
             out_dir, llc,
             dgrid_shape,
+            taper_dest,
             fill_dry_points,
             closest_idx,
             sgrid_drypnts,
@@ -485,14 +503,14 @@ def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk,
              mappingtype,
              sgrid_y, dgrid_y,
              out_dir, llc,
-             dgrid_shape,
+             dgrid_shape, taper_dest,
              fill_dry_points, closest_idx, sgrid_drypnts,
              OutputGlobalField=False,
              use_shared_mem=False,
              NP_SHARED_NAME='src_field_shm',             
              NP_DATA_TYPE = np.float32,
              verbose=False):
-
+  
     for band_idx in range(band0-1, band1):        
         if(band_idx>=K_params.nband_max):
             continue                    
@@ -544,7 +562,8 @@ def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk,
                                                        sgrid_size, sgrid_y,
                                                        dgrid_y,
                                                        band_idx, slat0,
-                                                       NP_SHARED_NAME, 
+                                                       NP_SHARED_NAME,
+                                                       taper_dest,
                                                        fill_dry_points,
                                                        out_fn,
                                                        chunk_start, nrec_chunk,
@@ -560,6 +579,7 @@ def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk,
                                                        dgrid_y,
                                                        band_idx, slat0,
                                                        NP_SHARED_NAME,
+                                                       taper_dest,
                                                        fill_dry_points,
                                                        out_fn,
                                                        chunk_start, nrec_chunk,
@@ -650,6 +670,7 @@ def main(verbose=False):
             sgrid_y, dgrid_y,
             out_dir, llc,
             dgrid_shape,
+            taper_dest,
             fill_dry_points,
             closest_idx,
             sgrid_drypnts,
@@ -669,6 +690,7 @@ def main(verbose=False):
              sgrid_y, dgrid_y,
              out_dir, llc,
              dgrid_shape,
+             taper_dest,
              fill_dry_points,
              closest_idx,
              sgrid_drypnts,
