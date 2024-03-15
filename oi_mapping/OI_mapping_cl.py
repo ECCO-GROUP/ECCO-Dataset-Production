@@ -208,7 +208,7 @@ def proc_band(src, src_dir, src_fn,
 #        print('masksub_src shape: ',src_field.shape,  masksub_src.shape)
     src_tapered = np.copy(src_field[0:nrec_chunk,masksub_src])                 
     
-    if(True): # tappering    
+    if(True): # tapering    
         disttmp = earthrad*np.deg2rad(sgrid_y[masksub_src]-lat_mid)
         # taperdist0 is actually 
         # earthrad*np.deg2rad(lat_mid-dlatcell/2+dlattap-lat_mid).
