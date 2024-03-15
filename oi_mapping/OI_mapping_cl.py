@@ -223,39 +223,50 @@ def proc_band(src, src_dir, src_fn,
             *np.deg2rad(+K_params.dlatcell/2-twodlattap)
         taperdist3 = earthrad\
             *np.deg2rad(+K_params.dlatcell/2-K_params.dlattap)
-        
-        if(slat0>grid_params.y0):
-            idxtaperdist0 = disttmp<taperdist0      
-            src_tapered[0:nrec_chunk,idxtaperdist0] = 0. #*src_tapered[idxtaperdist0]
-            idxtaperdist1 = (taperdist0<=disttmp) & (disttmp<taperdist1)     
-            src_tapered[0:nrec_chunk,idxtaperdist1] = src_tapered[0:nrec_chunk,idxtaperdist1] * \
-                (disttmp[idxtaperdist1]-taperdist0)/dlattap_inmeters                    
-                
-        if(slat1<grid_params.ymax): 
-            # no tapering (i.e., taper factor is 1) between taperdist1 and taperdist2
-            idxtaperdist3 = (taperdist2<=disttmp) & (disttmp<taperdist3)
-            src_tapered[0:nrec_chunk,idxtaperdist3] = src_tapered[0:nrec_chunk,idxtaperdist3] * \
-                (taperdist3-disttmp[idxtaperdist3])/dlattap_inmeters                    
-            idxtaperdist4 = taperdist3<=disttmp
-            src_tapered[0:nrec_chunk,idxtaperdist4] = 0. #*src_tapered[idxtaperdist4]    
 
-        dest_field_flat_sub = K_dict[band_idx] @ src_tapered.T
+        if False:       # turn off tapering source field          
+            if(slat0>grid_params.y0):
+                idxtaperdist0 = disttmp<taperdist0      
+                src_tapered[0:nrec_chunk,idxtaperdist0] = 0. #*src_tapered[idxtaperdist0]
+                idxtaperdist1 = (taperdist0<=disttmp) & (disttmp<taperdist1)     
+                src_tapered[0:nrec_chunk,idxtaperdist1] = src_tapered[0:nrec_chunk,idxtaperdist1] * \
+                    (disttmp[idxtaperdist1]-taperdist0)/dlattap_inmeters                    
+                    
+            if(slat1<grid_params.ymax): 
+                # no tapering (i.e., taper factor is 1) between taperdist1 and taperdist2
+                idxtaperdist3 = (taperdist2<=disttmp) & (disttmp<taperdist3)
+                src_tapered[0:nrec_chunk,idxtaperdist3] = src_tapered[0:nrec_chunk,idxtaperdist3] * \
+                    (taperdist3-disttmp[idxtaperdist3])/dlattap_inmeters                    
+                idxtaperdist4 = taperdist3<=disttmp
+                src_tapered[0:nrec_chunk,idxtaperdist4] = 0. #*src_tapered[idxtaperdist4]    
+        # dest_field_flat_sub: time_rec, dest_grid_point
+        dest_field_flat_sub = (K_dict[band_idx] @ src_tapered.T).T
         
         if taper_dest:
             disttmp_dest = earthrad*np.deg2rad(dgrid_y[masksub_dest]-lat_mid)
             
             if(tlat0>grid_params.y0):
                 idxtaperdist0 = disttmp_dest<taperdist0    
-                dest_field_flat_sub[idxtaperdist0,:nrec_chunk] = 0.                    
+                dest_field_flat_sub[0:nrec_chunk, idxtaperdist0] = 0.
+                idxtaperdist1 = (taperdist0<=disttmp_dest) & \
+                    (disttmp_dest<taperdist1)     
+                dest_field_flat_sub[0:nrec_chunk,idxtaperdist1] = \
+                    dest_field_flat_sub[0:nrec_chunk,idxtaperdist1] * \
+                        (disttmp_dest[idxtaperdist1]-taperdist0)/dlattap_inmeters                        
                     
-            if(tlat1<grid_params.ymax):                    
+            if(tlat1<grid_params.ymax):
+                idxtaperdist3 = (taperdist2<=disttmp_dest) & \
+                    (disttmp_dest<taperdist3)
+                dest_field_flat_sub[0:nrec_chunk,idxtaperdist3] = \
+                    dest_field_flat_sub[0:nrec_chunk,idxtaperdist3] * \
+                        (taperdist3-disttmp_dest[idxtaperdist3])/dlattap_inmeters                    
                 idxtaperdist4 = taperdist3<=disttmp_dest
-                dest_field_flat_sub[idxtaperdist4,0:nrec_chunk] = 0.            
-
+                dest_field_flat_sub[0:nrec_chunk, idxtaperdist4] = 0.
+                
         if (verbose):            
             print(f'  PROC_BAND ends -- exec time for band: {band_idx+1:3d}, '+
                   f'{time.time()-time_bf_matrix_a:.4f} (s)')
-        return masksub_dest, dest_field_flat_sub.T, out_fn, nrec_chunk
+        return masksub_dest, dest_field_flat_sub, out_fn, nrec_chunk
 
 #%%
 def load_grid(grid_params, grid_nm, grid_dir='./', local_or_s3='local'):
