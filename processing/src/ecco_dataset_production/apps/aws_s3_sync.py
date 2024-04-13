@@ -42,7 +42,7 @@ def create_parser():
     parser.add_argument('--nproc', type=int, default=1, help="""
         Maximum number of local-remote sync processes (default: %(default)s)""")
     parser.add_argument('--keygen', help="""
-        JPL federated login key generation script (e.g.,
+        If running in JPL domain, federated login key generation script (e.g.,
         /usr/local/bin/aws-login-pub.darwin.amd64)""")
     parser.add_argument('--dryrun', action='store_true', help="""
         Set AWS S3 CLI argument '--dryrun'""")

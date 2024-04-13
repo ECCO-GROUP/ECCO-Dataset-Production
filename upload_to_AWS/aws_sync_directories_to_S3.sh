@@ -20,6 +20,8 @@ bash_pid=$$
 # count number of sub-directories here
 # num_sub_dirs=`find . -type d -maxdepth 1 | wc -l`
 num_sub_dirs=`find $files_dir/* -type d -maxdepth 0 | wc -l`
+# gjm:
+echo 'num_sub_dirs: ' ${num_sub_dirs}
 
 # update AWS credentials 
 # there are many ways to do this.  Here we
@@ -34,6 +36,8 @@ echo "time of last cred update $time_of_last_cred_update"
 mkdir $cur_dir/logs
 
 # spawn up to max_synchronous_uploads upload jobs
+# gjm testing:
+#max_synchronous_uploads=1
 max_synchronous_uploads=20
 
 # loop through all sub-directories, spawn off

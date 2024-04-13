@@ -13,6 +13,10 @@ from .. import metadata
 from .. import utils
 
 
+logging.basicConfig(
+    format = '%(levelname)-10s %(asctime)s %(message)s')
+
+
 def create_parser():
     """Set up list of command-line arguments to ecco_dataset_production_local.
 
@@ -25,7 +29,6 @@ def create_parser():
     parser.add_argument('--cfgfile', default='./product_generation_config.yaml',
         help="""(Path and) filename of ECCO Production configuration file
         (default: '%(default)s')""")
-
     parser.add_argument('-l','--log', dest='log_level',
         choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],
         default='WARNING', help="""
@@ -47,45 +50,47 @@ def ecco_dataset_production_local( cfgfile=None, log_level=None):
     Returns:
 
     """
-    logging.basicConfig(
-        format = '%(levelname)-10s %(asctime)s %(message)s',
-        level=log_level)
-    log = logging.getLogger('ecco_dataset_production')
+    log = logging.getLogger(__name__)
+    if log_level:
+        log.setLevel(log_level)
 
     # configuration initialization:
 
     log.info('Initializing configuration parameters...')
     cfg = configuration.ECCODatasetProductionConfig(cfgfile=cfgfile)
     # TODO: cfg.set_default_paths(workingdir)
-    log.info('Configuration key value pairs:')
+    log.debug('Configuration key value pairs:')
     for k,v in cfg.items():
-        log.info('%s: %s', k, v)
+        log.debug('%s: %s', k, v)
     log.info('...done initializing configuration parameters.')
 
-    # collect package resource metadata pertaining to job control:
+    # collect job groupings-related package metadata and organize into a
+    # dictionary with keys, '1D', 'latlon', and 'native'
 
-    log.info('Collecting %s package resource metadata...' % cfg['ecco_version'])
+    log.info('collecting %s package resource metadata...' % cfg['ecco_version'])
     dataset_groupings = {}
     traversible = importlib.resources.files(metadata)
     with importlib.resources.as_file(traversible/cfg['ecco_version']) as files:
         for file in files.glob('*groupings*'):
-            print(file.name)
             if re.search(r'_1D_',file.name,re.IGNORECASE):
-                print(f'{file} is a 1D file')
+                log.debug('parsing 1D groupings metadata file %s' % file)
                 with open(file) as f:
                     dataset_groupings['1D'] = json.load(f)
             elif re.search(r'_latlon_',file.name,re.IGNORECASE):
-                print(f'{file} is a latlon file')
+                log.debug('parsing latlon groupings metadata file %s' % file)
                 with open(file) as f:
                     dataset_groupings['latlon'] = json.load(f)
             elif re.search(r'_native_',file.name,re.IGNORECASE):
-                print(f'{file} is a native file')
+                log.debug('parsing native groupings metadata file %s' % file)
                 with open(file) as f:
                     dataset_groupings['native'] = json.load(f)
-    log.info('dataset grouping metadata:')
-    for k,v in dataset_groupings.items():
-        log.info('%s' % k)
-        log.info('%s' % v)
+    log.debug('dataset grouping metadata:')
+    for key,list_of_dicts in dataset_groupings.items():
+        log.debug('%s:' % key)
+        for i,dict_i in enumerate(list_of_dicts):
+            log.debug(' %d:' % i)
+            for k,v in dict_i.items():
+                log.debug('  %s: %s' % (k,v))
     log.info('...done collecting %s resource metadata.'  % cfg['ecco_version'])
 
     # create dataset production job list:
