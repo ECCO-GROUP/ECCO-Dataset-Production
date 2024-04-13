@@ -32,8 +32,8 @@ dependencies = [
 #where = ["src"]
 
 [project.scripts]
-#edp                = 'ecco_dataset_production.bin.master_script:main'
-edp_local           = 'ecco_dataset_production.bin.ecco_dataset_production_local:main'
-edp_aws_s3_sync     = 'ecco_dataset_production.bin.aws_s3_sync:main'
-edp_create_factors  = 'ecco_dataset_production.bin.create_factors:main'
+edp_local               = 'ecco_dataset_production.apps.ecco_dataset_production_local:main'
+edp_aws_s3_sync         = 'ecco_dataset_production.apps.aws_s3_sync:main'
+edp_create_factors      = 'ecco_dataset_production.apps.create_factors:main'
+edp_create_job_file_list= 'ecco_dataset_production.apps.create_job_file_list:main'
 
