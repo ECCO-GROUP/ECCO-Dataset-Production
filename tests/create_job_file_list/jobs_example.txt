@@ -1,0 +1,2 @@
+[0,'native','AVG_MON','all']
+[11,'latlon','AVG_MON','all']
