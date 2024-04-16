@@ -2,6 +2,7 @@
 
 import argparse
 import ast
+import boto3
 import collections
 import glob
 import importlib.resources
@@ -9,11 +10,13 @@ import json
 import logging
 import os
 import re
+import subprocess
+import sys
+import urllib
 
 from .. import configuration
 from .. import metadata
 
-# TODO: add s3 support
 
 logging.basicConfig(
     format = '%(levelname)-10s %(asctime)s %(message)s')
@@ -35,9 +38,19 @@ def create_parser():
     parser.add_argument('--ecco_destination_root', help="""
         ECCO Dataset Production output root location, either directory path
         (e.g., ECCOV4r5_datasets) or AWS S3 bucket (s3://...)""")
+    parser.add_argument('--outfile', help="""
+        Resulting job task output file (json format) (default: stdout)""")
     parser.add_argument('--cfgfile', default='./product_generation_config.yaml',
         help="""(Path and) filename of ECCO Dataset Production configuration
         file (default: '%(default)s')""")
+    parser.add_argument('--keygen', help="""
+        If ecco_source_root references an S3 bucket and if running in JPL
+        domain, federated login key generation script (e.g.,
+        /usr/local/bin/aws-login-pub.darwin.amd64)""")
+    parser.add_argument('--profile_name', help="""
+        If ecco_source_root references an S3 bucket and if running in JPL
+        domain, AWS credential profile name (e.g., 'saml-pub', 'default',
+        etc.)""")
     parser.add_argument('-l','--log', dest='log_level',
         choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],
         default='WARNING', help="""
@@ -46,8 +59,26 @@ def create_parser():
     return parser
 
 
-def create_job_file_list( jobfile=None, ecco_source_root=None, ecco_destination_root=None, cfgfile=None, log_level=None):
-    """
+def is_s3_uri(path_or_uri_str):
+    """Determines whether or not input string is an AWS S3Uri.
+
+    Args:
+        path_or_uri_str (str): Input string.
+
+    Returns:
+        True if string matches 's3://', False otherwise.
+    """ 
+    if re.search( r's3:\/\/', path_or_uri_str, re.IGNORECASE):
+        return True
+    else:
+        return False
+
+
+def create_job_file_list(
+    jobfile=None, ecco_source_root=None, ecco_destination_root=None,
+    cfgfile=None, keygen=None, profile_name=None, log_level=None):
+    """Create a list of task inputs and outputs from an ECCO Dataset Production
+    job file.
 
     Args:
         jobfile (str): (Path and) filename of ECCO Dataset Production jobs
@@ -58,25 +89,36 @@ def create_job_file_list( jobfile=None, ecco_source_root=None, ecco_destination_
             of 'SNAP', 'AVG_MON', or 'AVG_DAY', and time_steps is either a list
             of time steps or 'all'.
         ecco_source_root (str): ECCO results root location, either directory
-            path (e.g., /ecco_nfs_1/shared/ECCOV4r5) or AWS S3 bucket (s3://...)
+            path (e.g., /ecco_nfs_1/shared/ECCOV4r5) or AWS S3 bucket
+            (s3://...). (default: './')
         ecco_destination_root (str): ECCO Dataset Production output root
             location, either directory path (e.g., ECCOV4r5_datasets) or AWS S3
-            bucket (s3://...)
+            bucket or folder (s3://...)
         cfgfile (str): (Path and) filename of ECCO Dataset Production
             configuration file.
+        keygen (str): If ecco_source_root If ecco_source_root references an S3
+            bucket and if running in JPL domain, federated login key generation
+            script (e.g., /usr/local/bin/aws-login-pub.darwin.amd64).
+            (default: None)
+        profile_name (str): If ecco_source_root references an AWS S3 bucket and
+            if running in JPL domain, AWS credential profile name (e.g.,
+            'saml-pub', 'default', etc.)
         log_level (str): log_level choices per Python logging module
             ('DEBUG','INFO','WARNING','ERROR' or 'CRITICAL'; default='WARNING').
 
     Returns:
-
-        List of dictionary elements with keys, 'input', 'dependencies', 'output'
-        corresponding to all located input files, and their potential input
-        dependencies (i.e., vector-rotated dataproducts) across all job/metadata
+        List of dictionary elements with keys 'input' and 'output' corresponding
+        to all located input files, and their potential input dependencies
+        (i.e., vector-rotated dataproducts) across all job/metadata
         specifications.
 
+    Raises:
+        ValueError: If ecco_source_root type cannot be determined or if jobfile
+        contains format errors.
+
     Notes:
-        . ECCO version string (e.g., "V4r5" is assumed to be present in AWS S3
-        object names and/or directory paths.
+        . ECCO version string (e.g., "V4r5") is assumed to be contained in
+        either directory path or in AWS S3 object names.
 
     """
     log = logging.getLogger(__name__)
@@ -92,6 +134,32 @@ def create_job_file_list( jobfile=None, ecco_source_root=None, ecco_destination_
     for k,v in cfg.items():
         log.debug(' %s: %s', k, v)
     log.info('...done initializing configuration parameters.')
+
+    if not ecco_source_root:
+        # default:
+        ecco_source_root = '.'
+    elif is_s3_uri(ecco_source_root):
+        # update login credentials:
+        log.info('updating credentials...')
+        try:
+            subprocess.run(keygen,check=True)
+        except subprocess.CalledProcessError as e:
+            log.error(e)
+            sys.exit(1)
+        log.info('...done')
+        # set session defaults:
+        boto3.setup_default_session(profile_name=profile_name)
+        # get bucket object list:
+        s3r = boto3.resource('s3')
+        s3_parts = urllib.parse.urlparse(ecco_source_root)
+        bucket_name = s3_parts.netloc
+        log.info("getting contents of bucket '%s'..." % bucket_name)
+        bucket = s3r.Bucket(bucket_name)
+        files_in_bucket = list(bucket.objects.all())
+        log.info('...done')
+    elif not os.path.exists(ecco_source_root):
+        raise ValueError(
+            'Could not determine ecco_source_root type (directory or s3:// location)')
 
     if not ecco_destination_root:
         ecco_destination_root = ''
@@ -137,7 +205,8 @@ def create_job_file_list( jobfile=None, ecco_source_root=None, ecco_destination_
     input_files_dependencies = []
     output_files = []
 
-    Job = collections.namedtuple('Job',['metadata_groupings_id','product_type','frequency','time_steps'])
+    Job = collections.namedtuple(
+        'Job',['metadata_groupings_id','product_type','frequency','time_steps'])
 
     with open(jobfile,'r') as fh:
 
@@ -160,7 +229,7 @@ def create_job_file_list( jobfile=None, ecco_source_root=None, ecco_destination_
                 # TODO
                 pass
             else:
-                raise SyntaxError("job frequency must be one of AVG_DAY, AVG_MON, or SNAP")
+                raise ValueError('job frequency must be one of AVG_DAY, AVG_MON, or SNAP')
 
             for output_field in job_metadata['fields'].replace(' ','').split(','): # fields string as iterable
 
@@ -198,17 +267,23 @@ def create_job_file_list( jobfile=None, ecco_source_root=None, ecco_destination_
                             time_pat = '.*'
                             file_pat = re.compile(
                                 '.*' + input_field_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
-                            for dirpath,dirnames,filenames in os.walk(ecco_source_root):
-                                if cfg['ecco_version'] in dirpath:
-                                    input_field_files.extend(
-                                        [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
-                            # obsolete glob-based approach:
-                            #time_pat = '*'
-                            #glob_pat = os.path.join(
-                            #    ecco_source_root, path_freq_pat,
-                            #    input_field_pat + '_' + file_freq_pat,
-                            #    input_field_pat + '_' + file_freq_pat + '.' + time_pat + '.data')
-                            #input_field_files.extend(glob.glob(glob_pat))
+                            if is_s3_uri(ecco_source_root):
+                                input_field_files.extend(
+                                    [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
+                                        for f in files_in_bucket if re.match(file_pat,f.key)])
+                            else:
+                                for dirpath,dirnames,filenames in os.walk(ecco_source_root):
+                                    if cfg['ecco_version'] in dirpath:
+                                        input_field_files.extend(
+                                            [os.path.join(dirpath,f)
+                                                for f in filenames if re.match(file_pat,f)])
+                                # obsolete glob-based approach:
+                                #time_pat = '*'
+                                #glob_pat = os.path.join(
+                                #    ecco_source_root, path_freq_pat,
+                                #    input_field_pat + '_' + file_freq_pat,
+                                #    input_field_pat + '_' + file_freq_pat + '.' + time_pat + '.data')
+                                #input_field_files.extend(glob.glob(glob_pat))
                         else:
                             # explicit list of time steps; one match per item:
                             time_steps_as_int_list = ast.literal_eval(job.time_steps)
@@ -216,16 +291,22 @@ def create_job_file_list( jobfile=None, ecco_source_root=None, ecco_destination_
                                 time_pat = "{0:0>10d}".format(int(time))
                                 file_pat = re.compile(
                                     '.*' + input_field_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
-                                for dirpath,dirnames,filenames in os.walk(ecco_source_root):
-                                    if cfg['ecco_version'] in dirpath:
-                                        input_field_files.append(
-                                            [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
-                                # obsolete glob-based approach:
-                                #glob_pat = os.path.join(
-                                #    ecco_source_root, path_freq_pat,
-                                #    input_field_pat + '_' + file_freq_pat,
-                                #    input_field_pat + '_' + file_freq_pat + '.' + time_pat + '.data')
-                                #input_field_files.extend(glob.glob(glob_pat))
+                                if is_s3_uri(ecco_source_root):
+                                    input_field_files.append(
+                                        [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
+                                            for f in files_in_bucket if re.match(file_pat,f.key)])
+                                else:
+                                    for dirpath,dirnames,filenames in os.walk(ecco_source_root):
+                                        if cfg['ecco_version'] in dirpath:
+                                            input_field_files.append(
+                                                [os.path.join(dirpath,f)
+                                                    for f in filenames if re.match(file_pat,f)])
+                                    # obsolete glob-based approach:
+                                    #glob_pat = os.path.join(
+                                    #    ecco_source_root, path_freq_pat,
+                                    #    input_field_pat + '_' + file_freq_pat,
+                                    #    input_field_pat + '_' + file_freq_pat + '.' + time_pat + '.data')
+                                    #input_field_files.extend(glob.glob(glob_pat))
                         input_field_files.sort()
                         all_input_field_files[input_field_key] = input_field_files
 
@@ -269,17 +350,22 @@ def create_job_file_list( jobfile=None, ecco_source_root=None, ecco_destination_
                         # get all possible time matches:
                         time_pat = '.*'
                         file_pat = re.compile('.*' + field_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
-                        for dirpath,dirnames,filenames in os.walk(ecco_source_root):
-                            if cfg['ecco_version'] in dirpath:
-                                field_files.extend(
-                                    [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
-                        # obsolete glob-based approach:
-                        #time_pat = '*'
-                        #glob_pat = os.path.join(
-                        #    ecco_source_root, path_freq_pat,
-                        #    field_pat + '_' + file_freq_pat,
-                        #    field_pat + '_' + file_freq_pat + '.' + time_pat + '.data')
-                        #field_files.extend(glob.glob(glob_pat))
+                        if is_s3_uri(ecco_source_root):
+                            field_files.extend(
+                                [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
+                                    for f in files_in_bucket if re.match(file_pat,f.key)])
+                        else:
+                            for dirpath,dirnames,filenames in os.walk(ecco_source_root):
+                                if cfg['ecco_version'] in dirpath:
+                                    field_files.extend(
+                                        [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
+                            # obsolete glob-based approach:
+                            #time_pat = '*'
+                            #glob_pat = os.path.join(
+                            #    ecco_source_root, path_freq_pat,
+                            #    field_pat + '_' + file_freq_pat,
+                            #    field_pat + '_' + file_freq_pat + '.' + time_pat + '.data')
+                            #field_files.extend(glob.glob(glob_pat))
                         field_files.sort()
                         # arrange as list of single element lists:
                         field_files = [[f] for f in field_files]
@@ -288,17 +374,23 @@ def create_job_file_list( jobfile=None, ecco_source_root=None, ecco_destination_
                         time_steps_as_int_list = ast.literal_eval(job.time_steps)
                         for time in time_steps_as_int_list:
                             time_pat = "{0:0>10d}".format(int(time))
-                            file_pat = re.compile('.*' + field_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
-                            for dirpath,dirnames,filenames in os.walk(ecco_source_root):
-                                if cfg['ecco_version'] in dirpath:
-                                    field_files.append(
-                                        [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
-                            # obsolete glob-based approach:
-                            #glob_pat = os.path.join(
-                            #    ecco_source_root, path_freq_pat,
-                            #    field_pat + '_' + file_freq_pat,
-                            #    field_pat + '_' + file_freq_pat + '.' + time_pat + '.data')
-                            #field_files.append([glob.glob(glob_pat)])
+                            file_pat = re.compile(
+                                '.*' + field_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                            if is_s3_uri(ecco_source_root):
+                                field_files.append(
+                                    [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
+                                        for f in files_in_bucket if re.match(file_pat,f.key)])
+                            else:
+                                for dirpath,dirnames,filenames in os.walk(ecco_source_root):
+                                    if cfg['ecco_version'] in dirpath:
+                                        field_files.append(
+                                            [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
+                                # obsolete glob-based approach:
+                                #glob_pat = os.path.join(
+                                #    ecco_source_root, path_freq_pat,
+                                #    field_pat + '_' + file_freq_pat,
+                                #    field_pat + '_' + file_freq_pat + '.' + time_pat + '.data')
+                                #field_files.append([glob.glob(glob_pat)])
 
                     # for every ECCO results file located, create corresponding
                     # list of single element lists of output granule destinations:
@@ -329,16 +421,21 @@ def main():
     args = parser.parse_args()
 
     (input_files,output_files) = create_job_file_list(
-        jobfile=args.jobfile, ecco_source_root=args.ecco_source_root,
+        jobfile=args.jobfile,
+        ecco_source_root=args.ecco_source_root,
         ecco_destination_root=args.ecco_destination_root,
-        cfgfile=args.cfgfile, log_level=args.log_level)
+        cfgfile=args.cfgfile,
+        keygen=args.keygen, profile_name=args.profile_name,
+        log_level=args.log_level)
 
     f = []
     for input_file_list,output_file_list in zip(input_files,output_files):
         f.append({'input':input_file_list,'output':output_file_list})
-    fp = open('tmp.json','w')
-    json.dump(f,fp)
-    fp.close()
+    if args.outfile:
+        fp = open(args.outfile,'w')
+    else:
+        fp = sys.stdout
+    json.dump(f,fp,indent=4)
 
 
 if __name__=='__main__':
