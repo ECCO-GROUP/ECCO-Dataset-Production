@@ -41,7 +41,9 @@ def create_parser():
         epilog="""Note: Currently, the following mapping is implemented: 
         merra2 to llc90, merra2 to llc270, and llc90 to llc270.""")       
     parser.add_argument('--json_dir', default='./', help="""
-        Directory of input json file (default: "%(default)s")""")        
+        Directory of input json file (default: "%(default)s")""")
+    parser.add_argument('--json_fn', default='', help="""
+        Input json filename (default: "%(default)s")""")        
     parser.add_argument('--src', default='merra2', help="""
         Source grid (default: "%(default)s")""")
     parser.add_argument('--dest', default='llc90', help="""
@@ -389,6 +391,7 @@ def prep_proc():
     
     # to be put in argument 
     json_dir = args.json_dir
+    json_fn = args.json_fn
     src = args.src
     dest = args.dest
     
@@ -454,7 +457,8 @@ def prep_proc():
                   f'{year0} vs. {year1}')
 
 #%%    
-    json_fn = mappingtype+".json"
+    if json_fn == '':
+        json_fn = mappingtype+".json"
     [mapping_factors_dir, fnprefix, src_dir, dgrid_dir,\
      sgrid_dir, out_dir, nearest_wet_points_indices_dir, ecco_s3_fs] = \
         load_params_from_json(json_dir, json_fn, fill_dry_points)
