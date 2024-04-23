@@ -138,6 +138,8 @@ def load_src_field_chunk(src, src_dir, src_fn, sgrid_size, sgrid_shape,
                                            skip=chunk_start,
                                            llc=llc,
                                            less_output=True)
+        if nrec_chunk==1:
+            src_field = np.expand_dims(src_field, 0)            
         src_field_tmp = src_field.ravel()
     src_field_flat_shape = src_field_tmp.shape  
     if use_shared_mem:
