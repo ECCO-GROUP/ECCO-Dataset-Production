@@ -46,6 +46,8 @@ def create_parser():
         Source grid (default: "%(default)s")""")
     parser.add_argument('--dest', default='llc90', help="""
         Destination grid (default: "%(default)s")""")
+    parser.add_argument('--src_fn', default='', help="""
+        Source filename (default: "%(default)s")""")        
     parser.add_argument('--NUM_WORKERS', type=int, default=1, help="""
         Number of processes (default: %(default)s)""")
     parser.add_argument('--variable', default='TAUX', help="""
@@ -390,6 +392,8 @@ def prep_proc():
     src = args.src
     dest = args.dest
     
+    src_fn = args.src_fn
+    
     NUM_WORKERS = args.NUM_WORKERS
     variable = args.variable
     year0 = args.year0
@@ -440,10 +444,8 @@ def prep_proc():
         band0 = K_params.nband_max        
     if(band1>K_params.nband_max):
         band1 = K_params.nband_max 
-        
-    if src == 'merra2':
-        src_fn = variable +f'_{year0:d}'
-    else: 
+
+    if src_fn == '' and (src == 'llc90' or src == 'llc270'):         
         src_fn = 'xx_'+variable +f'.{iternum:010d}.data'
 
     if src=='llc90' or src=='llc270':
