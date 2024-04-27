@@ -35,5 +35,5 @@ dependencies = [
 edp_local               = 'ecco_dataset_production.apps.ecco_dataset_production_local:main'
 edp_aws_s3_sync         = 'ecco_dataset_production.apps.aws_s3_sync:main'
 edp_create_factors      = 'ecco_dataset_production.apps.create_factors:main'
-edp_create_job_file_list= 'ecco_dataset_production.apps.create_job_file_list:main'
+edp_create_job_task_list= 'ecco_dataset_production.apps.create_job_task_list:main'
 
