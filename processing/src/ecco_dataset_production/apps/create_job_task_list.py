@@ -23,7 +23,7 @@ logging.basicConfig(
 
 
 def create_parser():
-    """Set up list of command-line arguments to create_job_file_list.
+    """Set up list of command-line arguments to create_job_task_list.
 
     Returns:
         argparser.ArgumentParser instance.
@@ -59,6 +59,10 @@ def create_parser():
     return parser
 
 
+#
+# common utilities, at some point:
+# 
+
 def is_s3_uri(path_or_uri_str):
     """Determines whether or not input string is an AWS S3Uri.
 
@@ -74,7 +78,24 @@ def is_s3_uri(path_or_uri_str):
         return False
 
 
-def create_job_file_list(
+def time_str(granule_filename):
+    """Get ten digit time string from ECCO granule filename.
+
+    Args:
+        granule_filename (str): Name of ECCO granule file (e.g., either
+            SSH_mon_mean.0000000732.data or SSH_mon_mean.0000000732.meta)
+
+    Returns:
+        Ten digit time string (e.g., '0000000732')
+    """
+    m = re.search('\d{10}',granule_filename)
+    if m:
+        return m.group()
+    else:
+        return None
+
+
+def create_job_task_list(
     jobfile=None, ecco_source_root=None, ecco_destination_root=None,
     cfgfile=None, keygen=None, profile_name=None, log_level=None):
     """Create a list of task inputs and outputs from an ECCO Dataset Production
@@ -90,7 +111,7 @@ def create_job_file_list(
             of time steps or 'all'.
         ecco_source_root (str): ECCO results root location, either directory
             path (e.g., /ecco_nfs_1/shared/ECCOV4r5) or AWS S3 bucket
-            (s3://...). (default: './')
+            (s3://...).
         ecco_destination_root (str): ECCO Dataset Production output root
             location, either directory path (e.g., ECCOV4r5_datasets) or AWS S3
             bucket or folder (s3://...)
@@ -107,14 +128,14 @@ def create_job_file_list(
             ('DEBUG','INFO','WARNING','ERROR' or 'CRITICAL'; default='WARNING').
 
     Returns:
-        List of dictionary elements with keys 'input' and 'output' corresponding
-        to all located input files, and their potential input dependencies
-        (i.e., vector-rotated dataproducts) across all job/metadata
-        specifications.
+        List of resulting job tasks, each as a dictionary with 'input',
+        'output', and 'metadata' keys.
 
     Raises:
+        RuntimeError: If ecco_source_root or ecco_destination_root are not
+            provided.
         ValueError: If ecco_source_root type cannot be determined or if jobfile
-        contains format errors.
+            contains format errors.
 
     Notes:
         . ECCO version string (e.g., "V4r5") is assumed to be contained in
@@ -135,10 +156,19 @@ def create_job_file_list(
         log.debug(' %s: %s', k, v)
     log.info('...done initializing configuration parameters.')
 
-    if not ecco_source_root:
-        # default:
-        ecco_source_root = '.'
-    elif is_s3_uri(ecco_source_root):
+    if not ecco_source_root or not ecco_destination_root:
+        err = None
+        if not ecco_source_root:
+            err = 'ecco_source_root'
+        if not ecco_destination_root:
+            if err:
+                err += ' and ecco_destination_root'
+            else:
+                err = 'ecco_destination_root'
+        err += ' must be provided'
+        raise RuntimeError(err)
+
+    if is_s3_uri(ecco_source_root):
         # update login credentials:
         log.info('updating credentials...')
         try:
@@ -153,69 +183,71 @@ def create_job_file_list(
         s3r = boto3.resource('s3')
         s3_parts = urllib.parse.urlparse(ecco_source_root)
         bucket_name = s3_parts.netloc
-        log.info("getting contents of bucket '%s'..." % bucket_name)
+        log.info("getting contents of bucket '%s'...", bucket_name)
         bucket = s3r.Bucket(bucket_name)
         files_in_bucket = list(bucket.objects.all())
         log.info('...done')
     elif not os.path.exists(ecco_source_root):
         raise ValueError(
-            'Could not determine ecco_source_root type (directory or s3:// location)')
-
-    if not ecco_destination_root:
-        ecco_destination_root = ''
-
-    # Example: [0,'latlon','AVG_DAY','all']
+            f"Nonexistent ecco_source_root directory location, '{ecco_source_root}'")
 
     # collect job groupings-related package metadata and organize into a
-    # dictionary with primary keys, '1D', 'latlon', and 'native'
+    # dictionary with primary keys, '1D', 'latlon', and 'native':
 
-    log.info('collecting %s package resource metadata...' % cfg['ecco_version'])
+    log.info('collecting %s package resource metadata...', cfg['ecco_version'])
     dataset_groupings = {}
     traversible = importlib.resources.files(metadata)
     with importlib.resources.as_file(traversible/cfg['ecco_version']) as files:
         for file in files.glob('*groupings*'):
             if re.search(r'_1D_',file.name,re.IGNORECASE):
-                log.debug('parsing 1D groupings metadata file %s' % file)
+                log.debug('parsing 1D groupings metadata file %s', file)
                 with open(file) as f:
                     dataset_groupings['1D'] = json.load(f)
             elif re.search(r'_latlon_',file.name,re.IGNORECASE):
-                log.debug('parsing latlon groupings metadata file %s' % file)
+                log.debug('parsing latlon groupings metadata file %s', file)
                 with open(file) as f:
                     dataset_groupings['latlon'] = json.load(f)
             elif re.search(r'_native_',file.name,re.IGNORECASE):
-                log.debug('parsing native groupings metadata file %s' % file)
+                log.debug('parsing native groupings metadata file %s', file)
                 with open(file) as f:
                     dataset_groupings['native'] = json.load(f)
     log.debug('dataset grouping metadata:')
     for key,list_of_dicts in dataset_groupings.items():
-        log.debug('%s:' % key)
+        log.debug('%s:', key)
         for i,dict_i in enumerate(list_of_dicts):
-            log.debug(' %d:' % i)
+            log.debug(' %d:', i)
             for k,v in dict_i.items():
-                log.debug('  %s: %s' % (k,v))
-    log.info('...done collecting %s resource metadata.'  % cfg['ecco_version'])
+                log.debug('  %s: %s', k, v)
+    log.info('...done collecting %s resource metadata.', cfg['ecco_version'])
 
     #
-    # collect (potentially very long) i/o lists for every task implied in the
-    # list of jobs, store as a list of dictionaries, for json serialization,
-    # i.e.: [{'input':..., 'output':...}, {...}, ...]
+    # list of job descriptions to be built in two steps: first, gather list of
+    # all available variable input granules, second, step through the collection
+    # and organize into list of output directories with 'input', 'output', and
+    # 'metadata' keys.
     #
 
-    input_files = []
-    input_files_dependencies = []
-    output_files = []
+    task_list = []
 
     Job = collections.namedtuple(
         'Job',['metadata_groupings_id','product_type','frequency','time_steps'])
+
 
     with open(jobfile,'r') as fh:
 
         for line in fh:
 
+            #
+            # Step 1: accumulate and group all variable inputs (ECCO results
+            # granules):
+            #
+
+            variable_inputs = {}
+
             job = Job(*ast.literal_eval(line))
             job_metadata = dataset_groupings[job.product_type][job.metadata_groupings_id]
-            log.debug('job metadata for %s, %d: %s' %
-                (job.product_type, job.metadata_groupings_id, job_metadata))
+            log.debug('job metadata for %s, %d: %s',
+                job.product_type, job.metadata_groupings_id, job_metadata)
 
             # find all source files referenced by this job/job_metadata combination:
 
@@ -231,186 +263,196 @@ def create_job_file_list(
             else:
                 raise ValueError('job frequency must be one of AVG_DAY, AVG_MON, or SNAP')
 
-            for output_field in job_metadata['fields'].replace(' ','').split(','): # fields string as iterable
+            for variable in job_metadata['fields'].replace(' ','').split(','): # 'fields' string as iterable
 
-                # accommodate two basic granule construction schemas: direct
-                # (one-to-one), and vector component (output based on many input
-                # components) based:
+                # collect list of available input files for the output variable.
+                # accommodate two basic schemas: direct (one-to-one), and vector
+                # component based (output based on many input components):
 
                 one_to_one = True
-                input_fields_keys = []
+                variable_input_components_keys = []
+                variable_files = []
 
                 if 'vector_inputs' in job_metadata:
 
-                    # output granule *may* depend on component inputs of
-                    # differing types.  if so, collect dependencies as
-                    # dictionary keys for subsequent file list accumulation:
+                    # variable *may* depend on component inputs of differing
+                    # types. if so, collect dependencies as dictionary keys for
+                    # subsequent file list accumulation:
 
                     for k,v in job_metadata['vector_inputs'].items():
-                        if output_field in v:
-                            input_fields_keys.append(k)
-                    if input_fields_keys:
+                        if variable in v:
+                            variable_input_components_keys.append(k)
+                            #input_fields_keys.append(k)
+                    if variable_input_components_keys:
                         one_to_one = False
 
                 if not one_to_one:
 
-                    # output granule *does* depend on component inputs of
-                    # differing types; determine availability of input files:
+                    # variable depends on component inputs; determine
+                    # availability of input files and gather accordingly:
 
-                    all_input_field_files = {}
+                    all_variable_input_component_files = {}
 
-                    for input_field_key in input_fields_keys:
-                        input_field_pat = input_field_key
-                        input_field_files = []
+                    for variable_input_component_key in variable_input_components_keys:
+
+                        variable_input_component_pat = variable_input_component_key
+                        variable_input_component_files = []
+
                         if 'all' == job.time_steps.lower():
                             # get all possible time matches:
                             time_pat = '.*'
                             file_pat = re.compile(
-                                '.*' + input_field_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                                '.*' + variable_input_component_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
                             if is_s3_uri(ecco_source_root):
-                                input_field_files.extend(
+                                variable_input_component_files.extend(
                                     [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
                                         for f in files_in_bucket if re.match(file_pat,f.key)])
                             else:
                                 for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                     if cfg['ecco_version'] in dirpath:
-                                        input_field_files.extend(
+                                        variable_input_component_files.extend(
                                             [os.path.join(dirpath,f)
                                                 for f in filenames if re.match(file_pat,f)])
-                                # obsolete glob-based approach:
-                                #time_pat = '*'
-                                #glob_pat = os.path.join(
-                                #    ecco_source_root, path_freq_pat,
-                                #    input_field_pat + '_' + file_freq_pat,
-                                #    input_field_pat + '_' + file_freq_pat + '.' + time_pat + '.data')
-                                #input_field_files.extend(glob.glob(glob_pat))
                         else:
                             # explicit list of time steps; one match per item:
                             time_steps_as_int_list = ast.literal_eval(job.time_steps)
                             for time in time_steps_as_int_list:
                                 time_pat = "{0:0>10d}".format(int(time))
                                 file_pat = re.compile(
-                                    '.*' + input_field_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                                    '.*' + variable_input_component_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
                                 if is_s3_uri(ecco_source_root):
-                                    input_field_files.append(
+                                    variable_input_component_files.append(
                                         [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
                                             for f in files_in_bucket if re.match(file_pat,f.key)])
                                 else:
                                     for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                         if cfg['ecco_version'] in dirpath:
-                                            input_field_files.append(
+                                            variable_input_component_files.append(
                                                 [os.path.join(dirpath,f)
                                                     for f in filenames if re.match(file_pat,f)])
-                                    # obsolete glob-based approach:
-                                    #glob_pat = os.path.join(
-                                    #    ecco_source_root, path_freq_pat,
-                                    #    input_field_pat + '_' + file_freq_pat,
-                                    #    input_field_pat + '_' + file_freq_pat + '.' + time_pat + '.data')
-                                    #input_field_files.extend(glob.glob(glob_pat))
-                        input_field_files.sort()
-                        all_input_field_files[input_field_key] = input_field_files
+                        variable_input_component_files.sort()
+                        all_variable_input_component_files[variable_input_component_key] = variable_input_component_files
 
-                    # group input field files by time value (i.e., across keys),
-                    # collect in time-based input lists:
+                    # group variable input component files by time value (i.e.,
+                    # across keys), collect in time-based input lists that
+                    # consist of just those variables for which all components
+                    # are available:
 
-                    all_input_field_files_by_time = []
+                    # the following can probably be optimised:
 
-                    for _,v in all_input_field_files.items():
-                        if not all_input_field_files_by_time:
-                            # initialize as list of lists:
-                            all_input_field_files_by_time = [[file] for file in v]
+                    # get list of times common across all variable input components:
+                    times = None
+                    for _,v in all_variable_input_component_files.items():
+                        if not times:
+                            # init:
+                            times = {time_str(filename) for filename in v}
                         else:
-                            # augment each input list in the list of lists:
-                            for i,file in enumerate(v):
-                                all_input_field_files_by_time[i].append(file)
-
-                    # for every ECCO results file set located, create
-                    # corresponding list of single element lists of output
-                    # granule destinations (just use first input field key):
-
-                    field_files_output = [
-                        [f.replace(ecco_source_root,ecco_destination_root).replace(
-                            input_fields_keys[0],output_field).replace('.data','.nc')]
-                            for f in all_input_field_files[input_fields_keys[0]]]
-
-                    # and add to cumulative i/o lists:
-                    input_files.extend(all_input_field_files_by_time)
-                    output_files.extend(field_files_output)
+                            # compare:
+                            times = times & {time_str(filename) for filename in v}
+                    times = list(times)
+                    times.sort()
+                    # reduce, and group by time:
+                    for time in times:
+                        tmp = []
+                        for _,v in all_variable_input_component_files.items():
+                            tmp.append(next(file for file in v if time==time_str(file)))
+                        variable_files.append(tmp)
 
                 else:
 
-                    # output granule is dependent on single input, of same type. for
-                    # data organization purposes, arrange as list of lists (a job's
-                    # (single) input is contained in a list, and a list of such
-                    # lists comprise all jobs):
+                    # variable depends on a single input, of same type. for data
+                    # organization purposes, arrange as list of lists (a
+                    # variable's single input is contained in a list, and a list
+                    # of such lists comprises all selected times).
 
-                    field_pat = output_field
-                    field_files = []
+                    variable_pat = variable
+                    variable_files = []
                     if 'all' == job.time_steps.lower():
                         # get all possible time matches:
                         time_pat = '.*'
-                        file_pat = re.compile('.*' + field_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                        file_pat = re.compile('.*' + variable_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
                         if is_s3_uri(ecco_source_root):
-                            field_files.extend(
+                            variable_files.extend(
                                 [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
                                     for f in files_in_bucket if re.match(file_pat,f.key)])
                         else:
                             for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                 if cfg['ecco_version'] in dirpath:
-                                    field_files.extend(
+                                    variable_files.extend(
                                         [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
-                            # obsolete glob-based approach:
-                            #time_pat = '*'
-                            #glob_pat = os.path.join(
-                            #    ecco_source_root, path_freq_pat,
-                            #    field_pat + '_' + file_freq_pat,
-                            #    field_pat + '_' + file_freq_pat + '.' + time_pat + '.data')
-                            #field_files.extend(glob.glob(glob_pat))
-                        field_files.sort()
+                        variable_files.sort()
                         # arrange as list of single element lists:
-                        field_files = [[f] for f in field_files]
+                        variable_files = [[f] for f in variable_files]
                     else:
                         # explicit list of time steps; one match per item:
                         time_steps_as_int_list = ast.literal_eval(job.time_steps)
                         for time in time_steps_as_int_list:
                             time_pat = "{0:0>10d}".format(int(time))
                             file_pat = re.compile(
-                                '.*' + field_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                                '.*' + variable_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
                             if is_s3_uri(ecco_source_root):
-                                field_files.append(
+                                variable_files.append(
                                     [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
                                         for f in files_in_bucket if re.match(file_pat,f.key)])
                             else:
                                 for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                     if cfg['ecco_version'] in dirpath:
-                                        field_files.append(
+                                        variable_files.append(
                                             [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
-                                # obsolete glob-based approach:
-                                #glob_pat = os.path.join(
-                                #    ecco_source_root, path_freq_pat,
-                                #    field_pat + '_' + file_freq_pat,
-                                #    field_pat + '_' + file_freq_pat + '.' + time_pat + '.data')
-                                #field_files.append([glob.glob(glob_pat)])
 
-                    # for every ECCO results file located, create corresponding
-                    # list of single element lists of output granule destinations:
+                # save list of variable file lists in time-keyed dictionaries
+                # for gather operations in Step 2:
 
-                    renamed_output_field = ''
-                    if 'variable_rename' in job_metadata:
-                        _,renamed_output_field = job_metadata['variable_rename'].split(':')
-                    else:
-                        renamed_output_field = output_field
+                variable_files_as_time_keyed_dict = {}
+                for file_list in variable_files:
+                    variable_files_as_time_keyed_dict[time_str(file_list[0])] = file_list
 
-                    field_files_output = [
-                        [f[0].replace(ecco_source_root,ecco_destination_root).replace(
-                            output_field,renamed_output_field).replace('.data','.nc')]
-                        for f in field_files]
+                variable_inputs[variable] = variable_files_as_time_keyed_dict
 
-                    # and add to cumulative i/o lists:
-                    input_files.extend(field_files)
-                    output_files.extend(field_files_output)
+            # finally, does the metadata specify any variable renames?:
 
-    return(input_files,output_files)
+            if 'variable_rename' in job_metadata.keys():
+                old_varname, new_varname = job_metadata['variable_rename'].split(':')
+                variable_inputs[new_varname] = variable_inputs.pop(old_varname)
+
+#           json.dump(variable_inputs,sys.stdout,indent=4)
+
+            #
+            # Step 2: walk through collection of variable inputs and organize
+            # into list of directories describing individual tasks. Note that
+            # approach allows for output even if not all variables exist for a
+            # given time.
+            #
+
+            # get list of times for which any of the variables exist:
+            all_times = set()
+            for k,v in variable_inputs.items():
+                all_times = all_times | set(v.keys())
+            all_times = list(all_times)
+            all_times.sort()
+
+            for time in all_times:
+                task = {}
+                output_filename =                   \
+                    job_metadata['filename']        \
+                    + '_' + file_freq_pat           \
+                    + '_' + time                    \
+                    + '_' + 'ECCO'                  \
+                    + '_' + cfg['ecco_version']     \
+                    + '_' + job_metadata['product'] \
+                    + '_' + cfg['filename_tail_'+job_metadata['product']]
+                task['output'] = output_filename
+                task_inputs = {}
+                for variable_name,variable_file_list in variable_inputs.items():
+                    task_inputs[variable_name] = variable_file_list[time]
+                task['input'] = task_inputs
+                # metadata that hasn't been used here, and will be of later use:
+                task['metadata'] = {
+                    'name':job_metadata['name'],
+                    'dimension':job_metadata['dimension']}
+                task_list.append(task)
+
+    return task_list
 
 
 def main():
@@ -420,7 +462,7 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
-    (input_files,output_files) = create_job_file_list(
+    task_list = create_job_task_list(
         jobfile=args.jobfile,
         ecco_source_root=args.ecco_source_root,
         ecco_destination_root=args.ecco_destination_root,
@@ -428,14 +470,7 @@ def main():
         keygen=args.keygen, profile_name=args.profile_name,
         log_level=args.log_level)
 
-    f = []
-    for input_file_list,output_file_list in zip(input_files,output_files):
-        f.append({'input':input_file_list,'output':output_file_list})
-    if args.outfile:
-        fp = open(args.outfile,'w')
-    else:
-        fp = sys.stdout
-    json.dump(f,fp,indent=4)
+    json.dump(task_list,sys.stdout,indent=4)
 
 
 if __name__=='__main__':
