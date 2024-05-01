@@ -2,7 +2,7 @@
 
 # test job task list generation using locally-stored ECCO results:
 
-edp_create_job_file_list \
+edp_create_job_task_list \
     --jobfile ./jobs_example.txt \
     --ecco_source_root ../ecco_model_granules \
     --ecco_destination_root s3://ecco_dataset_production_test \

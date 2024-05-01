@@ -433,6 +433,7 @@ def create_job_task_list(
 
             for time in all_times:
                 task = {}
+                # common util perhaps at some point:
                 output_filename =                   \
                     job_metadata['filename']        \
                     + '_' + file_freq_pat           \
@@ -470,7 +471,12 @@ def main():
         keygen=args.keygen, profile_name=args.profile_name,
         log_level=args.log_level)
 
-    json.dump(task_list,sys.stdout,indent=4)
+    if args.outfile:
+        fp = open(args.outfile,'w')
+    else:
+        fp = sys.stdout
+    json.dump(task_list,fp,indent=4)
+    fp.close()
 
 
 if __name__=='__main__':

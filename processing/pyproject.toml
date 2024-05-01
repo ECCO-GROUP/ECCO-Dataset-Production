@@ -8,6 +8,7 @@ version = '1.0'
 dependencies = [
     'boto3',
     'cartopy',
+    'importlib.resources',
     'matplotlib',
     'netCDF4',
     'numpy',
@@ -30,6 +31,9 @@ dependencies = [
 # specified and is listed here only for reference:
 #namespaces = true
 #where = ["src"]
+
+[tool.setuptools.package-data]
+"ecco_dataset_production.metadata.V4r4" = ["*.json"]
 
 [project.scripts]
 edp_local               = 'ecco_dataset_production.apps.ecco_dataset_production_local:main'
