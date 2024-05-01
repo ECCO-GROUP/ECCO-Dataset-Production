@@ -16,3 +16,8 @@ Test data
 
     - ecco_model_granules: Directory containing some representative ECCO results
       data, used in the above.
+
+Notes
+-----
+
+	- Tests that rely on AWS S3 access require an AWS account with login privileges.
