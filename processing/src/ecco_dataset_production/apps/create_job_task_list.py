@@ -15,6 +15,7 @@ import sys
 import urllib
 
 from .. import configuration
+from .. import ecco_file
 from .. import metadata
 
 
@@ -37,12 +38,15 @@ def create_parser():
         /ecco_nfs_1/shared/ECCOV4r5) or AWS S3 bucket (s3://...)""")
     parser.add_argument('--ecco_destination_root', help="""
         ECCO Dataset Production output root location, either directory path
-        (e.g., ECCOV4r5_datasets) or AWS S3 bucket (s3://...)""")
-    parser.add_argument('--outfile', help="""
-        Resulting job task output file (json format) (default: stdout)""")
+        (e.g., ECCOV4r5_datasets) or AWS S3 bucket (s3://bucket_name)""")
+
+    # parser.add_argument('--
+
     parser.add_argument('--cfgfile', default='./product_generation_config.yaml',
         help="""(Path and) filename of ECCO Dataset Production configuration
         file (default: '%(default)s')""")
+    parser.add_argument('--outfile', help="""
+        Resulting job task output file (json format) (default: stdout)""")
     parser.add_argument('--keygen', help="""
         If ecco_source_root references an S3 bucket and if running in JPL
         domain, federated login key generation script (e.g.,
@@ -78,21 +82,21 @@ def is_s3_uri(path_or_uri_str):
         return False
 
 
-def time_str(granule_filename):
-    """Get ten digit time string from ECCO granule filename.
-
-    Args:
-        granule_filename (str): Name of ECCO granule file (e.g., either
-            SSH_mon_mean.0000000732.data or SSH_mon_mean.0000000732.meta)
-
-    Returns:
-        Ten digit time string (e.g., '0000000732')
-    """
-    m = re.search('\d{10}',granule_filename)
-    if m:
-        return m.group()
-    else:
-        return None
+#def time_str(granule_filename):
+#    """Get ten digit time string from ECCO granule filename.
+#
+#    Args:
+#        granule_filename (str): Name of ECCO granule file (e.g., either
+#            SSH_mon_mean.0000000732.data or SSH_mon_mean.0000000732.meta)
+#
+#    Returns:
+#        Ten digit time string (e.g., '0000000732')
+#    """
+#    m = re.search('\d{10}',granule_filename)
+#    if m:
+#        return m.group()
+#    else:
+#        return None
 
 
 def create_job_task_list(
@@ -222,9 +226,12 @@ def create_job_task_list(
 
     #
     # list of job descriptions to be built in two steps: first, gather list of
-    # all available variable input granules, second, step through the collection
-    # and organize into list of output directories with 'input', 'output', and
-    # 'metadata' keys.
+    # all available variable (*) input granules, second, step through the
+    # collection and organize into list of output directories with 'input',
+    # 'output', and 'metadata' keys.
+    #
+    # (*) - "variable" as used here is meant to imply a NetCDF file variable,
+    # i.e., an ECCO dataset production output file component
     #
 
     task_list = []
@@ -251,13 +258,13 @@ def create_job_task_list(
 
             # find all source files referenced by this job/job_metadata combination:
 
-            if job.frequency == 'AVG_DAY':
+            if job.frequency.lower() == 'avg_day':
                 path_freq_pat = 'diags_daily'
                 file_freq_pat = 'day_mean'
-            elif job.frequency == 'AVG_MON':
+            elif job.frequency.lower() == 'avg_mon':
                 path_freq_pat = 'diags_monthly'
                 file_freq_pat = 'mon_mean'
-            elif job.frequency == 'SNAP':
+            elif job.frequency.lower() == 'snap':
                 # TODO
                 pass
             else:
@@ -295,14 +302,16 @@ def create_job_task_list(
 
                     for variable_input_component_key in variable_input_components_keys:
 
-                        variable_input_component_pat = variable_input_component_key
+                        #variable_input_component_pat = variable_input_component_key
                         variable_input_component_files = []
 
                         if 'all' == job.time_steps.lower():
                             # get all possible time matches:
-                            time_pat = '.*'
-                            file_pat = re.compile(
-                                '.*' + variable_input_component_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                            file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
+                                    varname=variable_input_component_key,averaging_period=file_freq_pat).filestr)
+                            #time_pat = '.*'
+                            #file_pat = re.compile(
+                            #    '.*' + variable_input_component_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
                             if is_s3_uri(ecco_source_root):
                                 variable_input_component_files.extend(
                                     [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
@@ -317,9 +326,11 @@ def create_job_task_list(
                             # explicit list of time steps; one match per item:
                             time_steps_as_int_list = ast.literal_eval(job.time_steps)
                             for time in time_steps_as_int_list:
-                                time_pat = "{0:0>10d}".format(int(time))
-                                file_pat = re.compile(
-                                    '.*' + variable_input_component_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                                file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
+                                    varname=variable_input_component_key,averaging_period=file_freq_pat,time=time).filestr)
+                                #time_pat = "{0:0>10d}".format(int(time))
+                                #file_pat = re.compile(
+                                #    '.*' + variable_input_component_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
                                 if is_s3_uri(ecco_source_root):
                                     variable_input_component_files.append(
                                         [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
@@ -345,17 +356,21 @@ def create_job_task_list(
                     for _,v in all_variable_input_component_files.items():
                         if not times:
                             # init:
-                            times = {time_str(filename) for filename in v}
+                            times = {ecco_file.ECCOFilestr(os.path.basename(filename)).time for filename in v}
+                            #times = {time_str(filename) for filename in v}
                         else:
                             # compare:
-                            times = times & {time_str(filename) for filename in v}
+                            times = times & {ecco_file.ECCOFilestr(os.path.basename(filename)).time for filename in v}
+                            #times = times & {time_str(filename) for filename in v}
                     times = list(times)
                     times.sort()
                     # reduce, and group by time:
                     for time in times:
                         tmp = []
                         for _,v in all_variable_input_component_files.items():
-                            tmp.append(next(file for file in v if time==time_str(file)))
+                            tmp.append(next(file for file in v if
+                                time==ecco_file.ECCOFilestr(os.path.basename(file)).time))
+                            #tmp.append(next(file for file in v if time==time_str(file)))
                         variable_files.append(tmp)
 
                 else:
@@ -365,12 +380,14 @@ def create_job_task_list(
                     # variable's single input is contained in a list, and a list
                     # of such lists comprises all selected times).
 
-                    variable_pat = variable
+                    #variable_pat = variable
                     variable_files = []
                     if 'all' == job.time_steps.lower():
                         # get all possible time matches:
-                        time_pat = '.*'
-                        file_pat = re.compile('.*' + variable_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                        file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
+                            varname=variable, averaging_period=file_freq_pat).filestr)
+                        #time_pat = '.*'
+                        #file_pat = re.compile('.*' + variable_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
                         if is_s3_uri(ecco_source_root):
                             variable_files.extend(
                                 [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
@@ -387,9 +404,11 @@ def create_job_task_list(
                         # explicit list of time steps; one match per item:
                         time_steps_as_int_list = ast.literal_eval(job.time_steps)
                         for time in time_steps_as_int_list:
-                            time_pat = "{0:0>10d}".format(int(time))
-                            file_pat = re.compile(
-                                '.*' + variable_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                            file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
+                                varname=variable,averaging_period=file_freq_pat,time=time).filestr)
+                            #time_pat = "{0:0>10d}".format(int(time))
+                            #file_pat = re.compile(
+                            #    '.*' + variable_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
                             if is_s3_uri(ecco_source_root):
                                 variable_files.append(
                                     [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
@@ -405,7 +424,9 @@ def create_job_task_list(
 
                 variable_files_as_time_keyed_dict = {}
                 for file_list in variable_files:
-                    variable_files_as_time_keyed_dict[time_str(file_list[0])] = file_list
+                    variable_files_as_time_keyed_dict[ecco_file.ECCOFilestr(
+                        os.path.basename(file_list[0])).time] = file_list
+                    #variable_files_as_time_keyed_dict[time_str(file_list[0])] = file_list
 
                 variable_inputs[variable] = variable_files_as_time_keyed_dict
 
@@ -442,7 +463,7 @@ def create_job_task_list(
                     + '_' + cfg['ecco_version']     \
                     + '_' + job_metadata['product'] \
                     + '_' + cfg['filename_tail_'+job_metadata['product']]
-                task['output'] = output_filename
+                task['output'] = os.path.join(ecco_destination_root,output_filename)
                 task_inputs = {}
                 for variable_name,variable_file_list in variable_inputs.items():
                     task_inputs[variable_name] = variable_file_list[time]
