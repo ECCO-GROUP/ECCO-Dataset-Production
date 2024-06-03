@@ -46,7 +46,7 @@ def adjusted_time_bounds( timestamp=None, timestamp_units='h',
     if time_bounds[0].astype('datetime64[D]')==np.datetime64(cfg['model_start_time'],'D'):
         # start of averaging period lands in first day's interval:
         tb[0] = np.datetime64(cfg['model_start_time'])
-        center_time = (tb[1]-tb[0])/2
+    center_time = (tb[0]+tb[1])/2
     elif time_bounds[1].astype('datetime64[D]')==np.datetime64(cfg['model_end_time'],'D'):
         # end of averaging period lands in last day's interval: move lower bound
         # up by an amount equal to the amount of time left in the last day
@@ -55,7 +55,7 @@ def adjusted_time_bounds( timestamp=None, timestamp_units='h',
         tb[0] = tb[0] + \
             np.timedelta64(1,'D') - \
             (np.datetime64(cfg['model_end_time'])-np.datetime64(cfg['model_end_time'],'D'))
-        center_time = (tb[1]-tb[0])/2
+        center_time = (tb[0]+tb[1])/2
 
     return (tb,center_time)
 
