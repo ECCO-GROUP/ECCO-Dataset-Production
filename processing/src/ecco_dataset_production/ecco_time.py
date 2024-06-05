@@ -2,27 +2,31 @@
 import ecco_v4_py
 import numpy as np
 
-
-def adjusted_time_bounds( timestamp=None, timestamp_units='h',
+def make_time_bounds_metadata( granule_time=None,
+    model_timestep=3600, model_timestep_units='s',
     averaging_period=None, cfg=None):
-    """If ECCO analysis start and end times do not align on 24 hour boundaries,
-    adjust first and last time averaging period endpoints accordingly.
+    """If ECCO model start and end times do not align on 24 hour boundaries,
+    adjust first and last time averaging period output endpoints accordingly.
 
     Args:
-        timestamp (int or str): ECCO analysis endpoint timestamp (e.g.,
-            '0000000012' or 12, etc.)
-        timestamp_units (str): timestamp argument units, per NumPy Datetime64
-            conventions, e.g., hours ('h'), mintes ('m'), etc. (default: 'h')
+        granule_time (int or str): ECCO analysis time value per time string in
+            file name (e.g., '0000000012' or 12, etc.).
+        model_timestep (int): Number of analysis time steps per granule_time
+            increment (e.g., 3600 for one second time steps and granule_time
+            increments of one hour). (default: 3600)
+        model_timestep_units (str): model_timestep units, per NumPy Datetime64
+            conventions, e.g., hours ('h'), minutes ('m'), seconds ('s') etc.
+            (default: 's')
         averaging_period (str): Interval for which adjusted time bounds will be
             created ('AVG_YEAR', 'AVG_MON', 'AVG_WEEK', or 'AVG_DAY' (case
-            insensitive))
+            insensitive)).
         cfg (dict): ECCO Dataset Production configuration data, typically parsed
             from yaml input (see examples). Specifically, this routine looks for
             the keys, 'model_start_time' and 'model_end_time'.
 
     Returns:
-        (tb,center_time): Tuple of tb array (tb[0]=interval start time,
-            tb[1]=interval end time), and interval center_time (ref.
+        (tb,center_time): Tuple of tb time bounds array (tb[0]=interval start
+            time, tb[1]=interval end time), and interval center_time (ref.
             ecco_v4_py.ecco_utils.make_time_bounds_from_ds64 return values)
 
     """
@@ -33,21 +37,22 @@ def adjusted_time_bounds( timestamp=None, timestamp_units='h',
     # that is less than 24 hours. Determine these potentially adjusted start and
     # end times so that they may be reported in file metadata.
 
-    # get usual averaging interval start, end, and center times (i.e., based on
-    # 24 hour intervals)...:
+    # given a granule_time, get interval start, end, and center times:
 
     tb, center_time = ecco_v4_py.ecco_utils.make_time_bounds_from_ds64(
-        np.datetime64(cfg['model_start_time'])+np.timedelta64(int(timestamp),timestamp_units),
+        np.datetime64(cfg['model_start_time']) + 
+        np.timedelta64(int(granule_time)*model_timestep,model_timestep_units),
         averaging_period.upper())
 
-    # ...and if one of the interval's endpoints lands on the first or last day,
-    # adjust time boundaries accordingly:
+    # ...and if one of the interval's endpoints lands on either the very first
+    # or last day, adjust time boundaries accordingly:
 
-    if time_bounds[0].astype('datetime64[D]')==np.datetime64(cfg['model_start_time'],'D'):
+    if tb[0].astype('datetime64[D]')==np.datetime64(cfg['model_start_time'],'D'):
         # start of averaging period lands in first day's interval:
         tb[0] = np.datetime64(cfg['model_start_time'])
-    center_time = (tb[0]+tb[1])/2
-    elif time_bounds[1].astype('datetime64[D]')==np.datetime64(cfg['model_end_time'],'D'):
+        center_time = tb[0] + (tb[1]-tb[0])/2   # delta time math to avoid
+                                                # exceptions
+    elif tb[1].astype('datetime64[D]')==np.datetime64(cfg['model_end_time'],'D'):
         # end of averaging period lands in last day's interval: move lower bound
         # up by an amount equal to the amount of time left in the last day
         # (because the averaging interval might be a day, month, or year), so it
@@ -55,7 +60,8 @@ def adjusted_time_bounds( timestamp=None, timestamp_units='h',
         tb[0] = tb[0] + \
             np.timedelta64(1,'D') - \
             (np.datetime64(cfg['model_end_time'])-np.datetime64(cfg['model_end_time'],'D'))
-        center_time = (tb[0]+tb[1])/2
+        center_time = tb[0] + (tb[1]-tb[0])/2   # delta time math to avoid
+                                                # exceptions
 
     return (tb,center_time)
 
