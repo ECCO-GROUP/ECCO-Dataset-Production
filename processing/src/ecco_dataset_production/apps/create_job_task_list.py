@@ -9,6 +9,7 @@ import importlib.resources
 import json
 import logging
 import os
+import pandas as pd
 import re
 import subprocess
 import sys
@@ -16,6 +17,7 @@ import urllib
 
 from .. import configuration
 from .. import ecco_file
+from .. import ecco_time
 from .. import metadata
 
 
@@ -268,7 +270,7 @@ def create_job_task_list(
                 # TODO
                 pass
             else:
-                raise ValueError('job frequency must be one of AVG_DAY, AVG_MON, or SNAP')
+                raise ValueError('job frequency must be one of avg_day, avg_mon, or snap')
 
             for variable in job_metadata['fields'].replace(' ','').split(','): # 'fields' string as iterable
 
@@ -308,10 +310,8 @@ def create_job_task_list(
                         if 'all' == job.time_steps.lower():
                             # get all possible time matches:
                             file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
-                                    varname=variable_input_component_key,averaging_period=file_freq_pat).filestr)
-                            #time_pat = '.*'
-                            #file_pat = re.compile(
-                            #    '.*' + variable_input_component_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                                prodname=variable_input_component_key,
+                                averaging_period=file_freq_pat).re_filestr)
                             if is_s3_uri(ecco_source_root):
                                 variable_input_component_files.extend(
                                     [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
@@ -327,10 +327,9 @@ def create_job_task_list(
                             time_steps_as_int_list = ast.literal_eval(job.time_steps)
                             for time in time_steps_as_int_list:
                                 file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
-                                    varname=variable_input_component_key,averaging_period=file_freq_pat,time=time).filestr)
-                                #time_pat = "{0:0>10d}".format(int(time))
-                                #file_pat = re.compile(
-                                #    '.*' + variable_input_component_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                                    prodname=variable_input_component_key,
+                                    averaging_period=file_freq_pat,
+                                    time=time).re_filestr)
                                 if is_s3_uri(ecco_source_root):
                                     variable_input_component_files.append(
                                         [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
@@ -385,9 +384,8 @@ def create_job_task_list(
                     if 'all' == job.time_steps.lower():
                         # get all possible time matches:
                         file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
-                            varname=variable, averaging_period=file_freq_pat).filestr)
-                        #time_pat = '.*'
-                        #file_pat = re.compile('.*' + variable_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                            prodname=variable,
+                            averaging_period=file_freq_pat).re_filestr)
                         if is_s3_uri(ecco_source_root):
                             variable_files.extend(
                                 [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
@@ -405,10 +403,7 @@ def create_job_task_list(
                         time_steps_as_int_list = ast.literal_eval(job.time_steps)
                         for time in time_steps_as_int_list:
                             file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
-                                varname=variable,averaging_period=file_freq_pat,time=time).filestr)
-                            #time_pat = "{0:0>10d}".format(int(time))
-                            #file_pat = re.compile(
-                            #    '.*' + variable_pat + '_' + file_freq_pat + '\.' + time_pat + '\.data')
+                                prodname=variable,averaging_period=file_freq_pat,time=time).re_filestr)
                             if is_s3_uri(ecco_source_root):
                                 variable_files.append(
                                     [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
@@ -454,24 +449,39 @@ def create_job_task_list(
 
             for time in all_times:
                 task = {}
-                # common util perhaps at some point:
-                output_filename =                   \
-                    job_metadata['filename']        \
-                    + '_' + file_freq_pat           \
-                    + '_' + time                    \
-                    + '_' + 'ECCO'                  \
-                    + '_' + cfg['ecco_version']     \
-                    + '_' + job_metadata['product'] \
-                    + '_' + cfg['filename_tail_'+job_metadata['product']]
+
+                print(f'time: {time}')
+                tb,center_time = ecco_time.make_time_bounds_metadata(
+                    granule_time=time,
+                    model_start_time=cfg['model_start_time'],
+                    model_end_time=cfg['model_end_time'],
+                    model_timestep=cfg['model_timestep'],
+                    model_timestep_units=cfg['model_timestep_units'],
+                    averaging_period=job.frequency)
+                print(f'time: {time}, tb: {tb}, center_time: {center_time}')
+                print(f"job_metadata['product']: {job_metadata['product']}")
+
+                output_filename = ecco_file.ECCOProductionFilestr(
+                    prodname=job_metadata['filename'],
+                    averaging_period=file_freq_pat,
+                    date=pd.Timestamp(tb[1]).strftime("%Y-%m-%dT%H:%M:%S"),
+                    version=cfg['ecco_version'],
+                    grid_type=job.product_type,
+                    grid_label=cfg['ecco_production_filestr_grid_label'][job.product_type],
+                ).filestr
+
                 task['output'] = os.path.join(ecco_destination_root,output_filename)
                 task_inputs = {}
                 for variable_name,variable_file_list in variable_inputs.items():
                     task_inputs[variable_name] = variable_file_list[time]
                 task['input'] = task_inputs
-                # metadata that hasn't been used here, and will be of later use:
+                # dynamic metadata:
                 task['metadata'] = {
                     'name':job_metadata['name'],
-                    'dimension':job_metadata['dimension']}
+                    'dimension':job_metadata['dimension'],
+                    'time_coverage_start': pd.Timestamp(tb[0]).strftime("%Y-%m-%dT%H:%M:%S"),
+                    'time_coverage_end': pd.Timestamp(tb[1]).strftime("%Y-%m-%dT%H:%M:%S"),
+                }
                 task_list.append(task)
 
     return task_list

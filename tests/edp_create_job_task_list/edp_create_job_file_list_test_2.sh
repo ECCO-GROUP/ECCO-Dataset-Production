@@ -11,7 +11,9 @@ edp_create_job_task_list \
     --ecco_source_root s3://ecco-tmp \
     --ecco_destination_root s3://ecco_dataset_production_test \
     --outfile edp_create_job_file_list_test_2.json \
-    --cfgfile ./product_generation_config.yaml \
+    --cfgfile ../../processing/configs/product_generation_config_updated.yaml \
     --keygen $(which aws-login-pub.darwin.amd64) \
     --profile_name saml-pub \
     --log DEBUG
+    #--cfgfile ./product_generation_config.yaml \
+    #--log INFO

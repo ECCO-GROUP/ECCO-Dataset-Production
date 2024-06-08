@@ -9,14 +9,14 @@ import re
 
 class ECCOFilestr(object):
     """Gathers operations on ECCO raw results file names of the form
-    <varname>_<averaging_period>.<time>.<ext> .
+    <prodname>_<averaging_period>.<time>.<ext> .
 
     Args:
         filestr (str): ECCO file string. (default=None)
         **kwargs: Instead of filestr, individual file components may be provided
             and can be used to build up file-matching regular expressions,
             returned as filestr. Possible arguments include:
-                varname (str): Variable name. (default: r'.*')
+                prodname (str): Product name. (default: r'.*')
                 averaging_period (str): Averaging period ('mon_mean',
                     'day_mean', or 'day_inst', case_insensitive). (default:
                     r'.*')
@@ -31,7 +31,7 @@ class ECCOFilestr(object):
             see re_filestr in this case)
         re_filestr (str): filestr regular expression for use in pattern-matching
             operations, based on either filestr or kwargs input.
-        varname (str): 'varname' from either input filestr or kwarg, r'.*'
+        prodname (str): 'prodname' from either input filestr or kwarg, r'.*'
             otherwise.
         averaging_period (str): 'averaging_period' from input filestr or kwarg,
             r'.*' otherwise.
@@ -39,7 +39,7 @@ class ECCOFilestr(object):
         ext (str): 'ext' from input filestr or kwarg, string 'data' otherwise.
 
     """
-    fmt = '<varname>_<averaging_period>.<time>.<ext>'
+    fmt = '<prodname>_<averaging_period>.<time>.<ext>'
 
     def __init__(self,filestr=None,**kwargs):
         """Create an instance of the ECCOFilestr class.
@@ -50,7 +50,7 @@ class ECCOFilestr(object):
             # ECCO variable names may include underscores):
             try:
                 re_so = re.search('_day_inst|_day_mean|_mon_mean',filestr)
-                self.varname = filestr[:re_so.span()[0]]
+                self.prodname = filestr[:re_so.span()[0]]
                 self.averaging_period = filestr[re_so.span()[0]+1:re_so.span()[1]]
                 time_and_ext = filestr[re_so.span()[1]+1:]
                 re_mo = re.match(r'\d{10}',time_and_ext)
@@ -63,30 +63,30 @@ class ECCOFilestr(object):
         else:
             # set attributes that may have been provided, regex placeholders as
             # best as we can for everything else:
-            self.varname = kwargs.pop('varname',r'.*')
+            self.prodname = kwargs.pop('prodname',r'.*')
             self.averaging_period = kwargs.pop('averaging_period',r'.*')
             self.time = kwargs.pop('time',r'\d{10}')
             self.ext = kwargs.pop('ext',r'data')
             # raw filestr:
             self.filestr = \
-                self.varname + '_' + self.averaging_period + '.' + \
+                self.prodname + '_' + self.averaging_period + '.' + \
                 self.time + '.' + self.ext
             # filestr, as a regex:
             self.re_filestr = \
-                self.varname + '_' + self.averaging_period + '\.' + \
+                self.prodname + '_' + self.averaging_period + '\.' + \
                 self.time + '\.' + self.ext
 
 
 class ECCOProductionFilestr(object):
     """Gathers operations on ECCO dataset production results distribution file names
-    of the form <varname>_<averaging_period>_<date>_ECCO_<version>_<grid_type>_<grid_label>.nc
+    of the form <prodname>_<averaging_period>_<date>_ECCO_<version>_<grid_type>_<grid_label>.nc
 
     Args:
         filestr (str): ECCO file string. (default=None)
         **kwargs: Instead of filestr, individual file components may be provided
             and can be used to build up file-matching regular expressions,
             returned as filestr. Possible arguments include:
-                varname (str): Variable name (default: r'.*')
+                prodname (str): Product name (default: r'.*')
                 averaging_period (str): Averaging period ('mon_mean',
                     'day_mean', or 'day_inst', case insensitive). (default:
                     r'.*')
@@ -112,7 +112,7 @@ class ECCOProductionFilestr(object):
             see re_filestr in this case)
         re_filestr (str): filestr regular expression for use in pattern-matching
             operations, based on either filestr or kwargs input.
-        varname (str): 'varname' from either input filestr or kwarg, r'.*'
+        prodname (str): 'prodname' from either input filestr or kwarg, r'.*'
             otherwise.
         averaging_period (str): 'averaging_period' from input filestr or kwarg,
             r'.*' otherwise. See preceding kwargs comment.
@@ -126,7 +126,7 @@ class ECCOProductionFilestr(object):
         ext (str): 'ext' from input filestr or kwarg, string 'nc' otherwise.
 
     """
-    fmt = '<varname>_<averaging_period>_<date>_ECCO_<version>_<grid_type>_<grid_label>.nc'
+    fmt = '<prodname>_<averaging_period>_<date>_ECCO_<version>_<grid_type>_<grid_label>.nc'
 
     def __init__(self,filestr=None,**kwargs):
         """Create an instance of the ECCOProductionFilestr class.
@@ -137,7 +137,7 @@ class ECCOProductionFilestr(object):
             # ECCO variable names may include underscores):
             try:
                 re_so = re.search('_day_inst|_day_mean|_mon_mean',filestr)
-                self.varname = filestr[:re_so.span()[0]]
+                self.prodname = filestr[:re_so.span()[0]]
                 self.averaging_period = filestr[re_so.span()[0]+1:re_so.span()[1]]
                 date_version_grid_type_grid_label_and_ext = filestr[re_so.span()[1]+1:]
                 # remaining fields are reliably separated by '_'; parse accordingly:
@@ -151,7 +151,7 @@ class ECCOProductionFilestr(object):
         else:
             # set attributes that may have been provided, regex placeholders as
             # best as we can for everything else:
-            self.varname = kwargs.pop('varname',r'.*')
+            self.prodname = kwargs.pop('prodname',r'.*')
             self.averaging_period = kwargs.pop('averaging_period',r'.*')
             date = kwargs.pop('date',r'.*')
             try:
@@ -170,12 +170,12 @@ class ECCOProductionFilestr(object):
             self.ext = kwargs.pop('ext','nc')
             # raw filestr:
             self.filestr = '_'.join([
-                self.varname, self.averaging_period, self.date, 'ECCO',
+                self.prodname, self.averaging_period, self.date, 'ECCO',
                 self.version, self.grid_type, self.grid_label])
             self.filestr = '.'.join([self.filestr,self.ext])
             # filestr, as regex:
             self.re_filestr = '_'.join([
-                self.varname, self.averaging_period, self.date, 'ECCO',
+                self.prodname, self.averaging_period, self.date, 'ECCO',
                 self.version, self.grid_type, self.grid_label])
             self.re_filestr = self.re_filestr + '\.' + self.ext
 

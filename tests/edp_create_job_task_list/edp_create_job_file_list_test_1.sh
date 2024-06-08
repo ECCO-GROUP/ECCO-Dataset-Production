@@ -7,6 +7,7 @@ edp_create_job_task_list \
     --ecco_source_root ../ecco_model_granules \
     --ecco_destination_root s3://ecco_dataset_production_test \
     --outfile edp_create_job_file_list_test_1.json \
-    --cfgfile ./product_generation_config.yaml \
+    --cfgfile ../../processing/configs/product_generation_config_updated.yaml \
     --log DEBUG
+    #--cfgfile ./product_generation_config_updated.yaml \
     #--log INFO
