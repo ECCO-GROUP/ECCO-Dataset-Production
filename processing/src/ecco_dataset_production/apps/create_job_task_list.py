@@ -309,14 +309,25 @@ def create_job_task_list(
 
                         if 'all' == job.time_steps.lower():
                             # get all possible time matches:
-                            file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
-                                prodname=variable_input_component_key,
-                                averaging_period=file_freq_pat).re_filestr)
                             if is_s3_uri(ecco_source_root):
+                                s3_key_pat = re.compile(
+                                    s3_parts.path.strip('/')    # remove leading '/' from urlpath
+                                    + '.*'                      # allow anything between path and filename
+                                    + ecco_file.ECCOFilestr(
+                                        prodname=variable_input_component_key,
+                                        averaging_period=file_freq_pat).re_filestr)
                                 variable_input_component_files.extend(
-                                    [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
-                                        for f in files_in_bucket if re.match(file_pat,f.key)])
+                                    [os.path.join(
+                                        urllib.parse.urlunparse(
+                                            (s3_parts.scheme,s3_parts.netloc,'','','','')),
+                                        f.key)
+                                        for f in files_in_bucket if re.match(s3_key_pat,f.key)])
+                                    #[os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
+                                    #    for f in files_in_bucket if re.match(file_pat,f.key)])
                             else:
+                                file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
+                                    prodname=variable_input_component_key,
+                                    averaging_period=file_freq_pat).re_filestr)
                                 for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                     if cfg['ecco_version'] in dirpath:
                                         variable_input_component_files.extend(
@@ -326,22 +337,35 @@ def create_job_task_list(
                             # explicit list of time steps; one match per item:
                             time_steps_as_int_list = ast.literal_eval(job.time_steps)
                             for time in time_steps_as_int_list:
-                                file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
-                                    prodname=variable_input_component_key,
-                                    averaging_period=file_freq_pat,
-                                    time=time).re_filestr)
+                                s3_key_pat = re.compile(
+                                    s3_parts.path.strip('/')    # remove leading '/' from urlpath
+                                    + '.*'                      # allow anything between path and filename
+                                    + ecco_file.ECCOFilestr(
+                                        prodname=variable_input_component_key,
+                                        averaging_period=file_freq_pat,
+                                        time=time).re_filestr)
                                 if is_s3_uri(ecco_source_root):
                                     variable_input_component_files.append(
-                                        [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
-                                            for f in files_in_bucket if re.match(file_pat,f.key)])
+                                        [os.path.join(
+                                            urllib.parse.urlunparse(
+                                                (s3_parts.scheme,s3_parts.netloc,'','','','')),
+                                            f.key)
+                                            for f in files_in_bucket if re.match(s3_key_pat,f.key)])
+                                        #[os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
+                                        #    for f in files_in_bucket if re.match(file_pat,f.key)])
                                 else:
+                                    file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
+                                        prodname=variable_input_component_key,
+                                        averaging_period=file_freq_pat,
+                                        time=time).re_filestr)
                                     for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                         if cfg['ecco_version'] in dirpath:
                                             variable_input_component_files.append(
                                                 [os.path.join(dirpath,f)
                                                     for f in filenames if re.match(file_pat,f)])
                         variable_input_component_files.sort()
-                        all_variable_input_component_files[variable_input_component_key] = variable_input_component_files
+                        all_variable_input_component_files[variable_input_component_key] = \
+                            variable_input_component_files
 
                     # group variable input component files by time value (i.e.,
                     # across keys), collect in time-based input lists that
@@ -355,11 +379,14 @@ def create_job_task_list(
                     for _,v in all_variable_input_component_files.items():
                         if not times:
                             # init:
-                            times = {ecco_file.ECCOFilestr(os.path.basename(filename)).time for filename in v}
+                            times = {ecco_file.ECCOFilestr(os.path.basename(filename)).time
+                                for filename in v}
                             #times = {time_str(filename) for filename in v}
                         else:
                             # compare:
-                            times = times & {ecco_file.ECCOFilestr(os.path.basename(filename)).time for filename in v}
+                            times = times & {
+                                ecco_file.ECCOFilestr(os.path.basename(filename)).time
+                                for filename in v}
                             #times = times & {time_str(filename) for filename in v}
                     times = list(times)
                     times.sort()
@@ -383,14 +410,23 @@ def create_job_task_list(
                     variable_files = []
                     if 'all' == job.time_steps.lower():
                         # get all possible time matches:
-                        file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
-                            prodname=variable,
-                            averaging_period=file_freq_pat).re_filestr)
                         if is_s3_uri(ecco_source_root):
+                            s3_key_pat = re.compile(
+                                s3_parts.path.strip('/')    # remove leading '/' from urlpath
+                                + '.*'                      # allow anything between path and filename
+                                + ecco_file.ECCOFilestr(
+                                    prodname=variable,
+                                    averaging_period=file_freq_pat).re_filestr)
                             variable_files.extend(
-                                [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
-                                    for f in files_in_bucket if re.match(file_pat,f.key)])
+                                [os.path.join(
+                                    urllib.parse.urlunparse(
+                                        (s3_parts.scheme,s3_parts.netloc,'','','','')),
+                                    f.key)
+                                    for f in files_in_bucket if re.match(s3_key_pat,f.key)])
                         else:
+                            file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
+                                prodname=variable,
+                                averaging_period=file_freq_pat).re_filestr)
                             for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                 if cfg['ecco_version'] in dirpath:
                                     variable_files.extend(
@@ -402,13 +438,23 @@ def create_job_task_list(
                         # explicit list of time steps; one match per item:
                         time_steps_as_int_list = ast.literal_eval(job.time_steps)
                         for time in time_steps_as_int_list:
-                            file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
-                                prodname=variable,averaging_period=file_freq_pat,time=time).re_filestr)
+                            s3_key_pat = re.compile(
+                                s3_parts.path.strip('/')    # remove leading '/' from urlpath
+                                + '.*'                      # allow anything between path and filename
+                                + ecco_file.ECCOFilestr(
+                                    prodname=variable,
+                                    averaging_period=file_freq_pat,
+                                    time=time).re_filestr)
                             if is_s3_uri(ecco_source_root):
                                 variable_files.append(
-                                    [os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
-                                        for f in files_in_bucket if re.match(file_pat,f.key)])
+                                    [os.path.join(
+                                        urllib.parse.urlunparse(
+                                            (s3_parts.scheme,s3_parts.netloc,'','','','')),
+                                        f.key)
+                                        for f in files_in_bucket if re.match(s3_key_pat,f.key)])
                             else:
+                                file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
+                                    prodname=variable,averaging_period=file_freq_pat,time=time).re_filestr)
                                 for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                     if cfg['ecco_version'] in dirpath:
                                         variable_files.append(
@@ -450,7 +496,6 @@ def create_job_task_list(
             for time in all_times:
                 task = {}
 
-                print(f'time: {time}')
                 tb,center_time = ecco_time.make_time_bounds_metadata(
                     granule_time=time,
                     model_start_time=cfg['model_start_time'],
@@ -458,8 +503,6 @@ def create_job_task_list(
                     model_timestep=cfg['model_timestep'],
                     model_timestep_units=cfg['model_timestep_units'],
                     averaging_period=job.frequency)
-                print(f'time: {time}, tb: {tb}, center_time: {center_time}')
-                print(f"job_metadata['product']: {job_metadata['product']}")
 
                 output_filename = ecco_file.ECCOProductionFilestr(
                     prodname=job_metadata['filename'],
