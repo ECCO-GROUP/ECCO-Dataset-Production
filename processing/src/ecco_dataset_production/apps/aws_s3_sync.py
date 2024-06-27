@@ -34,7 +34,7 @@ def create_parser():
         epilog="""Note: The values provided by the --src and --dest arguments
         must exist, as they will not be created by %(prog)s.  In other words, if
         either is a local directory, it must exist and, if it is an AWS S3 URI,
-        that bucket must have been created by, e.g. 'aws s3 mb'.""")
+        that bucket/prefix must have been created by, e.g. 'aws s3 mb'.""")
     parser.add_argument('--src', default='.', help="""
         Source location (local path or AWS S3 URI) (default: "%(default)s")""")
     parser.add_argument('--dest', default='.', help="""
@@ -44,6 +44,9 @@ def create_parser():
     parser.add_argument('--keygen', help="""
         If running in JPL domain, federated login key generation script (e.g.,
         /usr/local/bin/aws-login-pub.darwin.amd64)""")
+    parser.add_argument('--profile', help="""
+        If running in JPL domain, AWS credential profile name (e.g., 'saml-pub',
+        'default', etc.)""")
     parser.add_argument('--dryrun', action='store_true', help="""
         Set AWS S3 CLI argument '--dryrun'""")
     parser.add_argument('-l','--log', dest='log_level',
@@ -68,7 +71,8 @@ def is_s3_uri(path_or_uri_str):
         return False
 
 
-def sync_local_to_remote( src, dest, nproc, keygen, dryrun, log_level=None):
+def sync_local_to_remote( src, dest, nproc, keygen,
+    profile=None, dryrun=False, log_level=None):
     """Functional wrapper for multiprocess 'aws s3 sync <local> <s3uri>'
 
     """
@@ -79,7 +83,8 @@ def sync_local_to_remote( src, dest, nproc, keygen, dryrun, log_level=None):
     # update login credentials:
     log.info('updating credentials...')
     try:
-        subprocess.run(keygen,check=True)
+        subprocess.run([keygen],check=True)
+        #subprocess.run([keygen,'-c'],check=True)
     except subprocess.CalledProcessError as e:
         log.error(e)
         sys.exit(1)
@@ -141,8 +146,9 @@ def sync_local_to_remote( src, dest, nproc, keygen, dryrun, log_level=None):
 
                 cmd = [ 'aws', 's3', 'sync',
                     dirpath,                # "source"
-                    dest_s3uri,             # "destination"
-                    '--profile','saml-pub']
+                    dest_s3uri]             # "destination"
+                if profile:
+                    cmd.extend(['--profile',profile])
                 if dryrun:
                     cmd.append('--dryrun')
                 log.info('invoking subprocess: %s', cmd)
@@ -177,7 +183,8 @@ def sync_local_to_remote( src, dest, nproc, keygen, dryrun, log_level=None):
         #log.info('   stderr: %s', bytes.decode(stderr))
 
 
-def sync_remote_to_remote_or_local(  src, dest, keygen, dryrun, log_level=None):
+def sync_remote_to_remote_or_local( src, dest,
+    keygen, profile=None, dryrun=False, log_level=None):
     """Functional wrapper for either 'aws s3 sync <s3uri> <s3uri>' or
     'aws s3 sync <s3uri> <local>'
 
@@ -195,8 +202,9 @@ def sync_remote_to_remote_or_local(  src, dest, keygen, dryrun, log_level=None):
         sys.exit(1)
     log.info('...done')
 
-    cmd = [ 'aws', 's3', 'sync', src, dest,
-        '--profile','saml-pub']
+    cmd = [ 'aws', 's3', 'sync', src, dest]
+    if profile:
+        cmd.extend(['--profile',profile])
     if dryrun:
         cmd.append('--dryrun')
 
@@ -214,7 +222,8 @@ def sync_remote_to_remote_or_local(  src, dest, keygen, dryrun, log_level=None):
 
 
 def aws_s3_sync(
-    src=None, dest=None, nproc=None, keygen=None, dryrun=None, log_level=None):
+    src=None, dest=None, nproc=None, keygen=None,
+    profile=None, dryrun=None, log_level=None):
     """Top-level functional wrapper for 'aws s3 sync' operations.
 
     Args:
@@ -230,6 +239,9 @@ def aws_s3_sync(
     log.info('src: %s', src)
     log.info('dest: %s', dest)
     log.info('nproc: %s', nproc)
+    log.info('keygen: %s', keygen)
+    log.info('profile: %s', profile)
+    log.info('dryrun: %s', dryrun)
     log.info('log_level: %s', log_level)
 
     if not keygen:
@@ -239,15 +251,15 @@ def aws_s3_sync(
 
     if not is_s3_uri(src) and is_s3_uri(dest):
         # upload:
-        sync_local_to_remote( src, dest, nproc, keygen, dryrun)
+        sync_local_to_remote( src, dest, nproc, keygen, profile, dryrun)
 
     elif is_s3_uri(src) and is_s3_uri(dest):
         # remote sync:
-        sync_remote_to_remote_or_local( src, dest, keygen, dryrun)
+        sync_remote_to_remote_or_local( src, dest, keygen, profile, dryrun)
 
     elif is_s3_uri(src) and not is_s3_uri(dest):
         # download:
-        sync_remote_to_remote_or_local( src, dest, keygen, dryrun)
+        sync_remote_to_remote_or_local( src, dest, keygen, profile, dryrun)
 
     else:
         errstr = f'cannot sync {src} to {dest}'
@@ -263,7 +275,8 @@ def main():
     args = parser.parse_args()
 
     aws_s3_sync(
-        args.src, args.dest, args.nproc, args.keygen, args.dryrun, args.log_level)
+        args.src, args.dest, args.nproc, args.keygen,
+        args.profile, args.dryrun, args.log_level)
 
 
 if __name__=='__main__':

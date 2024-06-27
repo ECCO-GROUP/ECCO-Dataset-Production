@@ -41,9 +41,11 @@ def create_parser():
     parser.add_argument('--ecco_destination_root', help="""
         ECCO Dataset Production output root location, either directory path
         (e.g., ECCOV4r5_datasets) or AWS S3 bucket (s3://bucket_name)""")
-
-    # parser.add_argument('--
-
+    parser.add_argument('--ecco_grid_dir', help="""
+        Directory containing ECCO grid files, e.g., XC.*, YC.*, etc., as well as
+        the file available_diagnostics.log.  Though not used directly, it is
+        provided for inclusion into the ouput task list for use by subsequent
+        routines.""")
     parser.add_argument('--cfgfile', default='./product_generation_config.yaml',
         help="""(Path and) filename of ECCO Dataset Production configuration
         file (default: '%(default)s')""")
@@ -84,26 +86,10 @@ def is_s3_uri(path_or_uri_str):
         return False
 
 
-#def time_str(granule_filename):
-#    """Get ten digit time string from ECCO granule filename.
-#
-#    Args:
-#        granule_filename (str): Name of ECCO granule file (e.g., either
-#            SSH_mon_mean.0000000732.data or SSH_mon_mean.0000000732.meta)
-#
-#    Returns:
-#        Ten digit time string (e.g., '0000000732')
-#    """
-#    m = re.search('\d{10}',granule_filename)
-#    if m:
-#        return m.group()
-#    else:
-#        return None
-
-
 def create_job_task_list(
     jobfile=None, ecco_source_root=None, ecco_destination_root=None,
-    cfgfile=None, keygen=None, profile_name=None, log_level=None):
+    ecco_grid_dir=None, cfgfile=None, keygen=None, profile_name=None,
+    log_level=None):
     """Create a list of task inputs and outputs from an ECCO Dataset Production
     job file.
 
@@ -120,7 +106,11 @@ def create_job_task_list(
             (s3://...).
         ecco_destination_root (str): ECCO Dataset Production output root
             location, either directory path (e.g., ECCOV4r5_datasets) or AWS S3
-            bucket or folder (s3://...)
+            bucket or folder (s3://...).
+        ecco_grid_dir (str): Directory containing ECCO grid files, e.g., XC.*,
+            YC.*, etc., as well as the file available_diagnostics.log, provided
+            for inclusion into the ouput task list for use by subsequent
+            routines.
         cfgfile (str): (Path and) filename of ECCO Dataset Production
             configuration file.
         keygen (str): If ecco_source_root If ecco_source_root references an S3
@@ -313,8 +303,8 @@ def create_job_task_list(
                                 s3_key_pat = re.compile(
                                     s3_parts.path.strip('/')    # remove leading '/' from urlpath
                                     + '.*'                      # allow anything between path and filename
-                                    + ecco_file.ECCOFilestr(
-                                        prodname=variable_input_component_key,
+                                    + ecco_file.ECCOMDSFilestr(
+                                        prefix=variable_input_component_key,
                                         averaging_period=file_freq_pat).re_filestr)
                                 variable_input_component_files.extend(
                                     [os.path.join(
@@ -325,8 +315,8 @@ def create_job_task_list(
                                     #[os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
                                     #    for f in files_in_bucket if re.match(file_pat,f.key)])
                             else:
-                                file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
-                                    prodname=variable_input_component_key,
+                                file_pat = re.compile( r'.*' + ecco_file.ECCOMDSFilestr(
+                                    prefix=variable_input_component_key,
                                     averaging_period=file_freq_pat).re_filestr)
                                 for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                     if cfg['ecco_version'] in dirpath:
@@ -340,8 +330,8 @@ def create_job_task_list(
                                 s3_key_pat = re.compile(
                                     s3_parts.path.strip('/')    # remove leading '/' from urlpath
                                     + '.*'                      # allow anything between path and filename
-                                    + ecco_file.ECCOFilestr(
-                                        prodname=variable_input_component_key,
+                                    + ecco_file.ECCOMDSFilestr(
+                                        prefix=variable_input_component_key,
                                         averaging_period=file_freq_pat,
                                         time=time).re_filestr)
                                 if is_s3_uri(ecco_source_root):
@@ -354,8 +344,8 @@ def create_job_task_list(
                                         #[os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
                                         #    for f in files_in_bucket if re.match(file_pat,f.key)])
                                 else:
-                                    file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
-                                        prodname=variable_input_component_key,
+                                    file_pat = re.compile( r'.*' + ecco_file.ECCOMDSFilestr(
+                                        prefix=variable_input_component_key,
                                         averaging_period=file_freq_pat,
                                         time=time).re_filestr)
                                     for dirpath,dirnames,filenames in os.walk(ecco_source_root):
@@ -363,7 +353,22 @@ def create_job_task_list(
                                             variable_input_component_files.append(
                                                 [os.path.join(dirpath,f)
                                                     for f in filenames if re.match(file_pat,f)])
+
+                        # group .data/.meta pairs for all specified/retrieved time
+                        # steps:
+
                         variable_input_component_files.sort()
+                        variable_input_component_files_as_list_of_lists = []
+                        for f in variable_input_component_files:
+                            if ecco_file.ECCOMDSFilestr(os.path.basename(f)).ext == 'data':
+                                tmplist = [f]
+                            else:   # '.meta'
+                                tmplist.append(f)
+                                variable_input_component_files_as_list_of_lists.append(tmplist)
+                        variable_input_component_files = variable_input_component_files_as_list_of_lists
+
+                        # and add to dictionary:
+
                         all_variable_input_component_files[variable_input_component_key] = \
                             variable_input_component_files
 
@@ -379,34 +384,38 @@ def create_job_task_list(
                     for _,v in all_variable_input_component_files.items():
                         if not times:
                             # init:
-                            times = {ecco_file.ECCOFilestr(os.path.basename(filename)).time
-                                for filename in v}
-                            #times = {time_str(filename) for filename in v}
+                            times = {
+                                ecco_file.ECCOMDSFilestr(os.path.basename(file_list[0])).time
+                                for file_list in v}   # file_list[0] -> just use first element of .data/.meta pair
                         else:
                             # compare:
                             times = times & {
-                                ecco_file.ECCOFilestr(os.path.basename(filename)).time
-                                for filename in v}
-                            #times = times & {time_str(filename) for filename in v}
+                                ecco_file.ECCOMDSFilestr(os.path.basename(file_list[0])).time
+                                for file_list in v}   # file_list[0] -> just use first element of .data/.meta pair
                     times = list(times)
                     times.sort()
                     # reduce, and group by time:
                     for time in times:
                         tmp = []
                         for _,v in all_variable_input_component_files.items():
-                            tmp.append(next(file for file in v if
-                                time==ecco_file.ECCOFilestr(os.path.basename(file)).time))
-                            #tmp.append(next(file for file in v if time==time_str(file)))
+                            tmp.append(next(file_list for file_list in v if
+                                time==ecco_file.ECCOMDSFilestr(os.path.basename(file_list[0])).time))
+                            # as above, file_list[0] -> just use first element of .data/.meta pair
                         variable_files.append(tmp)
+                    #dbg:
+                    #print(' ')
+                    #print(f'variable: {variable}')
+                    #print(f'variable_files: {variable_files}')
+                    #end.
 
                 else:
 
-                    # variable depends on a single input, of same type. for data
-                    # organization purposes, arrange as list of lists (a
-                    # variable's single input is contained in a list, and a list
-                    # of such lists comprises all selected times).
+                    # variable depends on a single MDS input pair (.data/.meta),
+                    # of same type. for data organization purposes, arrange as
+                    # list of lists (a variable's single input MDS pair is
+                    # contained in a list, and a list of such lists comprises
+                    # all selected/retrieved times).
 
-                    #variable_pat = variable
                     variable_files = []
                     if 'all' == job.time_steps.lower():
                         # get all possible time matches:
@@ -414,8 +423,8 @@ def create_job_task_list(
                             s3_key_pat = re.compile(
                                 s3_parts.path.strip('/')    # remove leading '/' from urlpath
                                 + '.*'                      # allow anything between path and filename
-                                + ecco_file.ECCOFilestr(
-                                    prodname=variable,
+                                + ecco_file.ECCOMDSFilestr(
+                                    prefix=variable,
                                     averaging_period=file_freq_pat).re_filestr)
                             variable_files.extend(
                                 [os.path.join(
@@ -424,16 +433,13 @@ def create_job_task_list(
                                     f.key)
                                     for f in files_in_bucket if re.match(s3_key_pat,f.key)])
                         else:
-                            file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
-                                prodname=variable,
+                            file_pat = re.compile( r'.*' + ecco_file.ECCOMDSFilestr(
+                                prefix=variable,
                                 averaging_period=file_freq_pat).re_filestr)
                             for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                 if cfg['ecco_version'] in dirpath:
                                     variable_files.extend(
                                         [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
-                        variable_files.sort()
-                        # arrange as list of single element lists:
-                        variable_files = [[f] for f in variable_files]
                     else:
                         # explicit list of time steps; one match per item:
                         time_steps_as_int_list = ast.literal_eval(job.time_steps)
@@ -441,8 +447,8 @@ def create_job_task_list(
                             s3_key_pat = re.compile(
                                 s3_parts.path.strip('/')    # remove leading '/' from urlpath
                                 + '.*'                      # allow anything between path and filename
-                                + ecco_file.ECCOFilestr(
-                                    prodname=variable,
+                                + ecco_file.ECCOMDSFilestr(
+                                    prefix=variable,
                                     averaging_period=file_freq_pat,
                                     time=time).re_filestr)
                             if is_s3_uri(ecco_source_root):
@@ -453,25 +459,48 @@ def create_job_task_list(
                                         f.key)
                                         for f in files_in_bucket if re.match(s3_key_pat,f.key)])
                             else:
-                                file_pat = re.compile( r'.*' + ecco_file.ECCOFilestr(
-                                    prodname=variable,averaging_period=file_freq_pat,time=time).re_filestr)
+                                file_pat = re.compile( r'.*' + ecco_file.ECCOMDSFilestr(
+                                    prefix=variable,averaging_period=file_freq_pat,time=time).re_filestr)
                                 for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                     if cfg['ecco_version'] in dirpath:
                                         variable_files.append(
                                             [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
+
+                    # group .data/.meta pairs for all specified/retrieved time
+                    # steps:
+
+                    variable_files.sort()
+                    variable_files_as_list_of_lists = []
+                    for f in variable_files:
+                        if ecco_file.ECCOMDSFilestr(os.path.basename(f)).ext == 'data':
+                            tmplist = [f]
+                        else:   # '.meta'
+                            tmplist.append(f)
+                            variable_files_as_list_of_lists.append([tmplist])
+                            # note that above appends as list of single list for
+                            # "symmetry" with component input (i.e., not
+                            # one_to_one) above
+
+                    variable_files = variable_files_as_list_of_lists
 
                 # save list of variable file lists in time-keyed dictionaries
                 # for gather operations in Step 2:
 
                 variable_files_as_time_keyed_dict = {}
                 for file_list in variable_files:
-                    variable_files_as_time_keyed_dict[ecco_file.ECCOFilestr(
-                        os.path.basename(file_list[0])).time] = file_list
-                    #variable_files_as_time_keyed_dict[time_str(file_list[0])] = file_list
+                    #dbg:
+                    #print(' ')
+                    #print(f'file_list: {file_list}')
+                    #print(f'file_list[0][0]: {file_list[0][0]}')
+                    #print(ecco_file.ECCOMDSFilestr(os.path.basename(file_list[0][0])).time)
+                    #end.
+                    variable_files_as_time_keyed_dict[ecco_file.ECCOMDSFilestr(
+                        os.path.basename(file_list[0][0])).time] = file_list
+                        #os.path.basename(file_list[0])).time] = file_list
 
                 variable_inputs[variable] = variable_files_as_time_keyed_dict
 
-            # finally, does the metadata specify any variable renames?:
+            # finally, does the job metadata specify any variable renames?:
 
             if 'variable_rename' in job_metadata.keys():
                 old_varname, new_varname = job_metadata['variable_rename'].split(':')
@@ -504,10 +533,20 @@ def create_job_task_list(
                     model_timestep_units=cfg['model_timestep_units'],
                     averaging_period=job.frequency)
 
-                output_filename = ecco_file.ECCOProductionFilestr(
-                    prodname=job_metadata['filename'],
+                if file_freq_pat == 'mon_mean':
+                    # in the case of monthly means, ensure file date stamp is
+                    # correct (tb[1] generally places end date at start of
+                    # subsequent month, e.g., tb = [1992-01,1992-02] for a
+                    # 1992-01 monthly average)
+                    file_date_stamp = center_time
+                else:
+                    file_date_stamp = tb[1]
+
+                output_filename = ecco_file.ECCOGranuleFilestr(
+                    prefix=job_metadata['filename'],
                     averaging_period=file_freq_pat,
-                    date=pd.Timestamp(tb[1]).strftime("%Y-%m-%dT%H:%M:%S"),
+                    date=pd.Timestamp(file_date_stamp).strftime("%Y-%m-%dT%H:%M:%S"),
+                    #date=pd.Timestamp(tb[1]).strftime("%Y-%m-%dT%H:%M:%S"),
                     version=cfg['ecco_version'],
                     grid_type=job.product_type,
                     grid_label=cfg['ecco_production_filestr_grid_label'][job.product_type],
@@ -517,6 +556,7 @@ def create_job_task_list(
                 task_inputs = {}
                 for variable_name,variable_file_list in variable_inputs.items():
                     task_inputs[variable_name] = variable_file_list[time]
+                task_inputs['ecco_grid_dir'] = [ecco_grid_dir]  # list, for "symmetry"
                 task['input'] = task_inputs
                 # dynamic metadata:
                 task['metadata'] = {
@@ -541,6 +581,7 @@ def main():
         jobfile=args.jobfile,
         ecco_source_root=args.ecco_source_root,
         ecco_destination_root=args.ecco_destination_root,
+        ecco_grid_dir=args.ecco_grid_dir,
         cfgfile=args.cfgfile,
         keygen=args.keygen, profile_name=args.profile_name,
         log_level=args.log_level)
