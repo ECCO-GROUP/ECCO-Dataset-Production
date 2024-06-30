@@ -105,7 +105,7 @@ class ECCOGranuleFilestr(object):
                     r'.*')
                 grid_type (str): Grid, or product type, e.g. 'native' or
                     'latlon'. (default: r'.*')
-                grid_label (str): Additiona grid attributes, e.g., 'llc0090',
+                grid_label (str): Additional grid attributes, e.g., 'llc0090',
                     '0p50deg', etc. (default: r'.*')
                 ext (str): File extension. (default: 'nc')
 
