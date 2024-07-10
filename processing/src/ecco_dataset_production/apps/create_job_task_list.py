@@ -124,8 +124,8 @@ def create_job_task_list(
             ('DEBUG','INFO','WARNING','ERROR' or 'CRITICAL'; default='WARNING').
 
     Returns:
-        List of resulting job tasks, each as a dictionary with 'input',
-        'output', and 'metadata' keys.
+        List of resulting job tasks, each as a dictionary with 'granule',
+        'variables', 'ecco_grid_dir', and 'metadata' keys.
 
     Raises:
         RuntimeError: If ecco_source_root or ecco_destination_root are not
@@ -523,6 +523,8 @@ def create_job_task_list(
             all_times.sort()
 
             for time in all_times:
+                # TODO: when finalized, replace 'task={}' with 'task =
+                # ECCOTask()'; subsequent operations using class functions.
                 task = {}
 
                 tb,center_time = ecco_time.make_time_bounds_metadata(
@@ -535,7 +537,7 @@ def create_job_task_list(
 
                 if file_freq_pat == 'mon_mean':
                     # in the case of monthly means, ensure file date stamp is
-                    # correct (tb[1] generally places end date at start of
+                    # correct (tb[1] sometimes places end date at start of
                     # subsequent month, e.g., tb = [1992-01,1992-02] for a
                     # 1992-01 monthly average)
                     file_date_stamp = center_time
@@ -552,12 +554,12 @@ def create_job_task_list(
                     grid_label=cfg['ecco_production_filestr_grid_label'][job.product_type],
                 ).filestr
 
-                task['output'] = os.path.join(ecco_destination_root,output_filename)
-                task_inputs = {}
+                task['granule'] = os.path.join(ecco_destination_root,output_filename)
+                task_variables = {}
                 for variable_name,variable_file_list in variable_inputs.items():
-                    task_inputs[variable_name] = variable_file_list[time]
-                task_inputs['ecco_grid_dir'] = [ecco_grid_dir]  # list, for "symmetry"
-                task['input'] = task_inputs
+                    task_variables[variable_name] = variable_file_list[time]
+                task['variables'] = task_variables
+                task['ecco_grid_dir'] = ecco_grid_dir
                 # dynamic metadata:
                 task['metadata'] = {
                     'name':job_metadata['name'],
