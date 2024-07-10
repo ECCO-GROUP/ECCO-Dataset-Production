@@ -7,9 +7,9 @@ name = 'ecco_dataset_production'
 version = '1.0'
 dependencies = [
     'boto3',
-    'cartopy',
+#   'cartopy',
     'importlib.resources',
-    'matplotlib',
+#   'matplotlib',
     'netCDF4',
     'numpy',
     'pyresample',
