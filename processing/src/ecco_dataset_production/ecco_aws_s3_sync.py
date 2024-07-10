@@ -43,11 +43,11 @@ def sync_local_to_remote( src=None, dest=None, nproc=1, dryrun=False,
     if log_level:
         log.setLevel(log_level)
 
-    if kwargs['keygen']:
+    if kwargs.get('keygen',None):
         # update login credentials:
         cmd = [kwargs['keygen']]
         print(f'cmd: {cmd}')
-        if kwargs['profile']:
+        if kwargs.get('profile',None):
             cmd.extend(['--profile', kwargs['profile']])
             print(f'cmd: {cmd}')
         log.info("updating credentials using '%s' ...", cmd)
@@ -116,7 +116,7 @@ def sync_local_to_remote( src=None, dest=None, nproc=1, dryrun=False,
                 cmd = [ 'aws', 's3', 'sync',
                     dirpath,                # "source"
                     dest_s3uri]             # "destination"
-                if kwargs['profile']:
+                if kwargs.get('profile',None):
                     cmd.extend(['--profile',kwargs['profile']])
                 if dryrun:
                     cmd.append('--dryrun')
@@ -180,10 +180,10 @@ def sync_remote_to_remote_or_local( src=None, dest=None,
     if log_level:
         log.setLevel(log_level)
 
-    if kwargs['keygen']:
+    if kwargs.get('keygen',None):
         # update login credentials:
         cmd = [kwargs['keygen']]
-        if kwargs['profile']:
+        if kwargs.get('profile',None):
             cmd.extend(['--profile', kwargs['profile']])
         log.info("updating credentials using '%s' ...", cmd)
         try:
@@ -195,7 +195,7 @@ def sync_remote_to_remote_or_local( src=None, dest=None,
         log.info('...done')
 
     cmd = [ 'aws', 's3', 'sync', src, dest]
-    if kwargs['profile']:
+    if kwargs.get('profile',None):
         cmd.extend(['--profile',kwargs['profile']])
     if dryrun:
         cmd.append('--dryrun')
@@ -246,9 +246,9 @@ def aws_s3_sync(
     log.info('nproc: %s', nproc)
     log.info('dryrun: %s', dryrun)
     log.info('log_level: %s', log_level)
-    if kwargs['keygen']:
+    if kwargs.get('keygen',None):
         log.info('keygen: %s', kwargs['keygen'])
-    if kwargs['profile']:
+    if kwargs.get('profile',None):
         log.info('profile: %s', kwargs['profile'])
 
     if not ecco_aws.is_s3_uri(src) and ecco_aws.is_s3_uri(dest):
