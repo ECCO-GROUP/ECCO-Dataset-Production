@@ -14,9 +14,13 @@
 ## Boolean
 #create_checksum: True
 #
+# gjm: replace:
 ## Sets the "read_grid" value for xmitgcm.open_mdsdataset
 ## Boolean
 #read_ecco_grid_for_native_load: True
+# gjm: with:
+read_grid: False
+# gjm: end.
 #
 ## Include extra print statements when processing
 ## Boolean
@@ -57,6 +61,11 @@ ecco_version: 'V4r4'
 #
 ## String
 #array_precision: 'float32'
+
+#gjm: add:
+#xmitgcm.open_mdsdataset MITgcm grid geometry specifier:
+model_geometry: 'llc'
+#gjm: end.
 
 # Model start date and time, in ISO Date Time format (str,
 # 'YYYY-MM-DDThh:mm:ss'):
@@ -225,9 +234,15 @@ model_timestep_units: 'h'
 ## String
 #processed_output_dir_base: ''
 #
+# gjm replace:
 ## Filename string of the ECCO grid file (must be a NetCDF4 file). Assumes file exists in /processing/ecco_grids/{ecco_version}/
 ## String
 #ecco_grid_filename: 'GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc'
+# gjm with:
+# Name of ECCO grid NetCDF file, assumed to be in location defined by task
+# list's 'ecco_grid_dir' field:
+ecco_native_grid_filename: 'GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc'
+# gjm end.
 #
 ## Tail string for filename of processed files for 1D grid.
 ## "_ECCO_{ecco_version}_{grid_type}" will be prepeded during processing
