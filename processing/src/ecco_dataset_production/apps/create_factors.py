@@ -123,7 +123,3 @@ def main():
 
     create_factors( args.cfgfile, args.workingdir, args.dims, args.log_level)
     
-
-if __name__=='__main__':
-    main()
-

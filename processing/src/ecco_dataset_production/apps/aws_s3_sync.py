@@ -69,7 +69,3 @@ def main():
         nproc=args.nproc, dryrun=args.dryrun, log_level=args.log_level,
         keygen=args.keygen, profile=args.profile)
 
-
-if __name__=='__main__':
-    main()
-

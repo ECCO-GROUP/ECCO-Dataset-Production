@@ -595,7 +595,3 @@ def main():
     json.dump(task_list,fp,indent=4)
     fp.close()
 
-
-if __name__=='__main__':
-    main()
-

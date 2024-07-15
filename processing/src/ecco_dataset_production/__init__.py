@@ -4,7 +4,8 @@ from . import ecco_aws_s3_cp
 from . import ecco_aws_s3_sync
 from . import ecco_dataset
 from . import ecco_file
+from . import ecco_generate_dataproducts
 from . import ecco_task
 from . import ecco_time
-from . import ecco_gen_for_podaac
+#from . import ecco_gen_for_podaac
 from . import metadata

@@ -19,11 +19,12 @@ class ECCOMDSDataset(object):
     datasets.
 
     Args:
-        task (dict): Task description, typically parsed from json file generated
-            by create_job_task_list().
+        task (str, dict, or taskobj): (Path and) name of json-formatted file
+            defining a single task, single task description dictionary, or
+            ECCOTask object.
         variable (str) : Selected task list variable.
-        cfg (dict): ECCO Dataset Production configuration data. Fields used
-            include:
+        cfg (dict): ECCO Dataset Production configuration data. Referenced
+            fields include:
             ecco_native_grid_filename: ECCO NetCDF native grid file name (e.g.,
                 GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc).
             model_geometry: ECCO model geometry (e.g., 'llc').
@@ -37,7 +38,7 @@ class ECCOMDSDataset(object):
             MDS files specified by task and variable.
         grid_dir (str): ECCO grid directory name (may be equal to
             tmp_grid_dir.name if non-local source).
-        task (ECCOTask): Local store of input task descriptor.
+        task (ECCOTask): Local object store of input task descriptor.
         tmp_grid_dir (TemporaryDirectory): Temporary local ECCO grid directory
             if non-local source as specified in task descriptor.
         tmp_data_dir (TemporaryDirectory): Temporary local ECCO MDS file storage
@@ -53,23 +54,25 @@ class ECCOMDSDataset(object):
 
         if task:
 
-            self.task = ecco_task.ECCOTask(task)
+            if not isinstance(task,ecco_task.ECCOTask):
+                # instantiate from file or dict:
+                self.task = ecco_task.ECCOTask(task)
+            else:
+                # just use directly:
+                self.task = task
 
             # create dataset using variable and data references in task
             # description:
 
             # ensure grid data exists locally:
             if self.task.is_ecco_grid_dir_local:
-                self.grid_dir = self.task.ecco_grid_dir
-                #grid_dir_name = self.task.ecco_grid_dir
+                self.tmp_grid_dir = None
+                self.grid_dir = self.task['ecco_grid_dir']
             else:
                 # retrieve the ecco_grid_dir to temporary local storage:
                 self.tmp_grid_dir = tmpfile.TemporaryDirectory()
-                #self.grid_dir = tmpfile.TemporaryDirectory()
                 self.grid_dir = self.tmp_grid_dir.name
-                #grid_dir_name = self.grid_dir.name
-                ecco_aws_s3_sync.aws_s3_sync( src=self.task.ecco_grid_dir, dest=self.grid_dir, **kwargs)
-                #ecco_aws_s3_sync.aws_s3_sync( src=self.task.ecco_grid_dir, dest=grid_dir_name, **kwargs)
+                ecco_aws_s3_sync.aws_s3_sync( src=self.task['ecco_grid_dir'], dest=self.grid_dir, **kwargs)
                 # if grid_dir only contains a zipped tarball:
                 # TODO...
             #print(f'self.grid_dir: {self.grid_dir}')
@@ -80,19 +83,15 @@ class ECCOMDSDataset(object):
             # handle variables with multiple inputs and/or data stored in aws
             # s3 buckets):
             self.tmp_data_dir = tempfile.TemporaryDirectory()
-            #self.data_dir = tempfile.TemporaryDirectory()
             self.data_dir = self.tmp_data_dir.name
-            #data_dir_name = self.data_dir.name
             if self.task.is_variable_input_local(variable):
                 for components in self.task.variable_inputs(variable):
                     for file in components:
                         shutil.copy(file,self.data_dir)
-                        #shutil.copy(file,data_dir_name)
             else:
                 for components in self.task.variable_inputs(variable):
                     for file in components:
                         ecco_aws_s3_cp.aws_s3_cp( src=file, dest=self.data_dir, **kwargs)
-                        #ecco_aws_s3_cp.aws_s3_cp( src=file, dest=data_dir_name, **kwargs)
             #print(f'self.data_dir: {self.data_dir}')
             #print(os.listdir(self.data_dir))
 
@@ -105,7 +104,6 @@ class ECCOMDSDataset(object):
                         self.task.variable_inputs(variable)[0][0]))
                 self.ds = open_mdsdataset(
                     data_dir=self.data_dir, grid_dir=self.grid_dir,
-                    #data_dir=data_dir_name, grid_dir=grid_dir_name,
                     read_grid=self.cfg['read_grid'],
                     geometry=self.cfg['model_geometry'],
                     prefix=mds_file.prefix+'_'+mds_file.averaging_period,
@@ -142,6 +140,7 @@ class ECCOMDSDataset(object):
             mask_type = 'maskS'
         else:
             raise RuntimeError(f"Could not determine grid type for variable '{variable}'")
+        # numpy slice object:
         if self.is_variable_3d(variable):
             so = np.s_[:]
         else:
