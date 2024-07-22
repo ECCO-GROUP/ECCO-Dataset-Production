@@ -11,12 +11,14 @@ from . import aws
 from . import ecco_task
 
 NETCDF_GLOBSTR = '*.nc'
+NETCDF_LATLON_GLOBSTR = '*latlon*.nc'
+NETCDF_NATIVE_GLOBSTR = '*native*.nc'
 ZIPFILE_GLOBSTR = '*.gz'
 
 
 class ECCOGrid(object):
     """Container class for ECCO grid access. Primarily intended to optimize i/o
-    performance by allowing operations, e.g.  collections of ECCOMDSDataset
+    performance by allowing operations, e.g. collections of ECCOMDSDataset
     objects, to share a single copy of ECCO grid data.
 
     Args:
@@ -46,12 +48,21 @@ class ECCOGrid(object):
             archive (see "Notes"), tmpdir's 'name' may be extended accordingly
             prior to assigning to grid_dir.
 
+    Properties:
+        latlon_grid (xarray Dataset object): Object resulting from
+            xr.open_dataset() on *latlon*.nc (see Notes, item 2).
+        native_grid (xarray Dataset object): Object resulting from
+            xr.open_dataset() on *native*.nc (see Notes, item 2).
+
     Notes:
-        If the grid location referenced by task or grid_loc is an AWS S3
-        endpoint and contains a zipped tarball only, it will be unzipped/tarred
-        to a local temporary directory. If, however, the grid location is a
-        local directory, unzipping/untarring will not be performed so as not to
-        modify any local directory/file structures.
+        1.) If the grid location referenced by task or grid_loc is an AWS S3
+            endpoint and contains a zipped tarball only, it will be
+            unzipped/tarred to a local temporary directory. If, however, the
+            grid location is a local directory, unzipping/untarring will not be
+            performed so as not to modify any local directory/file structures.
+        2.) ECCOGrid assumes the presence of latlon (*latlon*.nc) and native
+            (*native*.nc) grid NetCDF4 files in either the location provided by
+            grid_loc or the AWS S3 endpoint referenced in the task description.
 
     """
     def __init__( self, task=None, grid_loc=None, **kwargs):
@@ -59,6 +70,9 @@ class ECCOGrid(object):
 
         """
         self.task = None
+        self.__native_grid = None
+        self.__latlon_grid = None
+
         if task:
             if not isinstance(task,ecco_task.ECCOTask):
             # instantiate from file or dict:
@@ -66,7 +80,7 @@ class ECCOGrid(object):
             else:
                 # just use directly:
                 self.task = task
-            grid_loc = self.task['ecco_grid_dir']
+            grid_loc = self.task['ecco_grid_loc']
 
         if aws.ecco_aws.is_s3_uri(grid_loc):
             # retrieve ecco grid to temporary local storage:
@@ -78,13 +92,12 @@ class ECCOGrid(object):
             self.tmpdir = None
             self.grid_dir = grid_loc
 
-        # unzip/untar if remote archive; if local, don't change local directory
-        # structure, and raise error instead:
-
+        # unzip/untar if remote archive; if local, check to make sure directory
+        # contains unzipped/untarred data (i.e., don't make any changes to local
+        # directory):
         if self.tmpdir:
             if  len(os.listdir(self.grid_dir))==1 and \
                 fnmatch.fnmatch(os.listdir(self.grid_dir)[0],ZIPFILE_GLOBSTR):
-
                 zf = glob.glob(os.path.join(self.grid_dir,ZIPFILE_GLOBSTR))[0]
                 to = tarfile.open(zf)
                 to.extractall(self.grid_dir)
@@ -94,12 +107,26 @@ class ECCOGrid(object):
                 ncdf_grid_files = \
                     [file for file in to.getnames() if fnmatch.fnmatch(file,NETCDF_GLOBSTR)]
                 self.grid_dir = os.path.join(self.grid_dir,os.path.dirname(ncdf_grid_files[0]))
-
         else:
             if  len(os.listdir(self.grid_dir))==1 and \
                 fnmatch.fnmatch(os.listdir(self.grid_dir)[0],ZIPFILE_GLOBSTR):
                 raise RuntimeError(
                     'Local grid directory contains zipped tarball only; unzip/tar before proceeding.')
+
+    @property
+    def latlon_grid(self):
+        if not self.__latlon_grid:
+            self.__latlon_grid = xr.open_dataset(
+                glob.glob(os.path.join(self.grid_dir,NETCDF_LATLON_GLOBSTR))[0])
+        return self.__latlon_grid
+
+
+    @property
+    def native_grid(self):
+        if not self.__native_grid:
+            self.__native_grid = xr.open_dataset(
+                glob.glob(os.path.join(self.grid_dir,NETCDF_NATIVE_GLOBSTR))[0])
+        return self.__native_grid
 
 
     def __del__(self):
