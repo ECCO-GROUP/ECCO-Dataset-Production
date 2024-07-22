@@ -32,7 +32,7 @@ def create_parser():
         If tasklist descriptors reference AWS S3 endpoints and if running in JPL
         domain, (path and) name of federated login key generation script (e.g.,
         /usr/local/bin/aws-login-pub.darwin.amd64)""")
-    parser.add_argument('--profile_name', help="""
+    parser.add_argument('--profile', help="""
         Optional profile name to be used in combination with keygen (e.g.,
         'saml-pub', 'default', etc.)""")
 
@@ -55,5 +55,5 @@ def main():
         cfgfile=args.cfgfile,
         workingdir='.',             # may end up deleting
         #log_level=args.log_level,  # logger hierarchy makes this redundant
-        keygen=args.keygen, profile_name=args.profile_name)
+        keygen=args.keygen, profile=args.profile)
 

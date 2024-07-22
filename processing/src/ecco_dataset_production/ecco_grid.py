@@ -6,6 +6,7 @@ import glob
 import os
 import tarfile
 import tempfile
+import xarray as xr
 
 from . import aws
 from . import ecco_task

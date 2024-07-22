@@ -87,11 +87,21 @@ def set_granule_ancillary_data(
     # time coordinate bounds:
     if all( [k in task['metadata'] for k in
         ('time_coverage_start','time_coverage_end','time_coverage_center')]):
-        dataset['time_bnds'] = []
-        dataset.time_bnds.values[0][0] = np.datetime64(task['metadata']['time_coverage_start'])
-        dataset.time_bnds.values[0][1] = np.datetime64(task['metadata']['time_coverage_end'])
-        dataset['time'] = []
-        dataset.time.values[0] = np.datetime64(task['metadata']['time_coverage_center'])
+        # original ported code that doesn't work (raises
+        # "IndexError: index 0 is out of bounds for axis 0 with size 0"):
+        #dataset['time_bnds'] = []
+        #dataset.time_bnds.values[0][0] = np.datetime64(task['metadata']['time_coverage_start'])
+        #dataset.time_bnds.values[0][1] = np.datetime64(task['metadata']['time_coverage_end'])
+        #dataset['time'] = []
+        #dataset.time.values[0] = np.datetime64(task['metadata']['time_coverage_center'])
+        # possible solution:
+        dataset['time_bnds'] = (
+            ('time','nv'),
+            [[np.datetime64(task['metadata']['time_coverage_start']),
+              np.datetime64(task['metadata']['time_coverage_end'])]])
+        dataset['time'] = (
+            ('time'),
+            [np.datetime64(task['metadata']['time_coverage_center'])])
 
     # spatial coordinate bounds:
     if task.is_latlon:
@@ -104,6 +114,7 @@ def set_granule_ancillary_data(
             dataset = dataset.assign_coords(
                 {'Z_bnds':(('Z','nv'),mapping_factors.depth_bounds)})
     else: # task.is_native
+        print(f"grid.native_grid['XC_bnds'].shape: {grid.native_grid['XC_bnds'].shape}")
         dataset = dataset.assign_coords(
             {"XC_bnds": (("tile","j","i","nb"), grid.native_grid['XC_bnds'].data)})
         dataset = dataset.assign_coords(
