@@ -8,9 +8,11 @@ import tempfile
 import xarray as xr
 from xmitgcm import open_mdsdataset
 
-from . import ecco_aws_s3_cp
-from . import ecco_aws_s3_sync
+from . import aws
+#from . import ecco_aws_s3_cp
+#from . import ecco_aws_s3_sync
 from . import ecco_file
+from . import ecco_grid
 from . import ecco_task
 
 
@@ -23,6 +25,10 @@ class ECCOMDSDataset(object):
             defining a single task, single task description dictionary, or
             ECCOTask object.
         variable (str) : Selected task list variable.
+        grid (ECCOGrid object): Optional grid object. If not provided, grid will
+            be determined from task input. Primarily intended to optimize i/o
+            performance by allowing operations on collections to share a single
+            copy of an ECCOGrid object created by a top-level application.
         cfg (dict): ECCO Dataset Production configuration data. Referenced
             fields include:
             ecco_native_grid_filename: ECCO NetCDF native grid file name (e.g.,
@@ -36,8 +42,9 @@ class ECCOMDSDataset(object):
         ds (xarray.Dataset): ECCO MDS dataset for specified task and variable.
         data_dir (str): Temporary directory name for local store of input ECCO
             MDS files specified by task and variable.
-        grid_dir (str): ECCO grid directory name (may be equal to
-            tmp_grid_dir.name if non-local source).
+        grid (ECCOGrid object): Local reference to ecco_grid input, if
+            provided, or local object if not (and thus generated using task
+            object specifier).
         task (ECCOTask): Local object store of input task descriptor.
         tmp_grid_dir (TemporaryDirectory): Temporary local ECCO grid directory
             if non-local source as specified in task descriptor.
@@ -45,7 +52,8 @@ class ECCOMDSDataset(object):
             for task and variable combination.
 
     """
-    def __init__( self, task=None, variable=None, cfg=None, **kwargs):
+    def __init__( self, task=None, grid=None, variable=None, cfg=None,
+        **kwargs):
         """Create instance of ECCOMDSDataset class.
 
         """
@@ -65,18 +73,14 @@ class ECCOMDSDataset(object):
             # description:
 
             # ensure grid data exists locally:
-            if self.task.is_ecco_grid_dir_local:
-                self.tmp_grid_dir = None
-                self.grid_dir = self.task['ecco_grid_dir']
+            if not grid:
+                # create grid from task definition:
+                self.grid = ecco_grid.ECCOGrid(task=self.task,**kwargs)
+            elif isinstance(grid,ecco_grid.ECCOGrid):
+                # point to existing object:
+                self.grid = grid
             else:
-                # retrieve the ecco_grid_dir to temporary local storage:
-                self.tmp_grid_dir = tmpfile.TemporaryDirectory()
-                self.grid_dir = self.tmp_grid_dir.name
-                ecco_aws_s3_sync.aws_s3_sync( src=self.task['ecco_grid_dir'], dest=self.grid_dir, **kwargs)
-                # if grid_dir only contains a zipped tarball:
-                # TODO...
-            #print(f'self.grid_dir: {self.grid_dir}')
-            #print(os.listdir(self.grid_dir))
+                raise ValueError('If provided, grid must be an instance of ECCOGrid class.')
 
             # gather variable input locally (not the most efficient approach for
             # data that may already be stored locally, but cleanest way to
@@ -91,9 +95,7 @@ class ECCOMDSDataset(object):
             else:
                 for components in self.task.variable_inputs(variable):
                     for file in components:
-                        ecco_aws_s3_cp.aws_s3_cp( src=file, dest=self.data_dir, **kwargs)
-            #print(f'self.data_dir: {self.data_dir}')
-            #print(os.listdir(self.data_dir))
+                        aws.ecco_aws_s3_cp.aws_s3_cp( src=file, dest=self.data_dir, **kwargs)
 
             if self.task.is_variable_single_component(variable):
                 # direct ingest:
@@ -103,7 +105,7 @@ class ECCOMDSDataset(object):
                     os.path.basename(
                         self.task.variable_inputs(variable)[0][0]))
                 self.ds = open_mdsdataset(
-                    data_dir=self.data_dir, grid_dir=self.grid_dir,
+                    data_dir=self.data_dir, grid_dir=self.grid.grid_dir,
                     read_grid=self.cfg['read_grid'],
                     geometry=self.cfg['model_geometry'],
                     prefix=mds_file.prefix+'_'+mds_file.averaging_period,
@@ -128,9 +130,11 @@ class ECCOMDSDataset(object):
         task['granule'] filename; then function can be generically-named.
 
         """
-        # get native land mask data from ECCO grid dataset... :
-        ecco_grid_ds = xr.open_dataset(os.path.join(self.grid_dir,self.cfg['ecco_native_grid_filename']))
+        ## get native land mask data from ECCO grid dataset... :
+        #ecco_grid_ds = xr.open_dataset(os.path.join(
+        #    self.grid.grid_dir,self.cfg['ecco_native_grid_filename']))
 
+        # apply grid-appropriate mask to the variable of interest:
         # ...and apply grid-appropriate mask to the variable of interest:
         if self.is_variable_c_data(variable):
             mask_type = 'maskC'
@@ -145,7 +149,8 @@ class ECCOMDSDataset(object):
             so = np.s_[:]
         else:
             so = np.s_[0,:]
-        self.ds[variable] = self.ds[variable] * np.where(ecco_grid_ds[mask_type][so]==True,1,np.nan)
+        self.ds[variable] = self.ds[variable] * np.where(self.grid.native_grid[mask_type][so]==True,1,np.nan)
+        #self.ds[variable] = self.ds[variable] * np.where(ecco_grid_ds[mask_type][so]==True,1,np.nan)
 
 
     def is_variable_c_data( self, variable=None):
@@ -225,10 +230,10 @@ class ECCOMDSDataset(object):
 
         """
         # clean up TemporaryDirectories:
-        try:
-            self.tmp_grid_dir.cleanup()
-        except:
-            pass
+        #try:
+        #    self.tmp_grid_dir.cleanup()
+        #except:
+        #    pass
         try:
             self.tmp_data_dir.cleanup()
         except:
