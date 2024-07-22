@@ -3,7 +3,8 @@
 
 import json
 
-from . import ecco_aws
+from . import aws
+#from . import ecco_aws
 from . import ecco_file
 
 
@@ -32,10 +33,30 @@ class ECCOTask(dict):
 
 
     @property
+    def averaging_period(self):
+        return ecco_file.ECCOGranuleFilestr(self.__getitem__('granule')).averaging_period
+
+
+    @property
+    def grid_type(self):
+        return ecco_file.ECCOGranuleFilestr(self.__getitem__('granule')).grid_type
+   
+
+    @property
+    def is_2d(self):
+        return "2d"==self.__getitem__('metadata')['dimension'].lower()
+
+
+    @property
+    def is_3d(self):
+        return "3d"==self.__getitem__('metadata')['dimension'].lower()
+
+
+    @property
     def is_ecco_grid_dir_local(self):
         """
         """
-        if ecco_aws.is_s3_uri(self.__getitem__('ecco_grid_dir')):
+        if aws.ecco_aws.is_s3_uri(self.__getitem__('ecco_grid_dir')):
             return False
         else:
             return True
@@ -43,7 +64,7 @@ class ECCOTask(dict):
 
     @property
     def is_granule_local(self):
-        if ecco_aws.is_s3_uri(self.__getitem__('granule')):
+        if aws.ecco_aws.is_s3_uri(self.__getitem__('granule')):
             return False
         else:
             return True
@@ -83,7 +104,7 @@ class ECCOTask(dict):
         # just look at first file in list (reasonable assumption is that all are
         # local or all are remote (s3://...))
 
-        if ecco_aws.is_s3_uri(self.__getitem__('variables')[variable][0][0]):
+        if aws.ecco_aws.is_s3_uri(self.__getitem__('variables')[variable][0][0]):
             return False
         else:
             return True

@@ -41,11 +41,14 @@ def create_parser():
     parser.add_argument('--ecco_destination_root', help="""
         ECCO Dataset Production output root location, either directory path
         (e.g., ECCOV4r5_datasets) or AWS S3 bucket (s3://bucket_name)""")
-    parser.add_argument('--ecco_grid_dir', help="""
+    parser.add_argument('--ecco_grid_loc', help="""
         Directory containing ECCO grid files, e.g., XC.*, YC.*, etc., as well as
-        the file available_diagnostics.log.  Though not used directly, it is
-        provided for inclusion into the ouput task list for use by subsequent
-        routines.""")
+        the file available_diagnostics.log, or similar remote location given by
+        AWS S3 bucket/prefix.""")
+    parser.add_argument('--ecco_mapping_factors_loc', help="""
+        Directory containing ECCO mapping factors (3D, land_mask, latlon_grid,
+        and sparse subdirectories), or similar remote location given by AWS S3
+        bucket/prefix.""")
     parser.add_argument('--cfgfile', default='./product_generation_config.yaml',
         help="""(Path and) filename of ECCO Dataset Production configuration
         file (default: '%(default)s')""")
@@ -55,7 +58,7 @@ def create_parser():
         If ecco_source_root references an S3 bucket and if running in JPL
         domain, federated login key generation script (e.g.,
         /usr/local/bin/aws-login-pub.darwin.amd64)""")
-    parser.add_argument('--profile_name', help="""
+    parser.add_argument('--profile', help="""
         If ecco_source_root references an S3 bucket and if running in JPL
         domain, AWS credential profile name (e.g., 'saml-pub', 'default',
         etc.)""")
@@ -88,8 +91,8 @@ def is_s3_uri(path_or_uri_str):
 
 def create_job_task_list(
     jobfile=None, ecco_source_root=None, ecco_destination_root=None,
-    ecco_grid_dir=None, cfgfile=None, keygen=None, profile_name=None,
-    log_level=None):
+    ecco_grid_loc=None, ecco_mapping_factors_loc=None,
+    cfgfile=None, keygen=None, profile=None, log_level=None):
     """Create a list of task inputs and outputs from an ECCO Dataset Production
     job file.
 
@@ -107,17 +110,19 @@ def create_job_task_list(
         ecco_destination_root (str): ECCO Dataset Production output root
             location, either directory path (e.g., ECCOV4r5_datasets) or AWS S3
             bucket or folder (s3://...).
-        ecco_grid_dir (str): Directory containing ECCO grid files, e.g., XC.*,
-            YC.*, etc., as well as the file available_diagnostics.log, provided
-            for inclusion into the ouput task list for use by subsequent
-            routines.
+        ecco_grid_loc (str): Directory containing ECCO grid files, e.g., XC.*,
+            YC.*, etc., as well as the file available_diagnostics.log, or
+            similar remote location given by AWS S3 bucket/prefix.
+        ecco_mapping_factors_loc (str): Directory containing ECCO mapping
+            factors (3D, land_mask, latlon_grid, and sparse subdirectories), or
+            similar remote location given by AWS S3 bucket/prefix.
         cfgfile (str): (Path and) filename of ECCO Dataset Production
             configuration file.
         keygen (str): If ecco_source_root If ecco_source_root references an S3
             bucket and if running in JPL domain, federated login key generation
             script (e.g., /usr/local/bin/aws-login-pub.darwin.amd64).
             (default: None)
-        profile_name (str): If ecco_source_root references an AWS S3 bucket and
+        profile (str): If ecco_source_root references an AWS S3 bucket and
             if running in JPL domain, AWS credential profile name (e.g.,
             'saml-pub', 'default', etc.)
         log_level (str): log_level choices per Python logging module
@@ -125,7 +130,8 @@ def create_job_task_list(
 
     Returns:
         List of resulting job tasks, each as a dictionary with 'granule',
-        'variables', 'ecco_grid_dir', and 'metadata' keys.
+        'variables', 'ecco_grid_loc', 'ecco_mapping_factors', and 'metadata'
+        keys.
 
     Raises:
         RuntimeError: If ecco_source_root or ecco_destination_root are not
@@ -134,11 +140,11 @@ def create_job_task_list(
             contains format errors.
 
     Notes:
-        . ECCO version string (e.g., "V4r5") is assumed to be contained in
+        - ECCO version string (e.g., "V4r5") is assumed to be contained in
         either directory path or in AWS S3 object names.
 
     """
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('edp')
     if log_level:
         log.setLevel(log_level)
 
@@ -174,7 +180,7 @@ def create_job_task_list(
             sys.exit(1)
         log.info('...done')
         # set session defaults:
-        boto3.setup_default_session(profile_name=profile_name)
+        boto3.setup_default_session(profile_name=profile)
         # get bucket object list:
         s3r = boto3.resource('s3')
         s3_parts = urllib.parse.urlparse(ecco_source_root)
@@ -559,13 +565,18 @@ def create_job_task_list(
                 for variable_name,variable_file_list in variable_inputs.items():
                     task_variables[variable_name] = variable_file_list[time]
                 task['variables'] = task_variables
-                task['ecco_grid_dir'] = ecco_grid_dir
+                task['ecco_grid_loc'] = ecco_grid_loc
+                task['ecco_mapping_factors_loc'] = ecco_mapping_factors_loc
                 # dynamic metadata:
                 task['metadata'] = {
                     'name':job_metadata['name'],
                     'dimension':job_metadata['dimension'],
                     'time_coverage_start': pd.Timestamp(tb[0]).strftime("%Y-%m-%dT%H:%M:%S"),
                     'time_coverage_end': pd.Timestamp(tb[1]).strftime("%Y-%m-%dT%H:%M:%S"),
+                    'time_coverage_center': pd.Timestamp(center_time).strftime("%Y-%m-%dT%H:%M:%S")
+                    #TODO:
+                    #'time_coverage_duration'
+                    #'time_coverage_resolution'
                 }
                 task_list.append(task)
 
@@ -583,9 +594,10 @@ def main():
         jobfile=args.jobfile,
         ecco_source_root=args.ecco_source_root,
         ecco_destination_root=args.ecco_destination_root,
-        ecco_grid_dir=args.ecco_grid_dir,
+        ecco_grid_loc=args.ecco_grid_loc,
+        ecco_mapping_factors_loc=args.ecco_mapping_factors_loc,
         cfgfile=args.cfgfile,
-        keygen=args.keygen, profile_name=args.profile_name,
+        keygen=args.keygen, profile=args.profile,
         log_level=args.log_level)
 
     if args.outfile:

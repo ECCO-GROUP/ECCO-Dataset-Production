@@ -37,8 +37,8 @@ dependencies = [
 #"ecco_dataset_production.metadata.V4r4" = ["*.json"]
 
 [project.scripts]
-edp_aws_s3_sync             = 'ecco_dataset_production.apps.aws_s3_sync:main'
-edp_create_factors          = 'ecco_dataset_production.apps.create_factors:main'
+#edp_aws_s3_sync             = 'ecco_dataset_production.apps.aws_s3_sync:main'
+#edp_create_factors          = 'ecco_dataset_production.apps.create_factors:main'
 edp_create_job_task_list    = 'ecco_dataset_production.apps.create_job_task_list:main'
 edp_generate_dataproducts   = 'ecco_dataset_production.apps.generate_dataproducts:main'
 

@@ -61,6 +61,10 @@ ecco_version: 'V4r4'
 #
 ## String
 #array_precision: 'float32'
+#gjm:
+# ecco granule variable precision; if not specified, defaults to float64:
+array_precision: 'float32'
+#gjm: end.
 
 #gjm: add:
 #xmitgcm.open_mdsdataset MITgcm grid geometry specifier:
