@@ -2,15 +2,20 @@
 import itertools
 import json
 import logging
+import netCDF4
+import numpy as np
 import os
 import xarray as xr
 import yaml
 
 from . import ecco_dataset
+from . import ecco_grid
+from . import ecco_mapping_factors
 from . import ecco_task
 
 
-def ecco_make_granule( task, cfg, log_level=None, **kwargs):
+def ecco_make_granule( task, cfg,
+    grid=None, mapping_factors=None, log_level=None, **kwargs):
     """
 
     Args:
@@ -37,7 +42,7 @@ def ecco_make_granule( task, cfg, log_level=None, **kwargs):
             for infile in itertools.chain.from_iterable(this_task.variable_inputs(variable)):
                 log.debug('    %s', infile)
             emdsds = ecco_dataset.ECCOMDSDataset(
-                task=this_task, variable=variable, cfg=cfg, **kwargs)
+                task=this_task, grid=grid, variable=variable, cfg=cfg, **kwargs)
             emdsds.drop_all_variables_except(variable)
             emdsds.apply_land_mask_to_native_variable(variable)
             variable_datasets.append(emdsds)
@@ -48,8 +53,14 @@ def ecco_make_granule( task, cfg, log_level=None, **kwargs):
     # EMDSDataset objects:
     merged_variable_dataset = xr.merge([ds.ds for ds in variable_datasets])
 
+    # set miscellaneous granule attributes:
+    set_granule_ancillary_data(
+        dataset=merged_variable_dataset, task=this_task,
+        grid=grid, mapping_factors=mapping_factors, cfg=cfg)
+
     # append metadata:
     # TODO
+    #set_granule_metadata()
 
     if this_task.is_granule_local:
         merged_variable_dataset.to_netcdf(this_task['granule'])
@@ -60,7 +71,50 @@ def ecco_make_granule( task, cfg, log_level=None, **kwargs):
     log.info('... done')
 
 
-def generate_dataproducts( tasklist, cfgfile, workingdir='.',
+def set_granule_ancillary_data(
+    dataset=None, task=None, grid=None, mapping_factors=None, cfg=None):
+    """
+    """
+    # ensure consistent variable (array) representation:
+    prec = cfg['array_precision'] if 'array_precision' in cfg else 'float64'
+    ncfill = netCDF4.default_fillvals['f4'] if prec=='float32' else netCDF4.default_fillvals['f8']
+    for var in dataset.data_vars:
+        dataset[var].values = dataset[var].astype(eval('np.'+prec))
+        dataset[var].attrs['valid_min'] = np.nanmin(dataset[var].values)
+        dataset[var].attrs['valid_max'] = np.nanmax(dataset[var].values)
+        dataset[var].values = np.where(np.isnan(dataset[var].values),ncfill,dataset[var].values)
+
+    # time coordinate bounds:
+    if all( [k in task['metadata'] for k in
+        ('time_coverage_start','time_coverage_end','time_coverage_center')]):
+        dataset['time_bnds'] = []
+        dataset.time_bnds.values[0][0] = np.datetime64(task['metadata']['time_coverage_start'])
+        dataset.time_bnds.values[0][1] = np.datetime64(task['metadata']['time_coverage_end'])
+        dataset['time'] = []
+        dataset.time.values[0] = np.datetime64(task['metadata']['time_coverage_center'])
+
+    # spatial coordinate bounds:
+    if task.is_latlon:
+        # assign lat/lon/depth bounds using data from mapping factors:
+        dataset = dataset.assign_coords(
+            {'latitude_bnds':(('latitude','nv'), mapping_factors.latitude_bounds)})
+        dataset = dataset.assign_coords(
+            {'longitude_bnds':(('longitude','nv'), mapping_factors.longitude_bounds)})
+        if task.is_3d:
+            dataset = dataset.assign_coords(
+                {'Z_bnds':(('Z','nv'),mapping_factors.depth_bounds)})
+    else: # task.is_native
+        dataset = dataset.assign_coords(
+            {"XC_bnds": (("tile","j","i","nb"), grid.native_grid['XC_bnds'].data)})
+        dataset = dataset.assign_coords(
+            {"YC_bnds": (("tile","j","i","nb"), grid.native_grid['YC_bnds'].data)})
+        if task.is_3d:
+            dataset = dataset.assign_coords(
+                {'Z_bnds':(('k','nv'),mapping_factors.depth_bounds)})
+
+
+def generate_dataproducts( tasklist, cfgfile,
+    #workingdir='.',
     log_level=None, **kwargs):
     """Generate PO.DAAC-ready ECCO granule(s) for all tasks in tasklist.
 
@@ -70,8 +124,8 @@ def generate_dataproducts( tasklist, cfgfile, workingdir='.',
             create_job_task_list. See that function for formats and details.
         cfgfile (str): (Path and) filename of ECCO Dataset Production
             configuration file.
-        workingdir (str): Working directory path definition default if explicit
-            path definitions are otherwise unassigned in cfgfile (default='.').
+        #workingdir (str): Working directory path definition default if explicit
+        #    path definitions are otherwise unassigned in cfgfile (default='.').
         log_level (str): Optional local logging level ('DEBUG', 'INFO',
             'WARNING', 'ERROR' or 'CRITICAL').  If called by a top-level
             application, the default will be that of the parent logger ('edp'),
@@ -81,7 +135,7 @@ def generate_dataproducts( tasklist, cfgfile, workingdir='.',
                 if running in JPL domain, (path and) name of federated login key
                 generation script (e.g.,
                 /usr/local/bin/aws-login-pub.darwin.amd64)
-            profile_name (str): Optional profile name to be used in combination
+            profile (str): Optional profile name to be used in combination
                 with keygen (e.g., 'saml-pub', 'default', etc.)
 
     Returns:
@@ -99,10 +153,19 @@ def generate_dataproducts( tasklist, cfgfile, workingdir='.',
         log.debug('%s: %s', k, v)
     log.info('...done initializing configuration parameters.')
 
-    # TODO: peek at tasklist to see if ecco grid is non-local (e.g., aws s3); if
-    # so, create an ECCOGrid object here so that it may be shared by all tasks.
+    shared_ecco_grid = shared_ecco_mapping_factors = None
 
     for task in json.load(open(tasklist)):
 
-        ecco_make_granule( task, cfg, log_level, **kwargs)
+        # Assuming all tasks share the same ECCO grid and mapping factors
+        # references, for performance reasons, create ECCOGrid and
+        # ECCOMappingFactors objects up-front (using the first task descriptor)
+        # that can be shared by all granule creation tasks:
+        if not shared_ecco_grid and not shared_ecco_mapping_factors:
+            shared_ecco_grid = ecco_grid.ECCOGrid(task=task)
+            shared_ecco_mapping_factors = ecco_mapping_factors.ECCOMappingFactors(task=task)
+
+        ecco_make_granule( task, cfg,
+            grid=shared_ecco_grid, mapping_factors=shared_ecco_mapping_factors,
+            log_level=log_level, **kwargs)
 
