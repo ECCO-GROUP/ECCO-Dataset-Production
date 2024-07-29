@@ -6,7 +6,9 @@ import os
 import shutil
 import tempfile
 import xarray as xr
-from xmitgcm import open_mdsdataset
+#from xmitgcm import open_mdsdataset
+
+import ecco_v4_py
 
 from . import aws
 #from . import ecco_aws_s3_cp
@@ -34,8 +36,8 @@ class ECCOMDSDataset(object):
             ecco_native_grid_filename: ECCO NetCDF native grid file name (e.g.,
                 GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc).
             model_geometry: ECCO model geometry (e.g., 'llc').
-            read_grid: Passed via the xmitgcm.open_mdsdataset input parameter of
-                the same name (e.g., 'False').
+            read_grid: Passed via the read_bin_llc.load_ecco_vars_from_mds input
+                parameter of the same name (e.g., 'False').
 
     Attributes:
         cfg (dict): Local store of cfg input.
@@ -100,16 +102,28 @@ class ECCOMDSDataset(object):
             if self.task.is_variable_single_component(variable):
                 # direct ingest:
                 # use first file in the list (.data file) to provide some of the
-                # input required by open_mdsdataset:
+                # input required by load_ecco_vars_from_mds:
                 mds_file = ecco_file.ECCOMDSFilestr(
                     os.path.basename(
                         self.task.variable_inputs(variable)[0][0]))
-                self.ds = open_mdsdataset(
-                    data_dir=self.data_dir, grid_dir=self.grid.grid_dir,
-                    read_grid=self.cfg['read_grid'],
-                    geometry=self.cfg['model_geometry'],
-                    prefix=mds_file.prefix+'_'+mds_file.averaging_period,
-                    iters=[mds_file.time])
+                self.ds = ecco_v4_py.read_bin_llc.load_ecco_vars_from_mds(
+                    mds_var_dir             = self.data_dir,
+                    mds_grid_dir            = self.grid.grid_dir,
+                    mds_files               = mds_file.prefix+'_'+mds_file.averaging_period,
+                    vars_to_load            = variable,
+                    drop_unused_coords      = True,
+                    grid_vars_to_coords     = False,
+                    output_freq_code        = mds_file.averaging_period,
+                    model_time_steps_to_load= [mds_file.time],
+                    read_grid               = self.cfg['read_grid'],
+                    model_start_datetime    = np.datetime64(self.cfg['model_start_time']))
+#                previously:
+#                self.ds = open_mdsdataset(
+#                    data_dir=self.data_dir, grid_dir=self.grid.grid_dir,
+#                    read_grid=self.cfg['read_grid'],
+#                    geometry=self.cfg['model_geometry'],
+#                    prefix=mds_file.prefix+'_'+mds_file.averaging_period,
+#                    iters=[mds_file.time])
 
             else:
                 # vector summation required before ingest:
