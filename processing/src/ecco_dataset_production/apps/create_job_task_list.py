@@ -4,7 +4,6 @@ import argparse
 import ast
 import boto3
 import collections
-import glob
 import importlib.resources
 import json
 import logging
@@ -15,15 +14,17 @@ import subprocess
 import sys
 import urllib
 
+from .. import aws
 from .. import configuration
 from .. import ecco_file
+from .. import ecco_metadata_store
 from .. import ecco_time
 from .. import metadata
 
 
 logging.basicConfig(
     format = '%(levelname)-10s %(asctime)s %(message)s')
-
+log = logging.getLogger('edp')
 
 def create_parser():
     """Set up list of command-line arguments to create_job_task_list.
@@ -49,6 +50,13 @@ def create_parser():
         Directory containing ECCO mapping factors (3D, land_mask, latlon_grid,
         and sparse subdirectories), or similar remote location given by AWS S3
         bucket/prefix.""")
+    parser.add_argument('--ecco_metadata_loc', help="""
+        Directory containing ECCO metadata *.json source files, or similar
+        remote location given by AWS S3 bucket/prefix.  Three of the source
+        files, *_groupings_for_{1D,latlon,native}_datasets.json, are used here
+        to create task definitions, while the others, e.g.
+        *_global_metadata_for_{all,native,latlon}_datasets.json, etc. are
+        referenced during subsequent dataset production task execution.""")
     parser.add_argument('--cfgfile', default='./product_generation_config.yaml',
         help="""(Path and) filename of ECCO Dataset Production configuration
         file (default: '%(default)s')""")
@@ -70,29 +78,30 @@ def create_parser():
     return parser
 
 
+##
+## common utilities, at some point:
+## 
 #
-# common utilities, at some point:
-# 
-
-def is_s3_uri(path_or_uri_str):
-    """Determines whether or not input string is an AWS S3Uri.
-
-    Args:
-        path_or_uri_str (str): Input string.
-
-    Returns:
-        True if string matches 's3://', False otherwise.
-    """ 
-    if re.search( r's3:\/\/', path_or_uri_str, re.IGNORECASE):
-        return True
-    else:
-        return False
+#def is_s3_uri(path_or_uri_str):
+#    """Determines whether or not input string is an AWS S3Uri.
+#
+#    Args:
+#        path_or_uri_str (str): Input string.
+#
+#    Returns:
+#        True if string matches 's3://', False otherwise.
+#    """ 
+#    if re.search( r's3:\/\/', path_or_uri_str, re.IGNORECASE):
+#        return True
+#    else:
+#        return False
 
 
 def create_job_task_list(
     jobfile=None, ecco_source_root=None, ecco_destination_root=None,
     ecco_grid_loc=None, ecco_mapping_factors_loc=None,
-    cfgfile=None, keygen=None, profile=None, log_level=None):
+    ecco_metadata_loc=None, cfgfile=None,
+    keygen=None, profile=None, log_level=None):
     """Create a list of task inputs and outputs from an ECCO Dataset Production
     job file.
 
@@ -115,6 +124,10 @@ def create_job_task_list(
             similar remote location given by AWS S3 bucket/prefix.
         ecco_mapping_factors_loc (str): Directory containing ECCO mapping
             factors (3D, land_mask, latlon_grid, and sparse subdirectories), or
+            similar remote location given by AWS S3 bucket/prefix.
+        ecco_metadata_loc (str): Directory containing ECCO metadata *.json
+            source files (*_groupings_for_{1D,latlon,native}_datasets.json,
+            *_global_metadata_for_{all,native,latlon}_datasets.json, etc.), or
             similar remote location given by AWS S3 bucket/prefix.
         cfgfile (str): (Path and) filename of ECCO Dataset Production
             configuration file.
@@ -144,7 +157,6 @@ def create_job_task_list(
         either directory path or in AWS S3 object names.
 
     """
-    log = logging.getLogger('edp')
     if log_level:
         log.setLevel(log_level)
 
@@ -170,7 +182,7 @@ def create_job_task_list(
         err += ' must be provided'
         raise RuntimeError(err)
 
-    if is_s3_uri(ecco_source_root):
+    if aws.ecco_aws.is_s3_uri(ecco_source_root):
         # update login credentials:
         log.info('updating credentials...')
         try:
@@ -196,31 +208,37 @@ def create_job_task_list(
     # collect job groupings-related package metadata and organize into a
     # dictionary with primary keys, '1D', 'latlon', and 'native':
 
-    log.info('collecting %s package resource metadata...', cfg['ecco_version'])
-    dataset_groupings = {}
-    traversible = importlib.resources.files(metadata)
-    with importlib.resources.as_file(traversible/cfg['ecco_version']) as files:
-        for file in files.glob('*groupings*'):
-            if re.search(r'_1D_',file.name,re.IGNORECASE):
-                log.debug('parsing 1D groupings metadata file %s', file)
-                with open(file) as f:
-                    dataset_groupings['1D'] = json.load(f)
-            elif re.search(r'_latlon_',file.name,re.IGNORECASE):
-                log.debug('parsing latlon groupings metadata file %s', file)
-                with open(file) as f:
-                    dataset_groupings['latlon'] = json.load(f)
-            elif re.search(r'_native_',file.name,re.IGNORECASE):
-                log.debug('parsing native groupings metadata file %s', file)
-                with open(file) as f:
-                    dataset_groupings['native'] = json.load(f)
-    log.debug('dataset grouping metadata:')
-    for key,list_of_dicts in dataset_groupings.items():
-        log.debug('%s:', key)
-        for i,dict_i in enumerate(list_of_dicts):
-            log.debug(' %d:', i)
-            for k,v in dict_i.items():
-                log.debug('  %s: %s', k, v)
-    log.info('...done collecting %s resource metadata.', cfg['ecco_version'])
+    dataset_groupings = ecco_metadata_store.ECCOMetadataStore(
+        metadata_loc=ecco_metadata_loc,
+        keygen=keygen, profile=profile).dataset_groupings
+
+#    # previous package-based implementation:
+#
+#    log.info('collecting %s package resource metadata...', cfg['ecco_version'])
+#    dataset_groupings = {}
+#    traversible = importlib.resources.files(metadata)
+#    with importlib.resources.as_file(traversible/cfg['ecco_version']) as files:
+#        for file in files.glob('*groupings*'):
+#            if re.search(r'_1D_',file.name,re.IGNORECASE):
+#                log.debug('parsing 1D groupings metadata file %s', file)
+#                with open(file) as f:
+#                    dataset_groupings['1D'] = json.load(f)
+#            elif re.search(r'_latlon_',file.name,re.IGNORECASE):
+#                log.debug('parsing latlon groupings metadata file %s', file)
+#                with open(file) as f:
+#                    dataset_groupings['latlon'] = json.load(f)
+#            elif re.search(r'_native_',file.name,re.IGNORECASE):
+#                log.debug('parsing native groupings metadata file %s', file)
+#                with open(file) as f:
+#                    dataset_groupings['native'] = json.load(f)
+#    log.debug('dataset grouping metadata:')
+#    for key,list_of_dicts in dataset_groupings.items():
+#        log.debug('%s:', key)
+#        for i,dict_i in enumerate(list_of_dicts):
+#            log.debug(' %d:', i)
+#            for k,v in dict_i.items():
+#                log.debug('  %s: %s', k, v)
+#    log.info('...done collecting %s resource metadata.', cfg['ecco_version'])
 
     #
     # list of job descriptions to be built in two steps: first, gather list of
@@ -305,7 +323,7 @@ def create_job_task_list(
 
                         if 'all' == job.time_steps.lower():
                             # get all possible time matches:
-                            if is_s3_uri(ecco_source_root):
+                            if aws.ecco_aws.is_s3_uri(ecco_source_root):
                                 s3_key_pat = re.compile(
                                     s3_parts.path.strip('/')    # remove leading '/' from urlpath
                                     + '.*'                      # allow anything between path and filename
@@ -340,7 +358,7 @@ def create_job_task_list(
                                         prefix=variable_input_component_key,
                                         averaging_period=file_freq_pat,
                                         time=time).re_filestr)
-                                if is_s3_uri(ecco_source_root):
+                                if aws.ecco_aws.is_s3_uri(ecco_source_root):
                                     variable_input_component_files.append(
                                         [os.path.join(
                                             urllib.parse.urlunparse(
@@ -425,7 +443,7 @@ def create_job_task_list(
                     variable_files = []
                     if 'all' == job.time_steps.lower():
                         # get all possible time matches:
-                        if is_s3_uri(ecco_source_root):
+                        if aws.ecco_aws.is_s3_uri(ecco_source_root):
                             s3_key_pat = re.compile(
                                 s3_parts.path.strip('/')    # remove leading '/' from urlpath
                                 + '.*'                      # allow anything between path and filename
@@ -457,7 +475,7 @@ def create_job_task_list(
                                     prefix=variable,
                                     averaging_period=file_freq_pat,
                                     time=time).re_filestr)
-                            if is_s3_uri(ecco_source_root):
+                            if aws.ecco_aws.is_s3_uri(ecco_source_root):
                                 variable_files.append(
                                     [os.path.join(
                                         urllib.parse.urlunparse(
@@ -567,6 +585,7 @@ def create_job_task_list(
                 task['variables'] = task_variables
                 task['ecco_grid_loc'] = ecco_grid_loc
                 task['ecco_mapping_factors_loc'] = ecco_mapping_factors_loc
+                task['ecco_metadata_loc'] = ecco_metadata_loc
                 # dynamic metadata:
                 task['metadata'] = {
                     'name':job_metadata['name'],
@@ -596,6 +615,7 @@ def main():
         ecco_destination_root=args.ecco_destination_root,
         ecco_grid_loc=args.ecco_grid_loc,
         ecco_mapping_factors_loc=args.ecco_mapping_factors_loc,
+        ecco_metadata_loc=args.ecco_metadata_loc,
         cfgfile=args.cfgfile,
         keygen=args.keygen, profile=args.profile,
         log_level=args.log_level)
