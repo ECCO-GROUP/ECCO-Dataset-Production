@@ -265,26 +265,44 @@ def create_job_task_list(
             # granules):
             #
 
-            variable_inputs = {}
+            #
+            # a few preliminaries ...
+            #
 
             job = Job(*ast.literal_eval(line))
             job_metadata = dataset_groupings[job.product_type][job.metadata_groupings_id]
             log.debug('job metadata for %s, %d: %s',
                 job.product_type, job.metadata_groupings_id, job_metadata)
 
-            # find all source files referenced by this job/job_metadata combination:
-
             if job.frequency.lower() == 'avg_day':
                 path_freq_pat = 'diags_daily'
                 file_freq_pat = 'day_mean'
+                dataset_description_head = 'This dataset contains daily-averaged '
             elif job.frequency.lower() == 'avg_mon':
                 path_freq_pat = 'diags_monthly'
                 file_freq_pat = 'mon_mean'
+                dataset_description_head = 'This dataset contains monthly-averaged '
             elif job.frequency.lower() == 'snap':
                 # TODO
+                dataset_description_head = 'This dataset contains instantaneous '
                 pass
             else:
-                raise ValueError('job frequency must be one of avg_day, avg_mon, or snap')
+                raise ValueError("job frequency must be one of 'avg_day', 'avg_mon', or 'snap'")
+
+            if job.product_type.lower() == '1d':
+                dataset_description_tail = cfg['dataset_description_tail_1D']
+            elif job.product_type.lower() == 'latlon':
+                dataset_description_tail = cfg['dataset_description_tail_latlon']
+            elif job.product_type.lower() == 'native':
+                dataset_description_tail = cfg['dataset_description_tail_native']
+            else:
+                raise ValueError("job product type must be one of '1d', 'latlon', or 'native'")
+
+            #
+            # find all source files referenced by this job/job_metadata combination:
+            #
+
+            variable_inputs = {}
 
             for variable in job_metadata['fields'].replace(' ','').split(','): # 'fields' string as iterable
 
@@ -597,6 +615,28 @@ def create_job_task_list(
                     #'time_coverage_duration'
                     #'time_coverage_resolution'
                 }
+                try:
+                    task['metadata']['comment'] = job_metadata['comment']
+                except:
+                    pass
+                if 'mean' in file_freq_pat:
+                    task['metadata']['time_long_name'] = 'center time of averaging period'
+                    if 'day' in file_freq_pat:
+                        task['metadata']['time_coverage_duration']  = 'P1D'
+                        task['metadata']['time_coverage_resolution']= 'P1D'
+                    elif 'mon' in file_freq_pat:
+                        task['metadata']['time_coverage_duration']  = 'P1M'
+                        task['metadata']['time_coverage_resolution']= 'P1M'
+                else:
+                    task['metadata']['time_long_name'] = 'snapshot time'
+                    task['metadata']['time_coverage_duration']  = 'P0S'
+                    task['metadata']['time_coverage_resolution']= 'P0S'
+
+                task['metadata']['summary'] = ' '.join(
+                    [dataset_description_head, job_metadata['name'], dataset_description_tail])
+                # remove (possible) redundant whitespace chars:
+                task['metadata']['summary'] = ' '.join(task['metadata']['summary'].split())
+
                 task_list.append(task)
 
     return task_list

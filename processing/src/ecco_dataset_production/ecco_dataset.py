@@ -115,7 +115,8 @@ class ECCOMDSDataset(object):
                     grid_vars_to_coords     = False,
                     output_freq_code        = mds_file.averaging_period,
                     model_time_steps_to_load= [mds_file.time],
-                    read_grid               = self.cfg['read_grid'],
+                    read_grid               = True,
+                    #read_grid               = self.cfg['read_grid'],
                     model_start_datetime    = np.datetime64(self.cfg['model_start_time']))
 #                previously:
 #                self.ds = open_mdsdataset(
