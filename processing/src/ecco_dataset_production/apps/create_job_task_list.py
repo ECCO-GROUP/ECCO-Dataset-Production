@@ -78,25 +78,6 @@ def create_parser():
     return parser
 
 
-##
-## common utilities, at some point:
-## 
-#
-#def is_s3_uri(path_or_uri_str):
-#    """Determines whether or not input string is an AWS S3Uri.
-#
-#    Args:
-#        path_or_uri_str (str): Input string.
-#
-#    Returns:
-#        True if string matches 's3://', False otherwise.
-#    """ 
-#    if re.search( r's3:\/\/', path_or_uri_str, re.IGNORECASE):
-#        return True
-#    else:
-#        return False
-
-
 def create_job_task_list(
     jobfile=None, ecco_source_root=None, ecco_destination_root=None,
     ecco_grid_loc=None, ecco_mapping_factors_loc=None,

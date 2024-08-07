@@ -10,6 +10,7 @@ import logging
 import netCDF4
 import numpy as np
 import os
+import pandas as pd
 import uuid
 import xarray as xr
 import yaml
@@ -17,11 +18,12 @@ import yaml
 import ecco_v4_py
 
 from . import ecco_dataset
+from . import ecco_file
 from . import ecco_grid
 from . import ecco_mapping_factors
 from . import ecco_metadata_store
 from . import ecco_task
-from . import metadata
+#from . import metadata
 
 
 def ecco_make_granule( task, cfg,
@@ -216,7 +218,7 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
     dataset.attrs['date_metadata_modified'] = current_time
     dataset.attrs['date_issued']            = current_time
 
-    # miscellaneous attributes sourced from cfg data:
+    # some miscellaneous attributes sourced directly from cfg data:
     dataset.attrs['history']                    = cfg['history']
     dataset.attrs['geospatial_vertical_min']    = cfg['geospatial_vertical_min']
     dataset.attrs['product_time_coverage_start']= cfg['model_start_time']
@@ -275,10 +277,6 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
     gcmd_keywords = ', '.join(gcmd_keywords)                                        # as single cs string
     dataset.attrs['keywords'] = gcmd_keywords
 
-    #
-    # "finishing touches":
-    #
-
     # uuid:
     dataset.attrs['uuid'] = str(uuid.uuid1())
 
@@ -291,19 +289,46 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
             dataset.attrs['comment'] = task['metadata']['comment']
     except:
         pass
-
     dataset.time.attrs['long_name'] = task['metadata']['time_long_name']
     dataset.attrs['time_coverage_duration'] = task['metadata']['time_coverage_duration']
     dataset.attrs['time_coverage_resolution'] = task['metadata']['time_coverage_resolution']
-    dataset.attrs['product_name'] = task['granule']
+    dataset.attrs['product_name'] = os.path.basename(task['granule'])
     dataset.attrs['summary'] = ' '.join([task['metadata']['summary'],dataset.attrs['summary']])
 
-    # TODO: PO.DAAC metadata...
+    # PO.DAAC metadata:
+    try:
+        # first, locate podaac metadata source file in ecco metadata directory:
+        pm = pd.read_csv( os.path.join(
+            task['ecco_metadata_loc'], cfg['podaac_metadata_filename']))
+        # get PO.DAAC metadata (row) corresponding to 'DATASET.FILENAME' column
+        # element that matches "generic" granule file string (i.e., without date and
+        # version):
+        granule_filestr = ecco_file.ECCOGranuleFilestr(os.path.basename(task['granule']))
+        granule_filestr.date = None
+        granule_filestr.version = None
+        pm_row_for_this_granule = pm[pm['DATASET.FILENAME'].str.match(granule_filestr.re_filestr)]
+        if len(pm_row_for_this_granule) != 1:
+            e1 = f'granule regular expression, {granule_filestr.re_filestr},'
+            if not len(pm_row_for_this_granule):
+                e2 = 'did not match any PO.DAAC DATASET.FILENAME column elements.'
+            else:
+                e2 = 'matched more that one PO.DAAC DATASET.FILENAME column element.'
+            raise RuntimeError(' '.join([e1,e2]))
+        dataset.attrs['id'] = \
+            pm_row_for_this_granule['DATASET.PERSISTENT_ID'].iloc[0].\
+            replace('PODAAC-',f"{cfg['doi_prefix']}/")
+        dataset.attrs['metadata_link'] = \
+            cfg['metadata_link_root'] + \
+            pm_row_for_this_granule['DATASET.SHORT_NAME'].iloc[0]
+        dataset.attrs['title'] = \
+            pm_row_for_this_granule['DATASET.LONG_NAME'].iloc[0]
+    except:
+        #log.info(...)
+        pass
 
+    dataset.attrs = dict(sorted(dataset.attrs.items()))
 
     return dataset
-
-
 
 
 def generate_dataproducts( tasklist, cfgfile,

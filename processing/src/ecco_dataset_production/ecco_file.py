@@ -16,30 +16,25 @@ class ECCOMDSFilestr(object):
     Args:
         filestr (str): ECCO MDS filename string. (default=None)
         **kwargs: Instead of filestr, individual file components may be provided
-            and can be used to build up file-matching regular expressions,
-            returned as re_filestr. Possible arguments include:
-                prefix (str): Product prefix/name. (default: r'.*')
+            and can be used to build up file-matching expressions.  Possible
+            arguments include:
+                prefix (str): Product prefix/name.
                 averaging_period (str): Averaging period ('mon_mean',
-                    'day_mean', or 'day_inst', case_insensitive). (default:
-                    r'.*')
+                    'day_mean', or 'day_inst', case_insensitive).
                 time (str): Time string with or without zero padding.
-                    (default: r'\d{10}')
-                ext (str): File extension (default: r'.*')
-                #ext (str): File extension (default: 'data')
+                ext (str): File extension.
 
     Attributes:
-        filestr (str): Input filestr, if provided, or raw string created from
-            input kwargs (may be a valid filename if all kwargs present and in
-            correct formats, but will not be a valid regular expression if not;
-            see re_filestr in this case)
-        re_filestr (str): filestr regular expression for use in pattern-matching
-            operations, based on either filestr or kwargs input.
-        prefix (str): 'prefix' from either input filestr or kwarg, r'.*'
-            otherwise.
-        averaging_period (str): 'averaging_period' from input filestr or kwarg,
-            r'.*' otherwise.
-        time (str): 'time' from input filestr or kwarg, r'\d{10}' otherwise.
-        ext (str): 'ext' from input filestr or kwarg, r'.*' otherwise.
+        prefix (str): 'prefix' from either input filestr or kwarg.
+        averaging_period (str): 'averaging_period' from input filestr or kwarg.
+        time (str): 'time' from input filestr or kwarg.
+        ext (str): 'ext' from input filestr or kwarg.
+
+    Properties:
+        filestr (str): ECCO mds file string, or shell wildcard expression if
+            any of the filestring components are undefined.
+        re_filestr (str): ECCO mds file string, or regular expression
+            pattern if any of the filestring components are undefined.
 
     """
     fmt = '<prefix>_<averaging_period>.<time>.<ext>'
@@ -59,25 +54,49 @@ class ECCOMDSFilestr(object):
                 re_mo = re.match(r'\d{10}',time_and_ext)
                 self.time = time_and_ext[:re_mo.span()[1]]
                 self.ext = time_and_ext[re_mo.span()[1]+1:]
-                self.filestr = filestr
             except:
                 raise ValueError(
                     f'unrecognized file string format; must be of the form {ECCOMDSFilestr.fmt}')
         else:
-            # set attributes that may have been provided, regex placeholders as
-            # best as we can for everything else:
-            self.prefix = kwargs.pop('prefix',r'.*')
-            self.averaging_period = kwargs.pop('averaging_period',r'.*')
-            self.time = kwargs.pop('time',r'\d{10}')
-            self.ext = kwargs.pop('ext',r'.*')
-            # raw filestr:
-            self.filestr = \
-                self.prefix + '_' + self.averaging_period + '.' + \
-                self.time + '.' + self.ext
-            # filestr, as a regex:
-            self.re_filestr = \
-                self.prefix + '_' + self.averaging_period + '\.' + \
-                self.time + '\.' + self.ext
+            # set attributes that may have been provided:
+            self.prefix = kwargs.pop('prefix',None)
+            self.averaging_period = kwargs.pop('averaging_period',None)
+            self.time = kwargs.pop('time',None)
+            self.ext = kwargs.pop('ext',None)
+
+
+    @property
+    def filestr(self):
+        """ECCO mds file string, or shell wildcard expression if any of the
+        filestring components are undefined.
+
+        """
+        prefix = self.prefix if self.prefix else '*'
+        averaging_period = self.averaging_period if self.averaging_period else '*'
+        time = self.time if self.time else '*'
+        ext = self.ext if self.ext else '*'
+        return \
+            prefix + '_' + \
+            averaging_period + '.' + \
+            time + '.' + \
+            ext
+
+
+    @property
+    def re_filestr(self):
+        """ECCO mds file string, or regular expression pattern if any of the
+        filestring components are undefined.
+
+        """
+        prefix = self.prefix if self.prefix else '.*'
+        averaging_period = self.averaging_period if self.averaging_period else '.*'
+        time = self.time if self.time else '\d{10}'
+        ext = self.ext if self.ext else '.*'
+        return \
+            prefix + '_' + \
+            averaging_period + '\.' + \
+            time + '\.' + \
+            ext
 
 
 class ECCOGranuleFilestr(object):
@@ -88,46 +107,38 @@ class ECCOGranuleFilestr(object):
     Args:
         filestr (str): ECCO file string. (default=None)
         **kwargs: Instead of filestr, individual file components may be provided
-            and can be used to build up file-matching regular expressions,
-            returned as re_filestr. Possible arguments include:
-                prefix (str): Product prefix/name (default: r'.*')
+            and can be used to build up file-matching expressions.  Possible
+            arguments include:
+                prefix (str): Product prefix/name.
                 averaging_period (str): Averaging period ('mon_mean',
-                    'day_mean', or 'day_inst', case insensitive). (default:
-                    r'.*')
+                    'day_mean', or 'day_inst', case insensitive).
                 date (str): Averaging period end date, in ISO Date or Date Time
                     format (e.g., 'YYYY-MM-DD' or 'YYYY-MM-DDThh:mm:ss').
                     Regardless of input, filestr date may be truncated according
                     to averaging period, for example, if
                     averaging_period='mon_mean' and date is in 'YYYY-MM-DD'
                     format, only the 'YYYY-MM' portion will be used in filestr.
-                    (default: r'.*')
-                version (str): ECCO version, e.g. 'V4r4', 'V4r5', etc. (default:
-                    r'.*')
-                grid_type (str): Grid, or product type, e.g. 'native' or
-                    'latlon'. (default: r'.*')
+                version (str): ECCO version, e.g. 'V4r4', 'V4r5', etc.
+                grid_type (str): Grid, or product type, e.g. 'latlon', 'native'
+                    or 'snap'.
                 grid_label (str): Additional grid attributes, e.g., 'llc0090',
-                    '0p50deg', etc. (default: r'.*')
+                    '0p50deg', etc.
                 ext (str): File extension. (default: 'nc')
 
     Attributes:
-        filestr (str): Input filestr, if provided, or raw string created from
-            input kwargs (may be a valid filename if all kwargs present and in
-            correct formats, but will not be a valid regular expression if not;
-            see re_filestr in this case)
-        re_filestr (str): filestr regular expression for use in pattern-matching
-            operations, based on either filestr or kwargs input.
-        prefix (str): 'prefix' from either input filestr or kwarg, r'.*'
-            otherwise.
-        averaging_period (str): 'averaging_period' from input filestr or kwarg,
-            r'.*' otherwise. See preceding kwargs comment.
-        date (str): 'date' from input filestr or kwarg, r'.*' otherwise. See
-            preceding kwargs comment.
-        version (str): 'version' from input filestr or kwarg, r'.*' otherwise.
-        grid_type (str): 'grid_type' from input filestr or kwarg, r'.*'
-            otherwise.
-        grid_label (str): 'grid_label' from input filestr or kwarg, r'.*'
-            otherwise.
+        prefix (str): 'prefix' from either input filestr or kwarg.
+        averaging_period (str): 'averaging_period' from input filestr or kwarg.
+        date (str): 'date' from input filestr or kwarg.
+        version (str): 'version' from input filestr or kwarg.
+        grid_type (str): 'grid_type' from input filestr or kwarg.
+        grid_label (str): 'grid_label' from input filestr or kwarg.
         ext (str): 'ext' from input filestr or kwarg, string 'nc' otherwise.
+
+    Properties:
+        filestr (str): ECCO granule file string, or shell wildcard expression if
+            any of the filestring components are undefined.
+        re_filestr (str): ECCO granule file string, or regular expression
+            pattern if any of the filestring components are undefined.
 
     """
     fmt = '<prefix>_<averaging_period>_<date>_ECCO_<version>_<grid_type>_<grid_label>.nc'
@@ -148,16 +159,14 @@ class ECCOGranuleFilestr(object):
                 self.date,_,self.version,self.grid_type,grid_label_and_ext = \
                     filestr[re_so.span()[1]+1:].split('_')
                 self.grid_label,self.ext = grid_label_and_ext.split('.')
-                self.filestr = filestr
             except:
                 raise ValueError(
                     f'unrecognized file string format; must be of the form {ECCOGranuleFilestr.fmt}')
         else:
-            # set attributes that may have been provided, regex placeholders as
-            # best as we can for everything else:
-            self.prefix = kwargs.pop('prefix',r'.*')
-            self.averaging_period = kwargs.pop('averaging_period',r'.*')
-            date = kwargs.pop('date',r'.*')
+            # set attributes that may have been provided:
+            self.prefix = kwargs.pop('prefix',None)
+            self.averaging_period = kwargs.pop('averaging_period',None)
+            date = kwargs.pop('date',None)
             try:
                 date_as_dt = dt.datetime.fromisoformat(date)
                 if 'mon' in self.averaging_period:
@@ -168,18 +177,44 @@ class ECCOGranuleFilestr(object):
                         date_as_dt.year,date_as_dt.month,date_as_dt.day)
             except:
                 self.date = date
-            self.version = kwargs.pop('version',r'.*')
-            self.grid_type = kwargs.pop('grid_type',r'.*')
-            self.grid_label = kwargs.pop('grid_label',r'.*')
+            self.version = kwargs.pop('version',None)
+            self.grid_type = kwargs.pop('grid_type',None)
+            self.grid_label = kwargs.pop('grid_label',None)
             self.ext = kwargs.pop('ext','nc')
-            # raw filestr:
-            self.filestr = '_'.join([
-                self.prefix, self.averaging_period, self.date, 'ECCO',
-                self.version, self.grid_type, self.grid_label])
-            self.filestr = '.'.join([self.filestr,self.ext])
-            # filestr, as regex:
-            self.re_filestr = '_'.join([
-                self.prefix, self.averaging_period, self.date, 'ECCO',
-                self.version, self.grid_type, self.grid_label])
-            self.re_filestr = self.re_filestr + '\.' + self.ext
+
+
+    @property
+    def filestr(self):
+        """ECCO granule file string, or shell wildcard expression if any of the
+        filestring components are undefined.
+
+        """
+        filestr = '_'.join([
+            self.prefix if self.prefix else '*',
+            self.averaging_period if self.averaging_period else '*',
+            self.date if self.date else '*',
+            'ECCO',
+            self.version if self.version else '*',
+            self.grid_type if self.grid_type else '*',
+            self.grid_label if self.grid_label else '*',
+            ])
+        return '.'.join([filestr,self.ext])
+
+
+    @property
+    def re_filestr(self):
+        """ECCO granule file string, or regular expression pattern if any of the
+        filestring components are undefined.
+
+        """
+        filestr = '_'.join([
+            self.prefix if self.prefix else '.*',
+            self.averaging_period if self.averaging_period else '.*',
+            self.date if self.date else '.*',
+            'ECCO',
+            self.version if self.version else '.*',
+            self.grid_type if self.grid_type else '.*',
+            self.grid_label if self.grid_label else '.*',
+            ])
+        return '\.'.join([filestr,self.ext])
 
