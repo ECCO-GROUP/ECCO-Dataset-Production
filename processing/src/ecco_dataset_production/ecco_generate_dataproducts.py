@@ -17,6 +17,7 @@ import yaml
 
 import ecco_v4_py
 
+from .aws import ecco_aws_s3_cp
 from . import ecco_dataset
 from . import ecco_file
 from . import ecco_grid
@@ -80,9 +81,12 @@ def ecco_make_granule( task, cfg,
         #merged_variable_dataset_with_ancillary_data.to_netcdf(this_task['granule'])
         #merged_variable_dataset.to_netcdf(this_task['granule'])
     else:
-        # TODO: write to temp location, upload...
-        pass
-
+        # write to local nc file and upload (assumes local '.' write):
+        _src = os.path.basename(this_task['granule'])
+        _dest = os.path.dirname(this_task['granule'])
+        merged_variable_dataset_with_all_metadata.to_netcdf(_src)
+        log.info('uploading %s to %s', _src, _dest)
+        ecco_aws_s3_cp.aws_s3_cp( src=_src, dest=_dest, **kwargs)
     log.info('... done')
 
 
@@ -100,23 +104,23 @@ def set_granule_ancillary_data(
         dataset[var].values = np.where(np.isnan(dataset[var].values),ncfill,dataset[var].values)
 
     # time coordinate bounds:
-    if all( [k in task['metadata'] for k in
+    if all( [k in task['dynamic_metadata'] for k in
         ('time_coverage_start','time_coverage_end','time_coverage_center')]):
         # original ported code that doesn't work (raises
         # "IndexError: index 0 is out of bounds for axis 0 with size 0"):
         #dataset['time_bnds'] = []
-        #dataset.time_bnds.values[0][0] = np.datetime64(task['metadata']['time_coverage_start'])
-        #dataset.time_bnds.values[0][1] = np.datetime64(task['metadata']['time_coverage_end'])
+        #dataset.time_bnds.values[0][0] = np.datetime64(task['dynamic_metadata']['time_coverage_start'])
+        #dataset.time_bnds.values[0][1] = np.datetime64(task['dynamic_metadata']['time_coverage_end'])
         #dataset['time'] = []
-        #dataset.time.values[0] = np.datetime64(task['metadata']['time_coverage_center'])
+        #dataset.time.values[0] = np.datetime64(task['dynamic_metadata']['time_coverage_center'])
         # possible solution:
         dataset['time_bnds'] = (
             ('time','nv'),
-            [[np.datetime64(task['metadata']['time_coverage_start']),
-              np.datetime64(task['metadata']['time_coverage_end'])]])
+            [[np.datetime64(task['dynamic_metadata']['time_coverage_start']),
+              np.datetime64(task['dynamic_metadata']['time_coverage_end'])]])
         dataset['time'] = (
             ('time'),
-            [np.datetime64(task['metadata']['time_coverage_center'])])
+            [np.datetime64(task['dynamic_metadata']['time_coverage_center'])])
 
     # spatial coordinate bounds:
     if task.is_latlon:
@@ -189,13 +193,13 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
 
     # global metadata:
     dataset = ecco_v4_py.ecco_utils.add_global_metadata(
-        all_metadata['global_all'], dataset, task['metadata']['dimension'])
+        all_metadata['global_all'], dataset, task['dynamic_metadata']['dimension'])
     if task.is_latlon:
         dataset = ecco_v4_py.ecco_utils.add_global_metadata(
-            all_metadata['global_latlon'], dataset, task['metadata']['dimension'])
+            all_metadata['global_latlon'], dataset, task['dynamic_metadata']['dimension'])
     elif task.is_native:
         dataset = ecco_v4_py.ecco_utils.add_global_metadata(
-            all_metadata['global_native'], dataset, task['metadata']['dimension'])
+            all_metadata['global_native'], dataset, task['dynamic_metadata']['dimension'])
 
     # time metadata:
     if 'time' in dataset.coords:
@@ -204,8 +208,8 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
 
     # global time and date-associated metadata:
     if 'mean' in task.averaging_period:
-        dataset.attrs['time_coverage_start']= task['metadata']['time_coverage_start']
-        dataset.attrs['time_coverage_end']  = task['metadata']['time_coverage_end']
+        dataset.attrs['time_coverage_start']= task['dynamic_metadata']['time_coverage_start']
+        dataset.attrs['time_coverage_end']  = task['dynamic_metadata']['time_coverage_end']
     #TODO:
     #else:
     #    G.attrs['time_coverage_start'] = str(G.time.values[0])[0:19]
@@ -284,16 +288,16 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
     try:
         if 'comment' in dataset.attrs.keys():
             dataset.attrs['comment'] = \
-                ' '.join([dataset.attrs['comment'],task['metadata']['comment']])
+                ' '.join([dataset.attrs['comment'],task['dynamic_metadata']['comment']])
         else:
-            dataset.attrs['comment'] = task['metadata']['comment']
+            dataset.attrs['comment'] = task['dynamic_metadata']['comment']
     except:
         pass
-    dataset.time.attrs['long_name'] = task['metadata']['time_long_name']
-    dataset.attrs['time_coverage_duration'] = task['metadata']['time_coverage_duration']
-    dataset.attrs['time_coverage_resolution'] = task['metadata']['time_coverage_resolution']
+    dataset.time.attrs['long_name'] = task['dynamic_metadata']['time_long_name']
+    dataset.attrs['time_coverage_duration'] = task['dynamic_metadata']['time_coverage_duration']
+    dataset.attrs['time_coverage_resolution'] = task['dynamic_metadata']['time_coverage_resolution']
     dataset.attrs['product_name'] = os.path.basename(task['granule'])
-    dataset.attrs['summary'] = ' '.join([task['metadata']['summary'],dataset.attrs['summary']])
+    dataset.attrs['summary'] = ' '.join([task['dynamic_metadata']['summary'],dataset.attrs['summary']])
 
     # PO.DAAC metadata:
     try:

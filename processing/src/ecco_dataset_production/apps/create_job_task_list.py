@@ -26,6 +26,7 @@ logging.basicConfig(
     format = '%(levelname)-10s %(asctime)s %(message)s')
 log = logging.getLogger('edp')
 
+
 def create_parser():
     """Set up list of command-line arguments to create_job_task_list.
 
@@ -37,8 +38,10 @@ def create_parser():
     parser.add_argument('--jobfile', help="""
         (Path and) filename of ECCO Dataset Production jobs simple text file""")
     parser.add_argument('--ecco_source_root', help="""
-        ECCO results root location, either directory path (e.g.,
-        /ecco_nfs_1/shared/ECCOV4r5) or AWS S3 bucket (s3://...)""")
+        ECCO results unique root location, either directory path (e.g.,
+        /ecco_nfs_1/shared/ECCOV4r5) or AWS S3 bucket
+        (s3://ecco-model-granules/V4r4). 'Unique' implies that multiple versions
+        of the same source files cannot be found from the root.""")
     parser.add_argument('--ecco_destination_root', help="""
         ECCO Dataset Production output root location, either directory path
         (e.g., ECCOV4r5_datasets) or AWS S3 bucket (s3://bucket_name)""")
@@ -76,6 +79,24 @@ def create_parser():
         Set logging level (default: %(default)s)""")
 
     return parser
+
+
+def s3_list_files( s3_client, bucket, prefix):
+    """A paginated approach to retrieving AWS S3 file lists.
+
+    """
+    file_list = []
+
+    paginator = s3_client.get_paginator('list_objects_v2')
+
+    # make sure prefix doesn't start with a '/' (api call will return 'OK' but
+    # with null 'Contents', no messages issued), page through results and field
+    # 'Key' values from objects in 'Contents':
+
+    for page in paginator.paginate(Bucket=bucket,Prefix=prefix.lstrip('/')):
+        for obj in page.get('Contents',[]):
+            file_list.append(obj['Key'])
+    return file_list
 
 
 def create_job_task_list(
@@ -124,8 +145,8 @@ def create_job_task_list(
 
     Returns:
         List of resulting job tasks, each as a dictionary with 'granule',
-        'variables', 'ecco_grid_loc', 'ecco_mapping_factors', and 'metadata'
-        keys.
+        'variables', 'ecco_grid_loc', 'ecco_mapping_factors',
+        'ecco_metadata_loc' and 'dynamic_metadata' keys.
 
     Raises:
         RuntimeError: If ecco_source_root or ecco_destination_root are not
@@ -138,6 +159,7 @@ def create_job_task_list(
         either directory path or in AWS S3 object names.
 
     """
+    log = logging.getLogger('edp.'+__name__)
     if log_level:
         log.setLevel(log_level)
 
@@ -163,8 +185,8 @@ def create_job_task_list(
         err += ' must be provided'
         raise RuntimeError(err)
 
-    if aws.ecco_aws.is_s3_uri(ecco_source_root):
-        # update login credentials:
+    if aws.ecco_aws.is_s3_uri(ecco_source_root) and keygen:
+        # running in SSO environment; update login credentials:
         log.info('updating credentials...')
         try:
             subprocess.run(keygen,check=True)
@@ -174,14 +196,17 @@ def create_job_task_list(
         log.info('...done')
         # set session defaults:
         boto3.setup_default_session(profile_name=profile)
-        # get bucket object list:
-        s3r = boto3.resource('s3')
+        # much of the following is now performed on a job entry-by-entry basis, below
+        ## get bucket object list:
+        #s3r = boto3.resource('s3')
         s3_parts = urllib.parse.urlparse(ecco_source_root)
-        bucket_name = s3_parts.netloc
-        log.info("getting contents of bucket '%s'...", bucket_name)
-        bucket = s3r.Bucket(bucket_name)
-        files_in_bucket = list(bucket.objects.all())
-        log.info('...done')
+        #bucket_name = s3_parts.netloc
+        #log.info("getting contents of bucket '%s'...", bucket_name)
+        #bucket = s3r.Bucket(bucket_name)
+        #files_in_bucket = list(bucket.objects.all())
+        #log.info('...done')
+        # and, instead, create an s3 client for later use instead:
+        s3c = boto3.client('s3')
     elif not os.path.exists(ecco_source_root):
         raise ValueError(
             f"Nonexistent ecco_source_root directory location, '{ecco_source_root}'")
@@ -285,8 +310,8 @@ def create_job_task_list(
 
             variable_inputs = {}
 
-            for variable in job_metadata['fields'].replace(' ','').split(','): # 'fields' string as iterable
-
+            for variable in job_metadata['fields'].replace(' ','').split(','):  # remove spaces, 'fields'
+                                                                                # string as iterable
                 # collect list of available input files for the output variable.
                 # accommodate two basic schemas: direct (one-to-one), and vector
                 # component based (output based on many input components):
@@ -317,8 +342,16 @@ def create_job_task_list(
 
                     for variable_input_component_key in variable_input_components_keys:
 
-                        #variable_input_component_pat = variable_input_component_key
                         variable_input_component_files = []
+
+                        if aws.ecco_aws.is_s3_uri(ecco_source_root):
+                            all_var_files_in_bucket = s3_list_files(
+                                s3_client=s3c,
+                                bucket=s3_parts.netloc,
+                                prefix=os.path.join(
+                                    s3_parts.path,
+                                    path_freq_pat,
+                                    '_'.join([variable_input_component_key,file_freq_pat])))
 
                         if 'all' == job.time_steps.lower():
                             # get all possible time matches:
@@ -332,9 +365,8 @@ def create_job_task_list(
                                 variable_input_component_files.extend(
                                     [os.path.join(
                                         urllib.parse.urlunparse(
-                                            (s3_parts.scheme,s3_parts.netloc,'','','','')),
-                                        f.key)
-                                        for f in files_in_bucket if re.match(s3_key_pat,f.key)])
+                                            (s3_parts.scheme,s3_parts.netloc,'','','','')),f)
+                                        for f in all_var_files_in_bucket if re.match(s3_key_pat,f)])
                                     #[os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
                                     #    for f in files_in_bucket if re.match(file_pat,f.key)])
                             else:
@@ -361,9 +393,8 @@ def create_job_task_list(
                                     variable_input_component_files.append(
                                         [os.path.join(
                                             urllib.parse.urlunparse(
-                                                (s3_parts.scheme,s3_parts.netloc,'','','','')),
-                                            f.key)
-                                            for f in files_in_bucket if re.match(s3_key_pat,f.key)])
+                                                (s3_parts.scheme,s3_parts.netloc,'','','','')),f)
+                                            for f in all_var_files_in_bucket if re.match(s3_key_pat,f)])
                                         #[os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
                                         #    for f in files_in_bucket if re.match(file_pat,f.key)])
                                 else:
@@ -440,6 +471,16 @@ def create_job_task_list(
                     # all selected/retrieved times).
 
                     variable_files = []
+
+                    if aws.ecco_aws.is_s3_uri(ecco_source_root):
+                        all_var_files_in_bucket = s3_list_files(
+                            s3_client=s3c,
+                            bucket=s3_parts.netloc,
+                            prefix=os.path.join(
+                                s3_parts.path,
+                                path_freq_pat,
+                                '_'.join([variable,file_freq_pat])))
+
                     if 'all' == job.time_steps.lower():
                         # get all possible time matches:
                         if aws.ecco_aws.is_s3_uri(ecco_source_root):
@@ -452,9 +493,8 @@ def create_job_task_list(
                             variable_files.extend(
                                 [os.path.join(
                                     urllib.parse.urlunparse(
-                                        (s3_parts.scheme,s3_parts.netloc,'','','','')),
-                                    f.key)
-                                    for f in files_in_bucket if re.match(s3_key_pat,f.key)])
+                                        (s3_parts.scheme,s3_parts.netloc,'','','','')),f)
+                                    for f in all_var_files_in_bucket if re.match(s3_key_pat,f)])
                         else:
                             file_pat = re.compile( r'.*' + ecco_file.ECCOMDSFilestr(
                                 prefix=variable,
@@ -478,9 +518,8 @@ def create_job_task_list(
                                 variable_files.append(
                                     [os.path.join(
                                         urllib.parse.urlunparse(
-                                            (s3_parts.scheme,s3_parts.netloc,'','','','')),
-                                        f.key)
-                                        for f in files_in_bucket if re.match(s3_key_pat,f.key)])
+                                            (s3_parts.scheme,s3_parts.netloc,'','','','')),f)
+                                        for f in files_in_bucket if re.match(s3_key_pat,f)])
                             else:
                                 file_pat = re.compile( r'.*' + ecco_file.ECCOMDSFilestr(
                                     prefix=variable,averaging_period=file_freq_pat,time=time).re_filestr)
@@ -585,38 +624,35 @@ def create_job_task_list(
                 task['ecco_grid_loc'] = ecco_grid_loc
                 task['ecco_mapping_factors_loc'] = ecco_mapping_factors_loc
                 task['ecco_metadata_loc'] = ecco_metadata_loc
-                # dynamic metadata:
-                task['metadata'] = {
+                task['dynamic_metadata'] = {
                     'name':job_metadata['name'],
                     'dimension':job_metadata['dimension'],
                     'time_coverage_start': pd.Timestamp(tb[0]).strftime("%Y-%m-%dT%H:%M:%S"),
                     'time_coverage_end': pd.Timestamp(tb[1]).strftime("%Y-%m-%dT%H:%M:%S"),
                     'time_coverage_center': pd.Timestamp(center_time).strftime("%Y-%m-%dT%H:%M:%S")
-                    #TODO:
-                    #'time_coverage_duration'
-                    #'time_coverage_resolution'
                 }
                 try:
-                    task['metadata']['comment'] = job_metadata['comment']
+                    task['dynamic_metadata']['comment'] = job_metadata['comment']
                 except:
                     pass
                 if 'mean' in file_freq_pat:
-                    task['metadata']['time_long_name'] = 'center time of averaging period'
+                    task['dynamic_metadata']['time_long_name'] = 'center time of averaging period'
                     if 'day' in file_freq_pat:
-                        task['metadata']['time_coverage_duration']  = 'P1D'
-                        task['metadata']['time_coverage_resolution']= 'P1D'
+                        task['dynamic_metadata']['time_coverage_duration']  = 'P1D'
+                        task['dynamic_metadata']['time_coverage_resolution']= 'P1D'
                     elif 'mon' in file_freq_pat:
-                        task['metadata']['time_coverage_duration']  = 'P1M'
-                        task['metadata']['time_coverage_resolution']= 'P1M'
+                        task['dynamic_metadata']['time_coverage_duration']  = 'P1M'
+                        task['dynamic_metadata']['time_coverage_resolution']= 'P1M'
                 else:
-                    task['metadata']['time_long_name'] = 'snapshot time'
-                    task['metadata']['time_coverage_duration']  = 'P0S'
-                    task['metadata']['time_coverage_resolution']= 'P0S'
+                    task['dynamic_metadata']['time_long_name'] = 'snapshot time'
+                    task['dynamic_metadata']['time_coverage_duration']  = 'P0S'
+                    task['dynamic_metadata']['time_coverage_resolution']= 'P0S'
 
-                task['metadata']['summary'] = ' '.join(
+                task['dynamic_metadata']['summary'] = ' '.join(
                     [dataset_description_head, job_metadata['name'], dataset_description_tail])
                 # remove (possible) redundant whitespace chars:
-                task['metadata']['summary'] = ' '.join(task['metadata']['summary'].split())
+                task['dynamic_metadata']['summary'] = ' '.join(
+                    task['dynamic_metadata']['summary'].split())
 
                 task_list.append(task)
 

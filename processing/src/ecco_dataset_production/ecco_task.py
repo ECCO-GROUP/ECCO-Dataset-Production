@@ -44,12 +44,12 @@ class ECCOTask(dict):
 
     @property
     def is_2d(self):
-        return "2d"==self.__getitem__('metadata')['dimension'].lower()
+        return "2d"==self.__getitem__('dynamic_metadata')['dimension'].lower()
 
 
     @property
     def is_3d(self):
-        return "3d"==self.__getitem__('metadata')['dimension'].lower()
+        return "3d"==self.__getitem__('dynamic_metadata')['dimension'].lower()
 
 
     @property
