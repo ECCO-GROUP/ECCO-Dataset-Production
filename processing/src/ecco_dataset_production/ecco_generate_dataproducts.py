@@ -87,6 +87,8 @@ def ecco_make_granule( task, cfg,
         merged_variable_dataset_with_all_metadata.to_netcdf(_src)
         log.info('uploading %s to %s', _src, _dest)
         ecco_aws_s3_cp.aws_s3_cp( src=_src, dest=_dest, **kwargs)
+        # clean up:
+        #pathlib.Path.unlink()
     log.info('... done')
 
 
@@ -149,6 +151,8 @@ def set_granule_ancillary_data(
 def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
     """
     """
+    log = logging.getLogger('edp.'+__name__)
+
     # get ecco metadata, wherever it may be:
     ecco_metadata_source = ecco_metadata_store.ECCOMetadataStore(
         metadata_loc=task['ecco_metadata_loc'], **kwargs)
@@ -299,7 +303,7 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
     dataset.attrs['product_name'] = os.path.basename(task['granule'])
     dataset.attrs['summary'] = ' '.join([task['dynamic_metadata']['summary'],dataset.attrs['summary']])
 
-    # PO.DAAC metadata:
+    # optional PO.DAAC metadata:
     try:
         # first, locate podaac metadata source file in ecco metadata directory:
         pm = pd.read_csv( os.path.join(
@@ -327,10 +331,10 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
         dataset.attrs['title'] = \
             pm_row_for_this_granule['DATASET.LONG_NAME'].iloc[0]
     except:
-        #log.info(...)
+        log.info('Skipping PO.DAAC metadata inclusion')
         pass
 
-    dataset.attrs = dict(sorted(dataset.attrs.items()))
+    dataset.attrs = dict(sorted(dataset.attrs.items(),key = lambda x : x[0].casefold()))
 
     return dataset
 
@@ -368,12 +372,12 @@ def generate_dataproducts( tasklist, cfgfile,
     if log_level:
         log.setLevel(log_level)
 
-    log.info('Initializing configuration parameters...')
+    log.info('Parsing configuration file...')
     cfg = yaml.safe_load(open(cfgfile))
-    log.debug('Configuration key value pairs:')
+    log.debug('configuration key value pairs:')
     for k,v in cfg.items():
         log.debug('%s: %s', k, v)
-    log.info('...done initializing configuration parameters.')
+    log.info('...done parsing configuration file.')
 
     shared_ecco_grid = shared_ecco_mapping_factors = None
 
@@ -382,7 +386,7 @@ def generate_dataproducts( tasklist, cfgfile,
         # Assuming all tasks share the same ECCO grid and mapping factors
         # references, for performance reasons, create ECCOGrid and
         # ECCOMappingFactors objects up-front (using the first task descriptor)
-        # that can be shared by all granule creation tasks:
+        # to be shared by all granule creation tasks:
         if not shared_ecco_grid and not shared_ecco_mapping_factors:
             shared_ecco_grid = ecco_grid.ECCOGrid(task=task)
             shared_ecco_mapping_factors = ecco_mapping_factors.ECCOMappingFactors(task=task)

@@ -62,6 +62,9 @@ class ECCOMDSFilestr(object):
             self.prefix = kwargs.pop('prefix',None)
             self.averaging_period = kwargs.pop('averaging_period',None)
             self.time = kwargs.pop('time',None)
+            if self.time:
+                # if an integer has been provided, enable subsequent string operations:
+                self.time = str(self.time)
             self.ext = kwargs.pop('ext',None)
 
 
@@ -73,7 +76,7 @@ class ECCOMDSFilestr(object):
         """
         prefix = self.prefix if self.prefix else '*'
         averaging_period = self.averaging_period if self.averaging_period else '*'
-        time = self.time if self.time else '*'
+        time = f'{int(self.time):010d}' if self.time else '*'
         ext = self.ext if self.ext else '*'
         return \
             prefix + '_' + \
@@ -90,7 +93,7 @@ class ECCOMDSFilestr(object):
         """
         prefix = self.prefix if self.prefix else '.*'
         averaging_period = self.averaging_period if self.averaging_period else '.*'
-        time = self.time if self.time else '\d{10}'
+        time = f'{int(self.time):010d}' if self.time else '\d{10}'
         ext = self.ext if self.ext else '.*'
         return \
             prefix + '_' + \

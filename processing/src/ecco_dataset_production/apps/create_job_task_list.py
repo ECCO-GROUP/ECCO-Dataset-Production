@@ -114,7 +114,7 @@ def create_job_task_list(
             where metadata_groupings_id is an integer from 0 through N,
             product_type is one of '1D', 'latlon', or 'native', frequency is one
             of 'SNAP', 'AVG_MON', or 'AVG_DAY', and time_steps is either a list
-            of time steps or 'all'.
+            of integer time steps or 'all'.
         ecco_source_root (str): ECCO results root location, either directory
             path (e.g., /ecco_nfs_1/shared/ECCOV4r5) or AWS S3 bucket
             (s3://...).
@@ -353,7 +353,7 @@ def create_job_task_list(
                                     path_freq_pat,
                                     '_'.join([variable_input_component_key,file_freq_pat])))
 
-                        if 'all' == job.time_steps.lower():
+                        if isinstance(job.time_steps,str) and 'all'==job.time_steps.lower():
                             # get all possible time matches:
                             if aws.ecco_aws.is_s3_uri(ecco_source_root):
                                 s3_key_pat = re.compile(
@@ -379,9 +379,10 @@ def create_job_task_list(
                                             [os.path.join(dirpath,f)
                                                 for f in filenames if re.match(file_pat,f)])
                         else:
-                            # explicit list of time steps; one match per item:
-                            time_steps_as_int_list = ast.literal_eval(job.time_steps)
-                            for time in time_steps_as_int_list:
+                            # assume explicit list of integer time steps; one match per item:
+                            #time_steps_as_int_list = ast.literal_eval(job.time_steps)
+                            for time in job.time_steps:
+                            #for time in time_steps_as_int_list:
                                 s3_key_pat = re.compile(
                                     s3_parts.path.strip('/')    # remove leading '/' from urlpath
                                     + '.*'                      # allow anything between path and filename
@@ -390,7 +391,7 @@ def create_job_task_list(
                                         averaging_period=file_freq_pat,
                                         time=time).re_filestr)
                                 if aws.ecco_aws.is_s3_uri(ecco_source_root):
-                                    variable_input_component_files.append(
+                                    variable_input_component_files.extend(
                                         [os.path.join(
                                             urllib.parse.urlunparse(
                                                 (s3_parts.scheme,s3_parts.netloc,'','','','')),f)
@@ -404,7 +405,7 @@ def create_job_task_list(
                                         time=time).re_filestr)
                                     for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                         if cfg['ecco_version'] in dirpath:
-                                            variable_input_component_files.append(
+                                            variable_input_component_files.extend(
                                                 [os.path.join(dirpath,f)
                                                     for f in filenames if re.match(file_pat,f)])
 
@@ -481,7 +482,8 @@ def create_job_task_list(
                                 path_freq_pat,
                                 '_'.join([variable,file_freq_pat])))
 
-                    if 'all' == job.time_steps.lower():
+                    if isinstance(job.time_steps,str) and 'all'==job.time_steps.lower():
+                    #if 'all' == job.time_steps.lower():
                         # get all possible time matches:
                         if aws.ecco_aws.is_s3_uri(ecco_source_root):
                             s3_key_pat = re.compile(
@@ -505,8 +507,9 @@ def create_job_task_list(
                                         [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
                     else:
                         # explicit list of time steps; one match per item:
-                        time_steps_as_int_list = ast.literal_eval(job.time_steps)
-                        for time in time_steps_as_int_list:
+                        #time_steps_as_int_list = ast.literal_eval(job.time_steps)
+                        for time in job.time_steps:
+                        #for time in time_steps_as_int_list:
                             s3_key_pat = re.compile(
                                 s3_parts.path.strip('/')    # remove leading '/' from urlpath
                                 + '.*'                      # allow anything between path and filename
@@ -515,17 +518,17 @@ def create_job_task_list(
                                     averaging_period=file_freq_pat,
                                     time=time).re_filestr)
                             if aws.ecco_aws.is_s3_uri(ecco_source_root):
-                                variable_files.append(
+                                variable_files.extend(
                                     [os.path.join(
                                         urllib.parse.urlunparse(
                                             (s3_parts.scheme,s3_parts.netloc,'','','','')),f)
-                                        for f in files_in_bucket if re.match(s3_key_pat,f)])
+                                        for f in all_var_files_in_bucket if re.match(s3_key_pat,f)])
                             else:
                                 file_pat = re.compile( r'.*' + ecco_file.ECCOMDSFilestr(
                                     prefix=variable,averaging_period=file_freq_pat,time=time).re_filestr)
                                 for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                     if cfg['ecco_version'] in dirpath:
-                                        variable_files.append(
+                                        variable_files.extend(
                                             [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
 
                     # group .data/.meta pairs for all specified/retrieved time
@@ -550,12 +553,6 @@ def create_job_task_list(
 
                 variable_files_as_time_keyed_dict = {}
                 for file_list in variable_files:
-                    #dbg:
-                    #print(' ')
-                    #print(f'file_list: {file_list}')
-                    #print(f'file_list[0][0]: {file_list[0][0]}')
-                    #print(ecco_file.ECCOMDSFilestr(os.path.basename(file_list[0][0])).time)
-                    #end.
                     variable_files_as_time_keyed_dict[ecco_file.ECCOMDSFilestr(
                         os.path.basename(file_list[0][0])).time] = file_list
                         #os.path.basename(file_list[0])).time] = file_list
