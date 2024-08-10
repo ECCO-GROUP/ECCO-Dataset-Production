@@ -185,15 +185,16 @@ def create_job_task_list(
         err += ' must be provided'
         raise RuntimeError(err)
 
-    if aws.ecco_aws.is_s3_uri(ecco_source_root) and keygen:
-        # running in SSO environment; update login credentials:
-        log.info('updating credentials...')
-        try:
-            subprocess.run(keygen,check=True)
-        except subprocess.CalledProcessError as e:
-            log.error(e)
-            sys.exit(1)
-        log.info('...done')
+    if aws.ecco_aws.is_s3_uri(ecco_source_root):
+        if keygen:
+            # running in SSO environment; update login credentials:
+            log.info('updating credentials...')
+            try:
+                subprocess.run(keygen,check=True)
+            except subprocess.CalledProcessError as e:
+                log.error(e)
+                sys.exit(1)
+            log.info('...done')
         # set session defaults:
         boto3.setup_default_session(profile_name=profile)
         # much of the following is now performed on a job entry-by-entry basis, below

@@ -83,12 +83,13 @@ def ecco_make_granule( task, cfg,
     else:
         # write to local nc file and upload (assumes local '.' write):
         _src = os.path.basename(this_task['granule'])
-        _dest = os.path.dirname(this_task['granule'])
+        _dest = this_task['granule']
+        #_dest = os.path.dirname(this_task['granule'])
         merged_variable_dataset_with_all_metadata.to_netcdf(_src)
         log.info('uploading %s to %s', _src, _dest)
         ecco_aws_s3_cp.aws_s3_cp( src=_src, dest=_dest, **kwargs)
         # clean up:
-        #pathlib.Path.unlink()
+        os.unlink(_src)
     log.info('... done')
 
 
