@@ -70,7 +70,13 @@ def create_parser():
     parser.add_argument('--band1', type=int, default=1, help="""
         End band index (default: %(default)s)""")        
     parser.add_argument('--iternum', type=int, default=0, help="""
-        Iteration number (default: %(default)s)""")        
+        Iteration number (default: %(default)s)""")
+    parser.add_argument('--fn_errors_full_path_prefix', default='', help="""
+        Error file prefix (default: "%(default)s")""")           
+    parser.add_argument('--corr_err', action='store_true')
+    parser.add_argument('--no-corr_err', dest='corr_err', action='store_false')
+    parser.set_defaults(corr_err=False)
+     
 # =============================================================================
 #     # Python >= 3.9
 #     parser.add_argument('--fill_dry_points', 
@@ -167,6 +173,8 @@ def proc_band(src, src_dir, src_fn,
               out_fn,
               chunk_start, nrec_chunk,
               sgrid_shape,
+              corr_err,
+              fn_errors_full_path_prefix,
               NP_DATA_TYPE=np.float32,
               closest_idx=np.nan,
               sgrid_drypnts=np.nan,              
@@ -246,7 +254,19 @@ def proc_band(src, src_dir, src_fn,
                 idxtaperdist4 = taperdist3<=disttmp
                 src_tapered[0:nrec_chunk,idxtaperdist4] = 0. #*src_tapered[idxtaperdist4]    
         # dest_field_flat_sub: time_rec, dest_grid_point
-        dest_field_flat_sub = (K_dict[band_idx] @ src_tapered.T).T
+            
+        dest_field_flat_sub = (K_dict[band_idx] @ src_tapered.T).T          
+# =============================================================================
+#         # alternative method to correct mapping error that is probably simpler 
+#         # because we do not need to pre-compute error. We then add back
+#         # mean_src_band to dest_field_flat_sub
+#         if corr_err:
+#             # now correct the mapping error
+#             mean_src_band = np.nanmean(src_tapered, axis=1)
+#             dest_field_flat_sub = (K_dict[band_idx] @ (src_tapered.T-mean_src_band)).T
+#         else:
+#             dest_field_flat_sub = (K_dict[band_idx] @ src_tapered.T).T
+# =============================================================================
         
         if taper_dest:
             disttmp_dest = earthrad*np.deg2rad(dgrid_y[masksub_dest]-lat_mid)
@@ -269,6 +289,18 @@ def proc_band(src, src_dir, src_fn,
                 idxtaperdist4 = taperdist3<=disttmp_dest
                 dest_field_flat_sub[0:nrec_chunk, idxtaperdist4] = 0.
                 
+        if corr_err:
+            # now correct the mapping error
+            mean_src_band = np.nanmean(src_tapered, axis=1)              
+            fn_err_full_path = fn_errors_full_path_prefix +f'_{band_idx+1:02d}_{band_idx+1:02d}'
+
+    #        fn_errors = \
+    #            f'errors_by_band_ones_on_MERRA2_grid.bin_merra2tollc90_{1:05d}_{1:05d}_{band:02d}_{band:02d}'
+            errors_band_tmp = np.fromfile(fn_err_full_path,dtype='>f4')
+            
+            dest_field_flat_sub = dest_field_flat_sub - \
+                np.outer( mean_src_band, errors_band_tmp)
+               
         if (verbose):            
             print(f'  PROC_BAND ends -- exec time for band: {band_idx+1:3d}, '+
                   f'{time.time()-time_bf_matrix_a:.4f} (s)')
@@ -411,7 +443,27 @@ def prep_proc():
     iternum = args.iternum    
     fill_dry_points = args.fill_dry_points
     verbose = args.verbose
-    taper_dest = args.taper_dest
+    taper_dest = args.taper_dest   
+    corr_err = args.corr_err
+    fn_errors_full_path_prefix = args.fn_errors_full_path_prefix
+  
+    if taper_dest==False:
+        print('======= Error! =======')
+        print(f'taper_dest has to be set to True: {taper_dest}')
+        sys.exit()
+        
+    if src=='merra2':
+        if corr_err==False:
+            print('======= Warning! =======')
+            print('When mapping MERRA2 to LLC90 or LLC270, it is recommended '+\
+                  f'to set corr_err to True: src={src}; corr_err={corr_err}') 
+    else:
+        if corr_err==True:
+            print('======= Warning! =======')
+            print('When src grid is other than MERRA2, corr_err can only be '+\
+                  'set to False: {corr_err}. Reseting corr_err to False')
+            corr_err==False        
+           
     if(nchunk<=0):
         print('Error!')
         print(f'nchunk has an integer that is larger than 0: {nchunk}')
@@ -505,6 +557,8 @@ def prep_proc():
             out_dir, llc,
             dgrid_shape,
             taper_dest,
+            corr_err,
+            fn_errors_full_path_prefix,            
             fill_dry_points,
             closest_idx,
             sgrid_drypnts,
@@ -523,6 +577,7 @@ def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk,
              sgrid_y, dgrid_y,
              out_dir, llc,
              dgrid_shape, taper_dest,
+             corr_err, fn_errors_full_path_prefix,             
              fill_dry_points, closest_idx, sgrid_drypnts,
              OutputGlobalField=False,
              use_shared_mem=False,
@@ -530,6 +585,7 @@ def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk,
              NP_DATA_TYPE = np.float32,
              verbose=False):
   
+    src_fn_input = src_fn
     for band_idx in range(band0-1, band1):        
         if(band_idx>=K_params.nband_max):
             continue                    
@@ -545,7 +601,7 @@ def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk,
                   f'{band_idx+1:d} ({slat0} to {slat1})')        
 
         for year in range(year0, year1+1):            
-            if src == 'merra2' and src_fn=='':
+            if src == 'merra2' and src_fn_input=='':
                 src_fn = variable +f'_{year:d}'           
             # input/source file information       
             file_stats = os.stat(src_dir+src_fn)
@@ -587,6 +643,8 @@ def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk,
                                                        out_fn,
                                                        chunk_start, nrec_chunk,
                                                        sgrid_shape,
+                                                       corr_err,
+                                                       fn_errors_full_path_prefix,
                                                        closest_idx=closest_idx,
                                                        sgrid_drypnts=
                                                        sgrid_drypnts,
@@ -603,6 +661,8 @@ def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk,
                                                        out_fn,
                                                        chunk_start, nrec_chunk,
                                                        sgrid_shape,
+                                                       corr_err,
+                                                       fn_errors_full_path_prefix,
                                                        closest_idx=closest_idx,
                                                        sgrid_drypnts=
                                                        sgrid_drypnts,
@@ -690,6 +750,8 @@ def main(verbose=False):
             out_dir, llc,
             dgrid_shape,
             taper_dest,
+            corr_err,
+            fn_errors_full_path_prefix,            
             fill_dry_points,
             closest_idx,
             sgrid_drypnts,
@@ -710,6 +772,8 @@ def main(verbose=False):
              out_dir, llc,
              dgrid_shape,
              taper_dest,
+             corr_err,
+             fn_errors_full_path_prefix,
              fill_dry_points,
              closest_idx,
              sgrid_drypnts,
