@@ -70,7 +70,7 @@ def create_parser():
     parser.add_argument('--band1', type=int, default=1, help="""
         End band index (default: %(default)s)""")        
     parser.add_argument('--iternum', type=int, default=0, help="""
-        Iternation number (default: %(default)s)""")        
+        Iteration number (default: %(default)s)""")        
 # =============================================================================
 #     # Python >= 3.9
 #     parser.add_argument('--fill_dry_points', 
@@ -545,7 +545,7 @@ def proc_all(band0, band1, year0, year1, rec0, rec1, nchunk,
                   f'{band_idx+1:d} ({slat0} to {slat1})')        
 
         for year in range(year0, year1+1):            
-            if src == 'merra2':
+            if src == 'merra2' and src_fn=='':
                 src_fn = variable +f'_{year:d}'           
             # input/source file information       
             file_stats = os.stat(src_dir+src_fn)
