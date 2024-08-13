@@ -119,11 +119,14 @@ def set_granule_ancillary_data(
         # possible solution:
         dataset['time_bnds'] = (
             ('time','nv'),
-            [[np.datetime64(task['dynamic_metadata']['time_coverage_start']),
-              np.datetime64(task['dynamic_metadata']['time_coverage_end'])]])
+            [[pd.Timestamp(task['dynamic_metadata']['time_coverage_start']),
+              pd.Timestamp(task['dynamic_metadata']['time_coverage_end'])]])
+            #[[np.datetime64(task['dynamic_metadata']['time_coverage_start']),
+            #  np.datetime64(task['dynamic_metadata']['time_coverage_end'])]])
         dataset['time'] = (
             ('time'),
-            [np.datetime64(task['dynamic_metadata']['time_coverage_center'])])
+            [pd.Timestamp(task['dynamic_metadata']['time_coverage_center'])])
+            #[np.datetime64(task['dynamic_metadata']['time_coverage_center'])])
 
     # spatial coordinate bounds:
     if task.is_latlon:
@@ -136,13 +139,10 @@ def set_granule_ancillary_data(
             dataset = dataset.assign_coords(
                 {'Z_bnds':(('Z','nv'),mapping_factors.depth_bounds)})
     else: # task.is_native
-        print(f'task.is_native start: {dataset}')
         dataset = dataset.assign_coords(
             {"XC_bnds": (("tile","j","i","nb"), grid.native_grid['XC_bnds'].data)})
-        print(f'plus XC_bnds: {dataset}')
         dataset = dataset.assign_coords(
             {"YC_bnds": (("tile","j","i","nb"), grid.native_grid['YC_bnds'].data)})
-        print(f'plus YC_bnds: {dataset}')
         if task.is_3d:
             dataset = dataset.assign_coords(
                 {'Z_bnds':(('k','nv'),mapping_factors.depth_bounds)})
