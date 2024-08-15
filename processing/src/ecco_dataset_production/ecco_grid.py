@@ -27,9 +27,9 @@ class ECCOGrid(object):
             defining a single task, single task description dictionary, or
             ECCOTask object. Either task or grid_loc may be provided, but not both.
         grid_loc (str): Optional pathname of either local ECCO grid directory
-            (containing XC.*, YC.* etc. files), or similar remote location given
-            by AWS S3 bucket/prefix.  Either grid_loc or task may be provided
-            but not both.
+            (containing XC.*, YC.*, *latlon*.nc, *native*.nc, etc. files), or
+            similar remote location given by AWS S3 bucket/prefix.  Either
+            grid_loc or task may be provided but not both.
         **kwargs: If either task or grid_loc reference an AWS S3 endpoint and if
             running within JPL's SSO environment, additional arguments that may
             be necessary include:

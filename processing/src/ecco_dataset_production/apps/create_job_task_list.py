@@ -614,7 +614,14 @@ def create_job_task_list(
                     grid_label=cfg['ecco_production_filestr_grid_label'][job.product_type],
                 ).filestr
 
-                task['granule'] = os.path.join(ecco_destination_root,output_filename)
+                task['granule'] = os.path.join(
+                    ecco_destination_root,
+                    cfg['ecco_version'],
+                    job.product_type.lower(),
+                    file_freq_pat,
+                    job_metadata['filename'],
+                    output_filename)
+                #task['granule'] = os.path.join(ecco_destination_root,output_filename)
                 task_variables = {}
                 for variable_name,variable_file_list in variable_inputs.items():
                     task_variables[variable_name] = variable_file_list[time]
