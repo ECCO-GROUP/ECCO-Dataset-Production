@@ -582,6 +582,12 @@ def create_job_task_list(
             all_times = list(all_times)
             all_times.sort()
 
+            if not all_times:
+                log.warning('No existing input variables/times for %s; skipping.',
+                    job_metadata['filename'])
+                # nothing to write to task list; continue with next jobfile entry
+                continue
+
             for time in all_times:
                 # TODO: when finalized, replace 'task={}' with 'task =
                 # ECCOTask()'; subsequent operations using class functions.
@@ -624,7 +630,11 @@ def create_job_task_list(
                 #task['granule'] = os.path.join(ecco_destination_root,output_filename)
                 task_variables = {}
                 for variable_name,variable_file_list in variable_inputs.items():
-                    task_variables[variable_name] = variable_file_list[time]
+                    try:
+                        task_variables[variable_name] = variable_file_list[time]
+                    except:
+                        log.warning("Granule %s: missing input detected for variable '%s' at time step '%s'.",
+                            task['granule'], variable_name, time)
                 task['variables'] = task_variables
                 task['ecco_grid_loc'] = ecco_grid_loc
                 task['ecco_mapping_factors_loc'] = ecco_mapping_factors_loc
