@@ -47,10 +47,8 @@ class ECCOMappingFactors(object):
     Properties:
         latitude_bounds ((360,2) numpy.ndarray): Latitude grid bounds per
             ./latlon_grid/latlon_grid.xz.
-
         longitude_bounds ((720,2) numpy.ndarray): Longitude grid bounds per
             ./latlon_grid/latlon_grid.xz.
-
         depth_bounds ((no. of grid depths, 2) numpy.ndarray): Depth grid bounds
             per ./latlon_grid/latlon_grid.xz.
 

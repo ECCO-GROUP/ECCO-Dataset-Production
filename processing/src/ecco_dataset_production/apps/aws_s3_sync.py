@@ -14,7 +14,7 @@ import subprocess
 import sys
 import time
 
-from .. import ecco_aws_s3_sync
+from ..aws import ecco_aws_s3_sync
 
 SLEEP_SECONDS = 5
 

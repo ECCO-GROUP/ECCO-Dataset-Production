@@ -201,16 +201,17 @@ def sync_remote_to_remote_or_local( src=None, dest=None,
         cmd.append('--dryrun')
 
     log.info('invoking subprocess: %s', cmd)
-    p = subprocess.Popen( cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    rtn = p.wait()
-    log.info('subprocess returned %d', rtn)
+    p = subprocess.Popen( cmd)
+    #p = subprocess.Popen( cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    #rtn = p.wait()
+    #log.info('subprocess returned %d', rtn)
 
-    if not rtn:
-        # normal termination:
-        log.info('%s', bytes.decode(p.stdout.read()))
-    else:
-        # error return:
-        log.info('%s', bytes.decode(p.stderr.read()))
+    #if not rtn:
+    #    # normal termination:
+    #    log.info('%s', bytes.decode(p.stdout.read()))
+    #else:
+    #    # error return:
+    #    log.info('%s', bytes.decode(p.stderr.read()))
 
 
 def aws_s3_sync(
