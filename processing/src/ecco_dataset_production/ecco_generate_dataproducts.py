@@ -392,7 +392,11 @@ def generate_dataproducts( tasklist, cfgfile,
             shared_ecco_grid = ecco_grid.ECCOGrid(task=task)
             shared_ecco_mapping_factors = ecco_mapping_factors.ECCOMappingFactors(task=task)
 
-        ecco_make_granule( task, cfg,
-            grid=shared_ecco_grid, mapping_factors=shared_ecco_mapping_factors,
-            log_level=log_level, **kwargs)
+        try:
+            ecco_make_granule( task, cfg,
+                grid=shared_ecco_grid, mapping_factors=shared_ecco_mapping_factors,
+                log_level=log_level, **kwargs)
+        except Exception as e:
+            # just log the error and continue
+            log.error('Error encountered during generation of %s: %s', task['granule'], e)
 
