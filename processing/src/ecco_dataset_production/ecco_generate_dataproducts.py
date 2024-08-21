@@ -72,20 +72,23 @@ def ecco_make_granule( task, cfg,
         grid=grid, mapping_factors=mapping_factors, cfg=cfg)
 
     # append metadata:
-    merged_variable_dataset_with_all_metadata = set_granule_metadata(
+    merged_variable_dataset_with_all_metadata, encoding = set_granule_metadata(
         dataset=merged_variable_dataset_with_ancillary_data,
         task=this_task, cfg=cfg)
 
     if this_task.is_granule_local:
         if not os.path.exists(os.path.dirname(this_task['granule'])):
             os.makedirs(os.path.dirname(this_task['granule']))
-        merged_variable_dataset_with_all_metadata.to_netcdf(this_task['granule'])
+        merged_variable_dataset_with_all_metadata.to_netcdf(
+            this_task['granule'], encoding=encoding)
     else:
+        # TODO: make/write to local scratch (NVME scr disk; add edp_generate_dataproducts --scr arg?)
         # write to local nc file and upload (assumes local '.' write
         # privileges):
         _src = os.path.basename(this_task['granule'])
         _dest = this_task['granule']
-        merged_variable_dataset_with_all_metadata.to_netcdf(_src)
+        merged_variable_dataset_with_all_metadata.to_netcdf(
+            _src, encoding=encoding)
         log.info('uploading %s to %s', _src, _dest)
         ecco_aws_s3_cp.aws_s3_cp( src=_src, dest=_dest, **kwargs)
         # clean up:
@@ -349,7 +352,7 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
 
     dataset.attrs = dict(sorted(dataset.attrs.items(),key = lambda x : x[0].casefold()))
 
-    return dataset
+    return (dataset,encoding)
 
 
 def generate_dataproducts( tasklist, cfgfile,
