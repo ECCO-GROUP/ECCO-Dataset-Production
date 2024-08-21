@@ -156,7 +156,7 @@ def set_granule_ancillary_data(
             if Z_bnds.chunks is not None:
                 Z_bnds.load()
             dataset = dataset.assign_coords(
-                {"Z_bnds": (("tile","j","i","nb"), Z_bnds.data)})
+                {"Z_bnds": (('k','nv'), Z_bnds.data)})
                 #{'Z_bnds':(('k','nv'),mapping_factors.depth_bounds)})
     return dataset
 
