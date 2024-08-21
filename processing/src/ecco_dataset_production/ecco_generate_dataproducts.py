@@ -139,13 +139,25 @@ def set_granule_ancillary_data(
             dataset = dataset.assign_coords(
                 {'Z_bnds':(('Z','nv'),mapping_factors.depth_bounds)})
     else: # task.is_native
+        XC_bnds = grid.native_grid['XC_bnds']
+        YC_bnds = grid.native_grid['YC_bnds']
+        if XC_bnds.chunks is not None:
+            XC_bnds.load()
+        if YC_bnds.chunks is not None:
+            YC_bnds.load()
         dataset = dataset.assign_coords(
-            {"XC_bnds": (("tile","j","i","nb"), grid.native_grid['XC_bnds'].data)})
+            {"XC_bnds": (("tile","j","i","nb"), XC_bnds.data)})
+            #{"XC_bnds": (("tile","j","i","nb"), grid.native_grid['XC_bnds'].data)})
         dataset = dataset.assign_coords(
-            {"YC_bnds": (("tile","j","i","nb"), grid.native_grid['YC_bnds'].data)})
+            {"YC_bnds": (("tile","j","i","nb"), YC_bnds.data)})
+            #{"YC_bnds": (("tile","j","i","nb"), grid.native_grid['YC_bnds'].data)})
         if task.is_3d:
+            Z_bnds = grid.native_grid['Z_bnds']
+            if Z_bnds.chunks is not None:
+                Z_bnds.load()
             dataset = dataset.assign_coords(
-                {'Z_bnds':(('k','nv'),mapping_factors.depth_bounds)})
+                {"Z_bnds": (("tile","j","i","nb"), Z_bnds.data)})
+                #{'Z_bnds':(('k','nv'),mapping_factors.depth_bounds)})
     return dataset
 
 

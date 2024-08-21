@@ -118,7 +118,8 @@ class ECCOGrid(object):
     def latlon_grid(self):
         if not self.__latlon_grid:
             self.__latlon_grid = xr.open_dataset(
-                glob.glob(os.path.join(self.grid_dir,NETCDF_LATLON_GLOBSTR))[0])
+                glob.glob(os.path.join(self.grid_dir,NETCDF_LATLON_GLOBSTR))[0],
+                chunks='auto')
         return self.__latlon_grid
 
 
@@ -126,7 +127,8 @@ class ECCOGrid(object):
     def native_grid(self):
         if not self.__native_grid:
             self.__native_grid = xr.open_dataset(
-                glob.glob(os.path.join(self.grid_dir,NETCDF_NATIVE_GLOBSTR))[0])
+                glob.glob(os.path.join(self.grid_dir,NETCDF_NATIVE_GLOBSTR))[0],
+                chunks='auto')
         return self.__native_grid
 
 

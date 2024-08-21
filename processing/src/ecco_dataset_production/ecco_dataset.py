@@ -164,7 +164,11 @@ class ECCOMDSDataset(object):
             so = np.s_[:]
         else:
             so = np.s_[0,:]
-        self.ds[variable] = self.ds[variable] * np.where(self.grid.native_grid[mask_type][so]==True,1,np.nan)
+        mask = self.grid.native_grid[mask_type]
+        if mask.chunks is not None:
+            mask.load()
+        self.ds[variable] = self.ds[variable] * np.where(mask[so]==True,1,np.nan)
+        #self.ds[variable] = self.ds[variable] * np.where(self.grid.native_grid[mask_type][so]==True,1,np.nan)
         #self.ds[variable] = self.ds[variable] * np.where(ecco_grid_ds[mask_type][so]==True,1,np.nan)
 
 
