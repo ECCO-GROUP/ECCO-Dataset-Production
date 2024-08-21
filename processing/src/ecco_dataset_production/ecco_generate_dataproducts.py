@@ -77,6 +77,7 @@ def ecco_make_granule( task, cfg,
         task=this_task, cfg=cfg)
 
     if this_task.is_granule_local:
+        # TODO: ensure local directory exists and is writeable
         merged_variable_dataset_with_all_metadata.to_netcdf(this_task['granule'])
         #merged_variable_dataset_with_ancillary_data.to_netcdf(this_task['granule'])
         #merged_variable_dataset.to_netcdf(this_task['granule'])

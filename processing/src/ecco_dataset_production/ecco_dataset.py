@@ -110,7 +110,8 @@ class ECCOMDSDataset(object):
                     mds_var_dir             = self.data_dir,
                     mds_grid_dir            = self.grid.grid_dir,
                     mds_files               = mds_file.prefix+'_'+mds_file.averaging_period,
-                    vars_to_load            = variable,
+                    vars_to_load            = mds_file.prefix,
+                    #vars_to_load            = variable,
                     drop_unused_coords      = True,
                     grid_vars_to_coords     = False,
                     output_freq_code        = mds_file.averaging_period,
@@ -118,6 +119,10 @@ class ECCOMDSDataset(object):
                     read_grid               = True,
                     #read_grid               = self.cfg['read_grid'],
                     model_start_datetime    = np.datetime64(self.cfg['model_start_time']))
+
+                if mds_file.prefix != variable:
+                    self.ds = self.ds.rename_vars({mds_file.prefix:variable})
+
 #                previously:
 #                self.ds = open_mdsdataset(
 #                    data_dir=self.data_dir, grid_dir=self.grid.grid_dir,
