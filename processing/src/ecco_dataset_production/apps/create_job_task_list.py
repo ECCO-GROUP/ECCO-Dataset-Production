@@ -658,7 +658,7 @@ def create_job_task_list(
 
                 task['dynamic_metadata']['time_long_name']          = time_long_name
                 task['dynamic_metadata']['time_coverage_duration']  = time_coverage_duration
-                task['dynamic_metadata']['time_coverage_resolution']= time_coverage_resoution
+                task['dynamic_metadata']['time_coverage_resolution']= time_coverage_resolution
 
                 #if 'mean' in file_freq_pat:
                 #    task['dynamic_metadata']['time_long_name'] = 'center time of averaging period'
