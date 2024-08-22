@@ -106,6 +106,19 @@ class ECCOMDSDataset(object):
                 mds_file = ecco_file.ECCOMDSFilestr(
                     os.path.basename(
                         self.task.variable_inputs(variable)[0][0]))
+
+                # back-compatibiity with ecco_v4_py.read_bin_llc.load_ecco_vars_from_mds:
+                if self.task['metadata']['time_coverage_duration'] == 'P1D':
+                    output_freq_code = 'AVG_DAY'
+                elif self.task['metadata']['time_coverage_duration'] == 'P1M':
+                    output_freq_code = 'AVG_MON'
+                elif self.task['metadata']['time_coverage_duration'] == 'PT0S':
+                    output_freq_code = 'SNAP'
+                else:
+                    e1 = "Unknown task['metadata']['time_coverage_duration'] type:"
+                    e2 = self.task['metadata']['time_coverage_duration']
+                    raise RuntimeError(f'{e1} {e2}')
+
                 self.ds = ecco_v4_py.read_bin_llc.load_ecco_vars_from_mds(
                     mds_var_dir             = self.data_dir,
                     mds_grid_dir            = self.grid.grid_dir,
@@ -114,7 +127,7 @@ class ECCOMDSDataset(object):
                     #vars_to_load            = variable,
                     drop_unused_coords      = True,
                     grid_vars_to_coords     = False,
-                    output_freq_code        = mds_file.averaging_period,
+                    output_freq_code        = ('AVG' if 'mean' in mds_file.averaging_period else None),
                     model_time_steps_to_load= [mds_file.time],
                     read_grid               = True,
                     #read_grid               = self.cfg['read_grid'],

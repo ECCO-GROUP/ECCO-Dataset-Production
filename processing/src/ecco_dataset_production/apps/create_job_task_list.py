@@ -284,15 +284,20 @@ def create_job_task_list(
             if job.frequency.lower() == 'avg_day':
                 path_freq_pat = 'diags_daily'
                 file_freq_pat = 'day_mean'
+                time_long_name = 'center time of averaging period'
+                time_coverage_duration = time_coverage_resolution = 'P1D'
                 dataset_description_head = 'This dataset contains daily-averaged '
             elif job.frequency.lower() == 'avg_mon':
                 path_freq_pat = 'diags_monthly'
                 file_freq_pat = 'mon_mean'
+                time_long_name = 'center time of averaging period'
+                time_coverage_duration = time_coverage_resolution = 'P1M'
                 dataset_description_head = 'This dataset contains monthly-averaged '
             elif job.frequency.lower() == 'snap':
-                # TODO
+                #TODO: path/file_freq_pat
+                time_long_name = 'snapshot time'
+                time_coverage_duration = time_coverage_resolution = 'PT0S'
                 dataset_description_head = 'This dataset contains instantaneous '
-                pass
             else:
                 raise ValueError("job frequency must be one of 'avg_day', 'avg_mon', or 'snap'")
 
@@ -650,18 +655,23 @@ def create_job_task_list(
                     task['dynamic_metadata']['comment'] = job_metadata['comment']
                 except:
                     pass
-                if 'mean' in file_freq_pat:
-                    task['dynamic_metadata']['time_long_name'] = 'center time of averaging period'
-                    if 'day' in file_freq_pat:
-                        task['dynamic_metadata']['time_coverage_duration']  = 'P1D'
-                        task['dynamic_metadata']['time_coverage_resolution']= 'P1D'
-                    elif 'mon' in file_freq_pat:
-                        task['dynamic_metadata']['time_coverage_duration']  = 'P1M'
-                        task['dynamic_metadata']['time_coverage_resolution']= 'P1M'
-                else:
-                    task['dynamic_metadata']['time_long_name'] = 'snapshot time'
-                    task['dynamic_metadata']['time_coverage_duration']  = 'P0S'
-                    task['dynamic_metadata']['time_coverage_resolution']= 'P0S'
+
+                task['dynamic_metadata']['time_long_name']          = time_long_name
+                task['dynamic_metadata']['time_coverage_duration']  = time_coverage_duration
+                task['dynamic_metadata']['time_coverage_resolution']= time_coverage_resoution
+
+                #if 'mean' in file_freq_pat:
+                #    task['dynamic_metadata']['time_long_name'] = 'center time of averaging period'
+                #    if 'day' in file_freq_pat:
+                #        task['dynamic_metadata']['time_coverage_duration']  = 'P1D'
+                #        task['dynamic_metadata']['time_coverage_resolution']= 'P1D'
+                #    elif 'mon' in file_freq_pat:
+                #        task['dynamic_metadata']['time_coverage_duration']  = 'P1M'
+                #        task['dynamic_metadata']['time_coverage_resolution']= 'P1M'
+                #else:
+                #    task['dynamic_metadata']['time_long_name'] = 'snapshot time'
+                #    task['dynamic_metadata']['time_coverage_duration']  = 'P0S'
+                #    task['dynamic_metadata']['time_coverage_resolution']= 'P0S'
 
                 task['dynamic_metadata']['summary'] = ' '.join(
                     [dataset_description_head, job_metadata['name'], dataset_description_tail])
