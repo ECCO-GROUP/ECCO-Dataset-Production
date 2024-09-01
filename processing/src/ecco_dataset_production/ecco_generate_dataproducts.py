@@ -3,13 +3,13 @@ from collections import defaultdict
 import datetime
 import fnmatch
 import glob
-#import importlib.resources
 import itertools
 import json
 import logging
 import netCDF4
 import numpy as np
 import os
+import tempfile
 import pandas as pd
 import uuid
 import xarray as xr
@@ -29,7 +29,8 @@ from . import ecco_task
 
 def ecco_make_granule( task, cfg,
     grid=None, mapping_factors=None, log_level=None, **kwargs):
-    """
+    """Create PO.DAAC-ready ECCO granule per instructions provided in input task
+    descriptor.
 
     Args:
         task (dict):
@@ -45,8 +46,10 @@ def ecco_make_granule( task, cfg,
     variable_datasets = []
 
     if this_task.is_latlon:
-        # TODO...
-        pass
+        log.info('generating %s ...', os.path.basename(this_task['granule']))
+        for variable in this_task.variable_names:
+            # TODO
+            pass
 
     elif this_task.is_native:
         log.info('generating %s ...', os.path.basename(this_task['granule']))
@@ -76,23 +79,20 @@ def ecco_make_granule( task, cfg,
         dataset=merged_variable_dataset_with_ancillary_data,
         task=this_task, cfg=cfg)
 
+    # write:
     if this_task.is_granule_local:
         if not os.path.exists(os.path.dirname(this_task['granule'])):
             os.makedirs(os.path.dirname(this_task['granule']))
         merged_variable_dataset_with_all_metadata.to_netcdf(
             this_task['granule'], encoding=encoding)
     else:
-        # TODO: make/write to local scratch (NVME scr disk; add edp_generate_dataproducts --scr arg?)
-        # write to local nc file and upload (assumes local '.' write
-        # privileges):
+        tmpdir = tempfile.TemporaryDirectory()
         _src = os.path.basename(this_task['granule'])
         _dest = this_task['granule']
         merged_variable_dataset_with_all_metadata.to_netcdf(
-            _src, encoding=encoding)
-        log.info('uploading %s to %s', _src, _dest)
-        ecco_aws_s3_cp.aws_s3_cp( src=_src, dest=_dest, **kwargs)
-        # clean up:
-        os.unlink(_src)
+            os.path.join(tmpdir,_src), encoding=encoding)
+        log.info('uploading %s to %s', os.path.join(tmpdir,_src), _dest)
+        ecco_aws_s3_cp.aws_s3_cp( src=os.path.join(tmpdir,_src), dest=_dest, **kwargs)
     log.info('... done')
 
 
@@ -130,6 +130,14 @@ def set_granule_ancillary_data(
             ('time'),
             [pd.Timestamp(task['dynamic_metadata']['time_coverage_center'])])
             #[np.datetime64(task['dynamic_metadata']['time_coverage_center'])])
+
+    # per PO.DAAC request, if present, remove 'timestep' non-dimension
+    # coordinate (value would have come from time string portion of input
+    # filename(s), e.g., '732', '1428', etc.):
+    try:
+        dataset = dataset.drop_vars('timestep')
+    except:
+        pass
 
     # spatial coordinate bounds:
     if task.is_latlon:
@@ -252,6 +260,10 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
     dataset.attrs['source']                     = cfg['source']
     dataset.attrs['summary']                    = cfg['summary']    # more later...
 
+    # remove upstream attribute assignments that aren't necessary/desirable:
+    dataset.attrs.pop('original_mds_grid_dir',None) # assigned in ecco_v4_py.read_bin_llc
+    dataset.attrs.pop('original_mds_var_dir',None)  # "                                 "
+
     # add coordinate attributes to all variables:
     var_coord_attrs = {}
     coord_set = set(['XC','YC','XG','YG','Z','Zp1','Zu','Zl','time'])
@@ -346,6 +358,9 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
             pm_row_for_this_granule['DATASET.SHORT_NAME'].iloc[0]
         dataset.attrs['title'] = \
             pm_row_for_this_granule['DATASET.LONG_NAME'].iloc[0]
+        # additional specific PO.DAAC metadata request:
+        dataset.attrs['coordinates_comment'] = \
+            "Note: the global 'coordinates' attribute describes auxillary coordinates."
     except:
         log.info('Skipping PO.DAAC metadata inclusion')
         pass
@@ -356,7 +371,6 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
 
 
 def generate_dataproducts( tasklist, cfgfile,
-    #workingdir='.',
     log_level=None, **kwargs):
     """Generate PO.DAAC-ready ECCO granule(s) for all tasks in tasklist.
 
@@ -366,8 +380,6 @@ def generate_dataproducts( tasklist, cfgfile,
             create_job_task_list. See that function for formats and details.
         cfgfile (str): (Path and) filename of ECCO Dataset Production
             configuration file.
-        #workingdir (str): Working directory path definition default if explicit
-        #    path definitions are otherwise unassigned in cfgfile (default='.').
         log_level (str): Optional local logging level ('DEBUG', 'INFO',
             'WARNING', 'ERROR' or 'CRITICAL').  If called by a top-level
             application, the default will be that of the parent logger ('edp'),
@@ -400,7 +412,7 @@ def generate_dataproducts( tasklist, cfgfile,
     for task in json.load(open(tasklist)):
 
         # Assuming all tasks share the same ECCO grid and mapping factors
-        # references, for performance reasons, create ECCOGrid and
+        # references then, for performance reasons, create ECCOGrid and
         # ECCOMappingFactors objects up-front (using the first task descriptor)
         # to be shared by all granule creation tasks:
         if not shared_ecco_grid and not shared_ecco_mapping_factors:
