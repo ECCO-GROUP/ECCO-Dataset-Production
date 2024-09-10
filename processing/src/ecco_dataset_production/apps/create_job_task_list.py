@@ -276,7 +276,16 @@ def create_job_task_list(
             # a few preliminaries ...
             #
 
-            job = Job(*ast.literal_eval(line))
+            try:
+                # assume job file entry is a Python list expression:
+                job = Job(*ast.literal_eval(line))
+            except:
+                # failure to parse may have been intentional (e.g., leading
+                # comment ('#'), blank lines, etc.), so just issue a
+                # low-priority log:
+                log.info('skipping jobfile entry "%s"', line.rstrip())
+                continue
+
             job_metadata = dataset_groupings[job.product_type][job.metadata_groupings_id]
             log.debug('job metadata for %s, %d: %s',
                 job.product_type, job.metadata_groupings_id, job_metadata)
