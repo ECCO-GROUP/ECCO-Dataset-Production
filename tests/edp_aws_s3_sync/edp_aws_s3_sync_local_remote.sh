@@ -8,7 +8,7 @@
 
 edp_aws_s3_sync \
     --src ../data/ecco_results/V4r4 \
-    --dest s3://ecco-tmp/V4r4 \
+    --dest s3://ecco-tmp/ecco-results/V4r4 \
     --nproc 2 \
     --keygen $(which aws-login-pub.darwin.amd64) \
     --profile saml-pub \
