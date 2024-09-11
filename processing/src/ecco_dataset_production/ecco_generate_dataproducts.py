@@ -48,8 +48,16 @@ def ecco_make_granule( task, cfg,
     if this_task.is_latlon:
         log.info('generating %s ...', os.path.basename(this_task['granule']))
         for variable in this_task.variable_names:
-            # TODO
-            pass
+            log.debug('... adding %s using:', variable)
+            for infile in itertools.chain.from_iterable(this_task.variable_inputs(variable)):
+                log.debug('    %s', infile)
+            emdsds = ecco_dataset.ECCOMDSDataset(
+                task=this_task, variable=variable, grid=grid,
+                mapping_factors=mapping_factors, cfg=cfg, **kwargs)
+            emdsds.drop_all_variables_except(variable)
+            var_as_latlon_ds = emdsds.as_latlon(variable)
+            variable_datasets.append(var_as_latlon_ds)
+        merged_variable_dataset = xr.merge(variable_datasets)
 
     elif this_task.is_native:
         log.info('generating %s ...', os.path.basename(this_task['granule']))
@@ -58,16 +66,14 @@ def ecco_make_granule( task, cfg,
             for infile in itertools.chain.from_iterable(this_task.variable_inputs(variable)):
                 log.debug('    %s', infile)
             emdsds = ecco_dataset.ECCOMDSDataset(
-                task=this_task, grid=grid, variable=variable, cfg=cfg, **kwargs)
+                task=this_task, variable=variable, grid=grid, cfg=cfg, **kwargs)
             emdsds.drop_all_variables_except(variable)
             emdsds.apply_land_mask_to_native_variable(variable)
             variable_datasets.append(emdsds)
+        merged_variable_dataset = xr.merge([ds.ds for ds in variable_datasets])
+
     else:
         raise RuntimeError('Could not determine output granule type (latlon or native)')
-
-    # create a merged xarray dataset using the datasets contained in the list of
-    # EMDSDataset objects:
-    merged_variable_dataset = xr.merge([ds.ds for ds in variable_datasets])
 
     # set miscellaneous granule attributes and properties:
     merged_variable_dataset_with_ancillary_data = set_granule_ancillary_data(
@@ -120,7 +126,8 @@ def set_granule_ancillary_data(
         #dataset['time'] = []
         #dataset.time.values[0] = np.datetime64(task['dynamic_metadata']['time_coverage_center'])
         # possible solution:
-        dataset['time_bnds'] = (
+        dataset.coords['time_bnds'] = (
+        #dataset['time_bnds'] = (
             ('time','nv'),
             [[pd.Timestamp(task['dynamic_metadata']['time_coverage_start']),
               pd.Timestamp(task['dynamic_metadata']['time_coverage_end'])]])
@@ -225,6 +232,7 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
     if task.is_latlon:
         dataset = ecco_v4_py.ecco_utils.add_global_metadata(
             all_metadata['global_latlon'], dataset, task['dynamic_metadata']['dimension'])
+        pass # tmp!!
     elif task.is_native:
         dataset = ecco_v4_py.ecco_utils.add_global_metadata(
             all_metadata['global_native'], dataset, task['dynamic_metadata']['dimension'])
