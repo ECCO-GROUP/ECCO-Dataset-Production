@@ -202,16 +202,17 @@ def sync_remote_to_remote_or_local( src=None, dest=None,
 
     log.info('invoking subprocess: %s', cmd)
     p = subprocess.Popen( cmd)
-    #p = subprocess.Popen( cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-    #rtn = p.wait()
-    #log.info('subprocess returned %d', rtn)
-
-    #if not rtn:
-    #    # normal termination:
-    #    log.info('%s', bytes.decode(p.stdout.read()))
-    #else:
-    #    # error return:
-    #    log.info('%s', bytes.decode(p.stderr.read()))
+    p = subprocess.Popen( cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    # TODO: although the following works fine for a sync remote->remote, for
+    # some reason, p.wait() never returns from a sync remote->local
+    rtn = p.wait()
+    if not rtn:
+        # normal termination:
+        log.info('%s', bytes.decode(p.stdout.read()))
+    else:
+        # error return:
+        log.info('%s', bytes.decode(p.stderr.read()))
+    log.info('subprocess returned %d', rtn)
 
 
 def aws_s3_sync(
