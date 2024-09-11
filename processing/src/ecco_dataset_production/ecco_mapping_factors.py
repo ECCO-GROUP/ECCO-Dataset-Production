@@ -4,10 +4,12 @@
 import lzma
 import os
 import pickle
+from scipy import sparse
 import tempfile
 
 from . import aws
 from . import ecco_task
+
 
 class ECCOMappingFactors(object):
     """Container class for ECCO mapping factors access. Primarily intended to
@@ -81,6 +83,24 @@ class ECCOMappingFactors(object):
             self.mapping_factors_dir = mapping_factors_loc
 
 
+    def latlon_land_mask( self, level):
+        """Get numpy land mask vector of length number of latlon grid points
+        corresponding to depth "level".
+
+        """
+        return pickle.load(lzma.open(os.path.join(
+            self.mapping_factors_dir,'land_mask',f'ecco_latlon_land_mask_{level}.xz')))
+
+
+    def native_to_latlon_mapping_factors( self, level):
+        """Get scipy sparse matrix native to latlon grid mapping factors
+        corresponding to depth "level".
+
+        """
+        return sparse.load_npz(
+            os.path.join(self.mapping_factors_dir,'sparse',f'sparse_matrix_{level}.npz'))
+
+
     @property
     def latitude_bounds(self):
         if not self.__latlon_grid:
@@ -115,50 +135,3 @@ class ECCOMappingFactors(object):
         except:
             pass
 
-
-
-#    def get_land_mask(self,level=None):
-#        """Get land mask for a specified level.
-#
-#        Args:
-#            level (int): Level, in range 0 (surface) through N.
-#
-#        Returns:
-#            land_mask
-#
-#        """
-#        land_mask_file_or_obj_identifying_substring = '_land_mask_'
-#
-#        if s3r:
-#
-#            # find land mask object corresponding to level, get, and uncompress:
-#
-#            path_prefix = urllib.parse.urlparse(self.mapping_factors_loc).path.strip('/')   # may be null
-#            # regular expression that gets the full key if matched:
-#            lm_rexp = re.compile(
-#                fr'{path_prefix}.*{land_mask_file_or_obj_identifying_substring}{level}\..*')
-#
-#            for obj in self.s3r_bucket.objects.all():
-#                if re.match(lm_rexp,obj.key):
-#
-#                    --> here's the thing we're interested in:
-#
-#                    s3r.Object(
-#                        s3r_bucket.name,
-#                        re.match(lm_rexp,obj.key)).get()['Body'].read()
-#
-#                    --> pick up here with stream decompress...
-#
-#            -> 's3://ecco-mapping-factors/V4r5/land_mask/ecco_latlon_land_mask_0.xz'
-#
-#            obj = s3r.Object(
-#                urllib.parse.urlparse(self.mapping_factors_loc).netloc,
-#                urllib.parse.urlparse(self.mapping_factors_loc).path.strip('/'))
-#
-#            obj.get()['Body'].read()
-#
-#        else:
-#            # local data:
-#
-#
-#    def get_latlon_grid(self):
