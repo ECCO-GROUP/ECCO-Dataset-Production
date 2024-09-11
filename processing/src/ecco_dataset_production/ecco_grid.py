@@ -3,6 +3,7 @@
 
 import fnmatch
 import glob
+import numpy as np
 import os
 import tarfile
 import tempfile
@@ -20,7 +21,8 @@ ZIPFILE_GLOBSTR = '*.gz'
 class ECCOGrid(object):
     """Container class for ECCO grid access. Primarily intended to optimize i/o
     performance by allowing operations, e.g. collections of ECCOMDSDataset
-    objects, to share a single copy of ECCO grid data.
+    objects, to share a single copy of ECCO native and target (latlon) grid
+    data.
 
     Args:
         task (str, dict, or taskobj): Optional (path and) name of json-formatted file
@@ -54,6 +56,9 @@ class ECCOGrid(object):
             xr.open_dataset() on *latlon*.nc (see Notes, item 2).
         native_grid (xarray Dataset object): Object resulting from
             xr.open_dataset() on *native*.nc (see Notes, item 2).
+        native_wet_point_indices (dict): Integer-keyed dictionary (by depth;
+           0 == surface through nz-1 == max depth) of "numpy.where" indices
+           identifying ECCO native grid "wet" points (hFacC>0).
 
     Notes:
         1.) If the grid location referenced by task or grid_loc is an AWS S3
@@ -61,9 +66,10 @@ class ECCOGrid(object):
             unzipped/tarred to a local temporary directory. If, however, the
             grid location is a local directory, unzipping/untarring will not be
             performed so as not to modify any local directory/file structures.
-        2.) ECCOGrid assumes the presence of latlon (*latlon*.nc) and native
-            (*native*.nc) grid NetCDF4 files in either the location provided by
-            grid_loc or the AWS S3 endpoint referenced in the task description.
+        2.) ECCOGrid assumes the presence of native (*native*.nc) and 'target'
+            latlon (*latlon*.nc) grid NetCDF4 files in either the location
+            provided by grid_loc or the AWS S3 endpoint referenced in the task
+            description.
 
     """
     def __init__( self, task=None, grid_loc=None, **kwargs):
@@ -71,8 +77,9 @@ class ECCOGrid(object):
 
         """
         self.task = None
-        self.__native_grid = None
         self.__latlon_grid = None
+        self.__native_grid = None
+        self.__native_wet_point_indices = None
 
         if task:
             if not isinstance(task,ecco_task.ECCOTask):
@@ -116,6 +123,8 @@ class ECCOGrid(object):
 
     @property
     def latlon_grid(self):
+        """
+        """
         if not self.__latlon_grid:
             self.__latlon_grid = xr.open_dataset(
                 glob.glob(os.path.join(self.grid_dir,NETCDF_LATLON_GLOBSTR))[0],
@@ -125,11 +134,29 @@ class ECCOGrid(object):
 
     @property
     def native_grid(self):
+        """
+        """
         if not self.__native_grid:
             self.__native_grid = xr.open_dataset(
                 glob.glob(os.path.join(self.grid_dir,NETCDF_NATIVE_GLOBSTR))[0],
                 chunks='auto')
         return self.__native_grid
+
+
+    @property
+    def native_wet_point_indices(self):
+        """Returns an nz integer-keyed dictionary (by depth; 0 == surface
+        through nz-1 == max depth) of "numpy.where" indices identifying ECCO
+        native grid "wet" points (hFacC>0).
+
+        """
+        if not self.__native_wet_point_indices:
+            native_wet_point_indices = {}
+            for z in range(self.native_grid['hFacC'].shape[0]):
+                native_wet_point_indices[z] = \
+                    np.where(self.native_grid['hFacC'][z,:]>0)
+            self.__native_wet_point_indices = native_wet_point_indices
+        return self.__native_wet_point_indices
 
 
     def __del__(self):
