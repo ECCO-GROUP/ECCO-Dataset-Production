@@ -1,6 +1,3 @@
-[submodule "ECCO-ACCESS"]
-	path = ECCO-ACCESS
-	url = https://github.com/ECCO-GROUP/ECCO-ACCESS.git
 [submodule "ECCO-v4-Configurations"]
 	path = ECCO-v4-Configurations
 	url = https://github.com/ECCO-GROUP/ECCO-v4-Configurations.git
