@@ -4,32 +4,49 @@
 # is found in AWS S3 bucket
 #
 
-# TODO: pass in credentials, profile via command-line, add options for some of
-# the hard-code data, e.g., ecco_prefixes, file counts, etc.
+# TODO: figure out why 'set -e' won't exit for loop if incorrect
+# keygen/profile input
 
-# some configuration data that may need to be changed depending on the user's
-# environment:
+set -e
+usage() { echo 'download_selected_data.sh -n num_dates_to_fetch -k keygen -p profile'; }
 
-profile=saml-pub
+ver='V4r4'   # V4r5, etc.
 
 # test data location(s) in AWS S3; may need to be changed if cloud storage
 # configuration changes:
 
 s3_bucket=s3://ecco-model-granules/
-s3_prefix=V4r4/diags_monthly/
+s3_prefix=${ver}/diags_monthly/
 ecco_prefixes=(
     ETAN_mon_mean/
+    SALT_mon_mean/
     SSH_mon_mean/
     SSHIBC_mon_mean/
     SSHNOIBC_mon_mean/
+    THETA_mon_mean/
     UVEL_mon_mean/
     VVEL_mon_mean/
     WVELMASS_mon_mean/)
 
-# number of mds file pairs (.data/.meta) to get:
+while getopts ":k:p:n:h" opt; do
+    case $opt in
+        k ) keygen=$OPTARG ;;
+        p ) profile=$OPTARG ;;
+        n ) file_pair_count=$OPTARG ;;
+        h ) usage
+            exit 1 ;;
+        \?) usage
+            exit 1 ;;
+    esac
+done
 
-file_pair_count=3
-
+if [[ -v keygen ]]; then
+    ${keygen}
+fi
+if [[ -v profile ]]; then
+    profileopt="--profile ${profile}"
+fi
+echo ${profileopt}
 # go get the data:
 
 root_dir=$(pwd)
@@ -42,12 +59,12 @@ for ecco_prefix in ${ecco_prefixes[@]}; do
 
     all_mds_files=($(aws s3 ls \
         ${s3_bucket}${s3_prefix}${ecco_prefix} \
-        --profile ${profile} \
+        ${profileopt} \
         --output text | awk '{print $4}'))
 
-    for f in ${all_mds_files[@]:0:$((file_pair_count*2))}; do
-        aws s3 cp ${s3_bucket}${s3_prefix}${ecco_prefix}${f} . --profile ${profile}
+    for f in ${all_mds_files[@]:0:$((${file_pair_count:?3}*2))}; do
+        aws s3 cp ${s3_bucket}${s3_prefix}${ecco_prefix}${f} . ${profileopt}
     done
     cd ${root_dir}
-done
 
+done

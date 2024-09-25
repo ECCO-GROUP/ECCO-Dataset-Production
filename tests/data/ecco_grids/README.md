@@ -1,6 +1,6 @@
-ECCO grids, per:
+## ECCO grid test data.
 
-    V4r4:
-        $ mkdir V4r4 && cd V4r4
-        $ aws s3 cp s3://ecco-model-granules/V4r4/llc90_grid/grid_ECCOV4r4.tar.gz .
-        $ tar -xf *gz
+Although already inluded here for test purposes, the ECCO grids in this directory
+could have also been retrieved vi the included dowload.sh script, e.g.:
+
+	$ download.sh -k /usr/local/bin/aws-login.darwin.amd64 -p saml-pub
