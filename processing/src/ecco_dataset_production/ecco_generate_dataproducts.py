@@ -92,13 +92,20 @@ def ecco_make_granule( task, cfg,
         merged_variable_dataset_with_all_metadata.to_netcdf(
             this_task['granule'], encoding=encoding)
     else:
-        tmpdir = tempfile.TemporaryDirectory()
-        _src = os.path.basename(this_task['granule'])
-        _dest = this_task['granule']
-        merged_variable_dataset_with_all_metadata.to_netcdf(
-            os.path.join(tmpdir,_src), encoding=encoding)
-        log.info('uploading %s to %s', os.path.join(tmpdir,_src), _dest)
-        ecco_aws_s3_cp.aws_s3_cp( src=os.path.join(tmpdir,_src), dest=_dest, **kwargs)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            log.info('temporary directory created: %s ', tmpdir)
+
+            _src = os.path.basename(this_task['granule'])
+            _dest = this_task['granule']
+
+            merged_variable_dataset_with_all_metadata.to_netcdf(
+                os.path.join(tmpdir,_src), encoding=encoding)
+        
+            log.info('uploading %s to %s', os.path.join(tmpdir,_src), _dest)
+            ecco_aws_s3_cp.aws_s3_cp( src=os.path.join(tmpdir,_src), dest=_dest, **kwargs)
+            # temporary directory will self-destruct at end of with block
+
     log.info('... done')
 
 
