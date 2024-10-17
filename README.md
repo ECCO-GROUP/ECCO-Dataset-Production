@@ -1,8 +1,8 @@
 
 # ECCO Dataset Production
 
-Tools and utilities, per the initial release, "to turn raw model
-output into glorious self-describing granules for widespread
+Tools and utilities, as stated in the initial release, "to turn raw
+model output into glorious self-describing granules for widespread
 distribution".
 
 Original release by Duncan Bark, in collaboration with Ian Fenty,
@@ -20,7 +20,7 @@ ouput in [MITgcm file
 formats](https://mitgcm.readthedocs.io/en/latest/).
 
 For general distribution however (e.g, via
-[PO.DAAC](https://podaac.jpl.nasa.gov/), it's useful to convert these
+[PO.DAAC](https://podaac.jpl.nasa.gov/)), it's useful to convert these
 raw output files to more intuitive day/date-stamped snapshot, daily mean,
 and monthly mean files, with appropriate metadata, in both native and
 latitude-longitude grid formats. Though the operations themselves are
@@ -33,7 +33,7 @@ distributed and cloud-based workflows, a central theme of ECCO Dataset
 Production.
 
 Though ECCO Dataset Production is capable of operating on extremely
-large data collections, it's equally applicable to smaller, limited
+large data collections, it applies just as well to smaller, limited
 production data sets; in short, anything for which wider distribution
 in easier-to-process formats is desired.
 
@@ -64,7 +64,7 @@ Dataset Production is configured and run:
 Each will be discussed separately.
 
 
-### Configuring ECCO Dataset Production to Run Locally
+### Configuring ECCO Dataset Production to run locally
 
 Installing ECCO Dataset Production locally, with input and output to
 local storage, is perhaps the quickest and easiest way to get started
