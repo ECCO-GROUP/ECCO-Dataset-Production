@@ -7,6 +7,7 @@ import collections
 import importlib.resources
 import json
 import logging
+import numpy as np
 import os
 import pandas as pd
 import re
@@ -20,6 +21,7 @@ from .. import ecco_file
 from .. import ecco_metadata_store
 from .. import ecco_time
 from .. import metadata
+from pprint import pprint
 
 
 logging.basicConfig(
@@ -262,9 +264,7 @@ def create_job_task_list(
     Job = collections.namedtuple(
         'Job',['metadata_groupings_id','product_type','frequency','time_steps'])
 
-
     with open(jobfile,'r') as fh:
-
         for line in fh:
 
             #
@@ -303,7 +303,8 @@ def create_job_task_list(
                 time_coverage_duration = time_coverage_resolution = 'P1M'
                 dataset_description_head = 'This dataset contains monthly-averaged '
             elif job.frequency.lower() == 'snap':
-                #TODO: path/file_freq_pat
+                path_freq_pat = 'diags_inst'
+                file_freq_pat = 'day_snap'
                 time_long_name = 'snapshot time'
                 time_coverage_duration = time_coverage_resolution = 'PT0S'
                 dataset_description_head = 'This dataset contains instantaneous '
@@ -349,6 +350,7 @@ def create_job_task_list(
                         one_to_one = False
 
                 if not one_to_one:
+                    #('IAN not one_to_one')
 
                     # variable depends on component inputs; determine
                     # availability of input files and gather accordingly:
@@ -371,12 +373,14 @@ def create_job_task_list(
                         if isinstance(job.time_steps,str) and 'all'==job.time_steps.lower():
                             # get all possible time matches:
                             if aws.ecco_aws.is_s3_uri(ecco_source_root):
+
                                 s3_key_pat = re.compile(
                                     s3_parts.path.strip('/')    # remove leading '/' from urlpath
                                     + '.*'                      # allow anything between path and filename
                                     + ecco_file.ECCOMDSFilestr(
                                         prefix=variable_input_component_key,
                                         averaging_period=file_freq_pat).re_filestr)
+                                
                                 variable_input_component_files.extend(
                                     [os.path.join(
                                         urllib.parse.urlunparse(
@@ -489,13 +493,15 @@ def create_job_task_list(
                     variable_files = []
 
                     if aws.ecco_aws.is_s3_uri(ecco_source_root):
+                        prefix=os.path.join(
+                                s3_parts.path,
+                                path_freq_pat,
+                                '_'.join([variable,file_freq_pat]))
                         all_var_files_in_bucket = s3_list_files(
                             s3_client=s3c,
                             bucket=s3_parts.netloc,
-                            prefix=os.path.join(
-                                s3_parts.path,
-                                path_freq_pat,
-                                '_'.join([variable,file_freq_pat])))
+                            prefix=prefix)
+                            
 
                     if isinstance(job.time_steps,str) and 'all'==job.time_steps.lower():
                     #if 'all' == job.time_steps.lower():
@@ -551,6 +557,9 @@ def create_job_task_list(
 
                     variable_files.sort()
                     variable_files_as_list_of_lists = []
+
+                    print('number of files ', len(variable_files))
+
                     for f in variable_files:
                         if ecco_file.ECCOMDSFilestr(os.path.basename(f)).ext == 'data':
                             tmplist = [f]
@@ -607,13 +616,29 @@ def create_job_task_list(
                 # ECCOTask()'; subsequent operations using class functions.
                 task = {}
 
-                tb,center_time = ecco_time.make_time_bounds_metadata(
-                    granule_time=time,
-                    model_start_time=cfg['model_start_time'],
-                    model_end_time=cfg['model_end_time'],
-                    model_timestep=cfg['model_timestep'],
-                    model_timestep_units=cfg['model_timestep_units'],
-                    averaging_period=job.frequency)
+                model_start_time=cfg['model_start_time']
+                model_end_time=cfg['model_end_time']
+                model_timestep=cfg['model_timestep']
+                model_timestep_units=cfg['model_timestep_units']
+                
+                if 'snap' in job.frequency.lower():
+                    mst = np.datetime64(model_start_time)
+                    td64 = np.timedelta64(int(time)*model_timestep ,model_timestep_units)
+                    center_time = \
+                        mst + \
+                        td64
+                    tb = []
+                    tb.append(center_time)
+                    tb.append(center_time)
+                    
+                else:
+                    tb,center_time = ecco_time.make_time_bounds_metadata(
+                        granule_time=time,
+                        model_start_time=model_start_time,
+                        model_end_time=model_end_time,
+                        model_timestep=model_timestep,
+                        model_timestep_units=model_timestep_units,
+                        averaging_period=job.frequency)
 
                 if file_freq_pat == 'mon_mean':
                     # in the case of monthly means, ensure file date stamp is
