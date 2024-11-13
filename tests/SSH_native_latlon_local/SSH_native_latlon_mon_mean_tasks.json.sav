@@ -1,6 +1,6 @@
 [
     {
-        "granule": "./V4r4/native/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_V4r4_native_llc0090.nc",
+        "granule": "./V4r4_sav_test/V4r4/native/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_V4r4_native_llc0090.nc",
         "variables": {
             "SSH": [
                 [
@@ -27,9 +27,9 @@
                 ]
             ]
         },
-        "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
-        "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
-        "ecco_metadata_loc": "../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
+        "ecco_grid_loc": "../../..//ECCO-Dataset-Production/tests/data/ecco_grids/V4r4/grid_ECCOV4r4",
+        "ecco_mapping_factors_loc": "../../..//ECCO-Dataset-Production/tests/data/ecco_mapping_factors/V4r4",
+        "ecco_metadata_loc": "../../..//ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
         "dynamic_metadata": {
             "name": "dynamic sea surface height and model sea level anomaly",
             "dimension": "2D",
@@ -44,7 +44,7 @@
         }
     },
     {
-        "granule": "./V4r4/native/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-02_ECCO_V4r4_native_llc0090.nc",
+        "granule": "./V4r4_sav_test/V4r4/native/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-02_ECCO_V4r4_native_llc0090.nc",
         "variables": {
             "SSH": [
                 [
@@ -71,9 +71,9 @@
                 ]
             ]
         },
-        "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
-        "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
-        "ecco_metadata_loc": "../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
+        "ecco_grid_loc": "../../..//ECCO-Dataset-Production/tests/data/ecco_grids/V4r4/grid_ECCOV4r4",
+        "ecco_mapping_factors_loc": "../../..//ECCO-Dataset-Production/tests/data/ecco_mapping_factors/V4r4",
+        "ecco_metadata_loc": "../../..//ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
         "dynamic_metadata": {
             "name": "dynamic sea surface height and model sea level anomaly",
             "dimension": "2D",
@@ -88,7 +88,7 @@
         }
     },
     {
-        "granule": "./V4r4/native/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-03_ECCO_V4r4_native_llc0090.nc",
+        "granule": "./V4r4_sav_test/V4r4/native/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-03_ECCO_V4r4_native_llc0090.nc",
         "variables": {
             "SSH": [
                 [
@@ -115,9 +115,9 @@
                 ]
             ]
         },
-        "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
-        "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
-        "ecco_metadata_loc": "../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
+        "ecco_grid_loc": "../../..//ECCO-Dataset-Production/tests/data/ecco_grids/V4r4/grid_ECCOV4r4",
+        "ecco_mapping_factors_loc": "../../..//ECCO-Dataset-Production/tests/data/ecco_mapping_factors/V4r4",
+        "ecco_metadata_loc": "../../..//ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
         "dynamic_metadata": {
             "name": "dynamic sea surface height and model sea level anomaly",
             "dimension": "2D",
@@ -132,7 +132,7 @@
         }
     },
     {
-        "granule": "./V4r4/latlon/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_V4r4_latlon_0p50deg.nc",
+        "granule": "./V4r4_sav_test/V4r4/latlon/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_V4r4_latlon_0p50deg.nc",
         "variables": {
             "SSH": [
                 [
@@ -153,9 +153,9 @@
                 ]
             ]
         },
-        "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
-        "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
-        "ecco_metadata_loc": "../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
+        "ecco_grid_loc": "../../..//ECCO-Dataset-Production/tests/data/ecco_grids/V4r4/grid_ECCOV4r4",
+        "ecco_mapping_factors_loc": "../../..//ECCO-Dataset-Production/tests/data/ecco_mapping_factors/V4r4",
+        "ecco_metadata_loc": "../../..//ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
         "dynamic_metadata": {
             "name": "dynamic sea surface height",
             "dimension": "2D",
@@ -170,7 +170,7 @@
         }
     },
     {
-        "granule": "./V4r4/latlon/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-02_ECCO_V4r4_latlon_0p50deg.nc",
+        "granule": "./V4r4_sav_test/V4r4/latlon/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-02_ECCO_V4r4_latlon_0p50deg.nc",
         "variables": {
             "SSH": [
                 [
@@ -191,9 +191,9 @@
                 ]
             ]
         },
-        "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
-        "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
-        "ecco_metadata_loc": "../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
+        "ecco_grid_loc": "../../..//ECCO-Dataset-Production/tests/data/ecco_grids/V4r4/grid_ECCOV4r4",
+        "ecco_mapping_factors_loc": "../../..//ECCO-Dataset-Production/tests/data/ecco_mapping_factors/V4r4",
+        "ecco_metadata_loc": "../../..//ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
         "dynamic_metadata": {
             "name": "dynamic sea surface height",
             "dimension": "2D",
@@ -208,7 +208,7 @@
         }
     },
     {
-        "granule": "./V4r4/latlon/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-03_ECCO_V4r4_latlon_0p50deg.nc",
+        "granule": "./V4r4_sav_test/V4r4/latlon/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-03_ECCO_V4r4_latlon_0p50deg.nc",
         "variables": {
             "SSH": [
                 [
@@ -229,9 +229,9 @@
                 ]
             ]
         },
-        "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
-        "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
-        "ecco_metadata_loc": "../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
+        "ecco_grid_loc": "../../..//ECCO-Dataset-Production/tests/data/ecco_grids/V4r4/grid_ECCOV4r4",
+        "ecco_mapping_factors_loc": "../../..//ECCO-Dataset-Production/tests/data/ecco_mapping_factors/V4r4",
+        "ecco_metadata_loc": "../../..//ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
         "dynamic_metadata": {
             "name": "dynamic sea surface height",
             "dimension": "2D",

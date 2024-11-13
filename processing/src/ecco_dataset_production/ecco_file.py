@@ -44,10 +44,11 @@ class ECCOMDSFilestr(object):
 
         """
         if filestr:
+            #print('IAN filestr ', filestr)
             # use filestr to set all attributes (a little complicated because
             # ECCO variable names may include underscores):
             try:
-                re_so = re.search('_day_inst|_day_mean|_mon_mean',filestr)
+                re_so = re.search('_day_snap|_day_mean|_mon_mean',filestr)
                 self.prefix = filestr[:re_so.span()[0]]
                 self.averaging_period = filestr[re_so.span()[0]+1:re_so.span()[1]]
                 time_and_ext = filestr[re_so.span()[1]+1:]
@@ -151,10 +152,12 @@ class ECCOGranuleFilestr(object):
 
         """
         if filestr:
+            #print('IAN ECCOGranuleFilestr filestr ', filestr)
+
             # use filestr to set all attributes (a little complicated because
             # ECCO variable names may include underscores):
             try:
-                re_so = re.search('_day_inst|_day_mean|_mon_mean',filestr)
+                re_so = re.search('_day_snap|_day_mean|_mon_mean',filestr)
                 self.prefix = filestr[:re_so.span()[0]]
                 self.averaging_period = filestr[re_so.span()[0]+1:re_so.span()[1]]
                 date_version_grid_type_grid_label_and_ext = filestr[re_so.span()[1]+1:]

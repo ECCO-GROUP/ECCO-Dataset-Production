@@ -36,6 +36,7 @@ def ecco_make_granule( task, cfg,
         task (dict):
         cfg
     """
+
     log = logging.getLogger('edp.'+__name__)
     if log_level:
         log.setLevel(log_level)
@@ -60,8 +61,10 @@ def ecco_make_granule( task, cfg,
         merged_variable_dataset = xr.merge(variable_datasets)
 
     elif this_task.is_native:
+
         log.info('generating %s ...', os.path.basename(this_task['granule']))
         for variable in this_task.variable_names:
+
             log.debug('... adding %s using:', variable)
             for infile in itertools.chain.from_iterable(this_task.variable_inputs(variable)):
                 log.debug('    %s', infile)
@@ -93,12 +96,14 @@ def ecco_make_granule( task, cfg,
             this_task['granule'], encoding=encoding)
     else:
         with tempfile.TemporaryDirectory() as tmpdir:
+            # temporary directory will self-destruct at end of with block
             _src = os.path.basename(this_task['granule'])
             _dest = this_task['granule']
             merged_variable_dataset_with_all_metadata.to_netcdf(
                 os.path.join(tmpdir,_src), encoding=encoding)
             log.info('uploading %s to %s', os.path.join(tmpdir,_src), _dest)
             ecco_aws_s3_cp.aws_s3_cp( src=os.path.join(tmpdir,_src), dest=_dest, **kwargs)
+
     log.info('... done')
 
 
