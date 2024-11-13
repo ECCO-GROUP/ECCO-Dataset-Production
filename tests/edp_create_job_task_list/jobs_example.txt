@@ -1,2 +1,13 @@
-[0,'native','AVG_MON','all']
-[11,'latlon','AVG_MON','all']
+
+# native groupings:
+
+[0, 'native','AVG_MON','all']   # dynamic sea surface height and model sea level anomaly
+[15,'native','AVG_MON','all']   # ocean potential temperature and salinity
+[17,'native','AVG_MON','all']   # ocean velocity
+
+# latlon groupings:
+
+[0, 'latlon','AVG_MON','all']   # dynamic sea surface height
+[9, 'latlon','AVG_MON','all']   # ocean potential temperature and salinity
+[11,'latlon','AVG_MON','all']   # ocean velocity
+

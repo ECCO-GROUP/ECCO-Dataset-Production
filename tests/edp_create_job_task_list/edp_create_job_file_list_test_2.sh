@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-# test job task list generation using AWS S3-stored ECCO results:
+# test job task list generation using a limited set of  AWS S3-stored ECCO
+# results:
 
 # previously:
 # $ aws s3 mb ecco-tmp

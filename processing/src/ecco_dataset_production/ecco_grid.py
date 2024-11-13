@@ -3,6 +3,7 @@
 
 import fnmatch
 import glob
+import logging
 import numpy as np
 import os
 import tarfile
@@ -16,6 +17,9 @@ NETCDF_GLOBSTR = '*.nc'
 NETCDF_LATLON_GLOBSTR = '*latlon*.nc'
 NETCDF_NATIVE_GLOBSTR = '*native*.nc'
 ZIPFILE_GLOBSTR = '*.gz'
+
+
+log = logging.getLogger('edp.'+__name__)
 
 
 class ECCOGrid(object):
@@ -77,9 +81,9 @@ class ECCOGrid(object):
 
         """
         self.task = None
-        self.__latlon_grid = None
-        self.__native_grid = None
-        self.__native_wet_point_indices = None
+        self._latlon_grid = None
+        self._native_grid = None
+        self._native_wet_point_indices = None
 
         if task:
             if not isinstance(task,ecco_task.ECCOTask):
@@ -123,24 +127,38 @@ class ECCOGrid(object):
 
     @property
     def latlon_grid(self):
+        """Returns latlon grid xarray.Dataset instance, if found. Raises
+        RuntimeError exception if not.
+
         """
-        """
-        if not self.__latlon_grid:
-            self.__latlon_grid = xr.open_dataset(
-                glob.glob(os.path.join(self.grid_dir,NETCDF_LATLON_GLOBSTR))[0],
-                chunks='auto')
-        return self.__latlon_grid
+        if not self._latlon_grid:
+            try:
+                self._latlon_grid = xr.open_dataset(
+                    glob.glob(os.path.join(self.grid_dir,NETCDF_LATLON_GLOBSTR))[0],
+                    chunks='auto')
+            except Exception as e:
+                log.error("'latlon file with name matching '%s' could either not be opened or found in grid directory '%s'",
+                    NETCDF_LATLON_GLOBSTR, self.grid_dir)
+                raise RuntimeError(e)
+        return self._latlon_grid
 
 
     @property
     def native_grid(self):
+        """Returns native grid xarray.Dataset instance, if found. Raises
+        RuntimeError exception if not.
+
         """
-        """
-        if not self.__native_grid:
-            self.__native_grid = xr.open_dataset(
-                glob.glob(os.path.join(self.grid_dir,NETCDF_NATIVE_GLOBSTR))[0],
-                chunks='auto')
-        return self.__native_grid
+        if not self._native_grid:
+            try:
+                self._native_grid = xr.open_dataset(
+                    glob.glob(os.path.join(self.grid_dir,NETCDF_NATIVE_GLOBSTR))[0],
+                    chunks='auto')
+            except Exception as e:
+                log.error("'latlon file with name matching '%s' could either not be opened or found in grid directory '%s'",
+                    NETCDF_NATIVE_GLOBSTR, self.grid_dir)
+                raise RuntimeError(e)
+        return self._native_grid
 
 
     @property
@@ -150,13 +168,13 @@ class ECCOGrid(object):
         native grid "wet" points (hFacC>0).
 
         """
-        if not self.__native_wet_point_indices:
+        if not self._native_wet_point_indices:
             native_wet_point_indices = {}
             for z in range(self.native_grid['hFacC'].shape[0]):
                 native_wet_point_indices[z] = \
                     np.where(self.native_grid['hFacC'][z,:]>0)
-            self.__native_wet_point_indices = native_wet_point_indices
-        return self.__native_wet_point_indices
+            self._native_wet_point_indices = native_wet_point_indices
+        return self._native_wet_point_indices
 
 
     def __del__(self):

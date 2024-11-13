@@ -1,31 +1,43 @@
 
-ECCO Dataset Production system-level tests
-==========================================
+# ECCO Dataset Production system-level tests
 
-Functionality
--------------
+## End-to-end test/demonstration examples:
 
-    - edp_aws_s3_sync: Tests various AWS S3 data sync operations: upload,
-      download, and copy within AWS.
+The following examples can be used as a basis for creating dataset
+production pipelines for other datatypes:
 
-    - edp_create_job_task_list: Tests creation of task lists based on high-level
-      job definition files.
+- SSH\_native\_latlon\_local: Generation of native and latlon format
+  granules from local input, with output to local directory. See
+  "Configuring ECCO Dataset Production to run locally" in ../README.md
+  for description.
 
-Test data:
-----------
+- SSH\_native\_latlon\_local\_remote: Generation of native and latlon
+  format granules from remote input data, with output to local
+  directory.  See "Configuring ECCO Dataset Production to run in
+  local/remote mode" in ../README.md for description.
 
-    - ./data/config/: ECCO Dataset Production configuration file examples.
+## Functionality
 
-    - ./data/ecco_granules/: A selection of representative ECCO Dataset
-      Production results data.
+- edp\_aws\_s3\_sync: Tests various AWS S3 data sync operations:
+  upload, download, and copy within AWS.
 
-    - ./data/ecco_grids/: ECCO grid definitions.
+- edp\_create\_job\_task\_list: Tests creation of task lists based on
+  high-level job definition files.
 
-    - ./data/ecco_results/: Sample ECCO MDS results data.  See also
-      download_selected_data.sh helper script that downloads selected MDS files
-      per the data requirements in edp_create_job_task_list (above).
+## Test data:
 
-Notes
------
+- ./data/config/: ECCO Dataset Production configuration file examples.
 
-	- Tests that rely on AWS S3 access require an AWS account with login privileges.
+- ./data/ecco_grids/: ECCO grid definitions and download script.
+
+- ./data/ecco\_mapping\_factors: ECCO mapping factors (interpolation
+  to latlon grids) and download script.
+
+- ./data/ecco\_results/: Sample ECCO MDS results data.  See also
+  download\_selected\_data.sh helper script that downloads selected
+  MDS files used in edp\_create\_job\_task\_list (above).
+
+## Remarks
+
+- Tests that rely on AWS S3 access require an AWS account with login
+  privileges.
