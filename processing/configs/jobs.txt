@@ -1,1 +1,0 @@
-[17,'native','AVG_MON',1]

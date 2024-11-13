@@ -7,3 +7,6 @@
 *.pyc
 job_logs*.json
 *.DS_Store
+# emacs temporary files:
+*~
+\#*\#

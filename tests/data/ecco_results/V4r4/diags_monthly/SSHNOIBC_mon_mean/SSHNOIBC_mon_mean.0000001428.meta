@@ -1,0 +1,14 @@
+ nDims = [   2 ];
+ dimList = [
+    90,    1,   90,
+  1170,    1, 1170
+ ];
+ dataprec = [ 'float32' ];
+ nrecords = [      1 ];
+ timeStepNumber = [       1428 ];
+ timeInterval = [  2.635200000000E+06  5.140800000000E+06 ];
+ missingValue = [ -9.99000000000000E+02 ];
+ nFlds = [    1 ];
+ fldList = {
+ 'SSHNOIBC'
+ };

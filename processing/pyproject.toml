@@ -1,0 +1,47 @@
+[build-system]
+requires = ['setuptools']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'ecco_dataset_production'
+version = '1.0'
+dependencies = [
+    'boto3',
+    'bs4',
+#   'cartopy',
+    'importlib.resources',
+    'lxml',
+#   'matplotlib',
+    'netCDF4',
+    'numpy',
+#   'pyresample',
+    'requests',
+    'scipy',
+    'xarray',
+    'xmitgcm',
+    'xgcm',
+    'ecco_cloud_utils @ git+https://github.com/ECCO-GROUP/ECCO-ACCESS/#subdirectory=ecco-cloud-utils',
+    'ecco_v4_py @ git+https://github.com/ECCO-GROUP/ECCOv4-py',
+]
+
+#[tool.setuptools]
+# include-package-data is true by default, so the following need not be
+# specified and is listed here only for reference:
+#include-package-data = true
+
+#[tool.setuptools.packages.find]
+# namespace package support is true by default, so the following need not be
+# specified and is listed here only for reference:
+#namespaces = true
+#where = ["src"]
+
+[tool.setuptools.package-data]
+"ecco_dataset_production" = ["*.json"]
+#"ecco_dataset_production.metadata.V4r4" = ["*.json"]
+
+[project.scripts]
+edp_aws_s3_sync             = 'ecco_dataset_production.apps.aws_s3_sync:main'
+edp_create_factors          = 'ecco_dataset_production.apps.create_factors:main'
+edp_create_job_task_list    = 'ecco_dataset_production.apps.create_job_task_list:main'
+edp_generate_dataproducts   = 'ecco_dataset_production.apps.generate_dataproducts:main'
+
