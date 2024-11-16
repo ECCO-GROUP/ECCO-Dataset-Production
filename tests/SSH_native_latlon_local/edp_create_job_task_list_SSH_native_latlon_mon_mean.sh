@@ -1,22 +1,16 @@
 #!/usr/bin/env bash
 
-# create a job task list from a jobfile
-# first argument is the name of the job task file (text)
-# second argument is the name of the output task file (json)
+# test job task list generation using locally-stored ECCO results:
 
-
-EDP_root_dir=../../../
-echo ${EDP_root_dir}
-ls ${EDP_root_dir}
+ver='V4r4'
 
 edp_create_job_task_list \
-    --jobfile ${1} \
+    --jobfile ./SSH_native_latlon_mon_mean_jobs.txt \
     --ecco_source_root ../data/ecco_results/${ver} \
-    --ecco_destination_root "./V4r4_sav_test" \
-    --ecco_grid_loc "${EDP_root_dir}/ECCO-Dataset-Production/tests/data/ecco_grids/V4r4/grid_ECCOV4r4" \
-    --ecco_mapping_factors_loc "${EDP_root_dir}/ECCO-Dataset-Production/tests/data/ecco_mapping_factors/V4r4" \
-    --ecco_metadata_loc "${EDP_root_dir}/ECCO-v4-Configurations/ECCOv4 Release 4/metadata" \
-    --outfile "${2}" \
-    --cfgfile "${EDP_root_dir}/ECCO-Dataset-Production/processing/configs/product_generation_config_updated.yaml" \
+    --ecco_destination_root ./ \
+    --ecco_grid_loc ../data/ecco_grids/${ver}/grid_ECCO${ver} \
+    --ecco_mapping_factors_loc ../data/ecco_mapping_factors/${ver} \
+    --ecco_metadata_loc '../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata' \
+    --outfile SSH_native_latlon_mon_mean_tasks.json \
+    --cfgfile ../../processing/configs/product_generation_config_updated.yaml \
     --log DEBUG
-

@@ -3,8 +3,8 @@
 
 ## End-to-end test/demonstration examples:
 
-The following examples can be used as a basis for creating dataset
-production pipelines for other datatypes:
+The following examples can either be run as configured, or used as
+starting points for other datatype production examples:
 
 - SSH\_native\_latlon\_local: Generation of native and latlon format
   granules from local input, with output to local directory. See

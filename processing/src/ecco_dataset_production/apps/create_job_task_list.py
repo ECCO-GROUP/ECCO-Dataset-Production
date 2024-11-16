@@ -21,7 +21,6 @@ from .. import ecco_file
 from .. import ecco_metadata_store
 from .. import ecco_time
 from .. import metadata
-from pprint import pprint
 
 
 logging.basicConfig(
@@ -111,7 +110,8 @@ def create_job_task_list(
 
     Args:
         jobfile (str): (Path and) filename of ECCO Dataset Production jobs
-            simple text file, each line containing a specifier of the form
+            simple text file, each line containing a Python case insensitive
+            list-style specifier of the form
             "[<metadata_groupings_id>,<product_type>,<frequency>,<time_steps>]"
             where metadata_groupings_id is an integer from 0 through N,
             product_type is one of '1D', 'latlon', or 'native', frequency is one
@@ -135,10 +135,9 @@ def create_job_task_list(
             similar remote location given by AWS S3 bucket/prefix.
         cfgfile (str): (Path and) filename of ECCO Dataset Production
             configuration file.
-        keygen (str): If ecco_source_root If ecco_source_root references an S3
-            bucket and if running in JPL domain, federated login key generation
-            script (e.g., /usr/local/bin/aws-login-pub.darwin.amd64).
-            (default: None)
+        keygen (str): If ecco_source_root references an S3 bucket and if running
+            in JPL domain, federated login key generation script (e.g.,
+            /usr/local/bin/aws-login-pub.darwin.amd64).  (default: None)
         profile (str): If ecco_source_root references an AWS S3 bucket and
             if running in JPL domain, AWS credential profile name (e.g.,
             'saml-pub', 'default', etc.)
@@ -169,7 +168,6 @@ def create_job_task_list(
 
     log.info('initializing configuration parameters...')
     cfg = configuration.ECCODatasetProductionConfig(cfgfile=cfgfile)
-    # TODO: cfg.set_default_paths(workingdir)
     log.debug('Configuration key value pairs:')
     for k,v in cfg.items():
         log.debug(' %s: %s', k, v)
@@ -221,42 +219,14 @@ def create_job_task_list(
         metadata_loc=ecco_metadata_loc,
         keygen=keygen, profile=profile).dataset_groupings
 
-#    # previous package-based implementation:
-#
-#    log.info('collecting %s package resource metadata...', cfg['ecco_version'])
-#    dataset_groupings = {}
-#    traversible = importlib.resources.files(metadata)
-#    with importlib.resources.as_file(traversible/cfg['ecco_version']) as files:
-#        for file in files.glob('*groupings*'):
-#            if re.search(r'_1D_',file.name,re.IGNORECASE):
-#                log.debug('parsing 1D groupings metadata file %s', file)
-#                with open(file) as f:
-#                    dataset_groupings['1D'] = json.load(f)
-#            elif re.search(r'_latlon_',file.name,re.IGNORECASE):
-#                log.debug('parsing latlon groupings metadata file %s', file)
-#                with open(file) as f:
-#                    dataset_groupings['latlon'] = json.load(f)
-#            elif re.search(r'_native_',file.name,re.IGNORECASE):
-#                log.debug('parsing native groupings metadata file %s', file)
-#                with open(file) as f:
-#                    dataset_groupings['native'] = json.load(f)
-#    log.debug('dataset grouping metadata:')
-#    for key,list_of_dicts in dataset_groupings.items():
-#        log.debug('%s:', key)
-#        for i,dict_i in enumerate(list_of_dicts):
-#            log.debug(' %d:', i)
-#            for k,v in dict_i.items():
-#                log.debug('  %s: %s', k, v)
-#    log.info('...done collecting %s resource metadata.', cfg['ecco_version'])
-
     #
     # list of job descriptions to be built in two steps: first, gather list of
     # all available variable (*) input granules, second, step through the
     # collection and organize into list of output directories with 'input',
     # 'output', and 'metadata' keys.
     #
-    # (*) - "variable" as used here is meant to imply a NetCDF file variable,
-    # i.e., an ECCO dataset production output file component
+    # (*) - "variable" is meant to imply a NetCDF file variable, i.e., an ECCO
+    # dataset production output file component
     #
 
     task_list = []
@@ -350,7 +320,6 @@ def create_job_task_list(
                         one_to_one = False
 
                 if not one_to_one:
-                    #('IAN not one_to_one')
 
                     # variable depends on component inputs; determine
                     # availability of input files and gather accordingly:
@@ -380,7 +349,7 @@ def create_job_task_list(
                                     + ecco_file.ECCOMDSFilestr(
                                         prefix=variable_input_component_key,
                                         averaging_period=file_freq_pat).re_filestr)
-                                
+
                                 variable_input_component_files.extend(
                                     [os.path.join(
                                         urllib.parse.urlunparse(
@@ -501,7 +470,7 @@ def create_job_task_list(
                             s3_client=s3c,
                             bucket=s3_parts.netloc,
                             prefix=prefix)
-                            
+
 
                     if isinstance(job.time_steps,str) and 'all'==job.time_steps.lower():
                     #if 'all' == job.time_steps.lower():
@@ -557,8 +526,6 @@ def create_job_task_list(
 
                     variable_files.sort()
                     variable_files_as_list_of_lists = []
-
-                    print('number of files ', len(variable_files))
 
                     for f in variable_files:
                         if ecco_file.ECCOMDSFilestr(os.path.basename(f)).ext == 'data':
@@ -620,7 +587,7 @@ def create_job_task_list(
                 model_end_time=cfg['model_end_time']
                 model_timestep=cfg['model_timestep']
                 model_timestep_units=cfg['model_timestep_units']
-                
+
                 if 'snap' in job.frequency.lower():
                     mst = np.datetime64(model_start_time)
                     td64 = np.timedelta64(int(time)*model_timestep ,model_timestep_units)
@@ -630,7 +597,7 @@ def create_job_task_list(
                     tb = []
                     tb.append(center_time)
                     tb.append(center_time)
-                    
+
                 else:
                     tb,center_time = ecco_time.make_time_bounds_metadata(
                         granule_time=time,
