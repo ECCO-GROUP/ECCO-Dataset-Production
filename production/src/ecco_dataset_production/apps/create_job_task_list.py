@@ -47,9 +47,10 @@ def create_parser():
         ECCO Dataset Production output root location, either directory path
         (e.g., ECCOV4r5_datasets) or AWS S3 bucket (s3://bucket_name)""")
     parser.add_argument('--ecco_grid_loc', help="""
-        Directory containing ECCO grid files, e.g., XC.*, YC.*, etc., as well as
-        the file available_diagnostics.log, or similar remote location given by
-        AWS S3 bucket/prefix.""")
+        Directory containing ECCO grid files (XC.*, YC.*, *latlon*.nc,
+        *native*.nc, etc., as well as the file available_diagnostics.log), or
+        ECCO grid zipfile, or similar remote location given by AWS S3
+        bucket/prefix.""")
     parser.add_argument('--ecco_mapping_factors_loc', help="""
         Directory containing ECCO mapping factors (3D, land_mask, latlon_grid,
         and sparse subdirectories), or similar remote location given by AWS S3
@@ -123,9 +124,10 @@ def create_job_task_list(
         ecco_destination_root (str): ECCO Dataset Production output root
             location, either directory path (e.g., ECCOV4r5_datasets) or AWS S3
             bucket or folder (s3://...).
-        ecco_grid_loc (str): Directory containing ECCO grid files, e.g., XC.*,
-            YC.*, etc., as well as the file available_diagnostics.log, or
-            similar remote location given by AWS S3 bucket/prefix.
+        ecco_grid_loc (str): Directory containing ECCO grid files (XC.*, YC.*,
+            *latlon*.nc, *native*.nc, etc., as well as the file
+            available_diagnostics.log), or ECCO grid zipfile, or similar remote
+            location given by AWS S3 bucket/prefix.""")
         ecco_mapping_factors_loc (str): Directory containing ECCO mapping
             factors (3D, land_mask, latlon_grid, and sparse subdirectories), or
             similar remote location given by AWS S3 bucket/prefix.

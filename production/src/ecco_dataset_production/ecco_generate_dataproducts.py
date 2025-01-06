@@ -61,15 +61,14 @@ def ecco_make_granule( task, cfg,
         merged_variable_dataset = xr.merge(variable_datasets)
 
     elif this_task.is_native:
-
         log.info('generating %s ...', os.path.basename(this_task['granule']))
         for variable in this_task.variable_names:
-
             log.debug('... adding %s using:', variable)
             for infile in itertools.chain.from_iterable(this_task.variable_inputs(variable)):
                 log.debug('    %s', infile)
             emdsds = ecco_dataset.ECCOMDSDataset(
-                task=this_task, variable=variable, grid=grid, cfg=cfg, **kwargs)
+                task=this_task, variable=variable, grid=grid,
+                mapping_factors=mapping_factors, cfg=cfg, **kwargs)
             emdsds.drop_all_variables_except(variable)
             emdsds.apply_land_mask_to_native_variable(variable)
             variable_datasets.append(emdsds)
