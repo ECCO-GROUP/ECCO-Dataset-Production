@@ -33,10 +33,33 @@ def ecco_make_granule( task, cfg,
     descriptor.
 
     Args:
-        task (dict):
-        cfg
-    """
+        task (dict): Single task from parsed ECCO dataset production
+            json-formatted task list.
+        cfg (dict): Parsed ECCO dataset production yaml file.
+        grid (obj): Instance of ECCOGrid class for current granule task.
+        mapping_factors (obj): Instance of ECCOMappingFactors for current
+            granule task.
+        log_level (str): Optional local logging level for the ecco_make_granule
+            task ('DEBUG', 'INFO', 'WARNING', 'ERROR' or 'CRITICAL').  If called
+            by a top-level application, the default will be that of the parent
+            logger ('edp').
+        **kwargs: Depending on run context:
+            keygen (str): If tasklist descriptors reference AWS S3 endpoints and
+                if running in JPL domain, (path and) name of federated login key
+                generation script (e.g.,
+                /usr/local/bin/aws-login-pub.darwin.amd64)
+            profile (str): Optional profile name to be used in combination
+                with keygen (e.g., 'saml-pub', 'default', etc.)
 
+    Returns:
+        Indirectly, NetCDF4-formatted ECCO granule, named according to, and
+        written to location specified by, input task 'granule' keyword.
+
+    Raises:
+        RuntimeError if indeterminate output granule type (i.e., not native or
+        latlon).
+
+    """
     log = logging.getLogger('edp.'+__name__)
     if log_level:
         log.setLevel(log_level)
@@ -108,7 +131,24 @@ def ecco_make_granule( task, cfg,
 
 def set_granule_ancillary_data(
     dataset=None, task=None, grid=None, mapping_factors=None, cfg=None):
-    """
+    """Collect, and set, global and ancillary data such as array precision, fill values,
+    variable-level min/max values, time bounds, and additional coordinate data
+    not already established during the process of Dataset granule creation.
+
+    Args:
+        dataset (xarray.Dataset): ECCO results data container to which
+            additional ancillary data, and data conventions, are to be applied.
+        task (obj): ECCOTask granule task descriptor providing
+            'dynamic_metadata'.
+        grid (obj): ECCOGrid instance providing, in the case of ECCO native
+            granule generation, XC, YC, and Z bounds.
+        mapping_factors (obj): ECCOMappingFactors instance providing, in the
+            case of ECCO latlon granules, lat/lon/depth bounds.
+        cfg (dict): Parsed ECCO dataset production yaml file.
+
+    Returns:
+        Input xarray.Datatset, with global ancillary data applied.
+
     """
     # ensure consistent variable (array) representation:
     prec = cfg['array_precision'] if 'array_precision' in cfg else 'float64'
@@ -184,7 +224,33 @@ def set_granule_ancillary_data(
 
 
 def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
-    """
+    """Primary routine for aggregrating and setting metadata collected from all
+    sources, e.g., ECCO configuration data, task list references, etc.
+    set_granule_metadata operations depend on functionality provided by
+    ecco_v4_py.ecco_utils.
+
+    Args:
+        dataset (xarray.Dataset): ECCO results data container to which metadata
+            are to be applied.
+        task (obj): ECCOTask granule task descriptor providing
+            'dynamic_metadata', 'ecco_metadata_loc' definitions.
+        grid (obj): ECCOGrid instance providing, in the case of ECCO native
+            granule generation, XC, YC, and Z bounds.
+        mapping_factors (obj): ECCOMappingFactors instance providing, in the
+            case of ECCO latlon granules, lat/lon/depth bounds.
+        cfg (dict): Parsed ECCO dataset production configuration file.
+        **kwargs: Depending on run context:
+            keygen (str): If task object key 'ecco_metadata_loc' references an
+                AWS S3 endpoint and if running in JPL domain, (path and) name of
+                federated login key generation script (e.g.,
+                /usr/local/bin/aws-login-pub.darwin.amd64)
+
+            profile (str): Optional profile name to be used in combination
+                with keygen (e.g., 'saml-pub', 'default', etc.)
+
+    Returns:
+        Input xarray.Datatset, with all metadata applied.
+
     """
     log = logging.getLogger('edp.'+__name__)
 
@@ -276,36 +342,29 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
     dataset.attrs.pop('original_mds_grid_dir',None) # assigned in ecco_v4_py.read_bin_llc
     dataset.attrs.pop('original_mds_var_dir',None)  # "                                 "
 
-    # add coordinate attributes to all variables:
-    var_coord_attrs = {}
-    coord_set = set(['XC','YC','XG','YG','Z','Zp1','Zu','Zl','time'])
-    for var in list(dataset.data_vars):
-        var_coord_original = set(list(dataset[var].coords))
-        set_intersect = var_coord_original.intersection(coord_set)
-        var_coord_attrs[var] = ' '.join(set_intersect)
-
-    # specific variable encodings:
+    # combine variable-specific encodings:
     prec = cfg['array_precision'] if 'array_precision' in cfg else 'float64'
     ncfill = netCDF4.default_fillvals['f4'] if prec=='float32' else netCDF4.default_fillvals['f8']
     var_encoding = {}
+    variable_coordinates_as_encoded_attributes = cfg['variable_coordinates_as_encoded_attributes']
     for var in list(dataset.data_vars):
         var_encoding[var] = {
             'zlib':True,
             'complevel':5,
             'shuffle':True,
             '_FillValue': ncfill}
-        # per PO.DAAC request, overwrite default coordinates attribute:
-        dataset[var].encoding['coordinates'] = var_coord_attrs[var]
+        # per PO.DAAC request (above), overwrite default coordinates encoding
+        # attribute based on key order in dataset[var].coords:
+        dataset[var].encoding['coordinates'] = ' '.join(
+            [c for c in list(dataset[var].coords) if c in variable_coordinates_as_encoded_attributes])
 
-    # specific coordinate encodings:
+    # specific coordinate datatype encodings:
     coord_encoding = {}
     for coord in dataset.coords:
         # default:
         coord_encoding[coord] = {'_FillValue':None, 'dtype':'float32'}
-
         if dataset[coord].values.dtype==np.int32 or dataset[coord].values.dtype==np.int64:
             coord_encoding[coord]['dtype'] = 'int32'
-
         if coord=='time' or coord=='time_bnds':
             coord_encoding[coord]['dtype'] = 'int32'
             if 'units' in dataset[coord].attrs:

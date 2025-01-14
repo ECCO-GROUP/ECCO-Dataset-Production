@@ -127,7 +127,7 @@ def create_job_task_list(
         ecco_grid_loc (str): Directory containing ECCO grid files (XC.*, YC.*,
             *latlon*.nc, *native*.nc, etc., as well as the file
             available_diagnostics.log), or ECCO grid zipfile, or similar remote
-            location given by AWS S3 bucket/prefix.""")
+            location given by AWS S3 bucket/prefix.
         ecco_mapping_factors_loc (str): Directory containing ECCO mapping
             factors (3D, land_mask, latlon_grid, and sparse subdirectories), or
             similar remote location given by AWS S3 bucket/prefix.
