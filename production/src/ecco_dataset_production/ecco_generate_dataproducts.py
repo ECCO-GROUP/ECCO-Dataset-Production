@@ -487,9 +487,10 @@ def generate_dataproducts( tasklist, cfgfile,
         # ECCOMappingFactors objects up-front (using the first task descriptor)
         # to be shared by all granule creation tasks:
         if not shared_ecco_grid and not shared_ecco_mapping_factors:
-            shared_ecco_grid = ecco_grid.ECCOGrid(task=task)
-            shared_ecco_mapping_factors = ecco_mapping_factors.ECCOMappingFactors(task=task)
-
+            shared_ecco_grid = ecco_grid.ECCOGrid(
+                task=task, **kwargs)
+            shared_ecco_mapping_factors = ecco_mapping_factors.ECCOMappingFactors(
+                task=task, **kwargs)
         try:
             ecco_make_granule( task, cfg,
                 grid=shared_ecco_grid, mapping_factors=shared_ecco_mapping_factors,

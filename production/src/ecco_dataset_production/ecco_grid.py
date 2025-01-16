@@ -99,6 +99,9 @@ class ECCOGrid(object):
             self.tmpdir = tempfile.TemporaryDirectory()
             self.grid_dir = self.tmpdir.name
             aws.ecco_aws_s3_sync.aws_s3_sync( src=grid_loc, dest=self.grid_dir, **kwargs)
+            if not os.listdir(self.grid_dir):
+                raise RuntimeError(
+                    f'Remote grid fetch failed. Ensure grid_loc ({grid_loc}) refers to a valid s3 bucket and prefix (only).')
         else:
             # just point to local grid directory:
             self.tmpdir = None
