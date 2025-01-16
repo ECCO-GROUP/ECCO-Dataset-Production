@@ -4,32 +4,32 @@
         "variables": {
             "SSH": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000000732.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000000732.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000000732.meta"
                 ]
             ],
             "SSHIBC": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000000732.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000000732.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000000732.meta"
                 ]
             ],
             "SSHNOIBC": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000000732.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000000732.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000000732.meta"
                 ]
             ],
             "ETAN": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000000732.data",
-                    "../data/ecco_results/V4r4/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000000732.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000000732.meta"
                 ]
             ]
         },
-        "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
-        "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
-        "ecco_metadata_loc": "../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
+        "ecco_grid_loc": "s3://ecco-model-granules/V4r4/llc90_grid",
+        "ecco_mapping_factors_loc": "s3://ecco-mapping-factors/V4r4",
+        "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
         "dynamic_metadata": {
             "name": "dynamic sea surface height and model sea level anomaly",
             "dimension": "2D",
@@ -48,32 +48,32 @@
         "variables": {
             "SSH": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.meta"
                 ]
             ],
             "SSHIBC": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000001428.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000001428.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000001428.meta"
                 ]
             ],
             "SSHNOIBC": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000001428.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000001428.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000001428.meta"
                 ]
             ],
             "ETAN": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000001428.data",
-                    "../data/ecco_results/V4r4/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000001428.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000001428.meta"
                 ]
             ]
         },
-        "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
-        "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
-        "ecco_metadata_loc": "../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
+        "ecco_grid_loc": "s3://ecco-model-granules/V4r4/llc90_grid",
+        "ecco_mapping_factors_loc": "s3://ecco-mapping-factors/V4r4",
+        "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
         "dynamic_metadata": {
             "name": "dynamic sea surface height and model sea level anomaly",
             "dimension": "2D",
@@ -92,32 +92,32 @@
         "variables": {
             "SSH": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.meta"
                 ]
             ],
             "SSHIBC": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000002172.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000002172.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000002172.meta"
                 ]
             ],
             "SSHNOIBC": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000002172.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000002172.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000002172.meta"
                 ]
             ],
             "ETAN": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000002172.data",
-                    "../data/ecco_results/V4r4/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000002172.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000002172.meta"
                 ]
             ]
         },
-        "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
-        "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
-        "ecco_metadata_loc": "../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
+        "ecco_grid_loc": "s3://ecco-model-granules/V4r4/llc90_grid",
+        "ecco_mapping_factors_loc": "s3://ecco-mapping-factors/V4r4",
+        "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
         "dynamic_metadata": {
             "name": "dynamic sea surface height and model sea level anomaly",
             "dimension": "2D",
@@ -136,26 +136,26 @@
         "variables": {
             "SSH": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000000732.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000000732.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000000732.meta"
                 ]
             ],
             "SSHIBC": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000000732.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000000732.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000000732.meta"
                 ]
             ],
             "SSHNOIBC": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000000732.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000000732.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000000732.meta"
                 ]
             ]
         },
-        "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
-        "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
-        "ecco_metadata_loc": "../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
+        "ecco_grid_loc": "s3://ecco-model-granules/V4r4/llc90_grid",
+        "ecco_mapping_factors_loc": "s3://ecco-mapping-factors/V4r4",
+        "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
         "dynamic_metadata": {
             "name": "dynamic sea surface height",
             "dimension": "2D",
@@ -174,26 +174,26 @@
         "variables": {
             "SSH": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.meta"
                 ]
             ],
             "SSHIBC": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000001428.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000001428.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000001428.meta"
                 ]
             ],
             "SSHNOIBC": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000001428.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000001428.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000001428.meta"
                 ]
             ]
         },
-        "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
-        "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
-        "ecco_metadata_loc": "../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
+        "ecco_grid_loc": "s3://ecco-model-granules/V4r4/llc90_grid",
+        "ecco_mapping_factors_loc": "s3://ecco-mapping-factors/V4r4",
+        "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
         "dynamic_metadata": {
             "name": "dynamic sea surface height",
             "dimension": "2D",
@@ -212,26 +212,26 @@
         "variables": {
             "SSH": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.meta"
                 ]
             ],
             "SSHIBC": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000002172.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000002172.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000002172.meta"
                 ]
             ],
             "SSHNOIBC": [
                 [
-                    "../data/ecco_results/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000002172.data",
-                    "../data/ecco_results/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000002172.meta"
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r4/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000002172.meta"
                 ]
             ]
         },
-        "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
-        "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
-        "ecco_metadata_loc": "../../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
+        "ecco_grid_loc": "s3://ecco-model-granules/V4r4/llc90_grid",
+        "ecco_mapping_factors_loc": "s3://ecco-mapping-factors/V4r4",
+        "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
         "dynamic_metadata": {
             "name": "dynamic sea surface height",
             "dimension": "2D",

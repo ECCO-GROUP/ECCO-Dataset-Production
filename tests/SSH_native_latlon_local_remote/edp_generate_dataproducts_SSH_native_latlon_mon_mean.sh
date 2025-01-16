@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+ver='V4r4'
+
 TASKLIST=SSH_native_latlon_mon_mean_tasks.json
-CFGFILE=../../processing/configs/product_generation_config_updated.yaml
+CFGFILE=../../config/config_${ver}.yaml
 KEYGEN=/usr/local/bin/aws-login-pub.darwin.amd64
 PROFILE=saml-pub
 

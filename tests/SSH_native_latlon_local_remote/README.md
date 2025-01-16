@@ -5,6 +5,13 @@ granules from remote input, with output to local directory.
 See "Configuring ECCO Dataset Production to run in local/remote mode"
 in top-level ../../README.md for details.
 
+If ECCO-Dataset-Production has not been cloned using the
+`--recurse-submodules` option, ../ECCO-v4-Configurations, referred to
+in this test case, can be cloned using:
+
+    git submodule init
+    git submodule update
+
 Steps include:
 
 - Task list generation:

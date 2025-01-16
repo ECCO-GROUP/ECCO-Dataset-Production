@@ -1,7 +1,7 @@
 
 # ECCO Dataset Production system-level tests
 
-## End-to-end test/demonstration examples:
+## Integration and system-level end-to-end test/demonstration examples:
 
 The following examples can either be run as configured, or used as
 starting points for other datatype production examples:
