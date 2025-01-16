@@ -12,9 +12,6 @@ from . import ecco_aws
 
 SLEEP_SECONDS = 5
 
-logging.basicConfig(
-    format = '%(levelname)-10s %(asctime)s %(message)s')
-
 
 def sync_local_to_remote( src=None, dest=None, nproc=1, dryrun=False,
     log_level=None, **kwargs):
@@ -25,8 +22,10 @@ def sync_local_to_remote( src=None, dest=None, nproc=1, dryrun=False,
         dest (str): Destination location (AWS S3 URI).
         nproc (int):  Maximum number of local-remote sync processes.
         dryrun (bool): Set AWS S3 CLI argument '--dryrun'.
-        log_level (str): log_level choices per Python logging module
-            ('DEBUG','INFO','WARNING','ERROR' or 'CRITICAL'; default='WARNING').
+        log_level (str): Optional local logging level ('DEBUG', 'INFO',
+            'WARNING', 'ERROR' or 'CRITICAL').  If called by a top-level
+            application, the default will be that of the parent logger ('edp'),
+            or 'WARNING' if called in standalone mode.
         **kwargs: Depending on the invocation context, additional arguments that
             may be necessary include:
             keygen (str): If aws_s3_sync is invoked within an SSO environment,
@@ -39,7 +38,7 @@ def sync_local_to_remote( src=None, dest=None, nproc=1, dryrun=False,
                 keygen (e.g., 'saml-pub', 'default', etc.)
 
     """
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('edp.'+__name__)
     if log_level:
         log.setLevel(log_level)
 
@@ -162,8 +161,10 @@ def sync_remote_to_remote_or_local( src=None, dest=None,
         dest (str): Destination location (local path or AWS S3 URI).
         nproc (int):  Maximum number of local-remote sync processes.
         dryrun (bool): Set AWS S3 CLI argument '--dryrun'.
-        log_level (str): log_level choices per Python logging module
-            ('DEBUG','INFO','WARNING','ERROR' or 'CRITICAL'; default='WARNING').
+        log_level (str): Optional local logging level ('DEBUG', 'INFO',
+            'WARNING', 'ERROR' or 'CRITICAL').  If called by a top-level
+            application, the default will be that of the parent logger ('edp'),
+            or 'WARNING' if called in standalone mode.
         **kwargs: Depending on the invocation context, additional arguments that
             may be necessary include:
             keygen (str): If aws_s3_sync is invoked within an SSO environment,
@@ -176,7 +177,7 @@ def sync_remote_to_remote_or_local( src=None, dest=None,
                 keygen (e.g., 'saml-pub', 'default', etc.)
 
     """
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('edp.'+__name__)
     if log_level:
         log.setLevel(log_level)
 
@@ -224,8 +225,10 @@ def aws_s3_sync(
         dest (str): Destination location (local path or AWS S3 URI).
         nproc (int):  Maximum number of local-remote sync processes.
         dryrun (bool): Set AWS S3 CLI argument '--dryrun'.
-        log_level (str): log_level choices per Python logging module
-            ('DEBUG','INFO','WARNING','ERROR' or 'CRITICAL'; default='WARNING').
+        log_level (str): Optional local logging level ('DEBUG', 'INFO',
+            'WARNING', 'ERROR' or 'CRITICAL').  If called by a top-level
+            application, the default will be that of the parent logger ('edp'),
+            or 'WARNING' if called in standalone mode.
         **kwargs: Depending on the invocation context, additional arguments that
             may be necessary include:
             keygen (str): If aws_s3_sync is invoked within an SSO environment,
@@ -238,7 +241,7 @@ def aws_s3_sync(
                 keygen (e.g., 'saml-pub', 'default', etc.)
 
     """
-    log = logging.getLogger(__name__)
+    log = logging.getLogger('edp.'+__name__)
     if log_level:
         log.setLevel(log_level)
 
