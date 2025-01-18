@@ -95,7 +95,7 @@ summary: 'Estimating the Circulation and Climate of the Ocean (ECCO) state estim
 
 # per PO.DAAC request, possible coordinate names to be included with
 # variable encodings (runtime-determined):
-variable_coordinates_as_encoded_attributes: ['tile','time','XC','XG','YC','YG','Z','Zp1','Zl','Zu']
+variable_coordinates_as_encoded_attributes: ['latitude','longitude','tile','time','XC','XG','YC','YG','Z','Zp1','Zl','Zu']
 
 # Assigned DOI prefix (ref. https://www.doi.org/):
 doi_prefix: '10.5067'

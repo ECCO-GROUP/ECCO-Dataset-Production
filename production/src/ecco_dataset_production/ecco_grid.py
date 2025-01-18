@@ -85,6 +85,9 @@ class ECCOGrid(object):
         self._native_grid = None
         self._native_wet_point_indices = None
 
+        if task and grid_loc:
+            raise RuntimeError('Either task or grid_loc may be provided, but not both')
+
         if task:
             if not isinstance(task,ecco_task.ECCOTask):
             # instantiate from file or dict:
@@ -127,6 +130,9 @@ class ECCOGrid(object):
                 fnmatch.fnmatch(os.listdir(self.grid_dir)[0],ZIPFILE_GLOBSTR):
                 raise RuntimeError(
                     'Local grid directory contains zipped tarball only; unzip/tar before proceeding.')
+
+        log.debug('ECCO grid at location %s contains %s', self.grid_dir, os.listdir(self.grid_dir))
+
 
     @property
     def latlon_grid(self):
