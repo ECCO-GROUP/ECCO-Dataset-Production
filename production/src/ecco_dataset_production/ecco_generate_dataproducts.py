@@ -342,21 +342,17 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
     dataset.attrs.pop('original_mds_grid_dir',None) # assigned in ecco_v4_py.read_bin_llc
     dataset.attrs.pop('original_mds_var_dir',None)  # "                                 "
 
-    # combine variable-specific encodings:
-    prec = cfg['array_precision'] if 'array_precision' in cfg else 'float64'
-    ncfill = netCDF4.default_fillvals['f4'] if prec=='float32' else netCDF4.default_fillvals['f8']
+    # variable-specific encodings:
     var_encoding = {}
-    variable_coordinates_as_encoded_attributes = cfg['variable_coordinates_as_encoded_attributes']
+    prec = cfg['array_precision'] if 'array_precision' in cfg else 'float64'
+    fill_value = netCDF4.default_fillvals['f4'] if prec=='float32' else netCDF4.default_fillvals['f8']
     for var in list(dataset.data_vars):
-        var_encoding[var] = {
-            'zlib':True,
-            'complevel':5,
-            'shuffle':True,
-            '_FillValue': ncfill}
+        var_encoding[var] = cfg['netcdf4_compression_encodings']
+        var_encoding[var]['_FillValue'] = fill_value
         # per PO.DAAC request (above), overwrite default coordinates encoding
         # attribute based on key order in dataset[var].coords:
         dataset[var].encoding['coordinates'] = ' '.join(
-            [c for c in list(dataset[var].coords) if c in variable_coordinates_as_encoded_attributes])
+            [c for c in list(dataset[var].coords) if c in cfg['variable_coordinates_as_encoded_attributes']])
 
     # specific coordinate datatype encodings:
     coord_encoding = {}
