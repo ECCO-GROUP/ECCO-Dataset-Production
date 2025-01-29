@@ -1,9 +1,12 @@
 ## ECCO mapping factors test data.
 
-Although already included for test purposes, the mapping factors in
-this directory could also have been generated via:
+Although already included here for test purposes, the mapping factors
+in this directory could also have been downloaded via the included
+script:
 
-- Download from AWS (ref. `download.sh`, which is the method used here)
-- Generation using ECCO-Dataset-Production command-line utility,
-  `edp_create_factors`
+    $ download.sh --help
+    download.sh -v ver -k keygen -p profile   # ver = V4r4, V4r5, etc.
 
+For example:
+
+    $ download.sh -v V4r4 -k /usr/local/bin/aws-login.darwin.amd64 -p saml-pub

@@ -225,9 +225,9 @@ def set_granule_ancillary_data(
 
 def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
     """Primary routine for aggregrating and setting metadata collected from all
-    sources, e.g., ECCO configuration data, task list references, etc.
-    set_granule_metadata operations depend on functionality provided by
-    ecco_v4_py.ecco_utils.
+    sources, e.g., ECCO configuration data, task list references, etc.  Note
+    that set_granule_metadata operations depend in large part on functionality
+    provided by ecco_v4_py.ecco_utils.
 
     Args:
         dataset (xarray.Dataset): ECCO results data container to which metadata

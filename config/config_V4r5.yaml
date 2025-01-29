@@ -1,0 +1,115 @@
+#=====================================================================
+#
+# config_V4r5.yaml
+#
+# ECCO Dataset Production configuration/lookup parameters
+#
+#=====================================================================
+
+#---------------------------------------------------------------------
+# MITgcm
+#---------------------------------------------------------------------
+
+# xmitgcm.open_mds_dataset 'read_grid' value:
+read_grid: False
+
+# xmitgcm.open_mdsdataset MITgcm grid geometry specifier:
+model_geometry: 'llc'
+
+#---------------------------------------------------------------------
+# ECCO version and filename-associated strings
+#---------------------------------------------------------------------
+
+# Short label of ECCO product version/release:
+ecco_version: 'V4r5'
+
+# Long label of ECCO product version/release:
+product_version: 'Version 4, Release 5'
+
+# Configurable ECCO Production filestring components (used in the
+# context of production filestrings of the form:
+# <prodname>_<averaging_period>_<date>_ECCO_<version>_<grid_type>_<grid_label>.nc)
+ecco_production_filestr_grid_label:
+    latlon: '0p50deg'
+    native: 'llc0090'
+
+#---------------------------------------------------------------------
+# ECCO results computation:
+#---------------------------------------------------------------------
+
+# ecco granule variable precision (default: float64):
+array_precision: 'float32'
+
+# Model start date and time, in ISO date time format
+# ('YYYY-MM-DDThh:mm:ss'):
+model_start_time: '1992-01-01T12:00:00'
+
+# Model end date and time, in ISO date time format
+# ('YYYY-MM-DDThh:mm:ss'):
+model_end_time: '2017-12-31T12:00:00'
+
+# Model timestep units (per numpy datetime64 conventions, i.e.,
+# hours('h'), minutes ('s'), seconds ('s'), etc.), and corresponding
+# number of simulation timesteps units per granule time increment
+# (e.g., 1 'h' per granule timestep increment):
+model_timestep_units: 'h'
+model_timestep: 1
+
+# Number of vertical of 3D fields (one (1) vertical level assumed for
+# 2D files):
+#num_vertical_levels: 50
+
+# Maximum model depth (meters):
+geospatial_vertical_min: -6134.5
+
+# Name of ECCO grid NetCDF file, assumed to be in location defined by
+# task list's 'ecco_grid_dir' field:
+ecco_native_grid_filename: 'GRID_GEOMETRY_ECCO_V4r5_native_llc0090.nc'
+
+#---------------------------------------------------------------------
+# Metadata, variable encodings:
+#---------------------------------------------------------------------
+
+# PO.DAAC metadata source:
+podaac_metadata_filename: 'PODAAC_datasets-revised_20210226.5.csv'
+
+# History string to include with global metadata:
+history: 'Inaugural release of an ECCO Central Estimate solution to PO.DAAC'
+
+# References string to include with global metadata:
+references: 'ECCO Consortium, Fukumori, I., Wang, O., Fenty, I., Forget, G., Heimbach, P., & Ponte, R. M. 2020. Synopsis of the ECCO Central Production Global Ocean and Sea-Ice State Estimate (Version 4 Release 5). doi:10.5281/zenodo.3765928'
+
+# Source string to include with global metadata:
+source: 'The ECCO V4r5 state estimate was produced by fitting a free-running solution of the MITgcm (checkpoint 66g) to satellite and in situ observational data in a least squares sense using the adjoint method.'
+
+# Summary string to include with global metadata:
+# Note: the final dataset 'summary' metadata field is as follows:
+#    dataset_desription_head + grouping['name'] + dataset_description_tail + summary
+#    i.e. "This dataset contains daily-averaged" + {grouping['name']} + {dataset_description_tail} + {summary}
+summary: 'Estimating the Circulation and Climate of the Ocean (ECCO) state estimates are dynamically and kinematically-consistent reconstructions of the three-dimensional, time-evolving ocean, sea-ice, and surface atmospheric states. ECCO V4r5 is a free-running solution of a global, nominally 1-degree configuration of the MIT general circulation model (MITgcm) that has been fit to observations in a least-squares sense. Observational data constraints used in V4r5 include sea surface height (SSH) from satellite altimeters [ERS-1/2, TOPEX/Poseidon, GFO, ENVISAT, Jason-1,2,3, CryoSat-2, and SARAL/AltiKa]; sea surface temperature (SST) from satellite radiometers [AVHRR], sea surface salinity (SSS) from the Aquarius satellite radiometer/scatterometer, ocean bottom pressure (OBP) from the GRACE satellite gravimeter; sea-ice concentration from satellite radiometers [SSM/I and SSMIS], and in-situ ocean temperature and salinity measured with conductivity-temperature-depth (CTD) sensors and expendable bathythermographs (XBTs) from several programs [e.g., WOCE, GO-SHIP, Argo, and others] and platforms [e.g., research vessels, gliders, moorings, ice-tethered profilers, and instrumented pinnipeds]. V4r5 covers the period 1992-01-01T12:00:00 to 2018-01-01T00:00:00.'
+
+# variable-level NetCDF4 compression encodings:
+netcdf4_compression_encodings:
+    zlib        : True
+    complevel   : 5
+    shuffle     : True
+
+# per PO.DAAC request, possible coordinate names to be included with
+# variable encodings (runtime-determined):
+variable_coordinates_as_encoded_attributes: ['latitude','longitude','tile','time','XC','XG','YC','YG','Z','Zp1','Zl','Zu']
+
+# Assigned DOI prefix (ref. https://www.doi.org/):
+doi_prefix: '10.5067'
+
+# metadata link root:
+metadata_link_root: 'https://cmr.earthdata.nasa.gov/search/collections.umm_json?ShortName='
+
+# Tail string for the dataset description for 1D grid
+dataset_description_tail_1D: ''
+
+# Tail string for the dataset description for latlon grid
+dataset_description_tail_latlon: ' interpolated to a regular 0.5-degree grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate.'
+
+# Tail string for the dataset description for native grid
+dataset_description_tail_native: ' on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate.'
+

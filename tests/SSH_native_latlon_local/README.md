@@ -15,11 +15,12 @@ in this test case, can be cloned using:
 Steps include:
 
 - Task list generation:
-  `$ ./edp_create_job_task_list_SSH_native_latlon_mon_mean.sh`.
-  Output file `SSH_native_latlon_mon_mean_tasks.json` can be compared
-  with saved results in `SSH_native_latlon_mon_mean_tasks.json.sav`.
+  `$ ./edp_create_job_task_list_SSH_native_latlon_mon_mean.sh <ver>`,
+  where `<ver>` is either 'V4r4' or 'V4r5'.  Output file(s)
+  `SSH_native_latlon_mon_mean_tasks_<ver>.json` can be compared with
+  saved results in `SSH_native_latlon_mon_mean_tasks_<ver>.json.sav`.
   
 - Granule generation based on generated task list:
-  `$ ./edp_generate_dataproducts_SSH_native_latlon_mon_mean.sh`.
-  Resulting granules in `./V4r4` can be compared with saved results in
-  `./V4r4_sav`.
+  `$ ./edp_generate_dataproducts_SSH_native_latlon_mon_mean.sh <ver>`,
+  where `<ver>` is either 'V4r4' or 'V4r5'.  Resulting granules in
+  `./<ver>` can be compared with saved results in `./<ver>_sav`.

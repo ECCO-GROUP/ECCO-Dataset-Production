@@ -94,12 +94,12 @@ class ECCOMDSFilestr(object):
         """
         prefix = self.prefix if self.prefix else '.*'
         averaging_period = self.averaging_period if self.averaging_period else '.*'
-        time = f'{int(self.time):010d}' if self.time else '\d{10}'
+        time = f'{int(self.time):010d}' if self.time else r'\d{10}'
         ext = self.ext if self.ext else '.*'
         return \
             prefix + '_' + \
-            averaging_period + '\.' + \
-            time + '\.' + \
+            averaging_period + r'\.' + \
+            time + r'\.' + \
             ext
 
 
@@ -222,5 +222,5 @@ class ECCOGranuleFilestr(object):
             self.grid_type if self.grid_type else '.*',
             self.grid_label if self.grid_label else '.*',
             ])
-        return '\.'.join([filestr,self.ext])
+        return r'\.'.join([filestr,self.ext])
 

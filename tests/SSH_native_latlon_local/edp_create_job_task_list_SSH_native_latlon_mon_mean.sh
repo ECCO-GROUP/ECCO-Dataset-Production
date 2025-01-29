@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-# test job task list generation using locally-stored ECCO results:
+#
+# test job task list generation using locally-stored ECCO results
+#
+# usage: edp_create_job_task_list_SSH_native_latlon_mon_mean.sh <ver>
+# where: <ver> = 'V4r4', 'V4r5', etc.
+#
 
-ver='V4r4'
+ver=${1:?usage: edp_create_job_task_list_SSH_native_latlon_mon_mean.sh <ver>   # ver = 'V4r4', 'V4r5', etc.}
 
 edp_create_job_task_list \
     --jobfile ./SSH_native_latlon_mon_mean_jobs.txt \
@@ -10,7 +15,7 @@ edp_create_job_task_list \
     --ecco_destination_root ./ \
     --ecco_grid_loc ../data/ecco_grids/${ver}/grid_ECCO${ver} \
     --ecco_mapping_factors_loc ../data/ecco_mapping_factors/${ver} \
-    --ecco_metadata_loc '../ECCO-v4-Configurations/ECCOv4 Release 4/metadata' \
-    --outfile SSH_native_latlon_mon_mean_tasks.json \
+    --ecco_metadata_loc "../ECCO-v${ver:1:1}-Configurations/ECCOv${ver:1:1} Release ${ver:3:1}/metadata" \
+    --outfile SSH_native_latlon_mon_mean_tasks_${ver}.json \
     --cfgfile ../../config/config_${ver}.yaml \
     --log DEBUG
