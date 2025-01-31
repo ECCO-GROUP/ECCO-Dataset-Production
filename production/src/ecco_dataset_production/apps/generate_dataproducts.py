@@ -22,8 +22,6 @@ def create_parser():
     parser.add_argument('--tasklist', help="""
         (Path and) name of json-formatted file containing list of ECCO dataset
         generation task descriptions.""")
-    parser.add_argument('--cfgfile', help="""
-        (Path and) filename of ECCO Dataset Production configuration file.""")
     parser.add_argument('-l','--log', dest='log_level',
         choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],
         default='WARNING', help="""
@@ -52,8 +50,6 @@ def main():
 
     ecco_generate_dataproducts.generate_dataproducts(
         tasklist=args.tasklist,
-        cfgfile=args.cfgfile,
-        workingdir='.',             # may end up deleting
         #log_level=args.log_level,  # logger hierarchy makes this redundant
         keygen=args.keygen, profile=args.profile)
 

@@ -37,7 +37,8 @@ def create_parser():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('--jobfile', help="""
-        (Path and) filename of ECCO Dataset Production jobs simple text file""")
+        (Path and) filename of ECCO Dataset Production jobs simple text
+        file.""")
     parser.add_argument('--ecco_source_root', help="""
         ECCO results unique root location, either directory path (e.g.,
         /ecco_nfs_1/shared/ECCOV4r5) or AWS S3 bucket
@@ -45,7 +46,7 @@ def create_parser():
         of the same source files cannot be found from the root.""")
     parser.add_argument('--ecco_destination_root', help="""
         ECCO Dataset Production output root location, either directory path
-        (e.g., ECCOV4r5_datasets) or AWS S3 bucket (s3://bucket_name)""")
+        (e.g., ECCOV4r5_datasets) or AWS S3 bucket (s3://bucket_name).""")
     parser.add_argument('--ecco_grid_loc', help="""
         Directory containing ECCO grid files (XC.*, YC.*, *latlon*.nc,
         *native*.nc, etc., as well as the file available_diagnostics.log), or
@@ -62,24 +63,24 @@ def create_parser():
         to create task definitions, while the others, e.g.
         *_global_metadata_for_{all,native,latlon}_datasets.json, etc. are
         referenced during subsequent dataset production task execution.""")
-    parser.add_argument('--cfgfile', default='./product_generation_config.yaml',
-        help="""(Path and) filename of ECCO Dataset Production configuration
-        file (default: '%(default)s')""")
+    parser.add_argument('--ecco_cfg_loc', help="""
+        (Path and) filename of ECCO Dataset Production configuration file (yaml
+        format), or similar remote location given by AWS S3
+        bucket/prefix/filename.""")
     parser.add_argument('--outfile', help="""
-        Resulting job task output file (json format) (default: stdout)""")
+        Resulting job task output file (json format) (default: stdout).""")
     parser.add_argument('--keygen', help="""
         If ecco_source_root references an S3 bucket and if running in JPL
         domain, federated login key generation script (e.g.,
-        /usr/local/bin/aws-login-pub.darwin.amd64)""")
+        /usr/local/bin/aws-login-pub.darwin.amd64).""")
     parser.add_argument('--profile', help="""
         If ecco_source_root references an S3 bucket and if running in JPL
         domain, AWS credential profile name (e.g., 'saml-pub', 'default',
-        etc.)""")
+        etc.).""")
     parser.add_argument('-l','--log', dest='log_level',
         choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],
         default='WARNING', help="""
-        Set logging level (default: %(default)s)""")
-
+        Set logging level (default: %(default)s).""")
     return parser
 
 
@@ -104,7 +105,7 @@ def s3_list_files( s3_client, bucket, prefix):
 def create_job_task_list(
     jobfile=None, ecco_source_root=None, ecco_destination_root=None,
     ecco_grid_loc=None, ecco_mapping_factors_loc=None,
-    ecco_metadata_loc=None, cfgfile=None,
+    ecco_metadata_loc=None, ecco_cfg_loc=None,
     keygen=None, profile=None, log_level=None):
     """Create a list of task inputs and outputs from an ECCO Dataset Production
     job file.
@@ -135,8 +136,9 @@ def create_job_task_list(
             source files (*_groupings_for_{1D,latlon,native}_datasets.json,
             *_global_metadata_for_{all,native,latlon}_datasets.json, etc.), or
             similar remote location given by AWS S3 bucket/prefix.
-        cfgfile (str): (Path and) filename of ECCO Dataset Production
-            configuration file.
+        ecco_cfg_loc (str): (Path and) filename of ECCO Dataset Production
+            configuration file (yaml format), or similar remote location given
+            by AWS S3 bucket/prefix/filename.
         keygen (str): If ecco_source_root references an S3 bucket and if running
             in JPL domain, federated login key generation script (e.g.,
             /usr/local/bin/aws-login-pub.darwin.amd64).  (default: None)
@@ -169,11 +171,7 @@ def create_job_task_list(
     # configuration initialization:
 
     log.info('initializing configuration parameters...')
-    cfg = configuration.ECCODatasetProductionConfig(cfgfile=cfgfile)
-    log.debug('Configuration key value pairs:')
-    for k,v in cfg.items():
-        log.debug(' %s: %s', k, v)
-    log.info('...done initializing configuration parameters.')
+    cfg = configuration.ECCODatasetProductionConfig(cfgfile=ecco_cfg_loc)
 
     if not ecco_source_root or not ecco_destination_root:
         err = None
@@ -644,6 +642,7 @@ def create_job_task_list(
                         log.warning("Granule %s: missing input detected for variable '%s' at time step '%s'.",
                             task['granule'], variable_name, time)
                 task['variables'] = task_variables
+                task['ecco_cfg_loc'] = ecco_cfg_loc
                 task['ecco_grid_loc'] = ecco_grid_loc
                 task['ecco_mapping_factors_loc'] = ecco_mapping_factors_loc
                 task['ecco_metadata_loc'] = ecco_metadata_loc
@@ -701,7 +700,7 @@ def main():
         ecco_grid_loc=args.ecco_grid_loc,
         ecco_mapping_factors_loc=args.ecco_mapping_factors_loc,
         ecco_metadata_loc=args.ecco_metadata_loc,
-        cfgfile=args.cfgfile,
+        ecco_cfg_loc=args.ecco_cfg_loc,
         keygen=args.keygen, profile=args.profile,
         log_level=args.log_level)
 

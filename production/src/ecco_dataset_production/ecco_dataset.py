@@ -39,7 +39,7 @@ class ECCOMDSDataset(object):
             input task descriptor.  Primarily intended to optimize i/o
             performance by allowing collections to share a single copy of an
             ECCOMappingFactors object created by the calling application.
-        cfg (dict): ECCO Dataset Production configuration data. Referenced
+        cfg (dict): Parsed ECCO dataset production yaml file. Referenced
             fields include:
             ecco_native_grid_filename: ECCO NetCDF native grid file name (e.g.,
                 GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc).

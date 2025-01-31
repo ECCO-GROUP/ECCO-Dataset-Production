@@ -71,7 +71,8 @@ ecco_native_grid_filename: 'GRID_GEOMETRY_ECCO_V4r5_native_llc0090.nc'
 #---------------------------------------------------------------------
 
 # PO.DAAC metadata source:
-podaac_metadata_filename: 'PODAAC_datasets-revised_20210226.5.csv'
+podaac_metadata_filename: 'PODAAC_datasets-revised_20250129.csv'
+#podaac_metadata_filename: 'PODAAC_datasets-revised_20210226.5.csv'
 
 # History string to include with global metadata:
 history: 'Inaugural release of an ECCO Central Estimate solution to PO.DAAC'
