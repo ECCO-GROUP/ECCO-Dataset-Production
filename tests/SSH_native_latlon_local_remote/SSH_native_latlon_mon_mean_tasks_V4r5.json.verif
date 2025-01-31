@@ -1,0 +1,248 @@
+[
+    {
+        "granule": "./V4r5/native/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_V4r5_native_llc0090.nc",
+        "variables": {
+            "SSH": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000000732.meta"
+                ]
+            ],
+            "SSHNOIBC": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000000732.meta"
+                ]
+            ],
+            "SSHIBC": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000000732.meta"
+                ]
+            ],
+            "ETAN": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000000732.meta"
+                ]
+            ]
+        },
+        "ecco_cfg_loc": "../../config/config_V4r5.yaml",
+        "ecco_grid_loc": "s3://ecco-model-granules/V4r5/llc90_grid",
+        "ecco_mapping_factors_loc": "s3://ecco-mapping-factors/V4r5",
+        "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 5/metadata",
+        "dynamic_metadata": {
+            "name": "sea surface height",
+            "dimension": "2D",
+            "time_coverage_start": "1992-01-01T12:00:00",
+            "time_coverage_end": "1992-02-01T00:00:00",
+            "time_coverage_center": "1992-01-16T18:00:00",
+            "time_long_name": "center time of averaging period",
+            "time_coverage_duration": "P1M",
+            "time_coverage_resolution": "P1M",
+            "summary": "This dataset contains monthly-averaged sea surface height on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate."
+        }
+    },
+    {
+        "granule": "./V4r5/native/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-02_ECCO_V4r5_native_llc0090.nc",
+        "variables": {
+            "SSH": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.meta"
+                ]
+            ],
+            "SSHNOIBC": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000001428.meta"
+                ]
+            ],
+            "SSHIBC": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000001428.meta"
+                ]
+            ],
+            "ETAN": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000001428.meta"
+                ]
+            ]
+        },
+        "ecco_cfg_loc": "../../config/config_V4r5.yaml",
+        "ecco_grid_loc": "s3://ecco-model-granules/V4r5/llc90_grid",
+        "ecco_mapping_factors_loc": "s3://ecco-mapping-factors/V4r5",
+        "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 5/metadata",
+        "dynamic_metadata": {
+            "name": "sea surface height",
+            "dimension": "2D",
+            "time_coverage_start": "1992-02-01T00:00:00",
+            "time_coverage_end": "1992-03-01T00:00:00",
+            "time_coverage_center": "1992-02-15T12:00:00",
+            "time_long_name": "center time of averaging period",
+            "time_coverage_duration": "P1M",
+            "time_coverage_resolution": "P1M",
+            "summary": "This dataset contains monthly-averaged sea surface height on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate."
+        }
+    },
+    {
+        "granule": "./V4r5/native/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-03_ECCO_V4r5_native_llc0090.nc",
+        "variables": {
+            "SSH": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.meta"
+                ]
+            ],
+            "SSHNOIBC": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000002172.meta"
+                ]
+            ],
+            "SSHIBC": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000002172.meta"
+                ]
+            ],
+            "ETAN": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/ETAN_mon_mean/ETAN_mon_mean.0000002172.meta"
+                ]
+            ]
+        },
+        "ecco_cfg_loc": "../../config/config_V4r5.yaml",
+        "ecco_grid_loc": "s3://ecco-model-granules/V4r5/llc90_grid",
+        "ecco_mapping_factors_loc": "s3://ecco-mapping-factors/V4r5",
+        "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 5/metadata",
+        "dynamic_metadata": {
+            "name": "sea surface height",
+            "dimension": "2D",
+            "time_coverage_start": "1992-03-01T00:00:00",
+            "time_coverage_end": "1992-04-01T00:00:00",
+            "time_coverage_center": "1992-03-16T12:00:00",
+            "time_long_name": "center time of averaging period",
+            "time_coverage_duration": "P1M",
+            "time_coverage_resolution": "P1M",
+            "summary": "This dataset contains monthly-averaged sea surface height on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate."
+        }
+    },
+    {
+        "granule": "./V4r5/latlon/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_V4r5_latlon_0p50deg.nc",
+        "variables": {
+            "SSH": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000000732.meta"
+                ]
+            ],
+            "SSHIBC": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000000732.meta"
+                ]
+            ],
+            "SSHNOIBC": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000000732.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000000732.meta"
+                ]
+            ]
+        },
+        "ecco_cfg_loc": "../../config/config_V4r5.yaml",
+        "ecco_grid_loc": "s3://ecco-model-granules/V4r5/llc90_grid",
+        "ecco_mapping_factors_loc": "s3://ecco-mapping-factors/V4r5",
+        "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 5/metadata",
+        "dynamic_metadata": {
+            "name": "sea surface height",
+            "dimension": "2D",
+            "time_coverage_start": "1992-01-01T12:00:00",
+            "time_coverage_end": "1992-02-01T00:00:00",
+            "time_coverage_center": "1992-01-16T18:00:00",
+            "time_long_name": "center time of averaging period",
+            "time_coverage_duration": "P1M",
+            "time_coverage_resolution": "P1M",
+            "summary": "This dataset contains monthly-averaged sea surface height interpolated to a regular 0.5-degree grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate."
+        }
+    },
+    {
+        "granule": "./V4r5/latlon/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-02_ECCO_V4r5_latlon_0p50deg.nc",
+        "variables": {
+            "SSH": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000001428.meta"
+                ]
+            ],
+            "SSHIBC": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000001428.meta"
+                ]
+            ],
+            "SSHNOIBC": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000001428.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000001428.meta"
+                ]
+            ]
+        },
+        "ecco_cfg_loc": "../../config/config_V4r5.yaml",
+        "ecco_grid_loc": "s3://ecco-model-granules/V4r5/llc90_grid",
+        "ecco_mapping_factors_loc": "s3://ecco-mapping-factors/V4r5",
+        "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 5/metadata",
+        "dynamic_metadata": {
+            "name": "sea surface height",
+            "dimension": "2D",
+            "time_coverage_start": "1992-02-01T00:00:00",
+            "time_coverage_end": "1992-03-01T00:00:00",
+            "time_coverage_center": "1992-02-15T12:00:00",
+            "time_long_name": "center time of averaging period",
+            "time_coverage_duration": "P1M",
+            "time_coverage_resolution": "P1M",
+            "summary": "This dataset contains monthly-averaged sea surface height interpolated to a regular 0.5-degree grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate."
+        }
+    },
+    {
+        "granule": "./V4r5/latlon/mon_mean/SEA_SURFACE_HEIGHT/SEA_SURFACE_HEIGHT_mon_mean_1992-03_ECCO_V4r5_latlon_0p50deg.nc",
+        "variables": {
+            "SSH": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSH_mon_mean/SSH_mon_mean.0000002172.meta"
+                ]
+            ],
+            "SSHIBC": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHIBC_mon_mean/SSHIBC_mon_mean.0000002172.meta"
+                ]
+            ],
+            "SSHNOIBC": [
+                [
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000002172.data",
+                    "s3://ecco-model-granules/V4r5/diags_monthly/SSHNOIBC_mon_mean/SSHNOIBC_mon_mean.0000002172.meta"
+                ]
+            ]
+        },
+        "ecco_cfg_loc": "../../config/config_V4r5.yaml",
+        "ecco_grid_loc": "s3://ecco-model-granules/V4r5/llc90_grid",
+        "ecco_mapping_factors_loc": "s3://ecco-mapping-factors/V4r5",
+        "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 5/metadata",
+        "dynamic_metadata": {
+            "name": "sea surface height",
+            "dimension": "2D",
+            "time_coverage_start": "1992-03-01T00:00:00",
+            "time_coverage_end": "1992-04-01T00:00:00",
+            "time_coverage_center": "1992-03-16T12:00:00",
+            "time_long_name": "center time of averaging period",
+            "time_coverage_duration": "P1M",
+            "time_coverage_resolution": "P1M",
+            "summary": "This dataset contains monthly-averaged sea surface height interpolated to a regular 0.5-degree grid from the ECCO Version 4 revision 5 (V4r5) ocean and sea-ice state estimate."
+        }
+    }
+]
