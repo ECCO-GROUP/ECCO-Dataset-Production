@@ -27,6 +27,7 @@
                 ]
             ]
         },
+        "ecco_cfg_loc": "../../config/config_V4r5.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r5/grid_ECCOV4r5",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r5",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 5/metadata",
@@ -70,6 +71,7 @@
                 ]
             ]
         },
+        "ecco_cfg_loc": "../../config/config_V4r5.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r5/grid_ECCOV4r5",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r5",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 5/metadata",
@@ -113,6 +115,7 @@
                 ]
             ]
         },
+        "ecco_cfg_loc": "../../config/config_V4r5.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r5/grid_ECCOV4r5",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r5",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 5/metadata",
@@ -150,6 +153,7 @@
                 ]
             ]
         },
+        "ecco_cfg_loc": "../../config/config_V4r5.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r5/grid_ECCOV4r5",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r5",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 5/metadata",
@@ -187,6 +191,7 @@
                 ]
             ]
         },
+        "ecco_cfg_loc": "../../config/config_V4r5.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r5/grid_ECCOV4r5",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r5",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 5/metadata",
@@ -224,6 +229,7 @@
                 ]
             ]
         },
+        "ecco_cfg_loc": "../../config/config_V4r5.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r5/grid_ECCOV4r5",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r5",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 5/metadata",
