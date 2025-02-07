@@ -461,7 +461,7 @@ def generate_dataproducts( tasklist, log_level=None, **kwargs):
         PO.DAAC-ready ECCO granule(s) to location(s) defined in tasklist.
 
     """
-    log = logging.getLogger('edp'+__name__)
+    log = logging.getLogger('edp.'+__name__)
     if log_level:
         log.setLevel(log_level)
 

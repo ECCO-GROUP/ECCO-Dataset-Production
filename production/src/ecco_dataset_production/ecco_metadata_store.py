@@ -44,7 +44,7 @@ class ECCOMetadataStore(object):
         """
         log.info("collecting 'groupings' metadata sourced from %s...", self.metadata_loc)
         dataset_groupings = {}
-        for file in glob.glob(os.path.join(self.metadata_loc,'*groupings*')):
+        for file in glob.glob(os.path.join(self.metadata_dir,'*groupings*')):
             if re.search(r'_1D_',os.path.basename(file),re.IGNORECASE):
                 log.debug('parsing 1D groupings metadata file %s ... ', file)
                 with open(file) as f:
