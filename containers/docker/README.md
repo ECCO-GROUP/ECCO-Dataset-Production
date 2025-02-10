@@ -41,7 +41,7 @@ Ref. https://<aws_region>.console.aws.amazon.com/ecr/private-registry/repositori
         $ aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
         $ docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/edp_generate_dataproducts:latest
 
-### Pulling the repository from AWS ECR to an EC2 instance:
+### Pulling the image from AWS ECR to an EC2 instance:
 
 - From the EC2 instance:
 
