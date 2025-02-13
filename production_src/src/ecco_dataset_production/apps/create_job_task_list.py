@@ -20,7 +20,7 @@ from .. import configuration
 from .. import ecco_file
 from .. import ecco_metadata_store
 from .. import ecco_time
-from .. import metadata
+#from .. import metadata
 
 
 logging.basicConfig(

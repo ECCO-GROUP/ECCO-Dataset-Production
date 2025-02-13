@@ -8,4 +8,4 @@ from . import ecco_metadata_store
 #from . import ecco_generate_dataproducts
 from . import ecco_task
 from . import ecco_time
-from . import metadata
+#from . import metadata
