@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.1.14)  24 FEB 2025 20:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.1.14)  25 FEB 2025 11:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2630,12 +2630,984 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 5--36
 Package longtable Warning: Column widths have changed
 (longtable)                in table 15.5 on input line 36.
 
-[60])) (./latex/dataset/native_coords_dataset.tex [61] (./latex/dataset/native_coords_dataset_tables.tex [62]
+[60])) (./latex/filenames_conventions.tex [61]
+Overfull \hbox (40.4204pt too wide) in paragraph at lines 20--21
+[]\T1/cmtt/m/n/9 <Indicative Date><Indicative Time>-<RDAC>-<Processing Level>_GHRSST-<SST Type>- <Product String>-<Additional
+ []
 
-Package longtable Warning: Column widths have changed
-(longtable)                in table 16.1 on input line 30.
+
+Overfull \hbox (37.59996pt too wide) in alignment at lines 29--35
+ [] [] [] 
+ []
+
+
+Underfull \hbox (badness 6675) in paragraph at lines 52--56
+\T1/Cabin-TLF/regular/n/9 prod-uct set. The string is used
+ []
+
+
+Underfull \hbox (badness 1189) in paragraph at lines 80--80
+[]|\T1/Cabin-TLF/regular/n/9 netCDF data file suf-fix (nc) or ISO
+ []
+
+
+Overfull \hbox (37.59996pt too wide) in alignment at lines 35--83
+ [] [] [] 
+ []
+
+[62]
+Overfull \hbox (25.19997pt too wide) in paragraph at lines 135--165
+ [][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 184--184
+[]|\T1/Cabin-TLF/bold/n/10 <Processing
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 204--204
+[]|\T1/Cabin-TLF/regular/n/10 Preprocessed
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+[]|\T1/Cabin-TLF/regular/n/10 Note that
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 within
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 GHRSST,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 re-quire a
+ []
+
+
+Underfull \hbox (badness 4193) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 full set of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 ex-ten-sive
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 an-cil-lary
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 data such
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 as wind
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 speeds
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 and times
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 of ob-ser-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 are pro-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 vided as
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+[]\T1/Cabin-TLF/regular/n/10 dynamic
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 flags[]that
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 users can
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 ma-nip-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 u-late to
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 fil-ter data
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 ac-cord-ing
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 to their
+ []
+
+
+Underfull \hbox (badness 5302) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 own qual-
+ []
+
+
+Underfull \hbox (badness 3724) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 ity cri-te-ria.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 L2P files
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 form the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 ba-sis of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 higher-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 level
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 prod-ucts
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 and are
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 of-ten the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 best level
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 prod-ucts
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 for data
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 as-sim-i-la-
+ []
+
+
+Underfull \hbox (badness 2503) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 tion. The
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 re-quire-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 ment for
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 dy-namic
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 flags is
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 par-tic-u-larly
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 im-por-tant
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 in this
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 con-text.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 Higher-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 level L3
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 prod-ucts
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 are of-ten
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 in-tended
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 use or
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 cre-ated
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 for in-put
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 to Level
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 4 anal-y-sis
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 sys-tems
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 so the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 re-quire-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 ment for
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 ex-ten-sive
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 an-cil-lary
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 data is
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 re-duced.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 Since
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 some
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 GHRSST
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 RDACs
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 only pro-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 cess data
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 na-tively
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 on grids
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 (es-pe-cially
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 of geo-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 sta-tion-ary
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 plat-form
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 ob-ser-va-
+ []
+
+
+Underfull \hbox (badness 4647) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 tions), the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 GDS 2.0
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 L3 spec-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 i-fi-ca-tion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 is flex-i-ble
+ []
+
+
+Underfull \hbox (badness 4647) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 enough to
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 al-low for
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 the cre-
+ []
+
+
+Underfull \hbox (badness 1852) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 files which
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 meet
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 all the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 con-tent
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 re-quire-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 L3 cases,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 bias and
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 stan-dard
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 de-vi-a-tion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 un-cer-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 mates are
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--237
+\T1/Cabin-TLF/regular/n/10 manda-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+[]\T1/Cabin-TLF/regular/n/10 The dis-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 tinc-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 tion be-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 tween L3
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 GHRSST
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 and L4
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 GHRSST
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 data is
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 made pri-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 mar-ily on
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 whether
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 gap-filling
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 tech-niques
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 are em-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 ployed,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 not on
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 whether
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 data from
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 mul-ti-ple
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 in-stru-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 ments is
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 L3 prod-
+ []
+
+
+Underfull \hbox (badness 1097) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 uct. If no
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 gap fill-ing
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 pro-ce-dure
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 (such as
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 op-ti-mal
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 in-ter-po-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 la-tion)
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 is used,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 then the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 GHRSST
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 prod-uct.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 GHRSST
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 de-fines
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 of L3
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 files: un-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 collated
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 (L3U),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 col-lated
+ []
+
+
+Underfull \hbox (badness 4217) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 (L3C), and
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 super-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 collated
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 (L3S). If
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 gap fill-ing
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 is used
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 to fill all
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 ob-ser-va-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 then the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 re-sult-ing
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 gap-free
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 data are
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 con-sid-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 ered L4
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+\T1/Cabin-TLF/regular/n/10 GHRSST
+ []
+
+
+Overfull \hbox (37.59995pt too wide) in paragraph at lines 181--246
+[][] 
+ []
+
+
+LaTeX Warning: Float too large for page by 1806.76994pt on input line 246.
 
 [63]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+) (./latex/data_product/data_product_file_struct.tex [64] (./latex/data_product/global_attributes.tex
+Underfull \hbox (badness 4954) in paragraph at lines 10--10
+[]|\T1/Cabin-TLF/regular/n/9 The data type, as de-rived from Unidata's Com-mon
+ []
+
+
+Underfull \hbox (badness 1824) in paragraph at lines 10--10
+\T1/Cabin-TLF/regular/n/9 Data Model Sci-en-tific Data types and un-der-stood by
+ []
+
+
+Underfull \hbox (badness 1348) in paragraph at lines 16--16
+\T1/Cabin-TLF/regular/n/9 spec-i-fied by the cre-ator_type at-tribute) prin-ci-pally re-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 26--26
+[]|\T1/Cabin-TLF/regular/n/9 Latitude Res-o-lu-tion in units match-ing geospa-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 28--28
+[]|\T1/Cabin-TLF/regular/n/9 Units of the lat-i-tu-di-nal res-o-lu-tion. Typ-i-cally "de-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 30--30
+[]|\T1/Cabin-TLF/regular/n/9 Longitude Res-o-lu-tion in units match-ing geospa-
+ []
+
+
+Underfull \hbox (badness 5050) in paragraph at lines 32--32
+[]|\T1/Cabin-TLF/regular/n/9 Units of the lon-gi-tu-di-nal res-o-lu-tion. Typ-i-cally "de-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 56--56
+[]|\T1/Cabin-TLF/regular/n/9 ACDD &
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 90--90
+[]|\T1/Cabin-TLF/regular/n/9 A Uni-ver-sally Unique Iden-ti-fier (UUID). Nu-mer-
+ []
+
+
+Underfull \hbox (badness 6808) in paragraph at lines 90--90
+\T1/Cabin-TLF/regular/n/9 ous, sim-ple tools can be used to cre-ate a UUID,
+ []
+
+
+Underfull \hbox (badness 1596) in paragraph at lines 90--90
+\T1/Cabin-TLF/regular/n/9 which is in-serted as the value of this at-tribute. See
+ []
+
+
+Overfull \hbox (1.79002pt too wide) in paragraph at lines 90--90
+\T1/Cabin-TLF/regular/n/9 http://en.wikipedia.org/wiki/Universally_Unique_Identifier
+ []
+
+
+Overfull \hbox (12.41869pt too wide) in alignment at lines 6--94
+ [] [] [] [] 
+ []
+
+[65]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 17.1 on input line 94.
+
+[66] [67]) (./latex/data_product/variable_attributes.tex
+Underfull \hbox (badness 10000) in paragraph at lines 7--7
+[]|\T1/Cabin-TLF/bold/n/9 Variable At-tribute
+ []
+
+
+Underfull \hbox (badness 1502) in paragraph at lines 12--17
+\T1/cmtt/m/n/9 {\T1/Cabin-TLF/regular/n/9 scale_factor} and \T1/cmtt/m/n/9 {\T1/Cabin-TLF/regular/n/9 add_offset}, oth-er-wise skipped to
+ []
+
+
+Underfull \hbox (badness 1616) in paragraph at lines 19--19
+[]|\T1/Cabin-TLF/regular/n/9 To be added to the vari-able af-ter mul-ti-ply-ing by the
+ []
+
+
+Underfull \hbox (badness 2486) in paragraph at lines 19--19
+\T1/Cabin-TLF/regular/n/9 should be in-cluded any-way to avoid am-bi-gu-ity, with
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 61--61
+\T1/cmtt/m/n/9 / / cfpcmdi . llnl . gov / documents / cfconventions / 1 .
+ []
+
+
+Underfull \hbox (badness 1194) in paragraph at lines 77--77
+[]|\T1/Cabin-TLF/regular/n/9 Space-separated list of text de-scrip-tions as-so-ci-ated in
+ []
+
+
+Underfull \hbox (badness 4913) in paragraph at lines 88--92
+[]\T1/Cabin-TLF/regular/it/9 {\T1/Cabin-TLF/regular/n/9 Note: CF al-lows the use of both flag_masks and
+ []
+
+
+Underfull \hbox (badness 1048) in paragraph at lines 88--92
+\T1/Cabin-TLF/regular/n/9 of masks that each have their own list of flag_values
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 88--92
+\T1/Cabin-TLF/regular/n/9 (see $\T1/cmtt/m/n/9 http : / / cfpcmdi . llnl . gov / documents /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 88--92
+\T1/cmtt/m/n/9 cfconventions / 1 . 5 / ch03s05 . html # id2710752$ \T1/Cabin-TLF/regular/n/9 for
+ []
+
+
+Overfull \hbox (12.41869pt too wide) in alignment at lines 6--103
+ [] [] [] [] 
+ []
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 17.2 on input line 103.
+
+[68] [69]) [70] [71] (./latex/data_product/example_native_table.tex
+Overfull \hbox (12.79999pt too wide) in alignment at lines 5--213
+ [] 
+ []
+
+
+Overfull \hbox (12.79999pt too wide) in alignment at lines 213--253
+ [] 
+ []
+
+[72] [73] [74] [75]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 17.3 on input line 253.
+
+[76] [77]) (./latex/data_product/example_latlon_table.tex
+Overfull \hbox (12.79999pt too wide) in alignment at lines 5--184
+ [] 
+ []
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 17.4 on input line 184.
+
+[78] [79] [80] [81]) (./latex/data_product/example_oneD_table.tex
+Overfull \hbox (12.79999pt too wide) in alignment at lines 5--36
+ [] 
+ []
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 17.5 on input line 36.
+
+[82])) (./latex/dataset/native_coords_dataset.tex [83] (./latex/dataset/native_coords_dataset_tables.tex [84]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 18.1 on input line 30.
+
+[85]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 38--38
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -2652,7 +3624,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 37--50
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.2 on input line 50.
+(longtable)                in table 18.2 on input line 50.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XC.png' not found on input line 54.
@@ -2669,7 +3641,7 @@ l.54 ...e_Model_Grid_(Version_4_Release_4)/XC.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[64]
+[86]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 64--64
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -2686,7 +3658,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 63--76
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.3 on input line 76.
+(longtable)                in table 18.3 on input line 76.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/YC.png' not found on input line 80.
@@ -2703,7 +3675,7 @@ l.80 ...e_Model_Grid_(Version_4_Release_4)/YC.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[65]
+[87]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 90--90
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -2720,7 +3692,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 89--101
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.4 on input line 101.
+(longtable)                in table 18.4 on input line 101.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XG.png' not found on input line 105.
@@ -2737,7 +3709,7 @@ l.105 ..._Model_Grid_(Version_4_Release_4)/XG.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[66]
+[88]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 115--115
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -2754,7 +3726,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 114--126
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.5 on input line 126.
+(longtable)                in table 18.5 on input line 126.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/YG.png' not found on input line 130.
@@ -2771,7 +3743,7 @@ l.130 ..._Model_Grid_(Version_4_Release_4)/YG.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[67]
+[89]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 140--140
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -2783,7 +3755,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 139--152
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.6 on input line 152.
+(longtable)                in table 18.6 on input line 152.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/CS.png' not found on input line 156.
@@ -2800,7 +3772,7 @@ l.156 ..._Model_Grid_(Version_4_Release_4)/CS.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[68]
+[90]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 166--166
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -2812,7 +3784,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 165--178
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.7 on input line 178.
+(longtable)                in table 18.7 on input line 178.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/SN.png' not found on input line 182.
@@ -2829,7 +3801,7 @@ l.182 ..._Model_Grid_(Version_4_Release_4)/SN.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[69]
+[91]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 192--192
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -2841,7 +3813,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 191--205
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.8 on input line 205.
+(longtable)                in table 18.8 on input line 205.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rA.png' not found on input line 209.
@@ -2858,7 +3830,7 @@ l.209 ..._Model_Grid_(Version_4_Release_4)/rA.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[70]
+[92]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 219--219
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -2870,7 +3842,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 218--230
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.9 on input line 230.
+(longtable)                in table 18.9 on input line 230.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dxG.png' not found on input line 234.
@@ -2887,7 +3859,7 @@ l.234 ...Model_Grid_(Version_4_Release_4)/dxG.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[71]
+[93]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 244--244
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -2904,7 +3876,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 243--255
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.10 on input line 255.
+(longtable)                in table 18.10 on input line 255.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dyG.png' not found on input line 259.
@@ -2921,7 +3893,7 @@ l.259 ...Model_Grid_(Version_4_Release_4)/dyG.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[72]
+[94]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 269--269
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -2933,7 +3905,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 268--282
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.11 on input line 282.
+(longtable)                in table 18.11 on input line 282.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/Depth.png' not found on input line 286.
@@ -2950,7 +3922,7 @@ l.286 ...del_Grid_(Version_4_Release_4)/Depth.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[73]
+[95]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 296--296
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -2962,7 +3934,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 295--309
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.12 on input line 309.
+(longtable)                in table 18.12 on input line 309.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAz.png' not found on input line 313.
@@ -2979,7 +3951,7 @@ l.313 ...Model_Grid_(Version_4_Release_4)/rAz.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[74]
+[96]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 323--323
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -2991,7 +3963,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 322--334
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.13 on input line 334.
+(longtable)                in table 18.13 on input line 334.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dxC.png' not found on input line 338.
@@ -3008,7 +3980,7 @@ l.338 ...Model_Grid_(Version_4_Release_4)/dxC.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[75]
+[97]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 348--348
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3020,7 +3992,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 347--359
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.14 on input line 359.
+(longtable)                in table 18.14 on input line 359.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dyC.png' not found on input line 363.
@@ -3037,7 +4009,7 @@ l.363 ...Model_Grid_(Version_4_Release_4)/dyC.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[76]
+[98]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 373--373
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3049,7 +4021,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 372--385
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.15 on input line 385.
+(longtable)                in table 18.15 on input line 385.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAw.png' not found on input line 389.
@@ -3066,7 +4038,7 @@ l.389 ...Model_Grid_(Version_4_Release_4)/rAw.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[77]
+[99]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 399--399
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3078,7 +4050,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 398--411
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.16 on input line 411.
+(longtable)                in table 18.16 on input line 411.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAs.png' not found on input line 415.
@@ -3095,7 +4067,7 @@ l.415 ...Model_Grid_(Version_4_Release_4)/rAs.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[78]
+[100]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 425--425
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3107,7 +4079,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 424--436
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.17 on input line 436.
+(longtable)                in table 18.17 on input line 436.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacC.png' not found on input line 440.
@@ -3124,7 +4096,7 @@ l.440 ...del_Grid_(Version_4_Release_4)/hFacC.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[79]
+[101]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 450--450
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3136,7 +4108,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 449--461
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.18 on input line 461.
+(longtable)                in table 18.18 on input line 461.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacW.png' not found on input line 465.
@@ -3153,7 +4125,7 @@ l.465 ...del_Grid_(Version_4_Release_4)/hFacW.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[80]
+[102]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 475--475
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3165,7 +4137,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 474--486
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.19 on input line 486.
+(longtable)                in table 18.19 on input line 486.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacS.png' not found on input line 490.
@@ -3182,7 +4154,7 @@ l.490 ...del_Grid_(Version_4_Release_4)/hFacS.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[81]
+[103]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 500--500
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3194,7 +4166,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 499--510
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.20 on input line 510.
+(longtable)                in table 18.20 on input line 510.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskC.png' not found on input line 514.
@@ -3211,7 +4183,7 @@ l.514 ...del_Grid_(Version_4_Release_4)/maskC.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[82]
+[104]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 524--524
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3223,7 +4195,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 523--534
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.21 on input line 534.
+(longtable)                in table 18.21 on input line 534.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskW.png' not found on input line 538.
@@ -3240,7 +4212,7 @@ l.538 ...del_Grid_(Version_4_Release_4)/maskW.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[83]
+[105]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 548--548
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3252,7 +4224,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 547--558
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 16.22 on input line 558.
+(longtable)                in table 18.22 on input line 558.
 
 
 LaTeX Warning: File `../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskS.png' not found on input line 562.
@@ -3269,12 +4241,12 @@ l.562 ...del_Grid_(Version_4_Release_4)/maskS.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-)) (./latex/dataset/native_dataset.tex [84] (./latex/dataset/native_dataset_tables.tex [85]
+)) (./latex/dataset/native_dataset.tex [106] (./latex/dataset/native_dataset_tables.tex [107]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.1 on input line 15.
+(longtable)                in table 19.1 on input line 15.
 
-[86]
+[108]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 23--23
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3286,7 +4258,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 22--37
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.2 on input line 37.
+(longtable)                in table 19.2 on input line 37.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png' not found on input line 41.
@@ -3303,7 +4275,7 @@ l.41 ...ure_Humidity_Wind_and_Pressure/EXFaqh.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[87]
+[109]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 51--51
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3320,7 +4292,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 50--65
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.3 on input line 65.
+(longtable)                in table 19.3 on input line 65.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFatemp.png' not found on input line 69.
@@ -3337,7 +4309,7 @@ l.69 ...e_Humidity_Wind_and_Pressure/EXFatemp.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[88]
+[110]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 79--79
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3349,7 +4321,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 78--93
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.4 on input line 93.
+(longtable)                in table 19.4 on input line 93.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFpress.png' not found on input line 97.
@@ -3366,7 +4338,7 @@ l.97 ...e_Humidity_Wind_and_Pressure/EXFpress.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[89]
+[111]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 107--107
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3378,7 +4350,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 106--121
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.5 on input line 121.
+(longtable)                in table 19.5 on input line 121.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFuwind.png' not found on input line 125.
@@ -3395,7 +4367,7 @@ l.125 ..._Humidity_Wind_and_Pressure/EXFuwind.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[90]
+[112]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 135--135
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3407,7 +4379,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 134--149
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.6 on input line 149.
+(longtable)                in table 19.6 on input line 149.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFvwind.png' not found on input line 153.
@@ -3424,7 +4396,7 @@ l.153 ..._Humidity_Wind_and_Pressure/EXFvwind.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[91]
+[113]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 163--163
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3436,7 +4408,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 162--177
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.7 on input line 177.
+(longtable)                in table 19.7 on input line 177.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFwspee.png' not found on input line 181.
@@ -3453,12 +4425,12 @@ l.181 ..._Humidity_Wind_and_Pressure/EXFwspee.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[92]
+[114]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.8 on input line 196.
+(longtable)                in table 19.8 on input line 196.
 
-[93]
+[115]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 204--204
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3470,7 +4442,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 203--217
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.9 on input line 217.
+(longtable)                in table 19.9 on input line 217.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/DIFFKR.png' not found on input line 221.
@@ -3487,7 +4459,7 @@ l.221 ...el_Grid_(Version_4_Release_4)/DIFFKR.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[94]
+[116]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 231--231
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3499,7 +4471,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 230--244
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.10 on input line 244.
+(longtable)                in table 19.10 on input line 244.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/KAPGM.png' not found on input line 248.
@@ -3516,7 +4488,7 @@ l.248 ...del_Grid_(Version_4_Release_4)/KAPGM.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[95]
+[117]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 258--258
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3528,7 +4500,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 257--271
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.11 on input line 271.
+(longtable)                in table 19.11 on input line 271.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/KAPREDI.png' not found on input line 275.
@@ -3545,12 +4517,12 @@ l.275 ...l_Grid_(Version_4_Release_4)/KAPREDI.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[96]
+[118]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.12 on input line 289.
+(longtable)                in table 19.12 on input line 289.
 
-[97]
+[119]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 297--297
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3562,7 +4534,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 296--311
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.13 on input line 311.
+(longtable)                in table 19.13 on input line 311.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Momentum_Tendency/Um_dPHdx.png' not found on input line 315.
@@ -3579,7 +4551,7 @@ l.315 ...mensional_Momentum_Tendency/Um_dPHdx.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[98]
+[120]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 325--325
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3591,7 +4563,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 324--339
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.14 on input line 339.
+(longtable)                in table 19.14 on input line 339.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Momentum_Tendency/Vm_dPHdy.png' not found on input line 343.
@@ -3608,12 +4580,12 @@ l.343 ...mensional_Momentum_Tendency/Vm_dPHdy.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[99]
+[121]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.15 on input line 363.
+(longtable)                in table 19.15 on input line 363.
 
-[100]
+[122]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 371--371
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3630,7 +4602,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 370--385
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.16 on input line 385.
+(longtable)                in table 19.16 on input line 385.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVr_SLT.png' not found on input line 389.
@@ -3647,7 +4619,7 @@ l.389 ...Dimensional_Salinity_Fluxes/ADVr_SLT.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[101]
+[123]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 399--399
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3664,7 +4636,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 398--414
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.17 on input line 414.
+(longtable)                in table 19.17 on input line 414.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVx_SLT.png' not found on input line 418.
@@ -3681,7 +4653,7 @@ l.418 ...Dimensional_Salinity_Fluxes/ADVx_SLT.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[102]
+[124]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 428--428
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3698,7 +4670,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 427--443
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.18 on input line 443.
+(longtable)                in table 19.18 on input line 443.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVy_SLT.png' not found on input line 447.
@@ -3715,7 +4687,7 @@ l.447 ...Dimensional_Salinity_Fluxes/ADVy_SLT.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[103]
+[125]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 457--457
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3732,7 +4704,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 456--471
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.19 on input line 471.
+(longtable)                in table 19.19 on input line 471.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFrE_SLT.png' not found on input line 475.
@@ -3749,7 +4721,7 @@ l.475 ...Dimensional_Salinity_Fluxes/DFrE_SLT.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[104]
+[126]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 485--485
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3766,7 +4738,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 484--499
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.20 on input line 499.
+(longtable)                in table 19.20 on input line 499.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFrI_SLT.png' not found on input line 503.
@@ -3783,7 +4755,7 @@ l.503 ...Dimensional_Salinity_Fluxes/DFrI_SLT.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[105]
+[127]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 513--513
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3800,7 +4772,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 512--528
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.21 on input line 528.
+(longtable)                in table 19.21 on input line 528.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFxE_SLT.png' not found on input line 532.
@@ -3817,7 +4789,7 @@ l.532 ...Dimensional_Salinity_Fluxes/DFxE_SLT.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[106]
+[128]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 542--542
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3834,7 +4806,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 541--557
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.22 on input line 557.
+(longtable)                in table 19.22 on input line 557.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFyE_SLT.png' not found on input line 561.
@@ -3851,7 +4823,7 @@ l.561 ...Dimensional_Salinity_Fluxes/DFyE_SLT.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[107]
+[129]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 571--571
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3868,7 +4840,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 570--585
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.23 on input line 585.
+(longtable)                in table 19.23 on input line 585.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/oceSPtnd.png' not found on input line 589.
@@ -3885,12 +4857,12 @@ l.589 ...Dimensional_Salinity_Fluxes/oceSPtnd.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[108]
+[130]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.24 on input line 608.
+(longtable)                in table 19.24 on input line 608.
 
-[109]
+[131]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 616--616
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3907,7 +4879,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 615--630
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.25 on input line 630.
+(longtable)                in table 19.25 on input line 630.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVr_TH.png' not found on input line 634.
@@ -3924,7 +4896,7 @@ l.634 ...Potential_Temperature_Fluxes/ADVr_TH.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[110]
+[132]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 644--644
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3941,7 +4913,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 643--659
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.26 on input line 659.
+(longtable)                in table 19.26 on input line 659.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVx_TH.png' not found on input line 663.
@@ -3958,7 +4930,7 @@ l.663 ...Potential_Temperature_Fluxes/ADVx_TH.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[111]
+[133]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 673--673
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -3975,7 +4947,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 672--688
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.27 on input line 688.
+(longtable)                in table 19.27 on input line 688.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVy_TH.png' not found on input line 692.
@@ -3992,7 +4964,7 @@ l.692 ...Potential_Temperature_Fluxes/ADVy_TH.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[112]
+[134]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 702--702
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4009,7 +4981,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 701--716
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.28 on input line 716.
+(longtable)                in table 19.28 on input line 716.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFrE_TH.png' not found on input line 720.
@@ -4026,7 +4998,7 @@ l.720 ...Potential_Temperature_Fluxes/DFrE_TH.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[113]
+[135]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 730--730
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4043,7 +5015,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 729--744
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.29 on input line 744.
+(longtable)                in table 19.29 on input line 744.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFrI_TH.png' not found on input line 748.
@@ -4060,7 +5032,7 @@ l.748 ...Potential_Temperature_Fluxes/DFrI_TH.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[114]
+[136]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 758--758
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4077,7 +5049,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 757--773
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.30 on input line 773.
+(longtable)                in table 19.30 on input line 773.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFxE_TH.png' not found on input line 777.
@@ -4094,7 +5066,7 @@ l.777 ...Potential_Temperature_Fluxes/DFxE_TH.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[115]
+[137]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 787--787
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4111,7 +5083,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 786--802
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.31 on input line 802.
+(longtable)                in table 19.31 on input line 802.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFyE_TH.png' not found on input line 806.
@@ -4128,12 +5100,12 @@ l.806 ...Potential_Temperature_Fluxes/DFyE_TH.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[116]
+[138]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.32 on input line 821.
+(longtable)                in table 19.32 on input line 821.
 
-[117]
+[139]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 829--829
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4145,7 +5117,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 828--844
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.33 on input line 844.
+(longtable)                in table 19.33 on input line 844.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/UVELMASS.png' not found on input line 848.
@@ -4162,7 +5134,7 @@ l.848 ...e-Dimensional_Volume_Fluxes/UVELMASS.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[118]
+[140]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 858--858
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4184,7 +5156,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 857--873
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.34 on input line 873.
+(longtable)                in table 19.34 on input line 873.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/VVELMASS.png' not found on input line 877.
@@ -4201,7 +5173,7 @@ l.877 ...e-Dimensional_Volume_Fluxes/VVELMASS.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[119]
+[141]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 887--887
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4213,7 +5185,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 886--902
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.35 on input line 902.
+(longtable)                in table 19.35 on input line 902.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/WVELMASS.png' not found on input line 906.
@@ -4230,12 +5202,12 @@ l.906 ...e-Dimensional_Volume_Fluxes/WVELMASS.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[120]
+[142]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.36 on input line 929.
+(longtable)                in table 19.36 on input line 929.
 
-[121]
+[143]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 937--937
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4247,7 +5219,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 936--953
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.37 on input line 953.
+(longtable)                in table 19.37 on input line 953.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFempmr.png' not found on input line 957.
@@ -4264,7 +5236,7 @@ l.957 ...e_Surface_Freshwater_Fluxes/EXFempmr.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[122]
+[144]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 967--967
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4276,7 +5248,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 966--982
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.38 on input line 982.
+(longtable)                in table 19.38 on input line 982.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFevap.png' not found on input line 986.
@@ -4293,7 +5265,7 @@ l.986 ...ce_Surface_Freshwater_Fluxes/EXFevap.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[123]
+[145]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 996--996
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4305,7 +5277,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 995--1011
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.39 on input line 1011.
+(longtable)                in table 19.39 on input line 1011.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFpreci.png' not found on input line 1015.
@@ -4322,7 +5294,7 @@ l.1015 ..._Surface_Freshwater_Fluxes/EXFpreci.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[124]
+[146]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1025--1025
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4334,7 +5306,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1024--1040
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.40 on input line 1040.
+(longtable)                in table 19.40 on input line 1040.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFroff.png' not found on input line 1044.
@@ -4351,7 +5323,7 @@ l.1044 ...e_Surface_Freshwater_Fluxes/EXFroff.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[125]
+[147]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1054--1054
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4368,7 +5340,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1053--1068
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.41 on input line 1068.
+(longtable)                in table 19.41 on input line 1068.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SFLUX.png' not found on input line 1072.
@@ -4385,7 +5357,7 @@ l.1072 ...Ice_Surface_Freshwater_Fluxes/SFLUX.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[126]
+[148]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1082--1082
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4402,7 +5374,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1081--1097
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.42 on input line 1097.
+(longtable)                in table 19.42 on input line 1097.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIacSubl.png' not found on input line 1101.
@@ -4419,7 +5391,7 @@ l.1101 ..._Surface_Freshwater_Fluxes/SIacSubl.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[127]
+[149]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1111--1111
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4431,7 +5403,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1110--1128
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.43 on input line 1128.
+(longtable)                in table 19.43 on input line 1128.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIatmFW.png' not found on input line 1132.
@@ -4448,7 +5420,7 @@ l.1132 ...e_Surface_Freshwater_Fluxes/SIatmFW.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[128]
+[150]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1142--1142
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4460,7 +5432,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1141--1156
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.44 on input line 1156.
+(longtable)                in table 19.44 on input line 1156.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIfwThru.png' not found on input line 1160.
@@ -4477,7 +5449,7 @@ l.1160 ..._Surface_Freshwater_Fluxes/SIfwThru.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[129]
+[151]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1170--1170
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4489,7 +5461,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1169--1184
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.45 on input line 1184.
+(longtable)                in table 19.45 on input line 1184.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIrsSubl.png' not found on input line 1188.
@@ -4506,7 +5478,7 @@ l.1188 ..._Surface_Freshwater_Fluxes/SIrsSubl.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[130]
+[152]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1198--1198
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4518,7 +5490,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1197--1213
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.46 on input line 1213.
+(longtable)                in table 19.46 on input line 1213.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIsnPrcp.png' not found on input line 1217.
@@ -4535,7 +5507,7 @@ l.1217 ..._Surface_Freshwater_Fluxes/SIsnPrcp.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[131]
+[153]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1227--1227
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4547,7 +5519,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1226--1242
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.47 on input line 1242.
+(longtable)                in table 19.47 on input line 1242.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/oceFWflx.png' not found on input line 1246.
@@ -4564,12 +5536,12 @@ l.1246 ..._Surface_Freshwater_Fluxes/oceFWflx.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[132]
+[154]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.48 on input line 1270.
+(longtable)                in table 19.48 on input line 1270.
 
-[133]
+[155]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1278--1278
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4581,7 +5553,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1277--1293
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.49 on input line 1293.
+(longtable)                in table 19.49 on input line 1293.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png' not found on input line 1297.
@@ -4598,7 +5570,7 @@ l.1297 ...d_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[134]
+[156]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1307--1307
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4610,7 +5582,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1306--1322
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.50 on input line 1322.
+(longtable)                in table 19.50 on input line 1322.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png' not found on input line 1326.
@@ -4627,7 +5599,7 @@ l.1326 ...d_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[135]
+[157]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1336--1336
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4639,7 +5611,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1335--1351
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.51 on input line 1351.
+(longtable)                in table 19.51 on input line 1351.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png' not found on input line 1355.
@@ -4656,7 +5628,7 @@ l.1355 ...Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[136]
+[158]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1365--1365
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4668,7 +5640,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1364--1380
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.52 on input line 1380.
+(longtable)                in table 19.52 on input line 1380.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png' not found on input line 1384.
@@ -4685,7 +5657,7 @@ l.1384 ...ea-Ice_Surface_Heat_Fluxes/EXFlwnet.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[137]
+[159]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1394--1394
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4697,7 +5669,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1393--1408
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.53 on input line 1408.
+(longtable)                in table 19.53 on input line 1408.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png' not found on input line 1412.
@@ -4714,7 +5686,7 @@ l.1412 ...Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[138]
+[160]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1422--1422
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4726,7 +5698,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1421--1437
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.54 on input line 1437.
+(longtable)                in table 19.54 on input line 1437.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png' not found on input line 1441.
@@ -4743,7 +5715,7 @@ l.1441 ...Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[139]
+[161]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1451--1451
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4755,7 +5727,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1450--1466
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.55 on input line 1466.
+(longtable)                in table 19.55 on input line 1466.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png' not found on input line 1470.
@@ -4772,7 +5744,7 @@ l.1470 ...ea-Ice_Surface_Heat_Fluxes/EXFswnet.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[140]
+[162]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1480--1480
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4784,7 +5756,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1479--1494
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.56 on input line 1494.
+(longtable)                in table 19.56 on input line 1494.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png' not found on input line 1498.
@@ -4801,7 +5773,7 @@ l.1498 ...ea-Ice_Surface_Heat_Fluxes/SIaaflux.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[141]
+[163]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1508--1508
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4813,7 +5785,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1507--1524
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.57 on input line 1524.
+(longtable)                in table 19.57 on input line 1524.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png' not found on input line 1528.
@@ -4830,7 +5802,7 @@ l.1528 ...ea-Ice_Surface_Heat_Fluxes/SIatmQnt.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[142]
+[164]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1538--1538
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4842,7 +5814,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1537--1552
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.58 on input line 1552.
+(longtable)                in table 19.58 on input line 1552.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png' not found on input line 1556.
@@ -4859,7 +5831,7 @@ l.1556 ...d_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[143]
+[165]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1566--1566
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4871,7 +5843,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1565--1581
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.59 on input line 1581.
+(longtable)                in table 19.59 on input line 1581.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQnet.png' not found on input line 1585.
@@ -4888,7 +5860,7 @@ l.1585 ...Sea-Ice_Surface_Heat_Fluxes/oceQnet.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[144]
+[166]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1595--1595
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4900,7 +5872,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1594--1609
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.60 on input line 1609.
+(longtable)                in table 19.60 on input line 1609.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png' not found on input line 1613.
@@ -4917,12 +5889,12 @@ l.1613 ..._Sea-Ice_Surface_Heat_Fluxes/oceQsw.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[145]
+[167]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.61 on input line 1629.
+(longtable)                in table 19.61 on input line 1629.
 
-[146]
+[168]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1637--1637
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4934,7 +5906,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1636--1652
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.62 on input line 1652.
+(longtable)                in table 19.62 on input line 1652.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaux.png' not found on input line 1656.
@@ -4951,7 +5923,7 @@ l.1656 ..._and_Sea-Ice_Surface_Stress/EXFtaux.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[147]
+[169]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1666--1666
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4963,7 +5935,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1665--1681
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.63 on input line 1681.
+(longtable)                in table 19.63 on input line 1681.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtauy.png' not found on input line 1685.
@@ -4980,7 +5952,7 @@ l.1685 ..._and_Sea-Ice_Surface_Stress/EXFtauy.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[148]
+[170]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1695--1695
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -4992,7 +5964,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1694--1711
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.64 on input line 1711.
+(longtable)                in table 19.64 on input line 1711.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUX.png' not found on input line 1715.
@@ -5009,7 +5981,7 @@ l.1715 ..._and_Sea-Ice_Surface_Stress/oceTAUX.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[149]
+[171]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1725--1725
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5021,7 +5993,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1724--1741
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.65 on input line 1741.
+(longtable)                in table 19.65 on input line 1741.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUY.png' not found on input line 1745.
@@ -5038,12 +6010,12 @@ l.1745 ..._and_Sea-Ice_Surface_Stress/oceTAUY.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[150]
+[172]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.66 on input line 1759.
+(longtable)                in table 19.66 on input line 1759.
 
-[151]
+[173]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1767--1767
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5055,7 +6027,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1766--1781
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.67 on input line 1781.
+(longtable)                in table 19.67 on input line 1781.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Gent-McWilliams_Bolus_Transport_Streamfunction/GM_PsiX.png' not found on input line 1785.
@@ -5072,7 +6044,7 @@ l.1785 ...us_Transport_Streamfunction/GM_PsiX.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[152]
+[174]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1795--1795
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5084,7 +6056,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1794--1809
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.68 on input line 1809.
+(longtable)                in table 19.68 on input line 1809.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Gent-McWilliams_Bolus_Transport_Streamfunction/GM_PsiY.png' not found on input line 1813.
@@ -5101,12 +6073,12 @@ l.1813 ...us_Transport_Streamfunction/GM_PsiY.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[153]
+[175]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.69 on input line 1828.
+(longtable)                in table 19.69 on input line 1828.
 
-[154]
+[176]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1836--1836
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5118,7 +6090,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1835--1851
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.70 on input line 1851.
+(longtable)                in table 19.70 on input line 1851.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/UVELSTAR.png' not found on input line 1855.
@@ -5135,7 +6107,7 @@ l.1855 ...liams_Ocean_Bolus_Velocity/UVELSTAR.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[155]
+[177]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1865--1865
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5147,7 +6119,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1864--1880
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.71 on input line 1880.
+(longtable)                in table 19.71 on input line 1880.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/VVELSTAR.png' not found on input line 1884.
@@ -5164,7 +6136,7 @@ l.1884 ...liams_Ocean_Bolus_Velocity/VVELSTAR.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[156]
+[178]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1894--1894
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5176,7 +6148,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1893--1909
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.72 on input line 1909.
+(longtable)                in table 19.72 on input line 1909.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/WVELSTAR.png' not found on input line 1913.
@@ -5193,12 +6165,12 @@ l.1913 ...liams_Ocean_Bolus_Velocity/WVELSTAR.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[157]
+[179]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.73 on input line 1928.
+(longtable)                in table 19.73 on input line 1928.
 
-[158]
+[180]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1936--1936
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5210,7 +6182,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1935--1949
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.74 on input line 1949.
+(longtable)                in table 19.74 on input line 1949.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Bottom_Pressure/OBP.png' not found on input line 1953.
@@ -5227,7 +6199,7 @@ l.1953 ...ive_plots/Ocean_Bottom_Pressure/OBP.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[159]
+[181]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1963--1963
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5239,7 +6211,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1962--1977
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.75 on input line 1977.
+(longtable)                in table 19.75 on input line 1977.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Bottom_Pressure/OBPGMAP.png' not found on input line 1981.
@@ -5256,7 +6228,7 @@ l.1981 ...plots/Ocean_Bottom_Pressure/OBPGMAP.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[160]
+[182]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1991--1991
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5268,7 +6240,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1990--2004
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.76 on input line 2004.
+(longtable)                in table 19.76 on input line 2004.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Bottom_Pressure/PHIBOT.png' not found on input line 2008.
@@ -5285,12 +6257,12 @@ l.2008 ..._plots/Ocean_Bottom_Pressure/PHIBOT.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[161]
+[183]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.77 on input line 2024.
+(longtable)                in table 19.77 on input line 2024.
 
-[162]
+[184]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2032--2032
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5302,7 +6274,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2031--2046
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.78 on input line 2046.
+(longtable)                in table 19.78 on input line 2046.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/DRHODR.png' not found on input line 2050.
@@ -5319,7 +6291,7 @@ l.2050 ...ion_and_Hydrostatic_Pressure/DRHODR.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[163]
+[185]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2060--2060
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5331,7 +6303,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2059--2073
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.79 on input line 2073.
+(longtable)                in table 19.79 on input line 2073.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYD.png' not found on input line 2077.
@@ -5348,7 +6320,7 @@ l.2077 ...ion_and_Hydrostatic_Pressure/PHIHYD.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[164]
+[186]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2087--2087
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5360,7 +6332,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2086--2100
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.80 on input line 2100.
+(longtable)                in table 19.80 on input line 2100.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYDcR.png' not found on input line 2104.
@@ -5377,7 +6349,7 @@ l.2104 ...n_and_Hydrostatic_Pressure/PHIHYDcR.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[165]
+[187]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2114--2114
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5389,7 +6361,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2113--2127
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.81 on input line 2127.
+(longtable)                in table 19.81 on input line 2127.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/RHOAnoma.png' not found on input line 2131.
@@ -5406,12 +6378,12 @@ l.2131 ...n_and_Hydrostatic_Pressure/RHOAnoma.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[166]
+[188]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.82 on input line 2144.
+(longtable)                in table 19.82 on input line 2144.
 
-[167]
+[189]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2152--2152
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5423,7 +6395,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2151--2167
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.83 on input line 2167.
+(longtable)                in table 19.83 on input line 2167.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Mixed_Layer_Depth/MXLDEPTH.png' not found on input line 2171.
@@ -5440,12 +6412,12 @@ l.2171 ...ts/Ocean_Mixed_Layer_Depth/MXLDEPTH.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[168]
+[190]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.84 on input line 2185.
+(longtable)                in table 19.84 on input line 2185.
 
-[169]
+[191]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2193--2193
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5457,7 +6429,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2192--2207
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.85 on input line 2207.
+(longtable)                in table 19.85 on input line 2207.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Temperature_and_Salinity/SALT.png' not found on input line 2211.
@@ -5474,7 +6446,7 @@ l.2211 ...Ocean_Temperature_and_Salinity/SALT.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[170]
+[192]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2221--2221
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5491,7 +6463,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2220--2236
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.86 on input line 2236.
+(longtable)                in table 19.86 on input line 2236.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Temperature_and_Salinity/THETA.png' not found on input line 2240.
@@ -5508,12 +6480,12 @@ l.2240 ...cean_Temperature_and_Salinity/THETA.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[171]
+[193]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.87 on input line 2255.
+(longtable)                in table 19.87 on input line 2255.
 
-[172]
+[194]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2263--2263
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5525,7 +6497,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2262--2279
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.88 on input line 2279.
+(longtable)                in table 19.88 on input line 2279.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Velocity/UVEL.png' not found on input line 2283.
@@ -5542,7 +6514,7 @@ l.2283 ...ts/native_plots/Ocean_Velocity/UVEL.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[173]
+[195]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2293--2293
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5554,7 +6526,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2292--2309
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.89 on input line 2309.
+(longtable)                in table 19.89 on input line 2309.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Velocity/VVEL.png' not found on input line 2313.
@@ -5571,7 +6543,7 @@ l.2313 ...ts/native_plots/Ocean_Velocity/VVEL.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[174]
+[196]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2323--2323
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5583,7 +6555,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2322--2338
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.90 on input line 2338.
+(longtable)                in table 19.90 on input line 2338.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Ocean_Velocity/WVEL.png' not found on input line 2342.
@@ -5600,12 +6572,12 @@ l.2342 ...ts/native_plots/Ocean_Velocity/WVEL.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[175]
+[197]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.91 on input line 2358.
+(longtable)                in table 19.91 on input line 2358.
 
-[176]
+[198]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2366--2366
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5617,7 +6589,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2365--2380
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.92 on input line 2380.
+(longtable)                in table 19.92 on input line 2380.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIarea.png' not found on input line 2384.
@@ -5634,7 +6606,7 @@ l.2384 ..._Concentration_and_Thickness/SIarea.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[177]
+[199]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2394--2394
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5646,7 +6618,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2393--2408
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.93 on input line 2408.
+(longtable)                in table 19.93 on input line 2408.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIheff.png' not found on input line 2412.
@@ -5663,7 +6635,7 @@ l.2412 ..._Concentration_and_Thickness/SIheff.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[178]
+[200]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2422--2422
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5675,7 +6647,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2421--2436
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.94 on input line 2436.
+(longtable)                in table 19.94 on input line 2436.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIhsnow.png' not found on input line 2440.
@@ -5692,7 +6664,7 @@ l.2440 ...Concentration_and_Thickness/SIhsnow.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[179]
+[201]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2450--2450
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5704,7 +6676,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2449--2464
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.95 on input line 2464.
+(longtable)                in table 19.95 on input line 2464.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/sIceLoad.png' not found on input line 2468.
@@ -5721,12 +6693,12 @@ l.2468 ...oncentration_and_Thickness/sIceLoad.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[180]
+[202]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.96 on input line 2488.
+(longtable)                in table 19.96 on input line 2488.
 
-[181]
+[203]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2496--2496
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5738,7 +6710,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2495--2511
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.97 on input line 2511.
+(longtable)                in table 19.97 on input line 2511.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVxHEFF.png' not found on input line 2515.
@@ -5755,7 +6727,7 @@ l.2515 ...w_Horizontal_Volume_Fluxes/ADVxHEFF.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[182]
+[204]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2525--2525
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5767,7 +6739,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2524--2540
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.98 on input line 2540.
+(longtable)                in table 19.98 on input line 2540.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVxSNOW.png' not found on input line 2544.
@@ -5784,7 +6756,7 @@ l.2544 ...w_Horizontal_Volume_Fluxes/ADVxSNOW.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[183]
+[205]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2554--2554
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5796,7 +6768,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2553--2569
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.99 on input line 2569.
+(longtable)                in table 19.99 on input line 2569.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVyHEFF.png' not found on input line 2573.
@@ -5813,7 +6785,7 @@ l.2573 ...w_Horizontal_Volume_Fluxes/ADVyHEFF.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[184]
+[206]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2583--2583
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5825,7 +6797,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2582--2598
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.100 on input line 2598.
+(longtable)                in table 19.100 on input line 2598.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVySNOW.png' not found on input line 2602.
@@ -5842,7 +6814,7 @@ l.2602 ...w_Horizontal_Volume_Fluxes/ADVySNOW.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[185]
+[207]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2612--2612
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5854,7 +6826,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2611--2627
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.101 on input line 2627.
+(longtable)                in table 19.101 on input line 2627.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFxEHEFF.png' not found on input line 2631.
@@ -5871,7 +6843,7 @@ l.2631 ...w_Horizontal_Volume_Fluxes/DFxEHEFF.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[186]
+[208]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2641--2641
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5883,7 +6855,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2640--2656
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.102 on input line 2656.
+(longtable)                in table 19.102 on input line 2656.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFxESNOW.png' not found on input line 2660.
@@ -5900,7 +6872,7 @@ l.2660 ...w_Horizontal_Volume_Fluxes/DFxESNOW.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[187]
+[209]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2670--2670
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5912,7 +6884,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2669--2685
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.103 on input line 2685.
+(longtable)                in table 19.103 on input line 2685.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFyEHEFF.png' not found on input line 2689.
@@ -5929,7 +6901,7 @@ l.2689 ...w_Horizontal_Volume_Fluxes/DFyEHEFF.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[188]
+[210]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2699--2699
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5941,7 +6913,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2698--2714
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.104 on input line 2714.
+(longtable)                in table 19.104 on input line 2714.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFyESNOW.png' not found on input line 2718.
@@ -5958,12 +6930,12 @@ l.2718 ...w_Horizontal_Volume_Fluxes/DFyESNOW.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[189]
+[211]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.105 on input line 2732.
+(longtable)                in table 19.105 on input line 2732.
 
-[190]
+[212]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2740--2740
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -5975,7 +6947,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2739--2753
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.106 on input line 2753.
+(longtable)                in table 19.106 on input line 2753.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_Salt_Plume_Fluxes/oceSPDep.png' not found on input line 2757.
@@ -5992,7 +6964,7 @@ l.2757 .../Sea-Ice_Salt_Plume_Fluxes/oceSPDep.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[191]
+[213]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2767--2767
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6009,7 +6981,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2766--2781
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.107 on input line 2781.
+(longtable)                in table 19.107 on input line 2781.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_Salt_Plume_Fluxes/oceSPflx.png' not found on input line 2785.
@@ -6026,12 +6998,12 @@ l.2785 .../Sea-Ice_Salt_Plume_Fluxes/oceSPflx.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[192]
+[214]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.108 on input line 2799.
+(longtable)                in table 19.108 on input line 2799.
 
-[193]
+[215]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2807--2807
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6043,7 +7015,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2806--2822
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.109 on input line 2822.
+(longtable)                in table 19.109 on input line 2822.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_Velocity/SIuice.png' not found on input line 2826.
@@ -6060,7 +7032,7 @@ l.2826 ...ative_plots/Sea-Ice_Velocity/SIuice.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[194]
+[216]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2836--2836
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6072,7 +7044,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2835--2851
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.110 on input line 2851.
+(longtable)                in table 19.110 on input line 2851.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea-Ice_Velocity/SIvice.png' not found on input line 2855.
@@ -6089,12 +7061,12 @@ l.2855 ...ative_plots/Sea-Ice_Velocity/SIvice.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[195]
+[217]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.111 on input line 2871.
+(longtable)                in table 19.111 on input line 2871.
 
-[196]
+[218]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2879--2879
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6106,7 +7078,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2878--2892
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.112 on input line 2892.
+(longtable)                in table 19.112 on input line 2892.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea_Surface_Height/ETAN.png' not found on input line 2896.
@@ -6123,7 +7095,7 @@ l.2896 ...ative_plots/Sea_Surface_Height/ETAN.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[197]
+[219]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2906--2906
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6135,7 +7107,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2905--2920
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.113 on input line 2920.
+(longtable)                in table 19.113 on input line 2920.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea_Surface_Height/SSH.png' not found on input line 2924.
@@ -6152,7 +7124,7 @@ l.2924 ...native_plots/Sea_Surface_Height/SSH.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[198]
+[220]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2934--2934
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6164,7 +7136,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2933--2947
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.114 on input line 2947.
+(longtable)                in table 19.114 on input line 2947.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea_Surface_Height/SSHIBC.png' not found on input line 2951.
@@ -6181,7 +7153,7 @@ l.2951 ...ive_plots/Sea_Surface_Height/SSHIBC.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[199]
+[221]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 2961--2961
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6193,7 +7165,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 2960--2974
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 17.115 on input line 2974.
+(longtable)                in table 19.115 on input line 2974.
 
 
 LaTeX Warning: File `../images/plots/native_plots/Sea_Surface_Height/SSHNOIBC.png' not found on input line 2978.
@@ -6210,12 +7182,12 @@ l.2978 ...e_plots/Sea_Surface_Height/SSHNOIBC.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-)) (./latex/dataset/latlon_coords_dataset.tex [200] (./latex/dataset/latlon_coords_dataset_tables.tex [201]
+)) (./latex/dataset/latlon_coords_dataset.tex [222] (./latex/dataset/latlon_coords_dataset_tables.tex [223]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 18.1 on input line 11.
+(longtable)                in table 20.1 on input line 11.
 
-[202]
+[224]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 19--19
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6227,7 +7199,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 18--29
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 18.2 on input line 29.
+(longtable)                in table 20.2 on input line 29.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/hFacC.png' not found on input line 33.
@@ -6244,7 +7216,7 @@ l.33 ...odel_Grid_(Version_4_Release_4)/hFacC.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[203]
+[225]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 43--43
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6256,7 +7228,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 42--52
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 18.3 on input line 52.
+(longtable)                in table 20.3 on input line 52.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/maskC.png' not found on input line 56.
@@ -6273,12 +7245,12 @@ l.56 ...odel_Grid_(Version_4_Release_4)/maskC.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-)) (./latex/dataset/latlon_dataset.tex [204] (./latex/dataset/latlon_dataset_tables.tex [205]
+)) (./latex/dataset/latlon_dataset.tex [226] (./latex/dataset/latlon_dataset_tables.tex [227]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.1 on input line 15.
+(longtable)                in table 21.1 on input line 15.
 
-[206]
+[228]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 23--23
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6290,7 +7262,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 22--37
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.2 on input line 37.
+(longtable)                in table 21.2 on input line 37.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png' not found on input line 41.
@@ -6307,7 +7279,7 @@ l.41 ...ure_Humidity_Wind_and_Pressure/EXFaqh.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[207]
+[229]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 51--51
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6324,7 +7296,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 50--65
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.3 on input line 65.
+(longtable)                in table 21.3 on input line 65.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFatemp.png' not found on input line 69.
@@ -6341,7 +7313,7 @@ l.69 ...e_Humidity_Wind_and_Pressure/EXFatemp.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[208]
+[230]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 79--79
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6353,7 +7325,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 78--93
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.4 on input line 93.
+(longtable)                in table 21.4 on input line 93.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFewind.png' not found on input line 97.
@@ -6370,7 +7342,7 @@ l.97 ...e_Humidity_Wind_and_Pressure/EXFewind.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[209]
+[231]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 107--107
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6382,7 +7354,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 106--121
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.5 on input line 121.
+(longtable)                in table 21.5 on input line 121.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFnwind.png' not found on input line 125.
@@ -6399,7 +7371,7 @@ l.125 ..._Humidity_Wind_and_Pressure/EXFnwind.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[210]
+[232]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 135--135
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6411,7 +7383,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 134--149
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.6 on input line 149.
+(longtable)                in table 21.6 on input line 149.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFpress.png' not found on input line 153.
@@ -6428,7 +7400,7 @@ l.153 ..._Humidity_Wind_and_Pressure/EXFpress.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[211]
+[233]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 163--163
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6440,7 +7412,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 162--177
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.7 on input line 177.
+(longtable)                in table 21.7 on input line 177.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFwspee.png' not found on input line 181.
@@ -6457,12 +7429,12 @@ l.181 ..._Humidity_Wind_and_Pressure/EXFwspee.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[212]
+[234]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.8 on input line 204.
+(longtable)                in table 21.8 on input line 204.
 
-[213]
+[235]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 212--212
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6474,7 +7446,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 211--228
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.9 on input line 228.
+(longtable)                in table 21.9 on input line 228.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFempmr.png' not found on input line 232.
@@ -6491,7 +7463,7 @@ l.232 ...e_Surface_Freshwater_Fluxes/EXFempmr.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[214]
+[236]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 242--242
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6503,7 +7475,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 241--257
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.10 on input line 257.
+(longtable)                in table 21.10 on input line 257.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFevap.png' not found on input line 261.
@@ -6520,7 +7492,7 @@ l.261 ...ce_Surface_Freshwater_Fluxes/EXFevap.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[215]
+[237]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 271--271
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6532,7 +7504,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 270--286
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.11 on input line 286.
+(longtable)                in table 21.11 on input line 286.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFpreci.png' not found on input line 290.
@@ -6549,7 +7521,7 @@ l.290 ...e_Surface_Freshwater_Fluxes/EXFpreci.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[216]
+[238]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 300--300
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6561,7 +7533,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 299--315
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.12 on input line 315.
+(longtable)                in table 21.12 on input line 315.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFroff.png' not found on input line 319.
@@ -6578,7 +7550,7 @@ l.319 ...ce_Surface_Freshwater_Fluxes/EXFroff.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[217]
+[239]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 329--329
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6595,7 +7567,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 328--343
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.13 on input line 343.
+(longtable)                in table 21.13 on input line 343.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SFLUX.png' not found on input line 347.
@@ -6612,7 +7584,7 @@ l.347 ...-Ice_Surface_Freshwater_Fluxes/SFLUX.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[218]
+[240]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 357--357
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6629,7 +7601,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 356--372
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.14 on input line 372.
+(longtable)                in table 21.14 on input line 372.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIacSubl.png' not found on input line 376.
@@ -6646,7 +7618,7 @@ l.376 ...e_Surface_Freshwater_Fluxes/SIacSubl.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[219]
+[241]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 386--386
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6658,7 +7630,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 385--403
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.15 on input line 403.
+(longtable)                in table 21.15 on input line 403.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIatmFW.png' not found on input line 407.
@@ -6675,7 +7647,7 @@ l.407 ...ce_Surface_Freshwater_Fluxes/SIatmFW.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[220]
+[242]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 417--417
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6687,7 +7659,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 416--431
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.16 on input line 431.
+(longtable)                in table 21.16 on input line 431.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIfwThru.png' not found on input line 435.
@@ -6704,7 +7676,7 @@ l.435 ...e_Surface_Freshwater_Fluxes/SIfwThru.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[221]
+[243]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 445--445
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6716,7 +7688,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 444--459
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.17 on input line 459.
+(longtable)                in table 21.17 on input line 459.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIrsSubl.png' not found on input line 463.
@@ -6733,7 +7705,7 @@ l.463 ...e_Surface_Freshwater_Fluxes/SIrsSubl.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[222]
+[244]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 473--473
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6745,7 +7717,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 472--488
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.18 on input line 488.
+(longtable)                in table 21.18 on input line 488.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIsnPrcp.png' not found on input line 492.
@@ -6762,7 +7734,7 @@ l.492 ...e_Surface_Freshwater_Fluxes/SIsnPrcp.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[223]
+[245]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 502--502
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6774,7 +7746,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 501--517
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.19 on input line 517.
+(longtable)                in table 21.19 on input line 517.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/oceFWflx.png' not found on input line 521.
@@ -6791,12 +7763,12 @@ l.521 ...e_Surface_Freshwater_Fluxes/oceFWflx.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[224]
+[246]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.20 on input line 545.
+(longtable)                in table 21.20 on input line 545.
 
-[225]
+[247]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 553--553
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6808,7 +7780,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 552--568
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.21 on input line 568.
+(longtable)                in table 21.21 on input line 568.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png' not found on input line 572.
@@ -6825,7 +7797,7 @@ l.572 ...nd_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[226]
+[248]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 582--582
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6837,7 +7809,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 581--597
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.22 on input line 597.
+(longtable)                in table 21.22 on input line 597.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png' not found on input line 601.
@@ -6854,7 +7826,7 @@ l.601 ...nd_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[227]
+[249]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 611--611
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6866,7 +7838,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 610--626
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.23 on input line 626.
+(longtable)                in table 21.23 on input line 626.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png' not found on input line 630.
@@ -6883,7 +7855,7 @@ l.630 ..._Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[228]
+[250]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 640--640
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6895,7 +7867,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 639--655
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.24 on input line 655.
+(longtable)                in table 21.24 on input line 655.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png' not found on input line 659.
@@ -6912,7 +7884,7 @@ l.659 ...Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[229]
+[251]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 669--669
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6924,7 +7896,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 668--683
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.25 on input line 683.
+(longtable)                in table 21.25 on input line 683.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png' not found on input line 687.
@@ -6941,7 +7913,7 @@ l.687 ..._Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[230]
+[252]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 697--697
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6953,7 +7925,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 696--712
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.26 on input line 712.
+(longtable)                in table 21.26 on input line 712.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png' not found on input line 716.
@@ -6970,7 +7942,7 @@ l.716 ..._Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[231]
+[253]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 726--726
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -6982,7 +7954,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 725--741
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.27 on input line 741.
+(longtable)                in table 21.27 on input line 741.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png' not found on input line 745.
@@ -6999,7 +7971,7 @@ l.745 ...Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[232]
+[254]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 755--755
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7011,7 +7983,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 754--769
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.28 on input line 769.
+(longtable)                in table 21.28 on input line 769.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png' not found on input line 773.
@@ -7028,7 +8000,7 @@ l.773 ...Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[233]
+[255]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 783--783
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7040,7 +8012,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 782--799
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.29 on input line 799.
+(longtable)                in table 21.29 on input line 799.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png' not found on input line 803.
@@ -7057,7 +8029,7 @@ l.803 ...Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[234]
+[256]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 813--813
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7069,7 +8041,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 812--827
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.30 on input line 827.
+(longtable)                in table 21.30 on input line 827.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png' not found on input line 831.
@@ -7086,7 +8058,7 @@ l.831 ...nd_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[235]
+[257]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 841--841
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7098,7 +8070,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 840--856
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.31 on input line 856.
+(longtable)                in table 21.31 on input line 856.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQnet.png' not found on input line 860.
@@ -7115,7 +8087,7 @@ l.860 ..._Sea-Ice_Surface_Heat_Fluxes/oceQnet.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[236]
+[258]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 870--870
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7127,7 +8099,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 869--884
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.32 on input line 884.
+(longtable)                in table 21.32 on input line 884.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png' not found on input line 888.
@@ -7144,12 +8116,12 @@ l.888 ...d_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[237]
+[259]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.33 on input line 904.
+(longtable)                in table 21.33 on input line 904.
 
-[238]
+[260]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 912--912
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7161,7 +8133,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 911--927
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.34 on input line 927.
+(longtable)                in table 21.34 on input line 927.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaue.png' not found on input line 931.
@@ -7178,7 +8150,7 @@ l.931 ...n_and_Sea-Ice_Surface_Stress/EXFtaue.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[239]
+[261]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 941--941
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7190,7 +8162,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 940--956
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.35 on input line 956.
+(longtable)                in table 21.35 on input line 956.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaun.png' not found on input line 960.
@@ -7207,7 +8179,7 @@ l.960 ...n_and_Sea-Ice_Surface_Stress/EXFtaun.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[240]
+[262]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 970--970
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7219,7 +8191,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 969--985
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.36 on input line 985.
+(longtable)                in table 21.36 on input line 985.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUE.png' not found on input line 989.
@@ -7236,7 +8208,7 @@ l.989 ...n_and_Sea-Ice_Surface_Stress/oceTAUE.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[241]
+[263]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 999--999
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7248,7 +8220,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 998--1014
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.37 on input line 1014.
+(longtable)                in table 21.37 on input line 1014.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUN.png' not found on input line 1018.
@@ -7265,12 +8237,12 @@ l.1018 ..._and_Sea-Ice_Surface_Stress/oceTAUN.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[242]
+[264]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.38 on input line 1033.
+(longtable)                in table 21.38 on input line 1033.
 
-[243]
+[265]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1041--1041
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7282,7 +8254,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1040--1055
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.39 on input line 1055.
+(longtable)                in table 21.39 on input line 1055.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/EVELSTAR.png' not found on input line 1059.
@@ -7299,7 +8271,7 @@ l.1059 ...liams_Ocean_Bolus_Velocity/EVELSTAR.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[244]
+[266]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1069--1069
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7311,7 +8283,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1068--1083
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.40 on input line 1083.
+(longtable)                in table 21.40 on input line 1083.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/NVELSTAR.png' not found on input line 1087.
@@ -7328,7 +8300,7 @@ l.1087 ...liams_Ocean_Bolus_Velocity/NVELSTAR.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[245]
+[267]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1097--1097
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7340,7 +8312,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1096--1112
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.41 on input line 1112.
+(longtable)                in table 21.41 on input line 1112.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/WVELSTAR.png' not found on input line 1116.
@@ -7357,12 +8329,12 @@ l.1116 ...liams_Ocean_Bolus_Velocity/WVELSTAR.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[246]
+[268]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.42 on input line 1130.
+(longtable)                in table 21.42 on input line 1130.
 
-[247]
+[269]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1138--1138
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7374,7 +8346,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1137--1151
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.43 on input line 1151.
+(longtable)                in table 21.43 on input line 1151.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_Bottom_Pressure/OBP.png' not found on input line 1155.
@@ -7391,7 +8363,7 @@ l.1155 ...lon_plots/Ocean_Bottom_Pressure/OBP.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[248]
+[270]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1165--1165
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7403,7 +8375,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1164--1179
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.44 on input line 1179.
+(longtable)                in table 21.44 on input line 1179.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_Bottom_Pressure/OBPGMAP.png' not found on input line 1183.
@@ -7420,12 +8392,12 @@ l.1183 ...plots/Ocean_Bottom_Pressure/OBPGMAP.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[249]
+[271]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.45 on input line 1198.
+(longtable)                in table 21.45 on input line 1198.
 
-[250]
+[272]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1206--1206
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7437,7 +8409,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1205--1220
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.46 on input line 1220.
+(longtable)                in table 21.46 on input line 1220.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/DRHODR.png' not found on input line 1224.
@@ -7454,7 +8426,7 @@ l.1224 ...ion_and_Hydrostatic_Pressure/DRHODR.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[251]
+[273]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1234--1234
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7466,7 +8438,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1233--1247
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.47 on input line 1247.
+(longtable)                in table 21.47 on input line 1247.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYD.png' not found on input line 1251.
@@ -7483,7 +8455,7 @@ l.1251 ...ion_and_Hydrostatic_Pressure/PHIHYD.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[252]
+[274]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1261--1261
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7495,7 +8467,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1260--1274
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.48 on input line 1274.
+(longtable)                in table 21.48 on input line 1274.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/RHOAnoma.png' not found on input line 1278.
@@ -7512,12 +8484,12 @@ l.1278 ...n_and_Hydrostatic_Pressure/RHOAnoma.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[253]
+[275]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.49 on input line 1291.
+(longtable)                in table 21.49 on input line 1291.
 
-[254]
+[276]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1299--1299
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7529,7 +8501,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1298--1314
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.50 on input line 1314.
+(longtable)                in table 21.50 on input line 1314.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_Mixed_Layer_Depth/MXLDEPTH.png' not found on input line 1318.
@@ -7546,12 +8518,12 @@ l.1318 ...ts/Ocean_Mixed_Layer_Depth/MXLDEPTH.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[255]
+[277]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.51 on input line 1332.
+(longtable)                in table 21.51 on input line 1332.
 
-[256]
+[278]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1340--1340
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7563,7 +8535,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1339--1354
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.52 on input line 1354.
+(longtable)                in table 21.52 on input line 1354.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_Temperature_and_Salinity/SALT.png' not found on input line 1358.
@@ -7580,7 +8552,7 @@ l.1358 ...Ocean_Temperature_and_Salinity/SALT.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[257]
+[279]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1368--1368
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7597,7 +8569,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1367--1383
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.53 on input line 1383.
+(longtable)                in table 21.53 on input line 1383.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_Temperature_and_Salinity/THETA.png' not found on input line 1387.
@@ -7614,12 +8586,12 @@ l.1387 ...cean_Temperature_and_Salinity/THETA.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[258]
+[280]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.54 on input line 1402.
+(longtable)                in table 21.54 on input line 1402.
 
-[259]
+[281]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1410--1410
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7631,7 +8603,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1409--1424
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.55 on input line 1424.
+(longtable)                in table 21.55 on input line 1424.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_Velocity/EVEL.png' not found on input line 1428.
@@ -7648,7 +8620,7 @@ l.1428 ...ts/latlon_plots/Ocean_Velocity/EVEL.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[260]
+[282]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1438--1438
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7660,7 +8632,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1437--1452
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.56 on input line 1452.
+(longtable)                in table 21.56 on input line 1452.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_Velocity/NVEL.png' not found on input line 1456.
@@ -7677,7 +8649,7 @@ l.1456 ...ts/latlon_plots/Ocean_Velocity/NVEL.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[261]
+[283]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1466--1466
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7689,7 +8661,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1465--1481
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.57 on input line 1481.
+(longtable)                in table 21.57 on input line 1481.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Ocean_Velocity/WVEL.png' not found on input line 1485.
@@ -7706,12 +8678,12 @@ l.1485 ...ts/latlon_plots/Ocean_Velocity/WVEL.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[262]
+[284]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.58 on input line 1501.
+(longtable)                in table 21.58 on input line 1501.
 
-[263]
+[285]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1509--1509
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7723,7 +8695,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1508--1523
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.59 on input line 1523.
+(longtable)                in table 21.59 on input line 1523.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIarea.png' not found on input line 1527.
@@ -7740,7 +8712,7 @@ l.1527 ..._Concentration_and_Thickness/SIarea.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[264]
+[286]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1537--1537
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7752,7 +8724,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1536--1551
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.60 on input line 1551.
+(longtable)                in table 21.60 on input line 1551.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIheff.png' not found on input line 1555.
@@ -7769,7 +8741,7 @@ l.1555 ..._Concentration_and_Thickness/SIheff.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[265]
+[287]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1565--1565
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7781,7 +8753,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1564--1579
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.61 on input line 1579.
+(longtable)                in table 21.61 on input line 1579.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIhsnow.png' not found on input line 1583.
@@ -7798,7 +8770,7 @@ l.1583 ...Concentration_and_Thickness/SIhsnow.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[266]
+[288]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1593--1593
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7810,7 +8782,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1592--1607
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.62 on input line 1607.
+(longtable)                in table 21.62 on input line 1607.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/sIceLoad.png' not found on input line 1611.
@@ -7827,12 +8799,12 @@ l.1611 ...oncentration_and_Thickness/sIceLoad.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[267]
+[289]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.63 on input line 1625.
+(longtable)                in table 21.63 on input line 1625.
 
-[268]
+[290]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1633--1633
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7844,7 +8816,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1632--1647
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.64 on input line 1647.
+(longtable)                in table 21.64 on input line 1647.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Sea-Ice_Velocity/SIeice.png' not found on input line 1651.
@@ -7861,7 +8833,7 @@ l.1651 ...atlon_plots/Sea-Ice_Velocity/SIeice.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[269]
+[291]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1661--1661
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7873,7 +8845,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1660--1675
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.65 on input line 1675.
+(longtable)                in table 21.65 on input line 1675.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Sea-Ice_Velocity/SInice.png' not found on input line 1679.
@@ -7890,12 +8862,12 @@ l.1679 ...atlon_plots/Sea-Ice_Velocity/SInice.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[270]
+[292]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.66 on input line 1694.
+(longtable)                in table 21.66 on input line 1694.
 
-[271]
+[293]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1702--1702
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7907,7 +8879,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1701--1716
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.67 on input line 1716.
+(longtable)                in table 21.67 on input line 1716.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Sea_Surface_Height/SSH.png' not found on input line 1720.
@@ -7924,7 +8896,7 @@ l.1720 ...latlon_plots/Sea_Surface_Height/SSH.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[272]
+[294]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1730--1730
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7936,7 +8908,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1729--1743
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.68 on input line 1743.
+(longtable)                in table 21.68 on input line 1743.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Sea_Surface_Height/SSHIBC.png' not found on input line 1747.
@@ -7953,7 +8925,7 @@ l.1747 ...lon_plots/Sea_Surface_Height/SSHIBC.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[273]
+[295]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 1757--1757
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7965,7 +8937,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 1756--1770
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 19.69 on input line 1770.
+(longtable)                in table 21.69 on input line 1770.
 
 
 LaTeX Warning: File `../images/plots/latlon_plots/Sea_Surface_Height/SSHNOIBC.png' not found on input line 1774.
@@ -7982,12 +8954,12 @@ l.1774 ...n_plots/Sea_Surface_Height/SSHNOIBC.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-)) (./latex/dataset/oneD_dataset.tex [274] (./latex/dataset/oneD_dataset_tables.tex [275]
+)) (./latex/dataset/oneD_dataset.tex [296] (./latex/dataset/oneD_dataset_tables.tex [297]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.1 on input line 10.
+(longtable)                in table 22.1 on input line 10.
 
-[276]
+[298]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 18--18
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -7999,7 +8971,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 17--32
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.2 on input line 32.
+(longtable)                in table 22.2 on input line 32.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/Global_Mean_Atmospheric_Pressure/Pa_global.png' not found on input line 36.
@@ -8016,12 +8988,12 @@ l.36 ...l_Mean_Atmospheric_Pressure/Pa_global.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[277]
+[299]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.3 on input line 51.
+(longtable)                in table 22.3 on input line 51.
 
-[278]
+[300]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 59--59
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8033,7 +9005,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 58--73
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.4 on input line 73.
+(longtable)                in table 22.4 on input line 73.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_barystatic_sea_level_anomaly.png' not found on input line 77.
@@ -8050,7 +9022,7 @@ l.77 ...bal_mean_barystatic_sea_level_anomaly.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[279]
+[301]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 87--87
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8062,7 +9034,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 86--101
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.5 on input line 101.
+(longtable)                in table 22.5 on input line 101.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_sea_level_anomaly.png' not found on input line 105.
@@ -8079,9 +9051,9 @@ l.105 ..._Level/global_mean_sea_level_anomaly.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[280]
-Overfull \hbox (2.72366pt too wide) in paragraph at lines 112--112
-[]\T1/Cabin-TLF/bold/n/10 Table 20.6: |CDL de-scrip-tion of GLOBAL_MEAN_SEA_LEVEL's global_mean_sterodynamic_sea_level_anomaly
+[302]
+Overfull \hbox (1.06366pt too wide) in paragraph at lines 112--112
+[]\T1/Cabin-TLF/bold/n/10 Table 22.6: |CDL de-scrip-tion of GLOBAL_MEAN_SEA_LEVEL's global_mean_sterodynamic_sea_level_anomaly
  []
 
 
@@ -8096,7 +9068,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 114--129
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.6 on input line 129.
+(longtable)                in table 22.6 on input line 129.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_sterodynamic_sea_level_anomaly.png' not found on input line 133.
@@ -8113,12 +9085,12 @@ l.133 ..._mean_sterodynamic_sea_level_anomaly.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[281]
+[303]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.7 on input line 171.
+(longtable)                in table 22.7 on input line 171.
 
-[282]
+[304]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 179--179
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8130,7 +9102,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 178--192
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.8 on input line 192.
+(longtable)                in table 22.8 on input line 192.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/mass.png' not found on input line 196.
@@ -8147,7 +9119,7 @@ l.196 ...ts/oneD_plots/SBO_Core_Products/mass.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[283]
+[305]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 206--206
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8159,7 +9131,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 205--219
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.9 on input line 219.
+(longtable)                in table 22.9 on input line 219.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/mass_fw.png' not found on input line 223.
@@ -8176,7 +9148,7 @@ l.223 ...oneD_plots/SBO_Core_Products/mass_fw.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[284]
+[306]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 233--233
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8188,7 +9160,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 232--246
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.10 on input line 246.
+(longtable)                in table 22.10 on input line 246.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/mass_gc.png' not found on input line 250.
@@ -8205,7 +9177,7 @@ l.250 ...oneD_plots/SBO_Core_Products/mass_gc.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[285]
+[307]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 260--260
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8217,7 +9189,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 259--273
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.11 on input line 273.
+(longtable)                in table 22.11 on input line 273.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/mass_si.png' not found on input line 277.
@@ -8234,7 +9206,7 @@ l.277 ...oneD_plots/SBO_Core_Products/mass_si.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[286]
+[308]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 287--287
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8246,7 +9218,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 286--300
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.12 on input line 300.
+(longtable)                in table 22.12 on input line 300.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/sboarea.png' not found on input line 304.
@@ -8263,7 +9235,7 @@ l.304 ...oneD_plots/SBO_Core_Products/sboarea.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[287]
+[309]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 314--314
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8275,7 +9247,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 313--327
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.13 on input line 327.
+(longtable)                in table 22.13 on input line 327.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/xcom.png' not found on input line 331.
@@ -8292,7 +9264,7 @@ l.331 ...ts/oneD_plots/SBO_Core_Products/xcom.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[288]
+[310]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 341--341
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8304,7 +9276,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 340--354
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.14 on input line 354.
+(longtable)                in table 22.14 on input line 354.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/xcom_fw.png' not found on input line 358.
@@ -8321,7 +9293,7 @@ l.358 ...oneD_plots/SBO_Core_Products/xcom_fw.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[289]
+[311]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 368--368
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8338,7 +9310,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 367--381
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.15 on input line 381.
+(longtable)                in table 22.15 on input line 381.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/xoamc.png' not found on input line 385.
@@ -8355,7 +9327,7 @@ l.385 ...s/oneD_plots/SBO_Core_Products/xoamc.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[290]
+[312]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 395--395
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8372,7 +9344,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 394--408
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.16 on input line 408.
+(longtable)                in table 22.16 on input line 408.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/xoamc_si.png' not found on input line 412.
@@ -8389,7 +9361,7 @@ l.412 ...neD_plots/SBO_Core_Products/xoamc_si.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[291]
+[313]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 422--422
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8406,7 +9378,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 421--435
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.17 on input line 435.
+(longtable)                in table 22.17 on input line 435.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/xoamp.png' not found on input line 439.
@@ -8423,7 +9395,7 @@ l.439 ...s/oneD_plots/SBO_Core_Products/xoamp.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[292]
+[314]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 449--449
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8440,7 +9412,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 448--462
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.18 on input line 462.
+(longtable)                in table 22.18 on input line 462.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/xoamp_dsl.png' not found on input line 466.
@@ -8457,7 +9429,7 @@ l.466 ...eD_plots/SBO_Core_Products/xoamp_dsl.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[293]
+[315]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 476--476
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8474,7 +9446,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 475--489
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.19 on input line 489.
+(longtable)                in table 22.19 on input line 489.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/xoamp_fw.png' not found on input line 493.
@@ -8491,7 +9463,7 @@ l.493 ...neD_plots/SBO_Core_Products/xoamp_fw.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[294]
+[316]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 503--503
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8503,7 +9475,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 502--516
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.20 on input line 516.
+(longtable)                in table 22.20 on input line 516.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/ycom.png' not found on input line 520.
@@ -8520,7 +9492,7 @@ l.520 ...ts/oneD_plots/SBO_Core_Products/ycom.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[295]
+[317]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 530--530
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8532,7 +9504,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 529--543
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.21 on input line 543.
+(longtable)                in table 22.21 on input line 543.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/ycom_fw.png' not found on input line 547.
@@ -8549,7 +9521,7 @@ l.547 ...oneD_plots/SBO_Core_Products/ycom_fw.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[296]
+[318]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 557--557
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8566,7 +9538,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 556--570
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.22 on input line 570.
+(longtable)                in table 22.22 on input line 570.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/yoamc.png' not found on input line 574.
@@ -8583,7 +9555,7 @@ l.574 ...s/oneD_plots/SBO_Core_Products/yoamc.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[297]
+[319]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 584--584
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8600,7 +9572,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 583--597
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.23 on input line 597.
+(longtable)                in table 22.23 on input line 597.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/yoamc_si.png' not found on input line 601.
@@ -8617,7 +9589,7 @@ l.601 ...neD_plots/SBO_Core_Products/yoamc_si.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[298]
+[320]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 611--611
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8634,7 +9606,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 610--624
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.24 on input line 624.
+(longtable)                in table 22.24 on input line 624.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/yoamp.png' not found on input line 628.
@@ -8651,7 +9623,7 @@ l.628 ...s/oneD_plots/SBO_Core_Products/yoamp.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[299]
+[321]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 638--638
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8668,7 +9640,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 637--651
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.25 on input line 651.
+(longtable)                in table 22.25 on input line 651.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/yoamp_dsl.png' not found on input line 655.
@@ -8685,7 +9657,7 @@ l.655 ...eD_plots/SBO_Core_Products/yoamp_dsl.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[300]
+[322]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 665--665
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8702,7 +9674,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 664--678
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.26 on input line 678.
+(longtable)                in table 22.26 on input line 678.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/yoamp_fw.png' not found on input line 682.
@@ -8719,7 +9691,7 @@ l.682 ...neD_plots/SBO_Core_Products/yoamp_fw.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[301]
+[323]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 692--692
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8731,7 +9703,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 691--705
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.27 on input line 705.
+(longtable)                in table 22.27 on input line 705.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/zcom.png' not found on input line 709.
@@ -8748,7 +9720,7 @@ l.709 ...ts/oneD_plots/SBO_Core_Products/zcom.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[302]
+[324]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 719--719
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8760,7 +9732,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 718--732
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.28 on input line 732.
+(longtable)                in table 22.28 on input line 732.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/zcom_fw.png' not found on input line 736.
@@ -8777,7 +9749,7 @@ l.736 ...oneD_plots/SBO_Core_Products/zcom_fw.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[303]
+[325]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 746--746
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8794,7 +9766,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 745--759
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.29 on input line 759.
+(longtable)                in table 22.29 on input line 759.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/zoamc.png' not found on input line 763.
@@ -8811,7 +9783,7 @@ l.763 ...s/oneD_plots/SBO_Core_Products/zoamc.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[304]
+[326]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 773--773
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8828,7 +9800,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 772--786
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.30 on input line 786.
+(longtable)                in table 22.30 on input line 786.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/zoamc_si.png' not found on input line 790.
@@ -8845,7 +9817,7 @@ l.790 ...neD_plots/SBO_Core_Products/zoamc_si.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[305]
+[327]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 800--800
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8862,7 +9834,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 799--813
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.31 on input line 813.
+(longtable)                in table 22.31 on input line 813.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/zoamp.png' not found on input line 817.
@@ -8879,7 +9851,7 @@ l.817 ...s/oneD_plots/SBO_Core_Products/zoamp.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[306]
+[328]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 827--827
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8896,7 +9868,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 826--840
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.32 on input line 840.
+(longtable)                in table 22.32 on input line 840.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/zoamp_dsl.png' not found on input line 844.
@@ -8913,7 +9885,7 @@ l.844 ...eD_plots/SBO_Core_Products/zoamp_dsl.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[307]
+[329]
 Overfull \hbox (1.65979pt too wide) in paragraph at lines 854--854
 []|\T1/Cabin-TLF/bold/n/9 Storage
  []
@@ -8930,7 +9902,7 @@ Overfull \hbox (12.79999pt too wide) in alignment at lines 853--867
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 20.33 on input line 867.
+(longtable)                in table 22.33 on input line 867.
 
 
 LaTeX Warning: File `../images/plots/oneD_plots/SBO_Core_Products/zoamp_fw.png' not found on input line 871.
@@ -8947,12 +9919,12 @@ l.871 ...neD_plots/SBO_Core_Products/zoamp_fw.png}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-)) (./latex/metadata_specification.tex [308]
+)) (./latex/metadata_specification.tex [330]
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/m/n' aliased to
 (Font)              `T1/Cabin-TLF/regular/n' on input line 41.
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/regular/n' will be
 (Font)              scaled to size 8.0pt on input line 41.
-<../images/iso_metadata_obj.png, id=997, 645.41125pt x 405.01312pt>
+<../images/iso_metadata_obj.png, id=1066, 645.41125pt x 405.01312pt>
 File: ../images/iso_metadata_obj.png Graphic file (type png)
 <use ../images/iso_metadata_obj.png>
 Package pdftex.def Info: ../images/iso_metadata_obj.png  used on input line 45.
@@ -8967,26 +9939,26 @@ Overfull \hbox (25.19997pt too wide) in alignment at lines 54--74
  [] [] 
  []
 
-[309 <../images/iso_metadata_obj.png>]
+[331 <../images/iso_metadata_obj.png>]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 21.1 on input line 74.
+(longtable)                in table 23.1 on input line 74.
 
-<../images/ghrsst_metadata_translation.png, id=1002, 633.36626pt x 215.80624pt>
+<../images/ghrsst_metadata_translation.png, id=1072, 633.36626pt x 215.80624pt>
 File: ../images/ghrsst_metadata_translation.png Graphic file (type png)
 <use ../images/ghrsst_metadata_translation.png>
 Package pdftex.def Info: ../images/ghrsst_metadata_translation.png  used on input line 119.
 (pdftex.def)             Requested size: 422.77664pt x 144.05597pt.
-[310]) (./latex/doc_management_policies.tex [311 <../images/ghrsst_metadata_translation.png>]
+[332]) (./latex/doc_management_policies.tex [333 <../images/ghrsst_metadata_translation.png>]
 Underfull \hbox (badness 2150) in paragraph at lines 28--29
 \T1/Cabin-TLF/regular/n/9 for-mat and on any medium and man-aged as
  []
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 22.1 on input line 34.
+(longtable)                in table 24.1 on input line 34.
 
-[312] [313]) (./latex/closing_statement.tex [314]
+[334] [335]) (./latex/closing_statement.tex [336]
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/m/it' aliased to
 (Font)              `T1/Cabin-TLF/regular/it' on input line 3.
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/regular/it' will be
@@ -8996,7 +9968,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 16--17
 []|[]$\T1/cmtt/m/n/9 http : / / ghrsst-[]pp . metoffice . com / pages / latest \
  []
 
-<../images/globe_1000px.jpeg, id=1020, 1003.75pt x 627.34375pt>
+<../images/globe_1000px.jpeg, id=1089, 1003.75pt x 627.34375pt>
 File: ../images/globe_1000px.jpeg Graphic file (type jpg)
 <use ../images/globe_1000px.jpeg>
 Package pdftex.def Info: ../images/globe_1000px.jpeg  used on input line 22.
@@ -9009,7 +9981,7 @@ LaTeX Font Info:    Font shape `T1/Cabin-TLF/regular/it' will be
 
 Package longtable Warning: Table widths have changed. Rerun LaTeX.
 
-[315 <../images/globe_1000px.jpeg>] [316] [317] [318] (./final_doc.aux)
+[337 <../images/globe_1000px.jpeg>] [338] [339] [340] [341] [342] (./final_doc.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -9018,18 +9990,18 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 15042 strings out of 478268
- 737112 string characters out of 5846347
- 591882 words of memory out of 5000000
- 32604 multiletter control sequences out of 15000+600000
+ 15062 strings out of 478268
+ 737751 string characters out of 5846347
+ 616578 words of memory out of 5000000
+ 32610 multiletter control sequences out of 15000+600000
  664927 words of font info for 79 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,15n,120p,1881b,468s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cabin/cbn_i3ioen.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cabin/cbn_taosrr.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/impallari/cabin/Cabin-Bold.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/impallari/cabin/Cabin-Italic.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/impallari/cabin/Cabin-Regular.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sftt0900.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on final_doc.pdf (318 pages, 1658324 bytes).
+Output written on final_doc.pdf (342 pages, 1738835 bytes).
 PDF statistics:
- 1073 PDF objects out of 1200 (max. 8388607)
- 723 compressed objects within 8 object streams
+ 1150 PDF objects out of 1200 (max. 8388607)
+ 776 compressed objects within 8 object streams
  0 named destinations out of 1000 (max. 500000)
  31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
