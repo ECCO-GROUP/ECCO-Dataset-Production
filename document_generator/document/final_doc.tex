@@ -1,18 +1,19 @@
 \documentclass[letterpaper]{article}
-\input{latex/preamble.tex}
+\input{latex/preamble.tex} % OK: this input provides all information on the globale set up of the "PDF" file.
 \begin{document}
-\input{latex/front_pages.tex}
-\input{latex/doc_records.tex}
-\input{latex/ECCO_team.tex}
-\input{latex/executive_summary.tex}\input{latex/TOC.tex}
-\input{latex/LOF.tex}
-\input{latex/app_ref_docs.tex}
-\input{latex/acry_abbrev_list.tex}
-\input{latex/document_conventions.tex}
-\input{latex/scope_content_doc.tex}
-\input{latex/ECCO_overview.tex}
-\input{latex/filenames_conventions}
-\input{latex/data_product/data_product_file_struct.tex}
+\input{latex/front_pages.tex} % OK: here, we have info for the main front page of the document.
+\input{latex/doc_records.tex} % OK: here, the history changes and doc version evolution is managed.
+\input{latex/ECCO_team.tex} % OK: here, the list of the team members is managed
+\input{latex/executive_summary.tex}% OK: here, the summary of the document is provided.
+\input{latex/TOC.tex} % OK: => table of the content
+\input{latex/LOF.tex} % OK: => list of Figures and Tables of the document 
+\input{latex/app_ref_docs.tex} % OK: => additional documents and references
+\input{latex/acry_abbrev_list.tex} % OK: => for acronyms in the cocuments
+\input{latex/document_conventions.tex} %OK: => convention for document reading
+\input{latex/scope_content_doc.tex} % OK: => for the scope of the document
+\input{latex/ECCO_overview.tex} % OK: => provides overview on the ECCO product
+\input{latex/filenames_conventions} % OK: => provides info on ECCO data files nomencalature and variable' conventions
+\input{latex/data_product/data_product_file_struct.tex} % OK: => provides info on the ECCO data file structure: global attributes, netcdf variables' attributes, variables' attributes and example of native dataset variables attributes
 
 \input{latex/dataset/native_coords_dataset.tex}
 \input{latex/dataset/native_dataset.tex}
