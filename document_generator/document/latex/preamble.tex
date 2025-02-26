@@ -32,10 +32,13 @@
 % Define a new page style called "myfancy"
 \fancypagestyle{myfancy}{
 \fancyhf{}
+%% OK: the line below specify the note on top-right corner of each page of the document
 \fancyhead[R]{\small The ECCO Data Specification (ECCO)\\
 version 4 release 4}
+%% OK: the line below specify the note on bottom-center of each page of the document
 \fancyfoot[C]{\small ECCO\_v4r4\_user\_guide.pdf \\
-\thepage{} Last saved: \today{} \currenttime}
+Last saved: \today{} \currenttime \\ \large{-- \thepage{} --}}
+%\thepage{} -- Last saved: \today{} \currenttime \\ -- \thepage{} --}
 }
 
 % Use the default page style for the rest of the document
