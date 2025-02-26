@@ -1,339 +1,339 @@
 \contentsline {section}{\numberline {1}The GHRSST Science Team 2010/11}{6}{}%
 \contentsline {section}{\numberline {2}Executive Summary}{7}{}%
 \contentsline {section}{\numberline {3}Table of Contents}{8}{}%
-\contentsline {section}{\numberline {4}Figures in this document}{9}{}%
-\contentsline {section}{\numberline {5}Tables in this document}{9}{}%
-\contentsline {section}{\numberline {6}Applicable Documents}{10}{}%
-\contentsline {section}{\numberline {7}Reference Documents}{10}{}%
-\contentsline {section}{\numberline {8}Acryonyms and abbreviation list}{11}{}%
-\contentsline {section}{\numberline {9}Document Conventions}{13}{}%
-\contentsline {subsection}{\numberline {9.1}Use of text types}{13}{}%
-\contentsline {subsection}{\numberline {9.2}Use of colour in tables}{13}{}%
-\contentsline {subsection}{\numberline {9.3}Definitions of storage types within the GDS 2.0}{13}{}%
-\contentsline {section}{\numberline {10}Scope and Content of this Document}{14}{}%
-\contentsline {section}{\numberline {11}Overview of GHRSST and the GDS 2.0}{15}{}%
-\contentsline {subsection}{\numberline {11.1}The Importance of SST}{15}{}%
-\contentsline {subsection}{\numberline {11.2}GHRSST History}{15}{}%
-\contentsline {subsection}{\numberline {11.3}GHRSST Organization}{16}{}%
-\contentsline {subsection}{\numberline {11.4}Overview of the GDS 2.0}{17}{}%
-\contentsline {section}{\numberline {12}GDS 2.0 Filenames and Supporting Conventions}{18}{}%
-\contentsline {subsection}{\numberline {12.1}1 Overview of Filename Convention and Example Filenames}{18}{}%
-\contentsline {subsubsection}{\numberline {12.1.1}L2\_GHRSST Filename Example}{19}{}%
-\contentsline {subsubsection}{\numberline {12.1.2}L3\_GHRSST Filename Example}{19}{}%
-\contentsline {subsubsection}{\numberline {12.1.3}L4\_GHRSST Filename Example}{19}{}%
-\contentsline {subsection}{\numberline {12.2}<Indicative Date>}{19}{}%
-\contentsline {subsection}{\numberline {12.3}<Indicative Time>}{19}{}%
-\contentsline {subsection}{\numberline {12.4}<RDAC>}{19}{}%
-\contentsline {subsection}{\numberline {12.5}<Processing Level>}{20}{}%
-\contentsline {section}{\numberline {13}GDS 2.0 Data Product File Structure}{21}{}%
-\contentsline {subsection}{\numberline {13.1}Overview of the GDS 2.0 netCDF File Format}{21}{}%
-\contentsline {subsection}{\numberline {13.2}GDS 2.0 netCDF Global Attributes}{21}{}%
-\contentsline {subsection}{\numberline {13.3}GDS 2.0 netCDF Variable Attributes}{24}{}%
-\contentsline {subsection}{\numberline {13.4}GDS 2.0 coordinate variable definitions}{26}{}%
-\contentsline {subsubsection}{\numberline {13.4.1}Native datasets}{28}{}%
-\contentsline {subsubsection}{\numberline {13.4.2}Latlon datasets}{34}{}%
-\contentsline {subsubsection}{\numberline {13.4.3}1D datasets}{38}{}%
-\contentsline {section}{\numberline {14}GDS 2.0 Filenames and Supporting Conventions}{40}{}%
-\contentsline {subsection}{\numberline {14.1}1 Overview of Filename Convention and Example Filenames}{40}{}%
-\contentsline {subsubsection}{\numberline {14.1.1}L2\_GHRSST Filename Example}{41}{}%
-\contentsline {subsubsection}{\numberline {14.1.2}L3\_GHRSST Filename Example}{41}{}%
-\contentsline {subsubsection}{\numberline {14.1.3}L4\_GHRSST Filename Example}{41}{}%
-\contentsline {subsection}{\numberline {14.2}<Indicative Date>}{41}{}%
-\contentsline {subsection}{\numberline {14.3}<Indicative Time>}{41}{}%
-\contentsline {subsection}{\numberline {14.4}<RDAC>}{41}{}%
-\contentsline {subsection}{\numberline {14.5}<Processing Level>}{41}{}%
-\contentsline {section}{\numberline {15}GDS 2.0 Data Product File Structure}{43}{}%
-\contentsline {subsection}{\numberline {15.1}Overview of the GDS 2.0 netCDF File Format}{43}{}%
-\contentsline {subsection}{\numberline {15.2}GDS 2.0 netCDF Global Attributes}{43}{}%
-\contentsline {subsection}{\numberline {15.3}GDS 2.0 netCDF Variable Attributes}{46}{}%
-\contentsline {subsection}{\numberline {15.4}GDS 2.0 coordinate variable definitions}{48}{}%
-\contentsline {subsubsection}{\numberline {15.4.1}Native datasets}{50}{}%
-\contentsline {subsubsection}{\numberline {15.4.2}Latlon datasets}{56}{}%
-\contentsline {subsubsection}{\numberline {15.4.3}1D datasets}{60}{}%
-\contentsline {section}{\numberline {16}GDS 2.0 Filenames and Supporting Conventions}{62}{}%
-\contentsline {subsection}{\numberline {16.1}1 Overview of Filename Convention and Example Filenames}{62}{}%
-\contentsline {subsubsection}{\numberline {16.1.1}L2\_GHRSST Filename Example}{63}{}%
-\contentsline {subsubsection}{\numberline {16.1.2}L3\_GHRSST Filename Example}{63}{}%
-\contentsline {subsubsection}{\numberline {16.1.3}L4\_GHRSST Filename Example}{63}{}%
-\contentsline {subsection}{\numberline {16.2}<Indicative Date>}{63}{}%
-\contentsline {subsection}{\numberline {16.3}<Indicative Time>}{63}{}%
-\contentsline {subsection}{\numberline {16.4}<RDAC>}{63}{}%
-\contentsline {subsection}{\numberline {16.5}<Processing Level>}{63}{}%
-\contentsline {section}{\numberline {17}GDS 2.0 Data Product File Structure}{65}{}%
-\contentsline {subsection}{\numberline {17.1}Overview of the GDS 2.0 netCDF File Format}{65}{}%
-\contentsline {subsection}{\numberline {17.2}GDS 2.0 netCDF Global Attributes}{65}{}%
-\contentsline {subsection}{\numberline {17.3}GDS 2.0 netCDF Variable Attributes}{68}{}%
-\contentsline {subsection}{\numberline {17.4}GDS 2.0 coordinate variable definitions}{70}{}%
-\contentsline {subsubsection}{\numberline {17.4.1}Native datasets}{72}{}%
-\contentsline {subsubsection}{\numberline {17.4.2}Latlon datasets}{78}{}%
-\contentsline {subsubsection}{\numberline {17.4.3}1D datasets}{82}{}%
-\contentsline {section}{\numberline {18}Native Dataset Coordinate Variables}{84}{}%
-\contentsline {subsection}{\numberline {18.1}Overview of the Native Dataset Coordinate Variables}{84}{}%
-\contentsline {subsection}{\numberline {18.2}Native coordinates NetCDF GRID\_GEOMETRY\_ECCO}{85}{}%
-\contentsline {subsubsection}{\numberline {18.2.1}Native coordinates Variable XC}{86}{}%
-\contentsline {subsubsection}{\numberline {18.2.2}Native coordinates Variable YC}{87}{}%
-\contentsline {subsubsection}{\numberline {18.2.3}Native coordinates Variable XG}{88}{}%
-\contentsline {subsubsection}{\numberline {18.2.4}Native coordinates Variable YG}{89}{}%
-\contentsline {subsubsection}{\numberline {18.2.5}Native coordinates Variable CS}{90}{}%
-\contentsline {subsubsection}{\numberline {18.2.6}Native coordinates Variable SN}{91}{}%
-\contentsline {subsubsection}{\numberline {18.2.7}Native coordinates Variable rA}{92}{}%
-\contentsline {subsubsection}{\numberline {18.2.8}Native coordinates Variable dxG}{93}{}%
-\contentsline {subsubsection}{\numberline {18.2.9}Native coordinates Variable dyG}{94}{}%
-\contentsline {subsubsection}{\numberline {18.2.10}Native coordinates Variable Depth}{95}{}%
-\contentsline {subsubsection}{\numberline {18.2.11}Native coordinates Variable rAz}{96}{}%
-\contentsline {subsubsection}{\numberline {18.2.12}Native coordinates Variable dxC}{97}{}%
-\contentsline {subsubsection}{\numberline {18.2.13}Native coordinates Variable dyC}{98}{}%
-\contentsline {subsubsection}{\numberline {18.2.14}Native coordinates Variable rAw}{99}{}%
-\contentsline {subsubsection}{\numberline {18.2.15}Native coordinates Variable rAs}{100}{}%
-\contentsline {subsubsection}{\numberline {18.2.16}Native coordinates Variable hFacC}{101}{}%
-\contentsline {subsubsection}{\numberline {18.2.17}Native coordinates Variable hFacW}{102}{}%
-\contentsline {subsubsection}{\numberline {18.2.18}Native coordinates Variable hFacS}{103}{}%
-\contentsline {subsubsection}{\numberline {18.2.19}Native coordinates Variable maskC}{104}{}%
-\contentsline {subsubsection}{\numberline {18.2.20}Native coordinates Variable maskW}{105}{}%
-\contentsline {subsubsection}{\numberline {18.2.21}Native coordinates Variable maskS}{106}{}%
-\contentsline {section}{\numberline {19}Native Dataset Groupings}{107}{}%
-\contentsline {subsection}{\numberline {19.1}Overview of the Native Dataset Groupings}{107}{}%
-\contentsline {subsection}{\numberline {19.2}Native NetCDF ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES}{108}{}%
-\contentsline {subsubsection}{\numberline {19.2.1}Native Variable EXFaqh}{109}{}%
-\contentsline {subsubsection}{\numberline {19.2.2}Native Variable EXFatemp}{110}{}%
-\contentsline {subsubsection}{\numberline {19.2.3}Native Variable EXFpress}{111}{}%
-\contentsline {subsubsection}{\numberline {19.2.4}Native Variable EXFuwind}{112}{}%
-\contentsline {subsubsection}{\numberline {19.2.5}Native Variable EXFvwind}{113}{}%
-\contentsline {subsubsection}{\numberline {19.2.6}Native Variable EXFwspee}{114}{}%
-\contentsline {subsection}{\numberline {19.3}Native NetCDF OCEAN\_3D\_MIXING\_COEFFS}{115}{}%
-\contentsline {subsubsection}{\numberline {19.3.1}Native Variable DIFFKR}{116}{}%
-\contentsline {subsubsection}{\numberline {19.3.2}Native Variable KAPGM}{117}{}%
-\contentsline {subsubsection}{\numberline {19.3.3}Native Variable KAPREDI}{118}{}%
-\contentsline {subsection}{\numberline {19.4}Native NetCDF OCEAN\_3D\_MOMENTUM\_TEND}{119}{}%
-\contentsline {subsubsection}{\numberline {19.4.1}Native Variable Um\_dPHdx}{120}{}%
-\contentsline {subsubsection}{\numberline {19.4.2}Native Variable Vm\_dPHdy}{121}{}%
-\contentsline {subsection}{\numberline {19.5}Native NetCDF OCEAN\_3D\_SALINITY\_FLUX}{122}{}%
-\contentsline {subsubsection}{\numberline {19.5.1}Native Variable ADVr\_SLT}{123}{}%
-\contentsline {subsubsection}{\numberline {19.5.2}Native Variable ADVx\_SLT}{124}{}%
-\contentsline {subsubsection}{\numberline {19.5.3}Native Variable ADVy\_SLT}{125}{}%
-\contentsline {subsubsection}{\numberline {19.5.4}Native Variable DFrE\_SLT}{126}{}%
-\contentsline {subsubsection}{\numberline {19.5.5}Native Variable DFrI\_SLT}{127}{}%
-\contentsline {subsubsection}{\numberline {19.5.6}Native Variable DFxE\_SLT}{128}{}%
-\contentsline {subsubsection}{\numberline {19.5.7}Native Variable DFyE\_SLT}{129}{}%
-\contentsline {subsubsection}{\numberline {19.5.8}Native Variable oceSPtnd}{130}{}%
-\contentsline {subsection}{\numberline {19.6}Native NetCDF OCEAN\_3D\_TEMPERATURE\_FLUX}{131}{}%
-\contentsline {subsubsection}{\numberline {19.6.1}Native Variable ADVr\_TH}{132}{}%
-\contentsline {subsubsection}{\numberline {19.6.2}Native Variable ADVx\_TH}{133}{}%
-\contentsline {subsubsection}{\numberline {19.6.3}Native Variable ADVy\_TH}{134}{}%
-\contentsline {subsubsection}{\numberline {19.6.4}Native Variable DFrE\_TH}{135}{}%
-\contentsline {subsubsection}{\numberline {19.6.5}Native Variable DFrI\_TH}{136}{}%
-\contentsline {subsubsection}{\numberline {19.6.6}Native Variable DFxE\_TH}{137}{}%
-\contentsline {subsubsection}{\numberline {19.6.7}Native Variable DFyE\_TH}{138}{}%
-\contentsline {subsection}{\numberline {19.7}Native NetCDF OCEAN\_3D\_VOLUME\_FLUX}{139}{}%
-\contentsline {subsubsection}{\numberline {19.7.1}Native Variable UVELMASS}{140}{}%
-\contentsline {subsubsection}{\numberline {19.7.2}Native Variable VVELMASS}{141}{}%
-\contentsline {subsubsection}{\numberline {19.7.3}Native Variable WVELMASS}{142}{}%
-\contentsline {subsection}{\numberline {19.8}Native NetCDF OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX}{143}{}%
-\contentsline {subsubsection}{\numberline {19.8.1}Native Variable EXFempmr}{144}{}%
-\contentsline {subsubsection}{\numberline {19.8.2}Native Variable EXFevap}{145}{}%
-\contentsline {subsubsection}{\numberline {19.8.3}Native Variable EXFpreci}{146}{}%
-\contentsline {subsubsection}{\numberline {19.8.4}Native Variable EXFroff}{147}{}%
-\contentsline {subsubsection}{\numberline {19.8.5}Native Variable SFLUX}{148}{}%
-\contentsline {subsubsection}{\numberline {19.8.6}Native Variable SIacSubl}{149}{}%
-\contentsline {subsubsection}{\numberline {19.8.7}Native Variable SIatmFW}{150}{}%
-\contentsline {subsubsection}{\numberline {19.8.8}Native Variable SIfwThru}{151}{}%
-\contentsline {subsubsection}{\numberline {19.8.9}Native Variable SIrsSubl}{152}{}%
-\contentsline {subsubsection}{\numberline {19.8.10}Native Variable SIsnPrcp}{153}{}%
-\contentsline {subsubsection}{\numberline {19.8.11}Native Variable oceFWflx}{154}{}%
-\contentsline {subsection}{\numberline {19.9}Native NetCDF OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX}{155}{}%
-\contentsline {subsubsection}{\numberline {19.9.1}Native Variable EXFhl}{156}{}%
-\contentsline {subsubsection}{\numberline {19.9.2}Native Variable EXFhs}{157}{}%
-\contentsline {subsubsection}{\numberline {19.9.3}Native Variable EXFlwdn}{158}{}%
-\contentsline {subsubsection}{\numberline {19.9.4}Native Variable EXFlwnet}{159}{}%
-\contentsline {subsubsection}{\numberline {19.9.5}Native Variable EXFqnet}{160}{}%
-\contentsline {subsubsection}{\numberline {19.9.6}Native Variable EXFswdn}{161}{}%
-\contentsline {subsubsection}{\numberline {19.9.7}Native Variable EXFswnet}{162}{}%
-\contentsline {subsubsection}{\numberline {19.9.8}Native Variable SIaaflux}{163}{}%
-\contentsline {subsubsection}{\numberline {19.9.9}Native Variable SIatmQnt}{164}{}%
-\contentsline {subsubsection}{\numberline {19.9.10}Native Variable TFLUX}{165}{}%
-\contentsline {subsubsection}{\numberline {19.9.11}Native Variable oceQnet}{166}{}%
-\contentsline {subsubsection}{\numberline {19.9.12}Native Variable oceQsw}{167}{}%
-\contentsline {subsection}{\numberline {19.10}Native NetCDF OCEAN\_AND\_ICE\_SURFACE\_STRESS}{168}{}%
-\contentsline {subsubsection}{\numberline {19.10.1}Native Variable EXFtaux}{169}{}%
-\contentsline {subsubsection}{\numberline {19.10.2}Native Variable EXFtauy}{170}{}%
-\contentsline {subsubsection}{\numberline {19.10.3}Native Variable oceTAUX}{171}{}%
-\contentsline {subsubsection}{\numberline {19.10.4}Native Variable oceTAUY}{172}{}%
-\contentsline {subsection}{\numberline {19.11}Native NetCDF OCEAN\_BOLUS\_STREAMFUNCTION}{173}{}%
-\contentsline {subsubsection}{\numberline {19.11.1}Native Variable GM\_PsiX}{174}{}%
-\contentsline {subsubsection}{\numberline {19.11.2}Native Variable GM\_PsiY}{175}{}%
-\contentsline {subsection}{\numberline {19.12}Native NetCDF OCEAN\_BOLUS\_VELOCITY}{176}{}%
-\contentsline {subsubsection}{\numberline {19.12.1}Native Variable UVELSTAR}{177}{}%
-\contentsline {subsubsection}{\numberline {19.12.2}Native Variable VVELSTAR}{178}{}%
-\contentsline {subsubsection}{\numberline {19.12.3}Native Variable WVELSTAR}{179}{}%
-\contentsline {subsection}{\numberline {19.13}Native NetCDF OCEAN\_BOTTOM\_PRESSURE}{180}{}%
-\contentsline {subsubsection}{\numberline {19.13.1}Native Variable OBP}{181}{}%
-\contentsline {subsubsection}{\numberline {19.13.2}Native Variable OBPGMAP}{182}{}%
-\contentsline {subsubsection}{\numberline {19.13.3}Native Variable PHIBOT}{183}{}%
-\contentsline {subsection}{\numberline {19.14}Native NetCDF OCEAN\_DENS\_STRAT\_PRESS}{184}{}%
-\contentsline {subsubsection}{\numberline {19.14.1}Native Variable DRHODR}{185}{}%
-\contentsline {subsubsection}{\numberline {19.14.2}Native Variable PHIHYD}{186}{}%
-\contentsline {subsubsection}{\numberline {19.14.3}Native Variable PHIHYDcR}{187}{}%
-\contentsline {subsubsection}{\numberline {19.14.4}Native Variable RHOAnoma}{188}{}%
-\contentsline {subsection}{\numberline {19.15}Native NetCDF OCEAN\_MIXED\_LAYER\_DEPTH}{189}{}%
-\contentsline {subsubsection}{\numberline {19.15.1}Native Variable MXLDEPTH}{190}{}%
-\contentsline {subsection}{\numberline {19.16}Native NetCDF OCEAN\_TEMPERATURE\_SALINITY}{191}{}%
-\contentsline {subsubsection}{\numberline {19.16.1}Native Variable SALT}{192}{}%
-\contentsline {subsubsection}{\numberline {19.16.2}Native Variable THETA}{193}{}%
-\contentsline {subsection}{\numberline {19.17}Native NetCDF OCEAN\_VELOCITY}{194}{}%
-\contentsline {subsubsection}{\numberline {19.17.1}Native Variable UVEL}{195}{}%
-\contentsline {subsubsection}{\numberline {19.17.2}Native Variable VVEL}{196}{}%
-\contentsline {subsubsection}{\numberline {19.17.3}Native Variable WVEL}{197}{}%
-\contentsline {subsection}{\numberline {19.18}Native NetCDF SEA\_ICE\_CONC\_THICKNESS}{198}{}%
-\contentsline {subsubsection}{\numberline {19.18.1}Native Variable SIarea}{199}{}%
-\contentsline {subsubsection}{\numberline {19.18.2}Native Variable SIheff}{200}{}%
-\contentsline {subsubsection}{\numberline {19.18.3}Native Variable SIhsnow}{201}{}%
-\contentsline {subsubsection}{\numberline {19.18.4}Native Variable sIceLoad}{202}{}%
-\contentsline {subsection}{\numberline {19.19}Native NetCDF SEA\_ICE\_HORIZ\_VOLUME\_FLUX}{203}{}%
-\contentsline {subsubsection}{\numberline {19.19.1}Native Variable ADVxHEFF}{204}{}%
-\contentsline {subsubsection}{\numberline {19.19.2}Native Variable ADVxSNOW}{205}{}%
-\contentsline {subsubsection}{\numberline {19.19.3}Native Variable ADVyHEFF}{206}{}%
-\contentsline {subsubsection}{\numberline {19.19.4}Native Variable ADVySNOW}{207}{}%
-\contentsline {subsubsection}{\numberline {19.19.5}Native Variable DFxEHEFF}{208}{}%
-\contentsline {subsubsection}{\numberline {19.19.6}Native Variable DFxESNOW}{209}{}%
-\contentsline {subsubsection}{\numberline {19.19.7}Native Variable DFyEHEFF}{210}{}%
-\contentsline {subsubsection}{\numberline {19.19.8}Native Variable DFyESNOW}{211}{}%
-\contentsline {subsection}{\numberline {19.20}Native NetCDF SEA\_ICE\_SALT\_PLUME\_FLUX}{212}{}%
-\contentsline {subsubsection}{\numberline {19.20.1}Native Variable oceSPDep}{213}{}%
-\contentsline {subsubsection}{\numberline {19.20.2}Native Variable oceSPflx}{214}{}%
-\contentsline {subsection}{\numberline {19.21}Native NetCDF SEA\_ICE\_VELOCITY}{215}{}%
-\contentsline {subsubsection}{\numberline {19.21.1}Native Variable SIuice}{216}{}%
-\contentsline {subsubsection}{\numberline {19.21.2}Native Variable SIvice}{217}{}%
-\contentsline {subsection}{\numberline {19.22}Native NetCDF SEA\_SURFACE\_HEIGHT}{218}{}%
-\contentsline {subsubsection}{\numberline {19.22.1}Native Variable ETAN}{219}{}%
-\contentsline {subsubsection}{\numberline {19.22.2}Native Variable SSH}{220}{}%
-\contentsline {subsubsection}{\numberline {19.22.3}Native Variable SSHIBC}{221}{}%
-\contentsline {subsubsection}{\numberline {19.22.4}Native Variable SSHNOIBC}{222}{}%
-\contentsline {section}{\numberline {20}Latlon Dataset Coordinate Variables}{223}{}%
-\contentsline {subsection}{\numberline {20.1}Overview of the Latlon Dataset Coordinate Variables}{223}{}%
-\contentsline {subsection}{\numberline {20.2}Latlon coordinates NetCDF GRID\_GEOMETRY\_ECCO}{224}{}%
-\contentsline {subsubsection}{\numberline {20.2.1}Latlon coordinates Variable hFacC}{225}{}%
-\contentsline {subsubsection}{\numberline {20.2.2}Latlon coordinates Variable maskC}{226}{}%
-\contentsline {section}{\numberline {21}Latlon Dataset Groupings}{227}{}%
-\contentsline {subsection}{\numberline {21.1}Overview of the latlon Dataset Groupings}{227}{}%
-\contentsline {subsection}{\numberline {21.2}Latlon NetCDF ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES}{228}{}%
-\contentsline {subsubsection}{\numberline {21.2.1}Latlon Variable EXFaqh}{229}{}%
-\contentsline {subsubsection}{\numberline {21.2.2}Latlon Variable EXFatemp}{230}{}%
-\contentsline {subsubsection}{\numberline {21.2.3}Latlon Variable EXFewind}{231}{}%
-\contentsline {subsubsection}{\numberline {21.2.4}Latlon Variable EXFnwind}{232}{}%
-\contentsline {subsubsection}{\numberline {21.2.5}Latlon Variable EXFpress}{233}{}%
-\contentsline {subsubsection}{\numberline {21.2.6}Latlon Variable EXFwspee}{234}{}%
-\contentsline {subsection}{\numberline {21.3}Latlon NetCDF OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX}{235}{}%
-\contentsline {subsubsection}{\numberline {21.3.1}Latlon Variable EXFempmr}{236}{}%
-\contentsline {subsubsection}{\numberline {21.3.2}Latlon Variable EXFevap}{237}{}%
-\contentsline {subsubsection}{\numberline {21.3.3}Latlon Variable EXFpreci}{238}{}%
-\contentsline {subsubsection}{\numberline {21.3.4}Latlon Variable EXFroff}{239}{}%
-\contentsline {subsubsection}{\numberline {21.3.5}Latlon Variable SFLUX}{240}{}%
-\contentsline {subsubsection}{\numberline {21.3.6}Latlon Variable SIacSubl}{241}{}%
-\contentsline {subsubsection}{\numberline {21.3.7}Latlon Variable SIatmFW}{242}{}%
-\contentsline {subsubsection}{\numberline {21.3.8}Latlon Variable SIfwThru}{243}{}%
-\contentsline {subsubsection}{\numberline {21.3.9}Latlon Variable SIrsSubl}{244}{}%
-\contentsline {subsubsection}{\numberline {21.3.10}Latlon Variable SIsnPrcp}{245}{}%
-\contentsline {subsubsection}{\numberline {21.3.11}Latlon Variable oceFWflx}{246}{}%
-\contentsline {subsection}{\numberline {21.4}Latlon NetCDF OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX}{247}{}%
-\contentsline {subsubsection}{\numberline {21.4.1}Latlon Variable EXFhl}{248}{}%
-\contentsline {subsubsection}{\numberline {21.4.2}Latlon Variable EXFhs}{249}{}%
-\contentsline {subsubsection}{\numberline {21.4.3}Latlon Variable EXFlwdn}{250}{}%
-\contentsline {subsubsection}{\numberline {21.4.4}Latlon Variable EXFlwnet}{251}{}%
-\contentsline {subsubsection}{\numberline {21.4.5}Latlon Variable EXFqnet}{252}{}%
-\contentsline {subsubsection}{\numberline {21.4.6}Latlon Variable EXFswdn}{253}{}%
-\contentsline {subsubsection}{\numberline {21.4.7}Latlon Variable EXFswnet}{254}{}%
-\contentsline {subsubsection}{\numberline {21.4.8}Latlon Variable SIaaflux}{255}{}%
-\contentsline {subsubsection}{\numberline {21.4.9}Latlon Variable SIatmQnt}{256}{}%
-\contentsline {subsubsection}{\numberline {21.4.10}Latlon Variable TFLUX}{257}{}%
-\contentsline {subsubsection}{\numberline {21.4.11}Latlon Variable oceQnet}{258}{}%
-\contentsline {subsubsection}{\numberline {21.4.12}Latlon Variable oceQsw}{259}{}%
-\contentsline {subsection}{\numberline {21.5}Latlon NetCDF OCEAN\_AND\_ICE\_SURFACE\_STRESS}{260}{}%
-\contentsline {subsubsection}{\numberline {21.5.1}Latlon Variable EXFtaue}{261}{}%
-\contentsline {subsubsection}{\numberline {21.5.2}Latlon Variable EXFtaun}{262}{}%
-\contentsline {subsubsection}{\numberline {21.5.3}Latlon Variable oceTAUE}{263}{}%
-\contentsline {subsubsection}{\numberline {21.5.4}Latlon Variable oceTAUN}{264}{}%
-\contentsline {subsection}{\numberline {21.6}Latlon NetCDF OCEAN\_BOLUS\_VELOCITY}{265}{}%
-\contentsline {subsubsection}{\numberline {21.6.1}Latlon Variable EVELSTAR}{266}{}%
-\contentsline {subsubsection}{\numberline {21.6.2}Latlon Variable NVELSTAR}{267}{}%
-\contentsline {subsubsection}{\numberline {21.6.3}Latlon Variable WVELSTAR}{268}{}%
-\contentsline {subsection}{\numberline {21.7}Latlon NetCDF OCEAN\_BOTTOM\_PRESSURE}{269}{}%
-\contentsline {subsubsection}{\numberline {21.7.1}Latlon Variable OBP}{270}{}%
-\contentsline {subsubsection}{\numberline {21.7.2}Latlon Variable OBPGMAP}{271}{}%
-\contentsline {subsection}{\numberline {21.8}Latlon NetCDF OCEAN\_DENS\_STRAT\_PRESS}{272}{}%
-\contentsline {subsubsection}{\numberline {21.8.1}Latlon Variable DRHODR}{273}{}%
-\contentsline {subsubsection}{\numberline {21.8.2}Latlon Variable PHIHYD}{274}{}%
-\contentsline {subsubsection}{\numberline {21.8.3}Latlon Variable RHOAnoma}{275}{}%
-\contentsline {subsection}{\numberline {21.9}Latlon NetCDF OCEAN\_MIXED\_LAYER\_DEPTH}{276}{}%
-\contentsline {subsubsection}{\numberline {21.9.1}Latlon Variable MXLDEPTH}{277}{}%
-\contentsline {subsection}{\numberline {21.10}Latlon NetCDF OCEAN\_TEMPERATURE\_SALINITY}{278}{}%
-\contentsline {subsubsection}{\numberline {21.10.1}Latlon Variable SALT}{279}{}%
-\contentsline {subsubsection}{\numberline {21.10.2}Latlon Variable THETA}{280}{}%
-\contentsline {subsection}{\numberline {21.11}Latlon NetCDF OCEAN\_VELOCITY}{281}{}%
-\contentsline {subsubsection}{\numberline {21.11.1}Latlon Variable EVEL}{282}{}%
-\contentsline {subsubsection}{\numberline {21.11.2}Latlon Variable NVEL}{283}{}%
-\contentsline {subsubsection}{\numberline {21.11.3}Latlon Variable WVEL}{284}{}%
-\contentsline {subsection}{\numberline {21.12}Latlon NetCDF SEA\_ICE\_CONC\_THICKNESS}{285}{}%
-\contentsline {subsubsection}{\numberline {21.12.1}Latlon Variable SIarea}{286}{}%
-\contentsline {subsubsection}{\numberline {21.12.2}Latlon Variable SIheff}{287}{}%
-\contentsline {subsubsection}{\numberline {21.12.3}Latlon Variable SIhsnow}{288}{}%
-\contentsline {subsubsection}{\numberline {21.12.4}Latlon Variable sIceLoad}{289}{}%
-\contentsline {subsection}{\numberline {21.13}Latlon NetCDF SEA\_ICE\_VELOCITY}{290}{}%
-\contentsline {subsubsection}{\numberline {21.13.1}Latlon Variable SIeice}{291}{}%
-\contentsline {subsubsection}{\numberline {21.13.2}Latlon Variable SInice}{292}{}%
-\contentsline {subsection}{\numberline {21.14}Latlon NetCDF SEA\_SURFACE\_HEIGHT}{293}{}%
-\contentsline {subsubsection}{\numberline {21.14.1}Latlon Variable SSH}{294}{}%
-\contentsline {subsubsection}{\numberline {21.14.2}Latlon Variable SSHIBC}{295}{}%
-\contentsline {subsubsection}{\numberline {21.14.3}Latlon Variable SSHNOIBC}{296}{}%
-\contentsline {section}{\numberline {22}1-D Dataset Groupings}{297}{}%
-\contentsline {subsection}{\numberline {22.1}Overview of the 1-D Dataset Groupings}{297}{}%
-\contentsline {subsection}{\numberline {22.2}1D NetCDF GLOBAL\_MEAN\_ATM\_SURFACE\_PRES}{298}{}%
-\contentsline {subsubsection}{\numberline {22.2.1}1D Variable Pa\_global}{299}{}%
-\contentsline {subsection}{\numberline {22.3}1D NetCDF GLOBAL\_MEAN\_SEA\_LEVEL}{300}{}%
-\contentsline {subsubsection}{\numberline {22.3.1}1D Variable global\_mean\_barystatic\_sea\_level\_anomaly}{301}{}%
-\contentsline {subsubsection}{\numberline {22.3.2}1D Variable global\_mean\_sea\_level\_anomaly}{302}{}%
-\contentsline {subsubsection}{\numberline {22.3.3}1D Variable global\_mean\_sterodynamic\_sea\_level\_anomaly}{303}{}%
-\contentsline {subsection}{\numberline {22.4}1D NetCDF SBO\_CORE\_PRODUCTS}{304}{}%
-\contentsline {subsubsection}{\numberline {22.4.1}1D Variable mass}{305}{}%
-\contentsline {subsubsection}{\numberline {22.4.2}1D Variable mass\_fw}{306}{}%
-\contentsline {subsubsection}{\numberline {22.4.3}1D Variable mass\_gc}{307}{}%
-\contentsline {subsubsection}{\numberline {22.4.4}1D Variable mass\_si}{308}{}%
-\contentsline {subsubsection}{\numberline {22.4.5}1D Variable sboarea}{309}{}%
-\contentsline {subsubsection}{\numberline {22.4.6}1D Variable xcom}{310}{}%
-\contentsline {subsubsection}{\numberline {22.4.7}1D Variable xcom\_fw}{311}{}%
-\contentsline {subsubsection}{\numberline {22.4.8}1D Variable xoamc}{312}{}%
-\contentsline {subsubsection}{\numberline {22.4.9}1D Variable xoamc\_si}{313}{}%
-\contentsline {subsubsection}{\numberline {22.4.10}1D Variable xoamp}{314}{}%
-\contentsline {subsubsection}{\numberline {22.4.11}1D Variable xoamp\_dsl}{315}{}%
-\contentsline {subsubsection}{\numberline {22.4.12}1D Variable xoamp\_fw}{316}{}%
-\contentsline {subsubsection}{\numberline {22.4.13}1D Variable ycom}{317}{}%
-\contentsline {subsubsection}{\numberline {22.4.14}1D Variable ycom\_fw}{318}{}%
-\contentsline {subsubsection}{\numberline {22.4.15}1D Variable yoamc}{319}{}%
-\contentsline {subsubsection}{\numberline {22.4.16}1D Variable yoamc\_si}{320}{}%
-\contentsline {subsubsection}{\numberline {22.4.17}1D Variable yoamp}{321}{}%
-\contentsline {subsubsection}{\numberline {22.4.18}1D Variable yoamp\_dsl}{322}{}%
-\contentsline {subsubsection}{\numberline {22.4.19}1D Variable yoamp\_fw}{323}{}%
-\contentsline {subsubsection}{\numberline {22.4.20}1D Variable zcom}{324}{}%
-\contentsline {subsubsection}{\numberline {22.4.21}1D Variable zcom\_fw}{325}{}%
-\contentsline {subsubsection}{\numberline {22.4.22}1D Variable zoamc}{326}{}%
-\contentsline {subsubsection}{\numberline {22.4.23}1D Variable zoamc\_si}{327}{}%
-\contentsline {subsubsection}{\numberline {22.4.24}1D Variable zoamp}{328}{}%
-\contentsline {subsubsection}{\numberline {22.4.25}1D Variable zoamp\_dsl}{329}{}%
-\contentsline {subsubsection}{\numberline {22.4.26}1D Variable zoamp\_fw}{330}{}%
-\contentsline {section}{\numberline {23}ECCO Metadata Specification}{331}{}%
-\contentsline {subsection}{\numberline {23.1}Overview Description of the ECCO Metadata Model}{331}{}%
-\contentsline {subsection}{\numberline {23.2}Evolution from the GHRSST GDS 1.0 Metadata Model}{331}{}%
-\contentsline {subsection}{\numberline {23.3}The ISO 19115-2 Metadata Model}{331}{}%
-\contentsline {section}{\numberline {24}GDS 2.0 Document Management Policy}{334}{}%
-\contentsline {subsection}{\numberline {24.1}GDS Document Management Definitions}{334}{}%
-\contentsline {subsection}{\numberline {24.2}GDS Document Management Policy Statement}{334}{}%
-\contentsline {subsection}{\numberline {24.3}GDS Document Management Policy Responsibility}{335}{}%
-\contentsline {subsection}{\numberline {24.4}GHRSST GDS Recordkeeping and Document Management System}{335}{}%
-\contentsline {subsection}{\numberline {24.5}GDS Document location}{335}{}%
-\contentsline {subsection}{\numberline {24.6}GDS Document Publication}{335}{}%
-\contentsline {subsection}{\numberline {24.7}GDS Document formats}{336}{}%
-\contentsline {subsection}{\numberline {24.8}GDS Document filing}{336}{}%
-\contentsline {subsection}{\numberline {24.9}Document retrieval}{336}{}%
-\contentsline {subsection}{\numberline {24.10}Document security}{336}{}%
-\contentsline {subsection}{\numberline {24.11}Retention and long term archive}{336}{}%
-\contentsline {subsection}{\numberline {24.12}Document workflow}{336}{}%
-\contentsline {subsection}{\numberline {24.13}Document creation}{336}{}%
+\contentsline {section}{\numberline {4}Figures in this document}{15}{}%
+\contentsline {section}{\numberline {5}Tables in this document}{24}{}%
+\contentsline {section}{\numberline {6}Applicable Documents}{25}{}%
+\contentsline {section}{\numberline {7}Reference Documents}{25}{}%
+\contentsline {section}{\numberline {8}Acryonyms and abbreviation list}{26}{}%
+\contentsline {section}{\numberline {9}Document Conventions}{28}{}%
+\contentsline {subsection}{\numberline {9.1}Use of text types}{28}{}%
+\contentsline {subsection}{\numberline {9.2}Use of colour in tables}{28}{}%
+\contentsline {subsection}{\numberline {9.3}Definitions of storage types within the GDS 2.0}{28}{}%
+\contentsline {section}{\numberline {10}Scope and Content of this Document}{29}{}%
+\contentsline {section}{\numberline {11}Overview of GHRSST and the GDS 2.0}{30}{}%
+\contentsline {subsection}{\numberline {11.1}The Importance of SST}{30}{}%
+\contentsline {subsection}{\numberline {11.2}GHRSST History}{30}{}%
+\contentsline {subsection}{\numberline {11.3}GHRSST Organization}{31}{}%
+\contentsline {subsection}{\numberline {11.4}Overview of the GDS 2.0}{32}{}%
+\contentsline {section}{\numberline {12}GDS 2.0 Filenames and Supporting Conventions}{33}{}%
+\contentsline {subsection}{\numberline {12.1}1 Overview of Filename Convention and Example Filenames}{33}{}%
+\contentsline {subsubsection}{\numberline {12.1.1}L2\_GHRSST Filename Example}{34}{}%
+\contentsline {subsubsection}{\numberline {12.1.2}L3\_GHRSST Filename Example}{34}{}%
+\contentsline {subsubsection}{\numberline {12.1.3}L4\_GHRSST Filename Example}{34}{}%
+\contentsline {subsection}{\numberline {12.2}<Indicative Date>}{34}{}%
+\contentsline {subsection}{\numberline {12.3}<Indicative Time>}{34}{}%
+\contentsline {subsection}{\numberline {12.4}<RDAC>}{34}{}%
+\contentsline {subsection}{\numberline {12.5}<Processing Level>}{35}{}%
+\contentsline {section}{\numberline {13}GDS 2.0 Data Product File Structure}{36}{}%
+\contentsline {subsection}{\numberline {13.1}Overview of the GDS 2.0 netCDF File Format}{36}{}%
+\contentsline {subsection}{\numberline {13.2}GDS 2.0 netCDF Global Attributes}{36}{}%
+\contentsline {subsection}{\numberline {13.3}GDS 2.0 netCDF Variable Attributes}{39}{}%
+\contentsline {subsection}{\numberline {13.4}GDS 2.0 coordinate variable definitions}{41}{}%
+\contentsline {subsubsection}{\numberline {13.4.1}Native datasets}{43}{}%
+\contentsline {subsubsection}{\numberline {13.4.2}Latlon datasets}{49}{}%
+\contentsline {subsubsection}{\numberline {13.4.3}1D datasets}{53}{}%
+\contentsline {section}{\numberline {14}GDS 2.0 Filenames and Supporting Conventions}{55}{}%
+\contentsline {subsection}{\numberline {14.1}1 Overview of Filename Convention and Example Filenames}{55}{}%
+\contentsline {subsubsection}{\numberline {14.1.1}L2\_GHRSST Filename Example}{56}{}%
+\contentsline {subsubsection}{\numberline {14.1.2}L3\_GHRSST Filename Example}{56}{}%
+\contentsline {subsubsection}{\numberline {14.1.3}L4\_GHRSST Filename Example}{56}{}%
+\contentsline {subsection}{\numberline {14.2}<Indicative Date>}{56}{}%
+\contentsline {subsection}{\numberline {14.3}<Indicative Time>}{56}{}%
+\contentsline {subsection}{\numberline {14.4}<RDAC>}{56}{}%
+\contentsline {subsection}{\numberline {14.5}<Processing Level>}{56}{}%
+\contentsline {section}{\numberline {15}GDS 2.0 Data Product File Structure}{58}{}%
+\contentsline {subsection}{\numberline {15.1}Overview of the GDS 2.0 netCDF File Format}{58}{}%
+\contentsline {subsection}{\numberline {15.2}GDS 2.0 netCDF Global Attributes}{58}{}%
+\contentsline {subsection}{\numberline {15.3}GDS 2.0 netCDF Variable Attributes}{61}{}%
+\contentsline {subsection}{\numberline {15.4}GDS 2.0 coordinate variable definitions}{63}{}%
+\contentsline {subsubsection}{\numberline {15.4.1}Native datasets}{65}{}%
+\contentsline {subsubsection}{\numberline {15.4.2}Latlon datasets}{71}{}%
+\contentsline {subsubsection}{\numberline {15.4.3}1D datasets}{75}{}%
+\contentsline {section}{\numberline {16}GDS 2.0 Filenames and Supporting Conventions}{77}{}%
+\contentsline {subsection}{\numberline {16.1}1 Overview of Filename Convention and Example Filenames}{77}{}%
+\contentsline {subsubsection}{\numberline {16.1.1}L2\_GHRSST Filename Example}{78}{}%
+\contentsline {subsubsection}{\numberline {16.1.2}L3\_GHRSST Filename Example}{78}{}%
+\contentsline {subsubsection}{\numberline {16.1.3}L4\_GHRSST Filename Example}{78}{}%
+\contentsline {subsection}{\numberline {16.2}<Indicative Date>}{78}{}%
+\contentsline {subsection}{\numberline {16.3}<Indicative Time>}{78}{}%
+\contentsline {subsection}{\numberline {16.4}<RDAC>}{78}{}%
+\contentsline {subsection}{\numberline {16.5}<Processing Level>}{78}{}%
+\contentsline {section}{\numberline {17}GDS 2.0 Data Product File Structure}{80}{}%
+\contentsline {subsection}{\numberline {17.1}Overview of the GDS 2.0 netCDF File Format}{80}{}%
+\contentsline {subsection}{\numberline {17.2}GDS 2.0 netCDF Global Attributes}{80}{}%
+\contentsline {subsection}{\numberline {17.3}GDS 2.0 netCDF Variable Attributes}{83}{}%
+\contentsline {subsection}{\numberline {17.4}GDS 2.0 coordinate variable definitions}{85}{}%
+\contentsline {subsubsection}{\numberline {17.4.1}Native datasets}{87}{}%
+\contentsline {subsubsection}{\numberline {17.4.2}Latlon datasets}{93}{}%
+\contentsline {subsubsection}{\numberline {17.4.3}1D datasets}{97}{}%
+\contentsline {section}{\numberline {18}Native Dataset Coordinate Variables}{99}{}%
+\contentsline {subsection}{\numberline {18.1}Overview of the Native Dataset Coordinate Variables}{99}{}%
+\contentsline {subsection}{\numberline {18.2}Native coordinates NetCDF GRID\_GEOMETRY\_ECCO}{100}{}%
+\contentsline {subsubsection}{\numberline {18.2.1}Native coordinates Variable XC}{101}{}%
+\contentsline {subsubsection}{\numberline {18.2.2}Native coordinates Variable YC}{102}{}%
+\contentsline {subsubsection}{\numberline {18.2.3}Native coordinates Variable XG}{103}{}%
+\contentsline {subsubsection}{\numberline {18.2.4}Native coordinates Variable YG}{104}{}%
+\contentsline {subsubsection}{\numberline {18.2.5}Native coordinates Variable CS}{105}{}%
+\contentsline {subsubsection}{\numberline {18.2.6}Native coordinates Variable SN}{106}{}%
+\contentsline {subsubsection}{\numberline {18.2.7}Native coordinates Variable rA}{107}{}%
+\contentsline {subsubsection}{\numberline {18.2.8}Native coordinates Variable dxG}{108}{}%
+\contentsline {subsubsection}{\numberline {18.2.9}Native coordinates Variable dyG}{109}{}%
+\contentsline {subsubsection}{\numberline {18.2.10}Native coordinates Variable Depth}{110}{}%
+\contentsline {subsubsection}{\numberline {18.2.11}Native coordinates Variable rAz}{111}{}%
+\contentsline {subsubsection}{\numberline {18.2.12}Native coordinates Variable dxC}{112}{}%
+\contentsline {subsubsection}{\numberline {18.2.13}Native coordinates Variable dyC}{113}{}%
+\contentsline {subsubsection}{\numberline {18.2.14}Native coordinates Variable rAw}{114}{}%
+\contentsline {subsubsection}{\numberline {18.2.15}Native coordinates Variable rAs}{115}{}%
+\contentsline {subsubsection}{\numberline {18.2.16}Native coordinates Variable hFacC}{116}{}%
+\contentsline {subsubsection}{\numberline {18.2.17}Native coordinates Variable hFacW}{117}{}%
+\contentsline {subsubsection}{\numberline {18.2.18}Native coordinates Variable hFacS}{118}{}%
+\contentsline {subsubsection}{\numberline {18.2.19}Native coordinates Variable maskC}{119}{}%
+\contentsline {subsubsection}{\numberline {18.2.20}Native coordinates Variable maskW}{120}{}%
+\contentsline {subsubsection}{\numberline {18.2.21}Native coordinates Variable maskS}{121}{}%
+\contentsline {section}{\numberline {19}Native Dataset Groupings}{122}{}%
+\contentsline {subsection}{\numberline {19.1}Overview of the Native Dataset Groupings}{122}{}%
+\contentsline {subsection}{\numberline {19.2}Native NetCDF ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES}{123}{}%
+\contentsline {subsubsection}{\numberline {19.2.1}Native Variable EXFaqh}{124}{}%
+\contentsline {subsubsection}{\numberline {19.2.2}Native Variable EXFatemp}{125}{}%
+\contentsline {subsubsection}{\numberline {19.2.3}Native Variable EXFpress}{126}{}%
+\contentsline {subsubsection}{\numberline {19.2.4}Native Variable EXFuwind}{127}{}%
+\contentsline {subsubsection}{\numberline {19.2.5}Native Variable EXFvwind}{128}{}%
+\contentsline {subsubsection}{\numberline {19.2.6}Native Variable EXFwspee}{129}{}%
+\contentsline {subsection}{\numberline {19.3}Native NetCDF OCEAN\_3D\_MIXING\_COEFFS}{130}{}%
+\contentsline {subsubsection}{\numberline {19.3.1}Native Variable DIFFKR}{131}{}%
+\contentsline {subsubsection}{\numberline {19.3.2}Native Variable KAPGM}{132}{}%
+\contentsline {subsubsection}{\numberline {19.3.3}Native Variable KAPREDI}{133}{}%
+\contentsline {subsection}{\numberline {19.4}Native NetCDF OCEAN\_3D\_MOMENTUM\_TEND}{134}{}%
+\contentsline {subsubsection}{\numberline {19.4.1}Native Variable Um\_dPHdx}{135}{}%
+\contentsline {subsubsection}{\numberline {19.4.2}Native Variable Vm\_dPHdy}{136}{}%
+\contentsline {subsection}{\numberline {19.5}Native NetCDF OCEAN\_3D\_SALINITY\_FLUX}{137}{}%
+\contentsline {subsubsection}{\numberline {19.5.1}Native Variable ADVr\_SLT}{138}{}%
+\contentsline {subsubsection}{\numberline {19.5.2}Native Variable ADVx\_SLT}{139}{}%
+\contentsline {subsubsection}{\numberline {19.5.3}Native Variable ADVy\_SLT}{140}{}%
+\contentsline {subsubsection}{\numberline {19.5.4}Native Variable DFrE\_SLT}{141}{}%
+\contentsline {subsubsection}{\numberline {19.5.5}Native Variable DFrI\_SLT}{142}{}%
+\contentsline {subsubsection}{\numberline {19.5.6}Native Variable DFxE\_SLT}{143}{}%
+\contentsline {subsubsection}{\numberline {19.5.7}Native Variable DFyE\_SLT}{144}{}%
+\contentsline {subsubsection}{\numberline {19.5.8}Native Variable oceSPtnd}{145}{}%
+\contentsline {subsection}{\numberline {19.6}Native NetCDF OCEAN\_3D\_TEMPERATURE\_FLUX}{146}{}%
+\contentsline {subsubsection}{\numberline {19.6.1}Native Variable ADVr\_TH}{147}{}%
+\contentsline {subsubsection}{\numberline {19.6.2}Native Variable ADVx\_TH}{148}{}%
+\contentsline {subsubsection}{\numberline {19.6.3}Native Variable ADVy\_TH}{149}{}%
+\contentsline {subsubsection}{\numberline {19.6.4}Native Variable DFrE\_TH}{150}{}%
+\contentsline {subsubsection}{\numberline {19.6.5}Native Variable DFrI\_TH}{151}{}%
+\contentsline {subsubsection}{\numberline {19.6.6}Native Variable DFxE\_TH}{152}{}%
+\contentsline {subsubsection}{\numberline {19.6.7}Native Variable DFyE\_TH}{153}{}%
+\contentsline {subsection}{\numberline {19.7}Native NetCDF OCEAN\_3D\_VOLUME\_FLUX}{154}{}%
+\contentsline {subsubsection}{\numberline {19.7.1}Native Variable UVELMASS}{155}{}%
+\contentsline {subsubsection}{\numberline {19.7.2}Native Variable VVELMASS}{156}{}%
+\contentsline {subsubsection}{\numberline {19.7.3}Native Variable WVELMASS}{157}{}%
+\contentsline {subsection}{\numberline {19.8}Native NetCDF OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX}{158}{}%
+\contentsline {subsubsection}{\numberline {19.8.1}Native Variable EXFempmr}{159}{}%
+\contentsline {subsubsection}{\numberline {19.8.2}Native Variable EXFevap}{160}{}%
+\contentsline {subsubsection}{\numberline {19.8.3}Native Variable EXFpreci}{161}{}%
+\contentsline {subsubsection}{\numberline {19.8.4}Native Variable EXFroff}{162}{}%
+\contentsline {subsubsection}{\numberline {19.8.5}Native Variable SFLUX}{163}{}%
+\contentsline {subsubsection}{\numberline {19.8.6}Native Variable SIacSubl}{164}{}%
+\contentsline {subsubsection}{\numberline {19.8.7}Native Variable SIatmFW}{165}{}%
+\contentsline {subsubsection}{\numberline {19.8.8}Native Variable SIfwThru}{166}{}%
+\contentsline {subsubsection}{\numberline {19.8.9}Native Variable SIrsSubl}{167}{}%
+\contentsline {subsubsection}{\numberline {19.8.10}Native Variable SIsnPrcp}{168}{}%
+\contentsline {subsubsection}{\numberline {19.8.11}Native Variable oceFWflx}{169}{}%
+\contentsline {subsection}{\numberline {19.9}Native NetCDF OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX}{170}{}%
+\contentsline {subsubsection}{\numberline {19.9.1}Native Variable EXFhl}{171}{}%
+\contentsline {subsubsection}{\numberline {19.9.2}Native Variable EXFhs}{172}{}%
+\contentsline {subsubsection}{\numberline {19.9.3}Native Variable EXFlwdn}{173}{}%
+\contentsline {subsubsection}{\numberline {19.9.4}Native Variable EXFlwnet}{174}{}%
+\contentsline {subsubsection}{\numberline {19.9.5}Native Variable EXFqnet}{175}{}%
+\contentsline {subsubsection}{\numberline {19.9.6}Native Variable EXFswdn}{176}{}%
+\contentsline {subsubsection}{\numberline {19.9.7}Native Variable EXFswnet}{177}{}%
+\contentsline {subsubsection}{\numberline {19.9.8}Native Variable SIaaflux}{178}{}%
+\contentsline {subsubsection}{\numberline {19.9.9}Native Variable SIatmQnt}{179}{}%
+\contentsline {subsubsection}{\numberline {19.9.10}Native Variable TFLUX}{180}{}%
+\contentsline {subsubsection}{\numberline {19.9.11}Native Variable oceQnet}{181}{}%
+\contentsline {subsubsection}{\numberline {19.9.12}Native Variable oceQsw}{182}{}%
+\contentsline {subsection}{\numberline {19.10}Native NetCDF OCEAN\_AND\_ICE\_SURFACE\_STRESS}{183}{}%
+\contentsline {subsubsection}{\numberline {19.10.1}Native Variable EXFtaux}{184}{}%
+\contentsline {subsubsection}{\numberline {19.10.2}Native Variable EXFtauy}{185}{}%
+\contentsline {subsubsection}{\numberline {19.10.3}Native Variable oceTAUX}{186}{}%
+\contentsline {subsubsection}{\numberline {19.10.4}Native Variable oceTAUY}{187}{}%
+\contentsline {subsection}{\numberline {19.11}Native NetCDF OCEAN\_BOLUS\_STREAMFUNCTION}{188}{}%
+\contentsline {subsubsection}{\numberline {19.11.1}Native Variable GM\_PsiX}{189}{}%
+\contentsline {subsubsection}{\numberline {19.11.2}Native Variable GM\_PsiY}{190}{}%
+\contentsline {subsection}{\numberline {19.12}Native NetCDF OCEAN\_BOLUS\_VELOCITY}{191}{}%
+\contentsline {subsubsection}{\numberline {19.12.1}Native Variable UVELSTAR}{192}{}%
+\contentsline {subsubsection}{\numberline {19.12.2}Native Variable VVELSTAR}{193}{}%
+\contentsline {subsubsection}{\numberline {19.12.3}Native Variable WVELSTAR}{194}{}%
+\contentsline {subsection}{\numberline {19.13}Native NetCDF OCEAN\_BOTTOM\_PRESSURE}{195}{}%
+\contentsline {subsubsection}{\numberline {19.13.1}Native Variable OBP}{196}{}%
+\contentsline {subsubsection}{\numberline {19.13.2}Native Variable OBPGMAP}{197}{}%
+\contentsline {subsubsection}{\numberline {19.13.3}Native Variable PHIBOT}{198}{}%
+\contentsline {subsection}{\numberline {19.14}Native NetCDF OCEAN\_DENS\_STRAT\_PRESS}{199}{}%
+\contentsline {subsubsection}{\numberline {19.14.1}Native Variable DRHODR}{200}{}%
+\contentsline {subsubsection}{\numberline {19.14.2}Native Variable PHIHYD}{201}{}%
+\contentsline {subsubsection}{\numberline {19.14.3}Native Variable PHIHYDcR}{202}{}%
+\contentsline {subsubsection}{\numberline {19.14.4}Native Variable RHOAnoma}{203}{}%
+\contentsline {subsection}{\numberline {19.15}Native NetCDF OCEAN\_MIXED\_LAYER\_DEPTH}{204}{}%
+\contentsline {subsubsection}{\numberline {19.15.1}Native Variable MXLDEPTH}{205}{}%
+\contentsline {subsection}{\numberline {19.16}Native NetCDF OCEAN\_TEMPERATURE\_SALINITY}{206}{}%
+\contentsline {subsubsection}{\numberline {19.16.1}Native Variable SALT}{207}{}%
+\contentsline {subsubsection}{\numberline {19.16.2}Native Variable THETA}{208}{}%
+\contentsline {subsection}{\numberline {19.17}Native NetCDF OCEAN\_VELOCITY}{209}{}%
+\contentsline {subsubsection}{\numberline {19.17.1}Native Variable UVEL}{210}{}%
+\contentsline {subsubsection}{\numberline {19.17.2}Native Variable VVEL}{211}{}%
+\contentsline {subsubsection}{\numberline {19.17.3}Native Variable WVEL}{212}{}%
+\contentsline {subsection}{\numberline {19.18}Native NetCDF SEA\_ICE\_CONC\_THICKNESS}{213}{}%
+\contentsline {subsubsection}{\numberline {19.18.1}Native Variable SIarea}{214}{}%
+\contentsline {subsubsection}{\numberline {19.18.2}Native Variable SIheff}{215}{}%
+\contentsline {subsubsection}{\numberline {19.18.3}Native Variable SIhsnow}{216}{}%
+\contentsline {subsubsection}{\numberline {19.18.4}Native Variable sIceLoad}{217}{}%
+\contentsline {subsection}{\numberline {19.19}Native NetCDF SEA\_ICE\_HORIZ\_VOLUME\_FLUX}{218}{}%
+\contentsline {subsubsection}{\numberline {19.19.1}Native Variable ADVxHEFF}{219}{}%
+\contentsline {subsubsection}{\numberline {19.19.2}Native Variable ADVxSNOW}{220}{}%
+\contentsline {subsubsection}{\numberline {19.19.3}Native Variable ADVyHEFF}{221}{}%
+\contentsline {subsubsection}{\numberline {19.19.4}Native Variable ADVySNOW}{222}{}%
+\contentsline {subsubsection}{\numberline {19.19.5}Native Variable DFxEHEFF}{223}{}%
+\contentsline {subsubsection}{\numberline {19.19.6}Native Variable DFxESNOW}{224}{}%
+\contentsline {subsubsection}{\numberline {19.19.7}Native Variable DFyEHEFF}{225}{}%
+\contentsline {subsubsection}{\numberline {19.19.8}Native Variable DFyESNOW}{226}{}%
+\contentsline {subsection}{\numberline {19.20}Native NetCDF SEA\_ICE\_SALT\_PLUME\_FLUX}{227}{}%
+\contentsline {subsubsection}{\numberline {19.20.1}Native Variable oceSPDep}{228}{}%
+\contentsline {subsubsection}{\numberline {19.20.2}Native Variable oceSPflx}{229}{}%
+\contentsline {subsection}{\numberline {19.21}Native NetCDF SEA\_ICE\_VELOCITY}{230}{}%
+\contentsline {subsubsection}{\numberline {19.21.1}Native Variable SIuice}{231}{}%
+\contentsline {subsubsection}{\numberline {19.21.2}Native Variable SIvice}{232}{}%
+\contentsline {subsection}{\numberline {19.22}Native NetCDF SEA\_SURFACE\_HEIGHT}{233}{}%
+\contentsline {subsubsection}{\numberline {19.22.1}Native Variable ETAN}{234}{}%
+\contentsline {subsubsection}{\numberline {19.22.2}Native Variable SSH}{235}{}%
+\contentsline {subsubsection}{\numberline {19.22.3}Native Variable SSHIBC}{236}{}%
+\contentsline {subsubsection}{\numberline {19.22.4}Native Variable SSHNOIBC}{237}{}%
+\contentsline {section}{\numberline {20}Latlon Dataset Coordinate Variables}{238}{}%
+\contentsline {subsection}{\numberline {20.1}Overview of the Latlon Dataset Coordinate Variables}{238}{}%
+\contentsline {subsection}{\numberline {20.2}Latlon coordinates NetCDF GRID\_GEOMETRY\_ECCO}{239}{}%
+\contentsline {subsubsection}{\numberline {20.2.1}Latlon coordinates Variable hFacC}{240}{}%
+\contentsline {subsubsection}{\numberline {20.2.2}Latlon coordinates Variable maskC}{241}{}%
+\contentsline {section}{\numberline {21}Latlon Dataset Groupings}{242}{}%
+\contentsline {subsection}{\numberline {21.1}Overview of the latlon Dataset Groupings}{242}{}%
+\contentsline {subsection}{\numberline {21.2}Latlon NetCDF ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES}{243}{}%
+\contentsline {subsubsection}{\numberline {21.2.1}Latlon Variable EXFaqh}{244}{}%
+\contentsline {subsubsection}{\numberline {21.2.2}Latlon Variable EXFatemp}{245}{}%
+\contentsline {subsubsection}{\numberline {21.2.3}Latlon Variable EXFewind}{246}{}%
+\contentsline {subsubsection}{\numberline {21.2.4}Latlon Variable EXFnwind}{247}{}%
+\contentsline {subsubsection}{\numberline {21.2.5}Latlon Variable EXFpress}{248}{}%
+\contentsline {subsubsection}{\numberline {21.2.6}Latlon Variable EXFwspee}{249}{}%
+\contentsline {subsection}{\numberline {21.3}Latlon NetCDF OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX}{250}{}%
+\contentsline {subsubsection}{\numberline {21.3.1}Latlon Variable EXFempmr}{251}{}%
+\contentsline {subsubsection}{\numberline {21.3.2}Latlon Variable EXFevap}{252}{}%
+\contentsline {subsubsection}{\numberline {21.3.3}Latlon Variable EXFpreci}{253}{}%
+\contentsline {subsubsection}{\numberline {21.3.4}Latlon Variable EXFroff}{254}{}%
+\contentsline {subsubsection}{\numberline {21.3.5}Latlon Variable SFLUX}{255}{}%
+\contentsline {subsubsection}{\numberline {21.3.6}Latlon Variable SIacSubl}{256}{}%
+\contentsline {subsubsection}{\numberline {21.3.7}Latlon Variable SIatmFW}{257}{}%
+\contentsline {subsubsection}{\numberline {21.3.8}Latlon Variable SIfwThru}{258}{}%
+\contentsline {subsubsection}{\numberline {21.3.9}Latlon Variable SIrsSubl}{259}{}%
+\contentsline {subsubsection}{\numberline {21.3.10}Latlon Variable SIsnPrcp}{260}{}%
+\contentsline {subsubsection}{\numberline {21.3.11}Latlon Variable oceFWflx}{261}{}%
+\contentsline {subsection}{\numberline {21.4}Latlon NetCDF OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX}{262}{}%
+\contentsline {subsubsection}{\numberline {21.4.1}Latlon Variable EXFhl}{263}{}%
+\contentsline {subsubsection}{\numberline {21.4.2}Latlon Variable EXFhs}{264}{}%
+\contentsline {subsubsection}{\numberline {21.4.3}Latlon Variable EXFlwdn}{265}{}%
+\contentsline {subsubsection}{\numberline {21.4.4}Latlon Variable EXFlwnet}{266}{}%
+\contentsline {subsubsection}{\numberline {21.4.5}Latlon Variable EXFqnet}{267}{}%
+\contentsline {subsubsection}{\numberline {21.4.6}Latlon Variable EXFswdn}{268}{}%
+\contentsline {subsubsection}{\numberline {21.4.7}Latlon Variable EXFswnet}{269}{}%
+\contentsline {subsubsection}{\numberline {21.4.8}Latlon Variable SIaaflux}{270}{}%
+\contentsline {subsubsection}{\numberline {21.4.9}Latlon Variable SIatmQnt}{271}{}%
+\contentsline {subsubsection}{\numberline {21.4.10}Latlon Variable TFLUX}{272}{}%
+\contentsline {subsubsection}{\numberline {21.4.11}Latlon Variable oceQnet}{273}{}%
+\contentsline {subsubsection}{\numberline {21.4.12}Latlon Variable oceQsw}{274}{}%
+\contentsline {subsection}{\numberline {21.5}Latlon NetCDF OCEAN\_AND\_ICE\_SURFACE\_STRESS}{275}{}%
+\contentsline {subsubsection}{\numberline {21.5.1}Latlon Variable EXFtaue}{276}{}%
+\contentsline {subsubsection}{\numberline {21.5.2}Latlon Variable EXFtaun}{277}{}%
+\contentsline {subsubsection}{\numberline {21.5.3}Latlon Variable oceTAUE}{278}{}%
+\contentsline {subsubsection}{\numberline {21.5.4}Latlon Variable oceTAUN}{279}{}%
+\contentsline {subsection}{\numberline {21.6}Latlon NetCDF OCEAN\_BOLUS\_VELOCITY}{280}{}%
+\contentsline {subsubsection}{\numberline {21.6.1}Latlon Variable EVELSTAR}{281}{}%
+\contentsline {subsubsection}{\numberline {21.6.2}Latlon Variable NVELSTAR}{282}{}%
+\contentsline {subsubsection}{\numberline {21.6.3}Latlon Variable WVELSTAR}{283}{}%
+\contentsline {subsection}{\numberline {21.7}Latlon NetCDF OCEAN\_BOTTOM\_PRESSURE}{284}{}%
+\contentsline {subsubsection}{\numberline {21.7.1}Latlon Variable OBP}{285}{}%
+\contentsline {subsubsection}{\numberline {21.7.2}Latlon Variable OBPGMAP}{286}{}%
+\contentsline {subsection}{\numberline {21.8}Latlon NetCDF OCEAN\_DENS\_STRAT\_PRESS}{287}{}%
+\contentsline {subsubsection}{\numberline {21.8.1}Latlon Variable DRHODR}{288}{}%
+\contentsline {subsubsection}{\numberline {21.8.2}Latlon Variable PHIHYD}{289}{}%
+\contentsline {subsubsection}{\numberline {21.8.3}Latlon Variable RHOAnoma}{290}{}%
+\contentsline {subsection}{\numberline {21.9}Latlon NetCDF OCEAN\_MIXED\_LAYER\_DEPTH}{291}{}%
+\contentsline {subsubsection}{\numberline {21.9.1}Latlon Variable MXLDEPTH}{292}{}%
+\contentsline {subsection}{\numberline {21.10}Latlon NetCDF OCEAN\_TEMPERATURE\_SALINITY}{293}{}%
+\contentsline {subsubsection}{\numberline {21.10.1}Latlon Variable SALT}{294}{}%
+\contentsline {subsubsection}{\numberline {21.10.2}Latlon Variable THETA}{295}{}%
+\contentsline {subsection}{\numberline {21.11}Latlon NetCDF OCEAN\_VELOCITY}{296}{}%
+\contentsline {subsubsection}{\numberline {21.11.1}Latlon Variable EVEL}{297}{}%
+\contentsline {subsubsection}{\numberline {21.11.2}Latlon Variable NVEL}{298}{}%
+\contentsline {subsubsection}{\numberline {21.11.3}Latlon Variable WVEL}{299}{}%
+\contentsline {subsection}{\numberline {21.12}Latlon NetCDF SEA\_ICE\_CONC\_THICKNESS}{300}{}%
+\contentsline {subsubsection}{\numberline {21.12.1}Latlon Variable SIarea}{301}{}%
+\contentsline {subsubsection}{\numberline {21.12.2}Latlon Variable SIheff}{302}{}%
+\contentsline {subsubsection}{\numberline {21.12.3}Latlon Variable SIhsnow}{303}{}%
+\contentsline {subsubsection}{\numberline {21.12.4}Latlon Variable sIceLoad}{304}{}%
+\contentsline {subsection}{\numberline {21.13}Latlon NetCDF SEA\_ICE\_VELOCITY}{305}{}%
+\contentsline {subsubsection}{\numberline {21.13.1}Latlon Variable SIeice}{306}{}%
+\contentsline {subsubsection}{\numberline {21.13.2}Latlon Variable SInice}{307}{}%
+\contentsline {subsection}{\numberline {21.14}Latlon NetCDF SEA\_SURFACE\_HEIGHT}{308}{}%
+\contentsline {subsubsection}{\numberline {21.14.1}Latlon Variable SSH}{309}{}%
+\contentsline {subsubsection}{\numberline {21.14.2}Latlon Variable SSHIBC}{310}{}%
+\contentsline {subsubsection}{\numberline {21.14.3}Latlon Variable SSHNOIBC}{311}{}%
+\contentsline {section}{\numberline {22}1-D Dataset Groupings}{312}{}%
+\contentsline {subsection}{\numberline {22.1}Overview of the 1-D Dataset Groupings}{312}{}%
+\contentsline {subsection}{\numberline {22.2}1D NetCDF GLOBAL\_MEAN\_ATM\_SURFACE\_PRES}{313}{}%
+\contentsline {subsubsection}{\numberline {22.2.1}1D Variable Pa\_global}{314}{}%
+\contentsline {subsection}{\numberline {22.3}1D NetCDF GLOBAL\_MEAN\_SEA\_LEVEL}{315}{}%
+\contentsline {subsubsection}{\numberline {22.3.1}1D Variable global\_mean\_barystatic\_sea\_level\_anomaly}{316}{}%
+\contentsline {subsubsection}{\numberline {22.3.2}1D Variable global\_mean\_sea\_level\_anomaly}{317}{}%
+\contentsline {subsubsection}{\numberline {22.3.3}1D Variable global\_mean\_sterodynamic\_sea\_level\_anomaly}{318}{}%
+\contentsline {subsection}{\numberline {22.4}1D NetCDF SBO\_CORE\_PRODUCTS}{319}{}%
+\contentsline {subsubsection}{\numberline {22.4.1}1D Variable mass}{320}{}%
+\contentsline {subsubsection}{\numberline {22.4.2}1D Variable mass\_fw}{321}{}%
+\contentsline {subsubsection}{\numberline {22.4.3}1D Variable mass\_gc}{322}{}%
+\contentsline {subsubsection}{\numberline {22.4.4}1D Variable mass\_si}{323}{}%
+\contentsline {subsubsection}{\numberline {22.4.5}1D Variable sboarea}{324}{}%
+\contentsline {subsubsection}{\numberline {22.4.6}1D Variable xcom}{325}{}%
+\contentsline {subsubsection}{\numberline {22.4.7}1D Variable xcom\_fw}{326}{}%
+\contentsline {subsubsection}{\numberline {22.4.8}1D Variable xoamc}{327}{}%
+\contentsline {subsubsection}{\numberline {22.4.9}1D Variable xoamc\_si}{328}{}%
+\contentsline {subsubsection}{\numberline {22.4.10}1D Variable xoamp}{329}{}%
+\contentsline {subsubsection}{\numberline {22.4.11}1D Variable xoamp\_dsl}{330}{}%
+\contentsline {subsubsection}{\numberline {22.4.12}1D Variable xoamp\_fw}{331}{}%
+\contentsline {subsubsection}{\numberline {22.4.13}1D Variable ycom}{332}{}%
+\contentsline {subsubsection}{\numberline {22.4.14}1D Variable ycom\_fw}{333}{}%
+\contentsline {subsubsection}{\numberline {22.4.15}1D Variable yoamc}{334}{}%
+\contentsline {subsubsection}{\numberline {22.4.16}1D Variable yoamc\_si}{335}{}%
+\contentsline {subsubsection}{\numberline {22.4.17}1D Variable yoamp}{336}{}%
+\contentsline {subsubsection}{\numberline {22.4.18}1D Variable yoamp\_dsl}{337}{}%
+\contentsline {subsubsection}{\numberline {22.4.19}1D Variable yoamp\_fw}{338}{}%
+\contentsline {subsubsection}{\numberline {22.4.20}1D Variable zcom}{339}{}%
+\contentsline {subsubsection}{\numberline {22.4.21}1D Variable zcom\_fw}{340}{}%
+\contentsline {subsubsection}{\numberline {22.4.22}1D Variable zoamc}{341}{}%
+\contentsline {subsubsection}{\numberline {22.4.23}1D Variable zoamc\_si}{342}{}%
+\contentsline {subsubsection}{\numberline {22.4.24}1D Variable zoamp}{343}{}%
+\contentsline {subsubsection}{\numberline {22.4.25}1D Variable zoamp\_dsl}{344}{}%
+\contentsline {subsubsection}{\numberline {22.4.26}1D Variable zoamp\_fw}{345}{}%
+\contentsline {section}{\numberline {23}ECCO Metadata Specification}{346}{}%
+\contentsline {subsection}{\numberline {23.1}Overview Description of the ECCO Metadata Model}{346}{}%
+\contentsline {subsection}{\numberline {23.2}Evolution from the GHRSST GDS 1.0 Metadata Model}{346}{}%
+\contentsline {subsection}{\numberline {23.3}The ISO 19115-2 Metadata Model}{346}{}%
+\contentsline {section}{\numberline {24}GDS 2.0 Document Management Policy}{349}{}%
+\contentsline {subsection}{\numberline {24.1}GDS Document Management Definitions}{349}{}%
+\contentsline {subsection}{\numberline {24.2}GDS Document Management Policy Statement}{349}{}%
+\contentsline {subsection}{\numberline {24.3}GDS Document Management Policy Responsibility}{350}{}%
+\contentsline {subsection}{\numberline {24.4}GHRSST GDS Recordkeeping and Document Management System}{350}{}%
+\contentsline {subsection}{\numberline {24.5}GDS Document location}{350}{}%
+\contentsline {subsection}{\numberline {24.6}GDS Document Publication}{350}{}%
+\contentsline {subsection}{\numberline {24.7}GDS Document formats}{351}{}%
+\contentsline {subsection}{\numberline {24.8}GDS Document filing}{351}{}%
+\contentsline {subsection}{\numberline {24.9}Document retrieval}{351}{}%
+\contentsline {subsection}{\numberline {24.10}Document security}{351}{}%
+\contentsline {subsection}{\numberline {24.11}Retention and long term archive}{351}{}%
+\contentsline {subsection}{\numberline {24.12}Document workflow}{351}{}%
+\contentsline {subsection}{\numberline {24.13}Document creation}{351}{}%

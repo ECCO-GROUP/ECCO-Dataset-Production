@@ -17,9 +17,11 @@ if __name__ == '__main__':
 
 
     parser = argparse.ArgumentParser(description='Download granules for a given dataset type.')
-    parser.add_argument('--type', required=True, type=str,
+    parser.add_argument('--type', required=False, type=str,
                         help="Type of the dataset to write. Should be one of 'native', 'latlon', '1D','coords', 'all'.", 
-                        choices=['native', 'latlon', '1D','coords' 'all'])
+                        choices=['native', 'latlon', '1D','coords', 'all'],
+                        default='all')
+    # parser.add_argument('--to', required=False, type=str,
     parser.add_argument('--to', required=False, type=str,
                         help="What directory will the files will be saved", 
                         default='here')
@@ -92,3 +94,6 @@ if __name__ == '__main__':
         file_exists(ll_coords_txt)
         os.system(f'mkdir -p {dataset_dir}/latlon_coords')
         os.system(f'wget --no-verbose --no-clobber --continue -i {ll_coords_txt} -P {dataset_dir}/latlon_coords/')
+
+
+#------
