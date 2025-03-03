@@ -175,20 +175,6 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray,
             #     cbar2.set_label(tmp_plt.attrs['units'])
             #else:
                 #cbar2.set_label('Axis:'+ field.attrs['axis'])
-
-        #OJH: Adding tiile' x-axis and y-axis direction guid on the plot
-        left, bottom, width, height = [0.5, 0.23, 0.25, 0.25]
-        ax_ojh = fig.add_axes([left, bottom, width, height],axes_class=AxesZero)    
-        for direction in ["xzero", "yzero"]:
-            ## adds arrows at the ends of each axis
-            ax_ojh.axis[direction].set_axisline_style("-|>")
-            ## adds X and Y-axis from the origin
-            ax_ojh.axis[direction].set_visible(True)
-        ## hides borders
-        for direction in ["left", "right", "bottom", "top"]:
-            ax_ojh.axis[direction].set_visible(False)
-        ax_ojh.set_xticklabels('',fontsize=24);ax_ojh.set_yticklabels('',fontsize=24)
-        ax_ojh.set_xlabel('tiles x-axis',fontsize=24);ax_ojh.set_ylabel('tiles y-axis',fontsize=24);
         
         fig = plt.gcf()  # get the current figure
         fig.set_size_inches(12, 6)
@@ -211,6 +197,20 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray,
             axpos = fig.axes[-2].get_position()
             new_bbox = [bbox.x0, axpos.y0, bbox.width, axpos.height * 5]
             cbar_ax.set_position(new_bbox)
+        
+        #OJH: Adding tiile' x-axis and y-axis direction guid on the plot
+        left, bottom, width, height = [0.5, 0.23, 0.25, 0.25]
+        ax_ojh = fig.add_axes([left, bottom, width, height],axes_class=AxesZero)    
+        for direction in ["xzero", "yzero"]:
+            ## adds arrows at the ends of each axis
+            ax_ojh.axis[direction].set_axisline_style("-|>")
+            ## adds X and Y-axis from the origin
+            ax_ojh.axis[direction].set_visible(True)
+        ## hides borders
+        for direction in ["left", "right", "bottom", "top"]:
+            ax_ojh.axis[direction].set_visible(False)
+        ax_ojh.set_xticklabels('',fontsize=24);ax_ojh.set_yticklabels('',fontsize=24)
+        ax_ojh.set_xlabel('tiles x-axis',fontsize=24);ax_ojh.set_ylabel('tiles y-axis',fontsize=24)
 
     if 'time' in field.dims:
         fig.suptitle(f'{field.name}: {field.attrs["long_name"]}\n{str(field.time.values[0])[:10]}\n ', wrap=True, fontsize='x-large')
