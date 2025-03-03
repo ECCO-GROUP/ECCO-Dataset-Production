@@ -38,7 +38,11 @@ conda install --file requirements.txt
 <h1>2. Folder configuration</h1>
 
 <h1>3. Independent Internal package</h1>
+
 <h2>3.1 download_granules.py</h2>
+
+This script aims to download a sample of ECCO data sets that will be documented by the document generator. The local environment settings in order to make `download_granules.py`  works can be found in [/granule_datasets/download_instructions.txt](/granule_datasets/download_instructions.txt/). It will mainly target native datasets ([native.txt](/granule_datasets/native.txt)), native coordinates ([native_coords.txt](/granule_datasets/native_coords.txt)), coordinates in longitude and latitude format ([latlon.txt](/granule_datasets/latlon.txt)) and global mean time series of certain variables ([oneD.txt](/granule_datasets/oneD.txt/)). Each of the aforementioned files is manually edited with the appropriate links where the datasets are hosted on the [Earthdata platform](https://search.earthdata.nasa.gov/search).
+
 <h2>3.2 utils.py</h2>
 <h1>4. Inter-dependent Internal scripts and packages</h1>
 <h2>4.1 cdf_reader.py</h2>
