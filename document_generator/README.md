@@ -55,7 +55,27 @@ This script (in `/document_generator/`) looks for the occurrence of any reserved
 </div>
 
 <h1>4. Inter-dependent Internal scripts and packages</h1>
-<h2>4.1 cdf_reader.py</h2>
-<h2>4.2 cdf_extract.py</h2>
-<h2>4.3 cdf_plotter.py</h2>
-<h2>4.4 sections</h2>
+<h2>4.1 readJSON.py</h2>
+<div align="justify">
+
+</div>
+
+<h2>4.2 cdf_reader.py</h2>
+<div align="justify">
+
+</div>
+
+<h2>4.3 cdf_extract.py</h2>
+<div align="justify">
+
+</div>
+
+<h2>4.4 cdf_plotter.py</h2>
+<div align="justify">
+
+</div>
+
+<h2>4.5 sections</h2>
+<div align="justify">
+
+</div>
