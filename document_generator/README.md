@@ -58,6 +58,8 @@ This script (in `/document_generator/`) looks for the occurrence of any reserved
 <h2>4.1 readJSON.py</h2>
 <div align="justify">
 
+This script (in `/document/generator/`) depends on `utils.py` described above. It contains 6 sub-functions that read JSON files and customize table format to be generated in the Latex file for the document generator (`readJSON.obtain_json_data`, `readJSON.obtain_keys`, `readJSON.verify_columns`, `readJSON.establish_table`, `readJSON.set_table`, and `readJSON.main`).
+
 </div>
 
 <h2>4.2 cdf_reader.py</h2>
