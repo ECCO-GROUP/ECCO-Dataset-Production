@@ -1,6 +1,7 @@
 import ecco_v4_py as ecco
 import matplotlib.colors
 import matplotlib.pyplot as plt
+from mpl_toolkits.axisartist.axislines import AxesZero #<= to plot x-axis and y-axis direction
 import xarray as xr
 import numpy as np
 import utils
@@ -9,6 +10,7 @@ import os
 import copy
 import cmocean
 import argparse
+
 #-------------------------------------------------------------------------------------------------
 #----------------------------------------- Plotting Functions ------------------------------------
 def data_var_plot(ds:xr.Dataset, field:xr.DataArray, directory:str='none', colorbar:bool=True, coords:bool=False)->str:
@@ -174,6 +176,20 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray,
             #else:
                 #cbar2.set_label('Axis:'+ field.attrs['axis'])
 
+        #OJH: Adding tiile' x-axis and y-axis direction guid on the plot
+        left, bottom, width, height = [0.5, 0.23, 0.25, 0.25]
+        ax_ojh = fig.add_axes([left, bottom, width, height],axes_class=AxesZero)    
+        for direction in ["xzero", "yzero"]:
+            ## adds arrows at the ends of each axis
+            ax_ojh.axis[direction].set_axisline_style("-|>")
+            ## adds X and Y-axis from the origin
+            ax_ojh.axis[direction].set_visible(True)
+        ## hides borders
+        for direction in ["left", "right", "bottom", "top"]:
+            ax_ojh.axis[direction].set_visible(False)
+        ax_ojh.set_xticklabels('',fontsize=24);ax_ojh.set_yticklabels('',fontsize=24)
+        ax_ojh.set_xlabel('tiles x-axis',fontsize=24);ax_ojh.set_ylabel('tiles y-axis',fontsize=24);
+        
         fig = plt.gcf()  # get the current figure
         fig.set_size_inches(12, 6)
 

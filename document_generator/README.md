@@ -65,6 +65,8 @@ This script (in `/document/generator/`) depends on `utils.py` described above. I
 <h2>4.2 cdf_reader.py</h2>
 <div align="justify">
 
+This script (in `/document_generator/`) reads the netCDF file of each targeted dataset with a set of functions to generate Latex lines for table building for each variable per netCDF file. See `cdf_reader.get_non_coord_vars`, `cdf_reader.readVarAttr`, `cdf_reader.readAllVarAttrs`, `cdf_reader.process_dict_items`, `cdf_reader.data_var_table`, `cdf_reader.compute_ds_dict`, `cdf_reader.read_data_vars`, `cdf_reader.generate_CDL` and `cdf_reader.cdl_to_latex`.
+
 </div>
 
 <h2>4.3 cdf_extract.py</h2>
