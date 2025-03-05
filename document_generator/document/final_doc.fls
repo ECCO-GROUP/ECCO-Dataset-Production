@@ -675,18 +675,14 @@ INPUT ./latex/TOC.tex
 INPUT latex/TOC.tex
 INPUT ./latex/TOC.tex
 INPUT latex/TOC.tex
-<<<<<<< HEAD
 INPUT ./final_doc.toc
 INPUT final_doc.toc
 INPUT final_doc.toc
-=======
->>>>>>> ojh
 OUTPUT final_doc.toc
 INPUT ./latex/LOF.tex
 INPUT latex/LOF.tex
 INPUT ./latex/LOF.tex
 INPUT latex/LOF.tex
-<<<<<<< HEAD
 INPUT ./final_doc.lof
 INPUT final_doc.lof
 INPUT final_doc.lof
@@ -694,9 +690,6 @@ OUTPUT final_doc.lof
 INPUT ./final_doc.lot
 INPUT final_doc.lot
 INPUT final_doc.lot
-=======
-OUTPUT final_doc.lof
->>>>>>> ojh
 OUTPUT final_doc.lot
 INPUT ./latex/app_ref_docs.tex
 INPUT latex/app_ref_docs.tex
@@ -774,7 +767,6 @@ INPUT ./latex/data_product/example_oneD_table.tex
 INPUT latex/data_product/example_oneD_table.tex
 INPUT ./latex/data_product/example_oneD_table.tex
 INPUT latex/data_product/example_oneD_table.tex
-<<<<<<< HEAD
 INPUT ./latex/filenames_conventions.tex
 INPUT ./latex/filenames_conventions.tex
 INPUT ./latex/filenames_conventions.tex
@@ -837,8 +829,6 @@ INPUT ./latex/data_product/example_oneD_table.tex
 INPUT latex/data_product/example_oneD_table.tex
 INPUT ./latex/data_product/example_oneD_table.tex
 INPUT latex/data_product/example_oneD_table.tex
-=======
->>>>>>> ojh
 INPUT ./latex/dataset/native_coords_dataset.tex
 INPUT latex/dataset/native_coords_dataset.tex
 INPUT ./latex/dataset/native_coords_dataset.tex
@@ -847,7 +837,6 @@ INPUT ./latex/dataset/native_coords_dataset_tables.tex
 INPUT latex/dataset/native_coords_dataset_tables.tex
 INPUT ./latex/dataset/native_coords_dataset_tables.tex
 INPUT latex/dataset/native_coords_dataset_tables.tex
-<<<<<<< HEAD
 INPUT ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XC.png
 INPUT ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XC.png
 INPUT ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XC.png
@@ -953,8 +942,6 @@ INPUT ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Ca
 INPUT ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskS.png
 INPUT ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskS.png
 INPUT ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskS.png
-=======
->>>>>>> ojh
 INPUT ./latex/dataset/native_dataset.tex
 INPUT latex/dataset/native_dataset.tex
 INPUT ./latex/dataset/native_dataset.tex
@@ -963,7 +950,6 @@ INPUT ./latex/dataset/native_dataset_tables.tex
 INPUT latex/dataset/native_dataset_tables.tex
 INPUT ./latex/dataset/native_dataset_tables.tex
 INPUT latex/dataset/native_dataset_tables.tex
-<<<<<<< HEAD
 INPUT ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png
 INPUT ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png
 INPUT ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png
@@ -1434,8 +1420,6 @@ INPUT ../images/plots/native_plots/Sea_Surface_Height/SSHNOIBC.png
 INPUT ../images/plots/native_plots/Sea_Surface_Height/SSHNOIBC.png
 INPUT ../images/plots/native_plots/Sea_Surface_Height/SSHNOIBC.png
 INPUT ../images/plots/native_plots/Sea_Surface_Height/SSHNOIBC.png
-=======
->>>>>>> ojh
 INPUT ./latex/dataset/latlon_coords_dataset.tex
 INPUT latex/dataset/latlon_coords_dataset.tex
 INPUT ./latex/dataset/latlon_coords_dataset.tex
@@ -1444,7 +1428,6 @@ INPUT ./latex/dataset/latlon_coords_dataset_tables.tex
 INPUT latex/dataset/latlon_coords_dataset_tables.tex
 INPUT ./latex/dataset/latlon_coords_dataset_tables.tex
 INPUT latex/dataset/latlon_coords_dataset_tables.tex
-<<<<<<< HEAD
 INPUT ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/hFacC.png
 INPUT ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/hFacC.png
 INPUT ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/hFacC.png
@@ -1455,8 +1438,6 @@ INPUT ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree
 INPUT ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/maskC.png
 INPUT ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/maskC.png
 INPUT ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/maskC.png
-=======
->>>>>>> ojh
 INPUT ./latex/dataset/latlon_dataset.tex
 INPUT latex/dataset/latlon_dataset.tex
 INPUT ./latex/dataset/latlon_dataset.tex
@@ -1465,7 +1446,6 @@ INPUT ./latex/dataset/latlon_dataset_tables.tex
 INPUT latex/dataset/latlon_dataset_tables.tex
 INPUT ./latex/dataset/latlon_dataset_tables.tex
 INPUT latex/dataset/latlon_dataset_tables.tex
-<<<<<<< HEAD
 INPUT ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png
 INPUT ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png
 INPUT ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png
@@ -1746,8 +1726,6 @@ INPUT ../images/plots/latlon_plots/Sea_Surface_Height/SSHNOIBC.png
 INPUT ../images/plots/latlon_plots/Sea_Surface_Height/SSHNOIBC.png
 INPUT ../images/plots/latlon_plots/Sea_Surface_Height/SSHNOIBC.png
 INPUT ../images/plots/latlon_plots/Sea_Surface_Height/SSHNOIBC.png
-=======
->>>>>>> ojh
 INPUT ./latex/dataset/oneD_dataset.tex
 INPUT latex/dataset/oneD_dataset.tex
 INPUT ./latex/dataset/oneD_dataset.tex
@@ -1756,7 +1734,6 @@ INPUT ./latex/dataset/oneD_dataset_tables.tex
 INPUT latex/dataset/oneD_dataset_tables.tex
 INPUT ./latex/dataset/oneD_dataset_tables.tex
 INPUT latex/dataset/oneD_dataset_tables.tex
-<<<<<<< HEAD
 INPUT ../images/plots/oneD_plots/Global_Mean_Atmospheric_Pressure/Pa_global.png
 INPUT ../images/plots/oneD_plots/Global_Mean_Atmospheric_Pressure/Pa_global.png
 INPUT ../images/plots/oneD_plots/Global_Mean_Atmospheric_Pressure/Pa_global.png
@@ -1907,8 +1884,6 @@ INPUT ../images/plots/oneD_plots/SBO_Core_Products/zoamp_fw.png
 INPUT ../images/plots/oneD_plots/SBO_Core_Products/zoamp_fw.png
 INPUT ../images/plots/oneD_plots/SBO_Core_Products/zoamp_fw.png
 INPUT ../images/plots/oneD_plots/SBO_Core_Products/zoamp_fw.png
-=======
->>>>>>> ojh
 INPUT ./latex/metadata_specification.tex
 INPUT latex/metadata_specification.tex
 INPUT ./latex/metadata_specification.tex

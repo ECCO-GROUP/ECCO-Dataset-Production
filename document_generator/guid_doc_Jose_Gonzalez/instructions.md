@@ -8,39 +8,39 @@ main files used are: `latex_outline.py` and `dataset_sections.py`:
 
 1. **JSON Configuration Files:**
 
-    - The script relies on several JSON files located in the `granule_datasets/` directory to define dataset groupings and coordinate information. These files must exist and be correctly formatted:
-        - `granule_datasets/native_coords.json`
-        - `granule_datasets/ECCOv4r4_groupings_for_native_datasets.json`
-        - `granule_datasets/latlon_coords.json`
-        - `granule_datasets/ECCOv4r4_groupings_for_latlon_datasets.json`
-        - `granule_datasets/ECCOv4r4_groupings_for_1D_datasets.json`
-    - The structure of these JSON files must match what the `data_products` function in `dataset_sections.py` expects (a list of dictionaries, each containing a `"filename"` key, at a minimum).
+   - The script relies on several JSON files located in the `granule_datasets/` directory to define dataset groupings and coordinate information. These files must exist and be correctly formatted:
+     - `granule_datasets/native_coords.json`
+     - `granule_datasets/ECCOv4r4_groupings_for_native_datasets.json`
+     - `granule_datasets/latlon_coords.json`
+     - `granule_datasets/ECCOv4r4_groupings_for_latlon_datasets.json`
+     - `granule_datasets/ECCOv4r4_groupings_for_1D_datasets.json`
+   - The structure of these JSON files must match what the `data_products` function in `dataset_sections.py` expects (a list of dictionaries, each containing a `"filename"` key, at a minimum).
 
 2. **Directory Structure:**
 
-    - the granule netcdf datasets need to be downloaded from site that is hosting them
-    - The script expects a specific directory structure for NetCDF files and generated images:
+   - the granule netcdf datasets need to be downloaded from site that is hosting them
+   - The script expects a specific directory structure for NetCDF files and generated images:
 
-        - `granule_datasets/natives_coords/` (Native coordinate datasets)
-        - `granule_datasets/natives/` (Native datasets)
-        - `granule_datasets/latlon_coords/` (LatLon coordinate datasets)
-        - `granule_datasets/latlon/` (LatLon datasets)
-        - `granule_datasets/oneD/` (1D datasets)
+     - `granule_datasets/natives_coords/` (Native coordinate datasets)
+     - `granule_datasets/natives/` (Native datasets)
+     - `granule_datasets/latlon_coords/` (LatLon coordinate datasets)
+     - `granule_datasets/latlon/` (LatLon datasets)
+     - `granule_datasets/oneD/` (1D datasets)
 
-        - `images/plots/native_plots_coords/` (Native coordinate plots)
-        - `images/plots/native_plots/` (Native plots)
-        - `images/plots/latlon_plots_coords/` (LatLon coordinate plots)
-        - `images/plots/latlon_plots/` (LatLon plots)
-        - `images/plots/oneD_plots/` (1D plots)
+     - `images/plots/native_plots_coords/` (Native coordinate plots)
+     - `images/plots/native_plots/` (Native plots)
+     - `images/plots/latlon_plots_coords/` (LatLon coordinate plots)
+     - `images/plots/latlon_plots/` (LatLon plots)
+     - `images/plots/oneD_plots/` (1D plots)
 
-    - These directories must exist, or the script will likely throw errors when trying to read NetCDF files or save plots.
-    - They is actually instructions on how to download granules in `granule_datasets/download_instructions.txt` right after following those instructions, you can run `granule_datasets/download_granules.py` to download the datasets!
+   - These directories must exist, or the script will likely throw errors when trying to read NetCDF files or save plots.
+   - They is actually instructions on how to download granules in `granule_datasets/download_instructions.txt` right after following those instructions, you can run `granule_datasets/download_granules.py` to download the datasets!
 
 3. **Attributes Table:**
-    - Also modify `data/global_attributes.json` and `data/variable_attributes` to your liking, the data will be parsed and utilized in the code
+   - Also modify `data/global_attributes.json` and `data/variable_attributes` to your liking, the data will be parsed and utilized in the code
 
--   **`dataset_sections.py`:** Orchestrates the process, calling functions from `cdf_extract` and `cdf_plotter` and assembling the LaTeX code for each data product.
--   **`latex_outline.py`:** Calls `dataset_sections.py` and writes the final LaTeX code to `.tex` files in the `document/latex/dataset/` and `document/latex/data_product/` directories.
+- **`dataset_sections.py`:** Orchestrates the process, calling functions from `cdf_extract` and `cdf_plotter` and assembling the LaTeX code for each data product.
+- **`latex_outline.py`:** Calls `dataset_sections.py` and writes the final LaTeX code to `.tex` files in the `document/latex/dataset/` and `document/latex/data_product/` directories.
 
 ## 1. obtain dependencies
 
@@ -61,12 +61,12 @@ brew install proj
 ```
 
 2. create a `requirements.txt` file in the `/document_generator` folder and add following packages
-    - xarray
-    - matplotlib
-    - numpy
-    - cartopy
-    - cmocean
-    - ecco_v4_py
+   - xarray
+   - matplotlib
+   - numpy
+   - cartopy
+   - cmocean
+   - ecco_v4_py
 
 **requirements.txt**
 
@@ -154,9 +154,9 @@ images/plots/
 ## 2. run document generator
 
 1. as stated earlier, make sure to
-    1. Modify `data/global_attributes.json` and `data/variable_attributes` to your liking, the data will be parsed and utilized in the code
-    2. Download ecco_datasets manually and separate by groups (latlon, latlon_coords, natives, natives_coords, and oneD ), save them in `granule_datasets/`
-        - recall: they is instructions on how to download granules in `granule_datasets/download_instructions.txt` right after following those instructions, you can run `granule_datasets/download_granules.py` to download the datasets!
+   1. Modify `data/global_attributes.json` and `data/variable_attributes` to your liking, the data will be parsed and utilized in the code
+   2. Download ecco_datasets manually and separate by groups (latlon, latlon_coords, natives, natives_coords, and oneD ), save them in `granule_datasets/`
+      - recall: they is instructions on how to download granules in `granule_datasets/download_instructions.txt` right after following those instructions, you can run `granule_datasets/download_granules.py` to download the datasets!
 2. in main.py uncomment the three write_dataset code to generate all the plot data(it takes a minute), just need to do it once! so comment those lines after so you don't have to wait a minute again
 
 ```python
@@ -180,9 +180,9 @@ This table explains which files in the `document/` directory are automatically g
 
 ### Summary
 
--   **Automatically Generated:** Files in `document/latex/data_product/*` and `document/latex/dataset/*` directories
--   **Manually Modified:** Various `.tex` files containing document structure and content
--   **Final Compilation:** All files are compiled into `document/final_doc.tex`
+- **Automatically Generated:** Files in `document/latex/data_product/*` and `document/latex/dataset/*` directories
+- **Manually Modified:** Various `.tex` files containing document structure and content
+- **Final Compilation:** All files are compiled into `document/final_doc.tex`
 
 ### Detailed Classification
 
@@ -229,13 +229,13 @@ python latex_outline.py --type [native|latlon|1D]
 
 `dataset_sections.py` creates LaTeX code to document datasets. It reads dataset info from a JSON file and generates:
 
--   **Sections & Subsections:** Organizes documentation by dataset and variable.
--   **Tables:** Uses `cdf_extract` to create tables describing dataset fields and variable attributes.
--   **Plots:** Uses `cdf_plotter` to generate and include plots of each variable.
+- **Sections & Subsections:** Organizes documentation by dataset and variable.
+- **Tables:** Uses `cdf_extract` to create tables describing dataset fields and variable attributes.
+- **Plots:** Uses `cdf_plotter` to generate and include plots of each variable.
 
 **Key Function:**
 
--   `data_products(filePath, directory, imageDirectory, section)`: Takes a JSON file path, directories, and dataset type (`section`) as input. It returns a list of LaTeX lines that form the documentation section.
+- `data_products(filePath, directory, imageDirectory, section)`: Takes a JSON file path, directories, and dataset type (`section`) as input. It returns a list of LaTeX lines that form the documentation section.
 
 ### what does `cdf_plotter.py` do ?
 
