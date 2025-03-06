@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-
+"""
+"""
 import argparse
 import ast
 import boto3
