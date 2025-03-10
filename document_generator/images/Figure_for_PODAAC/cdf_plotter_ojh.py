@@ -68,7 +68,7 @@ def data_var_plot(ds:xr.Dataset, field:xr.DataArray, directory:str='none', color
 
 
 
-def plot_native(ds:xr.Dataset, field:xr.DataArray,dataseteName:str, show_colorbar:bool=True, is_coord:bool=False)->None:
+def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorbar:bool=True, is_coord:bool=False)->None:
     """
     Create a plot in native projection.
 
@@ -85,6 +85,10 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray,dataseteName:str, show_colorba
     show_coords : bool, optional
         Whether to show the coordinates. Default is False.
     """
+    #-Files name setting-#
+    dataseteName = ds.product_name
+    #--------------------#
+
     product_type = 'Native'
     tmp_plt = field
     if 'time' in field.dims:
@@ -107,7 +111,7 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray,dataseteName:str, show_colorba
     cmax = np.nanmax(tmp_plt)
     # default
     cmap = copy.copy(plt.get_cmap('jet'))
-    cmap.set_bad(color='dimgray', alpha=0 )
+    cmap.set_bad(color='dimgray')#, alpha=0 
 
     shortname_tmp = ds.metadata_link.split('ShortName=')[1]
     # create function for editing cmap, cmin and cmax
@@ -259,7 +263,9 @@ def plot_latlon(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
     dataseteName : str
         The Name of dataset that is selected with '.nc' at the end.
     """
-
+    #-Files name setting-#
+    dataseteName = ds.product_name
+    #--------------------#
     tmp_plt = field
     if 'time' in field.dims:
         tmp_plt = field.isel(time=0)
@@ -360,6 +366,9 @@ def plot_oneD(ds:xr.Dataset, field:xr.DataArray, dataseteName:str)->None:
     dataseteName : str
         The Name of dataset that is selected with '.nc' at the end.
     """
+    #-Files name setting-#
+    dataseteName = ds.product_name
+    #--------------------#
     ds[field.name].plot() # type: ignore
     fig = plt.gcf()
     fig.set_size_inches(12, 6)
@@ -369,6 +378,54 @@ def plot_oneD(ds:xr.Dataset, field:xr.DataArray, dataseteName:str)->None:
     plt.figtext(0.45, -0.05, 
                 s='Example fied: '+dataseteName, 
                 wrap=True,horizontalalignment='center', fontsize=11)
+
+
+def plot_datasetPicEg(ds:xr.Dataset,save_to:str):
+    Dims_box = list(ds.dims)
+    Var_box  = list(ds.data_vars)
+    # Var selection
+    var_sel = 0
+    tmp_plt = ds[Var_box[var_sel]]
+    if 'time' in Dims_box:
+        tmp_plt = ds[Var_box[var_sel]].isel(time=0)
+    # GENERALLY PLOT THE K=0 (OR K_L=0) LAYER EXCEPT
+    # FOR WVEL AND DRHODR BECAUSE THEIR VALUES ARE 
+    # 0 OR NAN AT THE SURFACE
+    target_k = 0
+    if 'WVEL' in tmp_plt.name or 'DRHO' in tmp_plt.name:
+        target_k = 1
+    if 'k_l' in tmp_plt.dims:
+        tmp_plt = tmp_plt.isel(k_l=target_k)
+    elif 'k' in tmp_plt.dims:
+        tmp_plt = tmp_plt.isel(k=target_k)
+    elif 'Z' in tmp_plt.dims:
+        tmp_plt = tmp_plt.isel(Z=target_k)
+    # find reasonable color limit for the plot
+    cmin = np.nanmin(tmp_plt)
+    cmax = np.nanmax(tmp_plt)
+    # default
+    cmap = copy.copy(plt.get_cmap('jet'))
+    #PLOTTING PART#
+    fig = plt.gcf() 
+    fig.set_size_inches(12, 6)
+    if 'tile' in Dims_box:
+        cmap.set_bad(color='dimgray')#<= to change the NaN values by a unique color
+        ecco.plot_tiles(tmp_plt,cmin=cmin,cmax=cmax, fig_num=0, cmap=cmap,
+                        show_colorbar=False, show_tile_labels= False,
+                        fig_size=8, cbar_label=False, show_cbar_label=False)
+    else:
+        ax = plt.subplot(1,1,1,projection=ccrs.Robinson(central_longitude=200))
+        # the plot (p), the gridlines (gl), and the colorbar (cbar).
+        p, gl, cbar = ecco.plot_global(ds.longitude, ds.latitude, tmp_plt, data_epsg_code=4326,
+                                       cmin=cmin, cmax=cmax, ax=ax,cmap=cmap,
+                                       show_colorbar=False, colorbar_label=False)
+#         ax.add_feature(cfeature.LAND)
+    #------ getting Dataset name and building the saving path for the figure -----#
+    FILEname = ds.metadata_link.split('ShortName=')[1]+'.png'
+    fig_path = os.path.join(save_to, FILEname)
+    #------ SAVING-----#
+    plt.savefig(fig_path, dpi=300, facecolor='w', bbox_inches='tight', pad_inches = 0.05)
+    plt.close('all')
 
 ############################################################################################################
 #                                   Helper functions                
@@ -449,7 +506,7 @@ def cal_cmin_cmax(cmap:matplotlib.colors.LinearSegmentedColormap,
             cmap = copy.copy(cmocean.cm.dense)
 
         if product_type == 'Native':
-            cmap.set_bad(color='dimgray', alpha=0 )
+            cmap.set_bad(color='dimgray')#,alpha=0
 
         return cmap, cmin, cmax
 

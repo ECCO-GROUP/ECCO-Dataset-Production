@@ -2,7 +2,10 @@
 import utils as s
 import json
 import cdf_extract
-import cdf_plotter
+# import cdf_plotter
+# import sys
+# sys.path.append(r'../images/Figure_for_PODAAC')
+import images.Figure_for_PODAAC.cdf_plotter_ojh as cdf_plotter
 
 def data_products(filePath:str, directory:str, imageDirectory:str, section:str='native')->list:
     """
