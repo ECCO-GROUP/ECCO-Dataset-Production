@@ -64,7 +64,7 @@ def data_var_plot(ds:xr.Dataset, field:xr.DataArray, directory:str='none', color
 
     address = save_plt(fig, directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
     print(address) # TESTING----------------------
-    return r'\includegraphics[scale=0.5]{' + f'{address}' + r'}'
+    return r'\includegraphics[scale=0.80]{' + f'{address}' + r'}'#width=\textwidth
 
 
 

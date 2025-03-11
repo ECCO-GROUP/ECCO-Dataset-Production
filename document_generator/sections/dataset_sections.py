@@ -64,7 +64,8 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
             l.append(r'\begin{figure}[H]')
             l.append(r'\centering')
             l.append(dataVarPlot) #testing right here
-            l.append(fr"\caption{{\\Dataset: {s.sanitize(filename)}\\Variable: {s.sanitize(fieldName)}}}") #Just 
+            # l.append(fr"\caption{{\\Dataset: {s.sanitize(filename)}\\Variable: {s.sanitize(fieldName)}}}") #Just 
+            l.append(fr"\caption{{Dataset: {s.sanitize(filename)} Variable: {s.sanitize(fieldName)}}}") #Just 
             l.append(fr'\label{{tab:table-{filename}_{fieldName}-Plot}}')
             l.append(r'\end{figure}')
         # if is_coord:
