@@ -41,30 +41,58 @@ def data_var_plot(ds:xr.Dataset, field:xr.DataArray, directory:str='none', color
         elif directory == 'none' and coords:
             directory = 'images/plots/native_plots_coords/'
         if coords and 'tile' in field.dims and len(field.dims) > 2 and 'bnds' not in field.name:
-            plot_native(ds, field, directory, colorbar, coords)
+            figure_path  = os.path.join(directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
+            TrueFalse = os.path.exists(figure_path)
+            if TrueFalse is False:
+                plot_native(ds, field, directory, colorbar, coords)
+                address = save_plt(fig, directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
+            else:
+                address = '../'+figure_path[figure_path.find('images'):]
         elif coords:
             plt.close('all')
             return 'skipped'
         else:
-            plot_native(ds, field, directory, colorbar, coords)
+            figure_path  = os.path.join(directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
+            TrueFalse = os.path.exists(figure_path)
+            if TrueFalse is False:
+                plot_native(ds, field, directory, colorbar, coords)
+                address = save_plt(fig, directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
+            else:
+                address = '../'+figure_path[figure_path.find('images'):]
     elif 'latlon' in ds.attrs['product_name']:
         if directory == 'none' and not coords:
             directory = 'images/plots/latlon_plots/'
         elif directory == 'none' and coords:
             directory = 'images/plots/latlon_plots_coords/'
         if coords and len(field.dims) > 2:
-            plot_latlon(ds, field, directory, colorbar, coords)
+            figure_path  = os.path.join(directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
+            TrueFalse = os.path.exists(figure_path)
+            if TrueFalse is False:
+                plot_latlon(ds, field, directory, colorbar, coords)
+                address = save_plt(fig, directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
+            else:
+                address = '../'+figure_path[figure_path.find('images'):]
         elif coords:
             plt.close('all')
             return 'skipped'
         else:
-            plot_latlon(ds, field, directory, colorbar, coords)
+            figure_path  = os.path.join(directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
+            TrueFalse = os.path.exists(figure_path)
+            if TrueFalse is False:
+                plot_latlon(ds, field, directory, colorbar, coords)
+                address = save_plt(fig, directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
+            else:
+                address = '../'+figure_path[figure_path.find('images'):]
     else:
-        plot_oneD(ds, field, directory)
-
-    address = save_plt(fig, directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
+        figure_path  = os.path.join(directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
+        TrueFalse = os.path.exists(figure_path)
+        if TrueFalse is False:
+            plot_oneD(ds, field, directory)
+            address = save_plt(fig, directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
+        else:
+            address = '../'+figure_path[figure_path.find('images'):]
     print(address) # TESTING----------------------
-    return r'\includegraphics[scale=0.80]{' + f'{address}' + r'}'#width=\textwidth
+    return r'\includegraphics[scale=0.55]{' + f'{address}' + r'}'#width=\textwidth
 
 
 
