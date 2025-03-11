@@ -70,12 +70,13 @@ def create_parser():
     parser.add_argument('--outfile', help="""
         Resulting job task output file (json format) (default: stdout).""")
     parser.add_argument('--keygen', help="""
-        If ecco_source_root references an S3 bucket and if running in JPL
+        If ecco_source_root references an S3 bucket and if running in an
+        institutionally-managed AWS IAM Identity Center (SSO) environment
         domain, federated login key generation script (e.g.,
         /usr/local/bin/aws-login-pub.darwin.amd64).""")
     parser.add_argument('--profile', help="""
-        If ecco_source_root references an S3 bucket and if running in JPL
-        domain, AWS credential profile name (e.g., 'saml-pub', 'default',
+        If ecco_source_root references an S3 bucket and if running in an SSO
+        environment, AWS credential profile name (e.g., 'saml-pub', 'default',
         etc.).""")
     parser.add_argument('-l','--log', dest='log_level',
         choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],

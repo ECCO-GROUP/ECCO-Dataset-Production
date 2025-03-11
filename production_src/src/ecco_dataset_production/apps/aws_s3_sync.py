@@ -44,11 +44,12 @@ def create_parser():
     parser.add_argument('--nproc', type=int, default=1, help="""
         Maximum number of local-remote sync processes (default: %(default)s)""")
     parser.add_argument('--keygen', help="""
-        If running in JPL domain, federated login key generation script (e.g.,
+        If running in an institutionally-managed AWS IAM Identity Center (SSO)
+        environment, federated login key generation script (e.g.,
         /usr/local/bin/aws-login-pub.darwin.amd64)""")
     parser.add_argument('--profile', help="""
-        If running in JPL domain, AWS credential profile name (e.g., 'saml-pub',
-        'default', etc.)""")
+        If running in an SSO environment, AWS credential profile name (e.g.,
+        'saml-pub', 'default', etc.)""")
     parser.add_argument('--dryrun', action='store_true', help="""
         Set AWS S3 CLI argument '--dryrun'""")
     parser.add_argument('-l','--log', dest='log_level',

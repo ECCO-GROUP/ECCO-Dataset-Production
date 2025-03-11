@@ -27,8 +27,9 @@ def create_parser():
         default='WARNING', help="""
         Set logging level (default: %(default)s)""")
     parser.add_argument('--keygen', help="""
-        If tasklist descriptors reference AWS S3 endpoints and if running in JPL
-        domain, (path and) name of federated login key generation script (e.g.,
+        If tasklist descriptors reference AWS S3 endpoints and if running in an
+        institutionally-managed AWS IAM Identity Center (SSO) environment, (path
+        and) name of federated login key generation script (e.g.,
         /usr/local/bin/aws-login-pub.darwin.amd64)""")
     parser.add_argument('--profile', help="""
         Optional profile name to be used in combination with keygen (e.g.,

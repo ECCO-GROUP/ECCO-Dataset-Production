@@ -29,8 +29,9 @@ class ECCOMappingFactors(object):
             similar remote location given by AWS S3 bucket/prefix.  Either
             mapping_factors_loc or task may be provided but not both.
         **kwargs: If either task or mapping_factors_loc reference an AWS S3
-            endpoint and if running within JPL's SSO environment, additional
-            arguments that may be necessary include:
+            endpoint and if running within an institutionally-managed AWS IAM
+            Identity Center (SSO) environment, additional arguments that may be
+            necessary include:
             keygen (str): Federated login key generation script (e.g.,
                 /usr/local/bin/aws-login-pub.darwin.amd64).
             profile (str): Optional profile to be used in combination with

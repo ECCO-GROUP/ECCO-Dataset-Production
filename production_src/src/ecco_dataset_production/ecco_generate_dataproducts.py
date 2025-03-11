@@ -24,6 +24,7 @@ from . import ecco_file
 from . import ecco_grid
 from . import ecco_mapping_factors
 from . import ecco_metadata_store
+from . import ecco_podaac_metadata
 from . import ecco_task
 #from . import metadata
 
@@ -46,7 +47,8 @@ def ecco_make_granule( task, cfg,
             logger ('edp').
         **kwargs: Depending on run context:
             keygen (str): If tasklist descriptors reference AWS S3 endpoints and
-                if running in JPL domain, (path and) name of federated login key
+                if running in an institutionally-managed AWS IAM Identity Center
+                (SSO) environment, path and) name of federated login key
                 generation script (e.g.,
                 /usr/local/bin/aws-login-pub.darwin.amd64)
             profile (str): Optional profile name to be used in combination
@@ -242,10 +244,10 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
         cfg (dict): Parsed ECCO dataset production configuration file.
         **kwargs: Depending on run context:
             keygen (str): If task object key 'ecco_metadata_loc' references an
-                AWS S3 endpoint and if running in JPL domain, (path and) name of
+                AWS S3 endpoint and if running in an institutionally-managed AWS
+                IAM Identity Center (SSO) environment, (path and) name of
                 federated login key generation script (e.g.,
                 /usr/local/bin/aws-login-pub.darwin.amd64)
-
             profile (str): Optional profile name to be used in combination
                 with keygen (e.g., 'saml-pub', 'default', etc.)
 
@@ -402,8 +404,11 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
     # optional PO.DAAC metadata:
     try:
         # first, locate podaac metadata source file in ecco metadata directory:
-        pm = pd.read_csv( os.path.join(
-            task['ecco_metadata_loc'], cfg['podaac_metadata_filename']))
+        pm = ecco_podaac_metadata.ECCOPODAACMetadata(
+            metadata_src=os.path.join(task['ecco_metadata_loc'],cfg['podaac_metadata_filename']),
+            **kwargs).metadata
+        #pm = pd.read_csv( os.path.join(
+        #    task['ecco_metadata_loc'], cfg['podaac_metadata_filename']))
         # get PO.DAAC metadata (row) corresponding to 'DATASET.FILENAME' column
         # element that matches "generic" granule file string (i.e., without date and
         # version):
@@ -452,8 +457,9 @@ def generate_dataproducts( tasklist, log_level=None, **kwargs):
             or 'WARNING' if called in standalone mode.
         **kwargs: Depending on run context:
             keygen (str): If tasklist, or tasklist descriptors reference AWS S3
-                endpoints and if running in JPL domain, (path and) name of
-                federated login key generation script (e.g.,
+                endpoints and if running in an institutionally-managed AWS IAM
+                Identity Center (SSO) environment, (path and) name of federated
+                login key generation script (e.g.,
                 /usr/local/bin/aws-login-pub.darwin.amd64)
             profile (str): Optional profile name to be used in combination
                 with keygen (e.g., 'saml-pub', 'default', etc.)
