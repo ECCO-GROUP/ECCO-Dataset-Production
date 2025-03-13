@@ -9,13 +9,11 @@
 # (ref. https://cloudwiki.jpl.nasa.gov/display/cloudcomputing/AWS+CLI+and+BOTO+with+JPL+Credentials),
 # hence the optional arguments keygen and profile
 
-usage() { echo 'download.sh -k keygen -p profile'; }
+usage() { echo 'download.sh -v ver -k keygen -p profile   # ver = V4r4, V4r5, etc.'; }
 
-ver='V4r4'   # V4r5, etc.
-src="s3://ecco-model-granules/${ver}/llc90_grid/grid_ECCO${ver}.tar.gz"
-
-while getopts ":k:p:h" opt; do
+while getopts ":v:k:p:h" opt; do
     case $opt in
+    v ) ver=$OPTARG ;;
 	k ) keygen=$OPTARG ;;
 	p ) profile=$OPTARG ;;
 	h ) usage
@@ -25,19 +23,32 @@ while getopts ":k:p:h" opt; do
     esac
 done
 
+if [[ ! -v ver ]]; then
+    usage && exit 1
+fi
+
+# test data location(s) in AWS S3; may need to be changed if cloud storage
+# configuration changes:
+
+s3_bucket=s3://ecco-model-granules/
+s3_prefix=${ver}/llc90_grid/
+gridfile=grid_ECCO${ver}.tar.gz
+
+src=${s3_bucket}${s3_prefix}${gridfile}
+dest=./${ver}
+
 if [[ -v keygen ]]; then
     ${keygen}
 fi
 
-if [[ ! -d ${ver} ]]; then
-    mkdir -p ${ver}
+if [[ ! -d ${dest} ]]; then
+    mkdir -p ${dest}
 fi
 
-cd ${ver}
 if [[ -v profile ]]; then
-    aws s3 cp ${src} . --profile ${profile}
+    aws s3 cp ${src} ${dest} --profile ${profile}
 else
-    aws s3 cp ${src} .
+    aws s3 cp ${src} ${dest}
 fi
 
-tar -xf *gz
+cd ${dest} && tar -xf *gz

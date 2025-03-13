@@ -3,7 +3,6 @@
 *.diff
 */tmp/**/*.meta
 */tmp/**/*.data
-/upload_to_AWS/logs
 *.pyc
 job_logs*.json
 *.DS_Store
