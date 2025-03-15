@@ -1,6 +1,7 @@
 import ecco_v4_py as ecco
 import matplotlib.colors
 import matplotlib.pyplot as plt
+from mpl_toolkits.axisartist.axislines import AxesZero #<= to plot x-axis and y-axis direction
 import xarray as xr
 import numpy as np
 import utils
@@ -9,6 +10,7 @@ import os
 import copy
 import cmocean
 import argparse
+
 #-------------------------------------------------------------------------------------------------
 #----------------------------------------- Plotting Functions ------------------------------------
 def data_var_plot(ds:xr.Dataset, field:xr.DataArray, directory:str='none', colorbar:bool=True, coords:bool=False)->str:
@@ -173,7 +175,7 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray,
             #     cbar2.set_label(tmp_plt.attrs['units'])
             #else:
                 #cbar2.set_label('Axis:'+ field.attrs['axis'])
-
+        
         fig = plt.gcf()  # get the current figure
         fig.set_size_inches(12, 6)
 
@@ -195,6 +197,22 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray,
             axpos = fig.axes[-2].get_position()
             new_bbox = [bbox.x0, axpos.y0, bbox.width, axpos.height * 5]
             cbar_ax.set_position(new_bbox)
+        
+        #OJH: Adding tiile' x-axis and y-axis direction guide on the plot
+        # left, bottom, width, height = [0.5, 0.23, 0.25, 0.25]#<= to small x-axis and y-axis as inset
+        left, bottom, width, height = [0.1, 0.08, 0.75, 0.8]#<= to x-axis and y-axis around the entire figure. 
+        ax_ojh = fig.add_axes([left, bottom, width, height],axes_class=AxesZero)    
+        for direction in ["xzero", "yzero"]:
+            ## adds arrows at the ends of each axis
+            ax_ojh.axis[direction].set_axisline_style("-|>")
+            ## adds X and Y-axis from the origin
+            ax_ojh.axis[direction].set_visible(True)
+        ## hides borders
+        for direction in ["left", "right", "bottom", "top"]:
+            ax_ojh.axis[direction].set_visible(False)
+        ax_ojh.set_xticklabels('',fontsize=24);ax_ojh.set_yticklabels('',fontsize=24)
+        ax_ojh.set_xlabel('tiles x-axis',fontsize=24);ax_ojh.set_ylabel('tiles y-axis',fontsize=24)
+        ax_ojh.set_facecolor('none')#<= to x-axis and y-axis background color fully transparent.
 
     if 'time' in field.dims:
         fig.suptitle(f'{field.name}: {field.attrs["long_name"]}\n{str(field.time.values[0])[:10]}\n ', wrap=True, fontsize='x-large')
@@ -304,6 +322,55 @@ def plot_oneD(ds:xr.Dataset, field:xr.DataArray, directory:str)->None:
     fig = plt.gcf()
     fig.set_size_inches(12, 6)
     plt.suptitle(f'{field.name}: {str(field.time.values[0])[:10]}\n{field.attrs["long_name"]}', wrap=True, fontsize='x-large')
+
+
+def plot_datasetPicEg(ds:xr.Dataset,save_to:str):
+    Dims_box = list(ds.dims)
+    Var_box  = list(ds.data_vars)
+    # Var selection
+    var_sel = 0
+    tmp_plt = ds[Var_box[var_sel]]
+    if 'time' in Dims_box:
+        tmp_plt = ds[Var_box[var_sel]].isel(time=0)
+    # GENERALLY PLOT THE K=0 (OR K_L=0) LAYER EXCEPT
+    # FOR WVEL AND DRHODR BECAUSE THEIR VALUES ARE 
+    # 0 OR NAN AT THE SURFACE
+    target_k = 0
+    if 'WVEL' in tmp_plt.name or 'DRHO' in tmp_plt.name:
+        target_k = 1
+    if 'k_l' in tmp_plt.dims:
+        tmp_plt = tmp_plt.isel(k_l=target_k)
+    elif 'k' in tmp_plt.dims:
+        tmp_plt = tmp_plt.isel(k=target_k)
+    elif 'Z' in tmp_plt.dims:
+        tmp_plt = tmp_plt.isel(Z=target_k)
+    # find reasonable color limit for the plot
+    cmin = np.nanmin(tmp_plt)
+    cmax = np.nanmax(tmp_plt)
+    # default
+    cmap = copy.copy(plt.get_cmap('jet'))
+    #PLOTTING PART#
+    fig = plt.gcf() 
+    fig.set_size_inches(12, 6)
+    if 'tile' in Dims_box:
+        cmap.set_bad(color='dimgray')#<= to change the NaN values by a unique color
+        ecco.plot_tiles(tmp_plt,cmin=cmin,cmax=cmax, fig_num=0, cmap=cmap,
+                        show_colorbar=False, show_tile_labels= False,
+                        fig_size=8, cbar_label=False, show_cbar_label=False)
+    else:
+        ax = plt.subplot(1,1,1,projection=ccrs.Robinson(central_longitude=200))
+        # the plot (p), the gridlines (gl), and the colorbar (cbar).
+        p, gl, cbar = ecco.plot_global(ds.longitude, ds.latitude, tmp_plt, data_epsg_code=4326,
+                                       cmin=cmin, cmax=cmax, ax=ax,cmap=cmap,
+                                       show_colorbar=False, colorbar_label=False)
+#         ax.add_feature(cfeature.LAND)
+    #------ getting Dataset name and building the saving path for the figure -----#
+    FILEname = ds.metadata_link.split('ShortName=')[1]+'.png'
+    fig_path = os.path.join(save_to, FILEname)
+    #------ SAVING-----#
+    plt.savefig(fig_path, dpi=300, facecolor='w', bbox_inches='tight', pad_inches = 0.05)
+    plt.close('all')
+
 
 ############################################################################################################
 #                                   Helper functions                

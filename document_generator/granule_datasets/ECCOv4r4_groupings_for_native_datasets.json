@@ -93,7 +93,8 @@
     {
         "name": "ocean bottom pressure and model ocean bottom pressure anomaly",
         "fields": "OBP, OBPGMAP, PHIBOT",
-        "comment": "Ocean bottom pressure excluding (OBP) and including (OBPGMAP) the contribution from global mean atmospheric pressure. Note: PHIBOT is model hydrostatic bottom pressure anomaly and should not be compared with satellite bottom pressure products (e.g., from GRACE and GRACE-FO), see OBP and PHIBOT for more details.",
+        "dataset_description": "This dataset provides 2D fields of ocean bottom pressure. ",
+        "comment": "Ocean bottom pressure is provided in three forms: 1) ocean bottom pressure including global mean atmosphereic pressure (OGPGMAP), 2)  ocean bottom pressure excluding global mean atmosphereic pressure (OGP), and 3) the model's hydrostatic bottom pressure anomaly before the Greatbatch correction (PHIBOT).  Note: the ocean bottom pressure field PHIBOT should not be compared with satellite bottom pressure products (e.g., from GRACE and GRACE-FO), see the variable descriptions of OBP and PHIBOT for more details.",
         "product": "native",
         "filename": "OCEAN_BOTTOM_PRESSURE",
         "dimension": "2D",
@@ -103,7 +104,8 @@
         "name": "ocean density, stratification, and hydrostatic pressure",
         "fields": "RHOAnoma, DRHODR, PHIHYD, PHIHYDcR",
         "product": "native",
-        "dataset_description": "ocean density, stratification, and hydrostatic pressure",
+        "dataset_description": "This dataset provided 3D fields of ocean density, stratification, and hydrostatic pressure.",
+        "comment": "Hydrostatic pressure is provided in two forms: 1) using constant vertical grid spacing (PHIHYDcR) and 2) using time-varying grid spacing from the model's z* coordinate system (PHIHYD).",
         "filename": "OCEAN_DENS_STRAT_PRESS",
         "dimension": "3D",
         "frequency": "AVG_DAY, AVG_MON"

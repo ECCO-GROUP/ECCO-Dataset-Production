@@ -2,7 +2,10 @@
 import utils as s
 import json
 import cdf_extract
-import cdf_plotter
+# import cdf_plotter
+# import sys
+# sys.path.append(r'../images/Figure_for_PODAAC')
+import images.Figure_for_PODAAC.cdf_plotter_ojh as cdf_plotter
 
 def data_products(filePath:str, directory:str, imageDirectory:str, section:str='native')->list:
     """
@@ -61,7 +64,8 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
             l.append(r'\begin{figure}[H]')
             l.append(r'\centering')
             l.append(dataVarPlot) #testing right here
-            l.append(fr"\caption{{\\Dataset: {s.sanitize(filename)}\\Variable: {s.sanitize(fieldName)}}}") #Just 
+            # l.append(fr"\caption{{\\Dataset: {s.sanitize(filename)}\\Variable: {s.sanitize(fieldName)}}}") #Just 
+            l.append(fr"\caption{{Dataset: {s.sanitize(filename)} Variable: {s.sanitize(fieldName)}}}") #Just 
             l.append(fr'\label{{tab:table-{filename}_{fieldName}-Plot}}')
             l.append(r'\end{figure}')
         # if is_coord:

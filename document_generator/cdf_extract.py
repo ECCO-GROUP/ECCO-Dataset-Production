@@ -289,7 +289,8 @@ def data_var_table(field_name:str, attrs:dict, ds_name:str)->list[str]:
     la = [
             # ADJUST SIZE OF TABLE HERE
             # r'\begin{longtable}{|p{0.1\textwidth}|p{0.35\textwidth}|p{0.45\textwidth}|p{0.1\textwidth}|}',
-            r'\begin{longtable}{|p{0.06\textwidth}|p{0.41\textwidth}|p{0.39\textwidth}|p{0.06\textwidth}|}',
+            # r'\begin{longtable}{|p{0.06\textwidth}|p{0.41\textwidth}|p{0.39\textwidth}|p{0.06\textwidth}|}',
+            r'\begin{longtable}{|m{0.06\textwidth}|m{0.41\textwidth}|m{0.39\textwidth}|m{0.06\textwidth}|}',
             fr"\caption{{CDL description of {new_sani}'s {utils.sanitize(field_name)} variable}}",
             fr'\label{{tab:table-{ds_name}_{field_name}}} \\ ',
             r'\hline \endhead \hline \endfoot',
