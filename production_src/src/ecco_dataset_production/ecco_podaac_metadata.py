@@ -58,8 +58,8 @@ class ECCOPODAACMetadata(object):
 
 
     def __del__(self):
-        """If instantiated remove temporary metadata storage when directory when
-        ECCOPODAACMetadata instance goes out of scope or is explicitly deleted.
+        """Remove temporary metadata storage when ECCOPODAACMetadata instance
+        goes out of scope or is explicitly deleted.
 
         """
         try:

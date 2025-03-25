@@ -24,8 +24,8 @@ class ECCOMetadata(object):
     Args:
         task (str, dict, or taskobj): Optional (path and) name of json-formatted
             file defining a single task, single task description dictionary, or
-            ECCOTask object. Either task or metadata_loc may be provided, but
-            not both.
+            ECCOTask object. Either task or ecco_metadata_loc may be provided,
+            but not both.
         ecco_metadata_loc (str): Optional pathname of either ECCO metadata directory,
             or similar remote location given by AWS S3 bucket/prefix. Either
             ecco_metadata_loc or task may be provided but not both.
@@ -58,7 +58,7 @@ class ECCOMetadata(object):
         self.task = None
         self.tmpdir = None
 
-        if task and metadata_loc:
+        if task and ecco_metadata_loc:
             raise RuntimeError('Either task or metadata_loc may be provided, but not both')
 
         if task:
@@ -90,7 +90,7 @@ class ECCOMetadata(object):
         'latlon', and 'native' keys.
 
         """
-        log.info("collecting 'groupings' metadata sourced from %s...", self.metadata_loc)
+        log.info("collecting 'groupings' metadata sourced from %s...", self.metadata_dir)
         dataset_groupings = {}
         for file in glob.glob(os.path.join(self.metadata_dir,'*groupings*')):
             if re.search(r'_1D_',os.path.basename(file),re.IGNORECASE):
@@ -112,7 +112,7 @@ class ECCOMetadata(object):
                 log.debug(' %d:', i)
                 for k,v in dict_i.items():
                     log.debug('  %s: %s', k, v)
-        log.info("...done collecting 'groupings' metadata sourced from %s", self.metadata_loc)
+        log.info("...done collecting 'groupings' metadata sourced from %s", self.metadata_dir)
         return dataset_groupings
 
 

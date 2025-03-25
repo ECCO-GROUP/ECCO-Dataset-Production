@@ -46,12 +46,27 @@ class ECCOMDSDataset(object):
             model_geometry: ECCO model geometry (e.g., 'llc').
             read_grid: Passed via the read_bin_llc.load_ecco_vars_from_mds input
                 parameter of the same name (e.g., 'False').
+        tmpdir (str): Optional temporary directory for task list variable input
+            data store. If not defined, temporary storage will be created
+            locally, and separately, for each variable. The primary intent of
+            this shared storage space is to minimize data download for those
+            cases in which variables (re)use data such as vector transformed
+            fields (UV -> EW/NS).
+        **kwargs: If task references AWS S3 endpoint data and if running within
+            an institutionally-managed AWS IAM Identity Center (SSO)
+            environment, additional arguments that may be necessary include:
+            keygen (str): Federated login key generation script (e.g.,
+                /usr/local/bin/aws-login-pub.darwin.amd64).
+            profile (str): Optional profile to be used in combination with
+                keygen (e.g., 'default', 'saml-pub', etc.)
 
     Attributes:
         cfg (dict): Local store of cfg input.
-        ds (xarray.Dataset): ECCO MDS dataset for specified task and variable.
-        data_dir (str): Temporary directory name for local store of input ECCO
-            MDS files specified by task and variable.
+        ds (xarray.Dataset, or list of same): ECCO MDS dataset(s) for specified
+            task and variable (list of xarray.Datasets if variable is a
+            vector-transformed quantity, single xarray.Dataset otherwise).
+        #data_dir (str): Temporary directory name for local store of input ECCO
+        #    MDS files specified by task and variable.
         grid (ECCOGrid object): Local reference to ecco_grid input, if
             provided, or local object if not (and thus fetched using task object
             specifier).
@@ -59,14 +74,14 @@ class ECCOMDSDataset(object):
             ecco_mapping_factors input, if provided, or local object if not (and
             thus fetched using task object specifier).
         task (ECCOTask): Local object store of input task descriptor.
-        tmp_grid_dir (TemporaryDirectory): Temporary local ECCO grid directory
-            if non-local source as specified in task descriptor.
-        tmp_data_dir (TemporaryDirectory): Temporary local ECCO MDS file storage
-            for task and variable combination.
+        #tmp_data_dir (TemporaryDirectory): Temporary local ECCO MDS file storage
+        #    for task and variable combination.
+        tmpdir (TemporaryDirectory): Local store of TemporaryDirectory instance
+            if tmpdir input argument not provided.
 
     """
     def __init__( self, task=None, variable=None, grid=None,
-        mapping_factors=None, cfg=None, **kwargs):
+        mapping_factors=None, cfg=None, tmpdir=None, **kwargs):
         """Create instance of ECCOMDSDataset class.
 
         """
@@ -115,18 +130,27 @@ class ECCOMDSDataset(object):
 
             # gather variable input locally (not the most efficient approach for
             # data that may already be stored locally, but cleanest way to
-            # handle variables with multiple inputs and/or data stored in aws
-            # s3 buckets):
-            self.tmp_data_dir = tempfile.TemporaryDirectory()
-            self.data_dir = self.tmp_data_dir.name
+            # handle variables with multiple inputs and/or source locations,
+            # and/or data stored in aws s3 buckets):
+
+            if not tmpdir:
+                self.tmpdir = tempfile.TemporaryDirectory()
+                tmpdir = self.tmpdir.name
+
+            #self.tmp_data_dir = tempfile.TemporaryDirectory()
+            #self.data_dir = self.tmp_data_dir.name
+
             if self.task.is_variable_input_local(variable):
                 for components in self.task.variable_inputs(variable):
                     for file in components:
-                        shutil.copy(file,self.data_dir)
+                        if os.path.basename(file) not in os.listdir(tmpdir):
+                            # TODO: replace with os.symlink
+                            shutil.copy(file,tmpdir)
             else:
                 for components in self.task.variable_inputs(variable):
                     for file in components:
-                        aws.ecco_aws_s3_cp.aws_s3_cp( src=file, dest=self.data_dir, **kwargs)
+                        if os.path.basename(file) not in os.listdir(tmpdir):
+                            aws.ecco_aws_s3_cp.aws_s3_cp( src=file, dest=tmpdir, **kwargs)
 
             if self.task.is_variable_single_component(variable):
 
@@ -159,7 +183,7 @@ class ECCOMDSDataset(object):
                         raise RuntimeError(f'{e1} {e2}')
 
                     self.ds = ecco_v4_py.read_bin_llc.load_ecco_vars_from_mds(
-                        mds_var_dir             = self.data_dir,
+                        mds_var_dir             = tmpdir,
                         mds_grid_dir            = self.grid.grid_dir,
                         mds_files               = mds_file.prefix+'_'+mds_file.averaging_period,
                         vars_to_load            = mds_file.prefix,
@@ -188,8 +212,100 @@ class ECCOMDSDataset(object):
                     raise RuntimeError(err)
 
             else:
-                # vector summation required before ingest:
-                pass    # for now...
+
+                # field interpolation / vector transformation required:
+
+                ds = []     # accumulate vector components
+
+                for component in self.task.variable_inputs(variable):
+
+                    # determine method by which component is to be read:
+                    _,ext = os.path.splitext(component[0])
+
+                    if ext == '.data' or ext == '.meta':
+
+                        # time-dependent ECCO results from compact data/meta files:
+
+                        mds_file = ecco_file.ECCOMDSFilestr(
+                            os.path.basename(component[0]))
+
+                        # back-compatibility with ecco_v4_py.read_bin_llc.load_ecco_vars_from_mds:
+                        if self.task['dynamic_metadata']['time_coverage_duration'] == 'P1D':
+                            output_freq_code = 'AVG_DAY'
+                        elif self.task['dynamic_metadata']['time_coverage_duration'] == 'P1M':
+                            output_freq_code = 'AVG_MON'
+                        elif self.task['dynamic_metadata']['time_coverage_duration'] == 'PT0S':
+                            output_freq_code = 'SNAP'
+                        else:
+                            e1 = "Unknown task['dynamic_metadata']['time_coverage_duration'] type:"
+                            e2 = self.task['dynamic_metadata']['time_coverage_duration']
+                            log.error('%s %s',e1,e2)
+                            raise RuntimeError(f'{e1} {e2}')
+
+                        ds.append(
+                            ecco_v4_py.read_bin_llc.load_ecco_vars_from_mds(
+                                mds_var_dir             = tmpdir,
+                                mds_grid_dir            = self.grid.grid_dir,
+                                mds_files               = mds_file.prefix+'_'+mds_file.averaging_period,
+                                vars_to_load            = mds_file.prefix,
+                                #vars_to_load            = variable,
+                                drop_unused_coords      = True,
+                                grid_vars_to_coords     = False,
+                                output_freq_code        = output_freq_code,
+                                model_time_steps_to_load= [mds_file.time],
+                                read_grid               = True,
+                                #read_grid               = self.cfg['read_grid'],
+                                model_start_datetime    = np.datetime64(self.cfg['model_start_time'])) )
+
+                # ds[0], ds[1] will each contain 'x' or 'y' type fields (e.g.,
+                # UVEL, VVEL);  for purposes of UEVNfromUXVY call, unambiguously
+                # determine which is which, and satisfy numpy array function
+                # input requirements:
+
+                _xfld = _yfld = None
+
+                for i in range(len(ds)):
+
+                    if task['dynamic_metadata']['field_components'][variable]['x'] in ds[i].data_vars:
+                        _xfld_dataset_varname = task['dynamic_metadata']['field_components'][variable]['x'] # i.e., "UVEL"
+                        # make sure data are in np.array form to avoid "The
+                        # truth value of a Array is ambiguous. Use a.any() or
+                        # a.all()" error in UEVNfromUXVY call:
+                        ds[i][_xfld_dataset_varname].data = np.array(ds[i][_xfld_dataset_varname])
+                        _xfld = ds[i][_xfld_dataset_varname]
+
+                    elif task['dynamic_metadata']['field_components'][variable]['y'] in ds[i].data_vars:
+                        _yfld_dataset_varname = task['dynamic_metadata']['field_components'][variable]['y'] # i.e., "VVEL"
+                        # make sure data are in np.array form to avoid "The
+                        # truth value of a Array is ambiguous. Use a.any() or
+                        # a.all()" error in UEVNfromUXVY call:
+                        ds[i][_yfld_dataset_varname].data = np.array(ds[i][_yfld_dataset_varname])
+                        _yfld = ds[i][_yfld_dataset_varname]
+
+
+                # UEVNfromUXVY produces zonal and meridional component fields
+                # (in that order); for return value purposes, unambiguously
+                # determine output variable ordering (keeping in mind that, in
+                # the current context, only one of the output quantities will be
+                # retained.
+
+                (_zonal, _meridional) = ecco_v4_py.vector_calc.UEVNfromUXVY(
+                    xfld=_xfld,
+                    yfld=_yfld,
+                    coords=self.grid.native_grid)   # native_grid contains 'CS', 'SN' variables
+
+                # save the applicable output, _zonal or _meridional:
+
+                if task['dynamic_metadata']['field_orientations'][variable] == 'zonal':
+                    self.ds = xr.Dataset(data_vars={variable:_zonal})
+                elif task['dynamic_metadata']['field_orientations'][variable] == 'meridional':
+                    self.ds = xr.Dataset(data_vars={variable:_meridional})
+                else:
+                    e1 = f"task['dynamic_metadata']['field_orientations'][{variable}]="
+                    e2 = f"{task['dynamic_metadata']['field_orientations'][{variable}]}; "
+                    e3 = "value must either be 'zonal' or 'meridional'."
+                    log.error(e1+e2+e3)
+                    raise RuntimeError(e1+e2+e3)
 
 
     def as_latlon( self, variable=None):
@@ -404,12 +520,8 @@ class ECCOMDSDataset(object):
 
         """
         # clean up TemporaryDirectories:
-        #try:
-        #    self.tmp_grid_dir.cleanup()
-        #except:
-        #    pass
         try:
-            self.tmp_data_dir.cleanup()
+            self.tmpdir.cleanup()
         except:
             pass
 

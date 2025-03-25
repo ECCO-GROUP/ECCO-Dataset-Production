@@ -49,7 +49,7 @@ class ECCOGrid(object):
         task (ECCOTask): If provided, local object store of input task
             descriptor.
         grid_dir (str): Resulting local ECCO grid directory name (see
-            tmpdir).
+            tmpdir), grid_loc otherwise.
         tmpdir (tempfile.TemporaryDirectory object): If task or grid_loc
             references an AWS S3 endpoint, temporary directory object whose
             'name' attribute is assigned to grid_dir. In the case of a zipped
@@ -82,6 +82,7 @@ class ECCOGrid(object):
 
         """
         self.task = None
+        self.tmpdir = None
         self._latlon_grid = None
         self._native_grid = None
         self._native_wet_point_indices = None
