@@ -1,8 +1,0 @@
-
-# native groupings:
-
-[0,'native','AVG_MON','all']    # dynamic sea surface height and model sea level anomaly
-
-# latlon groupings:
-
-[0,'latlon','AVG_MON','all']    # dynamic sea surface height
