@@ -39,14 +39,28 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
     for item in data:
         filename = item["filename"]
         netCDF_ds = s.sanitize(filename)
-        l.append(r'\pagebreak') # Page break -- added
-        l.append(r'\subsection{'+ f'{section}' + ' NetCDF '+ f'{netCDF_ds}' + r'}')
-        #l.append(r'\par\vspace{0.5cm}')
-        l.append(r'\newp')
+        # l.append(r'\pagebreak') # Page break -- added ## <= is this utils? => yes, but I remove it to have continious paging
+        # l.append(r'\subsection{'+ f'{section}' + ' NetCDF '+ f'{netCDF_ds}' + r'}')
+        if "coordinates" in section:
+            complementText = " "
+        else:
+            complementText = ' dataset of '
+        l.append(r'\subsection{'+ f'{section}' + complementText + f'{netCDF_ds}' + r'}')
+        # l.append(r'\par\vspace{0.5cm}') # activated!! 
+        l.append(r'\newp') # Deasctived!!
         
         fields, ds = cdf_extract.search_and_extract(filename, directory, is_coord)
+
+        # l.append(r'\subsubsection{Overview of '+ f'{netCDF_ds}' + r' dataset content}')
+        l.append(r'\subsubsection{Overview}')
+        if "comment" in item.keys():
+            summary_content = item["Introduction"]+' '+s.sanitize(item["comment"])+" "
+        else:
+            summary_content = item["Introduction"]+" "
+        l.append(summary_content)
         # insert table function for each field in ds here ! 
-        l.extend(cdf_extract.fieldTable(ds, is_coord))
+        l.extend(cdf_extract.fieldTable(ds, is_coord)) #<== Modified!!! in order to remove the table that contain a list of variable per dataset.
+        l.append(r'\newp') # Deasctived!!
         for field in fields:
             attrs = cdf_extract.extract_field_info(field)
             #l.extend(newLines)
@@ -54,8 +68,8 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
             # Create latex table for each variable
             fieldName = attrs['Variable Name']
             cleanName = s.sanitize(fieldName)
-            l.append(r'\pagebreak') # Page break -- added 
-            l.append(fr'\subsubsection{{{section} Variable {cleanName}}}')
+            l.append(r'\pagebreak') # Page break -- added ## <= is this utils? => yes, but I remove it to have continious fluent paging
+            l.append(fr'\subsubsection{{{section} Variable: {cleanName}}}')
             dataVarTable = cdf_extract.data_var_table(fieldName, attrs, filename)
             l.extend(dataVarTable)    
 
@@ -65,7 +79,7 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
             l.append(r'\centering')
             l.append(dataVarPlot) #testing right here
             # l.append(fr"\caption{{\\Dataset: {s.sanitize(filename)}\\Variable: {s.sanitize(fieldName)}}}") #Just 
-            l.append(fr"\caption{{Dataset: {s.sanitize(filename)} Variable: {s.sanitize(fieldName)}}}") #Just 
+            l.append(fr"\caption{{Dataset: {s.sanitize(filename)}, Variable: {s.sanitize(fieldName)}}}") #Just 
             l.append(fr'\label{{tab:table-{filename}_{fieldName}-Plot}}')
             l.append(r'\end{figure}')
         # if is_coord:

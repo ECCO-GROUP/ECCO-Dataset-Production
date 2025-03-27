@@ -1,315 +1,246 @@
-\contentsline {table}{\numberline {9.1}{\ignorespaces Definition of text styles used in the GDS\relax }}{28}{}%
-\contentsline {table}{\numberline {9.2}{\ignorespaces Definition of colour styles used in the GDS\relax }}{28}{}%
-\contentsline {table}{\numberline {9.3}{\ignorespaces Storage type definitions used in the GDS\relax }}{28}{}%
-\contentsline {table}{\numberline {12.1}{\ignorespaces GDS 2.0 Filenaming convention components\relax }}{33}{}%
-\contentsline {table}{\numberline {12.2}{\ignorespaces Regional Data Assembly Centre (RDAC) code table\relax }}{35}{}%
-\contentsline {table}{\numberline {13.1}{\ignorespaces Mandatory global attributes for GDS 2.0 netCDF data files\relax }}{37}{}%
-\contentsline {table}{\numberline {13.1}{\ignorespaces Mandatory global attributes for GDS 2.0 netCDF data files\relax }}{38}{}%
-\contentsline {table}{\numberline {13.1}{\ignorespaces Mandatory global attributes for GDS 2.0 netCDF data files\relax }}{39}{}%
-\contentsline {table}{\numberline {13.2}{\ignorespaces Table 8-2. Variable attributes for GDS 2.0 netCDF data files\relax }}{39}{}%
-\contentsline {table}{\numberline {13.2}{\ignorespaces Table 8-2. Variable attributes for GDS 2.0 netCDF data files\relax }}{40}{}%
-\contentsline {table}{\numberline {13.2}{\ignorespaces Table 8-2. Variable attributes for GDS 2.0 netCDF data files\relax }}{41}{}%
-\contentsline {table}{\numberline {13.3}{\ignorespaces Example CDL description of native dataset\relax }}{43}{}%
-\contentsline {table}{\numberline {13.3}{\ignorespaces Example CDL description of native dataset\relax }}{44}{}%
-\contentsline {table}{\numberline {13.3}{\ignorespaces Example CDL description of native dataset\relax }}{45}{}%
-\contentsline {table}{\numberline {13.3}{\ignorespaces Example CDL description of native dataset\relax }}{46}{}%
-\contentsline {table}{\numberline {13.3}{\ignorespaces Example CDL description of native dataset\relax }}{47}{}%
-\contentsline {table}{\numberline {13.3}{\ignorespaces Example CDL description of native dataset\relax }}{48}{}%
-\contentsline {table}{\numberline {13.3}{\ignorespaces Example CDL description of native dataset\relax }}{49}{}%
-\contentsline {table}{\numberline {13.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{49}{}%
-\contentsline {table}{\numberline {13.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{50}{}%
-\contentsline {table}{\numberline {13.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{51}{}%
-\contentsline {table}{\numberline {13.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{52}{}%
-\contentsline {table}{\numberline {13.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{53}{}%
-\contentsline {table}{\numberline {13.5}{\ignorespaces Example CDL description of 1D dataset\relax }}{53}{}%
-\contentsline {table}{\numberline {13.5}{\ignorespaces Example CDL description of 1D dataset\relax }}{54}{}%
-\contentsline {table}{\numberline {14.1}{\ignorespaces GDS 2.0 Filenaming convention components\relax }}{55}{}%
-\contentsline {table}{\numberline {15.1}{\ignorespaces Mandatory global attributes for GDS 2.0 netCDF data files\relax }}{59}{}%
-\contentsline {table}{\numberline {15.1}{\ignorespaces Mandatory global attributes for GDS 2.0 netCDF data files\relax }}{60}{}%
-\contentsline {table}{\numberline {15.1}{\ignorespaces Mandatory global attributes for GDS 2.0 netCDF data files\relax }}{61}{}%
-\contentsline {table}{\numberline {15.2}{\ignorespaces Table 8-2. Variable attributes for GDS 2.0 netCDF data files\relax }}{61}{}%
-\contentsline {table}{\numberline {15.2}{\ignorespaces Table 8-2. Variable attributes for GDS 2.0 netCDF data files\relax }}{62}{}%
-\contentsline {table}{\numberline {15.2}{\ignorespaces Table 8-2. Variable attributes for GDS 2.0 netCDF data files\relax }}{63}{}%
-\contentsline {table}{\numberline {15.3}{\ignorespaces Example CDL description of native dataset\relax }}{65}{}%
-\contentsline {table}{\numberline {15.3}{\ignorespaces Example CDL description of native dataset\relax }}{66}{}%
-\contentsline {table}{\numberline {15.3}{\ignorespaces Example CDL description of native dataset\relax }}{67}{}%
-\contentsline {table}{\numberline {15.3}{\ignorespaces Example CDL description of native dataset\relax }}{68}{}%
-\contentsline {table}{\numberline {15.3}{\ignorespaces Example CDL description of native dataset\relax }}{69}{}%
-\contentsline {table}{\numberline {15.3}{\ignorespaces Example CDL description of native dataset\relax }}{70}{}%
-\contentsline {table}{\numberline {15.3}{\ignorespaces Example CDL description of native dataset\relax }}{71}{}%
-\contentsline {table}{\numberline {15.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{71}{}%
-\contentsline {table}{\numberline {15.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{72}{}%
-\contentsline {table}{\numberline {15.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{73}{}%
-\contentsline {table}{\numberline {15.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{74}{}%
-\contentsline {table}{\numberline {15.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{75}{}%
-\contentsline {table}{\numberline {15.5}{\ignorespaces Example CDL description of 1D dataset\relax }}{75}{}%
-\contentsline {table}{\numberline {15.5}{\ignorespaces Example CDL description of 1D dataset\relax }}{76}{}%
-\contentsline {table}{\numberline {16.1}{\ignorespaces GDS 2.0 Filenaming convention components\relax }}{77}{}%
-\contentsline {table}{\numberline {17.1}{\ignorespaces Mandatory global attributes for GDS 2.0 netCDF data files\relax }}{81}{}%
-\contentsline {table}{\numberline {17.1}{\ignorespaces Mandatory global attributes for GDS 2.0 netCDF data files\relax }}{82}{}%
-\contentsline {table}{\numberline {17.1}{\ignorespaces Mandatory global attributes for GDS 2.0 netCDF data files\relax }}{83}{}%
-\contentsline {table}{\numberline {17.2}{\ignorespaces Table 8-2. Variable attributes for GDS 2.0 netCDF data files\relax }}{83}{}%
-\contentsline {table}{\numberline {17.2}{\ignorespaces Table 8-2. Variable attributes for GDS 2.0 netCDF data files\relax }}{84}{}%
-\contentsline {table}{\numberline {17.2}{\ignorespaces Table 8-2. Variable attributes for GDS 2.0 netCDF data files\relax }}{85}{}%
-\contentsline {table}{\numberline {17.3}{\ignorespaces Example CDL description of native dataset\relax }}{87}{}%
-\contentsline {table}{\numberline {17.3}{\ignorespaces Example CDL description of native dataset\relax }}{88}{}%
-\contentsline {table}{\numberline {17.3}{\ignorespaces Example CDL description of native dataset\relax }}{89}{}%
-\contentsline {table}{\numberline {17.3}{\ignorespaces Example CDL description of native dataset\relax }}{90}{}%
-\contentsline {table}{\numberline {17.3}{\ignorespaces Example CDL description of native dataset\relax }}{91}{}%
-\contentsline {table}{\numberline {17.3}{\ignorespaces Example CDL description of native dataset\relax }}{92}{}%
-\contentsline {table}{\numberline {17.3}{\ignorespaces Example CDL description of native dataset\relax }}{93}{}%
-\contentsline {table}{\numberline {17.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{93}{}%
-\contentsline {table}{\numberline {17.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{94}{}%
-\contentsline {table}{\numberline {17.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{95}{}%
-\contentsline {table}{\numberline {17.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{96}{}%
-\contentsline {table}{\numberline {17.4}{\ignorespaces Example CDL description of latlon dataset\relax }}{97}{}%
-\contentsline {table}{\numberline {17.5}{\ignorespaces Example CDL description of 1D dataset\relax }}{97}{}%
-\contentsline {table}{\numberline {17.5}{\ignorespaces Example CDL description of 1D dataset\relax }}{98}{}%
-\contentsline {table}{\numberline {18.1}{\ignorespaces Variables in the dataset GRID\_GEOMETRY\_ECCO\relax }}{100}{}%
-\contentsline {table}{\numberline {18.2}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's XC variable\relax }}{101}{}%
-\contentsline {table}{\numberline {18.3}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's YC variable\relax }}{102}{}%
-\contentsline {table}{\numberline {18.4}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's XG variable\relax }}{103}{}%
-\contentsline {table}{\numberline {18.5}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's YG variable\relax }}{104}{}%
-\contentsline {table}{\numberline {18.6}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's CS variable\relax }}{105}{}%
-\contentsline {table}{\numberline {18.7}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's SN variable\relax }}{106}{}%
-\contentsline {table}{\numberline {18.8}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's rA variable\relax }}{107}{}%
-\contentsline {table}{\numberline {18.9}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's dxG variable\relax }}{108}{}%
-\contentsline {table}{\numberline {18.10}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's dyG variable\relax }}{109}{}%
-\contentsline {table}{\numberline {18.11}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's Depth variable\relax }}{110}{}%
-\contentsline {table}{\numberline {18.12}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's rAz variable\relax }}{111}{}%
-\contentsline {table}{\numberline {18.13}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's dxC variable\relax }}{112}{}%
-\contentsline {table}{\numberline {18.14}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's dyC variable\relax }}{113}{}%
-\contentsline {table}{\numberline {18.15}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's rAw variable\relax }}{114}{}%
-\contentsline {table}{\numberline {18.16}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's rAs variable\relax }}{115}{}%
-\contentsline {table}{\numberline {18.17}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's hFacC variable\relax }}{116}{}%
-\contentsline {table}{\numberline {18.18}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's hFacW variable\relax }}{117}{}%
-\contentsline {table}{\numberline {18.19}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's hFacS variable\relax }}{118}{}%
-\contentsline {table}{\numberline {18.20}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's maskC variable\relax }}{119}{}%
-\contentsline {table}{\numberline {18.21}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's maskW variable\relax }}{120}{}%
-\contentsline {table}{\numberline {18.22}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's maskS variable\relax }}{121}{}%
-\contentsline {table}{\numberline {19.1}{\ignorespaces Variables in the dataset ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES\relax }}{123}{}%
-\contentsline {table}{\numberline {19.2}{\ignorespaces CDL description of ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's EXFaqh variable\relax }}{124}{}%
-\contentsline {table}{\numberline {19.3}{\ignorespaces CDL description of ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's EXFatemp variable\relax }}{125}{}%
-\contentsline {table}{\numberline {19.4}{\ignorespaces CDL description of ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's EXFpress variable\relax }}{126}{}%
-\contentsline {table}{\numberline {19.5}{\ignorespaces CDL description of ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's EXFuwind variable\relax }}{127}{}%
-\contentsline {table}{\numberline {19.6}{\ignorespaces CDL description of ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's EXFvwind variable\relax }}{128}{}%
-\contentsline {table}{\numberline {19.7}{\ignorespaces CDL description of ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's EXFwspee variable\relax }}{129}{}%
-\contentsline {table}{\numberline {19.8}{\ignorespaces Variables in the dataset OCEAN\_3D\_MIXING\_COEFFS\_ECCO\relax }}{130}{}%
-\contentsline {table}{\numberline {19.9}{\ignorespaces CDL description of OCEAN\_3D\_MIXING\_COEFFS's DIFFKR variable\relax }}{131}{}%
-\contentsline {table}{\numberline {19.10}{\ignorespaces CDL description of OCEAN\_3D\_MIXING\_COEFFS's KAPGM variable\relax }}{132}{}%
-\contentsline {table}{\numberline {19.11}{\ignorespaces CDL description of OCEAN\_3D\_MIXING\_COEFFS's KAPREDI variable\relax }}{133}{}%
-\contentsline {table}{\numberline {19.12}{\ignorespaces Variables in the dataset OCEAN\_3D\_MOMENTUM\_TEND\relax }}{134}{}%
-\contentsline {table}{\numberline {19.13}{\ignorespaces CDL description of OCEAN\_3D\_MOMENTUM\_TEND's Um\_dPHdx variable\relax }}{135}{}%
-\contentsline {table}{\numberline {19.14}{\ignorespaces CDL description of OCEAN\_3D\_MOMENTUM\_TEND's Vm\_dPHdy variable\relax }}{136}{}%
-\contentsline {table}{\numberline {19.15}{\ignorespaces Variables in the dataset OCEAN\_3D\_SALINITY\_FLUX\relax }}{137}{}%
-\contentsline {table}{\numberline {19.16}{\ignorespaces CDL description of OCEAN\_3D\_SALINITY\_FLUX's ADVr\_SLT variable\relax }}{138}{}%
-\contentsline {table}{\numberline {19.17}{\ignorespaces CDL description of OCEAN\_3D\_SALINITY\_FLUX's ADVx\_SLT variable\relax }}{139}{}%
-\contentsline {table}{\numberline {19.18}{\ignorespaces CDL description of OCEAN\_3D\_SALINITY\_FLUX's ADVy\_SLT variable\relax }}{140}{}%
-\contentsline {table}{\numberline {19.19}{\ignorespaces CDL description of OCEAN\_3D\_SALINITY\_FLUX's DFrE\_SLT variable\relax }}{142}{}%
-\contentsline {table}{\numberline {19.20}{\ignorespaces CDL description of OCEAN\_3D\_SALINITY\_FLUX's DFrI\_SLT variable\relax }}{144}{}%
-\contentsline {table}{\numberline {19.21}{\ignorespaces CDL description of OCEAN\_3D\_SALINITY\_FLUX's DFxE\_SLT variable\relax }}{146}{}%
-\contentsline {table}{\numberline {19.22}{\ignorespaces CDL description of OCEAN\_3D\_SALINITY\_FLUX's DFyE\_SLT variable\relax }}{147}{}%
-\contentsline {table}{\numberline {19.23}{\ignorespaces CDL description of OCEAN\_3D\_SALINITY\_FLUX's oceSPtnd variable\relax }}{149}{}%
-\contentsline {table}{\numberline {19.24}{\ignorespaces Variables in the dataset OCEAN\_3D\_TEMPERATURE\_FLUX\relax }}{150}{}%
-\contentsline {table}{\numberline {19.25}{\ignorespaces CDL description of OCEAN\_3D\_TEMPERATURE\_FLUX's ADVr\_TH variable\relax }}{151}{}%
-\contentsline {table}{\numberline {19.26}{\ignorespaces CDL description of OCEAN\_3D\_TEMPERATURE\_FLUX's ADVx\_TH variable\relax }}{152}{}%
-\contentsline {table}{\numberline {19.27}{\ignorespaces CDL description of OCEAN\_3D\_TEMPERATURE\_FLUX's ADVy\_TH variable\relax }}{153}{}%
-\contentsline {table}{\numberline {19.28}{\ignorespaces CDL description of OCEAN\_3D\_TEMPERATURE\_FLUX's DFrE\_TH variable\relax }}{154}{}%
-\contentsline {table}{\numberline {19.29}{\ignorespaces CDL description of OCEAN\_3D\_TEMPERATURE\_FLUX's DFrI\_TH variable\relax }}{155}{}%
-\contentsline {table}{\numberline {19.30}{\ignorespaces CDL description of OCEAN\_3D\_TEMPERATURE\_FLUX's DFxE\_TH variable\relax }}{156}{}%
-\contentsline {table}{\numberline {19.31}{\ignorespaces CDL description of OCEAN\_3D\_TEMPERATURE\_FLUX's DFyE\_TH variable\relax }}{157}{}%
-\contentsline {table}{\numberline {19.32}{\ignorespaces Variables in the dataset OCEAN\_3D\_VOLUME\_FLUX\relax }}{158}{}%
-\contentsline {table}{\numberline {19.33}{\ignorespaces CDL description of OCEAN\_3D\_VOLUME\_FLUX's UVELMASS variable\relax }}{159}{}%
-\contentsline {table}{\numberline {19.34}{\ignorespaces CDL description of OCEAN\_3D\_VOLUME\_FLUX's VVELMASS variable\relax }}{160}{}%
-\contentsline {table}{\numberline {19.35}{\ignorespaces CDL description of OCEAN\_3D\_VOLUME\_FLUX's WVELMASS variable\relax }}{161}{}%
-\contentsline {table}{\numberline {19.36}{\ignorespaces Variables in the dataset OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX\relax }}{162}{}%
-\contentsline {table}{\numberline {19.37}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's EXFempmr variable\relax }}{163}{}%
-\contentsline {table}{\numberline {19.38}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's EXFevap variable\relax }}{164}{}%
-\contentsline {table}{\numberline {19.39}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's EXFpreci variable\relax }}{165}{}%
-\contentsline {table}{\numberline {19.40}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's EXFroff variable\relax }}{166}{}%
-\contentsline {table}{\numberline {19.41}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's SFLUX variable\relax }}{167}{}%
-\contentsline {table}{\numberline {19.42}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's SIacSubl variable\relax }}{168}{}%
-\contentsline {table}{\numberline {19.43}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's SIatmFW variable\relax }}{169}{}%
-\contentsline {table}{\numberline {19.44}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's SIfwThru variable\relax }}{170}{}%
-\contentsline {table}{\numberline {19.45}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's SIrsSubl variable\relax }}{171}{}%
-\contentsline {table}{\numberline {19.46}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's SIsnPrcp variable\relax }}{172}{}%
-\contentsline {table}{\numberline {19.47}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's oceFWflx variable\relax }}{173}{}%
-\contentsline {table}{\numberline {19.48}{\ignorespaces Variables in the dataset OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX\relax }}{174}{}%
-\contentsline {table}{\numberline {19.49}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFhl variable\relax }}{175}{}%
-\contentsline {table}{\numberline {19.50}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFhs variable\relax }}{176}{}%
-\contentsline {table}{\numberline {19.51}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFlwdn variable\relax }}{177}{}%
-\contentsline {table}{\numberline {19.52}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFlwnet variable\relax }}{178}{}%
-\contentsline {table}{\numberline {19.53}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFqnet variable\relax }}{179}{}%
-\contentsline {table}{\numberline {19.54}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFswdn variable\relax }}{180}{}%
-\contentsline {table}{\numberline {19.55}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFswnet variable\relax }}{181}{}%
-\contentsline {table}{\numberline {19.56}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's SIaaflux variable\relax }}{182}{}%
-\contentsline {table}{\numberline {19.57}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's SIatmQnt variable\relax }}{183}{}%
-\contentsline {table}{\numberline {19.58}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's TFLUX variable\relax }}{184}{}%
-\contentsline {table}{\numberline {19.59}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's oceQnet variable\relax }}{185}{}%
-\contentsline {table}{\numberline {19.60}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's oceQsw variable\relax }}{186}{}%
-\contentsline {table}{\numberline {19.61}{\ignorespaces Variables in the dataset OCEAN\_AND\_ICE\_SURFACE\_STRESS\relax }}{187}{}%
-\contentsline {table}{\numberline {19.62}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_STRESS's EXFtaux variable\relax }}{188}{}%
-\contentsline {table}{\numberline {19.63}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_STRESS's EXFtauy variable\relax }}{189}{}%
-\contentsline {table}{\numberline {19.64}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_STRESS's oceTAUX variable\relax }}{190}{}%
-\contentsline {table}{\numberline {19.65}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_STRESS's oceTAUY variable\relax }}{191}{}%
-\contentsline {table}{\numberline {19.66}{\ignorespaces Variables in the dataset OCEAN\_BOLUS\_STREAMFUNCTION\relax }}{192}{}%
-\contentsline {table}{\numberline {19.67}{\ignorespaces CDL description of OCEAN\_BOLUS\_STREAMFUNCTION's GM\_PsiX variable\relax }}{193}{}%
-\contentsline {table}{\numberline {19.68}{\ignorespaces CDL description of OCEAN\_BOLUS\_STREAMFUNCTION's GM\_PsiY variable\relax }}{194}{}%
-\contentsline {table}{\numberline {19.69}{\ignorespaces Variables in the dataset OCEAN\_BOLUS\_VELOCITY\relax }}{195}{}%
-\contentsline {table}{\numberline {19.70}{\ignorespaces CDL description of OCEAN\_BOLUS\_VELOCITY's UVELSTAR variable\relax }}{196}{}%
-\contentsline {table}{\numberline {19.71}{\ignorespaces CDL description of OCEAN\_BOLUS\_VELOCITY's VVELSTAR variable\relax }}{197}{}%
-\contentsline {table}{\numberline {19.72}{\ignorespaces CDL description of OCEAN\_BOLUS\_VELOCITY's WVELSTAR variable\relax }}{198}{}%
-\contentsline {table}{\numberline {19.73}{\ignorespaces Variables in the dataset OCEAN\_BOTTOM\_PRESSURE\relax }}{199}{}%
-\contentsline {table}{\numberline {19.74}{\ignorespaces CDL description of OCEAN\_BOTTOM\_PRESSURE's OBP variable\relax }}{200}{}%
-\contentsline {table}{\numberline {19.75}{\ignorespaces CDL description of OCEAN\_BOTTOM\_PRESSURE's OBPGMAP variable\relax }}{201}{}%
-\contentsline {table}{\numberline {19.76}{\ignorespaces CDL description of OCEAN\_BOTTOM\_PRESSURE's PHIBOT variable\relax }}{202}{}%
-\contentsline {table}{\numberline {19.77}{\ignorespaces Variables in the dataset OCEAN\_DENS\_STRAT\_PRESS\relax }}{203}{}%
-\contentsline {table}{\numberline {19.78}{\ignorespaces CDL description of OCEAN\_DENS\_STRAT\_PRESS's DRHODR variable\relax }}{204}{}%
-\contentsline {table}{\numberline {19.79}{\ignorespaces CDL description of OCEAN\_DENS\_STRAT\_PRESS's PHIHYD variable\relax }}{205}{}%
-\contentsline {table}{\numberline {19.80}{\ignorespaces CDL description of OCEAN\_DENS\_STRAT\_PRESS's PHIHYDcR variable\relax }}{206}{}%
-\contentsline {table}{\numberline {19.81}{\ignorespaces CDL description of OCEAN\_DENS\_STRAT\_PRESS's RHOAnoma variable\relax }}{207}{}%
-\contentsline {table}{\numberline {19.82}{\ignorespaces Variables in the dataset OCEAN\_MIXED\_LAYER\_DEPTH\relax }}{208}{}%
-\contentsline {table}{\numberline {19.83}{\ignorespaces CDL description of OCEAN\_MIXED\_LAYER\_DEPTH's MXLDEPTH variable\relax }}{209}{}%
-\contentsline {table}{\numberline {19.84}{\ignorespaces Variables in the dataset OCEAN\_TEMPERATURE\_SALINITY\relax }}{210}{}%
-\contentsline {table}{\numberline {19.85}{\ignorespaces CDL description of OCEAN\_TEMPERATURE\_SALINITY's SALT variable\relax }}{211}{}%
-\contentsline {table}{\numberline {19.86}{\ignorespaces CDL description of OCEAN\_TEMPERATURE\_SALINITY's THETA variable\relax }}{212}{}%
-\contentsline {table}{\numberline {19.87}{\ignorespaces Variables in the dataset OCEAN\_VELOCITY\relax }}{213}{}%
-\contentsline {table}{\numberline {19.88}{\ignorespaces CDL description of OCEAN\_VELOCITY's UVEL variable\relax }}{214}{}%
-\contentsline {table}{\numberline {19.89}{\ignorespaces CDL description of OCEAN\_VELOCITY's VVEL variable\relax }}{215}{}%
-\contentsline {table}{\numberline {19.90}{\ignorespaces CDL description of OCEAN\_VELOCITY's WVEL variable\relax }}{216}{}%
-\contentsline {table}{\numberline {19.91}{\ignorespaces Variables in the dataset SEA\_ICE\_CONC\_THICKNESS\relax }}{217}{}%
-\contentsline {table}{\numberline {19.92}{\ignorespaces CDL description of SEA\_ICE\_CONC\_THICKNESS's SIarea variable\relax }}{218}{}%
-\contentsline {table}{\numberline {19.93}{\ignorespaces CDL description of SEA\_ICE\_CONC\_THICKNESS's SIheff variable\relax }}{219}{}%
-\contentsline {table}{\numberline {19.94}{\ignorespaces CDL description of SEA\_ICE\_CONC\_THICKNESS's SIhsnow variable\relax }}{220}{}%
-\contentsline {table}{\numberline {19.95}{\ignorespaces CDL description of SEA\_ICE\_CONC\_THICKNESS's sIceLoad variable\relax }}{221}{}%
-\contentsline {table}{\numberline {19.96}{\ignorespaces Variables in the dataset SEA\_ICE\_HORIZ\_VOLUME\_FLUX\relax }}{222}{}%
-\contentsline {table}{\numberline {19.97}{\ignorespaces CDL description of SEA\_ICE\_HORIZ\_VOLUME\_FLUX's ADVxHEFF variable\relax }}{223}{}%
-\contentsline {table}{\numberline {19.98}{\ignorespaces CDL description of SEA\_ICE\_HORIZ\_VOLUME\_FLUX's ADVxSNOW variable\relax }}{224}{}%
-\contentsline {table}{\numberline {19.99}{\ignorespaces CDL description of SEA\_ICE\_HORIZ\_VOLUME\_FLUX's ADVyHEFF variable\relax }}{225}{}%
-\contentsline {table}{\numberline {19.100}{\ignorespaces CDL description of SEA\_ICE\_HORIZ\_VOLUME\_FLUX's ADVySNOW variable\relax }}{226}{}%
-\contentsline {table}{\numberline {19.101}{\ignorespaces CDL description of SEA\_ICE\_HORIZ\_VOLUME\_FLUX's DFxEHEFF variable\relax }}{227}{}%
-\contentsline {table}{\numberline {19.102}{\ignorespaces CDL description of SEA\_ICE\_HORIZ\_VOLUME\_FLUX's DFxESNOW variable\relax }}{228}{}%
-\contentsline {table}{\numberline {19.103}{\ignorespaces CDL description of SEA\_ICE\_HORIZ\_VOLUME\_FLUX's DFyEHEFF variable\relax }}{229}{}%
-\contentsline {table}{\numberline {19.104}{\ignorespaces CDL description of SEA\_ICE\_HORIZ\_VOLUME\_FLUX's DFyESNOW variable\relax }}{230}{}%
-\contentsline {table}{\numberline {19.105}{\ignorespaces Variables in the dataset SEA\_ICE\_SALT\_PLUME\_FLUX\relax }}{231}{}%
-\contentsline {table}{\numberline {19.106}{\ignorespaces CDL description of SEA\_ICE\_SALT\_PLUME\_FLUX's oceSPDep variable\relax }}{232}{}%
-\contentsline {table}{\numberline {19.107}{\ignorespaces CDL description of SEA\_ICE\_SALT\_PLUME\_FLUX's oceSPflx variable\relax }}{233}{}%
-\contentsline {table}{\numberline {19.108}{\ignorespaces Variables in the dataset SEA\_ICE\_VELOCITY\relax }}{234}{}%
-\contentsline {table}{\numberline {19.109}{\ignorespaces CDL description of SEA\_ICE\_VELOCITY's SIuice variable\relax }}{235}{}%
-\contentsline {table}{\numberline {19.110}{\ignorespaces CDL description of SEA\_ICE\_VELOCITY's SIvice variable\relax }}{236}{}%
-\contentsline {table}{\numberline {19.111}{\ignorespaces Variables in the dataset SEA\_SURFACE\_HEIGHT\relax }}{237}{}%
-\contentsline {table}{\numberline {19.112}{\ignorespaces CDL description of SEA\_SURFACE\_HEIGHT's ETAN variable\relax }}{238}{}%
-\contentsline {table}{\numberline {19.113}{\ignorespaces CDL description of SEA\_SURFACE\_HEIGHT's SSH variable\relax }}{239}{}%
-\contentsline {table}{\numberline {19.114}{\ignorespaces CDL description of SEA\_SURFACE\_HEIGHT's SSHIBC variable\relax }}{240}{}%
-\contentsline {table}{\numberline {19.115}{\ignorespaces CDL description of SEA\_SURFACE\_HEIGHT's SSHNOIBC variable\relax }}{241}{}%
-\contentsline {table}{\numberline {20.1}{\ignorespaces Variables in the dataset GRID\_GEOMETRY\_ECCO\relax }}{243}{}%
-\contentsline {table}{\numberline {20.2}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's hFacC variable\relax }}{244}{}%
-\contentsline {table}{\numberline {20.3}{\ignorespaces CDL description of GRID\_GEOMETRY\_ECCO's maskC variable\relax }}{245}{}%
-\contentsline {table}{\numberline {21.1}{\ignorespaces Variables in the dataset ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES\relax }}{247}{}%
-\contentsline {table}{\numberline {21.2}{\ignorespaces CDL description of ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's EXFaqh variable\relax }}{248}{}%
-\contentsline {table}{\numberline {21.3}{\ignorespaces CDL description of ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's EXFatemp variable\relax }}{249}{}%
-\contentsline {table}{\numberline {21.4}{\ignorespaces CDL description of ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's EXFewind variable\relax }}{250}{}%
-\contentsline {table}{\numberline {21.5}{\ignorespaces CDL description of ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's EXFnwind variable\relax }}{251}{}%
-\contentsline {table}{\numberline {21.6}{\ignorespaces CDL description of ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's EXFpress variable\relax }}{252}{}%
-\contentsline {table}{\numberline {21.7}{\ignorespaces CDL description of ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's EXFwspee variable\relax }}{253}{}%
-\contentsline {table}{\numberline {21.8}{\ignorespaces Variables in the dataset OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX\relax }}{254}{}%
-\contentsline {table}{\numberline {21.9}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's EXFempmr variable\relax }}{255}{}%
-\contentsline {table}{\numberline {21.10}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's EXFevap variable\relax }}{256}{}%
-\contentsline {table}{\numberline {21.11}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's EXFpreci variable\relax }}{257}{}%
-\contentsline {table}{\numberline {21.12}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's EXFroff variable\relax }}{258}{}%
-\contentsline {table}{\numberline {21.13}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's SFLUX variable\relax }}{259}{}%
-\contentsline {table}{\numberline {21.14}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's SIacSubl variable\relax }}{260}{}%
-\contentsline {table}{\numberline {21.15}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's SIatmFW variable\relax }}{261}{}%
-\contentsline {table}{\numberline {21.16}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's SIfwThru variable\relax }}{262}{}%
-\contentsline {table}{\numberline {21.17}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's SIrsSubl variable\relax }}{263}{}%
-\contentsline {table}{\numberline {21.18}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's SIsnPrcp variable\relax }}{264}{}%
-\contentsline {table}{\numberline {21.19}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's oceFWflx variable\relax }}{265}{}%
-\contentsline {table}{\numberline {21.20}{\ignorespaces Variables in the dataset OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX\relax }}{266}{}%
-\contentsline {table}{\numberline {21.21}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFhl variable\relax }}{267}{}%
-\contentsline {table}{\numberline {21.22}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFhs variable\relax }}{268}{}%
-\contentsline {table}{\numberline {21.23}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFlwdn variable\relax }}{269}{}%
-\contentsline {table}{\numberline {21.24}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFlwnet variable\relax }}{270}{}%
-\contentsline {table}{\numberline {21.25}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFqnet variable\relax }}{271}{}%
-\contentsline {table}{\numberline {21.26}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFswdn variable\relax }}{272}{}%
-\contentsline {table}{\numberline {21.27}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's EXFswnet variable\relax }}{273}{}%
-\contentsline {table}{\numberline {21.28}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's SIaaflux variable\relax }}{274}{}%
-\contentsline {table}{\numberline {21.29}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's SIatmQnt variable\relax }}{275}{}%
-\contentsline {table}{\numberline {21.30}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's TFLUX variable\relax }}{276}{}%
-\contentsline {table}{\numberline {21.31}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's oceQnet variable\relax }}{277}{}%
-\contentsline {table}{\numberline {21.32}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's oceQsw variable\relax }}{278}{}%
-\contentsline {table}{\numberline {21.33}{\ignorespaces Variables in the dataset OCEAN\_AND\_ICE\_SURFACE\_STRESS\relax }}{279}{}%
-\contentsline {table}{\numberline {21.34}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_STRESS's EXFtaue variable\relax }}{280}{}%
-\contentsline {table}{\numberline {21.35}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_STRESS's EXFtaun variable\relax }}{281}{}%
-\contentsline {table}{\numberline {21.36}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_STRESS's oceTAUE variable\relax }}{282}{}%
-\contentsline {table}{\numberline {21.37}{\ignorespaces CDL description of OCEAN\_AND\_ICE\_SURFACE\_STRESS's oceTAUN variable\relax }}{283}{}%
-\contentsline {table}{\numberline {21.38}{\ignorespaces Variables in the dataset OCEAN\_BOLUS\_VELOCITY\relax }}{284}{}%
-\contentsline {table}{\numberline {21.39}{\ignorespaces CDL description of OCEAN\_BOLUS\_VELOCITY's EVELSTAR variable\relax }}{285}{}%
-\contentsline {table}{\numberline {21.40}{\ignorespaces CDL description of OCEAN\_BOLUS\_VELOCITY's NVELSTAR variable\relax }}{286}{}%
-\contentsline {table}{\numberline {21.41}{\ignorespaces CDL description of OCEAN\_BOLUS\_VELOCITY's WVELSTAR variable\relax }}{287}{}%
-\contentsline {table}{\numberline {21.42}{\ignorespaces Variables in the dataset OCEAN\_BOTTOM\_PRESSURE\relax }}{288}{}%
-\contentsline {table}{\numberline {21.43}{\ignorespaces CDL description of OCEAN\_BOTTOM\_PRESSURE's OBP variable\relax }}{289}{}%
-\contentsline {table}{\numberline {21.44}{\ignorespaces CDL description of OCEAN\_BOTTOM\_PRESSURE's OBPGMAP variable\relax }}{290}{}%
-\contentsline {table}{\numberline {21.45}{\ignorespaces Variables in the dataset OCEAN\_DENS\_STRAT\_PRESS\relax }}{291}{}%
-\contentsline {table}{\numberline {21.46}{\ignorespaces CDL description of OCEAN\_DENS\_STRAT\_PRESS's DRHODR variable\relax }}{292}{}%
-\contentsline {table}{\numberline {21.47}{\ignorespaces CDL description of OCEAN\_DENS\_STRAT\_PRESS's PHIHYD variable\relax }}{293}{}%
-\contentsline {table}{\numberline {21.48}{\ignorespaces CDL description of OCEAN\_DENS\_STRAT\_PRESS's RHOAnoma variable\relax }}{294}{}%
-\contentsline {table}{\numberline {21.49}{\ignorespaces Variables in the dataset OCEAN\_MIXED\_LAYER\_DEPTH\relax }}{295}{}%
-\contentsline {table}{\numberline {21.50}{\ignorespaces CDL description of OCEAN\_MIXED\_LAYER\_DEPTH's MXLDEPTH variable\relax }}{296}{}%
-\contentsline {table}{\numberline {21.51}{\ignorespaces Variables in the dataset OCEAN\_TEMPERATURE\_SALINITY\relax }}{297}{}%
-\contentsline {table}{\numberline {21.52}{\ignorespaces CDL description of OCEAN\_TEMPERATURE\_SALINITY's SALT variable\relax }}{298}{}%
-\contentsline {table}{\numberline {21.53}{\ignorespaces CDL description of OCEAN\_TEMPERATURE\_SALINITY's THETA variable\relax }}{299}{}%
-\contentsline {table}{\numberline {21.54}{\ignorespaces Variables in the dataset OCEAN\_VELOCITY\relax }}{300}{}%
-\contentsline {table}{\numberline {21.55}{\ignorespaces CDL description of OCEAN\_VELOCITY's EVEL variable\relax }}{301}{}%
-\contentsline {table}{\numberline {21.56}{\ignorespaces CDL description of OCEAN\_VELOCITY's NVEL variable\relax }}{302}{}%
-\contentsline {table}{\numberline {21.57}{\ignorespaces CDL description of OCEAN\_VELOCITY's WVEL variable\relax }}{303}{}%
-\contentsline {table}{\numberline {21.58}{\ignorespaces Variables in the dataset SEA\_ICE\_CONC\_THICKNESS\relax }}{304}{}%
-\contentsline {table}{\numberline {21.59}{\ignorespaces CDL description of SEA\_ICE\_CONC\_THICKNESS's SIarea variable\relax }}{305}{}%
-\contentsline {table}{\numberline {21.60}{\ignorespaces CDL description of SEA\_ICE\_CONC\_THICKNESS's SIheff variable\relax }}{306}{}%
-\contentsline {table}{\numberline {21.61}{\ignorespaces CDL description of SEA\_ICE\_CONC\_THICKNESS's SIhsnow variable\relax }}{307}{}%
-\contentsline {table}{\numberline {21.62}{\ignorespaces CDL description of SEA\_ICE\_CONC\_THICKNESS's sIceLoad variable\relax }}{308}{}%
-\contentsline {table}{\numberline {21.63}{\ignorespaces Variables in the dataset SEA\_ICE\_VELOCITY\relax }}{309}{}%
-\contentsline {table}{\numberline {21.64}{\ignorespaces CDL description of SEA\_ICE\_VELOCITY's SIeice variable\relax }}{310}{}%
-\contentsline {table}{\numberline {21.65}{\ignorespaces CDL description of SEA\_ICE\_VELOCITY's SInice variable\relax }}{311}{}%
-\contentsline {table}{\numberline {21.66}{\ignorespaces Variables in the dataset SEA\_SURFACE\_HEIGHT\relax }}{312}{}%
-\contentsline {table}{\numberline {21.67}{\ignorespaces CDL description of SEA\_SURFACE\_HEIGHT's SSH variable\relax }}{313}{}%
-\contentsline {table}{\numberline {21.68}{\ignorespaces CDL description of SEA\_SURFACE\_HEIGHT's SSHIBC variable\relax }}{314}{}%
-\contentsline {table}{\numberline {21.69}{\ignorespaces CDL description of SEA\_SURFACE\_HEIGHT's SSHNOIBC variable\relax }}{315}{}%
-\contentsline {table}{\numberline {22.1}{\ignorespaces Variables in the dataset GLOBAL\_MEAN\_ATM\_SURFACE\_PRES\relax }}{317}{}%
-\contentsline {table}{\numberline {22.2}{\ignorespaces CDL description of GLOBAL\_MEAN\_ATM\_SURFACE\_PRES's Pa\_global variable\relax }}{318}{}%
-\contentsline {table}{\numberline {22.3}{\ignorespaces Variables in the dataset GLOBAL\_MEAN\_SEA\_LEVEL\relax }}{319}{}%
-\contentsline {table}{\numberline {22.4}{\ignorespaces CDL description of GLOBAL\_MEAN\_SEA\_LEVEL's global\_mean\_barystatic\_sea\_level\_anomaly variable\relax }}{320}{}%
-\contentsline {table}{\numberline {22.5}{\ignorespaces CDL description of GLOBAL\_MEAN\_SEA\_LEVEL's global\_mean\_sea\_level\_anomaly variable\relax }}{321}{}%
-\contentsline {table}{\numberline {22.6}{\ignorespaces CDL description of GLOBAL\_MEAN\_SEA\_LEVEL's global\_mean\_sterodynamic\_sea\_level\_anomaly variable\relax }}{322}{}%
-\contentsline {table}{\numberline {22.7}{\ignorespaces Variables in the dataset SBO\_CORE\_PRODUCTS\relax }}{323}{}%
-\contentsline {table}{\numberline {22.8}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's mass variable\relax }}{324}{}%
-\contentsline {table}{\numberline {22.9}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's mass\_fw variable\relax }}{325}{}%
-\contentsline {table}{\numberline {22.10}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's mass\_gc variable\relax }}{326}{}%
-\contentsline {table}{\numberline {22.11}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's mass\_si variable\relax }}{327}{}%
-\contentsline {table}{\numberline {22.12}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's sboarea variable\relax }}{328}{}%
-\contentsline {table}{\numberline {22.13}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's xcom variable\relax }}{329}{}%
-\contentsline {table}{\numberline {22.14}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's xcom\_fw variable\relax }}{330}{}%
-\contentsline {table}{\numberline {22.15}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's xoamc variable\relax }}{331}{}%
-\contentsline {table}{\numberline {22.16}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's xoamc\_si variable\relax }}{332}{}%
-\contentsline {table}{\numberline {22.17}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's xoamp variable\relax }}{333}{}%
-\contentsline {table}{\numberline {22.18}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's xoamp\_dsl variable\relax }}{334}{}%
-\contentsline {table}{\numberline {22.19}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's xoamp\_fw variable\relax }}{335}{}%
-\contentsline {table}{\numberline {22.20}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's ycom variable\relax }}{336}{}%
-\contentsline {table}{\numberline {22.21}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's ycom\_fw variable\relax }}{337}{}%
-\contentsline {table}{\numberline {22.22}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's yoamc variable\relax }}{338}{}%
-\contentsline {table}{\numberline {22.23}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's yoamc\_si variable\relax }}{339}{}%
-\contentsline {table}{\numberline {22.24}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's yoamp variable\relax }}{340}{}%
-\contentsline {table}{\numberline {22.25}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's yoamp\_dsl variable\relax }}{341}{}%
-\contentsline {table}{\numberline {22.26}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's yoamp\_fw variable\relax }}{342}{}%
-\contentsline {table}{\numberline {22.27}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's zcom variable\relax }}{343}{}%
-\contentsline {table}{\numberline {22.28}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's zcom\_fw variable\relax }}{344}{}%
-\contentsline {table}{\numberline {22.29}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's zoamc variable\relax }}{345}{}%
-\contentsline {table}{\numberline {22.30}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's zoamc\_si variable\relax }}{346}{}%
-\contentsline {table}{\numberline {22.31}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's zoamp variable\relax }}{347}{}%
-\contentsline {table}{\numberline {22.32}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's zoamp\_dsl variable\relax }}{348}{}%
-\contentsline {table}{\numberline {22.33}{\ignorespaces CDL description of SBO\_CORE\_PRODUCTS's zoamp\_fw variable\relax }}{349}{}%
-\contentsline {table}{\numberline {23.1}{\ignorespaces Major ISO Objects. Objects in use in the GHRSST metadata model are shaded in gray.\relax }}{351}{}%
-\contentsline {table}{\numberline {12.3}{\ignorespaces GHRSST Processing Level Conventions and Codes\relax }}{357}{}%
-\contentsline {table}{\numberline {14.2}{\ignorespaces Regional Data Assembly Centre (RDAC) code table\relax }}{358}{}%
-\contentsline {table}{\numberline {14.3}{\ignorespaces GHRSST Processing Level Conventions and Codes\relax }}{359}{}%
-\contentsline {table}{\numberline {16.2}{\ignorespaces Regional Data Assembly Centre (RDAC) code table\relax }}{360}{}%
-\contentsline {table}{\numberline {16.3}{\ignorespaces GHRSST Processing Level Conventions and Codes\relax }}{361}{}%
+\contentsline {table}{\numberline {11.1}{\ignorespaces Coordinates and Variables in the dataset GRID\_GEOMETRY\_ECCO\relax }}{29}{table.11.1}%
+\contentsline {table}{\numberline {11.1}{\ignorespaces Coordinates and Variables in the dataset GRID\_GEOMETRY\_ECCO\relax }}{30}{table.11.1}%
+\contentsline {table}{\numberline {11.2}{\ignorespaces Attributes description of the variable 'XC' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{31}{table.11.2}%
+\contentsline {table}{\numberline {11.3}{\ignorespaces Attributes description of the variable 'YC' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{32}{table.11.3}%
+\contentsline {table}{\numberline {11.4}{\ignorespaces Attributes description of the variable 'XG' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{33}{table.11.4}%
+\contentsline {table}{\numberline {11.5}{\ignorespaces Attributes description of the variable 'YG' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{34}{table.11.5}%
+\contentsline {table}{\numberline {11.6}{\ignorespaces Attributes description of the variable 'CS' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{35}{table.11.6}%
+\contentsline {table}{\numberline {11.7}{\ignorespaces Attributes description of the variable 'SN' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{36}{table.11.7}%
+\contentsline {table}{\numberline {11.8}{\ignorespaces Attributes description of the variable 'rA' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{37}{table.11.8}%
+\contentsline {table}{\numberline {11.9}{\ignorespaces Attributes description of the variable 'dxG' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{38}{table.11.9}%
+\contentsline {table}{\numberline {11.10}{\ignorespaces Attributes description of the variable 'dyG' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{39}{table.11.10}%
+\contentsline {table}{\numberline {11.11}{\ignorespaces Attributes description of the variable 'Depth' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{40}{table.11.11}%
+\contentsline {table}{\numberline {11.12}{\ignorespaces Attributes description of the variable 'rAz' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{41}{table.11.12}%
+\contentsline {table}{\numberline {11.13}{\ignorespaces Attributes description of the variable 'dxC' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{42}{table.11.13}%
+\contentsline {table}{\numberline {11.14}{\ignorespaces Attributes description of the variable 'dyC' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{43}{table.11.14}%
+\contentsline {table}{\numberline {11.15}{\ignorespaces Attributes description of the variable 'rAw' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{44}{table.11.15}%
+\contentsline {table}{\numberline {11.16}{\ignorespaces Attributes description of the variable 'rAs' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{45}{table.11.16}%
+\contentsline {table}{\numberline {11.17}{\ignorespaces Attributes description of the variable 'hFacC' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{46}{table.11.17}%
+\contentsline {table}{\numberline {11.18}{\ignorespaces Attributes description of the variable 'hFacW' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{47}{table.11.18}%
+\contentsline {table}{\numberline {11.19}{\ignorespaces Attributes description of the variable 'hFacS' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{48}{table.11.19}%
+\contentsline {table}{\numberline {11.20}{\ignorespaces Attributes description of the variable 'maskC' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{49}{table.11.20}%
+\contentsline {table}{\numberline {11.21}{\ignorespaces Attributes description of the variable 'maskW' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{50}{table.11.21}%
+\contentsline {table}{\numberline {11.22}{\ignorespaces Attributes description of the variable 'maskS' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{51}{table.11.22}%
+\contentsline {table}{\numberline {12.1}{\ignorespaces Coordinates and Variables in the dataset ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES\relax }}{52}{table.12.1}%
+\contentsline {table}{\numberline {12.2}{\ignorespaces Attributes description of the variable 'EXFaqh' from ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's dataset.\relax }}{53}{table.12.2}%
+\contentsline {table}{\numberline {12.3}{\ignorespaces Attributes description of the variable 'EXFatemp' from ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's dataset.\relax }}{54}{table.12.3}%
+\contentsline {table}{\numberline {12.4}{\ignorespaces Attributes description of the variable 'EXFpress' from ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's dataset.\relax }}{55}{table.12.4}%
+\contentsline {table}{\numberline {12.5}{\ignorespaces Attributes description of the variable 'EXFuwind' from ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's dataset.\relax }}{56}{table.12.5}%
+\contentsline {table}{\numberline {12.6}{\ignorespaces Attributes description of the variable 'EXFvwind' from ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's dataset.\relax }}{57}{table.12.6}%
+\contentsline {table}{\numberline {12.7}{\ignorespaces Attributes description of the variable 'EXFwspee' from ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's dataset.\relax }}{58}{table.12.7}%
+\contentsline {table}{\numberline {12.8}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_3D\_MIXING\_COEFFS\_ECCO\relax }}{59}{table.12.8}%
+\contentsline {table}{\numberline {12.9}{\ignorespaces Attributes description of the variable 'DIFFKR' from OCEAN\_3D\_MIXING\_COEFFS's dataset.\relax }}{60}{table.12.9}%
+\contentsline {table}{\numberline {12.10}{\ignorespaces Attributes description of the variable 'KAPGM' from OCEAN\_3D\_MIXING\_COEFFS's dataset.\relax }}{61}{table.12.10}%
+\contentsline {table}{\numberline {12.11}{\ignorespaces Attributes description of the variable 'KAPREDI' from OCEAN\_3D\_MIXING\_COEFFS's dataset.\relax }}{62}{table.12.11}%
+\contentsline {table}{\numberline {12.12}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_3D\_MOMENTUM\_TEND\relax }}{63}{table.12.12}%
+\contentsline {table}{\numberline {12.13}{\ignorespaces Attributes description of the variable 'Um\_dPHdx' from OCEAN\_3D\_MOMENTUM\_TEND's dataset.\relax }}{64}{table.12.13}%
+\contentsline {table}{\numberline {12.14}{\ignorespaces Attributes description of the variable 'Vm\_dPHdy' from OCEAN\_3D\_MOMENTUM\_TEND's dataset.\relax }}{65}{table.12.14}%
+\contentsline {table}{\numberline {12.15}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_3D\_SALINITY\_FLUX\relax }}{66}{table.12.15}%
+\contentsline {table}{\numberline {12.16}{\ignorespaces Attributes description of the variable 'ADVr\_SLT' from OCEAN\_3D\_SALINITY\_FLUX's dataset.\relax }}{67}{table.12.16}%
+\contentsline {table}{\numberline {12.17}{\ignorespaces Attributes description of the variable 'ADVx\_SLT' from OCEAN\_3D\_SALINITY\_FLUX's dataset.\relax }}{68}{table.12.17}%
+\contentsline {table}{\numberline {12.18}{\ignorespaces Attributes description of the variable 'ADVy\_SLT' from OCEAN\_3D\_SALINITY\_FLUX's dataset.\relax }}{70}{table.12.18}%
+\contentsline {table}{\numberline {12.19}{\ignorespaces Attributes description of the variable 'DFrE\_SLT' from OCEAN\_3D\_SALINITY\_FLUX's dataset.\relax }}{72}{table.12.19}%
+\contentsline {table}{\numberline {12.20}{\ignorespaces Attributes description of the variable 'DFrI\_SLT' from OCEAN\_3D\_SALINITY\_FLUX's dataset.\relax }}{74}{table.12.20}%
+\contentsline {table}{\numberline {12.21}{\ignorespaces Attributes description of the variable 'DFxE\_SLT' from OCEAN\_3D\_SALINITY\_FLUX's dataset.\relax }}{76}{table.12.21}%
+\contentsline {table}{\numberline {12.22}{\ignorespaces Attributes description of the variable 'DFyE\_SLT' from OCEAN\_3D\_SALINITY\_FLUX's dataset.\relax }}{78}{table.12.22}%
+\contentsline {table}{\numberline {12.23}{\ignorespaces Attributes description of the variable 'oceSPtnd' from OCEAN\_3D\_SALINITY\_FLUX's dataset.\relax }}{80}{table.12.23}%
+\contentsline {table}{\numberline {12.24}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_3D\_TEMPERATURE\_FLUX\relax }}{81}{table.12.24}%
+\contentsline {table}{\numberline {12.25}{\ignorespaces Attributes description of the variable 'ADVr\_TH' from OCEAN\_3D\_TEMPERATURE\_FLUX's dataset.\relax }}{82}{table.12.25}%
+\contentsline {table}{\numberline {12.26}{\ignorespaces Attributes description of the variable 'ADVx\_TH' from OCEAN\_3D\_TEMPERATURE\_FLUX's dataset.\relax }}{83}{table.12.26}%
+\contentsline {table}{\numberline {12.27}{\ignorespaces Attributes description of the variable 'ADVy\_TH' from OCEAN\_3D\_TEMPERATURE\_FLUX's dataset.\relax }}{84}{table.12.27}%
+\contentsline {table}{\numberline {12.28}{\ignorespaces Attributes description of the variable 'DFrE\_TH' from OCEAN\_3D\_TEMPERATURE\_FLUX's dataset.\relax }}{85}{table.12.28}%
+\contentsline {table}{\numberline {12.29}{\ignorespaces Attributes description of the variable 'DFrI\_TH' from OCEAN\_3D\_TEMPERATURE\_FLUX's dataset.\relax }}{87}{table.12.29}%
+\contentsline {table}{\numberline {12.30}{\ignorespaces Attributes description of the variable 'DFxE\_TH' from OCEAN\_3D\_TEMPERATURE\_FLUX's dataset.\relax }}{88}{table.12.30}%
+\contentsline {table}{\numberline {12.31}{\ignorespaces Attributes description of the variable 'DFyE\_TH' from OCEAN\_3D\_TEMPERATURE\_FLUX's dataset.\relax }}{89}{table.12.31}%
+\contentsline {table}{\numberline {12.32}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_3D\_VOLUME\_FLUX\relax }}{90}{table.12.32}%
+\contentsline {table}{\numberline {12.33}{\ignorespaces Attributes description of the variable 'UVELMASS' from OCEAN\_3D\_VOLUME\_FLUX's dataset.\relax }}{91}{table.12.33}%
+\contentsline {table}{\numberline {12.34}{\ignorespaces Attributes description of the variable 'VVELMASS' from OCEAN\_3D\_VOLUME\_FLUX's dataset.\relax }}{93}{table.12.34}%
+\contentsline {table}{\numberline {12.35}{\ignorespaces Attributes description of the variable 'WVELMASS' from OCEAN\_3D\_VOLUME\_FLUX's dataset.\relax }}{95}{table.12.35}%
+\contentsline {table}{\numberline {12.36}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX\relax }}{96}{table.12.36}%
+\contentsline {table}{\numberline {12.37}{\ignorespaces Attributes description of the variable 'EXFempmr' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{97}{table.12.37}%
+\contentsline {table}{\numberline {12.38}{\ignorespaces Attributes description of the variable 'EXFevap' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{98}{table.12.38}%
+\contentsline {table}{\numberline {12.39}{\ignorespaces Attributes description of the variable 'EXFpreci' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{99}{table.12.39}%
+\contentsline {table}{\numberline {12.40}{\ignorespaces Attributes description of the variable 'EXFroff' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{100}{table.12.40}%
+\contentsline {table}{\numberline {12.41}{\ignorespaces Attributes description of the variable 'SFLUX' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{101}{table.12.41}%
+\contentsline {table}{\numberline {12.42}{\ignorespaces Attributes description of the variable 'SIacSubl' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{102}{table.12.42}%
+\contentsline {table}{\numberline {12.43}{\ignorespaces Attributes description of the variable 'SIatmFW' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{103}{table.12.43}%
+\contentsline {table}{\numberline {12.44}{\ignorespaces Attributes description of the variable 'SIfwThru' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{104}{table.12.44}%
+\contentsline {table}{\numberline {12.45}{\ignorespaces Attributes description of the variable 'SIrsSubl' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{105}{table.12.45}%
+\contentsline {table}{\numberline {12.46}{\ignorespaces Attributes description of the variable 'SIsnPrcp' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{106}{table.12.46}%
+\contentsline {table}{\numberline {12.47}{\ignorespaces Attributes description of the variable 'oceFWflx' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{107}{table.12.47}%
+\contentsline {table}{\numberline {12.48}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX\relax }}{108}{table.12.48}%
+\contentsline {table}{\numberline {12.49}{\ignorespaces Attributes description of the variable 'EXFhl' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{109}{table.12.49}%
+\contentsline {table}{\numberline {12.50}{\ignorespaces Attributes description of the variable 'EXFhs' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{110}{table.12.50}%
+\contentsline {table}{\numberline {12.51}{\ignorespaces Attributes description of the variable 'EXFlwdn' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{111}{table.12.51}%
+\contentsline {table}{\numberline {12.52}{\ignorespaces Attributes description of the variable 'EXFlwnet' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{112}{table.12.52}%
+\contentsline {table}{\numberline {12.53}{\ignorespaces Attributes description of the variable 'EXFqnet' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{113}{table.12.53}%
+\contentsline {table}{\numberline {12.54}{\ignorespaces Attributes description of the variable 'EXFswdn' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{114}{table.12.54}%
+\contentsline {table}{\numberline {12.55}{\ignorespaces Attributes description of the variable 'EXFswnet' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{115}{table.12.55}%
+\contentsline {table}{\numberline {12.56}{\ignorespaces Attributes description of the variable 'SIaaflux' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{116}{table.12.56}%
+\contentsline {table}{\numberline {12.57}{\ignorespaces Attributes description of the variable 'SIatmQnt' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{117}{table.12.57}%
+\contentsline {table}{\numberline {12.58}{\ignorespaces Attributes description of the variable 'TFLUX' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{118}{table.12.58}%
+\contentsline {table}{\numberline {12.59}{\ignorespaces Attributes description of the variable 'oceQnet' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{119}{table.12.59}%
+\contentsline {table}{\numberline {12.60}{\ignorespaces Attributes description of the variable 'oceQsw' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{121}{table.12.60}%
+\contentsline {table}{\numberline {12.61}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_AND\_ICE\_SURFACE\_STRESS\relax }}{122}{table.12.61}%
+\contentsline {table}{\numberline {12.62}{\ignorespaces Attributes description of the variable 'EXFtaux' from OCEAN\_AND\_ICE\_SURFACE\_STRESS's dataset.\relax }}{123}{table.12.62}%
+\contentsline {table}{\numberline {12.63}{\ignorespaces Attributes description of the variable 'EXFtauy' from OCEAN\_AND\_ICE\_SURFACE\_STRESS's dataset.\relax }}{124}{table.12.63}%
+\contentsline {table}{\numberline {12.64}{\ignorespaces Attributes description of the variable 'oceTAUX' from OCEAN\_AND\_ICE\_SURFACE\_STRESS's dataset.\relax }}{125}{table.12.64}%
+\contentsline {table}{\numberline {12.65}{\ignorespaces Attributes description of the variable 'oceTAUY' from OCEAN\_AND\_ICE\_SURFACE\_STRESS's dataset.\relax }}{126}{table.12.65}%
+\contentsline {table}{\numberline {12.66}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_BOLUS\_STREAMFUNCTION\relax }}{127}{table.12.66}%
+\contentsline {table}{\numberline {12.67}{\ignorespaces Attributes description of the variable 'GM\_PsiX' from OCEAN\_BOLUS\_STREAMFUNCTION's dataset.\relax }}{128}{table.12.67}%
+\contentsline {table}{\numberline {12.68}{\ignorespaces Attributes description of the variable 'GM\_PsiY' from OCEAN\_BOLUS\_STREAMFUNCTION's dataset.\relax }}{129}{table.12.68}%
+\contentsline {table}{\numberline {12.69}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_BOLUS\_VELOCITY\relax }}{130}{table.12.69}%
+\contentsline {table}{\numberline {12.70}{\ignorespaces Attributes description of the variable 'UVELSTAR' from OCEAN\_BOLUS\_VELOCITY's dataset.\relax }}{131}{table.12.70}%
+\contentsline {table}{\numberline {12.71}{\ignorespaces Attributes description of the variable 'VVELSTAR' from OCEAN\_BOLUS\_VELOCITY's dataset.\relax }}{132}{table.12.71}%
+\contentsline {table}{\numberline {12.72}{\ignorespaces Attributes description of the variable 'WVELSTAR' from OCEAN\_BOLUS\_VELOCITY's dataset.\relax }}{133}{table.12.72}%
+\contentsline {table}{\numberline {12.73}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_BOTTOM\_PRESSURE\relax }}{134}{table.12.73}%
+\contentsline {table}{\numberline {12.74}{\ignorespaces Attributes description of the variable 'OBP' from OCEAN\_BOTTOM\_PRESSURE's dataset.\relax }}{135}{table.12.74}%
+\contentsline {table}{\numberline {12.75}{\ignorespaces Attributes description of the variable 'OBPGMAP' from OCEAN\_BOTTOM\_PRESSURE's dataset.\relax }}{137}{table.12.75}%
+\contentsline {table}{\numberline {12.76}{\ignorespaces Attributes description of the variable 'PHIBOT' from OCEAN\_BOTTOM\_PRESSURE's dataset.\relax }}{139}{table.12.76}%
+\contentsline {table}{\numberline {12.77}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_DENS\_STRAT\_PRESS\relax }}{140}{table.12.77}%
+\contentsline {table}{\numberline {12.78}{\ignorespaces Attributes description of the variable 'DRHODR' from OCEAN\_DENS\_STRAT\_PRESS's dataset.\relax }}{141}{table.12.78}%
+\contentsline {table}{\numberline {12.79}{\ignorespaces Attributes description of the variable 'PHIHYD' from OCEAN\_DENS\_STRAT\_PRESS's dataset.\relax }}{142}{table.12.79}%
+\contentsline {table}{\numberline {12.80}{\ignorespaces Attributes description of the variable 'PHIHYDcR' from OCEAN\_DENS\_STRAT\_PRESS's dataset.\relax }}{143}{table.12.80}%
+\contentsline {table}{\numberline {12.81}{\ignorespaces Attributes description of the variable 'RHOAnoma' from OCEAN\_DENS\_STRAT\_PRESS's dataset.\relax }}{144}{table.12.81}%
+\contentsline {table}{\numberline {12.82}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_MIXED\_LAYER\_DEPTH\relax }}{145}{table.12.82}%
+\contentsline {table}{\numberline {12.83}{\ignorespaces Attributes description of the variable 'MXLDEPTH' from OCEAN\_MIXED\_LAYER\_DEPTH's dataset.\relax }}{146}{table.12.83}%
+\contentsline {table}{\numberline {12.84}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_TEMPERATURE\_SALINITY\relax }}{147}{table.12.84}%
+\contentsline {table}{\numberline {12.85}{\ignorespaces Attributes description of the variable 'SALT' from OCEAN\_TEMPERATURE\_SALINITY's dataset.\relax }}{148}{table.12.85}%
+\contentsline {table}{\numberline {12.86}{\ignorespaces Attributes description of the variable 'THETA' from OCEAN\_TEMPERATURE\_SALINITY's dataset.\relax }}{149}{table.12.86}%
+\contentsline {table}{\numberline {12.87}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_VELOCITY\relax }}{150}{table.12.87}%
+\contentsline {table}{\numberline {12.88}{\ignorespaces Attributes description of the variable 'UVEL' from OCEAN\_VELOCITY's dataset.\relax }}{151}{table.12.88}%
+\contentsline {table}{\numberline {12.89}{\ignorespaces Attributes description of the variable 'VVEL' from OCEAN\_VELOCITY's dataset.\relax }}{152}{table.12.89}%
+\contentsline {table}{\numberline {12.90}{\ignorespaces Attributes description of the variable 'WVEL' from OCEAN\_VELOCITY's dataset.\relax }}{153}{table.12.90}%
+\contentsline {table}{\numberline {12.91}{\ignorespaces Coordinates and Variables in the dataset SEA\_ICE\_CONC\_THICKNESS\relax }}{154}{table.12.91}%
+\contentsline {table}{\numberline {12.92}{\ignorespaces Attributes description of the variable 'SIarea' from SEA\_ICE\_CONC\_THICKNESS's dataset.\relax }}{155}{table.12.92}%
+\contentsline {table}{\numberline {12.93}{\ignorespaces Attributes description of the variable 'SIheff' from SEA\_ICE\_CONC\_THICKNESS's dataset.\relax }}{156}{table.12.93}%
+\contentsline {table}{\numberline {12.94}{\ignorespaces Attributes description of the variable 'SIhsnow' from SEA\_ICE\_CONC\_THICKNESS's dataset.\relax }}{157}{table.12.94}%
+\contentsline {table}{\numberline {12.95}{\ignorespaces Attributes description of the variable 'sIceLoad' from SEA\_ICE\_CONC\_THICKNESS's dataset.\relax }}{158}{table.12.95}%
+\contentsline {table}{\numberline {12.96}{\ignorespaces Coordinates and Variables in the dataset SEA\_ICE\_HORIZ\_VOLUME\_FLUX\relax }}{159}{table.12.96}%
+\contentsline {table}{\numberline {12.97}{\ignorespaces Attributes description of the variable 'ADVxHEFF' from SEA\_ICE\_HORIZ\_VOLUME\_FLUX's dataset.\relax }}{160}{table.12.97}%
+\contentsline {table}{\numberline {12.98}{\ignorespaces Attributes description of the variable 'ADVxSNOW' from SEA\_ICE\_HORIZ\_VOLUME\_FLUX's dataset.\relax }}{161}{table.12.98}%
+\contentsline {table}{\numberline {12.99}{\ignorespaces Attributes description of the variable 'ADVyHEFF' from SEA\_ICE\_HORIZ\_VOLUME\_FLUX's dataset.\relax }}{162}{table.12.99}%
+\contentsline {table}{\numberline {12.100}{\ignorespaces Attributes description of the variable 'ADVySNOW' from SEA\_ICE\_HORIZ\_VOLUME\_FLUX's dataset.\relax }}{163}{table.12.100}%
+\contentsline {table}{\numberline {12.101}{\ignorespaces Attributes description of the variable 'DFxEHEFF' from SEA\_ICE\_HORIZ\_VOLUME\_FLUX's dataset.\relax }}{164}{table.12.101}%
+\contentsline {table}{\numberline {12.102}{\ignorespaces Attributes description of the variable 'DFxESNOW' from SEA\_ICE\_HORIZ\_VOLUME\_FLUX's dataset.\relax }}{165}{table.12.102}%
+\contentsline {table}{\numberline {12.103}{\ignorespaces Attributes description of the variable 'DFyEHEFF' from SEA\_ICE\_HORIZ\_VOLUME\_FLUX's dataset.\relax }}{166}{table.12.103}%
+\contentsline {table}{\numberline {12.104}{\ignorespaces Attributes description of the variable 'DFyESNOW' from SEA\_ICE\_HORIZ\_VOLUME\_FLUX's dataset.\relax }}{167}{table.12.104}%
+\contentsline {table}{\numberline {12.105}{\ignorespaces Coordinates and Variables in the dataset SEA\_ICE\_SALT\_PLUME\_FLUX\relax }}{168}{table.12.105}%
+\contentsline {table}{\numberline {12.106}{\ignorespaces Attributes description of the variable 'oceSPDep' from SEA\_ICE\_SALT\_PLUME\_FLUX's dataset.\relax }}{169}{table.12.106}%
+\contentsline {table}{\numberline {12.107}{\ignorespaces Attributes description of the variable 'oceSPflx' from SEA\_ICE\_SALT\_PLUME\_FLUX's dataset.\relax }}{170}{table.12.107}%
+\contentsline {table}{\numberline {12.108}{\ignorespaces Coordinates and Variables in the dataset SEA\_ICE\_VELOCITY\relax }}{170}{table.12.108}%
+\contentsline {table}{\numberline {12.108}{\ignorespaces Coordinates and Variables in the dataset SEA\_ICE\_VELOCITY\relax }}{171}{table.12.108}%
+\contentsline {table}{\numberline {12.109}{\ignorespaces Attributes description of the variable 'SIuice' from SEA\_ICE\_VELOCITY's dataset.\relax }}{172}{table.12.109}%
+\contentsline {table}{\numberline {12.110}{\ignorespaces Attributes description of the variable 'SIvice' from SEA\_ICE\_VELOCITY's dataset.\relax }}{173}{table.12.110}%
+\contentsline {table}{\numberline {12.111}{\ignorespaces Coordinates and Variables in the dataset SEA\_SURFACE\_HEIGHT\relax }}{174}{table.12.111}%
+\contentsline {table}{\numberline {12.112}{\ignorespaces Attributes description of the variable 'ETAN' from SEA\_SURFACE\_HEIGHT's dataset.\relax }}{175}{table.12.112}%
+\contentsline {table}{\numberline {12.113}{\ignorespaces Attributes description of the variable 'SSH' from SEA\_SURFACE\_HEIGHT's dataset.\relax }}{176}{table.12.113}%
+\contentsline {table}{\numberline {12.114}{\ignorespaces Attributes description of the variable 'SSHIBC' from SEA\_SURFACE\_HEIGHT's dataset.\relax }}{177}{table.12.114}%
+\contentsline {table}{\numberline {12.115}{\ignorespaces Attributes description of the variable 'SSHNOIBC' from SEA\_SURFACE\_HEIGHT's dataset.\relax }}{178}{table.12.115}%
+\contentsline {table}{\numberline {13.1}{\ignorespaces Coordinates and Variables in the dataset GRID\_GEOMETRY\_ECCO\relax }}{179}{table.13.1}%
+\contentsline {table}{\numberline {13.2}{\ignorespaces Attributes description of the variable 'hFacC' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{180}{table.13.2}%
+\contentsline {table}{\numberline {13.3}{\ignorespaces Attributes description of the variable 'maskC' from GRID\_GEOMETRY\_ECCO's dataset.\relax }}{181}{table.13.3}%
+\contentsline {table}{\numberline {14.1}{\ignorespaces Coordinates and Variables in the dataset ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES\relax }}{182}{table.14.1}%
+\contentsline {table}{\numberline {14.2}{\ignorespaces Attributes description of the variable 'EXFaqh' from ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's dataset.\relax }}{183}{table.14.2}%
+\contentsline {table}{\numberline {14.3}{\ignorespaces Attributes description of the variable 'EXFatemp' from ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's dataset.\relax }}{184}{table.14.3}%
+\contentsline {table}{\numberline {14.4}{\ignorespaces Attributes description of the variable 'EXFewind' from ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's dataset.\relax }}{185}{table.14.4}%
+\contentsline {table}{\numberline {14.5}{\ignorespaces Attributes description of the variable 'EXFnwind' from ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's dataset.\relax }}{186}{table.14.5}%
+\contentsline {table}{\numberline {14.6}{\ignorespaces Attributes description of the variable 'EXFpress' from ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's dataset.\relax }}{187}{table.14.6}%
+\contentsline {table}{\numberline {14.7}{\ignorespaces Attributes description of the variable 'EXFwspee' from ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES's dataset.\relax }}{188}{table.14.7}%
+\contentsline {table}{\numberline {14.8}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX\relax }}{189}{table.14.8}%
+\contentsline {table}{\numberline {14.9}{\ignorespaces Attributes description of the variable 'EXFempmr' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{190}{table.14.9}%
+\contentsline {table}{\numberline {14.10}{\ignorespaces Attributes description of the variable 'EXFevap' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{191}{table.14.10}%
+\contentsline {table}{\numberline {14.11}{\ignorespaces Attributes description of the variable 'EXFpreci' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{192}{table.14.11}%
+\contentsline {table}{\numberline {14.12}{\ignorespaces Attributes description of the variable 'EXFroff' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{193}{table.14.12}%
+\contentsline {table}{\numberline {14.13}{\ignorespaces Attributes description of the variable 'SFLUX' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{194}{table.14.13}%
+\contentsline {table}{\numberline {14.14}{\ignorespaces Attributes description of the variable 'SIacSubl' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{195}{table.14.14}%
+\contentsline {table}{\numberline {14.15}{\ignorespaces Attributes description of the variable 'SIatmFW' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{196}{table.14.15}%
+\contentsline {table}{\numberline {14.16}{\ignorespaces Attributes description of the variable 'SIfwThru' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{197}{table.14.16}%
+\contentsline {table}{\numberline {14.17}{\ignorespaces Attributes description of the variable 'SIrsSubl' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{198}{table.14.17}%
+\contentsline {table}{\numberline {14.18}{\ignorespaces Attributes description of the variable 'SIsnPrcp' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{199}{table.14.18}%
+\contentsline {table}{\numberline {14.19}{\ignorespaces Attributes description of the variable 'oceFWflx' from OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX's dataset.\relax }}{200}{table.14.19}%
+\contentsline {table}{\numberline {14.20}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX\relax }}{201}{table.14.20}%
+\contentsline {table}{\numberline {14.21}{\ignorespaces Attributes description of the variable 'EXFhl' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{202}{table.14.21}%
+\contentsline {table}{\numberline {14.22}{\ignorespaces Attributes description of the variable 'EXFhs' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{203}{table.14.22}%
+\contentsline {table}{\numberline {14.23}{\ignorespaces Attributes description of the variable 'EXFlwdn' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{204}{table.14.23}%
+\contentsline {table}{\numberline {14.24}{\ignorespaces Attributes description of the variable 'EXFlwnet' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{205}{table.14.24}%
+\contentsline {table}{\numberline {14.25}{\ignorespaces Attributes description of the variable 'EXFqnet' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{206}{table.14.25}%
+\contentsline {table}{\numberline {14.26}{\ignorespaces Attributes description of the variable 'EXFswdn' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{207}{table.14.26}%
+\contentsline {table}{\numberline {14.27}{\ignorespaces Attributes description of the variable 'EXFswnet' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{208}{table.14.27}%
+\contentsline {table}{\numberline {14.28}{\ignorespaces Attributes description of the variable 'SIaaflux' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{209}{table.14.28}%
+\contentsline {table}{\numberline {14.29}{\ignorespaces Attributes description of the variable 'SIatmQnt' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{210}{table.14.29}%
+\contentsline {table}{\numberline {14.30}{\ignorespaces Attributes description of the variable 'TFLUX' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{211}{table.14.30}%
+\contentsline {table}{\numberline {14.31}{\ignorespaces Attributes description of the variable 'oceQnet' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{212}{table.14.31}%
+\contentsline {table}{\numberline {14.32}{\ignorespaces Attributes description of the variable 'oceQsw' from OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX's dataset.\relax }}{213}{table.14.32}%
+\contentsline {table}{\numberline {14.33}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_AND\_ICE\_SURFACE\_STRESS\relax }}{214}{table.14.33}%
+\contentsline {table}{\numberline {14.34}{\ignorespaces Attributes description of the variable 'EXFtaue' from OCEAN\_AND\_ICE\_SURFACE\_STRESS's dataset.\relax }}{215}{table.14.34}%
+\contentsline {table}{\numberline {14.35}{\ignorespaces Attributes description of the variable 'EXFtaun' from OCEAN\_AND\_ICE\_SURFACE\_STRESS's dataset.\relax }}{216}{table.14.35}%
+\contentsline {table}{\numberline {14.36}{\ignorespaces Attributes description of the variable 'oceTAUE' from OCEAN\_AND\_ICE\_SURFACE\_STRESS's dataset.\relax }}{217}{table.14.36}%
+\contentsline {table}{\numberline {14.37}{\ignorespaces Attributes description of the variable 'oceTAUN' from OCEAN\_AND\_ICE\_SURFACE\_STRESS's dataset.\relax }}{218}{table.14.37}%
+\contentsline {table}{\numberline {14.38}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_BOLUS\_VELOCITY\relax }}{219}{table.14.38}%
+\contentsline {table}{\numberline {14.39}{\ignorespaces Attributes description of the variable 'EVELSTAR' from OCEAN\_BOLUS\_VELOCITY's dataset.\relax }}{220}{table.14.39}%
+\contentsline {table}{\numberline {14.40}{\ignorespaces Attributes description of the variable 'NVELSTAR' from OCEAN\_BOLUS\_VELOCITY's dataset.\relax }}{221}{table.14.40}%
+\contentsline {table}{\numberline {14.41}{\ignorespaces Attributes description of the variable 'WVELSTAR' from OCEAN\_BOLUS\_VELOCITY's dataset.\relax }}{222}{table.14.41}%
+\contentsline {table}{\numberline {14.42}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_BOTTOM\_PRESSURE\relax }}{223}{table.14.42}%
+\contentsline {table}{\numberline {14.43}{\ignorespaces Attributes description of the variable 'OBP' from OCEAN\_BOTTOM\_PRESSURE's dataset.\relax }}{224}{table.14.43}%
+\contentsline {table}{\numberline {14.44}{\ignorespaces Attributes description of the variable 'OBPGMAP' from OCEAN\_BOTTOM\_PRESSURE's dataset.\relax }}{225}{table.14.44}%
+\contentsline {table}{\numberline {14.45}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_DENS\_STRAT\_PRESS\relax }}{226}{table.14.45}%
+\contentsline {table}{\numberline {14.46}{\ignorespaces Attributes description of the variable 'DRHODR' from OCEAN\_DENS\_STRAT\_PRESS's dataset.\relax }}{227}{table.14.46}%
+\contentsline {table}{\numberline {14.47}{\ignorespaces Attributes description of the variable 'PHIHYD' from OCEAN\_DENS\_STRAT\_PRESS's dataset.\relax }}{228}{table.14.47}%
+\contentsline {table}{\numberline {14.48}{\ignorespaces Attributes description of the variable 'RHOAnoma' from OCEAN\_DENS\_STRAT\_PRESS's dataset.\relax }}{229}{table.14.48}%
+\contentsline {table}{\numberline {14.49}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_MIXED\_LAYER\_DEPTH\relax }}{229}{table.14.49}%
+\contentsline {table}{\numberline {14.49}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_MIXED\_LAYER\_DEPTH\relax }}{230}{table.14.49}%
+\contentsline {table}{\numberline {14.50}{\ignorespaces Attributes description of the variable 'MXLDEPTH' from OCEAN\_MIXED\_LAYER\_DEPTH's dataset.\relax }}{231}{table.14.50}%
+\contentsline {table}{\numberline {14.51}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_TEMPERATURE\_SALINITY\relax }}{232}{table.14.51}%
+\contentsline {table}{\numberline {14.52}{\ignorespaces Attributes description of the variable 'SALT' from OCEAN\_TEMPERATURE\_SALINITY's dataset.\relax }}{233}{table.14.52}%
+\contentsline {table}{\numberline {14.53}{\ignorespaces Attributes description of the variable 'THETA' from OCEAN\_TEMPERATURE\_SALINITY's dataset.\relax }}{234}{table.14.53}%
+\contentsline {table}{\numberline {14.54}{\ignorespaces Coordinates and Variables in the dataset OCEAN\_VELOCITY\relax }}{235}{table.14.54}%
+\contentsline {table}{\numberline {14.55}{\ignorespaces Attributes description of the variable 'EVEL' from OCEAN\_VELOCITY's dataset.\relax }}{236}{table.14.55}%
+\contentsline {table}{\numberline {14.56}{\ignorespaces Attributes description of the variable 'NVEL' from OCEAN\_VELOCITY's dataset.\relax }}{237}{table.14.56}%
+\contentsline {table}{\numberline {14.57}{\ignorespaces Attributes description of the variable 'WVEL' from OCEAN\_VELOCITY's dataset.\relax }}{238}{table.14.57}%
+\contentsline {table}{\numberline {14.58}{\ignorespaces Coordinates and Variables in the dataset SEA\_ICE\_CONC\_THICKNESS\relax }}{239}{table.14.58}%
+\contentsline {table}{\numberline {14.59}{\ignorespaces Attributes description of the variable 'SIarea' from SEA\_ICE\_CONC\_THICKNESS's dataset.\relax }}{240}{table.14.59}%
+\contentsline {table}{\numberline {14.60}{\ignorespaces Attributes description of the variable 'SIheff' from SEA\_ICE\_CONC\_THICKNESS's dataset.\relax }}{241}{table.14.60}%
+\contentsline {table}{\numberline {14.61}{\ignorespaces Attributes description of the variable 'SIhsnow' from SEA\_ICE\_CONC\_THICKNESS's dataset.\relax }}{242}{table.14.61}%
+\contentsline {table}{\numberline {14.62}{\ignorespaces Attributes description of the variable 'sIceLoad' from SEA\_ICE\_CONC\_THICKNESS's dataset.\relax }}{243}{table.14.62}%
+\contentsline {table}{\numberline {14.63}{\ignorespaces Coordinates and Variables in the dataset SEA\_ICE\_VELOCITY\relax }}{244}{table.14.63}%
+\contentsline {table}{\numberline {14.64}{\ignorespaces Attributes description of the variable 'SIeice' from SEA\_ICE\_VELOCITY's dataset.\relax }}{245}{table.14.64}%
+\contentsline {table}{\numberline {14.65}{\ignorespaces Attributes description of the variable 'SInice' from SEA\_ICE\_VELOCITY's dataset.\relax }}{246}{table.14.65}%
+\contentsline {table}{\numberline {14.66}{\ignorespaces Coordinates and Variables in the dataset SEA\_SURFACE\_HEIGHT\relax }}{247}{table.14.66}%
+\contentsline {table}{\numberline {14.67}{\ignorespaces Attributes description of the variable 'SSH' from SEA\_SURFACE\_HEIGHT's dataset.\relax }}{248}{table.14.67}%
+\contentsline {table}{\numberline {14.68}{\ignorespaces Attributes description of the variable 'SSHIBC' from SEA\_SURFACE\_HEIGHT's dataset.\relax }}{249}{table.14.68}%
+\contentsline {table}{\numberline {14.69}{\ignorespaces Attributes description of the variable 'SSHNOIBC' from SEA\_SURFACE\_HEIGHT's dataset.\relax }}{250}{table.14.69}%
+\contentsline {table}{\numberline {15.1}{\ignorespaces Coordinates and Variables in the dataset GLOBAL\_MEAN\_ATM\_SURFACE\_PRES\relax }}{251}{table.15.1}%
+\contentsline {table}{\numberline {15.2}{\ignorespaces Attributes description of the variable 'Pa\_global' from GLOBAL\_MEAN\_ATM\_SURFACE\_PRES's dataset.\relax }}{252}{table.15.2}%
+\contentsline {table}{\numberline {15.3}{\ignorespaces Coordinates and Variables in the dataset GLOBAL\_MEAN\_SEA\_LEVEL\relax }}{253}{table.15.3}%
+\contentsline {table}{\numberline {15.4}{\ignorespaces Attributes description of the variable 'global\_mean\_barystatic\_sea\_level\_anomaly' from GLOBAL\_MEAN\_SEA\_LEVEL's dataset.\relax }}{254}{table.15.4}%
+\contentsline {table}{\numberline {15.5}{\ignorespaces Attributes description of the variable 'global\_mean\_sea\_level\_anomaly' from GLOBAL\_MEAN\_SEA\_LEVEL's dataset.\relax }}{256}{table.15.5}%
+\contentsline {table}{\numberline {15.6}{\ignorespaces Attributes description of the variable 'global\_mean\_sterodynamic\_sea\_level\_anomaly' from GLOBAL\_MEAN\_SEA\_LEVEL's dataset.\relax }}{257}{table.15.6}%
+\contentsline {table}{\numberline {15.7}{\ignorespaces Coordinates and Variables in the dataset SBO\_CORE\_PRODUCTS\relax }}{258}{table.15.7}%
+\contentsline {table}{\numberline {15.7}{\ignorespaces Coordinates and Variables in the dataset SBO\_CORE\_PRODUCTS\relax }}{259}{table.15.7}%
+\contentsline {table}{\numberline {15.8}{\ignorespaces Attributes description of the variable 'mass' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{260}{table.15.8}%
+\contentsline {table}{\numberline {15.9}{\ignorespaces Attributes description of the variable 'mass\_fw' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{261}{table.15.9}%
+\contentsline {table}{\numberline {15.10}{\ignorespaces Attributes description of the variable 'mass\_gc' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{262}{table.15.10}%
+\contentsline {table}{\numberline {15.11}{\ignorespaces Attributes description of the variable 'mass\_si' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{263}{table.15.11}%
+\contentsline {table}{\numberline {15.12}{\ignorespaces Attributes description of the variable 'sboarea' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{264}{table.15.12}%
+\contentsline {table}{\numberline {15.13}{\ignorespaces Attributes description of the variable 'xcom' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{265}{table.15.13}%
+\contentsline {table}{\numberline {15.14}{\ignorespaces Attributes description of the variable 'xcom\_fw' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{266}{table.15.14}%
+\contentsline {table}{\numberline {15.15}{\ignorespaces Attributes description of the variable 'xoamc' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{267}{table.15.15}%
+\contentsline {table}{\numberline {15.16}{\ignorespaces Attributes description of the variable 'xoamc\_si' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{268}{table.15.16}%
+\contentsline {table}{\numberline {15.17}{\ignorespaces Attributes description of the variable 'xoamp' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{269}{table.15.17}%
+\contentsline {table}{\numberline {15.18}{\ignorespaces Attributes description of the variable 'xoamp\_dsl' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{270}{table.15.18}%
+\contentsline {table}{\numberline {15.19}{\ignorespaces Attributes description of the variable 'xoamp\_fw' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{271}{table.15.19}%
+\contentsline {table}{\numberline {15.20}{\ignorespaces Attributes description of the variable 'ycom' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{272}{table.15.20}%
+\contentsline {table}{\numberline {15.21}{\ignorespaces Attributes description of the variable 'ycom\_fw' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{273}{table.15.21}%
+\contentsline {table}{\numberline {15.22}{\ignorespaces Attributes description of the variable 'yoamc' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{274}{table.15.22}%
+\contentsline {table}{\numberline {15.23}{\ignorespaces Attributes description of the variable 'yoamc\_si' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{275}{table.15.23}%
+\contentsline {table}{\numberline {15.24}{\ignorespaces Attributes description of the variable 'yoamp' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{276}{table.15.24}%
+\contentsline {table}{\numberline {15.25}{\ignorespaces Attributes description of the variable 'yoamp\_dsl' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{277}{table.15.25}%
+\contentsline {table}{\numberline {15.26}{\ignorespaces Attributes description of the variable 'yoamp\_fw' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{278}{table.15.26}%
+\contentsline {table}{\numberline {15.27}{\ignorespaces Attributes description of the variable 'zcom' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{279}{table.15.27}%
+\contentsline {table}{\numberline {15.28}{\ignorespaces Attributes description of the variable 'zcom\_fw' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{280}{table.15.28}%
+\contentsline {table}{\numberline {15.29}{\ignorespaces Attributes description of the variable 'zoamc' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{281}{table.15.29}%
+\contentsline {table}{\numberline {15.30}{\ignorespaces Attributes description of the variable 'zoamc\_si' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{282}{table.15.30}%
+\contentsline {table}{\numberline {15.31}{\ignorespaces Attributes description of the variable 'zoamp' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{283}{table.15.31}%
+\contentsline {table}{\numberline {15.32}{\ignorespaces Attributes description of the variable 'zoamp\_dsl' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{284}{table.15.32}%
+\contentsline {table}{\numberline {15.33}{\ignorespaces Attributes description of the variable 'zoamp\_fw' from SBO\_CORE\_PRODUCTS's dataset.\relax }}{285}{table.15.33}%

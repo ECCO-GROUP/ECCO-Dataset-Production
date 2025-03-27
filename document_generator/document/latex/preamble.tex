@@ -15,13 +15,14 @@
 
 % \usepackage{color}   %May be necessary if you want to color links
 
-% \usepackage{hyperref}
-% \hypersetup{
-%     colorlinks=true,
-%     linktoc=all,     
-%     linkcolor=blue, 
-% }
-% \urlstyle{same}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,     
+    linkcolor=black, 
+    urlcolor=blue
+}
+\urlstyle{same}
 
 \usepackage{ltablex} % combo of longtable and tabularx
 \usepackage{chngcntr}
@@ -48,7 +49,7 @@
 version 4 release 4}
 %% OK: the line below specify the note on bottom-center of each page of the document
 \fancyfoot[C]{\small ECCO\_v4r4\_user\_guide.pdf \\
-Last saved: \today{} \currenttime \\ \large{-- \thepage{} --}}
+Last saved: \today{} \currenttime, page: \thepage{}}
 %\thepage{} -- Last saved: \today{} \currenttime \\ -- \thepage{} --}
 }
 

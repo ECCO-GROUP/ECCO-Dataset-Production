@@ -2,26 +2,49 @@ import os
 import xarray as xr
 import subprocess
 import utils
-
+import numpy as np
 ## ----------------------------------------------------------------------------
 ## ---------------------- Extracting CDL For Examples -------------------------
 ## ----------------------------------------------------------------------------
 def fieldTable(ds:xr.Dataset, is_coord:bool)->list[str]:
 
     dataset = get_product_name(ds)
-    fields = fields_in_ds(ds, is_coord)
+    # fields = fields_in_ds(ds, is_coord=True)
+    field_var1,field_var_des1,field_var_unit1 = get_coord_vars_in_ds(ds=ds,CoordsOrVar=True)
+    field_var2,field_var_des2,field_var_unit2 = get_coord_vars_in_ds(ds=ds,CoordsOrVar=False)
+    # Managing the table cells' lenght for "Variable Name" and "Description"
+    a,b = table_cellSize(field_var1+field_var2)
+    # maxVarlen = []
+    # for ik in field_var:
+    #     maxVarlen.append(len(ik))
+    # maxVarlen = np.max(maxVarlen)
+    # if maxVarlen>=29:
+    #     a = 0.4;b = 0.39
+    # else:
+    #     a =0.15 ;b = 0.64
     ll = []
-    ll.append(r'\begin{longtable}{|p{0.1\textwidth}|p{0.5\textwidth}|}')
+    # ll.append(r'\begin{longtable}{|p{0.25\textwidth}|p{0.5\textwidth}|p{0.11\textwidth}|}')
+    ll.append(r'\begin{longtable}{|m{'+str(a)+r'\textwidth}|m{'+str(b)+r'\textwidth}|m{0.12\textwidth}|}')
     # make a table that displays the fields in the dataset
-    ll.append(fr'\caption{{Variables in the dataset {utils.sanitize(dataset)}}}')
+    ll.append(fr'\caption{{Coordinates and Variables in the dataset {utils.sanitize(dataset)}}}')
     ll.append(fr'\label{{tab:table-{dataset}-fields}} \\ ')
     ll.append(r'\hline \endhead \hline \endfoot')
-
+    # ll.append(r'\rowcolor{lightgray} \textbf{Dataset:} & \textbf{'+f'{utils.sanitize(dataset)}'+r'} \\ \hline')
     
-    ll.append(r'\rowcolor{lightgray} \textbf{Dataset:} & \textbf{'+f'{utils.sanitize(dataset)}'+r'} \\ \hline')
-    for field in fields:
-        ll.append(r'Field: &' + f'{utils.sanitize(field)}'+r' \\ \hline')
+    ll.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Variables}} & \multicolumn{1}{|c|}{\textbf{Description of data variables}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
 
+    # for field in fields:
+    ## Here, dataset's variables are filled out with description and the corresponding unit!
+    for ij in np.arange(len(field_var1)):
+        # ll.append(r'Field: &' + f'{utils.sanitize(field)}'+r' \\ \hline')
+        ll.append(f'{utils.sanitize(field_var1[ij])} &' + f'{utils.sanitize(field_var_des1[ij])} &'+ rf'{utils.sanitize(field_var_unit1[ij])}  \\ \hline')
+    
+    ll.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Coordinates}} & \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
+    ## Here, dataset's coordinates are filled out with description and the corresponding unit!
+    for ij in np.arange(len(field_var2)):
+        # ll.append(r'Field: &' + f'{utils.sanitize(field)}'+r' \\ \hline')
+        ll.append(f'{utils.sanitize(field_var2[ij])} &' + f'{utils.sanitize(field_var_des2[ij])} &'+ rf'{utils.sanitize(field_var_unit2[ij])}  \\ \hline')
+    
     ll.append(r'\end{longtable}')
     ll.append(r"")
     return ll
@@ -285,18 +308,6 @@ def data_var_table(field_name:str, attrs:dict, ds_name:str)->list[str]:
         list: A list containing the latex table of the data variable.
     """
     new_sani = utils.sanitize(ds_name)
-    # Create the latex table
-    la = [
-            # ADJUST SIZE OF TABLE HERE
-            # r'\begin{longtable}{|p{0.1\textwidth}|p{0.35\textwidth}|p{0.45\textwidth}|p{0.1\textwidth}|}',
-            # r'\begin{longtable}{|p{0.06\textwidth}|p{0.41\textwidth}|p{0.39\textwidth}|p{0.06\textwidth}|}',
-            r'\begin{longtable}{|m{0.06\textwidth}|m{0.41\textwidth}|m{0.39\textwidth}|m{0.06\textwidth}|}',
-            fr"\caption{{CDL description of {new_sani}'s {utils.sanitize(field_name)} variable}}",
-            fr'\label{{tab:table-{ds_name}_{field_name}}} \\ ',
-            r'\hline \endhead \hline \endfoot',
-        ]
-    #daName = utils.sanitize(field_name)
-
     # Obtain the important attributes
     storageType = utils.sanitize(attrs["Storage Type"])
     varName = utils.sanitize(attrs["Variable Name"])
@@ -309,15 +320,48 @@ def data_var_table(field_name:str, attrs:dict, ds_name:str)->list[str]:
     cdl_description = cdl_description.replace(r'\\', '\'')
     cdl_description = cdl_description.replace('\n', '\\\\\n')
     cdl_description = cdl_description.replace('    ', r'\hspace*{0.5cm}')
+    # Managing the table cells' lenght for "Variable Name" and "Description"
+    if len(varName)>=29:
+        a = 0.44;b = 0.38
+    else:
+        a =0.3 ;b = 0.45
+    # Create the latex table
+    la = [
+            # ADJUST SIZE OF TABLE HERE
+            # r'\begin{longtable}{|p{0.1\textwidth}|p{0.35\textwidth}|p{0.45\textwidth}|p{0.1\textwidth}|}',
+            # r'\begin{longtable}{|p{0.06\textwidth}|p{0.41\textwidth}|p{0.39\textwidth}|p{0.06\textwidth}|}',
+            # r'\begin{longtable}{|m{0.06\textwidth}|m{0.39\textwidth}|m{0.37\textwidth}|m{0.11\textwidth}|}',
+            r'\begin{longtable}{|m{0.06\textwidth}|m{'+str(a)+r'\textwidth}|m{'+str(b)+r'\textwidth}|m{0.11\textwidth}|}',
+            # fr"\caption{{CDL description of {new_sani}'s {utils.sanitize(field_name)} variable}}",
+            fr"\caption{{Attributes description of the variable '{utils.sanitize(field_name)}' from {new_sani}'s  dataset.}}",
+            fr'\label{{tab:table-{ds_name}_{field_name}}} \\ ',
+            r'\hline \endhead \hline \endfoot',
+        ]
+    #daName = utils.sanitize(field_name)
+
+    # Obtain the important attributes
+    # storageType = utils.sanitize(attrs["Storage Type"])
+    # varName = utils.sanitize(attrs["Variable Name"])
+    # description = utils.sanitize(attrs["Description"])
+    # unit = utils.sanitize(attrs["Units"])
+    # comment = utils.sanitize(attrs["Comments"])
+
+    # # Treat 'Example CDL Description' as a string
+    # cdl_description = utils.sanitize_with_math(attrs['CDL Description']) # might have math
+    # cdl_description = cdl_description.replace(r'\\', '\'')
+    # cdl_description = cdl_description.replace('\n', '\\\\\n')
+    # cdl_description = cdl_description.replace('    ', r'\hspace*{0.5cm}')
 
 
     # Finally create the latex line
     la.append(r'\rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline')
-    la.append(rf'{storageType} & {varName} & {description} & {unit} \\ \hline')
-    la.append(r'\rowcolor{lightgray}  \multicolumn{4}{|p{1.00\textwidth}|}{\textbf{CDL Description}} \\ \hline')
-    la.append(r'\multicolumn{4}{|p{1.00\textwidth}|}' +r'{\makecell{\parbox{1\textwidth}'+ rf'{{{cdl_description}}}' + r'}} \\ \hline')
-    la.append(r'\rowcolor{lightgray} \multicolumn{4}{|p{1.00\textwidth}|}{\textbf{Comments}} \\ \hline')
-    la.append(r'\multicolumn{4}{|p{1\textwidth}|}' + rf'{{{comment}}}' + r' \\ \hline')
+    la.append(rf'{storageType} & {varName} & {description.capitalize()} & {unit} \\ \hline')
+    # la.append(r'\rowcolor{lightgray}  \multicolumn{4}{|m{1.00\textwidth}|}{\textbf{CDL Description}} \\ \hline')
+    la.append(r'\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline')
+    la.append(r'\multicolumn{4}{|c|}' +r'{\makecell{\parbox{.92\textwidth}'+ rf'{{{cdl_description}}}' + r'}} \\ \hline')
+    la.append(r'\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline')
+    # la.append(r'\multicolumn{4}{|p{1\textwidth}|}' + rf'{{{comment.capitalize()}}}' + r' \\ \hline')
+    la.append(r'\multicolumn{4}{|p{1\textwidth}|}' + rf'{{{comment.capitalize()}}}' + r' \\ \hline')
     la.append(r'\end{longtable}')
     la.append(r"")
 
@@ -388,3 +432,51 @@ def fields_in_ds(ds:xr.Dataset, is_coord:bool)->list[str]:
     # else:
 
     return fields
+
+
+def get_coord_vars_in_ds(ds:xr.Dataset,CoordsOrVar:bool=True)->list[str,str,str]:
+    """
+    This function get coordinates, data variavles and their unit from the dataset field.
+    input:-> ds: dataset field in xarray dataset format
+    CoordsOrVar:-> to select "data_vars" (Default, -> True) or "coords" (-> False)
+    output:-> list of coords, var and unit
+    """
+    if CoordsOrVar == True:
+        var_list = list(ds.data_vars)
+        VARI =         []
+        DESCRIP_VARI = []
+        VARI_UNIT =    []
+        for ij in np.arange(len(var_list)):
+            VARI.append(var_list[ij])
+            DESCRIP_VARI.append(str(ds[var_list[ij]].long_name).capitalize())
+            if 'units' in ds[var_list[ij]].attrs.keys():
+                VARI_UNIT.append(ds[var_list[ij]].units)
+            else:
+                VARI_UNIT.append('--none--')
+    if CoordsOrVar == False:
+        var_list = list(ds.coords)
+        VARI =         []
+        DESCRIP_VARI = []
+        VARI_UNIT =    []
+        for ij in np.arange(len(var_list)):
+            VARI.append(var_list[ij])
+            DESCRIP_VARI.append(str(ds[var_list[ij]].long_name).capitalize())
+            if 'units' in ds[var_list[ij]].attrs.keys():
+                VARI_UNIT.append(ds[var_list[ij]].units)
+            else:
+                VARI_UNIT.append('--none--')
+    return VARI, DESCRIP_VARI, VARI_UNIT
+
+def table_cellSize(field_var:list):
+    """
+    this function return the proportion 'a' and 'b' of the textwidth to consider for the table.
+    """
+    maxVarlen = []
+    for ik in field_var:
+        maxVarlen.append(len(ik))
+    maxVarlen = np.max(maxVarlen)
+    if maxVarlen>=29:
+        a = 0.4;b = 0.39
+    else:
+        a =0.15 ;b = 0.64
+    return a,b

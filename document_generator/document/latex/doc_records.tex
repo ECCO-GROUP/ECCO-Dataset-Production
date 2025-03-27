@@ -2,72 +2,81 @@
 
 \begin{center}
     \vspace*{2cm}
-    {\Large The Recommended GHRSST Data Specification (GDS)}\\[2cm]
-    {\LARGE \textbf{GDS 2.0 Technical Specifications}}\\[2cm]
-    {\large Compiled by\\the GHRSST International Science Team 2010,\\reviewed by DAS-TAG 2011.}\\[2cm]
-    {\large Published by the International \\GHRSST Project Office\\
-    Department of Meteorology,\\
-    University of Reading,\\
-    Reading\\
-    United Kingdom}\\[2cm]
-    {\large Tel +44 (0) 118 3785579\\
-    Fax +44 (0) 118 3785576\\
-    E-mail: ghrsst-po@nceo.ac.uk}\\[2cm]
+    {\Large The Recommended ECCO Data Specification (EDS)}\\[2cm]
+    {\LARGE \textbf{EDS Technical Specifications}}\\[2cm]
+    {\large Compiled by\\the ECCO Science Team 2025}\\[2cm]
+    % {\large Published by the International \\GHRSST Project Office\\
+    % Department of Meteorology,\\
+    % University of Reading,\\
+    % Reading\\
+    % United Kingdom}\\[2cm]
+    % {\large Tel +44 (0) 118 3785579\\
+    % Fax +44 (0) 118 3785576\\
+    % E-mail: ghrsst-po@nceo.ac.uk}\\[2cm]
+\end{center}
+
+\begin{center}
+    \textcolor{red}{\Large{On building process!!!}}
 \end{center}
 
 \newpage
 
-\textbf{\Large Document Approval Record}\par\vspace{1cm}
-This document has been approved for release only when signed and dated signatures are present for
-the entities listed below. Documents may be digitally signed. 
-\par 
-\vspace{1cm}
-\begin{tabular}{|p{1.5cm}|>{\raggedright}p{2.5cm}|>{\raggedright}p{3cm}|p{4cm}|p{1.5cm}|}
-    \hline \rowcolor{lightgray}
-        Role & Name & Representing Entity & Signature(s) & Date(s) \\
-    \hline
-        Book Captains & Kenneth Casey and Craig Donion & GHRSST Science Team & insert image & tbd \\
-    \hline
-        GHRSST Project Office & Andrea KaiserWeiss & GHRSST Quality Assurance and Revision Control &insert image & tbd \\
-    \hline
-        GHRSST GDS 2.0 Internal Review Board & Edward M Armstrong & Data Assembly and Systems Technical Advisory Group (DAS-TAG) & insert image & tbd \\
-    \hline
-        GDS 2.0 External Review Board & Anne O\'Carroll & ll GHRSST External Review Board & insert image & tbd \\
-    \hline
-        GHRSST Advisory Council & Jacob Hoyer & GHRSST Advisory Council & insert image & tbd \\
-    \hline
-\end{tabular}
+\begin{center}
+    \textcolor{red}{\Large{On building process!!!}}
+\end{center}
 
-\newpage
 
-\textbf{\large Document History} 
-\par \vspace{1.5cm}
-\begin{tabular}{|p{2.5cm}|>{\raggedright}p{5.5cm}|p{3cm}|p{2cm}|}
-    \hline \rowcolor{lightgray}
-        Author & Version description & Version number & Date of Revision\\
-    \hline
-        K Casey & edits based on external review and inputs from the GHRSST team & v2.006 & 27 September 2010 \\
-    \hline
-        A Kaiser-Weiss & Release version & v2.007 & 1 October 2010 \\
-    \hline
-        Ed Armstrong & GDS2.0 reviewed by DAS-TAG 2011 & v2 rev 4 & 6th November 2011 \\
-    \hline
-        Ed Armstrong & GDS2.0 release 5 & v2 rev 5 & 9th October 2012 \\
-    \hline
-\end{tabular}
+% \textbf{\Large Document Approval Record}\par\vspace{1cm}
+% This document has been approved for release only when signed and dated signatures are present for
+% the entities listed below. Documents may be digitally signed. 
+% \par 
+% \vspace{1cm}
+% \begin{tabular}{|p{1.5cm}|>{\raggedright}p{2.5cm}|>{\raggedright}p{3cm}|p{4cm}|p{1.5cm}|}
+%     \hline \rowcolor{lightgray}
+%         Role & Name & Representing Entity & Signature(s) & Date(s) \\
+%     \hline
+%         Book Captains & Kenneth Casey and Craig Donion & GHRSST Science Team & insert image & tbd \\
+%     \hline
+%         GHRSST Project Office & Andrea KaiserWeiss & GHRSST Quality Assurance and Revision Control &insert image & tbd \\
+%     \hline
+%         GHRSST GDS 2.0 Internal Review Board & Edward M Armstrong & Data Assembly and Systems Technical Advisory Group (DAS-TAG) & insert image & tbd \\
+%     \hline
+%         GDS 2.0 External Review Board & Anne O\'Carroll & ll GHRSST External Review Board & insert image & tbd \\
+%     \hline
+%         GHRSST Advisory Council & Jacob Hoyer & GHRSST Advisory Council & insert image & tbd \\
+%     \hline
+% \end{tabular}
 
-\par \vspace{3cm}
-\textbf{\Large Document Change Record} \par \vspace{1.5cm}
-\begin{tabular}{|p{2.5cm}|>{\raggedright}p{5.5cm}|p{3.5cm}|p{2cm}|}
-    \hline \rowcolor{lightgray}
-        Author & Reason for Change & Pages/paragraphs Changed & Date of Revision\\
-    \hline
-        E. Armstrong & Updates based on external review and DAS-TAG summary report to GHRSST-12 & Multiple & 28 Sep 2011 \\
-    \hline
-        A Kaiser-Weiss & Links updated, minor typos removed & 1-7, 37, 50, 104 & 29 Sep 2011 \\
-    \hline
-        Ed Armstrong & Updated based on final DAS-TAG mini review & CF comment attribute added to all variable examples; full example, L2P CDL revised; variable l2p\_flags clarified ; SSES clarified as Sensor Specific Error Statistic & 6 Nov 2011 \\
-    \hline
-        Ed Armstrong & g Minor updates & Minor changes and additions to metadata attributes. Mostly table 8.2. Other minor changes. & 9 October 2012 \\
-    \hline
-\end{tabular}
+% \newpage
+
+% \textbf{\large Document History} 
+% \par \vspace{1.5cm}
+% \begin{tabular}{|p{2.5cm}|>{\raggedright}p{5.5cm}|p{3cm}|p{2cm}|}
+%     \hline \rowcolor{lightgray}
+%         Author & Version description & Version number & Date of Revision\\
+%     \hline
+%         K Casey & edits based on external review and inputs from the GHRSST team & v2.006 & 27 September 2010 \\
+%     \hline
+%         A Kaiser-Weiss & Release version & v2.007 & 1 October 2010 \\
+%     \hline
+%         Ed Armstrong & GDS2.0 reviewed by DAS-TAG 2011 & v2 rev 4 & 6th November 2011 \\
+%     \hline
+%         Ed Armstrong & GDS2.0 release 5 & v2 rev 5 & 9th October 2012 \\
+%     \hline
+% \end{tabular}
+
+% \par \vspace{3cm}
+% \textbf{\Large Document Change Record} \par \vspace{1.5cm}
+% \begin{tabular}{|p{2.5cm}|>{\raggedright}p{5.5cm}|p{3.5cm}|p{2cm}|}
+%     \hline \rowcolor{lightgray}
+%         Author & Reason for Change & Pages/paragraphs Changed & Date of Revision\\
+%     \hline
+%         E. Armstrong & Updates based on external review and DAS-TAG summary report to GHRSST-12 & Multiple & 28 Sep 2011 \\
+%     \hline
+%         A Kaiser-Weiss & Links updated, minor typos removed & 1-7, 37, 50, 104 & 29 Sep 2011 \\
+%     \hline
+%         Ed Armstrong & Updated based on final DAS-TAG mini review & CF comment attribute added to all variable examples; full example, L2P CDL revised; variable l2p\_flags clarified ; SSES clarified as Sensor Specific Error Statistic & 6 Nov 2011 \\
+%     \hline
+%         Ed Armstrong & g Minor updates & Minor changes and additions to metadata attributes. Mostly table 8.2. Other minor changes. & 9 October 2012 \\
+%     \hline
+% \end{tabular}

@@ -5,7 +5,8 @@
         "product": "native",
         "filename": "ATM_SURFACE_TEMP_HUM_WIND_PRES",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of atmosphere surface temperature, humidity, winds, and pressure on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean three-dimensional Gent-Mcwilliams, Redi, and background vertical diffusivity coefficients",
@@ -13,7 +14,8 @@
         "product": "native",
         "filename": "OCEAN_3D_MIXING_COEFFS",
         "dimension": "3D",
-        "frequency": "TI"
+        "frequency": "TI",
+        "Introduction":"This dataset provides 3D time-invariant coefficients for the Gent-McWilliams and Redi parameterizations and background vertical diffusivity on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate."
     },
     {
         "name": "ocean three-dimensional momentum tendency",
@@ -21,7 +23,8 @@
         "product": "native",
         "filename": "OCEAN_3D_MOMENTUM_TEND",
         "dimension": "3D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides three-dimensional ocean momentum tendency on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean three-dimensional salinity fluxes",
@@ -30,7 +33,8 @@
         "product": "native",
         "filename": "OCEAN_3D_SALINITY_FLUX",
         "dimension": "3D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides three-dimensional ocean salinity fluxes on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean three-dimensional potential temperature fluxes",
@@ -39,7 +43,8 @@
         "product": "native",
         "filename": "OCEAN_3D_TEMPERATURE_FLUX",
         "dimension": "3D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides three-dimensional ocean potential temperature fluxes on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean three-dimensional volume fluxes",
@@ -48,7 +53,8 @@
         "product": "native",
         "filename": "OCEAN_3D_VOLUME_FLUX",
         "dimension": "3D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides three-dimensional ocean volume fluxes on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean and sea-ice surface freshwater fluxes",
@@ -56,7 +62,8 @@
         "product": "native",
         "filename": "OCEAN_AND_ICE_SURFACE_FW_FLUX",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of ocean and sea-ice surface freshwater fluxes on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean and sea-ice surface heat fluxes",
@@ -64,7 +71,8 @@
         "product": "native",
         "filename": "OCEAN_AND_ICE_SURFACE_HEAT_FLUX",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of ocean and sea-ice surface heat fluxes on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean and sea-ice surface stress",
@@ -72,7 +80,8 @@
         "product": "native",
         "filename": "OCEAN_AND_ICE_SURFACE_STRESS",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of ocean and sea-ice surface stress on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "Gent-McWilliams ocean bolus transport streamfunction",
@@ -80,7 +89,8 @@
         "product": "native",
         "filename": "OCEAN_BOLUS_STREAMFUNCTION",
         "dimension": "3D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 3D fields of Gent-McWilliams ocean bolus transport streamfunctions on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "Gent-McWilliams ocean bolus velocity",
@@ -88,7 +98,8 @@
         "product": "native",
         "filename": "OCEAN_BOLUS_VELOCITY",
         "dimension": "3D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 3D fields of Gent-McWilliams ocean bolus velocity on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean bottom pressure and model ocean bottom pressure anomaly",
@@ -98,7 +109,8 @@
         "product": "native",
         "filename": "OCEAN_BOTTOM_PRESSURE",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON, SNAP"
+        "frequency": "AVG_DAY, AVG_MON, SNAP",
+        "Introduction":"This dataset provides 2D fields of ocean bottom pressure and model ocean bottom pressure anomaly on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution. Snapshot data of ocean bottom pressure and model ocean bottom pressure anomaly are also provided."
     },
     {
         "name": "ocean density, stratification, and hydrostatic pressure",
@@ -108,7 +120,8 @@
         "comment": "Hydrostatic pressure is provided in two forms: 1) using constant vertical grid spacing (PHIHYDcR) and 2) using time-varying grid spacing from the model's z* coordinate system (PHIHYD).",
         "filename": "OCEAN_DENS_STRAT_PRESS",
         "dimension": "3D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 3D fields of ocean density, stratification, and hydrostatic pressure on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean mixed layer depth",
@@ -116,7 +129,8 @@
         "product": "native",
         "filename": "OCEAN_MIXED_LAYER_DEPTH",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of ocean mixed layer depth on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean potential temperature and salinity",
@@ -124,7 +138,8 @@
         "product": "native",
         "filename": "OCEAN_TEMPERATURE_SALINITY",
         "dimension": "3D",
-        "frequency": "AVG_DAY, AVG_MON, SNAP"
+        "frequency": "AVG_DAY, AVG_MON, SNAP",
+        "Introduction":"This dataset provides 3D fields of ocean potential temperature and salinity on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution. Snapshot data of ocean potential temperature and salinity are also provided."
     },
     {
         "name": "ocean velocity",
@@ -149,7 +164,8 @@
         "vector_outputs": {
             "EVEL": "EAST",
             "NVEL": "NORTH"
-        }
+        },
+        "Introduction":"This dataset provides 3D fields of ocean velocity (3D fields: zonal, meridional and vertical velocity components) on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "sea-ice and snow concentration and thickness",
@@ -157,7 +173,8 @@
         "product": "native",
         "filename": "SEA_ICE_CONC_THICKNESS",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON, SNAP"
+        "frequency": "AVG_DAY, AVG_MON, SNAP",
+        "Introduction":"This dataset provides 2D fields of sea-ice and snow concentration, thickness, and pressure loading on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution. Snapshot data of sea-ice and snow concentration, thickness, and pressure are also provided."
     },
     {
         "name": "sea-ice and snow horizontal volume fluxes",
@@ -165,7 +182,8 @@
         "product": "native",
         "filename": "SEA_ICE_HORIZ_VOLUME_FLUX",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of sea-ice and snow horizontal volume fluxes on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "sea-ice salt plume fluxes",
@@ -174,7 +192,8 @@
         "product": "native",
         "filename": "SEA_ICE_SALT_PLUME_FLUX",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of sea-ice salt plume fluxes on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "sea-ice velocity",
@@ -182,7 +201,8 @@
         "product": "native",
         "filename": "SEA_ICE_VELOCITY",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON, SNAP"
+        "frequency": "AVG_DAY, AVG_MON, SNAP",
+        "Introduction":"This dataset provides 2D fields of sea-ice velocity on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution. Snapshot data of sea-ice velocity are also provided."
     },
     {
         "name": "dynamic sea surface height and model sea level anomaly",
@@ -191,6 +211,7 @@
         "product": "native",
         "filename": "SEA_SURFACE_HEIGHT",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON, SNAP"
+        "frequency": "AVG_DAY, AVG_MON, SNAP",
+        "Introduction":"This dataset provides 2D fields of dynamic sea surface height and model sea level anomaly on the lat-lon-cap 90 (llc90) native model grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution. Snapshot data of dynamic sea surface height and model sea level anomaly are also provided."
     }
 ]

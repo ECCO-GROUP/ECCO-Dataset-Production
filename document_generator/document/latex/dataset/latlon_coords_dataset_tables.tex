@@ -1,59 +1,71 @@
-\pagebreak
-\subsection{Latlon coordinates NetCDF GRID\_GEOMETRY\_ECCO}
+\subsection{Latlon coordinates GRID\_GEOMETRY\_ECCO}
 \newp
-\begin{longtable}{|p{0.1\textwidth}|p{0.5\textwidth}|}
-\caption{Variables in the dataset GRID\_GEOMETRY\_ECCO}
+\subsubsection{Overview}
+This dataset provides geometric parameters for the regular 0.5-degree lat-lon grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. Parameters include areas and lengths of grid cell sides, horizontal and vertical coordinates of grid cell centers and corners, and global domain geometry including bathymetry and land/ocean masks. 
+\begin{longtable}{|m{0.15\textwidth}|m{0.64\textwidth}|m{0.12\textwidth}|}
+\caption{Coordinates and Variables in the dataset GRID\_GEOMETRY\_ECCO}
 \label{tab:table-GRID_GEOMETRY_ECCO-fields} \\ 
 \hline \endhead \hline \endfoot
-\rowcolor{lightgray} \textbf{Dataset:} & \textbf{GRID\_GEOMETRY\_ECCO} \\ \hline
-Field: &hFacC \\ \hline
-Field: &maskC \\ \hline
+\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Variables}} & \multicolumn{1}{|c|}{\textbf{Description of data variables}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline
+hFacC &Vertical open fraction of grid cell &1  \\ \hline
+Depth &Model seafloor depth below ocean surface at rest &m  \\ \hline
+area &Area of lat-lon grid cell &m2  \\ \hline
+drF &Distance between the upper and lower interfaces of the model grid cell &m  \\ \hline
+maskC &Wet/dry boolean mask for grid cell &--none--  \\ \hline
+\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Coordinates}} & \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline
+Z &Depth of grid cell center &m  \\ \hline
+latitude &Latitude at grid cell center &degrees\_north  \\ \hline
+longitude &Longitude at grid cell center &degrees\_east  \\ \hline
+latitude\_bnds &Latitudes of grid cell edges &--none--  \\ \hline
+longitude\_bnds &Longitudes of grid cell edges &--none--  \\ \hline
+Z\_bnds &Depths of grid cell upper and lower interfaces &--none--  \\ \hline
 \end{longtable}
 
+\newp
 \pagebreak
-\subsubsection{Latlon coordinates Variable hFacC}
-\begin{longtable}{|m{0.06\textwidth}|m{0.41\textwidth}|m{0.39\textwidth}|m{0.06\textwidth}|}
-\caption{CDL description of GRID\_GEOMETRY\_ECCO's hFacC variable}
+\subsubsection{Latlon coordinates Variable: hFacC}
+\begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.11\textwidth}|}
+\caption{Attributes description of the variable 'hFacC' from GRID\_GEOMETRY\_ECCO's  dataset.}
 \label{tab:table-GRID_GEOMETRY_ECCO_hFacC} \\ 
 \hline \endhead \hline \endfoot
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
-float64 & hFacC & vertical open fraction of grid cell & 1 \\ \hline
-\rowcolor{lightgray}  \multicolumn{4}{|p{1.00\textwidth}|}{\textbf{CDL Description}} \\ \hline
-\multicolumn{4}{|p{1.00\textwidth}|}{\makecell{\parbox{1\textwidth}{float64 hFacC(Z, latitude, longitude)\\
+float64 & hFacC & Vertical open fraction of grid cell & 1 \\ \hline
+\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
+\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 hFacC(Z, latitude, longitude)\\
 \hspace*{0.5cm}hFacC: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}hFacC: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}hFacC: long\_name = vertical open fraction of grid cell\\
 \hspace*{0.5cm}hFacC: units = 1}}} \\ \hline
-\rowcolor{lightgray} \multicolumn{4}{|p{1.00\textwidth}|}{\textbf{Comments}} \\ \hline
-\multicolumn{4}{|p{1\textwidth}|}{Grid cells may be fractionally closed in the vertical. The open vertical fraction is hFacC. The model allows for partially-filled cells to represent topographic variations more smoothly (hFacC < 1). Completely closed (dry) tracer grid cells have hFacC = 0. Note: the lat-lon gridded hFacC is spatially-averaged from the hFacC field on the lat-lon-cap (llc90) model native grid. The total ocean volume of the ECCO V4r4 lat-lon gridded fields is within 0.05\% of the total ocean volume of the native grid fields.} \\ \hline
+\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{Grid cells may be fractionally closed in the vertical. the open vertical fraction is hfacc. the model allows for partially-filled cells to represent topographic variations more smoothly (hfacc < 1). completely closed (dry) tracer grid cells have hfacc = 0. note: the lat-lon gridded hfacc is spatially-averaged from the hfacc field on the lat-lon-cap (llc90) model native grid. the total ocean volume of the ecco v4r4 lat-lon gridded fields is within 0.05\% of the total ocean volume of the native grid fields.} \\ \hline
 \end{longtable}
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.55]{../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/hFacC.png}
-\caption{Dataset: GRID\_GEOMETRY\_ECCO Variable: hFacC}
+\caption{Dataset: GRID\_GEOMETRY\_ECCO, Variable: hFacC}
 \label{tab:table-GRID_GEOMETRY_ECCO_hFacC-Plot}
 \end{figure}
 \pagebreak
-\subsubsection{Latlon coordinates Variable maskC}
-\begin{longtable}{|m{0.06\textwidth}|m{0.41\textwidth}|m{0.39\textwidth}|m{0.06\textwidth}|}
-\caption{CDL description of GRID\_GEOMETRY\_ECCO's maskC variable}
+\subsubsection{Latlon coordinates Variable: maskC}
+\begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.11\textwidth}|}
+\caption{Attributes description of the variable 'maskC' from GRID\_GEOMETRY\_ECCO's  dataset.}
 \label{tab:table-GRID_GEOMETRY_ECCO_maskC} \\ 
 \hline \endhead \hline \endfoot
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
-bool & maskC & wet/dry boolean mask for grid cell & N/A \\ \hline
-\rowcolor{lightgray}  \multicolumn{4}{|p{1.00\textwidth}|}{\textbf{CDL Description}} \\ \hline
-\multicolumn{4}{|p{1.00\textwidth}|}{\makecell{\parbox{1\textwidth}{bool maskC(Z, latitude, longitude)\\
+bool & maskC & Wet/dry boolean mask for grid cell & N/A \\ \hline
+\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
+\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{bool maskC(Z, latitude, longitude)\\
 \hspace*{0.5cm}maskC: \_FillValue = 1\\
 \hspace*{0.5cm}maskC: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}maskC: long\_name = wet/dry boolean mask for grid cell}}} \\ \hline
-\rowcolor{lightgray} \multicolumn{4}{|p{1.00\textwidth}|}{\textbf{Comments}} \\ \hline
-\multicolumn{4}{|p{1\textwidth}|}{True for grid cells with nonzero open vertical fraction (hFacC > 0), otherwise False.} \\ \hline
+\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{True for grid cells with nonzero open vertical fraction (hfacc > 0), otherwise false.} \\ \hline
 \end{longtable}
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.55]{../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/maskC.png}
-\caption{Dataset: GRID\_GEOMETRY\_ECCO Variable: maskC}
+\caption{Dataset: GRID\_GEOMETRY\_ECCO, Variable: maskC}
 \label{tab:table-GRID_GEOMETRY_ECCO_maskC-Plot}
 \end{figure}
