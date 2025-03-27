@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# test job task list generation using selected, locally-stored ECCO results
+# test job task list generation using select, locally-stored ECCO results
 #
 # usage: edp_create_job_task_list.sh <ver>
 # where: <ver> = 'V4r4', 'V4r5', etc.

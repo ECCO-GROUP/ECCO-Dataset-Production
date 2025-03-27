@@ -2,7 +2,9 @@
 # native groupings:
 
 [0,'native','AVG_MON',[732,1428,2172]]  # dynamic sea surface height and model sea level anomaly
+[17,'native','AVG_MON',[732,1428,2172]] # ocean velocity
 
 # latlon groupings:
 
 [0,'latlon','AVG_MON',[732,1428,2172]]  # dynamic sea surface height
+[11,'latlon','AVG_MON',[732,1428,2172]] # ocean velocity
