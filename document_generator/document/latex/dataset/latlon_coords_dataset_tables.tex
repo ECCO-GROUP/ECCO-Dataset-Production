@@ -31,11 +31,11 @@ Z\_bnds &Depths of grid cell upper and lower interfaces &--none--  \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & hFacC & Vertical open fraction of grid cell & 1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 hFacC(Z, latitude, longitude)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 hFacC(Z, latitude, longitude)\\
 \hspace*{0.5cm}hFacC: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}hFacC: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}hFacC: long\_name = vertical open fraction of grid cell\\
-\hspace*{0.5cm}hFacC: units = 1}}} \\ \hline
+\hspace*{0.5cm}hFacC: units = 1}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{Grid cells may be fractionally closed in the vertical. the open vertical fraction is hfacc. the model allows for partially-filled cells to represent topographic variations more smoothly (hfacc < 1). completely closed (dry) tracer grid cells have hfacc = 0. note: the lat-lon gridded hfacc is spatially-averaged from the hfacc field on the lat-lon-cap (llc90) model native grid. the total ocean volume of the ecco v4r4 lat-lon gridded fields is within 0.05\% of the total ocean volume of the native grid fields.} \\ \hline
 \end{longtable}
@@ -55,10 +55,10 @@ float64 & hFacC & Vertical open fraction of grid cell & 1 \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 bool & maskC & Wet/dry boolean mask for grid cell & N/A \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{bool maskC(Z, latitude, longitude)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{bool maskC(Z, latitude, longitude)\\
 \hspace*{0.5cm}maskC: \_FillValue = 1\\
 \hspace*{0.5cm}maskC: coverage\_content\_type = modelResult\\
-\hspace*{0.5cm}maskC: long\_name = wet/dry boolean mask for grid cell}}} \\ \hline
+\hspace*{0.5cm}maskC: long\_name = wet/dry boolean mask for grid cell}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{True for grid cells with nonzero open vertical fraction (hfacc > 0), otherwise false.} \\ \hline
 \end{longtable}

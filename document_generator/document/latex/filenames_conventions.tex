@@ -2,27 +2,71 @@
 \section{ECCO Data Filenames and Supporting Conventions}
 
 
+ECCO Version 4 Release 4 (V4r4) follows a structured filename convention to organize its extensive datasets. The filenames encode essential information about the dataset's content, grid type, temporal resolution, and version. Below is an overview of the naming convention.
+
+\subsection{General filename Structure}
+\par \vspace{0.25cm}
+
+\par For ECCO dataset product files:
+
+\par \vspace{0.5cm}
 \begin{center}
-    \textcolor{red}{\Large{On building process!!!}}
+\small{\textbf{\fontfamily{lmtt}\selectfont{[ShortName]\_[TemporalResolution]\_[Indicative Time]\_ECCO\_[Version]\_[GridType].<File Type>}}}
+\end{center}
+\par \vspace{0.5cm}
+\par For ECCO data geometry and grid files:
+
+\par \vspace{0.5cm}
+\begin{center}
+    \small{\textbf{\fontfamily{lmtt}\selectfont{[ShortName]\_ECCO\_[Version]\_[GridType].<File Type>}}}
+\end{center}
+% \texttt
+\par \vspace{0.25cm}
+
+\begin{center}
+\begin{tabular}{m{0.18\textwidth} m{0.75\textwidth}}
+    \multicolumn{1}{c}{\textbf{Keypoins}} & \multicolumn{1}{c}{\textbf{Description}} \\ \hline
+    ShortName: & Describes the dataset variable (e.g., SSH for sea surface height, TEMP\_SALINITY for temperature and salinity). \\ \hline 
+    TemporalResolution: & Indicates the time averaging or snapshot type (e.g., DAILY, MONTHLY, SNAP). \\ \hline
+    GridType : & Specifies the grid used (e.g., \textbf{native\_llc90} for the native ECCO grid or \textbf{laton\_0p50deg} for interpolated 0.5 \textdegree lat-lon grid). It can also be a specific information such as \textbf{1D} to indication the one-dimentional dataset files over the full period of ECCO data availability.\\ \hline
+    Version: &  Identifies the ECCO release version (e.g., V4r4). \\ \hline
+    Indicative Time: & Encodes the time period covered by the file (e.g., monthly files use YYYY-MM, daily files use YYYY-MM-DD) \\ \hline
+    File Type & netCDF or Zarr data format. \\ \hline
+\end{tabular}
 \end{center}
 
+\par \vspace{0.25cm}
+\subsection{Examples}
+\par Daily atmosphere surface temperature, humidity, winds, and pressure on the lat-lon-cap 90 (llc90)
+native model grid (first) and on the interpolated regular 0.5-degree lat-lon grid (second) from ECCO V4r4 on 2017-12-29.
+\begin{itemize}
+    \item ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES\_day\_mean\_2017-12-29\_ECCO\_V4r4\_native\_llc0090.nc
+    \item ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES\_day\_mean\_2017-12-29\_ECCO\_V4r4\_latlon\_0p50deg.nc
+\end{itemize}
 
-% Striving to achieve a flexible naming convention that maintains consistency across processing levels
-% and better serves user needs, the GDS 2.0 uses a single form for all GHRSST data files. An overview
-% of the format is presented below in Section 7.1 along with example filenames. Details on each of the
-% filename convention components are provided in Sections 7.2 through 7.8.
-% \par
-% In addition, a best practice has been established for creating character strings used to describe
-% GHRSST SST products and sources of ancillary data. These strings, and associated numeric codes
-% for the SST products, are used within some GHRSST data files but are not part of the filename
-% convention itself. The best practice is described in Section 7.9.
-% \par
+\par Dynamic sea surface height interpolated on the latlon regular 0.5-degree model grid from ECCO V4r4 on 2017-12-29.
+
+\begin{itemize}
+    \item SEA\_SURFACE\_HEIGHT\_day\_mean\_2017-12-29\_ECCO\_V4r4\_native\_llc0090.nc
+\end{itemize}
+
+\par One-dimentional field of global mean atmospheric surface pressure over the ocean and sea-ice fromthe ECCO V4r4.
+\begin{itemize}
+    \item GLOBAL\_MEAN\_ATM\_SURFACE\_PRES\_snap\_ECCO\_V4r4\_1D.nc
+\end{itemize}
+
+\par Geometric parameters for the regular 0.5-degree lat-lon grid from ECCO V4r4.
+\begin{itemize}
+    \item GRID\_GEOMETRY\_ECCO\_V4r4\_latlon\_0p50deg.nc
+\end{itemize}
+
+%%% Arret ici !!!!!! Modify!!!
 
 % \subsection{1 Overview of Filename Convention and Example Filenames}
 % The filenaming convention for the GDS 2.0 is shown below. 
 % \par \vspace{0.25in}
 
-% \small{\texttt{<Indicative Date><Indicative Time>-<RDAC>-<Processing Level>\_GHRSST-<SST Type>-
+% \small{\texttt{<Dataset name>_<>_<Indicative Time>-<RDAC>-<Processing Level>\_GHRSST-<SST Type>-
 % <Product String>-<Additional Segregator>-v<GDS Version>-fv<File Version>.<File Type>}}
 % \par \vspace{0.25in}
 
@@ -250,8 +294,6 @@
 % are considered L4 GHRSST data products. \par
 % \end{tabular}
 % \end{table}
-
-
 
 %%% Arret ici !!!!!!
 

@@ -1,0 +1,64 @@
+\pagebreak
+
+\section{ECCO Data Product File Structure}
+\subsection{Overview of the ECCO Data netCDF File Format}
+
+ECCO data files preferentially use the \textbf{netCDF-4} format. These ECCO formatted data comply with the Climate and Forecast (CF) Conventions, because these conventions provide a practical standard for storing oceanographic data in a robust, easily-preserved for the long-term, and interoperable manner. The CF-compliant netCDF data format is flexible, self-describing, and has been adopted as a de facto standard for many operational and scientific oceanography systems. Both netCDF and CF are actively maintained
+including significant discussions and inputs from the oceanographic community (see \url{http://cfpcmdi.llnl.gov/discussion/index_html}). 
+The CF convention generalizes and extends the Cooperative Ocean/Atmosphere Research Data Service (COARDS) Convention but relaxes the COARDS constraints on dimension order and specifies methods for reducing the size of datasets. The purpose
+of the CF Conventions is to require conforming datasets to contain sufficient metadata so that they are
+self-describing, in the sense that each variable in the file has an associated description of what it
+represents, physical units if appropriate, and that each value can be located in space (relative to earthbased coordinates) and time. In addition to the CF Conventions, ECCO formatted files follow some of the recommendations of the Unidata Attribute Convention for Dataset Discovery. \par \vspace{0.1in}
+
+In the context of netCDF, a variable refers to data stored in the file as a vector or as a
+multidimensional array. Within the netCDF file, global attributes are used to hold information that applies to the whole file, such
+as the data set title. Each individual variable has its own attributes, referred to as variable attributes. These variable attributes define, for example, an axis, long$\_$name, standard$\_$name, units, a descriptive version of the variable name, and a fill value (if apply), which is used to indicate array elements that do not
+contain valid data.
+
+\par \vspace{0.1in} Overall, the ECCO netCDF  files are structured in five (5) blocks: 
+\begin{itemize}
+    \item Dimensions
+    \item Coordinates (non-dimension coordinate)
+    \item Data variables
+    \item Global Attributes
+\end{itemize}
+
+\subsection{ECCO netCFD Global Attributes}
+\par The globale attributes used in the ECCO V4r4 data netCDF files are listed in the table below.
+
+\input{latex/data_product/GlobalAttribute_tableV1.tex}
+
+\subsection{ECCO Data netCFD Coordinates, Dimensions and Variabiles Attributes}
+\par The attributes of the ECCO V4r4 data Coordinates, Dimensions and Variabiles used in the netCDF files are listed in the table below.
+
+\input{latex/data_product/Coordinates_Dimensions_Variables_Attribute_tablev1.tex}
+
+
+\subsection{ECCO Data netCDF Dimensions definition}
+From the Climate and Forecast (CF) metadata conventions, the dimensions of the variable define the axes of the quantity it contains. Dimensions other than those of space and time may be included. Across all ot the ECCO V4r4 data netCDF files, at least 12 dimensions can be identified (see table below). Note that \textbf{nv} is not a spatial or temporal dimension per se. It is a kind of dummy dimension of length 2 for the coordiante \textbf{time\_bnds} which has both a starting and ending time for each one averaging period. The same is true of \textbf{nb} which has length 4 and is used by \textbf{XC\_bnds} and \textbf{YC\_bnds} to store coordinates for the 4 corners of each tracer grid cell (more details in the followings sections).
+
+\input{latex/data_product/Dimensions_table.tex}
+
+\par Nate that (i, j, k, tile, time) are centered dimension coordinates while i\_g, j\_g, k\_l and k\_u are not centered.
+
+\subsection{ECCO Data netCDF Coordinates variabile definition}
+
+The so-called non-dimension coordinates: i- are variables that (may) contain coordinate data, but are not a dimension coordinate; ii- they can be multidimensional and there is no relationship between the name of a non-dimension coordinate and the name(s) of its dimension(s); iii- can be useful for indexing or plotting ... Table below provides a list of unique coordinates used in ECCO V4r4 data.
+
+\input{latex/data_product/Coordinates_table.tex}
+\subsection*{Regular latitude/logitude grids}
+\par This is for the regular interpolated latlon grid of the ECCO V4r4 dataset geographic localization of each variabile. On such a projection, only two coordinate variables are requested and they are stored as vector arrays. Longitudes range from -180 to +180, corresponding to 180 degrees West to 180 degrees East. Latitudes range from -90 to +90, corresponding to 90 degrees South to 90 degrees North. See example of CDL display in the table below.
+
+\subsection*{Non-regular latitude/longitude grids}
+\par The ECCO V4r4 uses the Lat-Lon-Cap 90 (LLC90) grid, a native specialized global grid designed for ocean and sea-ice modeling. The LLC90 grid divides the globe into five faces, with dimensions: 1- [90x270], 2- [90x270], 3- [90x90], 4- [270x90], and 5- [270x90]. Each face consists of 90x90 tiles, hence the name LLC90. LLC90 grid combines a latitude-longitude grid between 70\textdegree S and 57\textdegree N with an Arctic "cap" in the northern hemisphere to handle polar regions effectively. The horizontal resolution varies spatially from about 22 km in high latitudes to 110 km in mid-latitudes. Redarding the vertical and horizontal resolutions, the grid has 50 vertical levels, with spacing increasing from 10 m near the surface to 457 m near the ocean bottom, which is set at a maximum depth of 6145 m. The Cartesian coordinates (x, y) are locally oriented within each tile, which may differ from traditional longitude-latitude directions. Diagnostic outputs include both native (UVEL, VVEL) and conventional (EVEL, NVEL) velocity components for ease of analysis. The datasets include geometric details such as cell areas, side lengths, rotation angles, bathymetry, and land/ocean masks. LLC90 grid geometric parameters are essential for accurate modeling and budget calculations. The LLC90 grid is particularly suited for global ocean circulation studies due to its efficient handling of polar regions and its variable resolution that balances computational efficiency with detail where needed.
+
+\pagebreak
+\subsection{Example of ECCO V4r4 netCDF latlon grid datasets}
+\input{latex/data_product/example_latlon_table.tex} % inserting contents from a python generated tex file
+\pagebreak
+\subsection{Example of ECCO V4r4 netCDF native llc90 grid datasets}
+\input{latex/data_product/example_native_table.tex} % inserting contents from a python generated tex file
+\pagebreak
+\subsection{Example of ECCO V4r4 netCDF for 1D data}
+\input{latex/data_product/example_oneD_table.tex}
+

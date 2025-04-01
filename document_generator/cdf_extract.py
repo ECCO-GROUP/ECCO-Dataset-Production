@@ -3,6 +3,7 @@ import xarray as xr
 import subprocess
 import utils
 import numpy as np
+import json
 ## ----------------------------------------------------------------------------
 ## ---------------------- Extracting CDL For Examples -------------------------
 ## ----------------------------------------------------------------------------
@@ -117,9 +118,9 @@ def formatList(cdl:list[str], name : str = "example")->list[str]:
 
 def latex_example_netcdf(fileType)->list[str]:
     if fileType == 'native':
-        file = 'granule_datasets/natives/OCEAN_3D_SALINITY_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc'
+        file = 'granule_datasets/natives/OCEAN_3D_MIXING_COEFFS_ECCO_V4r4_native_llc0090.nc'#OCEAN_3D_SALINITY_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc'
     elif fileType == 'latlon':
-        file = 'granule_datasets/latlon/OCEAN_AND_ICE_SURFACE_HEAT_FLUX_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc'
+        file = 'granule_datasets/latlon/OCEAN_MIXED_LAYER_DEPTH_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc'#OCEAN_AND_ICE_SURFACE_HEAT_FLUX_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc'
     else:
         file = 'granule_datasets/oneD/GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r4_1D.nc'
 
@@ -358,7 +359,7 @@ def data_var_table(field_name:str, attrs:dict, ds_name:str)->list[str]:
     la.append(rf'{storageType} & {varName} & {description.capitalize()} & {unit} \\ \hline')
     # la.append(r'\rowcolor{lightgray}  \multicolumn{4}{|m{1.00\textwidth}|}{\textbf{CDL Description}} \\ \hline')
     la.append(r'\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline')
-    la.append(r'\multicolumn{4}{|c|}' +r'{\makecell{\parbox{.92\textwidth}'+ rf'{{{cdl_description}}}' + r'}} \\ \hline')
+    la.append(r'\multicolumn{4}{|c|}' +r'{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}'+ rf'{{{cdl_description}}}' + r'}}} \\ \hline')
     la.append(r'\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline')
     # la.append(r'\multicolumn{4}{|p{1\textwidth}|}' + rf'{{{comment.capitalize()}}}' + r' \\ \hline')
     la.append(r'\multicolumn{4}{|p{1\textwidth}|}' + rf'{{{comment.capitalize()}}}' + r' \\ \hline')
@@ -480,3 +481,60 @@ def table_cellSize(field_var:list):
     else:
         a =0.15 ;b = 0.64
     return a,b
+
+def global_attrs_for_ECCOnetCDF(jsonFileRef:str,
+                                GlobalAttrsCollect:str,
+                                tableCaption:str,
+                                latexFilename:str,saveTo:str):
+    """
+    jsonFileRef: provide the json file that contain the reference attributes meta data.
+    GlobalAttrsCollect: list of the attributes to include in the table of the latex file to be generated.
+    tableCaption: the caption of the table in the generated latex file
+    latexFilename: name of the latex file to be generated
+    saveTo: the place to save the generated latex file
+    """
+    GlobAttrsFilledECCO = {}
+    with open(jsonFileRef, 'r') as json_file:
+        data = json.load(json_file)
+    AttrsRef = list(data.keys())
+    for itk in GlobalAttrsCollect:
+        if itk in AttrsRef:
+            GlobAttrsFilledECCO.update({itk:{"type":data[itk]['type'],"description":data[itk]['description'],"sourc":data[itk]['sourc']}}) 
+        else:
+            GlobAttrsFilledECCO.update({itk:{"type":"TBD","description":"TBD","sourc":"TBD"}})
+    ll = [
+        r'\begin{longtable}{|p{0.28\textwidth}|p{0.06\textwidth}|p{0.51\textwidth}|p{0.07\textwidth}|}',
+        r'\caption{'+rf'{tableCaption}'+r'}',
+        r'\label{tab:variable-attributes} \\ ',
+        r'\hline \endhead',
+        r'\hline \endfoot',
+        r'\rowcolor{blue!25} \textbf{Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline',
+    ]
+    for i in list(GlobAttrsFilledECCO.keys()):
+        GAttrsNam = i
+        GAFormat = GlobAttrsFilledECCO[i]["type"]
+        GAdescription = GlobAttrsFilledECCO[i]["description"]
+        GASource = GlobAttrsFilledECCO[i]["sourc"]
+        ll.append(r'\rowcolor{cyan!25}')
+        ll.append(rf'{utils.sanitize(GAttrsNam)} & {GAFormat} & {utils.sanitize(GAdescription)} & {GASource} \\ \hline')
+    ll.append(r'\end{longtable}')
+    ll.append(r"")
+    with open(saveTo+latexFilename, 'w') as output_file:
+            output_file.write('\n'.join(ll))
+
+
+
+def get_Global_or_CoordsDimsVarsList(netCDFpath:str,jsonFileName:str,saveTo:str):
+    """
+    netCDFpath: path of the folder of a set of ECCO data sample: Gid and Geometry, Dataset and 1D data file. This is used and an exaple to extract the unique global attribute name across ECCO data netCDF files.
+    jsonFileName: name of the json file to save the unique globale attributes name list.
+    saveTo: phat to the repository to save the generated json file.
+    """
+    contentlist = sorted(os.listdir(path=netCDFpath))
+    GlobalAttrsCollect = []
+    for i in range(len(contentlist)):
+        dsopened = xr.open_dataset(netCDFpath+contentlist[i])
+        GlobalAttrsCollect = GlobalAttrsCollect + list(dsopened.attrs)
+    GlobalAttrsCollect = sorted(list(set(GlobalAttrsCollect)))
+    with open(os.path.join(saveTo,jsonFileName), 'w') as output_file:
+        output_file.write(str(json.dumps(GlobalAttrsCollect)))

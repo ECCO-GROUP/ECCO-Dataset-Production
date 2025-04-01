@@ -1,0 +1,37 @@
+\begin{longtable}{|p{0.22\textwidth}|p{0.1\textwidth}|p{0.53\textwidth}|p{0.07\textwidth}|}
+\caption{Coordinates, Dimensions and Variables Attributes used in ECO V4r4 data netCDF files}
+\label{tab:variable-attributes} \\ 
+\hline \endhead
+\hline \endfoot
+\rowcolor{blue!25} \textbf{Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline
+\rowcolor{violet!25}
+axis & string & For use with coordinate variables only. The attribute 'axis' may be attached to a coordinate variable and given one of the values 'X', 'Y', 'Z', or 'T', which stand for a longitude, latitude, vertical, or time axis respectively. & CF \\ \hline
+\rowcolor{violet!25}
+bounds & TBD & TBD & TBD \\ \hline
+\rowcolor{violet!25}
+c\_grid\_axis\_shift & TBD & TBD & TBD \\ \hline
+\rowcolor{violet!25}
+comment & string & Miscellaneous information about the variable or the methods used to produce it. & CF \\ \hline
+\rowcolor{violet!25}
+coordinate & TBD & TBD & TBD \\ \hline
+\rowcolor{violet!25}
+coverage\_content\_type & TBD & TBD & TBD \\ \hline
+\rowcolor{violet!25}
+direction & TBD & TBD & TBD \\ \hline
+\rowcolor{violet!25}
+long\_name & string & A free-text descriptive variable name. & CF, ACDD \\ \hline
+\rowcolor{violet!25}
+mate & TBD & TBD & TBD \\ \hline
+\rowcolor{violet!25}
+positive & string & For use with a vertical coordinate variables only. May have the value 'up' or 'down'. For example, if an oceanographic netCDF file encodes the depth of the surface as 0 and the depth of 1000 meters as 1000 then the axis would set positive to 'down'. If a depth of 1000 meters was encoded as -1000, then positive would be set to 'up'. & CF \\ \hline
+\rowcolor{violet!25}
+standard\_name & string & Provides a standard and unique description of a physical quantity. The standard name table can be found at http://cfpcmdi.llnl.gov/documents/cf-standard-names/standard-name-table/11/standard-name-table. & CF, ACDD \\ \hline
+\rowcolor{violet!25}
+swap\_dim & TBD & TBD & TBD \\ \hline
+\rowcolor{violet!25}
+units & string & Text description of the units, preferably S.I., and must be compatible with the Unidata UDUNITS-2 package [AD-5]. For a given variable (e.g. wind speed), these must be the same for each dataset. Required for the majority of variables except mask, quality\_level, and l2p\_flags. & CF, ACDD \\ \hline
+\rowcolor{violet!25}
+valid\_max & Expressed in same data type as variable & Maximum valid value for this variable once they are packed (in storage type). The fill value should be outside this valid range. Note that some netCDF readers are unable to cope with signed bytes and may, in these cases, report valid min as 127. Required for all variables except variable time. & CF \\ \hline
+\rowcolor{violet!25}
+valid\_min & Expressed in same data type as variable & Minimum valid value for this variable once they are packed (in storage type). The fill value should be outside this valid range. Note that some netCDF readers are unable to cope with signed bytes and may, in these cases, report valid min as 129. Some cases as unsigned bytes 0 to 255. Values outside of 'valid\_min' and 'valid\_max' will be treated as missing values. Required for all variables except variable time. & CF \\ \hline
+\end{longtable}

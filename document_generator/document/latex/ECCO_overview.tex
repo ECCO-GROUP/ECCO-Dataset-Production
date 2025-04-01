@@ -1,9 +1,45 @@
 \pagebreak
 \section{Overview of ECCO Data}
 
+\par\vspace{0.25cm}
+ECCO (Estimating the Circulation and Climate of the Ocean) is a NASA-led initiative creating detailed, physically consistent reconstructions of Earth's ocean and sea-ice systems since 1992. Its version 4 release 4 (V4r4) represents the most advanced synthesis of satellite data, in-situ measurements (like Argo floats), and MIT's ocean/sea-ice model to produce a "digital replica" of marine environments. Unlike conventional ocean models, ECCO strictly adheres to conservation laws of physics while assimilating billions of observations. Indeed, the ECCO V4r4 data products provide a dynamically and kinematically consistent global reconstruction of the ocean, sea-ice, and surface atmospheric states from 1992 to 2018. These datasets include daily, monthly, and instantaneous time intervals and are available on two primary grids: the native Lat-Lon-Cap 90 (LLC90) grid and a 0.5\textdegree latitude-longitude interpolated grid. 
+
+\par\vspace{0.25cm}
+The LLC90 grid is a curvilinear Cartesian grid with five faces, including a latitude-longitude grid between 70\textdegree S and 57\textdegree N and an Arctic cap. It features varying resolutions (22–110 km horizontally) and 50 vertical levels, with finer resolution at higher latitudes. The LLC90 grid configurations offer a unique cubed-sphere design in the northern hemisphere and a dipolar arrangement in the southern hemisphere, with an Arctic "cap" north of ~57\textdegree N. Its geometry includes 13 tiles of 90x90 cells each, with detailed geometric parameters like cell areas, side lengths, rotation angles, bathymetry, and land/ocean masks. This design enables accurate modeling of global ocean dynamics while accommodating complex geometries like the Arctic cap.
+The interpolated grid (0.5\textdegree latitude-longitude grid) offers user-friendly access for daily or monthly averages, but is less suitable for budget closure analyses. The datasets cover a wide range of parameters, such as temperature, salinity, velocity, fluxes, sea level anomalies, and sea-ice properties.
+
+\par\vspace{0.25cm}
+The V4r4 data are formatted in netCDF-4 and adhere to CF 1.8 and ACDD 1.3 metadata standards. Accessible through NASA's Earthdata Cloud infrastructure, these datasets are optimized for cloud-native workflows via APIs like Harmony for conversion to formats like Zarr. This comprehensive framework supports diverse applications in oceanography, climate studies, and Earth system modeling. Note that NASA's Earthdata enables efficient access of the ECCO V4r4 via HTTPS or AWS S3 services.
+
+\subsection{Why trust ECCO?}
+\par\vspace{0.25cm}
+The ECCO ocean and sea-ice state estimation system is a mathematically rigorous, mature, state-of-the-art data tool for synthesizing NASA's diverse Earth system observations – especially remote sensing data – into a complete and physically-consistent description of the three-dimensional time-varying global ocean and sea-ice state.
+\vspace{0.25cm}
+So, ECCO:
+\begin{itemize}
+\item Eliminates Unrealistic "Jumps" in Data
+\item Can Be Run Forward \& Backwards
+\item Is Constrained by Billions of Data Points
+\item Fills in the Gaps of Sparse Ocean Database
+\item Provides a "Climate Change Assessment" Toolkit
+\item Helps Understand Impacts on Ocean Ecosystems
+\item Reveals Coastal Transformation in Our Warming Climate
+\end{itemize}
+
+\subsection{Why Choose ECCO Over Alternatives?}
+\par\vspace{0.25cm}
+ECCO's cloud-native architecture allows direct access to 3TB+ data via NASA Earthdata Cloud, with tools for format conversion and subsetting. This makes it uniquely suited for researchers needing physically rigorous, observationally grounded reconstructions of ocean-climate interactions.
+\vspace{0.25cm}
+
 \begin{center}
-    \textcolor{red}{\Large{On building process!!!}}
-    \end{center}
+\begin{tabular}{m{0.3\textwidth} m{0.65\textwidth}}
+    \multicolumn{1}{c}{\textbf{Feature}} & \multicolumn{1}{c}{\textbf{ECCO Advantage}} \\ \hline
+    Physical Consistency & Perfectly satisfies thermodynamics laws vs. statistical approximations in traditional reanalyses \\ \hline 
+    Time Flexibility & Can analyze causes/effects backward/forward in time (e.g., tracing sea level rise origins) \\ \hline
+    Data Integration & Synthesizes 300M+ satellite observations and 1B+ in-situ measurements into unified framework \\ \hline
+    Application Range & Used for climate studies, marine biology (habitat modeling), coastal flood prediction, and sensor placement optimization \\ \hline
+\end{tabular}
+\end{center}
 
 % GHRSST [RD-2] is an international consortium representing commercial enterprises, academic
 % institutions, research organizations, and operational agencies that collaborate to provide accurate,high resolution, and consistently formatted SST observations and analyses from space-based

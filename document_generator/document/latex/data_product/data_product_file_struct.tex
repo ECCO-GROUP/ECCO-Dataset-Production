@@ -1,73 +1,249 @@
 \pagebreak
-\section{GDS 2.0 Data Product File Structure}
-\subsection{Overview of the GDS 2.0 netCDF File Format}
+\section{ECCO Data Product File Structure}
+\subsection{Overview of the ECCO Data netCDF File Format}
 
-GDS 2.0 data files preferentially use the \textbf{netCDF-4 Classic} format. However, as netCDF-4 is a
-relatively new format and includes a significant number of new features that may not be well supported
-by existing user applications and tools, the GHRSST Science Team agreed to support both netCDF-3
-and netCDF-4 format data files during a transition period. At the 11th GHRSST Science Team
-meeting, Lima Peru, 21-25th June 2010 it was agreed that the transition period would end in 2013 at
-which point (subject to positive developments in the user community using netCDF-4) the use of
-netCDF-3 format data products will cease within the GHRSST R/GTS framework. \textbf{NetCDF-3 data
-products shall be delivered to the GDAC with an accompanying MMR file records as described
-in Section 13}. While netCDF-3 can store the metadata, it is computationally expensive to extract it
-from externally-compressed netCDF-3 files. A major advantage to the use of NetCDF-4 format
-products from the producer's perspective is that no additional metadata records are required when
-using this format since the GDAC and LTSRF can easily extract it from the files without having to
-decompress the entire file. \par \vspace{0.1in}
-
-
-These GDS 2.0 formatted data sets must comply with the Climate and Forecast (CF) Conventions,
-v1.4 [AD-3] or later because these conventions provide a practical standard for storing oceanographic
-data in a robust, easily-preserved for the long-term, and interoperable manner. The CF-compliant
-netCDF data format is flexible, self-describing, and has been adopted as a de facto standard for many
-operational and scientific oceanography systems. Both netCDF and CF are actively maintained
+ECCO data files preferentially use the \textbf{netCDF-4} format. These ECCO formatted data comply with the Climate and Forecast (CF) Conventions, because these conventions provide a practical standard for storing oceanographic data in a robust, easily-preserved for the long-term, and interoperable manner. The CF-compliant netCDF data format is flexible, self-describing, and has been adopted as a de facto standard for many operational and scientific oceanography systems. Both netCDF and CF are actively maintained
 including significant discussions and inputs from the oceanographic community (see \url{http://cfpcmdi.llnl.gov/discussion/index_html}). 
-The CF convention generalizes and extends the Cooperative
-Ocean/Atmosphere Research Data Service (COARDS, [AD-4]) Convention but relaxes the COARDS
-constraints on dimension order and specifies methods for reducing the size of datasets. The purpose
+The CF convention generalizes and extends the Cooperative Ocean/Atmosphere Research Data Service (COARDS, [AD-4]) Convention but relaxes the COARDS constraints on dimension order and specifies methods for reducing the size of datasets. The purpose
 of the CF Conventions is to require conforming datasets to contain sufficient metadata so that they are
 self-describing, in the sense that each variable in the file has an associated description of what it
-represents, physical units if appropriate, and that each value can be located in space (relative to earthbased coordinates) and time. In addition to the CF Conventions, GDS 2.0 formatted files follow some
-of the recommendations of the Unidata Attribute Convention for Dataset Discovery (ACDD, [AD-7]). \par \vspace{0.1in}
+represents, physical units if appropriate, and that each value can be located in space (relative to earthbased coordinates) and time. In addition to the CF Conventions, ECCO formatted files follow some of the recommendations of the Unidata Attribute Convention for Dataset Discovery. \par \vspace{0.1in}
 
 In the context of netCDF, a variable refers to data stored in the file as a vector or as a
-multidimensional array. Each variable in a GHRSST netCDF file consists of a 2-dimensional [i x j], 3-
-dimensional [i x j x k], or 4-dimensional [i x j x k x l] array of data. The dimensions of each variable
-must be explicitly declared in the dimension section. \par \vspace{0.1in}
+multidimensional array. Within the netCDF file, global attributes are used to hold information that applies to the whole file, such
+as the data set title. Each individual variable has its own attributes, referred to as variable attributes. These variable attributes define, for example, an axis, long$\_$name, standard$\_$name, units, a descriptive version of the variable name, and a fill value (if apply), which is used to indicate array elements that do not
+contain valid data.
 
-Within the netCDF file, global attributes are used to hold information that applies to the whole file, such
-as the data set title. Each individual variable must also have its own attributes, referred to as variable
-attributes. These variable attributes define, for example, an offset, scale factor, units, a descriptive
-version of the variable name, and a fill value, which is used to indicate array elements that do not
-contain valid data. Where applicable, SI units should be used and described by a character string,
-which is compatible with the Unidata UDUNITS-2 package [AD-5]. \par \vspace{0.1in}
+\par \vspace{0.1in} Overall, the ECCO netCDF  files are structured in five (5) blocks: 
+\begin{itemize}
+    \item Dimensions
+    \item Coordinates
+    \item Data variables
+    \item Indexes
+    \item Attributes
+\end{itemize}
 
-All GHRSST GDS 2.0 files conform to this structure and share a common set of netCDF global
-attributes. These global attributes include those required by the CF Convention plus additional ones
-required by the GDS 2.0. The required set of global attributes is described in Section 8.2 and entities
-within the GHRSST R/GTS framework are free to add their own, as long as they do not contradict the
-GDS 2.0 and CF requirements. \par \vspace{0.1in}
+\subsection{ECCO netCFD Global Attributes}
 
-Following the CF convention, each variable also has a set of variable attributes. The required variable
-attributes are described in Section 8.3. In a few cases, some of these variable attributes may not be
-relevant for certain variables or additional variable attributes may be required. In those cases, the
-variable descriptions in each of the L2P, L3, L4, and GMPE product specifications (Sections 9, 10, 11,
-and 12) will identify the differences and specify requirements for each product. As with the global
-attributes, entities within the GHRSST R/GTS framework are free to add their own variable attributes,
-as long as they do not contradict the GDS 2.0 and CF requirements. \par \vspace{0.1in}
+\subsection{ECCO netCFD Coordinates, Dimensions and Variabiles Attributes}
+\par Provide dimension across all datasets
 
-While the exact volumes can vary, an average L2P file will use about 33 bytes per pixel, an L3 file 28
-bytes per pixel, and an L4 file about 8 bytes per pixel. The data type encodings for each variable are
-fixed except for the experimental fields, which are flexible and can chosen by the producing RDAC. \par \vspace{0.1in}
+\begin{longtable}{|m{0.15\textwidth}|m{0.15\textwidth}|m{0.7\textwidth}|}
+    \hline \endhead \hline \endfoot'
+    Dimensions & Length & Description \\ \hline
+    i & "to be filled" & "to be filled" \\ \hline
+    i\_g & "to be filled" & "to be filled" \\ \hline
+    j & "to be filled" & "to be filled" \\ \hline
+    j\_g & "to be filled" & "to be filled" \\ \hline
+    k & "to be filled" & "to be filled" \\ \hline
+    k\_u & "to be filled" & "to be filled" \\ \hline
+    k\_l & "to be filled" & "to be filled" \\ \hline
+    k\_p1 & "to be filled" & "to be filled" \\ \hline
+    tile & "to be filled" & "to be filled" \\ \hline
+    nb & "to be filled" & "to be filled" \\ \hline
+    nv & "to be filled" & "to be filled" \\ \hline    
+\end{longtable}
+\subsection{ECCO Data netCDF Coordinates and Variabiles Attributes}
+\par Provide Coordinates and variabiles attribute across all datasets
+    
+\subsection{ECCO Data netCDF Indexes}
+\par Provide a definition for the meaning of "indexes" for the netCDF files
+\subsection{ECCO Data netCDF Globale Attributes}
 
-\subsection{GDS 2.0 netCDF Global Attributes}
-Table 8-1 below summarizes the global attributes that are mandatory for every GDS 2.0 netCDF data
-file. More details on the CF-mandated attributes (as indicated in the Source column) are available at:
-\url{http://cf-pcmdi.llnl.gov/documents/cf-conventions/1.4/cf-conventions.html#attribute-appendix} and
-information on the ACDD recommendations is available at
-\url{http://www.unidata.ucar.edu/software/netcdf-java/formats/DataDiscoveryAttConvention.html}.
-\par \vspace{0.1in}
+\par Provide Globale attribute for the netCDF files across all datasets
+
+% \subsection{GDS 2.0 netCDF Global Attributes}
+% Table 8-1 below summarizes the global attributes that are mandatory for every GDS 2.0 netCDF data
+% file. More details on the CF-mandated attributes (as indicated in the Source column) are available at:
+% \url{http://cf-pcmdi.llnl.gov/documents/cf-conventions/1.4/cf-conventions.html#attribute-appendix} and
+% information on the ACDD recommendations is available at
+% \url{http://www.unidata.ucar.edu/software/netcdf-java/formats/DataDiscoveryAttConvention.html}.
+% \par \vspace{0.1in}
+
+
+
+% \input{latex/data_product/global_attributes.tex} % inserting contents from a python generated tex file
+
+
+% \subsection{GDS 2.0 netCDF Variable Attributes}
+
+% \input{latex/data_product/variable_attributes.tex} % inserting contents from a python generated tex file
+
+% \subsection{GDS 2.0 coordinate variable definitions}
+% NetCDF coordinate variables provide scales for the space and time axes for the multidimensional data
+% arrays, and must be included for all dimensions that can be identified as spatio-temporal axes.
+% Coordinate arrays are used to geolocate data arrays on non-orthogonal grids, such as images in the
+% original pixel/scan line space, or complicated map projections. Required attributes are \texttt{units} and
+% \texttt{\_FillValue}. Elements of the coordinate array need not be monotonically ordered. The data type
+% can be any and scaling may be implemented if required. \texttt{add\_offset} and \texttt{scale\_factor} have to
+% be adjusted according to the sensor resolution and the product spatial coverage. If the packed values
+% can not stand on a short, float can be used instead (multiplying the size of these variables by two).
+% \par \vspace{0.1in}
+
+% '\texttt{time}' is the reference time of the SST data array. The GDS 2.0 specifies that this reference time
+% should be extracted or computed to the nearest second and then coded as continuous UTC time
+% coordinates in \textbf{seconds from 00:00:00 UTC January 1, 1981} (which is the definition of the \textbf{GHRSST}
+% origin time, chosen to approximate the start of useful AVHRR SST data record). Note that the use of
+% UDUNITS in GHRSST implies that that calendar to be used is the default mixed Gregorian/Julian
+% calendar.
+% \par \vspace{0.1in}
+
+% The reference time used is dependent on the <Processing Level> of the data and is defined as
+% follows:
+% \par \vspace{0.1in}
+% \begin{itemize}
+%     \item L2P: start time of granule;
+%     \item L3U: start time of granule;
+%     \item L3C and L3S: centre time of the collation window;
+%     \item L4 and GMPE: nominal time of the analysis
+% \end{itemize}
+% \par \vspace{0.1in}
+
+% The coordinate variable '\texttt{time}' is intended to minimize the size of the \texttt{sst\_dtime} variable (e.g., see
+% Section 9.4), which stores offsets from the reference time in seconds for each SST pixel. \texttt{'time'} also
+% facilitates aggregation of all files of a given dataset along the time axis with such tools as THREDDS
+% and LAS.
+% \par \vspace{0.1in}
+
+% x (columns) and y (lines) grid dimensions are referred either as \texttt{'lat'} and \texttt{'lon'} or as \texttt{'ni'} and \texttt{'nj'}.
+% \texttt{lon} and \texttt{lat} must be used if data are mapped on a regular grid (some geostationary products). \texttt{ni}
+% and \texttt{nj} are used if data are mapped on a non-regular grid (curvilinear coordinates) or following the 
+% sensor scanning pattern (scan line, swath). It is preferred that \texttt{ni} should be used for the across-track
+% dimension and \texttt{nj} for the along-track dimension.
+% \par \vspace{0.1in}
+
+% Coordinate vectors are used for data arrays located on orthogonal (but not necessarily regularly
+% spaced) grids, such as a geographic (lat-lon) map projections. The only required attribute is \texttt{units}.
+% The elements of a coordinate vector array should be in monotonically increasing or decreasing order.
+% The data type can be any and scaling may be implemented if required.
+% \par \vspace{0.1in}
+
+% A \texttt{coordinate's} variable (= \texttt{"lon lat"}): must be provided if the data are on a non-regular lat/lon
+% grid (map projection or swath data).
+% \par \vspace{0.1in}
+
+% A \texttt{grid\_mapping} (= "projection name"): must be provided if the data are mapped following a
+% projection. Refer to the CF convention [AD-3] for standard projection names. 
+% \par
+% \pagebreak
+
+% \subsubsection{Native datasets}
+% Hoc est casus simplex. Multae L3, L4, et GMPE comoediae, necnon quaedam geostationaria L2P comoediae, in ordinaria lat/lon tabula praebentur. In huiusmodi projectione, solum duo coordinate sunt requisitae et vectorum formis servari possunt. Longitudines debent variare ab -180 ad +180, id est ab 180 gradibus Occidentem ad 180 gradibus Orientem. Latitudines debent variare ab -90 ad +90, id est ab 90 gradibus Meridiem ad 90 gradibus Septentrionem. Non debet esse \_FillValue pro latitudine et longitudine, et omnes SST pixeles debent habere validum latitudinis et longitudinis valorem.
+% \par \vspace{0.1in}
+
+% Recommendatur ut tempus dimensionem pro Level 3 et Level 4 data prodigia ut infinita specificetur. Nota quod tempus dimensio pro L2P data est stricta definita ut tempus=1 (infinita dimensio non permittitur). Hoc strictum definitum est quia L2P data sunt swath based et geospatial informatio potest mutare per consecutive tempus slabs.
+% \par \vspace{0.1in}
+% In GHRSST L3 et L4 granulis, solum unum tempus dimensio (tempus=1) est, et variabilis tempus solum unum valorem habet (secunda post 1981), sed infinitum tempus dimensionem permittit netCDF instrumenta et utilitates facile concatenare (et exempli gratia, mediare) seriem de tempore consecutive GHRSST granulis. Sequens CDL exemplum dat:
+% \par \vspace{0.1in}
+
+% \begin{verbatim}
+%     netcdf example {
+%         dimensions:
+%         lat = 1801 ;
+%         lon = 3600 ;
+%         time = UNLIMITED ; // (strictly set to 1 for L2P)
+%         variables:
+%         …
+%     }
+% \end{verbatim}
+% \par \vspace{0.1in}
+% Pro his casibus, dimensiones et coordinae variabiles debent uti pro regulari lat/lon tabula, ut in Tabula 8-3 monstratur. Nullae specificae variabiles attributi sunt requisitae pro aliis variabilibus (ut sea\_surface\_temperature, ut in exemplo dat in Tabula 8-3).
+% \par \vspace{0.1in}
+
+% % Table 8-3. Example of a native dataset
+% \input{latex/data_product/example_native_table.tex} % inserting contents from a python generated tex file
+
+
+% \subsubsection{Latlon datasets}
+% Hoc est casus simplex. Multae L3, L4, et GMPE comoediae, necnon quaedam geostationaria L2P comoediae, in ordinaria lat/lon tabula praebentur. In huiusmodi projectione, solum duo coordinate sunt requisitae et vectorum formis servari possunt. Longitudines debent variare ab -180 ad +180, id est ab 180 gradibus Occidentem ad 180 gradibus Orientem. Latitudines debent variare ab -90 ad +90, id est ab 90 gradibus Meridiem ad 90 gradibus Septentrionem. Non debet esse \_FillValue pro latitudine et longitudine, et omnes SST pixeles debent habere validum latitudinis et longitudinis valorem.
+% \par \vspace{0.1in}
+
+% Recommendatur ut tempus dimensionem pro Level 3 et Level 4 data prodigia ut infinita specificetur. Nota quod tempus dimensio pro L2P data est stricta definita ut tempus=1 (infinita dimensio non permittitur). Hoc strictum definitum est quia L2P data sunt swath based et geospatial informatio potest mutare per consecutive tempus slabs.
+% \par \vspace{0.1in}
+% In GHRSST L3 et L4 granulis, solum unum tempus dimensio (tempus=1) est, et variabilis tempus solum unum valorem habet (secunda post 1981), sed infinitum tempus dimensionem permittit netCDF instrumenta et utilitates facile concatenare (et exempli gratia, mediare) seriem de tempore consecutive GHRSST granulis. Sequens CDL exemplum dat:
+% \par \vspace{0.1in}
+
+% \begin{verbatim}
+%     netcdf example {
+%         dimensions:
+%         lat = 1801 ;
+%         lon = 3600 ;
+%         time = UNLIMITED ; // (strictly set to 1 for L2P)
+%         variables:
+%         …
+%     }
+% \end{verbatim}
+% \par \vspace{0.1in}
+% Pro his casibus, dimensiones et coordinae variabiles debent uti pro regulari lat/lon tabula, ut in Tabula 8-3 monstratur. Nullae specificae variabiles attributi sunt requisitae pro aliis variabilibus (ut sea\_surface\_temperature, ut in exemplo dat in Tabula 8-3).
+% \par \vspace{0.1in}
+
+% % Table 8-3. Example of a native dataset
+% \input{latex/data_product/example_latlon_table.tex} % inserting contents from a python generated tex file
+
+% \subsubsection{1D datasets}
+% Hoc est casus simplex. Multae L3, L4, et GMPE comoediae, necnon quaedam geostationaria L2P comoediae, in ordinaria lat/lon tabula praebentur. In huiusmodi projectione, solum duo coordinate sunt requisitae et vectorum formis servari possunt. Longitudines debent variare ab -180 ad +180, id est ab 180 gradibus Occidentem ad 180 gradibus Orientem. Latitudines debent variare ab -90 ad +90, id est ab 90 gradibus Meridiem ad 90 gradibus Septentrionem. Non debet esse \_FillValue pro latitudine et longitudine, et omnes SST pixeles debent habere validum latitudinis et longitudinis valorem.
+% \par \vspace{0.1in}
+
+% Recommendatur ut tempus dimensionem pro Level 3 et Level 4 data prodigia ut infinita specificetur. Nota quod tempus dimensio pro L2P data est stricta definita ut tempus=1 (infinita dimensio non permittitur). Hoc strictum definitum est quia L2P data sunt swath based et geospatial informatio potest mutare per consecutive tempus slabs.
+% \par \vspace{0.1in}
+% In GHRSST L3 et L4 granulis, solum unum tempus dimensio (tempus=1) est, et variabilis tempus solum unum valorem habet (secunda post 1981), sed infinitum tempus dimensionem permittit netCDF instrumenta et utilitates facile concatenare (et exempli gratia, mediare) seriem de tempore consecutive GHRSST granulis. Sequens CDL exemplum dat:
+% \par \vspace{0.1in}
+
+% \begin{verbatim}
+%     netcdf example {
+%         dimensions:
+%         lat = 1801 ;
+%         lon = 3600 ;
+%         time = UNLIMITED ; // (strictly set to 1 for L2P)
+%         variables:
+%         …
+%     }
+% \end{verbatim}
+% \par \vspace{0.1in}
+% Pro his casibus, dimensiones et coordinae variabiles debent uti pro regulari lat/lon tabula, ut in Tabula 8-3 monstratur. Nullae specificae variabiles attributi sunt requisitae pro aliis variabilibus (ut sea\_surface\_temperature, ut in exemplo dat in Tabula 8-3).
+% \par \vspace{0.1in}
+
+% % Table 8-3. Example of a native dataset
+% \input{latex/data_product/example_oneD_table.tex} % inserting contents from a python generated tex file
+
+
+
+% I made this!!!
+
+% However, as netCDF-4 is a relatively new format and includes a significant number of new features that may not be well supported
+% by existing user applications and tools, the GHRSST Science Team agreed to support both netCDF-3
+% and netCDF-4 format data files during a transition period. At the 11th GHRSST Science Team
+% meeting, Lima Peru, 21-25th June 2010 it was agreed that the transition period would end in 2013 at
+% which point (subject to positive developments in the user community using netCDF-4) the use of
+% netCDF-3 format data products will cease within the GHRSST R/GTS framework. \textbf{NetCDF-3 data
+% products shall be delivered to the GDAC with an accompanying MMR file records as described
+% in Section 13}. While netCDF-3 can store the metadata, it is computationally expensive to extract it
+% from externally-compressed netCDF-3 files. A major advantage to the use of NetCDF-4 format
+% products from the producer's perspective is that no additional metadata records are required when
+% using this format since the GDAC and LTSRF can easily extract it from the files without having to
+% decompress the entire file. \par \vspace{0.1in}
+% % Classic
+
+% Where applicable, SI units should be used and described by a character string,
+% which is compatible with the Unidata UDUNITS-2 package [AD-5]. \par \vspace{0.1in}
+% All GHRSST GDS 2.0 files conform to this structure and share a common set of netCDF global
+% attributes. These global attributes include those required by the CF Convention plus additional ones
+% required by the GDS 2.0. The required set of global attributes is described in Section 8.2 and entities
+% within the GHRSST R/GTS framework are free to add their own, as long as they do not contradict the
+% GDS 2.0 and CF requirements. \par \vspace{0.1in}
+
+% Following the CF convention, each variable also has a set of variable attributes. The required variable
+% attributes are described in Section 8.3. In a few cases, some of these variable attributes may not be
+% relevant for certain variables or additional variable attributes may be required. In those cases, the
+% variable descriptions in each of the L2P, L3, L4, and GMPE product specifications (Sections 9, 10, 11,
+% and 12) will identify the differences and specify requirements for each product. As with the global
+% attributes, entities within the GHRSST R/GTS framework are free to add their own variable attributes,
+% as long as they do not contradict the GDS 2.0 and CF requirements. \par \vspace{0.1in}
+
+% While the exact volumes can vary, an average L2P file will use about 33 bytes per pixel, an L3 file 28
+% bytes per pixel, and an L4 file about 8 bytes per pixel. The data type encodings for each variable are
+% fixed except for the experimental fields, which are flexible and can chosen by the producing RDAC. \par \vspace{0.1in}
+
 
 % Table 8-1 Mandatory global attributes for GDS 2.0 netCDF data files
 % \begin{longtable}{|p{0.3\textwidth}|p{0.1\textwidth}|p{0.5\textwidth}|p{0.1\textwidth}|}
@@ -77,10 +253,8 @@ information on the ACDD recommendations is available at
 % \rowcolor{lightgray} \textbf{Global Attribute Name} & \textbf{Source} & \textbf{Description} & \textbf{Type} \\ \hline
 %     \input{latex/data_product/global_attributes.tex} % inserting contents from a python generated tex file
 % \end{longtable}
-\input{latex/data_product/global_attributes.tex} % inserting contents from a python generated tex file
 
 
-\subsection{GDS 2.0 netCDF Variable Attributes}
 % Table 8-2 Variable attributes for GDS 2.0 netCDF data files
 % \begin{longtable}{|p{0.15\textwidth}|p{0.25\textwidth}|p{0.5\textwidth}|p{0.1\textwidth}|}
 
@@ -90,141 +264,3 @@ information on the ACDD recommendations is available at
 % \rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline
 %     \input{latex/data_product/variable_attributes.tex} % inserting contents from a python generated tex file
 % \end{longtable}
-\input{latex/data_product/variable_attributes.tex} % inserting contents from a python generated tex file
-
-\subsection{GDS 2.0 coordinate variable definitions}
-NetCDF coordinate variables provide scales for the space and time axes for the multidimensional data
-arrays, and must be included for all dimensions that can be identified as spatio-temporal axes.
-Coordinate arrays are used to geolocate data arrays on non-orthogonal grids, such as images in the
-original pixel/scan line space, or complicated map projections. Required attributes are \texttt{units} and
-\texttt{\_FillValue}. Elements of the coordinate array need not be monotonically ordered. The data type
-can be any and scaling may be implemented if required. \texttt{add\_offset} and \texttt{scale\_factor} have to
-be adjusted according to the sensor resolution and the product spatial coverage. If the packed values
-can not stand on a short, float can be used instead (multiplying the size of these variables by two).
-\par \vspace{0.1in}
-
-'\texttt{time}' is the reference time of the SST data array. The GDS 2.0 specifies that this reference time
-should be extracted or computed to the nearest second and then coded as continuous UTC time
-coordinates in \textbf{seconds from 00:00:00 UTC January 1, 1981} (which is the definition of the \textbf{GHRSST}
-origin time, chosen to approximate the start of useful AVHRR SST data record). Note that the use of
-UDUNITS in GHRSST implies that that calendar to be used is the default mixed Gregorian/Julian
-calendar.
-\par \vspace{0.1in}
-
-The reference time used is dependent on the <Processing Level> of the data and is defined as
-follows:
-\par \vspace{0.1in}
-\begin{itemize}
-    \item L2P: start time of granule;
-    \item L3U: start time of granule;
-    \item L3C and L3S: centre time of the collation window;
-    \item L4 and GMPE: nominal time of the analysis
-\end{itemize}
-\par \vspace{0.1in}
-
-The coordinate variable '\texttt{time}' is intended to minimize the size of the \texttt{sst\_dtime} variable (e.g., see
-Section 9.4), which stores offsets from the reference time in seconds for each SST pixel. \texttt{'time'} also
-facilitates aggregation of all files of a given dataset along the time axis with such tools as THREDDS
-and LAS.
-\par \vspace{0.1in}
-
-x (columns) and y (lines) grid dimensions are referred either as \texttt{'lat'} and \texttt{'lon'} or as \texttt{'ni'} and \texttt{'nj'}.
-\texttt{lon} and \texttt{lat} must be used if data are mapped on a regular grid (some geostationary products). \texttt{ni}
-and \texttt{nj} are used if data are mapped on a non-regular grid (curvilinear coordinates) or following the 
-sensor scanning pattern (scan line, swath). It is preferred that \texttt{ni} should be used for the across-track
-dimension and \texttt{nj} for the along-track dimension.
-\par \vspace{0.1in}
-
-Coordinate vectors are used for data arrays located on orthogonal (but not necessarily regularly
-spaced) grids, such as a geographic (lat-lon) map projections. The only required attribute is \texttt{units}.
-The elements of a coordinate vector array should be in monotonically increasing or decreasing order.
-The data type can be any and scaling may be implemented if required.
-\par \vspace{0.1in}
-
-A \texttt{coordinate's} variable (= \texttt{"lon lat"}): must be provided if the data are on a non-regular lat/lon
-grid (map projection or swath data).
-\par \vspace{0.1in}
-
-A \texttt{grid\_mapping} (= "projection name"): must be provided if the data are mapped following a
-projection. Refer to the CF convention [AD-3] for standard projection names. 
-\par
-\pagebreak
-
-\subsubsection{Native datasets}
-Hoc est casus simplex. Multae L3, L4, et GMPE comoediae, necnon quaedam geostationaria L2P comoediae, in ordinaria lat/lon tabula praebentur. In huiusmodi projectione, solum duo coordinate sunt requisitae et vectorum formis servari possunt. Longitudines debent variare ab -180 ad +180, id est ab 180 gradibus Occidentem ad 180 gradibus Orientem. Latitudines debent variare ab -90 ad +90, id est ab 90 gradibus Meridiem ad 90 gradibus Septentrionem. Non debet esse \_FillValue pro latitudine et longitudine, et omnes SST pixeles debent habere validum latitudinis et longitudinis valorem.
-\par \vspace{0.1in}
-
-Recommendatur ut tempus dimensionem pro Level 3 et Level 4 data prodigia ut infinita specificetur. Nota quod tempus dimensio pro L2P data est stricta definita ut tempus=1 (infinita dimensio non permittitur). Hoc strictum definitum est quia L2P data sunt swath based et geospatial informatio potest mutare per consecutive tempus slabs.
-\par \vspace{0.1in}
-In GHRSST L3 et L4 granulis, solum unum tempus dimensio (tempus=1) est, et variabilis tempus solum unum valorem habet (secunda post 1981), sed infinitum tempus dimensionem permittit netCDF instrumenta et utilitates facile concatenare (et exempli gratia, mediare) seriem de tempore consecutive GHRSST granulis. Sequens CDL exemplum dat:
-\par \vspace{0.1in}
-
-\begin{verbatim}
-    netcdf example {
-        dimensions:
-        lat = 1801 ;
-        lon = 3600 ;
-        time = UNLIMITED ; // (strictly set to 1 for L2P)
-        variables:
-        …
-    }
-\end{verbatim}
-\par \vspace{0.1in}
-Pro his casibus, dimensiones et coordinae variabiles debent uti pro regulari lat/lon tabula, ut in Tabula 8-3 monstratur. Nullae specificae variabiles attributi sunt requisitae pro aliis variabilibus (ut sea\_surface\_temperature, ut in exemplo dat in Tabula 8-3).
-\par \vspace{0.1in}
-
-% Table 8-3. Example of a native dataset
-\input{latex/data_product/example_native_table.tex} % inserting contents from a python generated tex file
-
-
-\subsubsection{Latlon datasets}
-Hoc est casus simplex. Multae L3, L4, et GMPE comoediae, necnon quaedam geostationaria L2P comoediae, in ordinaria lat/lon tabula praebentur. In huiusmodi projectione, solum duo coordinate sunt requisitae et vectorum formis servari possunt. Longitudines debent variare ab -180 ad +180, id est ab 180 gradibus Occidentem ad 180 gradibus Orientem. Latitudines debent variare ab -90 ad +90, id est ab 90 gradibus Meridiem ad 90 gradibus Septentrionem. Non debet esse \_FillValue pro latitudine et longitudine, et omnes SST pixeles debent habere validum latitudinis et longitudinis valorem.
-\par \vspace{0.1in}
-
-Recommendatur ut tempus dimensionem pro Level 3 et Level 4 data prodigia ut infinita specificetur. Nota quod tempus dimensio pro L2P data est stricta definita ut tempus=1 (infinita dimensio non permittitur). Hoc strictum definitum est quia L2P data sunt swath based et geospatial informatio potest mutare per consecutive tempus slabs.
-\par \vspace{0.1in}
-In GHRSST L3 et L4 granulis, solum unum tempus dimensio (tempus=1) est, et variabilis tempus solum unum valorem habet (secunda post 1981), sed infinitum tempus dimensionem permittit netCDF instrumenta et utilitates facile concatenare (et exempli gratia, mediare) seriem de tempore consecutive GHRSST granulis. Sequens CDL exemplum dat:
-\par \vspace{0.1in}
-
-\begin{verbatim}
-    netcdf example {
-        dimensions:
-        lat = 1801 ;
-        lon = 3600 ;
-        time = UNLIMITED ; // (strictly set to 1 for L2P)
-        variables:
-        …
-    }
-\end{verbatim}
-\par \vspace{0.1in}
-Pro his casibus, dimensiones et coordinae variabiles debent uti pro regulari lat/lon tabula, ut in Tabula 8-3 monstratur. Nullae specificae variabiles attributi sunt requisitae pro aliis variabilibus (ut sea\_surface\_temperature, ut in exemplo dat in Tabula 8-3).
-\par \vspace{0.1in}
-
-% Table 8-3. Example of a native dataset
-\input{latex/data_product/example_latlon_table.tex} % inserting contents from a python generated tex file
-
-\subsubsection{1D datasets}
-Hoc est casus simplex. Multae L3, L4, et GMPE comoediae, necnon quaedam geostationaria L2P comoediae, in ordinaria lat/lon tabula praebentur. In huiusmodi projectione, solum duo coordinate sunt requisitae et vectorum formis servari possunt. Longitudines debent variare ab -180 ad +180, id est ab 180 gradibus Occidentem ad 180 gradibus Orientem. Latitudines debent variare ab -90 ad +90, id est ab 90 gradibus Meridiem ad 90 gradibus Septentrionem. Non debet esse \_FillValue pro latitudine et longitudine, et omnes SST pixeles debent habere validum latitudinis et longitudinis valorem.
-\par \vspace{0.1in}
-
-Recommendatur ut tempus dimensionem pro Level 3 et Level 4 data prodigia ut infinita specificetur. Nota quod tempus dimensio pro L2P data est stricta definita ut tempus=1 (infinita dimensio non permittitur). Hoc strictum definitum est quia L2P data sunt swath based et geospatial informatio potest mutare per consecutive tempus slabs.
-\par \vspace{0.1in}
-In GHRSST L3 et L4 granulis, solum unum tempus dimensio (tempus=1) est, et variabilis tempus solum unum valorem habet (secunda post 1981), sed infinitum tempus dimensionem permittit netCDF instrumenta et utilitates facile concatenare (et exempli gratia, mediare) seriem de tempore consecutive GHRSST granulis. Sequens CDL exemplum dat:
-\par \vspace{0.1in}
-
-\begin{verbatim}
-    netcdf example {
-        dimensions:
-        lat = 1801 ;
-        lon = 3600 ;
-        time = UNLIMITED ; // (strictly set to 1 for L2P)
-        variables:
-        …
-    }
-\end{verbatim}
-\par \vspace{0.1in}
-Pro his casibus, dimensiones et coordinae variabiles debent uti pro regulari lat/lon tabula, ut in Tabula 8-3 monstratur. Nullae specificae variabiles attributi sunt requisitae pro aliis variabilibus (ut sea\_surface\_temperature, ut in exemplo dat in Tabula 8-3).
-\par \vspace{0.1in}
-
-% Table 8-3. Example of a native dataset
-\input{latex/data_product/example_oneD_table.tex} % inserting contents from a python generated tex file

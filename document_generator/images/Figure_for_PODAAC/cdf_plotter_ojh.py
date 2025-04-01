@@ -214,14 +214,14 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
             fig.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.45,y=.90,weight='bold', fontsize=16)
             fig.text(s=field.attrs["long_name"]+"\n", x=0.45, y=.82, fontsize=12, ha='center', va='center')
             plt.figtext(0.45, 0.13, 
-                            s='Example fied '+str(field.time.values[0])[:10]+',\n '+dataseteName, 
-                            wrap=True,horizontalalignment='center', fontsize=11)
+                            s=dataseteName, 
+                            wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+str(field.time.values[0])[:10]+',\n '
         else:
             fig.suptitle(str(field.name),ha='center',x=.45,y=.90,weight='bold', fontsize=16)
             fig.text(s=field.attrs["long_name"]+"\n", x=0.45, y=.82, fontsize=12, ha='center', va='center')
             plt.figtext(0.45, 0.13, 
-                            s='Example fied :\n '+dataseteName, 
-                            wrap=True,horizontalalignment='center', fontsize=11)
+                            s=dataseteName, 
+                            wrap=True,horizontalalignment='center', fontsize=11)#'Example fied :\n '+
 
     else:
         if 'units' in tmp_plt.attrs.keys():
@@ -264,16 +264,16 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
             fig.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.5,y=.968,weight='bold', fontsize=16)
             fig.text(s=field.attrs["long_name"]+"\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
             plt.figtext(0.5, -0.02, 
-                            s='Example fied '+str(field.time.values[0])[:10]+',\n '+dataseteName, 
-                            wrap=True,horizontalalignment='center', fontsize=11)
+                            s=dataseteName, 
+                            wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+str(field.time.values[0])[:10]+',\n '
 
         else:
             # fig.suptitle(f'{field.name}: \n{field.attrs["long_name"]}\n ', wrap=True, fontsize='x-large')
             fig.suptitle(str(field.name),ha='center',x=.5,y=.968,weight='bold', fontsize=16)
             fig.text(s=field.attrs["long_name"]+"\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
             plt.figtext(0.5, -0.02, 
-                        s='Example fied: \n '+dataseteName, 
-                        wrap=True,horizontalalignment='center', fontsize=11)
+                        s=dataseteName, 
+                        wrap=True,horizontalalignment='center', fontsize=11)#'Example fied: \n '+
 
 
 
@@ -347,8 +347,8 @@ def plot_latlon(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
         fig.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.45,y=.91,weight='bold', fontsize=16)
         fig.text(s=field.attrs["long_name"]+"\n", x=0.45, y=.82, fontsize=12, ha='center', va='center')
         plt.figtext(0.45, 0.1,
-                    s='Example fied '+str(field.time.values[0])[:10]+',\n '+dataseteName,
-                    wrap=True,horizontalalignment='center', fontsize=11)
+                    s=dataseteName,
+                    wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+str(field.time.values[0])[:10]+',\n '+
         
     else:
 
@@ -371,15 +371,15 @@ def plot_latlon(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
             plt.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.45,y=.91,weight='bold', fontsize=16)
             plt.title(field.attrs["long_name"]+"\n", wrap=True, fontsize=12)
             plt.figtext(0.45, 0.1, 
-                        s='Example fied '+str(field.time.values[0])[:10]+',\n '+dataseteName, 
-                        wrap=True,horizontalalignment='center', fontsize=11)
+                        s=str(field.time.values[0])[:10]+',\n '+dataseteName, 
+                        wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+
         else:
             # plt.suptitle(f'{field.name}: \n{field.attrs["long_name"]}', wrap=True, fontsize='x-large')
             plt.suptitle(str(field.name),ha='center',x=.45,y=.91,weight='bold', fontsize=16)
             plt.title(field.attrs["long_name"]+"\n", wrap=True, fontsize=12)
             plt.figtext(0.45, 0.1, 
-                        s='Example fied: \n '+dataseteName, 
-                        wrap=True,horizontalalignment='center', fontsize=11)
+                        s=dataseteName, 
+                        wrap=True,horizontalalignment='center', fontsize=11)#'Example fied: \n '+
 
 def plot_oneD(ds:xr.Dataset, field:xr.DataArray, dataseteName:str)->None:
     """
@@ -404,8 +404,8 @@ def plot_oneD(ds:xr.Dataset, field:xr.DataArray, dataseteName:str)->None:
     # plt.suptitle(str(field.name),ha='center',x=.45,y=.91,weight='bold', fontsize=16)
     plt.title(field.attrs["long_name"]+"\n", wrap=True,weight='bold', fontsize=16)# fontsize=12)
     plt.figtext(0.45, -0.05, 
-                s='Example fied: '+dataseteName, 
-                wrap=True,horizontalalignment='center', fontsize=11)
+                s=dataseteName, 
+                wrap=True,horizontalalignment='center', fontsize=11) #'Example fied: '+
 
 
 def plot_datasetPicEg(ds:xr.Dataset,save_to:str):

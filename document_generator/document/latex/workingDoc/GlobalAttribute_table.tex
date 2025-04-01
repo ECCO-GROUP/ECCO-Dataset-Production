@@ -1,0 +1,131 @@
+\begin{longtable}{|p{0.28\textwidth}|p{0.06\textwidth}|p{0.51\textwidth}|p{0.07\textwidth}|}
+\caption{Global Attributes used in ECCO V4r4 data netCDF files}
+\label{tab:variable-attributes} \\ 
+\hline \endhead
+\hline \endfoot
+\rowcolor{blue!25} \textbf{Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline
+\rowcolor{cyan!25}
+Conventions & string & A text string identifying the netCDF conventions followed. This attribute should be set to the version of CF used and should also include the ACDD. For example: 'CF-1.4, Unidata Observation Dataset v1.0'. & CF \\ \hline
+\rowcolor{cyan!25}
+acknowledgement & string & Information about funding source and how to cite the use of these data. & ACDD \\ \hline
+\rowcolor{cyan!25}
+author & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+cdm\_data\_type & string & The data type, as derived from Unidata's Common Data Model Scientific Data types and understood by THREDDS. This is a THREDDS 'dataType', and is different from the CF NetCDF attribute 'featureType', which indicates a Discrete Sampling Geometry file in CF. For ECCO, it is 'grid'. & ACDD \\ \hline
+\rowcolor{cyan!25}
+comment & string & Miscellaneous information about the data or methods used to produce it. & CF, ACDD \\ \hline
+\rowcolor{cyan!25}
+coordinates\_comment & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+creator\_email & string & Provide an email address for the most relevant point of contact at the producing RDAC relevant to this data set. & ACDD \\ \hline
+\rowcolor{cyan!25}
+creator\_institution & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+creator\_name & string & Provide a name for the most relevant point of contact at the producing RDAC relevant to this data set. & ACDD \\ \hline
+\rowcolor{cyan!25}
+creator\_type & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+creator\_url & string & Provide a URL address relevant to this data set. & ACDD \\ \hline
+\rowcolor{cyan!25}
+date\_created & string & The date and time the data file was created in the form “YYYY-MM-DDThh:mm:ssZ”. This time format is ISO 8601 compliant. & ACDD \\ \hline
+\rowcolor{cyan!25}
+date\_issued & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+date\_metadata\_modified & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+date\_modified & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_bounds\_crs & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_lat\_max & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_lat\_min & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_lat\_resolution & float & Latitude Resolution in units matching 'geospatial\_lat\_units'. & ACDD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_lat\_units & string & Units of the latitudinal resolution. Typically 'degrees\_north'. & ACDD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_lon\_max & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_lon\_min & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_lon\_resolution & float & Longitude Resolution in units matching 'geospatial\_lon\_resolution'. & ACDD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_lon\_units & string & Units of the longitudinal resolution. Typically 'degrees\_east'. & ACDD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_vertical\_max & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_vertical\_min & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_vertical\_positive & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_vertical\_resolution & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+geospatial\_vertical\_units & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+history & string & History of all applications that have modified the original data to create this file. & CF, ACDD \\ \hline
+\rowcolor{cyan!25}
+id & string & The unique ECCO character string for this product. & ACDD \\ \hline
+\rowcolor{cyan!25}
+institution & string & ECCO code or institution where the data were produced. & CF, ACDD \\ \hline
+\rowcolor{cyan!25}
+instrument\_vocabulary & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+keywords & string & A comma-separated list of key words and/or phrases & ACDD \\ \hline
+\rowcolor{cyan!25}
+keywords\_vocabulary & string & Unique name or identifier of the vocabulary from which keywords are taken. f more than one keyword vocabulary is used, each may be presented with a prefix and a following comma, so that keywords may optionally be prefixed with the controlled vocabulary key. & ACDD \\ \hline
+\rowcolor{cyan!25}
+license & string & Provide the URL to a standard or specific license, enter 'Public Domain', 'Freely Distributed' or 'None', or describe any restrictions to data access and distribution in free text & ACDD \\ \hline
+\rowcolor{cyan!25}
+metadata\_link & string & Link to collection metadata record at archive & ACDD \\ \hline
+\rowcolor{cyan!25}
+naming\_authority & string & The organization that provides the initial 'id' for the dataset. The naming authority is uniquely specified by this attribute & ACDD \\ \hline
+\rowcolor{cyan!25}
+platform & string & Satellite(s) used to create this data file. Select from the entries found in the Satellite Platform and provide as a comma separated list if there is more than one. & GDS \\ \hline
+\rowcolor{cyan!25}
+platform\_vocabulary & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+processing\_level & string & A textual description of the processing (or quality control) level of the data. For ECCO, it is level 4 (L4) & ACDD, GDS \\ \hline
+\rowcolor{cyan!25}
+product\_name & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+product\_time\_coverage\_end & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+product\_time\_coverage\_start & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+product\_version & string & The product version of this data file, which may be different than the file version used in the file naming convention & GDS \\ \hline
+\rowcolor{cyan!25}
+program & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+project & string & The name of the project(s) principally responsible for originating this data & ACDD \\ \hline
+\rowcolor{cyan!25}
+publisher\_email & string & The email address of the person (or other entity specified by the publisher\_type attribute) responsible for publishing the data file or product to users, with its current metadata and format. For ECCO, it is: podaac@podaac.jpl.nasa.gov & ACDD \\ \hline
+\rowcolor{cyan!25}
+publisher\_institution & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+publisher\_name & string & The name of the person (or other entity specified by the publisher\_type attribute) responsible for publishing the data file or product to users, with its current metadata and format. & ACDD \\ \hline
+\rowcolor{cyan!25}
+publisher\_type & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+publisher\_url & string & The URL of the person (or other entity specified by the publisher\_type attribute) responsible for publishing the data file or product to users, with its current metadata and format. For ECCO, it is : https://podaac.jpl.nasa.gov & ACDD \\ \hline
+\rowcolor{cyan!25}
+references & string & Published or web-based references that describe the data or methods used to produce it. & CF \\ \hline
+\rowcolor{cyan!25}
+source & string & Comma separated list of all source data present in this file. Provides the method of production of the original data in detail with the model and its version, as specifically as could be useful. & CF \\ \hline
+\rowcolor{cyan!25}
+standard\_name\_vocabulary & string & The name and version of the controlled vocabulary from which variable standard names are taken. Values for any standard\_name attribute must come from the CF Standard Names vocabulary for the data file or product to comply with CF. & ACDD \\ \hline
+\rowcolor{cyan!25}
+summary & string & A paragraph describing the dataset. & ACDD \\ \hline
+\rowcolor{cyan!25}
+time\_coverage\_duration & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+time\_coverage\_end & string & Identical to 'stop\_time'. Included for increased ACDD compliance. & ACDD \\ \hline
+\rowcolor{cyan!25}
+time\_coverage\_resolution & TBD & TBD & TBD \\ \hline
+\rowcolor{cyan!25}
+time\_coverage\_start & string & Identical to 'start\_time'. Included for increased ACDD compliance. & ACDD \\ \hline
+\rowcolor{cyan!25}
+title & string & A descriptive title for the ECCO data set & CF, ACDD \\ \hline
+\rowcolor{cyan!25}
+uuid & string & A Universally Unique Identifier (UUID). Numerous, simple tools can be used to create a UUID, which is inserted as the value of this attribute. See http://en.wikipedia.org/wiki/Universally\_Unique\_I dentifier for more information and tools. & ACDD \\ \hline
+\end{longtable}

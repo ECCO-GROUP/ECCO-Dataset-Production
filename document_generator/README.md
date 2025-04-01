@@ -82,4 +82,19 @@ This script (in `/document_generator/`) reads the netCDF file of each targeted d
 <h2>4.5 sections</h2>
 <div align="justify">
 
+<h1>5. JSON and TXT files configurations</h1>
+
+<h2>5.1 JSON files</h2>
+<div align="justify">
+
+</div>
+
+<h2>5.1.1 global_attrs_GDS20r5.json</h2>
+<div align="justify">
+
+</div>
+
+<h2>5.2 TXT files</h2>
+<div align="justify">
+
 </div>

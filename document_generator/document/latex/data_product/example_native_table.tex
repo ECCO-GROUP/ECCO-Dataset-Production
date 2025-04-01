@@ -15,9 +15,8 @@ dimensions\\
 \rowcolor{YellowGreen}  k\_l = 50\\
 \rowcolor{YellowGreen}  k\_p1 = 51\\
 \rowcolor{YellowGreen}  tile = 13\\
-\rowcolor{YellowGreen}  time = 1\\
-\rowcolor{YellowGreen}  nv = 2\\
 \rowcolor{YellowGreen}  nb = 4\\
+\rowcolor{YellowGreen}  nv = 2\\
 \hline
 
 coordinates\\
@@ -55,18 +54,18 @@ coordinates\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k:coverage\_content\_type = "coordinate"\\
 \rowcolor{Apricot}\hspace{0.5cm}int32 k\_u (k\_u)\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:axis = "Z"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:long\_name = "grid index in z corresponding to the bottom face of tracer grid cells ('w' locations)"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:c\_grid\_axis\_shift = "0.5"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:swap\_dim = "Zu"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:comment = "First index corresponds to the bottom face of the uppermost tracer grid cell. The use of 'u' in the variable name follows the MITgcm convention for naming the bottom face of ocean tracer grid cells."\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:coverage\_content\_type = "coordinate"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:long\_name = "grid index in z corresponding to the bottom face of tracer grid cells ('w' locations)"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:comment = "First index corresponds to the bottom surface of the uppermost tracer grid cell. The use of 'u' in the variable name follows the MITgcm convention for ocean variables in which the upper (u) face of a tracer grid cell on the logical grid corresponds to the bottom face of the grid cell on the physical grid."\\
 \rowcolor{Apricot}\hspace{0.5cm}int32 k\_l (k\_l)\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:axis = "Z"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:long\_name = "grid index in z corresponding to the top face of tracer grid cells ('w' locations)"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:c\_grid\_axis\_shift = "-0.5"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:swap\_dim = "Zl"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:comment = "First index corresponds to the top face of the uppermost tracer grid cell. The use of 'l' in the variable name follows the MITgcm convention for naming the top face of ocean tracer grid cells."\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:coverage\_content\_type = "coordinate"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:long\_name = "grid index in z corresponding to the top face of tracer grid cells ('w' locations)"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:comment = "First index corresponds to the top surface of the uppermost tracer grid cell. The use of 'l' in the variable name follows the MITgcm convention for ocean variables in which the lower (l) face of a tracer grid cell on the logical grid corresponds to the top face of the grid cell on the physical grid."\\
 \rowcolor{Apricot}\hspace{0.5cm}int32 k\_p1 (k\_p1)\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_p1:axis = "Z"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_p1:long\_name = "grid index in z for variables at 'w' locations"\\
@@ -78,14 +77,6 @@ coordinates\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:long\_name = "lat-lon-cap tile index"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:comment = "The ECCO V4 horizontal model grid is divided into 13 tiles of 90x90 cells for convenience."\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:coverage\_content\_type = "coordinate"\\
-\rowcolor{Apricot}\hspace{0.5cm}int32 time (time)\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "center time of averaging period"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:bounds = "time\_bnds"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
 \rowcolor{Apricot}\hspace{0.5cm}float32 XC (tile, j, i)\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:long\_name = "longitude of tracer grid cell center"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:units = "degrees\_east"\\
@@ -112,10 +103,10 @@ coordinates\\
 \rowcolor{Apricot}\hspace{0.5cm}float32 YG (tile, j\_g, i\_g)\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:long\_name = "latitude of 'southwest' corner of tracer grid cell"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:units = "degrees\_north"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coordinate = "YG XG"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:comment = "Nonuniform grid spacing. Note: 'southwest' does not correspond to geographic orientation but is used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coverage\_content\_type = "coordinate"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:standard\_name = "latitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coordinates = "YG XG"\\
 \rowcolor{Apricot}\hspace{0.5cm}float32 Z (k)\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z:long\_name = "depth of tracer grid cell center"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z:units = "m"\\
@@ -125,30 +116,26 @@ coordinates\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z:coverage\_content\_type = "coordinate"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z:standard\_name = "depth"\\
 \rowcolor{Apricot}\hspace{0.5cm}float32 Zp1 (k\_p1)\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:long\_name = "depth of tracer grid cell interface"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:long\_name = "depth of top/bottom face of tracer grid cell"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:units = "m"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:positive = "up"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:comment = "Contains one element more than the number of vertical layers. First element is 0m, the depth of the upper interface of the surface grid cell. Last element is the depth of the lower interface of the deepest grid cell."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:comment = "Contains one element more than the number of vertical layers. First element is 0m, the depth of the top face of the uppermost grid cell. Last element is the depth of the bottom face of the deepest grid cell."\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:coverage\_content\_type = "coordinate"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:standard\_name = "depth"\\
 \rowcolor{Apricot}\hspace{0.5cm}float32 Zu (k\_u)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:long\_name = "depth of bottom face of tracer grid cell"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:units = "m"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:positive = "up"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:comment = "First element is -10m, the depth of the bottom face of the uppermost tracer grid cell. Last element is the depth of the bottom face of the deepest grid cell. The use of 'u' in the variable name follows the MITgcm convention for naming the bottom face of ocean tracer grid cells."\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:coverage\_content\_type = "coordinate"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:standard\_name = "depth"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:long\_name = "depth of the bottom face of tracer grid cells"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:comment = "First element is -10m, the depth of the bottom face of the first tracer grid cell. Last element is the depth of the bottom face of the deepest grid cell. The use of 'u' in the variable name follows the MITgcm convention for ocean variables in which the upper (u) face of a tracer grid cell on the logical grid corresponds to the bottom face of the grid cell on the physical grid. In other words, the logical vertical grid of MITgcm ocean variables is inverted relative to the physical vertical grid."\\
 \rowcolor{Apricot}\hspace{0.5cm}float32 Zl (k\_l)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:long\_name = "depth of top face of tracer grid cell"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:units = "m"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:positive = "up"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:comment = "First element is 0m, the depth of the top face of the uppermost tracer grid cell (i.e., the ocean surface). Last element is the depth of the top face of the deepest grid cell. The use of 'l' in the variable name follows the MITgcm convention for naming the top face of ocean tracer grid cells."\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:coverage\_content\_type = "coordinate"\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:standard\_name = "depth"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:long\_name = "depth of the top face of tracer grid cells"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:comment = "First element is 0m, the depth of the top face of the first tracer grid cell (ocean surface). Last element is the depth of the top face of the deepest grid cell. The use of 'l' in the variable name follows the MITgcm convention for ocean variables in which the lower (l) face of a tracer grid cell on the logical grid corresponds to the top face of the grid cell on the physical grid. In other words, the logical vertical grid of MITgcm ocean variables is inverted relative to the physical vertical grid."\\
-\rowcolor{Apricot}\hspace{0.5cm}int32 time\_bnds (time, nv)\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:comment = "Start and end times of averaging period."\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:coverage\_content\_type = "coordinate"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:long\_name = "time bounds of averaging period"\\
 \rowcolor{Apricot}\hspace{0.5cm}float32 XC\_bnds (tile, j, i, nb)\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:comment = "Bounds array follows CF conventions. XC\_bnds[i,j,0] = 'southwest' corner (j-1, i-1), XC\_bnds[i,j,1] = 'southeast' corner (j-1, i+1), XC\_bnds[i,j,2] = 'northeast' corner (j+1, i+1), XC\_bnds[i,j,3]  = 'northwest' corner (j+1, i-1). Note: 'southwest', 'southeast', northwest', and 'northeast' do not correspond to geographic orientation but are used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:coverage\_content\_type = "coordinate"\\
@@ -160,94 +147,37 @@ coordinates\\
 \rowcolor{Apricot}\hspace{0.5cm}float32 Z\_bnds (k, nv)\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z\_bnds:comment = "One pair of depths for each vertical level."\\
 \rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z\_bnds:coverage\_content\_type = "coordinate"\\
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z\_bnds:long\_name = "depths of tracer grid cell upper and lower interfaces"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z\_bnds:long\_name = "depths of top and bottom faces of tracer grid cell"\\
 \hline
 
 data variables\\
 \hline
-\hspace{0.5cm}float32 ADVx\_SLT (time, k, tile, j, i\_g)\\
-\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:long\_name = "Lateral advective flux of salinity in the model +x direction"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:units = "1e-3 m3 s-1"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:mate = "ADVy\_SLT"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:direction = ">0 increases salinity (SALT)"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:comment = "Lateral advective flux of salinity (SALT) in the +x direction through the 'u' face of the tracer cell on the native model grid. Note: in the Arakawa-C grid, horizontal flux quantities are staggered relative to the tracer cells with indexing such that +ADVx\_SLT(i\_g,j,k) corresponds to +x fluxes through the 'u' face of the tracer cell at (i,j,k). Also, the model +x direction does not necessarily correspond to the geographical east-west direction because the x and y axes of the model's curvilinear lat-lon-cap (llc) grid have arbitrary orientations which vary within and across tiles. Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:coordinates = "Z time"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:valid\_min = "-181830224.0"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:valid\_max = "260411296.0"\\
-\hspace{0.5cm}float32 DFxE\_SLT (time, k, tile, j, i\_g)\\
-\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:long\_name = "Lateral diffusive flux of salinity in the model +x direction"\\
-\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:units = "1e-3 m3 s-1"\\
-\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:mate = "DFyE\_SLT"\\
-\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:direction = ">0 increases salinity (SALT)"\\
-\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:comment = "Lateral diffusive flux of salinity (SALT) in the +x direction through the 'u' face of the tracer cell on the native model grid. Note: in the Arakawa-C grid, horizontal flux quantities are staggered relative to the tracer cells with indexing such that +DFxE\_SLT(i\_g,j,k) corresponds to +x fluxes through the 'u' face of the tracer cell at (i,j,k). Also, the model +x direction does not necessarily correspond to the geographical east-west direction because the x and y axes of the model's curvilinear lat-lon-cap (llc) grid have arbitrary orientations which vary within and across tiles. Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
-\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:coordinates = "Z time"\\
-\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:valid\_min = "-125908.03125"\\
-\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:valid\_max = "192716.484375"\\
-\hspace{0.5cm}float32 ADVy\_SLT (time, k, tile, j\_g, i)\\
-\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:long\_name = "Lateral advective flux of salinity in the model +y direction"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:units = "1e-3 m3 s-1"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:mate = "ADVx\_SLT"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:direction = ">0 increases salinity (SALT)"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:comment = "Lateral advective flux of salinity (SALT) in the +y direction through the 'v' face of the tracer cell on the native model grid. Note: in the Arakawa-C grid, horizontal flux quantities are staggered relative to the tracer cells with indexing such that +ADVy\_SLT(i,j\_g,k) corresponds to +y fluxes through the 'v' face of the tracer cell at (i,j,k). Also, the model +y direction does not necessarily correspond to the geographical north-south direction because the x and y axes of the model's curvilinear lat-lon-cap (llc) grid have arbitrary orientations which vary within and across tiles. Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:coordinates = "Z time"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:valid\_min = "-137905760.0"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:valid\_max = "164271664.0"\\
-\hspace{0.5cm}float32 DFyE\_SLT (time, k, tile, j\_g, i)\\
-\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:long\_name = "Lateral diffusive flux of salinity in the model +y direction"\\
-\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:units = "1e-3 m3 s-1"\\
-\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:mate = "DFxE\_SLT"\\
-\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:direction = ">0 increases salinity (SALT)"\\
-\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:comment = "Lateral diffusive flux of salinity (SALT) in the +y direction through the 'v' face of the tracer cell on the native model grid. Note: in the Arakawa-C grid, horizontal flux quantities are staggered relative to the tracer cells with indexing such that +DFyE\_SLT(i,j\_g,k) corresponds to +y fluxes through the 'v' face of the tracer cell at (i,j,k). Also, the model +y direction does not necessarily correspond to the geographical north-south direction because the x and y axes of the model's curvilinear lat-lon-cap (llc) grid have arbitrary orientations which vary within and across tiles. Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
-\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:coordinates = "Z time"\\
-\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:valid\_min = "-114959.2109375"\\
-\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:valid\_max = "154227.140625"\\
-\hspace{0.5cm}float32 ADVr\_SLT (time, k\_l, tile, j, i)\\
-\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:long\_name = "Vertical advective flux of salinity"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:units = "1e-3 m3 s-1"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:direction = ">0 decreases salinity (SALT)"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:comment = "Vertical advective flux of salinity (SALT) in the +z direction through the top 'w' face of the tracer cell on the native model grid. Note: in the Arakawa-C grid, vertical flux quantities are staggered relative to the tracer cells with indexing such that +ADVr\_SLT(i,j,k\_l) corresponds to upward +z fluxes through the top 'w' face of the tracer cell at (i,j,k). Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:coordinates = "XC Zl YC time"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:valid\_min = "-324149856.0"\\
-\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:valid\_max = "263294624.0"\\
-\hspace{0.5cm}float32 DFrE\_SLT (time, k\_l, tile, j, i)\\
-\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:long\_name = "Vertical diffusive flux of salinity (explicit term)"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:units = "1e-3 m3 s-1"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:direction = ">0 decreases salinity (SALT)"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:comment = "The explicit term of the vertical diffusive flux of salinity (SALT) in the +z direction through the top 'w' face of the tracer cell on the native model grid. In the ECCO V4r4 model, an implicit scheme is used to calculate vertical diffusive tracer fluxes due to background diffusivity and the Kwz component of the GM-Redi tensor (vertical flux as a function of vertical gradient) while an explicit scheme is used to calculate the vertical diffusive fluxes from the Kwx and Kwy components of the GM-Redi tensor (vertical flux as a function of horizontal gradient). Both implicit and explicit components of vertical diffusive flux of salinity are provided. Note: in the Arakawa-C grid, vertical flux quantities are staggered relative to the tracer cells with indexing such that +DFrE\_SLT(i,j,k\_l) corresponds to upward +z fluxes through the top 'w' face of the tracer cell at (i,j,k). Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:coordinates = "XC Zl YC time"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:valid\_min = "-1074719.375"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:valid\_max = "471215.75"\\
-\hspace{0.5cm}float32 DFrI\_SLT (time, k\_l, tile, j, i)\\
-\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:long\_name = "Vertical diffusive flux of salinity (implicit term)"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:units = "1e-3 m3 s-1"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:direction = ">0 decreases salinity (SALT)"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:comment = "The implicit term of the vertical diffusive flux of salinity (SALT) in the +z direction through the top 'w' face of the tracer cell on the native model grid. In the ECCO V4r4 model, an implicit scheme is used to calculate vertical diffusive tracer fluxes due to background diffusivity and the Kwz component of the GM-Redi tensor (vertical flux as a function of vertical gradient) while an explicit scheme is used to calculate the vertical diffusive fluxes from the Kwx and Kwy components of the GM-Redi tensor (vertical flux as a function of horizontal gradient). Both implicit and explicit components of vertical diffusive flux of salinity are provided. Note: in the Arakawa-C grid, vertical flux quantities are staggered relative to the tracer cells with indexing such that +DFrI\_SLT(i,j,k\_l) corresponds to upward +z fluxes through the top face 'w' of the tracer cell at (i,j,k). Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:coordinates = "XC Zl YC time"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:valid\_min = "-30609048.0"\\
-\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:valid\_max = "3197643.0"\\
-\hspace{0.5cm}float32 oceSPtnd (time, k, tile, j, i)\\
-\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:long\_name = "Salt tendency due to the vertical transport of salt in high-salinity brine plumes"\\
-\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:units = "g m-2 s-1"\\
-\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:direction = ">0 increases salinity (SALT)"\\
-\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:comment = "Salt tendency due to the vertical transport of salt in high-salinity brine plumes. Note: units are grams of salt per square meter per second, not salinity per square meter per second."\\
-\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:coordinates = "XC Z YC time"\\
-\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:valid\_min = "0.0"\\
-\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:valid\_max = "0.021119138225913048"\\
+\hspace{0.5cm}float32 DIFFKR (k, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:long\_name = "Vertical diffusivity"\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:units = "m2 s-1"\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:comment = "Background vertical diffusion coefficient for temperature and salinity. Total vertical diffusivity includes background diffusivity plus contributions from the GGL90 vertical mixing and the Gent-McWilliams/Redi parameterizations. Note: DIFFKR is a model control variable and has been optimized from a spatially-invariant first-guess value of 1e-5 m2 s-1."\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:valid\_min = "9.999999974752427e-07"\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:valid\_max = "0.00018549950618762523"\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:coordinates = "Z XC YC"\\
+\hspace{0.5cm}float32 KAPGM (k, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:long\_name = "Gent-McWilliams diffusivity"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:units = "m2 s-1"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:comment = "Gent-McWilliams diffusivity coefficient as described in Gent and McWilliams (1990, JPO). Note: KAPGM is a model control variable and has been optimized from a spatially invariant first guess of 1e3 m2 s-1."\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:valid\_min = "100.0"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:valid\_max = "10000.0"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:coordinates = "Z XC YC"\\
+\hspace{0.5cm}float32 KAPREDI (k, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:long\_name = "Along-isopycnal diffusivity"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:units = "m2 s-1"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:comment = "Redi along-isopycnal diffusivity coefficient as described in Redi (1982, JPO). Note: KAPREDI is a model control variable and has been optimized from a spatially invariant first guess of 1e3 m2 s-1."\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:valid\_min = "100.0"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:valid\_max = "10000.0"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:coordinates = "Z XC YC"\\
 \hline
 \end{longtable}

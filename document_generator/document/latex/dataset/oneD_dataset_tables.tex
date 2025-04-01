@@ -22,7 +22,7 @@ time &Snapshot time &--none--  \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & Pa\_global & Global mean atmospheric surface pressure over the ocean and sea-ice & N m-2 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 Pa\_global(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 Pa\_global(time)\\
 \hspace*{0.5cm}Pa\_global: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}Pa\_global: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}Pa\_global: long\_name = Global mean atmospheric surface pressure over the ocean and sea: ice\\
@@ -30,7 +30,7 @@ float64 & Pa\_global & Global mean atmospheric surface pressure over the ocean a
 \hspace*{0.5cm}Pa\_global: units = N m: 2\\
 \hspace*{0.5cm}Pa\_global: valid\_min = 100873.14755283327\\
 \hspace*{0.5cm}Pa\_global: valid\_max = 101257.45252296235\\
-\hspace*{0.5cm}Pa\_global: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}Pa\_global: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -67,7 +67,7 @@ time &Center time of averaging period &--none--  \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float32 & global\_mean\_barystatic\_sea\_level\_anomaly & Global mean of barystatic sea level anomaly & m \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float32 global\_mean\_barystatic\_sea\_level\_anomaly(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float32 global\_mean\_barystatic\_sea\_level\_anomaly(time)\\
 \hspace*{0.5cm}global\_mean\_barystatic\_sea\_level\_anomaly: \_FillValue = 9.96921e+36\\
 \hspace*{0.5cm}global\_mean\_barystatic\_sea\_level\_anomaly: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}global\_mean\_barystatic\_sea\_level\_anomaly: long\_name = Global mean of barystatic sea level anomaly\\
@@ -75,7 +75,7 @@ float32 & global\_mean\_barystatic\_sea\_level\_anomaly & Global mean of barysta
 \hspace*{0.5cm}global\_mean\_barystatic\_sea\_level\_anomaly: units = m\\
 \hspace*{0.5cm}global\_mean\_barystatic\_sea\_level\_anomaly: valid\_min = : 0.045110904\\
 \hspace*{0.5cm}global\_mean\_barystatic\_sea\_level\_anomaly: valid\_max = 0.043493364\\
-\hspace*{0.5cm}global\_mean\_barystatic\_sea\_level\_anomaly: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}global\_mean\_barystatic\_sea\_level\_anomaly: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{Global mean barystatic sea level anomaly due to changes in total ocean mass. note: eccov4 uses a volume-conserving boussinesq formulation of the mitgcm with a free-surface boundary condition with real freshwater flux forcing. changes in ocean mass due to evaporation, precipitation, runoff, and sea-ice growth/melt are reflected in model sea level. however, as a consequence of the boussinsq formulation, changes to seawater density due to net buoyancy fluxes (e.g., global mean surface heating/cooling) do not change model sea level anomaly (etan) via seawater expansion/contraction. changes in global ocean density therefore induce a spurious change in model ocean bottom pressure (phibot) via 'virtual mass fluxes'. the 'greatbatch correction' is a time varying, globally-uniform correction to account for changes in global mean density in boussinesq models. this correction is used to calculate dynamic sea surface height (ssh) and ocean bottom pressure (obp). importantly, there is no dynamical significance to the greatbatch correction but it is required to account for steric changes in global sea level. see greatbatch, 1994. j. of geophys. res. oceans, doi.org/10.1029/94jc00847} \\ \hline
 \end{longtable}
@@ -95,7 +95,7 @@ float32 & global\_mean\_barystatic\_sea\_level\_anomaly & Global mean of barysta
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float32 & global\_mean\_sea\_level\_anomaly & Global mean of dynamic ssh & m \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float32 global\_mean\_sea\_level\_anomaly(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float32 global\_mean\_sea\_level\_anomaly(time)\\
 \hspace*{0.5cm}global\_mean\_sea\_level\_anomaly: \_FillValue = 9.96921e+36\\
 \hspace*{0.5cm}global\_mean\_sea\_level\_anomaly: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}global\_mean\_sea\_level\_anomaly: long\_name = Global mean of dynamic SSH\\
@@ -103,7 +103,7 @@ float32 & global\_mean\_sea\_level\_anomaly & Global mean of dynamic ssh & m \\ 
 \hspace*{0.5cm}global\_mean\_sea\_level\_anomaly: units = m\\
 \hspace*{0.5cm}global\_mean\_sea\_level\_anomaly: valid\_min = : 0.055836163\\
 \hspace*{0.5cm}global\_mean\_sea\_level\_anomaly: valid\_max = 0.05520557\\
-\hspace*{0.5cm}global\_mean\_sea\_level\_anomaly: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}global\_mean\_sea\_level\_anomaly: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{Global mean of dynamic sea level anomaly, equivalent to global mean sea level change. note: eccov4 uses a volume-conserving boussinesq formulation of the mitgcm with a free-surface boundary condition with real freshwater flux forcing. changes in ocean mass due to evaporation, precipitation, runoff, and sea-ice growth/melt are reflected in model sea level. however, as a consequence of the boussinsq formulation, changes to seawater density due to net buoyancy fluxes (e.g., global mean surface heating/cooling) do not change model sea level anomaly (etan) via seawater expansion/contraction. changes in global ocean density therefore induce a spurious change in model ocean bottom pressure (phibot) via 'virtual mass fluxes'. the 'greatbatch correction' is a time varying, globally-uniform correction to account for changes in global mean density in boussinesq models. this correction is used to calculate dynamic sea surface height (ssh) and ocean bottom pressure (obp). importantly, there is no dynamical significance to the greatbatch correction but it is required to account for steric changes in global sea level. see greatbatch, 1994. j. of geophys. res. oceans, doi.org/10.1029/94jc00847} \\ \hline
 \end{longtable}
@@ -123,7 +123,7 @@ float32 & global\_mean\_sea\_level\_anomaly & Global mean of dynamic ssh & m \\ 
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & global\_mean\_sterodynamic\_sea\_level\_anomaly & Global mean of sterodynamic sea level anomaly & m \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 global\_mean\_sterodynamic\_sea\_level\_anomaly(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 global\_mean\_sterodynamic\_sea\_level\_anomaly(time)\\
 \hspace*{0.5cm}global\_mean\_sterodynamic\_sea\_level\_anomaly: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}global\_mean\_sterodynamic\_sea\_level\_anomaly: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}global\_mean\_sterodynamic\_sea\_level\_anomaly: long\_name = Global mean of sterodynamic sea level anomaly\\
@@ -131,7 +131,7 @@ float64 & global\_mean\_sterodynamic\_sea\_level\_anomaly & Global mean of stero
 \hspace*{0.5cm}global\_mean\_sterodynamic\_sea\_level\_anomaly: units = m\\
 \hspace*{0.5cm}global\_mean\_sterodynamic\_sea\_level\_anomaly: valid\_min = : 0.017658796143049296\\
 \hspace*{0.5cm}global\_mean\_sterodynamic\_sea\_level\_anomaly: valid\_max = 0.017642477223663407\\
-\hspace*{0.5cm}global\_mean\_sterodynamic\_sea\_level\_anomaly: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}global\_mean\_sterodynamic\_sea\_level\_anomaly: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{Steric sea level anomaly associated with seawater expansion/contraction due to density changes. note: eccov4 uses a volume-conserving boussinesq formulation of the mitgcm with a free-surface boundary condition with real freshwater flux forcing. changes in ocean mass due to evaporation, precipitation, runoff, and sea-ice growth/melt are reflected in model sea level. however, as a consequence of the boussinsq formulation, changes to seawater density due to net buoyancy fluxes (e.g., global mean surface heating/cooling) do not change model sea level anomaly (etan) via seawater expansion/contraction. changes in global ocean density therefore induce a spurious change in model ocean bottom pressure (phibot) via 'virtual mass fluxes'. the 'greatbatch correction' is a time varying, globally-uniform correction to account for changes in global mean density in boussinesq models. this correction is used to calculate dynamic sea surface height (ssh) and ocean bottom pressure (obp). importantly, there is no dynamical significance to the greatbatch correction but it is required to account for steric changes in global sea level. see greatbatch, 1994. j. of geophys. res. oceans, doi.org/10.1029/94jc00847} \\ \hline
 \end{longtable}
@@ -191,14 +191,14 @@ time &Snapshot time &--none--  \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & mass & Ocean mass & kg \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 mass(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 mass(time)\\
 \hspace*{0.5cm}mass: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}mass: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}mass: long\_name = ocean\hspace*{0.5cm} mass\\
 \hspace*{0.5cm}mass: units = kg\\
 \hspace*{0.5cm}mass: valid\_min = 1.3737507447512265e+21\\
 \hspace*{0.5cm}mass: valid\_max = 1.3737832079900274e+21\\
-\hspace*{0.5cm}mass: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}mass: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -218,14 +218,14 @@ float64 & mass & Ocean mass & kg \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & mass\_fw & Mass due to freshwater flux & kg \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 mass\_fw(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 mass\_fw(time)\\
 \hspace*{0.5cm}mass\_fw: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}mass\_fw: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}mass\_fw: long\_name = mass due to freshwater flux\\
 \hspace*{0.5cm}mass\_fw: units = kg\\
 \hspace*{0.5cm}mass\_fw: valid\_min = 3.7929380693921944e+16\\
 \hspace*{0.5cm}mass\_fw: valid\_max = 7.0392619494226936e+16\\
-\hspace*{0.5cm}mass\_fw: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}mass\_fw: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -245,14 +245,14 @@ float64 & mass\_fw & Mass due to freshwater flux & kg \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & mass\_gc & Mass due to the greatbatch correction & kg \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 mass\_gc(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 mass\_gc(time)\\
 \hspace*{0.5cm}mass\_gc: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}mass\_gc: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}mass\_gc: long\_name = mass due to the Greatbatch correction\\
 \hspace*{0.5cm}mass\_gc: units = kg\\
 \hspace*{0.5cm}mass\_gc: valid\_min = : 1.140148294309558e+19\\
 \hspace*{0.5cm}mass\_gc: valid\_max = : 1.1388436906537843e+19\\
-\hspace*{0.5cm}mass\_gc: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}mass\_gc: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -272,14 +272,14 @@ float64 & mass\_gc & Mass due to the greatbatch correction & kg \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & mass\_si & Sea-ice mass & kg \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 mass\_si(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 mass\_si(time)\\
 \hspace*{0.5cm}mass\_si: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}mass\_si: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}mass\_si: long\_name = sea: ice mass\\
 \hspace*{0.5cm}mass\_si: units = kg\\
 \hspace*{0.5cm}mass\_si: valid\_min = 1.5801085624300974e+16\\
 \hspace*{0.5cm}mass\_si: valid\_max = 3.372421224523182e+16\\
-\hspace*{0.5cm}mass\_si: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}mass\_si: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -299,14 +299,14 @@ float64 & mass\_si & Sea-ice mass & kg \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & sboarea & Surface area of oceans & m2 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 sboarea(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 sboarea(time)\\
 \hspace*{0.5cm}sboarea: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}sboarea: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}sboarea: long\_name = surface area of oceans\\
 \hspace*{0.5cm}sboarea: units = m2\\
 \hspace*{0.5cm}sboarea: valid\_min = 358013861149443.5\\
 \hspace*{0.5cm}sboarea: valid\_max = 358013861149443.5\\
-\hspace*{0.5cm}sboarea: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}sboarea: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{Note: ocean surface area is constant but provided as time series for convenience} \\ \hline
 \end{longtable}
@@ -326,14 +326,14 @@ float64 & sboarea & Surface area of oceans & m2 \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & xcom & X-comp of center-of-mass of ocean & m \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 xcom(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 xcom(time)\\
 \hspace*{0.5cm}xcom: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}xcom: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}xcom: long\_name = x: comp of center: of: mass of ocean\\
 \hspace*{0.5cm}xcom: units = m\\
 \hspace*{0.5cm}xcom: valid\_min = : 763730.0399730895\\
 \hspace*{0.5cm}xcom: valid\_max = : 763667.0104211655\\
-\hspace*{0.5cm}xcom: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}xcom: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -353,14 +353,14 @@ float64 & xcom & X-comp of center-of-mass of ocean & m \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & xcom\_fw & X-comp of center-of-mass of freshwater flux & m \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 xcom\_fw(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 xcom\_fw(time)\\
 \hspace*{0.5cm}xcom\_fw: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}xcom\_fw: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}xcom\_fw: long\_name = x: comp of center: of: mass of freshwater flux\\
 \hspace*{0.5cm}xcom\_fw: units = m\\
 \hspace*{0.5cm}xcom\_fw: valid\_min = : 573864.6948562702\\
 \hspace*{0.5cm}xcom\_fw: valid\_max = : 573864.6948562652\\
-\hspace*{0.5cm}xcom\_fw: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}xcom\_fw: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -380,14 +380,14 @@ float64 & xcom\_fw & X-comp of center-of-mass of freshwater flux & m \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & xoamc & X-comp of oceanic angular momentum due to currents & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 xoamc(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 xoamc(time)\\
 \hspace*{0.5cm}xoamc: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}xoamc: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}xoamc: long\_name = x: comp of oceanic angular momentum due to currents\\
 \hspace*{0.5cm}xoamc: units = kg m2 s: 1\\
 \hspace*{0.5cm}xoamc: valid\_min = : 3.783733447704127e+24\\
 \hspace*{0.5cm}xoamc: valid\_max = 2.555331552045857e+24\\
-\hspace*{0.5cm}xoamc: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}xoamc: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -407,14 +407,14 @@ float64 & xoamc & X-comp of oceanic angular momentum due to currents & kg m2 s-1
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & xoamc\_si & X-comp of oceanic angular momentum due to sea-ice motion & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 xoamc\_si(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 xoamc\_si(time)\\
 \hspace*{0.5cm}xoamc\_si: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}xoamc\_si: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}xoamc\_si: long\_name = x: comp of oceanic angular momentum due to sea: ice motion\\
 \hspace*{0.5cm}xoamc\_si: units = kg m2 s: 1\\
 \hspace*{0.5cm}xoamc\_si: valid\_min = : 9.76342837969224e+21\\
 \hspace*{0.5cm}xoamc\_si: valid\_max = 1.3721188892065168e+22\\
-\hspace*{0.5cm}xoamc\_si: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}xoamc\_si: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -434,14 +434,14 @@ float64 & xoamc\_si & X-comp of oceanic angular momentum due to sea-ice motion &
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & xoamp & X-comp of oceanic angular momentum due to pressure & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 xoamp(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 xoamp(time)\\
 \hspace*{0.5cm}xoamp: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}xoamp: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}xoamp: long\_name = x: comp of oceanic angular momentum due to pressure\\
 \hspace*{0.5cm}xoamp: units = kg m2 s: 1\\
 \hspace*{0.5cm}xoamp: valid\_min = 1.3543642768158851e+29\\
 \hspace*{0.5cm}xoamp: valid\_max = 1.3546098666231897e+29\\
-\hspace*{0.5cm}xoamp: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}xoamp: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -461,14 +461,14 @@ float64 & xoamp & X-comp of oceanic angular momentum due to pressure & kg m2 s-1
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & xoamp\_dsl & X-comp of oceanic angular momentum due to pressure based on dynamic (ib-corrected) sea level & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 xoamp\_dsl(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 xoamp\_dsl(time)\\
 \hspace*{0.5cm}xoamp\_dsl: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}xoamp\_dsl: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}xoamp\_dsl: long\_name = x: comp of oceanic angular momentum due to pressure based on dynamic (IB: corrected) sea level\\
 \hspace*{0.5cm}xoamp\_dsl: units = kg m2 s: 1\\
 \hspace*{0.5cm}xoamp\_dsl: valid\_min = 1.354440386439953e+29\\
 \hspace*{0.5cm}xoamp\_dsl: valid\_max = 1.3545518352698056e+29\\
-\hspace*{0.5cm}xoamp\_dsl: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}xoamp\_dsl: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -488,14 +488,14 @@ float64 & xoamp\_dsl & X-comp of oceanic angular momentum due to pressure based 
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & xoamp\_fw & X-comp of oceanic angular momentum due to freshwater flux & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 xoamp\_fw(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 xoamp\_fw(time)\\
 \hspace*{0.5cm}xoamp\_fw: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}xoamp\_fw: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}xoamp\_fw: long\_name = x: comp of oceanic angular momentum due to freshwater flux\\
 \hspace*{0.5cm}xoamp\_fw: units = kg m2 s: 1\\
 \hspace*{0.5cm}xoamp\_fw: valid\_min = 1.805799644912138e+24\\
 \hspace*{0.5cm}xoamp\_fw: valid\_max = 3.351358892803656e+24\\
-\hspace*{0.5cm}xoamp\_fw: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}xoamp\_fw: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -515,14 +515,14 @@ float64 & xoamp\_fw & X-comp of oceanic angular momentum due to freshwater flux 
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & ycom & Y-comp of center-of-mass of ocean & m \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 ycom(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 ycom(time)\\
 \hspace*{0.5cm}ycom: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}ycom: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}ycom: long\_name = y: comp of center: of: mass of ocean\\
 \hspace*{0.5cm}ycom: units = m\\
 \hspace*{0.5cm}ycom: valid\_min = : 466387.24450374383\\
 \hspace*{0.5cm}ycom: valid\_max = : 466327.21844756586\\
-\hspace*{0.5cm}ycom: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}ycom: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -542,14 +542,14 @@ float64 & ycom & Y-comp of center-of-mass of ocean & m \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & ycom\_fw & Y-comp of center-of-mass of freshwater flux & m \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 ycom\_fw(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 ycom\_fw(time)\\
 \hspace*{0.5cm}ycom\_fw: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}ycom\_fw: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}ycom\_fw: long\_name = y: comp of center: of: mass of freshwater flux\\
 \hspace*{0.5cm}ycom\_fw: units = m\\
 \hspace*{0.5cm}ycom\_fw: valid\_min = : 324750.41529212013\\
 \hspace*{0.5cm}ycom\_fw: valid\_max = : 324750.4152921157\\
-\hspace*{0.5cm}ycom\_fw: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}ycom\_fw: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -569,14 +569,14 @@ float64 & ycom\_fw & Y-comp of center-of-mass of freshwater flux & m \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & yoamc & Y-comp of oceanic angular momentum due to currents & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 yoamc(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 yoamc(time)\\
 \hspace*{0.5cm}yoamc: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}yoamc: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}yoamc: long\_name = y: comp of oceanic angular momentum due to currents\\
 \hspace*{0.5cm}yoamc: units = kg m2 s: 1\\
 \hspace*{0.5cm}yoamc: valid\_min = : 2.19249690136359e+24\\
 \hspace*{0.5cm}yoamc: valid\_max = 4.179441018940977e+24\\
-\hspace*{0.5cm}yoamc: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}yoamc: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -596,14 +596,14 @@ float64 & yoamc & Y-comp of oceanic angular momentum due to currents & kg m2 s-1
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & yoamc\_si & Y-comp of oceanic angular momentum due to sea-ice motion & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 yoamc\_si(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 yoamc\_si(time)\\
 \hspace*{0.5cm}yoamc\_si: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}yoamc\_si: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}yoamc\_si: long\_name = y: comp of oceanic angular momentum due to sea: ice motion\\
 \hspace*{0.5cm}yoamc\_si: units = kg m2 s: 1\\
 \hspace*{0.5cm}yoamc\_si: valid\_min = : 1.176556337395274e+22\\
 \hspace*{0.5cm}yoamc\_si: valid\_max = 1.6107851446370722e+22\\
-\hspace*{0.5cm}yoamc\_si: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}yoamc\_si: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -623,14 +623,14 @@ float64 & yoamc\_si & Y-comp of oceanic angular momentum due to sea-ice motion &
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & yoamp & Y-comp of oceanic angular momentum due to pressure & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 yoamp(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 yoamp(time)\\
 \hspace*{0.5cm}yoamp: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}yoamp: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}yoamp: long\_name = y: comp of oceanic angular momentum due to pressure\\
 \hspace*{0.5cm}yoamp: units = kg m2 s: 1\\
 \hspace*{0.5cm}yoamp: valid\_min = 1.0476388397938864e+29\\
 \hspace*{0.5cm}yoamp: valid\_max = 1.0478581623131764e+29\\
-\hspace*{0.5cm}yoamp: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}yoamp: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -650,14 +650,14 @@ float64 & yoamp & Y-comp of oceanic angular momentum due to pressure & kg m2 s-1
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & yoamp\_dsl & Y-comp of oceanic angular momentum due to pressure based on dynamic (ib-corrected) sea level & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 yoamp\_dsl(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 yoamp\_dsl(time)\\
 \hspace*{0.5cm}yoamp\_dsl: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}yoamp\_dsl: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}yoamp\_dsl: long\_name = y: comp of oceanic angular momentum due to pressure based on dynamic (IB: corrected) sea level\\
 \hspace*{0.5cm}yoamp\_dsl: units = kg m2 s: 1\\
 \hspace*{0.5cm}yoamp\_dsl: valid\_min = 1.0476994334049981e+29\\
 \hspace*{0.5cm}yoamp\_dsl: valid\_max = 1.0478187262074598e+29\\
-\hspace*{0.5cm}yoamp\_dsl: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}yoamp\_dsl: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -677,14 +677,14 @@ float64 & yoamp\_dsl & Y-comp of oceanic angular momentum due to pressure based 
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & yoamp\_fw & Y-comp of oceanic angular momentum due to freshwater flux & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 yoamp\_fw(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 yoamp\_fw(time)\\
 \hspace*{0.5cm}yoamp\_fw: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}yoamp\_fw: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}yoamp\_fw: long\_name = y: comp of oceanic angular momentum due to freshwater flux\\
 \hspace*{0.5cm}yoamp\_fw: units = kg m2 s: 1\\
 \hspace*{0.5cm}yoamp\_fw: valid\_min = 2.6255410225894626e+24\\
 \hspace*{0.5cm}yoamp\_fw: valid\_max = 4.872705717529432e+24\\
-\hspace*{0.5cm}yoamp\_fw: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}yoamp\_fw: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -704,14 +704,14 @@ float64 & yoamp\_fw & Y-comp of oceanic angular momentum due to freshwater flux 
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & zcom & Z-comp of center-of-mass of ocean & m \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 zcom(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 zcom(time)\\
 \hspace*{0.5cm}zcom: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}zcom: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}zcom: long\_name = z: comp of center: of: mass of ocean\\
 \hspace*{0.5cm}zcom: units = m\\
 \hspace*{0.5cm}zcom: valid\_min = : 875420.3898804963\\
 \hspace*{0.5cm}zcom: valid\_max = : 875350.3238026679\\
-\hspace*{0.5cm}zcom: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}zcom: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -731,14 +731,14 @@ float64 & zcom & Z-comp of center-of-mass of ocean & m \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & zcom\_fw & Z-comp of center-of-mass of freshater flux & m \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 zcom\_fw(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 zcom\_fw(time)\\
 \hspace*{0.5cm}zcom\_fw: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}zcom\_fw: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}zcom\_fw: long\_name = z: comp of center: of: mass of freshater flux\\
 \hspace*{0.5cm}zcom\_fw: units = m\\
 \hspace*{0.5cm}zcom\_fw: valid\_min = : 648386.5781734617\\
 \hspace*{0.5cm}zcom\_fw: valid\_max = : 648386.5781734567\\
-\hspace*{0.5cm}zcom\_fw: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}zcom\_fw: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -758,14 +758,14 @@ float64 & zcom\_fw & Z-comp of center-of-mass of freshater flux & m \\ \hline
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & zoamc & Z-comp of oceanic angular momentum due to currents & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 zoamc(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 zoamc(time)\\
 \hspace*{0.5cm}zoamc: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}zoamc: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}zoamc: long\_name = z: comp of oceanic angular momentum due to currents\\
 \hspace*{0.5cm}zoamc: units = kg m2 s: 1\\
 \hspace*{0.5cm}zoamc: valid\_min = 7.331764457927521e+24\\
 \hspace*{0.5cm}zoamc: valid\_max = 2.207264300276968e+25\\
-\hspace*{0.5cm}zoamc: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}zoamc: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -785,14 +785,14 @@ float64 & zoamc & Z-comp of oceanic angular momentum due to currents & kg m2 s-1
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & zoamc\_si & Z-comp of oceanic angular momentum due to sea-ice motion & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 zoamc\_si(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 zoamc\_si(time)\\
 \hspace*{0.5cm}zoamc\_si: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}zoamc\_si: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}zoamc\_si: long\_name = z: comp of oceanic angular momentum due to sea: ice motion\\
 \hspace*{0.5cm}zoamc\_si: units = kg m2 s: 1\\
 \hspace*{0.5cm}zoamc\_si: valid\_min = : 5.909426721868294e+21\\
 \hspace*{0.5cm}zoamc\_si: valid\_max = 5.930388258256482e+21\\
-\hspace*{0.5cm}zoamc\_si: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}zoamc\_si: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -812,14 +812,14 @@ float64 & zoamc\_si & Z-comp of oceanic angular momentum due to sea-ice motion &
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & zoamp & Z-comp of oceanic angular momentum due to pressure & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 zoamp(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 zoamp(time)\\
 \hspace*{0.5cm}zoamp: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}zoamp: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}zoamp: long\_name = z: comp of oceanic angular momentum due to pressure\\
 \hspace*{0.5cm}zoamp: units = kg m2 s: 1\\
 \hspace*{0.5cm}zoamp: valid\_min = 2.927645942668479e+30\\
 \hspace*{0.5cm}zoamp: valid\_max = 2.9277200254389854e+30\\
-\hspace*{0.5cm}zoamp: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}zoamp: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -839,14 +839,14 @@ float64 & zoamp & Z-comp of oceanic angular momentum due to pressure & kg m2 s-1
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & zoamp\_dsl & Z-comp of oceanic angular momentum due to pressure based on dynamic (ib-corrected) sea level & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 zoamp\_dsl(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 zoamp\_dsl(time)\\
 \hspace*{0.5cm}zoamp\_dsl: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}zoamp\_dsl: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}zoamp\_dsl: long\_name = z: comp of oceanic angular momentum due to pressure based on dynamic (IB: corrected) sea level\\
 \hspace*{0.5cm}zoamp\_dsl: units = kg m2 s: 1\\
 \hspace*{0.5cm}zoamp\_dsl: valid\_min = 2.9276609546728614e+30\\
 \hspace*{0.5cm}zoamp\_dsl: valid\_max = 2.9277328440911863e+30\\
-\hspace*{0.5cm}zoamp\_dsl: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}zoamp\_dsl: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
@@ -866,14 +866,14 @@ float64 & zoamp\_dsl & Z-comp of oceanic angular momentum due to pressure based 
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float64 & zoamp\_fw & Z-comp of oceanic angular momentum due to freshwater flux & kg m2 s-1 \\ \hline
 \multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
-\multicolumn{4}{|c|}{\makecell{\parbox{.92\textwidth}{float64 zoamp\_fw(time)\\
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}{float64 zoamp\_fw(time)\\
 \hspace*{0.5cm}zoamp\_fw: \_FillValue = 9.969209968386869e+36\\
 \hspace*{0.5cm}zoamp\_fw: coverage\_content\_type = modelResult\\
 \hspace*{0.5cm}zoamp\_fw: long\_name = z: comp of oceanic angular momentum due to freshwater flux\\
 \hspace*{0.5cm}zoamp\_fw: units = kg m2 s: 1\\
 \hspace*{0.5cm}zoamp\_fw: valid\_min = 7.774584605728723e+25\\
 \hspace*{0.5cm}zoamp\_fw: valid\_max = 1.442874536478883e+26\\
-\hspace*{0.5cm}zoamp\_fw: coordinates = time}}} \\ \hline
+\hspace*{0.5cm}zoamp\_fw: coordinates = time}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
 \multicolumn{4}{|p{1\textwidth}|}{N/a} \\ \hline
 \end{longtable}
