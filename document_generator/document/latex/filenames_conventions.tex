@@ -1,253 +1,301 @@
 \pagebreak
-\section{GDS 2.0 Filenames and Supporting Conventions}
-
-Striving to achieve a flexible naming convention that maintains consistency across processing levels
-and better serves user needs, the GDS 2.0 uses a single form for all GHRSST data files. An overview
-of the format is presented below in Section 7.1 along with example filenames. Details on each of the
-filename convention components are provided in Sections 7.2 through 7.8.
-\par
-In addition, a best practice has been established for creating character strings used to describe
-GHRSST SST products and sources of ancillary data. These strings, and associated numeric codes
-for the SST products, are used within some GHRSST data files but are not part of the filename
-convention itself. The best practice is described in Section 7.9.
-\par
-
-\subsection{1 Overview of Filename Convention and Example Filenames}
-The filenaming convention for the GDS 2.0 is shown below. 
-\par \vspace{0.25in}
-
-\texttt{<Indicative Date><Indicative Time>-<RDAC>-<Processing Level>\_GHRSST-<SST Type>-
-<Product String>-<Additional Segregator>-v<GDS Version>-fv<File Version>.<File Type>}
-\par \vspace{0.25in}
-
-The variable components within braces (“< >”) are summarized in Table 7-1 below and detailed in the
-\textbf{should not} be used in any GHRSST code or the <Additional Segregator> element. Example
-filenames are given later in this section. While no strict limit to filename length is mandated, RDACs
-are encouraged to keep the length to less than 240 characters to increase readability and usability.
-
-%Table 7-1. GDS 2.0 Filenaming convention components
-\begin{longtable}{|p{0.2\textwidth}|p{0.3\textwidth}|p{0.5\textwidth}|}
-\caption{GDS 2.0 Filenaming convention components}
-\label{tab:filenaming conventions}
-\\ \hline
-\rowcolor{lightgray}
-\textbf{Name} & \textbf{Definition} & \textbf{Description} \\ \hline 
-\endfirsthead
-<Indicative Date> & YYYYMMDD & The identifying date for this data set. See Section 7.2. \\ \hline
-<Indicative Time> & HHMMSS & The identifying time for this data set. The time used is dependent on the <Processing Level> of
-the data set: L2P: start time of granule 
-\begin{itemize}
- \item{L3U: start time of granule}
- \item{L3C and L3S: centre time of the collation window}
- \item{L4 and GMPE: nominal time of analysis}
-\end{itemize}
-All times should be given in UTC. See Section 7.3. \\ \hline
-<RDAC> & The RDAC where the file was created & The Regional Data Assembly Centre (RDAC)code, listed in Section 7.4. \\ \hline
-<Processing Level> & The data processing level code (L2P, L3U, L3C, L3S, or L4) & 
-The data processing level code, defined in Section 7.5. \\ \hline
-<SST Type> & The type of SST data included in the file. & 
-Conforms to the GHRSST definitions for SST, defined in Section 7.6 \\ \hline
-
-<Product String> &
-A character string identifying the
-SST product set. The string is
-used uniquely within an RDAC
-but may be shared across
-RDACs. & 
-The unique “name” within an RDAC of the
-product line. See Section 7.7 for the product
-string lists, one each for L2P, L3, L4, and GMPE
-products. See Section 7.7. \\ \hline
-
-<Additional Segregator> &
-Optional text to distinguish
-between files with the same
-<Product String>. Dashes are
-not allowed within this element. &
-This text is used since the other filename
-components are sometimes insufficient to
-uniquely identify a file. For example, in L2P or
-L3U (un-collated) products this is often the
-original file name or processing algorithm. Note,
-underscores should be used, not dashes. For L4
-files, this element should begin with the
-appropriate regional code as defined in Section 7.8. This component is optional but must be used
-in those cases were non-unique filenames would otherwise result. \\ \hline
-
-<GDS Version> & nn.n & Version number of the GDS used to process the file. For example, GDS 2.0 = “02.0”. \\ \hline
-<File Version> & xx.x & Version number for the file, for example, “01.0”. \\ \hline
-
-<File Type> & netCDF data file suffix (nc) or ISO metadata file suffix (xml) & 
-Indicates this is a netCDF file containing data or its corresponding ISO-19115 metadata record in XML.\\ \hline
-
-\end{longtable}
-
-\subsubsection{L2\_GHRSST Filename Example}
-20070503132300-NAVO-L2P\_GHRSST-SSTblend-AVHRR17\_L-SST\_s0123\_e0135-v02.0-fv01.0.nc \par
-The above file contains GHRSST L2P blended SST data for 03 May 2007, from AVHRR LAC data
-collected from the NOAA-17 platform. The granule begins at 13:23:00 hours. It is version 1.0 of the
-file and was produced by the NAVO RDAC in accordance with the GDS 2.0. The <Additional
-Segregator> text is “SST\_s0123\_e0135”. \par
-
-\subsubsection{L3\_GHRSST Filename Example}
-20070503110153-REMSS-L3C\_GHRSST-SSTsubskin-TMI-tmi\_20070503rt-v02.0-fv01.0.nc \par
-The above file was produced by the REMSS RDAC and contains collated L3 sub-skin SST data from
-the TMI instrument for 03 May 2007. The collated file has a centre time of at 11:01:53 hours. It is
-version 1.0 of the file and was produced according to GDS 2.0 specifications. Its <Additional
-Segregator> text is “tmi\_20070503rt”. \par
-
-\subsubsection{L4\_GHRSST Filename Example}
-20070503120000-UKMO-L4\_GHRSST-SSTfnd-OSTIA-GLOB-v02.0-fv01.0.nc \par
-The above file contains L4 foundation SST data produced at the UKMO RDAC using the OSTIA
-system. It is global coverage, contains data for 03 May 2007, was produced to GDS 2.0 specifications
-and is version 1.0 of the file. The nominal time of the OSTIA analysis is 12:00:00 hours. \par
+\section{ECCO Data Filenames and Supporting Conventions}
 
 
-\subsection{<Indicative Date>}
-The identifying date for this data set, using the format YYYYMMDD, where YYYY is the four-digit year,
-MM is the two-digit month from 01 to 12, and DD is the two-digit day of month from 01 to 31. The date
-used should best represent the observation date for the dataset. \par
+ECCO Version 4 Release 4 (V4r4) follows a structured filename convention to organize its extensive datasets. The filenames encode essential information about the dataset's content, grid type, temporal resolution, and version. Below is an overview of the naming convention.
 
-\subsection{<Indicative Time>}
-The identifying time for this data set in UTC, using the format HHMMSS, where HH is the two-digit
-hour from 00 to 23, MM is the two-digit minute from 00 to 59, and SS is the two-digit second from 00 to
-59. The time used is dependent on the <Processing Level> of the data set: \par \vspace{0.5in}
+\subsection{General filename Structure}
+\par \vspace{0.25cm}
 
-L2P: start time of granule \\
-L3U: start time of granule \\ 
-L3C and L3S: centre time of the collation window \\ 
-L4 and GMPE: nominal time of analysis \par \vspace{0.1in}
-All times should be given in UTC and should be chosen to best represent the observation time for this
-dataset. Note: RDACs should ensure the applications they use to determine UTC proprerly account
-for leap seconds.
+\par For ECCO dataset product files:
 
-\subsection{<RDAC>}
-Codes used for GHRSST Regional Data Assembly Centres (RDACs) are provided in the table below.
-New codes are assigned by the GHRSST Data And Systems Technical Advisory Group (DAS-TAG)
-and entered into the table upon agreement by the GDAC, LTSRF, and relevant RDACs. \par
+\par \vspace{0.5cm}
+\begin{center}
+\small{\textbf{\fontfamily{lmtt}\selectfont{[ShortName]\_[TemporalResolution]\_[Indicative Time]\_ECCO\_[Version]\_[GridType].<File Type>}}}
+\end{center}
+\par \vspace{0.5cm}
+\par For ECCO data geometry and grid files:
 
+\par \vspace{0.5cm}
+\begin{center}
+    \small{\textbf{\fontfamily{lmtt}\selectfont{[ShortName]\_ECCO\_[Version]\_[GridType].<File Type>}}}
+\end{center}
+% \texttt
+\par \vspace{0.25cm}
 
-% Table 7-2: Regional Data Assembly Centre (RDAC) code table.
-\begin{table}[h]
-\centering
-\caption{Regional Data Assembly Centre (RDAC) code table}
-\label{tab:RDAC code table}
-\begin{tabular}{|p{0.2\textwidth}|p{0.8\textwidth}|}
-\hline
-\rowcolor{lightgray}
-RDAC Code & GHRSST RDAC Name \\ \hline
-ABOM & Australian Bureau of Meteorology \\ \hline
-CMC & Canadian Meteorological Centre \\ \hline
-DMI & Danish Meteorological Institute \\ \hline
-EUR & European RDAC \\ \hline
-GOS & Gruppo di Oceanografia da Satellite \\ \hline
-JPL & JPL Physical Oceanography Distributed Active Archive Center \\ \hline
-JPL\_OUROCEAN & JPL OurOcean Project \\ \hline
-METNO & Norwegian Meteorological Institute \\ \hline
-MYO & MyOcean \\ \hline
-NAVO & Naval Oceanographic Office \\ \hline
-NCDC & NOAA National Climatic Data Center \\ \hline
-NEODAAS & NERC Observation Data Acquisition and Analysis Service \\ \hline
-NOC & National Oceanography Centre, Southampton \\ \hline
-NODC & NOAA National Oceanographic Data Center \\ \hline
-OSDPD & NOAA Office of Satellite Data Processing and Distribution \\ \hline
-OSISAF & EUMETSAT Ocean and Sea Ice Satellite Applications Facility \\ \hline
-REMSS & Remote Sensing Systems, CA, USA \\ \hline
-RSMAS & University of Miami, RSMAS \\ \hline
-UKMO & UK Meteorological Office \\ \hline
-UPA & United Kingdom Multi-Mission Processing and Archiving Facility \\ \hline
-ESACCI & ESA SST Climate Change Initiative \\ \hline
-JAXA & Japan Aerospace Exploration Agency \\ \hline
-New codes & Please contact the GHRSST international Project Office if you require new
-codes to be included in future revisions of the GDS. \\ \hline
-
+\begin{center}
+\begin{tabular}{m{0.18\textwidth} m{0.75\textwidth}}
+    \multicolumn{1}{c}{\textbf{Keypoins}} & \multicolumn{1}{c}{\textbf{Description}} \\ \hline
+    ShortName: & Describes the dataset variable (e.g., SSH for sea surface height, TEMP\_SALINITY for temperature and salinity). \\ \hline 
+    TemporalResolution: & Indicates the time averaging or snapshot type (e.g., DAILY, MONTHLY, SNAP). \\ \hline
+    GridType : & Specifies the grid used (e.g., \textbf{native\_llc90} for the native ECCO grid or \textbf{laton\_0p50deg} for interpolated 0.5 \textdegree lat-lon grid). It can also be a specific information such as \textbf{1D} to indication the one-dimentional dataset files over the full period of ECCO data availability.\\ \hline
+    Version: &  Identifies the ECCO release version (e.g., V4r4). \\ \hline
+    Indicative Time: & Encodes the time period covered by the file (e.g., monthly files use YYYY-MM, daily files use YYYY-MM-DD) \\ \hline
+    File Type & netCDF or Zarr data format. \\ \hline
 \end{tabular}
-\end{table}
+\end{center}
 
-
-\subsection{<Processing Level>}
-Satellite data processing level definitions can lead to ambiguous situations, especially regarding the
-distinction between L3 and L4 products. GHRSST identified the use of analysis procedures to fill gaps
-where no observations exist to resolve this ambiguity. Within GHRSST filenames, the <Processing
-Level> codes are shown below in Table 7-3. GHRSST currently establishes standards for L2P, L3U,
-L3C, L3S, and L4 (GHRSST Multi-Product Ensembles known as GMPE are a special kind of L4
-product for which GHRSST also provides standards). \par
-
-% Table 7-3:  GHRSST Processing Level Conventions and Codes
-\begin{table}[h]
-%\centering
-\caption{GHRSST Processing Level Conventions and Codes}
-\label{tab:GHRSST Processing Level Conventions and Codes}
-\begin{tabular}{|p{0.1\textwidth}|p{0.15\textwidth}|p{0.75\textwidth}|}
-\hline
-\rowcolor{lightgray}
-\textbf{Level} & \textbf{<Processing Level> Code} & \textbf{Description} \\ \hline
-
-Level 0 & L0 &
-Unprocessed instrument and payload data at full resolution. GHRSST
-does not make recommendations regarding formats or content for data
-at this processing level. \\ \hline
-
-Level 1A & L1A & 
-Reconstructed unprocessed instrument data at full resolution, time
-referenced, and annotated with ancillary information, including
-radiometric and geometric calibration coefficients and geo-referencing
-parameters, computed and appended, but not applied, to L0 data.
-GHRSST does not make recommendations regarding formats or
-content for data at this processing level. \\ \hline
-
-Level 1B & L1B & 
-Level 1A data that have been processed to sensor units. GHRSST
-does not currently make recommendations regarding formats or content
-for L1B data. \\ \hline
-
-Level 2 & Preprocessed L2P &
-Geophysical variables derived from Level 1 source data at the same
-resolution and location as the Level 1 data, typically in a satellite
-projection with geographic information. These data form the
-fundamental basis for higher-level GHRSST products and require
-ancillary data and uncertainty estimates. \\ \hline
-
-Level 3 & L3U L3C L3S & Level 2 variables mapped on a defined grid with reduced requirements for ancillary data. 
-Uncertainty estimates are still mandatory. Three
-types of L3 products are defined:
+\par \vspace{0.25cm}
+\subsection{Examples}
+\par Daily atmosphere surface temperature, humidity, winds, and pressure on the lat-lon-cap 90 (llc90)
+native model grid (first) and on the interpolated regular 0.5-degree lat-lon grid (second) from ECCO V4r4 on 2017-12-29.
 \begin{itemize}
-\item{Un-collated (L3U): L2 data granules remapped to a space grid without combining any observations from overlapping orbits}
-\item {Collated (L3C): observations combined from a single instrument into a space-time grid}
-\item {Super-collated (L3S): observations combined from multiple instruments into a space-time grid.}
+    \item ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES\_day\_mean\_2017-12-29\_ECCO\_V4r4\_native\_llc0090.nc
+    \item ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES\_day\_mean\_2017-12-29\_ECCO\_V4r4\_latlon\_0p50deg.nc
 \end{itemize}
-Note that L3 GHRSST products do not use analysis or interpolation
-procedures to fill gaps where no observations are available. \\ \hline
 
-Level 4 & L4 &
-Data sets created from the analysis of lower level data that result in
-gridded, gap-free products. SST data generated from multiple sources
-of satellite data using optimal interpolation are an example of L4
-GHRSST products. GMPE products are a type of L4 dataset. \\  \hline
+\par Dynamic sea surface height interpolated on the latlon regular 0.5-degree model grid from ECCO V4r4 on 2017-12-29.
 
-Note that within GHRSST, all L2P files require a full set of extensive ancillary data such as wind
-speeds and times of observation that are provided as \'dynamic flags\' that users can manipulate to
-filter data according to their own quality criteria. L2P files form the basis of higher-level products and
-are often the best level products for data assimilation. The requirement for dynamic flags is particularly
-important in this context. Higher-level L3 products are often intended for general use or created for
-input to Level 4 analysis systems so the requirement for extensive ancillary data is reduced. Since
-some GHRSST RDACs only process data natively on grids (especially in the case of geostationary
-platform observations), the GDS 2.0 L3 specification is flexible enough to allow for the creation of L3
-files which meet all the content requirements of a L2P file. In all L2P and L3 cases, bias and standard
-deviation uncertainty estimates are mandatory. \par
+\begin{itemize}
+    \item SEA\_SURFACE\_HEIGHT\_day\_mean\_2017-12-29\_ECCO\_V4r4\_native\_llc0090.nc
+\end{itemize}
 
-The distinction between L3 GHRSST and L4 GHRSST data is made primarily on whether or not any
-gap-filling techniques are employed, not on whether data from multiple instruments is used in the L3
-product. If no gap filling procedure (such as optimal interpolation) is used, then the product remains a
-L3 GHRSST product. GHRSST defines three kinds of L3 files: un-collated (L3U), collated (L3C), and
-super-collated (L3S). If gap filling is used to fill all observations gaps, then the resulting gap-free data
-are considered L4 GHRSST data products. \par
-\end{tabular}
-\end{table}
+\par One-dimentional field of global mean atmospheric surface pressure over the ocean and sea-ice fromthe ECCO V4r4.
+\begin{itemize}
+    \item GLOBAL\_MEAN\_ATM\_SURFACE\_PRES\_snap\_ECCO\_V4r4\_1D.nc
+\end{itemize}
+
+\par Geometric parameters for the regular 0.5-degree lat-lon grid from ECCO V4r4.
+\begin{itemize}
+    \item GRID\_GEOMETRY\_ECCO\_V4r4\_latlon\_0p50deg.nc
+\end{itemize}
+
+%%% Arret ici !!!!!! Modify!!!
+
+% \subsection{1 Overview of Filename Convention and Example Filenames}
+% The filenaming convention for the GDS 2.0 is shown below. 
+% \par \vspace{0.25in}
+
+% \small{\texttt{<Dataset name>_<>_<Indicative Time>-<RDAC>-<Processing Level>\_GHRSST-<SST Type>-
+% <Product String>-<Additional Segregator>-v<GDS Version>-fv<File Version>.<File Type>}}
+% \par \vspace{0.25in}
+
+% The variable components within braces (“< >”) are summarized in Table 7-1 below and detailed in the
+% \textbf{should not} be used in any GHRSST code or the <Additional Segregator> element. Example
+% filenames are given later in this section. While no strict limit to filename length is mandated, RDACs
+% are encouraged to keep the length to less than 240 characters to increase readability and usability.
+
+% %Table 7-1. GDS 2.0 Filenaming convention components
+% \begin{longtable}{|p{0.2\textwidth}|p{0.3\textwidth}|p{0.5\textwidth}|}
+% \caption{GDS 2.0 Filenaming convention components}
+% \label{tab:filenaming conventions}
+% \\ \hline
+% \rowcolor{lightgray}
+% \textbf{Name} & \textbf{Definition} & \textbf{Description} \\ \hline 
+% \endfirsthead
+% <Indicative Date> & YYYYMMDD & The identifying date for this data set. See Section 7.2. \\ \hline
+% <Indicative Time> & HHMMSS & The identifying time for this data set. The time used is dependent on the <Processing Level> of
+% the data set: L2P: start time of granule 
+% \begin{itemize}
+%  \item{L3U: start time of granule}
+%  \item{L3C and L3S: centre time of the collation window}
+%  \item{L4 and GMPE: nominal time of analysis}
+% \end{itemize}
+% All times should be given in UTC. See Section 7.3. \\ \hline
+% <RDAC> & The RDAC where the file was created & The Regional Data Assembly Centre (RDAC)code, listed in Section 7.4. \\ \hline
+% <Processing Level> & The data processing level code (L2P, L3U, L3C, L3S, or L4) & 
+% The data processing level code, defined in Section 7.5. \\ \hline
+% <SST Type> & The type of SST data included in the file. & 
+% Conforms to the GHRSST definitions for SST, defined in Section 7.6 \\ \hline
+
+% <Product String> &
+% A character string identifying the
+% SST product set. The string is
+% used uniquely within an RDAC
+% but may be shared across
+% RDACs. & 
+% The unique “name” within an RDAC of the
+% product line. See Section 7.7 for the product
+% string lists, one each for L2P, L3, L4, and GMPE
+% products. See Section 7.7. \\ \hline
+
+% <Additional Segregator> &
+% Optional text to distinguish
+% between files with the same
+% <Product String>. Dashes are
+% not allowed within this element. &
+% This text is used since the other filename
+% components are sometimes insufficient to
+% uniquely identify a file. For example, in L2P or
+% L3U (un-collated) products this is often the
+% original file name or processing algorithm. Note,
+% underscores should be used, not dashes. For L4
+% files, this element should begin with the
+% appropriate regional code as defined in Section 7.8. This component is optional but must be used
+% in those cases were non-unique filenames would otherwise result. \\ \hline
+
+% <GDS Version> & nn.n & Version number of the GDS used to process the file. For example, GDS 2.0 = “02.0”. \\ \hline
+% <File Version> & xx.x & Version number for the file, for example, “01.0”. \\ \hline
+
+% <File Type> & netCDF data file suffix (nc) or ISO metadata file suffix (xml) & 
+% Indicates this is a netCDF file containing data or its corresponding ISO-19115 metadata record in XML.\\ \hline
+
+% \end{longtable}
+
+% \subsubsection{L2\_GHRSST Filename Example}
+% 20070503132300-NAVO-L2P\_GHRSST-SSTblend-AVHRR17\_L-SST\_s0123\_e0135-v02.0-fv01.0.nc \par
+% The above file contains GHRSST L2P blended SST data for 03 May 2007, from AVHRR LAC data
+% collected from the NOAA-17 platform. The granule begins at 13:23:00 hours. It is version 1.0 of the
+% file and was produced by the NAVO RDAC in accordance with the GDS 2.0. The <Additional
+% Segregator> text is “SST\_s0123\_e0135”. \par
+
+% \subsubsection{L3\_GHRSST Filename Example}
+% 20070503110153-REMSS-L3C\_GHRSST-SSTsubskin-TMI-tmi\_20070503rt-v02.0-fv01.0.nc \par
+% The above file was produced by the REMSS RDAC and contains collated L3 sub-skin SST data from
+% the TMI instrument for 03 May 2007. The collated file has a centre time of at 11:01:53 hours. It is
+% version 1.0 of the file and was produced according to GDS 2.0 specifications. Its <Additional
+% Segregator> text is “tmi\_20070503rt”. \par
+
+% \subsubsection{L4\_GHRSST Filename Example}
+% 20070503120000-UKMO-L4\_GHRSST-SSTfnd-OSTIA-GLOB-v02.0-fv01.0.nc \par
+% The above file contains L4 foundation SST data produced at the UKMO RDAC using the OSTIA
+% system. It is global coverage, contains data for 03 May 2007, was produced to GDS 2.0 specifications
+% and is version 1.0 of the file. The nominal time of the OSTIA analysis is 12:00:00 hours. \par
 
 
+% \subsection{<Indicative Date>}
+% The identifying date for this data set, using the format YYYYMMDD, where YYYY is the four-digit year,
+% MM is the two-digit month from 01 to 12, and DD is the two-digit day of month from 01 to 31. The date
+% used should best represent the observation date for the dataset. \par
+
+% \subsection{<Indicative Time>}
+% The identifying time for this data set in UTC, using the format HHMMSS, where HH is the two-digit
+% hour from 00 to 23, MM is the two-digit minute from 00 to 59, and SS is the two-digit second from 00 to
+% 59. The time used is dependent on the <Processing Level> of the data set: \par \vspace{0.5in}
+
+% L2P: start time of granule \\
+% L3U: start time of granule \\ 
+% L3C and L3S: centre time of the collation window \\ 
+% L4 and GMPE: nominal time of analysis \par \vspace{0.1in}
+% All times should be given in UTC and should be chosen to best represent the observation time for this
+% dataset. Note: RDACs should ensure the applications they use to determine UTC proprerly account
+% for leap seconds.
+
+% \subsection{<RDAC>}
+% Codes used for GHRSST Regional Data Assembly Centres (RDACs) are provided in the table below.
+% New codes are assigned by the GHRSST Data And Systems Technical Advisory Group (DAS-TAG)
+% and entered into the table upon agreement by the GDAC, LTSRF, and relevant RDACs. \par
 
 
+% % Table 7-2: Regional Data Assembly Centre (RDAC) code table.
+% \begin{table}[h]
+% \centering
+% \caption{Regional Data Assembly Centre (RDAC) code table}
+% \label{tab:RDAC code table}
+% \begin{tabular}{|p{0.2\textwidth}|p{0.8\textwidth}|}
+% \hline
+% \rowcolor{lightgray}
+% RDAC Code & GHRSST RDAC Name \\ \hline
+% ABOM & Australian Bureau of Meteorology \\ \hline
+% CMC & Canadian Meteorological Centre \\ \hline
+% DMI & Danish Meteorological Institute \\ \hline
+% EUR & European RDAC \\ \hline
+% GOS & Gruppo di Oceanografia da Satellite \\ \hline
+% JPL & JPL Physical Oceanography Distributed Active Archive Center \\ \hline
+% JPL\_OUROCEAN & JPL OurOcean Project \\ \hline
+% METNO & Norwegian Meteorological Institute \\ \hline
+% MYO & MyOcean \\ \hline
+% NAVO & Naval Oceanographic Office \\ \hline
+% NCDC & NOAA National Climatic Data Center \\ \hline
+% NEODAAS & NERC Observation Data Acquisition and Analysis Service \\ \hline
+% NOC & National Oceanography Centre, Southampton \\ \hline
+% NODC & NOAA National Oceanographic Data Center \\ \hline
+% OSDPD & NOAA Office of Satellite Data Processing and Distribution \\ \hline
+% OSISAF & EUMETSAT Ocean and Sea Ice Satellite Applications Facility \\ \hline
+% REMSS & Remote Sensing Systems, CA, USA \\ \hline
+% RSMAS & University of Miami, RSMAS \\ \hline
+% UKMO & UK Meteorological Office \\ \hline
+% UPA & United Kingdom Multi-Mission Processing and Archiving Facility \\ \hline
+% ESACCI & ESA SST Climate Change Initiative \\ \hline
+% JAXA & Japan Aerospace Exploration Agency \\ \hline
+% New codes & Please contact the GHRSST international Project Office if you require new
+% codes to be included in future revisions of the GDS. \\ \hline
+
+% \end{tabular}
+% \end{table}
+
+
+% \subsection{<Processing Level>}
+% Satellite data processing level definitions can lead to ambiguous situations, especially regarding the
+% distinction between L3 and L4 products. GHRSST identified the use of analysis procedures to fill gaps
+% where no observations exist to resolve this ambiguity. Within GHRSST filenames, the <Processing
+% Level> codes are shown below in Table 7-3. GHRSST currently establishes standards for L2P, L3U,
+% L3C, L3S, and L4 (GHRSST Multi-Product Ensembles known as GMPE are a special kind of L4
+% product for which GHRSST also provides standards). \par
+
+% % Table 7-3:  GHRSST Processing Level Conventions and Codes
+% \begin{table}[h]
+% %\centering
+% \caption{GHRSST Processing Level Conventions and Codes}
+% \label{tab:GHRSST Processing Level Conventions and Codes}
+% \begin{tabular}{|p{0.1\textwidth}|p{0.15\textwidth}|p{0.75\textwidth}|}
+% \hline
+% \rowcolor{lightgray}
+% \textbf{Level} & \textbf{<Processing Level> Code} & \textbf{Description} \\ \hline
+
+% Level 0 & L0 &
+% Unprocessed instrument and payload data at full resolution. GHRSST
+% does not make recommendations regarding formats or content for data
+% at this processing level. \\ \hline
+
+% Level 1A & L1A & 
+% Reconstructed unprocessed instrument data at full resolution, time
+% referenced, and annotated with ancillary information, including
+% radiometric and geometric calibration coefficients and geo-referencing
+% parameters, computed and appended, but not applied, to L0 data.
+% GHRSST does not make recommendations regarding formats or
+% content for data at this processing level. \\ \hline
+
+% Level 1B & L1B & 
+% Level 1A data that have been processed to sensor units. GHRSST
+% does not currently make recommendations regarding formats or content
+% for L1B data. \\ \hline
+
+% Level 2 & Preprocessed L2P &
+% Geophysical variables derived from Level 1 source data at the same
+% resolution and location as the Level 1 data, typically in a satellite
+% projection with geographic information. These data form the
+% fundamental basis for higher-level GHRSST products and require
+% ancillary data and uncertainty estimates. \\ \hline
+
+% Level 3 & L3U L3C L3S & Level 2 variables mapped on a defined grid with reduced requirements for ancillary data. 
+% Uncertainty estimates are still mandatory. Three
+% types of L3 products are defined:
+% \begin{itemize}
+% \item{Un-collated (L3U): L2 data granules remapped to a space grid without combining any observations from overlapping orbits}
+% \item {Collated (L3C): observations combined from a single instrument into a space-time grid}
+% \item {Super-collated (L3S): observations combined from multiple instruments into a space-time grid.}
+% \end{itemize}
+% Note that L3 GHRSST products do not use analysis or interpolation
+% procedures to fill gaps where no observations are available. \\ \hline
+
+% Level 4 & L4 &
+% Data sets created from the analysis of lower level data that result in
+% gridded, gap-free products. SST data generated from multiple sources
+% of satellite data using optimal interpolation are an example of L4
+% GHRSST products. GMPE products are a type of L4 dataset. \\  \hline
+
+% Note that within GHRSST, all L2P files require a full set of extensive ancillary data such as wind
+% speeds and times of observation that are provided as \'dynamic flags\' that users can manipulate to
+% filter data according to their own quality criteria. L2P files form the basis of higher-level products and
+% are often the best level products for data assimilation. The requirement for dynamic flags is particularly
+% important in this context. Higher-level L3 products are often intended for general use or created for
+% input to Level 4 analysis systems so the requirement for extensive ancillary data is reduced. Since
+% some GHRSST RDACs only process data natively on grids (especially in the case of geostationary
+% platform observations), the GDS 2.0 L3 specification is flexible enough to allow for the creation of L3
+% files which meet all the content requirements of a L2P file. In all L2P and L3 cases, bias and standard
+% deviation uncertainty estimates are mandatory. \par
+
+% The distinction between L3 GHRSST and L4 GHRSST data is made primarily on whether or not any
+% gap-filling techniques are employed, not on whether data from multiple instruments is used in the L3
+% product. If no gap filling procedure (such as optimal interpolation) is used, then the product remains a
+% L3 GHRSST product. GHRSST defines three kinds of L3 files: un-collated (L3U), collated (L3C), and
+% super-collated (L3S). If gap filling is used to fill all observations gaps, then the resulting gap-free data
+% are considered L4 GHRSST data products. \par
+% \end{tabular}
+% \end{table}
+
+%%% Arret ici !!!!!!
 
 % \subsection{<SST Type>}
 % In conjunction with the NetCDF Climate and Forecast (CF) community [AD-9] the GHRSST Science

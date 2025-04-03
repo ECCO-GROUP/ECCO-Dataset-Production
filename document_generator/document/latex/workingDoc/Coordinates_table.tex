@@ -1,0 +1,33 @@
+\begin{longtable}{|p{0.15\textwidth}|p{0.15\textwidth}|p{0.47\textwidth}|p{0.13\textwidth}|}
+\caption{Coordinates used in used in ECCO V4r4 data netCDF files}
+\label{tab:variable-attributes} \\ 
+\hline \endhead
+\hline \endfoot
+\rowcolor{blue!25} \textbf{Name} & \textbf{Dims} & \textbf{Description} & \textbf{Units} \\ \hline
+\rowcolor{magenta!25}
+XC & ('tile', 'j', 'i') & longitude of tracer grid cell center & degrees\_east \\ \hline
+\rowcolor{magenta!25}
+YC & ('tile', 'j', 'i') & latitude of tracer grid cell center & degrees\_north \\ \hline
+\rowcolor{magenta!25}
+XG & ('tile', 'j\_g', 'i\_g') & longitude of 'southwest' corner of tracer grid cell & degrees\_east \\ \hline
+\rowcolor{magenta!25}
+YG & ('tile', 'j\_g', 'i\_g') & latitude of 'southwest' corner of tracer grid cell & degrees\_north \\ \hline
+\rowcolor{magenta!25}
+Zp1 & ('k\_p1',) & depth of tracer grid cell interface & m \\ \hline
+\rowcolor{magenta!25}
+Zu & ('k\_u',) & depth of the bottom face of tracer grid cells & m \\ \hline
+\rowcolor{magenta!25}
+Zl & ('k\_l',) & depth of the top face of tracer grid cells & m \\ \hline
+\rowcolor{magenta!25}
+XC\_bnds & ('tile', 'j', 'i', 'nb') & longitudes of tracer grid cell corners & --none-- \\ \hline
+\rowcolor{magenta!25}
+YC\_bnds & ('tile', 'j', 'i', 'nb') & latitudes of tracer grid cell corners & --none-- \\ \hline
+\rowcolor{magenta!25}
+Z\_bnds & ('Z', 'nv') & depths of grid cell upper and lower interfaces & --none-- \\ \hline
+\rowcolor{magenta!25}
+time\_bnds & ('time', 'nv') & time bounds of averaging period & --none-- \\ \hline
+\rowcolor{magenta!25}
+latitude\_bnds & ('latitude', 'nv') & latitudes of grid cell edges & --none-- \\ \hline
+\rowcolor{magenta!25}
+longitude\_bnds & ('longitude', 'nv') & longitudes of grid cell edges & --none-- \\ \hline
+\end{longtable}

@@ -5,7 +5,8 @@
         "product": "latlon",
         "filename": "ATM_SURFACE_TEMP_HUM_WIND_PRES",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of atmosphere surface temperature, humidity, wind, and pressure interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean and sea-ice surface freshwater fluxes",
@@ -13,7 +14,8 @@
         "product": "latlon",
         "filename": "OCEAN_AND_ICE_SURFACE_FW_FLUX",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of ocean and sea-ice surface freshwater fluxes interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean and sea-ice surface heat fluxes",
@@ -21,7 +23,8 @@
         "product": "latlon",
         "filename": "OCEAN_AND_ICE_SURFACE_HEAT_FLUX",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of ocean and sea-ice surface heat fluxes interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean and sea-ice surface stress",
@@ -29,7 +32,8 @@
         "product": "latlon",
         "filename": "OCEAN_AND_ICE_SURFACE_STRESS",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of ocean and sea-ice surface stress interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "Gent-McWilliams ocean bolus velocity",
@@ -37,7 +41,8 @@
         "product": "latlon",
         "filename": "OCEAN_BOLUS_VELOCITY",
         "dimension": "3D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 3D fields of Gent-McWilliams ocean bolus velocity interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean bottom pressure",
@@ -46,7 +51,8 @@
         "product": "latlon",
         "filename": "OCEAN_BOTTOM_PRESSURE",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of ocean bottom pressure interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean density, stratification, and hydrostatic pressure",
@@ -54,7 +60,8 @@
         "product": "latlon",
         "filename": "OCEAN_DENS_STRAT_PRESS",
         "dimension": "3D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 3D fields of ocean density, stratification, and hydrostatic pressure interpolated to a regular0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean mixed layer depth",
@@ -62,7 +69,8 @@
         "product": "latlon",
         "filename": "OCEAN_MIXED_LAYER_DEPTH",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fileds of ocean mixed layer depth interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean potential temperature and salinity",
@@ -70,7 +78,8 @@
         "product": "latlon",
         "filename": "OCEAN_TEMPERATURE_SALINITY",
         "dimension": "3D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 3D fields of ocean potential temperature and salinity interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "ocean velocity",
@@ -95,7 +104,8 @@
         "vector_outputs": {
             "EVEL": "EAST",
             "NVEL": "NORTH"
-        }
+        },
+        "Introduction":"This dataset provides 3D fields of ocean velocity interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "sea-ice and snow concentration and thickness",
@@ -103,7 +113,8 @@
         "product": "latlon",
         "filename": "SEA_ICE_CONC_THICKNESS",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of sea-ice and snow concentration and thickness interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "sea-ice velocity",
@@ -111,7 +122,8 @@
         "product": "latlon",
         "filename": "SEA_ICE_VELOCITY",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of sea-ice velocity interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     },
     {
         "name": "dynamic sea surface height",
@@ -120,6 +132,7 @@
         "product": "latlon",
         "filename": "SEA_SURFACE_HEIGHT",
         "dimension": "2D",
-        "frequency": "AVG_DAY, AVG_MON"
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of dynamic sea surface height interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
     }
 ]

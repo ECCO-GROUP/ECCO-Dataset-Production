@@ -1,0 +1,283 @@
+{"Conventions":
+  {
+    "type":"string",
+    "description":"A text string identifying the netCDF conventions followed. This attribute should be set to the version of CF used and should also include the ACDD. For example: 'CF-1.4, Unidata Observation Dataset v1.0'.",
+    "sourc":"CF"
+  },
+  "title":
+  {
+    "type":"string",
+    "description":"A descriptive title for the ECCO data set",
+    "sourc":"CF, ACDD"
+  },
+  "summary":
+  {
+    "type":"string",
+    "description":"A paragraph describing the dataset.",
+    "sourc":"ACDD"
+  },
+  "references":
+  {
+    "type":"string",
+    "description":"Published or web-based references that describe the data or methods used to produce it.",
+    "sourc":"CF"
+  },
+  "institution":
+  {
+    "type":"string",
+    "description":"ECCO code or institution where the data were produced.",
+    "sourc":"CF, ACDD"
+  },
+  "history":
+  {
+    "type":"string",
+    "description":"History of all applications that have modified the original data to create this file.",
+    "sourc":"CF, ACDD"
+  },
+  "comment":
+  {
+    "type":"string",
+    "description":"Miscellaneous information about the data or methods used to produce it.",
+    "sourc":"CF, ACDD"
+  },
+  "license":
+  {
+    "type":"string",
+    "description":"Provide the URL to a standard or specific license, enter 'Public Domain', 'Freely Distributed' or 'None', or describe any restrictions to data access and distribution in free text",
+    "sourc":"ACDD"
+  },
+  "id":
+  {
+    "type":"string",
+    "description":"The unique ECCO character string for this product.",
+    "sourc":"ACDD"
+  },
+  "naming_authority":
+  {
+    "type":"string",
+    "description":"The organization that provides the initial 'id' for the dataset. The naming authority is uniquely specified by this attribute",
+    "sourc":"ACDD"
+  },
+  "product_version":
+  {
+    "type":"string",
+    "description":"The product version of this data file, which may be different than the file version used in the file naming convention",
+    "sourc":"GDS"
+  },
+  "uuid":
+  {
+    "type":"string",
+    "description":"A Universally Unique Identifier (UUID). Numerous, simple tools can be used to create a UUID, which is inserted as the value of this attribute. See http://en.wikipedia.org/wiki/Universally_Unique_I dentifier for more information and tools.",
+    "sourc":"ACDD"
+  },
+  "gds_version_id":
+  {
+    "type":"string",
+    "description":"GDS version used to create this data file. For example, “2.0”.",
+    "sourc":"GDS"
+  },
+  "netcdf_version_id":
+  {
+    "type":"string",
+    "description":"Version of netCDF libraries used to create this file. For example, '4.1.1'.",
+    "sourc":"GDS"
+  },
+  "date_created":
+  {
+    "type":"string",
+    "description":"The date and time the data file was created in the form “YYYY-MM-DDThh:mm:ssZ”. This time format is ISO 8601 compliant.",
+    "sourc":"ACDD"
+  },
+  "file_quality_level":
+  {
+    "type":"string",
+    "description":"A code value: 0 = unknown quality; 1 = extremely suspect (frequent problems, e.g. with known satellite problems); 2 = suspect (occasional problems, e.g. after launch); 3 = excellent (no known problems).",
+    "sourc":"GDS"
+  },
+  "spatial_resolution":
+  {
+    "type":"string",
+    "description":"A string describing the approximate resolution of the product. For example, '1.1km at nadir'.",
+    "sourc":"GDS"
+  },
+  "start_time":
+  {
+    "type":"string",
+    "description":"Representative date and time of the start of the granule in the ISO 8601 compliant format of 'yyyymmddThhmmssZ'. The exact meaning of this attribute depends the type of granule: i) L2P: first measurement in granule (identical to 'time' netCDF variable); ii) L3U: start time of granule; iii) L3C and L3S: representative start time of first measurement in the collation; iv) L4: representative start time of the analysis ('start_time' and 'stop_time' together represent the valid period of the L4 granule)",
+    "sourc":"GDS"
+  },
+  "time_coverage_start":
+  {
+    "type":"string",
+    "description":"Identical to 'start_time'. Included for increased ACDD compliance.",
+    "sourc":"ACDD"
+  },
+  "stop_time":
+  {
+    "type":"string",
+    "description":"Representative date and time of the start of the granule in the ISO 8601 compliant format of 'yyyymmddThhmmssZ'. The exact meaning of this attribute depends the type of granule: i) L2P: first measurement in granule (identical to 'time' netCDF variable); ii) L3U: start time of granule; iii) L3C and L3S: representative start time of first measurement in the collation; iv) L4: representative start time of the analysis ('start_time' and 'stop_time' together represent the valid period of the L4 granule)",
+    "sourc":"GDS"
+  },
+  "time_coverage_end":
+  {
+    "type":"string",
+    "description":"Identical to 'stop_time'. Included for increased ACDD compliance.",
+    "sourc":"ACDD"
+  },
+  "northernmost_latitude":
+  {
+    "type":"float",
+    "description":"Decimal degrees north, range -90 to +90. This is equivalent to ACDD 'geospatial_lat_max'.",
+    "sourc":"GDS"
+  },
+  "southernmost_latitude":
+  {
+    "type":"float",
+    "description":"Decimal degrees north, range -90 to +90. This is equivalent to ACDD 'geospatial_lat_max'.",
+    "sourc":"GDS"
+  },
+  "easternmost_longitude":
+  {
+    "type":"float",
+    "description":"Decimal degrees east, range -180 to +180. This is equivalent to ACDD 'geospatial_lon_max'.",
+    "sourc":"GDS"
+  },
+  "westernmost_longitude":
+  {
+    "type":"float",
+    "description":"Decimal degrees east, range -180 to +180. This is equivalent to ACDD 'geospatial_lon_max'.",
+    "sourc":"GDS"
+  },
+  "source":
+  {
+    "type":"string",
+    "description":"Comma separated list of all source data present in this file. Provides the method of production of the original data in detail with the model and its version, as specifically as could be useful.",
+    "sourc":"CF"
+  },
+  "platform":
+  {
+    "type":"string",
+    "description":"Satellite(s) used to create this data file. Select from the entries found in the Satellite Platform and provide as a comma separated list if there is more than one.",
+    "sourc":"GDS"
+  },
+  "sensor":
+  {
+    "type":"string",
+    "description":"Sensor(s) used to create this data file. Select from the entries found in the Satellite Sensor and provide as a comma separated list if there is more than one.",
+    "sourc":"GDS"
+  },
+  "Metadata_Conventions":
+  {
+    "type":"string",
+    "description":"Unidata Dataset Discovery v1.0",
+    "sourc":"ACDD"
+  },
+  "metadata_link":
+  {
+    "type":"string",
+    "description":"Link to collection metadata record at archive",
+    "sourc":"ACDD"
+  },
+  "keywords":
+  {
+    "type":"string",
+    "description":"A comma-separated list of key words and/or phrases",
+    "sourc":"ACDD"
+  },
+  "keywords_vocabulary":
+  {
+    "type":"string",
+    "description":"Unique name or identifier of the vocabulary from which keywords are taken. f more than one keyword vocabulary is used, each may be presented with a prefix and a following comma, so that keywords may optionally be prefixed with the controlled vocabulary key.",
+    "sourc":"ACDD"
+  },
+  "standard_name_vocabulary":
+  {
+    "type":"string",
+    "description":"The name and version of the controlled vocabulary from which variable standard names are taken. Values for any standard_name attribute must come from the CF Standard Names vocabulary for the data file or product to comply with CF.",
+    "sourc":"ACDD"
+  },
+  "geospatial_lat_units":
+  {
+    "type":"string",
+    "description":"Units of the latitudinal resolution. Typically 'degrees_north'.",
+    "sourc":"ACDD"
+  },
+  "geospatial_lat_resolution":
+  {
+    "type":"float",
+    "description":"Latitude Resolution in units matching 'geospatial_lat_units'.",
+    "sourc":"ACDD"
+  },
+  "geospatial_lon_units":
+  {
+    "type":"string",
+    "description":"Units of the longitudinal resolution. Typically 'degrees_east'.",
+    "sourc":"ACDD"
+  },
+  "geospatial_lon_resolution":
+  {
+    "type":"float",
+    "description":"Longitude Resolution in units matching 'geospatial_lon_resolution'.",
+    "sourc":"ACDD"
+  },
+  "acknowledgement":
+  {
+    "type":"string",
+    "description":"Information about funding source and how to cite the use of these data.",
+    "sourc":"ACDD"
+  },
+  "creator_name":
+  {
+    "type":"string",
+    "description":"Provide a name for the most relevant point of contact at the producing RDAC relevant to this data set.",
+    "sourc":"ACDD"
+  },
+  "creator_email":
+  {
+    "type":"string",
+    "description":"Provide an email address for the most relevant point of contact at the producing RDAC relevant to this data set.",
+    "sourc":"ACDD"
+  },
+  "creator_url":
+  {
+    "type":"string",
+    "description":"Provide a URL address relevant to this data set.",
+    "sourc":"ACDD"
+  },
+  "project":
+  {
+    "type":"string",
+    "description":"The name of the project(s) principally responsible for originating this data",
+    "sourc":"ACDD"
+  },
+  "publisher_name":
+  {
+    "type":"string",
+    "description":"The name of the person (or other entity specified by the publisher_type attribute) responsible for publishing the data file or product to users, with its current metadata and format.",
+    "sourc":"ACDD"
+  },
+  "publisher_url":
+  {
+    "type":"string",
+    "description":"The URL of the person (or other entity specified by the publisher_type attribute) responsible for publishing the data file or product to users, with its current metadata and format. For ECCO, it is : https://podaac.jpl.nasa.gov",
+    "sourc":"ACDD"
+  },
+  "publisher_email":
+  {
+    "type":"string",
+    "description":"The email address of the person (or other entity specified by the publisher_type attribute) responsible for publishing the data file or product to users, with its current metadata and format. For ECCO, it is: podaac@podaac.jpl.nasa.gov",
+    "sourc":"ACDD"
+  },
+  "processing_level":
+  {
+    "type":"string",
+    "description":"A textual description of the processing (or quality control) level of the data. For ECCO, it is level 4 (L4)",
+    "sourc":"ACDD, GDS"
+  },
+  "cdm_data_type":
+  {
+    "type":"string",
+    "description":"The data type, as derived from Unidata's Common Data Model Scientific Data types and understood by THREDDS. This is a THREDDS 'dataType', and is different from the CF NetCDF attribute 'featureType', which indicates a Discrete Sampling Geometry file in CF. For ECCO, it is 'grid'.",
+    "sourc":"ACDD"
+  }
+ }
