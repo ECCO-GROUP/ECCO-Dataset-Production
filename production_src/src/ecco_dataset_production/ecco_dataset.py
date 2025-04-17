@@ -85,10 +85,11 @@ class ECCOMDSDataset(object):
         """Create instance of ECCOMDSDataset class.
 
         """
-        self.task = None
+        self.cfg = cfg
+        self.ds = None
         self.grid = None
         self.mapping_factors = None
-        self.cfg = cfg
+        self.task = None
 
         if grid:
             if isinstance(grid,ecco_grid.ECCOGrid):
@@ -290,8 +291,8 @@ class ECCOMDSDataset(object):
                 # retained.
 
                 (_zonal, _meridional) = ecco_v4_py.vector_calc.UEVNfromUXVY(
-                    xfld=_xfld,
-                    yfld=_yfld,
+                    x_fld=_xfld,
+                    y_fld=_yfld,
                     coords=self.grid.native_grid)   # native_grid contains 'CS', 'SN' variables
 
                 # save the applicable output, _zonal or _meridional:

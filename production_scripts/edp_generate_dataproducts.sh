@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 #
-# ECCO Dataset Production ENTRYPOINT script
+# ECCO Dataset Production Dockerfile ENTRYPOINT script
 #
 
-# Note: TASKLIST must be in the environment
+# Note: TASKLIST must be a defined environment variable
 
-edp_generate_dataproducts \
+time edp_generate_dataproducts \
     --tasklist ${TASKLIST} \
     --log DEBUG
