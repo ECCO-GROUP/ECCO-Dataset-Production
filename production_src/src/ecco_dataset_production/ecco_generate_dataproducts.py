@@ -23,14 +23,13 @@ from . import configuration
 from . import ecco_file
 from . import ecco_grid
 from . import ecco_mapping_factors
-from . import ecco_metadata_store
+from . import ecco_metadata
 from . import ecco_podaac_metadata
 from . import ecco_task
-#from . import metadata
 
 
 def ecco_make_granule( task, cfg,
-    grid=None, mapping_factors=None, log_level=None, **kwargs):
+    grid=None, mapping_factors=None, metadata=None, log_level=None, **kwargs):
     """Create PO.DAAC-ready ECCO granule per instructions provided in input task
     descriptor.
 
@@ -41,6 +40,7 @@ def ecco_make_granule( task, cfg,
         grid (obj): Instance of ECCOGrid class for current granule task.
         mapping_factors (obj): Instance of ECCOMappingFactors for current
             granule task.
+        metadata (obj): Optional instance of ECCOMetadata for current granule task.
         log_level (str): Optional local logging level for the ecco_make_granule
             task ('DEBUG', 'INFO', 'WARNING', 'ERROR' or 'CRITICAL').  If called
             by a top-level application, the default will be that of the parent
@@ -72,62 +72,75 @@ def ecco_make_granule( task, cfg,
 
     variable_datasets = []
 
-    if this_task.is_latlon:
-        log.info('generating %s ...', os.path.basename(this_task['granule']))
-        for variable in this_task.variable_names:
-            log.debug('... adding %s using:', variable)
-            for infile in itertools.chain.from_iterable(this_task.variable_inputs(variable)):
-                log.debug('    %s', infile)
-            emdsds = ecco_dataset.ECCOMDSDataset(
-                task=this_task, variable=variable, grid=grid,
-                mapping_factors=mapping_factors, cfg=cfg, **kwargs)
-            emdsds.drop_all_variables_except(variable)
-            var_as_latlon_ds = emdsds.as_latlon(variable)
-            variable_datasets.append(var_as_latlon_ds)
-        merged_variable_dataset = xr.merge(variable_datasets)
+    with tempfile.TemporaryDirectory() as build_tmpdir: # (*)
 
-    elif this_task.is_native:
-        log.info('generating %s ...', os.path.basename(this_task['granule']))
-        for variable in this_task.variable_names:
-            log.debug('... adding %s using:', variable)
-            for infile in itertools.chain.from_iterable(this_task.variable_inputs(variable)):
-                log.debug('    %s', infile)
-            emdsds = ecco_dataset.ECCOMDSDataset(
-                task=this_task, variable=variable, grid=grid,
-                mapping_factors=mapping_factors, cfg=cfg, **kwargs)
-            emdsds.drop_all_variables_except(variable)
-            emdsds.apply_land_mask_to_native_variable(variable)
-            variable_datasets.append(emdsds)
-        merged_variable_dataset = xr.merge([ds.ds for ds in variable_datasets])
+        # (*) The reason for this particular construct, i.e., build_tmpdir at
+        # the highest level, is that, although build_tmpdir is not explicitly
+        # referenced after the calls to ecco_dataset.ECCOMDSDataset, the
+        # resulting xarray Dataset is, however, memory-resident until written
+        # (to_netcdf()). All operations prior, then, assume the persistence of
+        # build_tmpdir, which can only go out of scope after write and
+        # (possible) S3 upload are complete.
 
-    else:
-        raise RuntimeError('Could not determine output granule type (latlon or native)')
+        if this_task.is_latlon:
+            log.info('generating %s ...', os.path.basename(this_task['granule']))
+            for variable in this_task.variable_names:
+                log.debug('... adding %s using:', variable)
+                for infile in itertools.chain.from_iterable(this_task.variable_inputs(variable)):
+                    log.debug('    %s', infile)
+                emdsds = ecco_dataset.ECCOMDSDataset(
+                    task=this_task, variable=variable, grid=grid,
+                    mapping_factors=mapping_factors, cfg=cfg, tmpdir=build_tmpdir,
+                    **kwargs)
+                emdsds.drop_all_variables_except(variable)
+                variable_datasets.append(emdsds.as_latlon(variable))    # as_latlon returns xarray DataArray
+            merged_variable_dataset = xr.merge(variable_datasets)
 
-    # set miscellaneous granule attributes and properties:
-    merged_variable_dataset_with_ancillary_data = set_granule_ancillary_data(
-        dataset=merged_variable_dataset, task=this_task,
-        grid=grid, mapping_factors=mapping_factors, cfg=cfg)
+        elif this_task.is_native:
+            log.info('generating %s ...', os.path.basename(this_task['granule']))
+            for variable in this_task.variable_names:
+                log.debug('... adding %s using:', variable)
+                for infile in itertools.chain.from_iterable(this_task.variable_inputs(variable)):
+                    log.debug('    %s', infile)
+                emdsds = ecco_dataset.ECCOMDSDataset(
+                    task=this_task, variable=variable, grid=grid,
+                    mapping_factors=mapping_factors, cfg=cfg, tmpdir=build_tmpdir,
+                    **kwargs)
+                emdsds.drop_all_variables_except(variable)
+                emdsds.apply_land_mask_to_native_variable(variable)
+                variable_datasets.append(emdsds)
+            merged_variable_dataset = xr.merge([ds.ds for ds in variable_datasets])
 
-    # append metadata:
-    merged_variable_dataset_with_all_metadata, encoding = set_granule_metadata(
-        dataset=merged_variable_dataset_with_ancillary_data,
-        task=this_task, cfg=cfg)
+        else:
+            raise RuntimeError('Could not determine output granule type (latlon or native)')
 
-    # write:
-    if this_task.is_granule_local:
-        if not os.path.exists(os.path.dirname(this_task['granule'])):
-            os.makedirs(os.path.dirname(this_task['granule']))
-        merged_variable_dataset_with_all_metadata.to_netcdf(
-            this_task['granule'], encoding=encoding)
-    else:
-        with tempfile.TemporaryDirectory() as tmpdir:
-            # temporary directory will self-destruct at end of with block
-            _src = os.path.basename(this_task['granule'])
-            _dest = this_task['granule']
+        # set miscellaneous granule attributes and properties:
+        merged_variable_dataset_with_ancillary_data = set_granule_ancillary_data(
+            dataset=merged_variable_dataset, task=this_task,
+            grid=grid, mapping_factors=mapping_factors, cfg=cfg)
+
+        # append metadata:
+        merged_variable_dataset_with_all_metadata, encoding = set_granule_metadata(
+            dataset=merged_variable_dataset_with_ancillary_data,
+            task=this_task,
+            ecco_metadata=metadata,
+            cfg=cfg)
+
+        # write:
+        if this_task.is_granule_local:
+            if not os.path.exists(os.path.dirname(this_task['granule'])):
+                os.makedirs(os.path.dirname(this_task['granule']))
             merged_variable_dataset_with_all_metadata.to_netcdf(
-                os.path.join(tmpdir,_src), encoding=encoding)
-            log.info('uploading %s to %s', os.path.join(tmpdir,_src), _dest)
-            aws.ecco_aws_s3_cp.aws_s3_cp( src=os.path.join(tmpdir,_src), dest=_dest, **kwargs)
+                this_task['granule'], encoding=encoding)
+        else:
+            with tempfile.TemporaryDirectory() as upload_tmpdir:
+                # temporary directory will self-destruct at end of with block
+                _src = os.path.basename(this_task['granule'])
+                _dest = this_task['granule']
+                merged_variable_dataset_with_all_metadata.to_netcdf(
+                    os.path.join(upload_tmpdir,_src), encoding=encoding)
+                log.info('uploading %s to %s', os.path.join(upload_tmpdir,_src), _dest)
+                aws.ecco_aws_s3_cp.aws_s3_cp( src=os.path.join(upload_tmpdir,_src), dest=_dest, **kwargs)
 
     log.info('... done')
 
@@ -226,8 +239,8 @@ def set_granule_ancillary_data(
     return dataset
 
 
-def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
-    """Primary routine for aggregrating and setting metadata collected from all
+def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None, **kwargs):
+    """Primary routine for aggregrating and setting mtadata collected from all
     sources, e.g., ECCO configuration data, task list references, etc.  Note
     that set_granule_metadata operations depend in large part on functionality
     provided by ecco_v4_py.ecco_utils.
@@ -237,17 +250,16 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
             are to be applied.
         task (obj): ECCOTask granule task descriptor providing
             'dynamic_metadata', 'ecco_metadata_loc' definitions.
-        grid (obj): ECCOGrid instance providing, in the case of ECCO native
-            granule generation, XC, YC, and Z bounds.
-        mapping_factors (obj): ECCOMappingFactors instance providing, in the
-            case of ECCO latlon granules, lat/lon/depth bounds.
+        ecco_metadata (obj): Optional ECCOMetadata class instance. If not
+            provided, instance will be locally instantiated using
+            task['ecco_metadata_loc'] descriptor.
         cfg (dict): Parsed ECCO dataset production configuration file.
         **kwargs: Depending on run context:
-            keygen (str): If task object key 'ecco_metadata_loc' references an
-                AWS S3 endpoint and if running in an institutionally-managed AWS
-                IAM Identity Center (SSO) environment, (path and) name of
-                federated login key generation script (e.g.,
-                /usr/local/bin/aws-login-pub.darwin.amd64)
+            keygen (str): If ecco_metadata is not provided and task object key
+                'ecco_metadata_loc' references an AWS S3 endpoint and if running
+                in an institutionally-managed AWS IAM Identity Center (SSO)
+                environment, (path and) name of federated login key generation
+                script (e.g., /usr/local/bin/aws-login-pub.darwin.amd64)
             profile (str): Optional profile name to be used in combination
                 with keygen (e.g., 'saml-pub', 'default', etc.)
 
@@ -257,9 +269,11 @@ def set_granule_metadata( dataset=None, task=None, cfg=None, **kwargs):
     """
     log = logging.getLogger('edp.'+__name__)
 
-    # get ecco metadata, wherever it may be:
-    ecco_metadata_source = ecco_metadata_store.ECCOMetadataStore(
-        metadata_loc=task['ecco_metadata_loc'], **kwargs)
+    # point to ecco metadata, using whatever form provided:
+    if not ecco_metadata:
+        ecco_metadata_source = ecco_metadata.ECCOMetadata( task, **kwargs)
+    else:
+        ecco_metadata_source = ecco_metadata
 
     expected_metadata_source_identifiers = {
         'coord_1D':         ['coordinate_metadata_for_1D_datasets'],
@@ -472,10 +486,8 @@ def generate_dataproducts( tasklist, log_level=None, **kwargs):
     if log_level:
         log.setLevel(log_level)
 
-    shared_ecco_grid = shared_ecco_mapping_factors = None
-
-    # get parsed list of all tasks (TODO: implement TaskList class to better
-    # handle src/dest checks):
+    shared_ecco_resources = False
+    shared_ecco_grid = shared_ecco_mapping_factors = shared_ecco_metadata = None
 
     if aws.ecco_aws.is_s3_uri(tasklist):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -490,18 +502,33 @@ def generate_dataproducts( tasklist, log_level=None, **kwargs):
 
         cfg = configuration.ECCODatasetProductionConfig(cfgfile=task['ecco_cfg_loc'])
 
-        # Assuming all tasks share the same ECCO grid and mapping factors
-        # references then, for performance reasons, create ECCOGrid and
-        # ECCOMappingFactors objects up-front (using the first task descriptor)
-        # to be shared by all granule creation tasks:
-        if not shared_ecco_grid and not shared_ecco_mapping_factors:
-            shared_ecco_grid = ecco_grid.ECCOGrid(
-                task=task, **kwargs)
-            shared_ecco_mapping_factors = ecco_mapping_factors.ECCOMappingFactors(
-                task=task, **kwargs)
+        # Assuming all tasks share the same ECCO grid, mapping factors, and
+        # metadata references then, for performance reasons, create ECCOGrid,
+        # ECCOMappingFactors, and ECCOMetadata objects up-front (using the first
+        # task descriptor) to be shared by all granule creation tasks:
+
+        if not shared_ecco_resources:
+            try:
+                shared_ecco_grid = ecco_grid.ECCOGrid(
+                    task=task, **kwargs)
+                shared_ecco_mapping_factors = ecco_mapping_factors.ECCOMappingFactors(
+                    task=task, **kwargs)
+                shared_ecco_metadata = ecco_metadata.ECCOMetadata(
+                    task=task, **kwargs)
+                shared_ecco_resources = True
+            except Exception as e:
+                # If shared resources can't be created, all subsequent jobs
+                # would most certainly fail, even if they tried to create their
+                # own grid/factors/metadata instances; just take hard exit:
+                errmsg = 'Could not create shared ECCO resources'
+                log.error(errmsg)
+                raise SystemExit(e)
+
         try:
             ecco_make_granule( task, cfg,
-                grid=shared_ecco_grid, mapping_factors=shared_ecco_mapping_factors,
+                grid=shared_ecco_grid,
+                mapping_factors=shared_ecco_mapping_factors,
+                metadata=shared_ecco_metadata,
                 log_level=log_level, **kwargs)
         except Exception as e:
             # just log the error and continue

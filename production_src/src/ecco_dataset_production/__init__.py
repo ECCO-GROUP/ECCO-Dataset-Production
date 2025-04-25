@@ -4,7 +4,7 @@ from . import ecco_dataset
 from . import ecco_file
 from . import ecco_grid
 from . import ecco_mapping_factors
-from . import ecco_metadata_store
+from . import ecco_metadata
 from . import ecco_podaac_metadata
 #from . import ecco_generate_dataproducts
 from . import ecco_task

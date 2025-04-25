@@ -1,4 +1,4 @@
-FROM public.ecr.aws/amazonlinux/amazonlinux:latest
+FROM public.ecr.aws/amazonlinux/amazonlinux:2023
 
 # aws linux installs python3 -> python3.9; install corresponding
 # tools:

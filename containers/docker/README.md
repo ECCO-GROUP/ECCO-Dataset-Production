@@ -65,7 +65,7 @@ Ref. https://<aws_region>.console.aws.amazon.com/ecr/private-registry/repositori
         $ sudo docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/ecco_edp_generate_dataproducts
 
         # and run using, e.g.:
-        $ sudo docker run --rm --env TASKLIST=s3://<prefixessome_task_list.json ecco_edp_generate_dataproducts
+        $ sudo docker run --rm --env TASKLIST=s3://<bucket_and_prefix>/some_task_list.json ecco_edp_generate_dataproducts
         # where TASKLIST must reference an S3-resident task list
 
 
