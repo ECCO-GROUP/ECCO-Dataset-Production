@@ -20,7 +20,7 @@ class ECCOMDSFilestr(object):
             arguments include:
                 prefix (str): Product prefix/name.
                 averaging_period (str): Averaging period ('mon_mean',
-                    'day_mean', or 'day_inst', case_insensitive).
+                    'day_mean', or 'day_snap', case_insensitive).
                 time (str): Time string with or without zero padding.
                 ext (str): File extension.
 
@@ -44,7 +44,6 @@ class ECCOMDSFilestr(object):
 
         """
         if filestr:
-            #print('IAN filestr ', filestr)
             # use filestr to set all attributes (a little complicated because
             # ECCO variable names may include underscores):
             try:
@@ -115,13 +114,15 @@ class ECCOGranuleFilestr(object):
             arguments include:
                 prefix (str): Product prefix/name.
                 averaging_period (str): Averaging period ('mon_mean',
-                    'day_mean', or 'day_inst', case insensitive).
+                    'day_mean', or 'day_snap', case insensitive).
                 date (str): Averaging period end date, in ISO Date or Date Time
                     format (e.g., 'YYYY-MM-DD' or 'YYYY-MM-DDThh:mm:ss').
-                    Regardless of input, filestr date may be truncated according
-                    to averaging period, for example, if
+                    Regardless of input, filestr date may be truncated, or
+                    extended, according to averaging period. For example, if
                     averaging_period='mon_mean' and date is in 'YYYY-MM-DD'
                     format, only the 'YYYY-MM' portion will be used in filestr.
+                    And, if averaging_period is 'snap' or 'day_snap', a time
+                    string will be appended, e.g., 'YYYY-MM-DDT000000'.
                 version (str): ECCO version, e.g. 'V4r4', 'V4r5', etc.
                 grid_type (str): Grid, or product type, e.g. 'latlon', 'native'
                     or 'snap'.
@@ -152,12 +153,10 @@ class ECCOGranuleFilestr(object):
 
         """
         if filestr:
-            #print('IAN ECCOGranuleFilestr filestr ', filestr)
-
             # use filestr to set all attributes (a little complicated because
             # ECCO variable names may include underscores):
             try:
-                re_so = re.search('_day_snap|_day_mean|_mon_mean',filestr)
+                re_so = re.search('_day_snap|_day_mean|_mon_mean',filestr)  # TODO: just 'snap' in future
                 self.prefix = filestr[:re_so.span()[0]]
                 self.averaging_period = filestr[re_so.span()[0]+1:re_so.span()[1]]
                 date_version_grid_type_grid_label_and_ext = filestr[re_so.span()[1]+1:]
@@ -175,12 +174,16 @@ class ECCOGranuleFilestr(object):
             date = kwargs.pop('date',None)
             try:
                 date_as_dt = dt.datetime.fromisoformat(date)
-                if 'mon' in self.averaging_period:
-                    self.date = '{0:04d}-{1:02d}'.format(
-                        date_as_dt.year,date_as_dt.month)
+                if 'snap' in self.averaging_period:
+                    self.date = '{0:04d}-{1:02d}-{2:02d}T{3:s}'.format(
+                        date_as_dt.year,date_as_dt.month,date_as_dt.day,
+                        date_as_dt.isoformat().split('T')[1].replace(':',''))
                 elif 'day' in self.averaging_period:
                     self.date = '{0:04d}-{1:02d}-{2:02d}'.format(
                         date_as_dt.year,date_as_dt.month,date_as_dt.day)
+                elif 'mon' in self.averaging_period:
+                    self.date = '{0:04d}-{1:02d}'.format(
+                        date_as_dt.year,date_as_dt.month)
             except:
                 self.date = date
             self.version = kwargs.pop('version',None)

@@ -13,6 +13,32 @@ from . import ecco_aws
 SLEEP_SECONDS = 5
 
 
+def update_credentials( log_level=None, **kwargs):
+    """Update SSO login credentials. 
+
+    Args:
+        See calling routine argument description.
+
+    """
+    log = logging.getLogger('edp.'+__name__)
+    if log_level:
+        log.setLevel(log_level)
+
+    if kwargs.get('keygen',None):
+        # update login credentials:
+        cmd = [kwargs['keygen']]
+        if kwargs.get('profile',None):
+            cmd.extend(['--profile', kwargs['profile']])
+        log.info("updating credentials using '%s' ...", cmd)
+        try:
+            subprocess.run(cmd,check=True)
+            #subprocess.run([keygen,'-c'],check=True)
+        except subprocess.CalledProcessError as e:
+            log.error(e)
+            sys.exit(1)
+        log.info('...done')
+
+
 def sync_local_to_remote( src=None, dest=None, nproc=1, dryrun=False,
     log_level=None, **kwargs):
     """Functional wrapper for multiprocess 'aws s3 sync <local> <s3uri>'
@@ -41,22 +67,6 @@ def sync_local_to_remote( src=None, dest=None, nproc=1, dryrun=False,
     log = logging.getLogger('edp.'+__name__)
     if log_level:
         log.setLevel(log_level)
-
-    if kwargs.get('keygen',None):
-        # update login credentials:
-        cmd = [kwargs['keygen']]
-        print(f'cmd: {cmd}')
-        if kwargs.get('profile',None):
-            cmd.extend(['--profile', kwargs['profile']])
-            print(f'cmd: {cmd}')
-        log.info("updating credentials using '%s' ...", cmd)
-        try:
-            subprocess.run(cmd,check=True)
-            #subprocess.run([keygen,'-c'],check=True)
-        except subprocess.CalledProcessError as e:
-            log.error(e)
-            sys.exit(1)
-        log.info('...done')
 
     # list of submitted processes:
     proclist = []
@@ -110,7 +120,13 @@ def sync_local_to_remote( src=None, dest=None, nproc=1, dryrun=False,
             if running_procs<nproc and not blocking_procs>0:
 
                 # there's room in the queue, and no subdirectory syncs are
-                # running; submit:
+                # running; make sure credentials are up-to-date (because some of
+                # these subdirectory-level syncs can take a *long* time), and
+                # submit:
+                # TODO: figure out a better method for determining whether or
+                # not credentials actually need to be updated.
+
+                update_credentials(log_level,**kwargs)
 
                 cmd = [ 'aws', 's3', 'sync',
                     dirpath,                # "source"

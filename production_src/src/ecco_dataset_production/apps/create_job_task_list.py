@@ -595,9 +595,17 @@ def create_job_task_list(
                 else:
                     file_date_stamp = tb[1]
 
+                # in the future, the input file frequency pattern will just be
+                # 'snap' instead of 'day_snap'. In the meantime, make sure
+                # output files adhere to the future standard:
+                if re.match('.*snap',file_freq_pat):
+                    _file_freq_pat = 'snap'
+                else:
+                    _file_freq_pat = file_freq_pat
+
                 output_filename = ecco_file.ECCOGranuleFilestr(
                     prefix=job_metadata['filename'],
-                    averaging_period=file_freq_pat,
+                    averaging_period=_file_freq_pat,    # see above test
                     date=pd.Timestamp(file_date_stamp).strftime("%Y-%m-%dT%H:%M:%S"),
                     #date=pd.Timestamp(tb[1]).strftime("%Y-%m-%dT%H:%M:%S"),
                     version=cfg['ecco_version'],
@@ -609,7 +617,7 @@ def create_job_task_list(
                     ecco_destination_root,
                     cfg['ecco_version'],
                     job.product_type.lower(),
-                    file_freq_pat,
+                    _file_freq_pat,                     # see above test/assignment
                     job_metadata['filename'],
                     output_filename)
                 #task['granule'] = os.path.join(ecco_destination_root,output_filename)
@@ -636,7 +644,7 @@ def create_job_task_list(
                 task['dynamic_metadata']['time_coverage_duration']  = time_coverage_duration
                 task['dynamic_metadata']['time_coverage_resolution']= time_coverage_resolution
 
-                # optional metadata that might / might not exist:
+                # optional metadata that may or may not exist:
                 try:
                     task['dynamic_metadata']['comment'] = job_metadata['comment']
                 except:
