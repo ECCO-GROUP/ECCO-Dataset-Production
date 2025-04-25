@@ -10,3 +10,4 @@ job_logs*.json
 *~
 *._*
 \#*\#
+*ipynb_checkpoints*
