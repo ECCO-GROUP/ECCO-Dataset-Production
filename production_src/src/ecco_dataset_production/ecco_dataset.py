@@ -170,6 +170,7 @@ class ECCOMDSDataset(object):
                         os.path.basename(
                             self.task.variable_inputs(variable)[0][0]))
 
+
                     # back-compatibility with ecco_v4_py.read_bin_llc.load_ecco_vars_from_mds:
                     if self.task['dynamic_metadata']['time_coverage_duration'] == 'P1D':
                         output_freq_code = 'AVG_DAY'
@@ -183,6 +184,14 @@ class ECCOMDSDataset(object):
                         log.error('%s %s',e1,e2)
                         raise RuntimeError(f'{e1} {e2}')
 
+                    # find the precision of the mds file
+                    # it is stored in the '*.meta' file in the line 'dataprec'
+                    # the meta filename can be constructed by replacing the 'ext'
+                    # field of the mds_file with 'meta'.
+                    mds_file.ext = 'meta'                    
+                    mds_datatype = determine_mds_prec(mds_file.filestr())
+                    
+                    
                     self.ds = ecco_v4_py.read_bin_llc.load_ecco_vars_from_mds(
                         mds_var_dir             = tmpdir,
                         mds_grid_dir            = self.grid.grid_dir,
@@ -195,6 +204,7 @@ class ECCOMDSDataset(object):
                         model_time_steps_to_load= [mds_file.time],
                         read_grid               = True,
                         #read_grid               = self.cfg['read_grid'],
+                        mds_datatype            = mds_datatype,
                         model_start_datetime    = np.datetime64(self.cfg['model_start_time']))
 
                     if mds_file.prefix != variable:
@@ -308,6 +318,28 @@ class ECCOMDSDataset(object):
                     log.error(e1+e2+e3)
                     raise RuntimeError(e1+e2+e3)
 
+    
+    def determine_mds_prec(mds_meta_file):
+        """Determine the file precision of an MITgcm meta file
+        """        
+        with open(mds_meta_file, 'r') as f:
+            lines = f.readlines()
+        
+        # Find the line containing 'dataprec'
+        for line in lines:
+            if 'dataprec' in line:
+                dataprec_line = line
+                break
+        
+        # Now dataprec_line contains the line with 'dataprec'
+        #print('\nparsed dataprec_lin ', dataprec_line)
+        if 'float64' in dataprec_line:
+            file_dtype = '>f8'
+        if 'float32' in dataprec_line:
+            file_dtype = '>f4'
+        
+        #print('file data type:', file_dtype)
+        return file_dtype
 
     def as_latlon( self, variable=None):
         """Recast variable in latlon format, return as a named (using variable
