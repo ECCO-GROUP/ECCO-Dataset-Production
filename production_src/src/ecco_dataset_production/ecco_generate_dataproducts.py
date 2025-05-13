@@ -128,7 +128,7 @@ def ecco_make_granule( task, cfg,
 
         # write:
         if this_task.is_granule_local:
-            if not os.path.exists(os.path.dirname(this_task['granule'])):
+            if os.path.dirname(this_task['granule']) and not os.path.exists(os.path.dirname(this_task['granule'])):
                 os.makedirs(os.path.dirname(this_task['granule']))
             merged_variable_dataset_with_all_metadata.to_netcdf(
                 this_task['granule'], encoding=encoding)
