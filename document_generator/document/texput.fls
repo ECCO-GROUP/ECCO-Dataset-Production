@@ -1,0 +1,5 @@
+PWD /Users/houndegno/Documents/ECCO-PROD/ECCO-Dataset-Production/document_generator/document
+INPUT /usr/local/texlive/2022/texmf.cnf
+INPUT /usr/local/texlive/2022/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt
+OUTPUT texput.log

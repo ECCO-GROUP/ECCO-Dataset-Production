@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.1.14)  31 MAR 2025 16:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.1.14)  14 MAY 2025 21:39
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -514,27 +514,27 @@ LaTeX Info: Redefining \nameref on input line 6.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/m/n' aliased to
+(Font)              `T1/Cabin-TLF/regular/n' on input line 10.
+LaTeX Font Info:    Font shape `T1/Cabin-TLF/regular/n' will be
+(Font)              scaled to size 14.4pt on input line 10.
+LaTeX Font Info:    Font shape `T1/Cabin-TLF/m/n' aliased to
 (Font)              `T1/Cabin-TLF/regular/n' on input line 11.
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/regular/n' will be
-(Font)              scaled to size 14.4pt on input line 11.
+(Font)              scaled to size 17.28pt on input line 11.
+LaTeX Font Info:    Font shape `T1/Cabin-TLF/b/n' aliased to
+(Font)              `T1/Cabin-TLF/bold/n' on input line 11.
+LaTeX Font Info:    Font shape `T1/Cabin-TLF/bold/n' will be
+(Font)              scaled to size 17.28pt on input line 11.
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/m/n' aliased to
 (Font)              `T1/Cabin-TLF/regular/n' on input line 12.
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/regular/n' will be
-(Font)              scaled to size 17.28pt on input line 12.
-LaTeX Font Info:    Font shape `T1/Cabin-TLF/b/n' aliased to
-(Font)              `T1/Cabin-TLF/bold/n' on input line 12.
-LaTeX Font Info:    Font shape `T1/Cabin-TLF/bold/n' will be
-(Font)              scaled to size 17.28pt on input line 12.
-LaTeX Font Info:    Font shape `T1/Cabin-TLF/m/n' aliased to
-(Font)              `T1/Cabin-TLF/regular/n' on input line 13.
-LaTeX Font Info:    Font shape `T1/Cabin-TLF/regular/n' will be
-(Font)              scaled to size 12.0pt on input line 13.
+(Font)              scaled to size 12.0pt on input line 12.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 18.
+(Font)              <12> on input line 17.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 18.
+(Font)              <8> on input line 17.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 18.
+(Font)              <6> on input line 17.
 
 
 Package caption Warning: Unused \captionsetup[table] on input line 34.
@@ -545,17 +545,17 @@ Package caption Warning: Unused \captionsetup[figure] on input line 35.
 See the caption package documentation for explanation.
 
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/m/n' aliased to
-(Font)              `T1/Cabin-TLF/regular/n' on input line 43.
+(Font)              `T1/Cabin-TLF/regular/n' on input line 55.
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/regular/n' will be
-(Font)              scaled to size 9.0pt on input line 43.
+(Font)              scaled to size 9.0pt on input line 55.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 43.
+(Font)              <9> on input line 55.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 43.
+(Font)              <5> on input line 55.
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/m/n' aliased to
-(Font)              `T1/Cabin-TLF/regular/n' on input line 43.
+(Font)              `T1/Cabin-TLF/regular/n' on input line 55.
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/regular/n' will be
-(Font)              scaled to size 6.0pt on input line 43.
+(Font)              scaled to size 6.0pt on input line 55.
 [1{/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ] (./workingfile.aux)
@@ -565,13 +565,13 @@ Package rerunfilecheck Info: File `workingfile.out' has not changed.
 Here is how much of TeX's memory you used:
  13735 strings out of 478268
  226573 string characters out of 5846347
- 533817 words of memory out of 5000000
+ 533893 words of memory out of 5000000
  31718 multiletter control sequences out of 15000+600000
  557256 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,13n,120p,1147b,348s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cabin/cbn_i3ioen.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/impallari/cabin/Cabin-Bold.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/impallari/cabin/Cabin-Regular.pfb>
-Output written on workingfile.pdf (1 page, 52068 bytes).
+Output written on workingfile.pdf (1 page, 52661 bytes).
 PDF statistics:
  25 PDF objects out of 1000 (max. 8388607)
  17 compressed objects within 1 object stream

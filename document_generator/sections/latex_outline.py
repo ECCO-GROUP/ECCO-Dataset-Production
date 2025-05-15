@@ -94,7 +94,7 @@ def write_datasets(dataset_type:str)->None:
 
     elif dataset_type == 'latlon':
         latlon_coord_ds_lines = ds_s.data_products(latlon_coords_groupings, latlon_coords_dir,
-                                                   latlon_coords_images_dir, dataset_type + " Coordinates")
+                                                   latlon_coords_images_dir, dataset_type) #+ " Coordinates"
         with open('document/latex/dataset/latlon_coords_dataset_tables.tex', 'w') as output_file:
             output_file.write('\n'.join(latlon_coord_ds_lines))
 

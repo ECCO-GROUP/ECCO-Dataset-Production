@@ -45,6 +45,8 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
             complementText = " "
         else:
             complementText = ' dataset of '
+        # new page breaker addded here on May 14
+        # l.append(r'\pagebreak')
         l.append(r'\subsection{'+ f'{section}' + complementText + f'{netCDF_ds}' + r'}')
         # l.append(r'\par\vspace{0.5cm}') # activated!! 
         l.append(r'\newp') # Deasctived!!
@@ -82,6 +84,7 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
             l.append(fr"\caption{{Dataset: {s.sanitize(filename)}, Variable: {s.sanitize(fieldName)}}}") #Just 
             l.append(fr'\label{{tab:table-{filename}_{fieldName}-Plot}}')
             l.append(r'\end{figure}')
+            l.append(r'\newpage')
         # if is_coord:
         #     break
 
