@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.1.14)  14 MAY 2025 23:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.1.14)  15 MAY 2025 09:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -10684,7 +10684,7 @@ pdfTeX warning (dest): name{http://web.mit.edu/} has been referenced but does no
 pdfTeX warning (dest): name{https://www.jpl.nasa.gov/} has been referenced but does not exist, replaced by a fixed one
 
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cabin/cbn_taosrr.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cabin/cbn_i3ioen.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/impallari/cabin/Cabin-Bold.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/impallari/cabin/Cabin-Regular.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt8.pfb>
-Output written on ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.pdf (289 pages, 69102070 bytes).
+Output written on ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.pdf (289 pages, 69102147 bytes).
 PDF statistics:
  5294 PDF objects out of 6186 (max. 8388607)
  4522 compressed objects within 46 object streams
