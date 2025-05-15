@@ -1,6 +1,12 @@
 ## ECCO grid test data.
 
-Although already inluded here for test purposes, the ECCO grids in this directory
-could have also been retrieved via the included dowload.sh script, e.g.:
+Although already included here for test purposes, the ECCO grids in
+this directory could also have been downloaded via the included
+script:
 
-	$ download.sh -k /usr/local/bin/aws-login.darwin.amd64 -p saml-pub
+    $ download.sh --help
+    download.sh -v ver -k keygen -p profile   # ver = V4r4, V4r5, etc.
+
+For example:
+
+	$ download.sh -v V4r4 -k /usr/local/bin/aws-login.darwin.amd64 -p saml-pub

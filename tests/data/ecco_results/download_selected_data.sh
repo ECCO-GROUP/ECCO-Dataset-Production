@@ -1,16 +1,36 @@
 #!/usr/bin/env bash
-#
+ 
 # get/update some representative ECCO results test data using same topology as
 # is found in AWS S3 bucket
-#
+
+# Note that it will be necessary to first log into AWS if running within an AWS
+# federated login service, e.g. JPL's SSO domain
+# (ref. https://cloudwiki.jpl.nasa.gov/display/cloudcomputing/AWS+CLI+and+BOTO+with+JPL+Credentials),
+# hence the optional arguments keygen and profile
 
 # TODO: figure out why 'set -e' won't exit for loop if incorrect
 # keygen/profile input
 
 set -e
-usage() { echo 'download_selected_data.sh -n num_dates_to_fetch -k keygen -p profile'; }
 
-ver='V4r4'   # V4r5, etc.
+usage() { echo 'download_selected_data.sh -v ver -n file_pair_count -k keygen -p profile   # ver = V4r4, V4r5, etc., -n 3 default'; }
+
+while getopts ":v:k:p:n:h" opt; do
+    case $opt in
+        v ) ver=$OPTARG ;;
+        k ) keygen=$OPTARG ;;
+        p ) profile=$OPTARG ;;
+        n ) file_pair_count=$OPTARG ;;
+        h ) usage
+            exit 1 ;;
+        \?) usage
+            exit 1 ;;
+    esac
+done
+
+if [[ ! -v ver ]]; then
+    usage && exit 1
+fi
 
 # test data location(s) in AWS S3; may need to be changed if cloud storage
 # configuration changes:
@@ -28,25 +48,14 @@ ecco_prefixes=(
     VVEL_mon_mean/
     WVELMASS_mon_mean/)
 
-while getopts ":k:p:n:h" opt; do
-    case $opt in
-        k ) keygen=$OPTARG ;;
-        p ) profile=$OPTARG ;;
-        n ) file_pair_count=$OPTARG ;;
-        h ) usage
-            exit 1 ;;
-        \?) usage
-            exit 1 ;;
-    esac
-done
-
 if [[ -v keygen ]]; then
     ${keygen}
 fi
+
 if [[ -v profile ]]; then
     profileopt="--profile ${profile}"
 fi
-echo ${profileopt}
+
 # go get the data:
 
 root_dir=$(pwd)
