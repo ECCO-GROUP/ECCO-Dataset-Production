@@ -132,7 +132,8 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
         tmp_plt = tmp_plt.isel(k_l=target_k)
     elif 'k' in field.dims:
         tmp_plt = tmp_plt.isel(k=target_k)
-
+    # verticale level
+    verti_level = target_k+1
     print(target_k)
     # find reasonable color limit for the plot
     cmin = np.nanmin(tmp_plt)
@@ -212,13 +213,13 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
         fig.set_size_inches(12, 6)
         if 'time' in field.dims:
             fig.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.45,y=.90,weight='bold', fontsize=16)
-            fig.text(s=field.attrs["long_name"]+"\n", x=0.45, y=.82, fontsize=12, ha='center', va='center')
+            fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
             plt.figtext(0.45, 0.13, 
                             s=dataseteName, 
                             wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+str(field.time.values[0])[:10]+',\n '
         else:
             fig.suptitle(str(field.name),ha='center',x=.45,y=.90,weight='bold', fontsize=16)
-            fig.text(s=field.attrs["long_name"]+"\n", x=0.45, y=.82, fontsize=12, ha='center', va='center')
+            fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
             plt.figtext(0.45, 0.13, 
                             s=dataseteName, 
                             wrap=True,horizontalalignment='center', fontsize=11)#'Example fied :\n '+
@@ -262,7 +263,7 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
         if 'time' in field.dims:
             # fig.suptitle(f'{field.name}: {field.attrs["long_name"]}\n{str(field.time.values[0])[:10]}\n ', wrap=True, fontsize='x-large')
             fig.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.5,y=.968,weight='bold', fontsize=16)
-            fig.text(s=field.attrs["long_name"]+"\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
+            fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
             plt.figtext(0.5, -0.02, 
                             s=dataseteName, 
                             wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+str(field.time.values[0])[:10]+',\n '
@@ -270,7 +271,7 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
         else:
             # fig.suptitle(f'{field.name}: \n{field.attrs["long_name"]}\n ', wrap=True, fontsize='x-large')
             fig.suptitle(str(field.name),ha='center',x=.5,y=.968,weight='bold', fontsize=16)
-            fig.text(s=field.attrs["long_name"]+"\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
+            fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
             plt.figtext(0.5, -0.02, 
                         s=dataseteName, 
                         wrap=True,horizontalalignment='center', fontsize=11)#'Example fied: \n '+
@@ -297,13 +298,14 @@ def plot_latlon(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
     tmp_plt = field
     if 'time' in field.dims:
         tmp_plt = field.isel(time=0)
-    
+
     target_k = 0
     if 'WVEL' in field.name or 'DRHO' in field.name:
         target_k = 1
     if 'Z' in field.dims:
         tmp_plt = tmp_plt.isel(Z=target_k)
-    
+    # verticale level
+    verti_level = target_k+1
     cmin = np.nanmin(tmp_plt)
     cmax = np.nanmax(tmp_plt)
     # default
@@ -345,11 +347,27 @@ def plot_latlon(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
 
         # plt.suptitle(f'{field.name}: {str(field.time.values[0])[:10]}\n{field.attrs["long_name"]}\n', wrap=True, fontsize='x-large')
         fig.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.45,y=.91,weight='bold', fontsize=16)
-        fig.text(s=field.attrs["long_name"]+"\n", x=0.45, y=.82, fontsize=12, ha='center', va='center')
+        fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
         plt.figtext(0.45, 0.1,
                     s=dataseteName,
                     wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+str(field.time.values[0])[:10]+',\n '+
+    elif field.name=='drF':
+        # plotting only this particular case of var from latlon grid geometry!
+        fig = plt.gcf()  # get the current figure
+        fig.set_size_inches(8, 9)
+        plt.plot(field,ds.Z)
+        plt.ylim(-6000.1,50);plt.xlim(0.490)
+        plt.yticks(-np.arange(0,6000.1,500))
+        plt.xticks(np.arange(0,490.1,50))
+        plt.xlabel(field.long_name.capitalize()+ " [m]",wrap=True)
+        plt.ylabel("Depth of the grid cell center [m]")
         
+        fig.suptitle(str(field.name),ha='center',x=.5,y=.95,weight='bold', fontsize=16)
+        plt.title(field.attrs["long_name"]+"\n", wrap=True, fontsize=12)
+        # fig.text(s=field.attrs["long_name"]+"\n", x=0.45, y=.82, fontsize=12, ha='center', va='center')
+        plt.figtext(0.45, 0.025,
+                    s=dataseteName,
+                    wrap=True,horizontalalignment='center', fontsize=11)
     else:
 
         fig = plt.gcf()  # get the current figure
@@ -369,14 +387,15 @@ def plot_latlon(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
         if 'time' in field.dims:
             # plt.suptitle(f'{field.name}: {str(field.time.values[0])[:10]}\n{field.attrs["long_name"]}', wrap=True, fontsize='x-large')
             plt.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.45,y=.91,weight='bold', fontsize=16)
-            plt.title(field.attrs["long_name"]+"\n", wrap=True, fontsize=12)
+            plt.title(field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", wrap=True, fontsize=12)
             plt.figtext(0.45, 0.1, 
                         s=str(field.time.values[0])[:10]+',\n '+dataseteName, 
                         wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+
         else:
             # plt.suptitle(f'{field.name}: \n{field.attrs["long_name"]}', wrap=True, fontsize='x-large')
             plt.suptitle(str(field.name),ha='center',x=.45,y=.91,weight='bold', fontsize=16)
-            plt.title(field.attrs["long_name"]+"\n", wrap=True, fontsize=12)
+            # plt.title(field.attrs["long_name"]+"\n", wrap=True, fontsize=12)
+            plt.title(field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", wrap=True, fontsize=12)
             plt.figtext(0.45, 0.1, 
                         s=dataseteName, 
                         wrap=True,horizontalalignment='center', fontsize=11)#'Example fied: \n '+

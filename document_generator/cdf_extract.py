@@ -31,20 +31,23 @@ def fieldTable(ds:xr.Dataset, is_coord:bool)->list[str]:
     ll.append(fr'\label{{tab:table-{dataset}-fields}} \\ ')
     ll.append(r'\hline \endhead \hline \endfoot')
     # ll.append(r'\rowcolor{lightgray} \textbf{Dataset:} & \textbf{'+f'{utils.sanitize(dataset)}'+r'} \\ \hline')
+    ll.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Coordinates}} & \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
     
-    ll.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Variables}} & \multicolumn{1}{|c|}{\textbf{Description of data variables}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
+    # ll.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Variables}} & \multicolumn{1}{|c|}{\textbf{Description of data variables}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
 
     # for field in fields:
     ## Here, dataset's variables are filled out with description and the corresponding unit!
-    for ij in np.arange(len(field_var1)):
-        # ll.append(r'Field: &' + f'{utils.sanitize(field)}'+r' \\ \hline')
-        ll.append(f'{utils.sanitize(field_var1[ij])} &' + f'{utils.sanitize(field_var_des1[ij])} &'+ rf'{utils.sanitize(field_var_unit1[ij])}  \\ \hline')
-    
-    ll.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Coordinates}} & \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
-    ## Here, dataset's coordinates are filled out with description and the corresponding unit!
     for ij in np.arange(len(field_var2)):
         # ll.append(r'Field: &' + f'{utils.sanitize(field)}'+r' \\ \hline')
         ll.append(f'{utils.sanitize(field_var2[ij])} &' + f'{utils.sanitize(field_var_des2[ij])} &'+ rf'{utils.sanitize(field_var_unit2[ij])}  \\ \hline')
+    
+    ll.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Variables}} & \multicolumn{1}{|c|}{\textbf{Description of data variables}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
+    
+    # ll.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Coordinates}} & \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
+    ## Here, dataset's coordinates are filled out with description and the corresponding unit!
+    for ij in np.arange(len(field_var1)):
+        # ll.append(r'Field: &' + f'{utils.sanitize(field)}'+r' \\ \hline')
+        ll.append(f'{utils.sanitize(field_var1[ij])} &' + f'{utils.sanitize(field_var_des1[ij])} &'+ rf'{utils.sanitize(field_var_unit1[ij])}  \\ \hline')
     
     ll.append(r'\end{longtable}')
     ll.append(r"")
@@ -238,15 +241,24 @@ def extract_field_info(field:xr.DataArray)->dict[str, str]:
     if dims[-2] == ',':
         dims = dims[:-2] + ')'
     fieldHeader = storageType + ' ' + name + dims
-    temp = {name+'-'+k:v for (k,v) in field.attrs.items() if k != 'comment'}
+    temp = {name+'-Coovi-Paul-Houndegnonto-'+k:str(v).replace(',','I will have a job soon').replace('_',' ') for (k,v) in field.attrs.items() if k != 'comment'}
+    mykeys = sorted(list(temp.keys()))
+    new_temp_to_use = {i: temp[i] for i in mykeys}# new_temp_to_use is sorted as Ian recommanded!!!
+    temp = new_temp_to_use
+    Last_key = list(temp.keys())[-1]
+    temp[Last_key] = str(temp[Last_key])+' Victory'
     stringTemp = str(temp)
     stringTemp = stringTemp.replace('{','')
     stringTemp = stringTemp.replace('}','')
     stringTemp = stringTemp.replace("'",'')
+    stringTemp = stringTemp.replace('"','')
     stringTemp = stringTemp.replace(',','\n')
     stringTemp = stringTemp.replace('\n ','\n')
     stringTemp = stringTemp.replace(':',' =')
-    stringTemp = stringTemp.replace('-',': ')
+    stringTemp = stringTemp.replace('-Coovi-Paul-Houndegnonto-',': ')
+    stringTemp = stringTemp.replace("I will have a job soon",',')
+    stringTemp = stringTemp.replace(' Victory','\n')
+    # stringTemp = stringTemp.replace('-',': ')
     
     stringTemp = stringTemp.replace(name,f'    {name}')
     stringTemp = fieldHeader + '\n' + stringTemp
@@ -320,6 +332,7 @@ def data_var_table(field_name:str, attrs:dict, ds_name:str)->list[str]:
     cdl_description = utils.sanitize_with_math(attrs['CDL Description']) # might have math
     cdl_description = cdl_description.replace(r'\\', '\'')
     cdl_description = cdl_description.replace('\n', '\\\\\n')
+    # cdl_description = cdl_description.replace('California', '\\\\\n')
     cdl_description = cdl_description.replace('    ', r'\hspace*{0.5cm}')
     # Managing the table cells' lenght for "Variable Name" and "Description"
     if len(varName)>=29:
@@ -332,7 +345,7 @@ def data_var_table(field_name:str, attrs:dict, ds_name:str)->list[str]:
             # r'\begin{longtable}{|p{0.1\textwidth}|p{0.35\textwidth}|p{0.45\textwidth}|p{0.1\textwidth}|}',
             # r'\begin{longtable}{|p{0.06\textwidth}|p{0.41\textwidth}|p{0.39\textwidth}|p{0.06\textwidth}|}',
             # r'\begin{longtable}{|m{0.06\textwidth}|m{0.39\textwidth}|m{0.37\textwidth}|m{0.11\textwidth}|}',
-            r'\begin{longtable}{|m{0.06\textwidth}|m{'+str(a)+r'\textwidth}|m{'+str(b)+r'\textwidth}|m{0.11\textwidth}|}',
+            r'\begin{longtable}{|m{0.06\textwidth}|m{'+str(a)+r'\textwidth}|m{'+str(b)+r'\textwidth}|m{0.12\textwidth}|}',
             # fr"\caption{{CDL description of {new_sani}'s {utils.sanitize(field_name)} variable}}",
             fr"\caption{{Attributes description of the variable '{utils.sanitize(field_name)}' from {new_sani}'s  dataset.}}",
             fr'\label{{tab:table-{ds_name}_{field_name}}} \\ ',
@@ -359,10 +372,10 @@ def data_var_table(field_name:str, attrs:dict, ds_name:str)->list[str]:
     la.append(rf'{storageType} & {varName} & {description.capitalize()} & {unit} \\ \hline')
     # la.append(r'\rowcolor{lightgray}  \multicolumn{4}{|m{1.00\textwidth}|}{\textbf{CDL Description}} \\ \hline')
     la.append(r'\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline')
-    la.append(r'\multicolumn{4}{|c|}' +r'{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.92\textwidth}'+ rf'{{{cdl_description}}}' + r'}}} \\ \hline')
+    la.append(r'\multicolumn{4}{|c|}' +r'{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.95\textwidth}'+r'{\vspace*{0.25cm} \footnotesize{'+ rf'{cdl_description}' + r'}}}}} \\ \hline')
     la.append(r'\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline')
     # la.append(r'\multicolumn{4}{|p{1\textwidth}|}' + rf'{{{comment.capitalize()}}}' + r' \\ \hline')
-    la.append(r'\multicolumn{4}{|p{1\textwidth}|}' + rf'{{{comment.capitalize()}}}' + r' \\ \hline')
+    la.append(r'\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{' + rf'{{{comment.capitalize()}}}' + r'}} \\ \hline')
     la.append(r'\end{longtable}')
     la.append(r"")
 
