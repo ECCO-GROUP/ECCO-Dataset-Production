@@ -4,7 +4,7 @@ import argparse
 def check_keys_consistency(json_file, optional_keys=None):
     # Set default optional keys
     if optional_keys is None:
-        optional_keys = set(['standard_name', 'internal note', 'GCMD_keywords'])
+        optional_keys = set(['standard_name', 'internal note'])
     else:
         optional_keys = set(optional_keys)
 
