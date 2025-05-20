@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.1.14)  19 MAY 2025 12:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.1.14)  20 MAY 2025 08:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -925,15 +925,14 @@ LaTeX Font Info:    Font shape `T1/Cabin-TLF/regular/n' will be
 (Font)              scaled to size 14.4pt on input line 2.
  [2]
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/b/n' aliased to
+(Font)              `T1/Cabin-TLF/bold/n' on input line 4.
+LaTeX Font Info:    Font shape `T1/Cabin-TLF/bold/n' will be
+(Font)              scaled to size 14.4pt on input line 4.
+LaTeX Font Info:    Font shape `T1/Cabin-TLF/b/n' aliased to
 (Font)              `T1/Cabin-TLF/bold/n' on input line 5.
 LaTeX Font Info:    Font shape `T1/Cabin-TLF/bold/n' will be
 (Font)              scaled to size 17.28pt on input line 5.
  [3]) (./latex/ECCO_team.tex
-LaTeX Font Info:    Font shape `T1/Cabin-TLF/b/n' aliased to
-(Font)              `T1/Cabin-TLF/bold/n' on input line 2.
-LaTeX Font Info:    Font shape `T1/Cabin-TLF/bold/n' will be
-(Font)              scaled to size 14.4pt on input line 2.
-
 Underfull \hbox (badness 3386) in paragraph at lines 49--49
 []|\T1/Cabin-TLF/regular/n/10 Atmospheric and En-vi-ron-men-tal Re-
  []
@@ -948,7 +947,7 @@ Overfull \hbox (23.48918pt too wide) in paragraph at lines 78--78
 []|[]| 
  []
 
-<../images/logo_jpl.png, id=1280, 385.44pt x 192.72pt>
+<../images/logo_jpl.png, id=1279, 385.44pt x 192.72pt>
 File: ../images/logo_jpl.png Graphic file (type png)
 <use ../images/logo_jpl.png>
 Package pdftex.def Info: ../images/logo_jpl.png  used on input line 78.
@@ -958,7 +957,7 @@ Overfull \hbox (23.48918pt too wide) in paragraph at lines 78--78
 []|[]| 
  []
 
-<../images/logo_mit.png, id=1281, 385.44pt x 192.72pt>
+<../images/logo_mit.png, id=1280, 385.44pt x 192.72pt>
 File: ../images/logo_mit.png Graphic file (type png)
 <use ../images/logo_mit.png>
 Package pdftex.def Info: ../images/logo_mit.png  used on input line 78.
@@ -968,7 +967,7 @@ Overfull \hbox (23.48918pt too wide) in paragraph at lines 78--79
 []|[]| 
  []
 
-<../images/logo_aer.png, id=1282, 385.44pt x 192.72pt>
+<../images/logo_aer.png, id=1281, 385.44pt x 192.72pt>
 File: ../images/logo_aer.png Graphic file (type png)
 <use ../images/logo_aer.png>
 Package pdftex.def Info: ../images/logo_aer.png  used on input line 80.
@@ -978,7 +977,7 @@ Overfull \hbox (23.48918pt too wide) in paragraph at lines 80--80
 []|[]| 
  []
 
-<../images/logo_uta.png, id=1283, 385.44pt x 192.72pt>
+<../images/logo_uta.png, id=1282, 385.44pt x 192.72pt>
 File: ../images/logo_uta.png Graphic file (type png)
 <use ../images/logo_uta.png>
 Package pdftex.def Info: ../images/logo_uta.png  used on input line 80.
@@ -988,7 +987,7 @@ Overfull \hbox (23.48918pt too wide) in paragraph at lines 80--80
 []|[]| 
  []
 
-<../images/ecco_teams_sjsu.png, id=1284, 385.44pt x 192.72pt>
+<../images/ecco_teams_sjsu.png, id=1283, 385.44pt x 192.72pt>
 File: ../images/ecco_teams_sjsu.png Graphic file (type png)
 <use ../images/ecco_teams_sjsu.png>
 Package pdftex.def Info: ../images/ecco_teams_sjsu.png  used on input line 80.
@@ -998,12 +997,12 @@ Overfull \hbox (23.48918pt too wide) in paragraph at lines 80--81
 []|[]| 
  []
 
-<../images/logo-podaac.png, id=1285, 225.84375pt x 225.84375pt>
+<../images/logo-podaac.png, id=1284, 225.84375pt x 225.84375pt>
 File: ../images/logo-podaac.png Graphic file (type png)
 <use ../images/logo-podaac.png>
 Package pdftex.def Info: ../images/logo-podaac.png  used on input line 84.
 (pdftex.def)             Requested size: 93.94957pt x 93.95084pt.
-<../images/logo-nasa.jpg, id=1286, 803.0pt x 723.70375pt>
+<../images/logo-nasa.jpg, id=1285, 803.0pt x 723.70375pt>
 File: ../images/logo-nasa.jpg Graphic file (type jpg)
 <use ../images/logo-nasa.jpg>
 Package pdftex.def Info: ../images/logo-nasa.jpg  used on input line 84.
@@ -2815,7 +2814,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 60--74
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XC.png, id=3553, 521.7894pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XC.png, id=3552, 521.7894pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XC.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XC.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XC.png  used on input line 78.
@@ -2855,7 +2854,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 88--102
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/YC.png, id=3560, 515.526pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/YC.png, id=3559, 515.526pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/YC.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/YC.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/YC.png  used on input line 106.
@@ -2890,7 +2889,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 116--129
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XG.png, id=3566, 521.7894pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XG.png, id=3565, 521.7894pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XG.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XG.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/XG.png  used on input line 133.
@@ -2930,7 +2929,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 143--156
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/YG.png, id=3572, 515.526pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/YG.png, id=3571, 515.526pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/YG.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/YG.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/YG.png  used on input line 160.
@@ -2965,7 +2964,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 170--184
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/CS.png, id=3578, 524.6802pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/CS.png, id=3577, 524.6802pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/CS.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/CS.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/CS.png  used on input line 188.
@@ -3000,7 +2999,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 198--212
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/SN.png, id=3584, 524.6802pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/SN.png, id=3583, 524.6802pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/SN.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/SN.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/SN.png  used on input line 216.
@@ -3035,7 +3034,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 226--241
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rA.png, id=3591, 509.9853pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rA.png, id=3590, 509.9853pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rA.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rA.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rA.png  used on input line 245.
@@ -3070,7 +3069,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 255--268
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dxG.png, id=3597, 532.389pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dxG.png, id=3596, 532.389pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dxG.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dxG.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dxG.png  used on input line 272.
@@ -3105,7 +3104,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 282--295
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dyG.png, id=3603, 532.389pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dyG.png, id=3602, 532.389pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dyG.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dyG.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dyG.png  used on input line 299.
@@ -3140,7 +3139,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 309--324
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/Depth.png, id=3609, 519.6213pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/Depth.png, id=3608, 519.6213pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/Depth.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/Depth.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/Depth.png  used on input line 328.
@@ -3175,7 +3174,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 338--353
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAz.png, id=3615, 509.9853pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAz.png, id=3614, 509.9853pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAz.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAz.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAz.png  used on input line 357.
@@ -3210,7 +3209,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 367--380
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dxC.png, id=3621, 532.389pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dxC.png, id=3620, 532.389pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dxC.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dxC.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dxC.png  used on input line 384.
@@ -3245,7 +3244,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 394--407
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dyC.png, id=3628, 532.389pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dyC.png, id=3627, 532.389pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dyC.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dyC.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/dyC.png  used on input line 411.
@@ -3280,7 +3279,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 421--435
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAw.png, id=3634, 509.9853pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAw.png, id=3633, 509.9853pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAw.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAw.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAw.png  used on input line 439.
@@ -3315,7 +3314,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 449--463
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAs.png, id=3640, 509.9853pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAs.png, id=3639, 509.9853pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAs.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAs.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/rAs.png  used on input line 467.
@@ -3350,7 +3349,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 477--490
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacC.png, id=3647, 509.9853pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacC.png, id=3646, 509.9853pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacC.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacC.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacC.png  used on input line 494.
@@ -3385,7 +3384,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 504--517
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacW.png, id=3653, 509.9853pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacW.png, id=3652, 509.9853pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacW.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacW.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacW.png  used on input line 521.
@@ -3420,7 +3419,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 531--544
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacS.png, id=3659, 509.9853pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacS.png, id=3658, 509.9853pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacS.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacS.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/hFacS.png  used on input line 548.
@@ -3450,7 +3449,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 558--570
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskC.png, id=3666, 496.254pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskC.png, id=3665, 496.254pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskC.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskC.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskC.png  used on input line 574.
@@ -3480,7 +3479,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 584--596
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskW.png, id=3672, 496.254pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskW.png, id=3671, 496.254pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskW.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskW.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskW.png  used on input line 600.
@@ -3510,7 +3509,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 610--622
  [] [] [] [] 
  []
 
-<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskS.png, id=3678, 496.254pt x 510.2262pt>
+<../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskS.png, id=3677, 496.254pt x 510.2262pt>
 File: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskS.png Graphic file (type png)
 <use ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskS.png>
 Package pdftex.def Info: ../images/plots/native_plots_coords/Geometry_Parameters_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/maskS.png  used on input line 626.
@@ -3555,7 +3554,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 38--54
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png, id=3688, 539.3751pt x 510.2262pt>
+<../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png, id=3687, 539.3751pt x 510.2262pt>
 File: ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png Graphic file (type png)
 <use ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png>
 Package pdftex.def Info: ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png  used on input line 58.
@@ -3590,7 +3589,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 68--84
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFatemp.png, id=3694, 526.3665pt x 510.2262pt>
+<../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFatemp.png, id=3693, 526.3665pt x 510.2262pt>
 File: ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFatemp.png Graphic file (type png)
 <use ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFatemp.png>
 Package pdftex.def Info: ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFatemp.png  used on input line 88.
@@ -3625,7 +3624,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 98--114
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFpress.png, id=3701, 542.5068pt x 510.2262pt>
+<../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFpress.png, id=3700, 542.5068pt x 510.2262pt>
 File: ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFpress.png Graphic file (type png)
 <use ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFpress.png>
 Package pdftex.def Info: ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFpress.png  used on input line 118.
@@ -3660,7 +3659,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 128--144
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFuwind.png, id=3707, 526.3665pt x 510.2262pt>
+<../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFuwind.png, id=3706, 526.3665pt x 510.2262pt>
 File: ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFuwind.png Graphic file (type png)
 <use ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFuwind.png>
 Package pdftex.def Info: ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFuwind.png  used on input line 148.
@@ -3695,7 +3694,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 158--174
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFvwind.png, id=3713, 526.3665pt x 510.2262pt>
+<../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFvwind.png, id=3712, 526.3665pt x 510.2262pt>
 File: ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFvwind.png Graphic file (type png)
 <use ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFvwind.png>
 Package pdftex.def Info: ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFvwind.png  used on input line 178.
@@ -3730,7 +3729,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 188--204
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFwspee.png, id=3719, 526.3665pt x 510.2262pt>
+<../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFwspee.png, id=3718, 526.3665pt x 510.2262pt>
 File: ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFwspee.png Graphic file (type png)
 <use ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFwspee.png>
 Package pdftex.def Info: ../images/plots/native_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFwspee.png  used on input line 208.
@@ -3775,7 +3774,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 254--269
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/DIFFKR.png, id=3729, 509.9853pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/DIFFKR.png, id=3728, 509.9853pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/DIFFKR.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/DIFFKR.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/DIFFKR.png  used on input line 273.
@@ -3810,7 +3809,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 283--298
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/KAPGM.png, id=3736, 519.6213pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/KAPGM.png, id=3735, 519.6213pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/KAPGM.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/KAPGM.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/KAPGM.png  used on input line 302.
@@ -3845,7 +3844,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 312--327
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/KAPREDI.png, id=3742, 519.6213pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/KAPREDI.png, id=3741, 519.6213pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/KAPREDI.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/KAPREDI.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_3D_Gent-Mcwilliams_Redi_and_Background_Vertical_Diffusivity_Coefficients_for_the_Lat-Lon-Cap_90_(llc90)_Native_Model_Grid_(Version_4_Release_4)/KAPREDI.png  used on input line 331.
@@ -3890,7 +3889,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 378--394
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Momentum_Tendency/Um_dPHdx.png, id=3753, 508.7808pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Momentum_Tendency/Um_dPHdx.png, id=3752, 508.7808pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Momentum_Tendency/Um_dPHdx.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Momentum_Tendency/Um_dPHdx.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Momentum_Tendency/Um_dPHdx.png  used on input line 398.
@@ -3925,7 +3924,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 408--424
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Momentum_Tendency/Vm_dPHdy.png, id=3759, 508.7808pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Momentum_Tendency/Vm_dPHdy.png, id=3758, 508.7808pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Momentum_Tendency/Vm_dPHdy.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Momentum_Tendency/Vm_dPHdy.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Momentum_Tendency/Vm_dPHdy.png  used on input line 428.
@@ -3970,7 +3969,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 481--497
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVr_SLT.png, id=3770, 550.2156pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVr_SLT.png, id=3769, 550.2156pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVr_SLT.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVr_SLT.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVr_SLT.png  used on input line 501.
@@ -4005,7 +4004,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 511--528
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVx_SLT.png, id=3776, 518.4168pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVx_SLT.png, id=3775, 518.4168pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVx_SLT.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVx_SLT.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVx_SLT.png  used on input line 532.
@@ -4040,7 +4039,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 542--559
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVy_SLT.png, id=3782, 518.4168pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVy_SLT.png, id=3781, 518.4168pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVy_SLT.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVy_SLT.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/ADVy_SLT.png  used on input line 563.
@@ -4075,7 +4074,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 573--589
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFrE_SLT.png, id=3788, 531.1845pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFrE_SLT.png, id=3787, 531.1845pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFrE_SLT.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFrE_SLT.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFrE_SLT.png  used on input line 593.
@@ -4110,7 +4109,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 603--619
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFrI_SLT.png, id=3794, 531.1845pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFrI_SLT.png, id=3793, 531.1845pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFrI_SLT.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFrI_SLT.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFrI_SLT.png  used on input line 623.
@@ -4145,7 +4144,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 633--650
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFxE_SLT.png, id=3800, 534.3162pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFxE_SLT.png, id=3799, 534.3162pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFxE_SLT.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFxE_SLT.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFxE_SLT.png  used on input line 654.
@@ -4180,7 +4179,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 664--681
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFyE_SLT.png, id=3807, 534.3162pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFyE_SLT.png, id=3806, 534.3162pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFyE_SLT.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFyE_SLT.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/DFyE_SLT.png  used on input line 685.
@@ -4220,7 +4219,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 695--711
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/oceSPtnd.png, id=3813, 531.1845pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/oceSPtnd.png, id=3812, 531.1845pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/oceSPtnd.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/oceSPtnd.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Salinity_Fluxes/oceSPtnd.png  used on input line 715.
@@ -4305,7 +4304,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 767--783
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVr_TH.png, id=3823, 509.0217pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVr_TH.png, id=3822, 509.0217pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVr_TH.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVr_TH.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVr_TH.png  used on input line 787.
@@ -4350,7 +4349,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 797--814
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVx_TH.png, id=3829, 518.6577pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVx_TH.png, id=3828, 518.6577pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVx_TH.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVx_TH.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVx_TH.png  used on input line 818.
@@ -4395,7 +4394,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 828--845
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVy_TH.png, id=3835, 518.6577pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVy_TH.png, id=3834, 518.6577pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVy_TH.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVy_TH.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/ADVy_TH.png  used on input line 849.
@@ -4435,7 +4434,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 859--875
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFrE_TH.png, id=3843, 531.4254pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFrE_TH.png, id=3841, 531.4254pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFrE_TH.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFrE_TH.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFrE_TH.png  used on input line 879.
@@ -4475,7 +4474,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 889--905
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFrI_TH.png, id=3849, 531.4254pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFrI_TH.png, id=3848, 531.4254pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFrI_TH.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFrI_TH.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFrI_TH.png  used on input line 909.
@@ -4520,7 +4519,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 919--936
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFxE_TH.png, id=3855, 534.5571pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFxE_TH.png, id=3854, 534.5571pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFxE_TH.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFxE_TH.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFxE_TH.png  used on input line 940.
@@ -4560,7 +4559,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 950--967
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFyE_TH.png, id=3861, 541.0614pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFyE_TH.png, id=3860, 541.0614pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFyE_TH.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFyE_TH.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Potential_Temperature_Fluxes/DFyE_TH.png  used on input line 971.
@@ -4610,7 +4609,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1019--1036
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/UVELMASS.png, id=3871, 518.4168pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/UVELMASS.png, id=3870, 518.4168pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/UVELMASS.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/UVELMASS.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/UVELMASS.png  used on input line 1040.
@@ -4650,7 +4649,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1050--1067
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/VVELMASS.png, id=3878, 518.4168pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/VVELMASS.png, id=3877, 518.4168pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/VVELMASS.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/VVELMASS.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/VVELMASS.png  used on input line 1071.
@@ -4690,7 +4689,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1081--1098
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/WVELMASS.png, id=3884, 508.7808pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/WVELMASS.png, id=3883, 508.7808pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/WVELMASS.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/WVELMASS.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Three-Dimensional_Volume_Fluxes/WVELMASS.png  used on input line 1102.
@@ -4740,7 +4739,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1149--1165
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFempmr.png, id=3894, 514.5624pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFempmr.png, id=3893, 514.5624pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFempmr.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFempmr.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFempmr.png  used on input line 1169.
@@ -4775,7 +4774,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1179--1196
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFevap.png, id=3900, 514.5624pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFevap.png, id=3899, 514.5624pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFevap.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFevap.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFevap.png  used on input line 1200.
@@ -4810,7 +4809,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1210--1227
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFpreci.png, id=3906, 514.5624pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFpreci.png, id=3905, 514.5624pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFpreci.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFpreci.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFpreci.png  used on input line 1231.
@@ -4845,7 +4844,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1241--1258
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFroff.png, id=3913, 514.5624pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFroff.png, id=3912, 514.5624pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFroff.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFroff.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFroff.png  used on input line 1262.
@@ -4880,7 +4879,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1272--1288
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SFLUX.png, id=3919, 535.5207pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SFLUX.png, id=3918, 535.5207pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SFLUX.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SFLUX.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SFLUX.png  used on input line 1292.
@@ -4920,7 +4919,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1302--1319
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIacSubl.png, id=3925, 514.5624pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIacSubl.png, id=3924, 514.5624pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIacSubl.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIacSubl.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIacSubl.png  used on input line 1323.
@@ -4955,7 +4954,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1333--1350
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIatmFW.png, id=3931, 541.7841pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIatmFW.png, id=3930, 541.7841pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIatmFW.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIatmFW.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIatmFW.png  used on input line 1354.
@@ -4990,7 +4989,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1364--1380
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIfwThru.png, id=3937, 522.753pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIfwThru.png, id=3936, 522.753pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIfwThru.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIfwThru.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIfwThru.png  used on input line 1384.
@@ -5025,7 +5024,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1394--1410
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIrsSubl.png, id=3944, 514.5624pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIrsSubl.png, id=3943, 514.5624pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIrsSubl.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIrsSubl.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIrsSubl.png  used on input line 1414.
@@ -5060,7 +5059,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1424--1441
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIsnPrcp.png, id=3951, 514.5624pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIsnPrcp.png, id=3950, 514.5624pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIsnPrcp.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIsnPrcp.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIsnPrcp.png  used on input line 1445.
@@ -5095,7 +5094,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1455--1472
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/oceFWflx.png, id=3957, 541.7841pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/oceFWflx.png, id=3956, 541.7841pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/oceFWflx.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/oceFWflx.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/oceFWflx.png  used on input line 1476.
@@ -5140,7 +5139,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1524--1541
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png, id=3967, 531.6663pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png, id=3966, 531.6663pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png  used on input line 1545.
@@ -5175,7 +5174,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1555--1572
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png, id=3973, 531.6663pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png, id=3972, 531.6663pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png  used on input line 1576.
@@ -5210,7 +5209,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1586--1603
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png, id=3979, 531.6663pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png, id=3978, 531.6663pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png  used on input line 1607.
@@ -5245,7 +5244,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1617--1634
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png, id=3986, 531.6663pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png, id=3985, 531.6663pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png  used on input line 1638.
@@ -5280,7 +5279,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1648--1664
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png, id=3992, 531.6663pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png, id=3991, 531.6663pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png  used on input line 1668.
@@ -5315,7 +5314,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1678--1695
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png, id=3998, 531.6663pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png, id=3997, 531.6663pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png  used on input line 1699.
@@ -5350,7 +5349,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1709--1726
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png, id=4004, 531.6663pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png, id=4003, 531.6663pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png  used on input line 1730.
@@ -5385,7 +5384,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1740--1756
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png, id=4010, 526.1256pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png, id=4009, 526.1256pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png  used on input line 1760.
@@ -5420,7 +5419,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1770--1787
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png, id=4016, 531.6663pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png, id=4015, 531.6663pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png  used on input line 1791.
@@ -5455,7 +5454,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1801--1817
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png, id=4023, 531.6663pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png, id=4022, 531.6663pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png  used on input line 1821.
@@ -5490,7 +5489,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1831--1848
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQnet.png, id=4029, 531.6663pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQnet.png, id=4028, 531.6663pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQnet.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQnet.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQnet.png  used on input line 1852.
@@ -5525,7 +5524,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1862--1878
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png, id=4035, 531.6663pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png, id=4034, 531.6663pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png  used on input line 1882.
@@ -5570,7 +5569,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1922--1939
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaux.png, id=4046, 518.6577pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaux.png, id=4045, 518.6577pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaux.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaux.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaux.png  used on input line 1943.
@@ -5605,7 +5604,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1953--1970
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtauy.png, id=4052, 518.6577pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtauy.png, id=4051, 518.6577pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtauy.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtauy.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtauy.png  used on input line 1974.
@@ -5640,7 +5639,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1984--2002
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUX.png, id=4059, 518.6577pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUX.png, id=4058, 518.6577pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUX.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUX.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUX.png  used on input line 2006.
@@ -5675,7 +5674,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2016--2034
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUY.png, id=4065, 524.9211pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUY.png, id=4064, 524.9211pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUY.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUY.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUY.png  used on input line 2038.
@@ -5720,7 +5719,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2085--2101
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Gent-McWilliams_Bolus_Transport_Streamfunction/GM_PsiX.png, id=4075, 531.1845pt x 510.2262pt>
+<../images/plots/native_plots/Gent-McWilliams_Bolus_Transport_Streamfunction/GM_PsiX.png, id=4074, 531.1845pt x 510.2262pt>
 File: ../images/plots/native_plots/Gent-McWilliams_Bolus_Transport_Streamfunction/GM_PsiX.png Graphic file (type png)
 <use ../images/plots/native_plots/Gent-McWilliams_Bolus_Transport_Streamfunction/GM_PsiX.png>
 Package pdftex.def Info: ../images/plots/native_plots/Gent-McWilliams_Bolus_Transport_Streamfunction/GM_PsiX.png  used on input line 2105.
@@ -5755,7 +5754,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2115--2131
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Gent-McWilliams_Bolus_Transport_Streamfunction/GM_PsiY.png, id=4081, 531.1845pt x 510.2262pt>
+<../images/plots/native_plots/Gent-McWilliams_Bolus_Transport_Streamfunction/GM_PsiY.png, id=4080, 531.1845pt x 510.2262pt>
 File: ../images/plots/native_plots/Gent-McWilliams_Bolus_Transport_Streamfunction/GM_PsiY.png Graphic file (type png)
 <use ../images/plots/native_plots/Gent-McWilliams_Bolus_Transport_Streamfunction/GM_PsiY.png>
 Package pdftex.def Info: ../images/plots/native_plots/Gent-McWilliams_Bolus_Transport_Streamfunction/GM_PsiY.png  used on input line 2135.
@@ -5805,7 +5804,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2183--2200
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/UVELSTAR.png, id=4092, 571.1739pt x 510.2262pt>
+<../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/UVELSTAR.png, id=4091, 571.1739pt x 510.2262pt>
 File: ../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/UVELSTAR.png Graphic file (type png)
 <use ../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/UVELSTAR.png>
 Package pdftex.def Info: ../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/UVELSTAR.png  used on input line 2204.
@@ -5845,7 +5844,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2214--2231
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/VVELSTAR.png, id=4098, 571.1739pt x 510.2262pt>
+<../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/VVELSTAR.png, id=4097, 571.1739pt x 510.2262pt>
 File: ../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/VVELSTAR.png Graphic file (type png)
 <use ../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/VVELSTAR.png>
 Package pdftex.def Info: ../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/VVELSTAR.png  used on input line 2235.
@@ -5880,7 +5879,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2245--2262
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/WVELSTAR.png, id=4104, 537.4479pt x 510.2262pt>
+<../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/WVELSTAR.png, id=4103, 537.4479pt x 510.2262pt>
 File: ../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/WVELSTAR.png Graphic file (type png)
 <use ../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/WVELSTAR.png>
 Package pdftex.def Info: ../images/plots/native_plots/Gent-McWilliams_Ocean_Bolus_Velocity/WVELSTAR.png  used on input line 2266.
@@ -5925,7 +5924,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2305--2320
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Bottom_Pressure/OBP.png, id=4114, 506.8536pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Bottom_Pressure/OBP.png, id=4113, 506.8536pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Bottom_Pressure/OBP.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Bottom_Pressure/OBP.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Bottom_Pressure/OBP.png  used on input line 2324.
@@ -5965,7 +5964,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2334--2349
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Bottom_Pressure/OBPGMAP.png, id=4120, 641.0349pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Bottom_Pressure/OBPGMAP.png, id=4119, 641.0349pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Bottom_Pressure/OBPGMAP.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Bottom_Pressure/OBPGMAP.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Bottom_Pressure/OBPGMAP.png  used on input line 2353.
@@ -6000,7 +5999,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2363--2378
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Bottom_Pressure/PHIBOT.png, id=4127, 513.117pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Bottom_Pressure/PHIBOT.png, id=4126, 513.117pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Bottom_Pressure/PHIBOT.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Bottom_Pressure/PHIBOT.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Bottom_Pressure/PHIBOT.png  used on input line 2382.
@@ -6045,7 +6044,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2431--2447
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/DRHODR.png, id=4138, 531.1845pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/DRHODR.png, id=4136, 531.1845pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/DRHODR.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/DRHODR.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/DRHODR.png  used on input line 2451.
@@ -6080,7 +6079,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2461--2476
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYD.png, id=4144, 513.117pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYD.png, id=4143, 513.117pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYD.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYD.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYD.png  used on input line 2480.
@@ -6115,7 +6114,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2490--2505
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYDcR.png, id=4150, 513.117pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYDcR.png, id=4149, 513.117pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYDcR.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYDcR.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYDcR.png  used on input line 2509.
@@ -6150,7 +6149,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2519--2534
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/RHOAnoma.png, id=4156, 515.2851pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/RHOAnoma.png, id=4155, 515.2851pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/RHOAnoma.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/RHOAnoma.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/RHOAnoma.png  used on input line 2538.
@@ -6200,7 +6199,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2575--2591
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Mixed_Layer_Depth/MXLDEPTH.png, id=4167, 560.3334pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Mixed_Layer_Depth/MXLDEPTH.png, id=4166, 560.3334pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Mixed_Layer_Depth/MXLDEPTH.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Mixed_Layer_Depth/MXLDEPTH.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Mixed_Layer_Depth/MXLDEPTH.png  used on input line 2595.
@@ -6245,7 +6244,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2642--2658
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Temperature_and_Salinity/SALT.png, id=4177, 506.8536pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Temperature_and_Salinity/SALT.png, id=4176, 506.8536pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Temperature_and_Salinity/SALT.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Temperature_and_Salinity/SALT.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Temperature_and_Salinity/SALT.png  used on input line 2662.
@@ -6280,7 +6279,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2672--2689
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Temperature_and_Salinity/THETA.png, id=4183, 507.0945pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Temperature_and_Salinity/THETA.png, id=4182, 507.0945pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Temperature_and_Salinity/THETA.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Temperature_and_Salinity/THETA.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Temperature_and_Salinity/THETA.png  used on input line 2693.
@@ -6325,7 +6324,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2741--2759
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Velocity/UVEL.png, id=4194, 518.4168pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Velocity/UVEL.png, id=4193, 518.4168pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Velocity/UVEL.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Velocity/UVEL.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Velocity/UVEL.png  used on input line 2763.
@@ -6360,7 +6359,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2773--2791
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Velocity/VVEL.png, id=4200, 518.4168pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Velocity/VVEL.png, id=4199, 518.4168pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Velocity/VVEL.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Velocity/VVEL.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Velocity/VVEL.png  used on input line 2795.
@@ -6395,7 +6394,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2805--2822
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Ocean_Velocity/WVEL.png, id=4206, 508.7808pt x 510.2262pt>
+<../images/plots/native_plots/Ocean_Velocity/WVEL.png, id=4205, 508.7808pt x 510.2262pt>
 File: ../images/plots/native_plots/Ocean_Velocity/WVEL.png Graphic file (type png)
 <use ../images/plots/native_plots/Ocean_Velocity/WVEL.png>
 Package pdftex.def Info: ../images/plots/native_plots/Ocean_Velocity/WVEL.png  used on input line 2826.
@@ -6440,7 +6439,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2866--2882
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIarea.png, id=4216, 682.2288pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIarea.png, id=4215, 682.2288pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIarea.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIarea.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIarea.png  used on input line 2886.
@@ -6475,7 +6474,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2896--2912
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIheff.png, id=4222, 682.2288pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIheff.png, id=4221, 682.2288pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIheff.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIheff.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIheff.png  used on input line 2916.
@@ -6510,7 +6509,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2926--2942
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIhsnow.png, id=4229, 688.7331pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIhsnow.png, id=4228, 688.7331pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIhsnow.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIhsnow.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIhsnow.png  used on input line 2946.
@@ -6545,7 +6544,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 2956--2972
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/sIceLoad.png, id=4236, 682.2288pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/sIceLoad.png, id=4235, 682.2288pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/sIceLoad.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/sIceLoad.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/sIceLoad.png  used on input line 2976.
@@ -6590,7 +6589,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3020--3037
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVxHEFF.png, id=4246, 706.5597pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVxHEFF.png, id=4245, 706.5597pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVxHEFF.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVxHEFF.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVxHEFF.png  used on input line 3041.
@@ -6630,7 +6629,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3051--3068
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVxSNOW.png, id=4252, 700.2963pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVxSNOW.png, id=4251, 700.2963pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVxSNOW.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVxSNOW.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVxSNOW.png  used on input line 3072.
@@ -6670,7 +6669,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3082--3099
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVyHEFF.png, id=4258, 706.5597pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVyHEFF.png, id=4257, 706.5597pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVyHEFF.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVyHEFF.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVyHEFF.png  used on input line 3103.
@@ -6710,7 +6709,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3113--3130
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVySNOW.png, id=4265, 700.2963pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVySNOW.png, id=4264, 700.2963pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVySNOW.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVySNOW.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/ADVySNOW.png  used on input line 3134.
@@ -6750,7 +6749,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3144--3161
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFxEHEFF.png, id=4271, 693.792pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFxEHEFF.png, id=4270, 693.792pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFxEHEFF.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFxEHEFF.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFxEHEFF.png  used on input line 3165.
@@ -6785,7 +6784,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3175--3192
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFxESNOW.png, id=4277, 693.792pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFxESNOW.png, id=4276, 693.792pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFxESNOW.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFxESNOW.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFxESNOW.png  used on input line 3196.
@@ -6820,7 +6819,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3206--3223
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFyEHEFF.png, id=4283, 693.792pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFyEHEFF.png, id=4282, 693.792pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFyEHEFF.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFyEHEFF.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFyEHEFF.png  used on input line 3227.
@@ -6855,7 +6854,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3237--3254
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFyESNOW.png, id=4289, 693.792pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFyESNOW.png, id=4288, 693.792pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFyESNOW.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFyESNOW.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_and_Snow_Horizontal_Volume_Fluxes/DFyESNOW.png  used on input line 3258.
@@ -6900,7 +6899,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3296--3311
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_Salt_Plume_Fluxes/oceSPDep.png, id=4300, 700.2963pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_Salt_Plume_Fluxes/oceSPDep.png, id=4299, 700.2963pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_Salt_Plume_Fluxes/oceSPDep.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_Salt_Plume_Fluxes/oceSPDep.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_Salt_Plume_Fluxes/oceSPDep.png  used on input line 3315.
@@ -6935,7 +6934,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3325--3341
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_Salt_Plume_Fluxes/oceSPflx.png, id=4306, 703.428pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_Salt_Plume_Fluxes/oceSPflx.png, id=4305, 703.428pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_Salt_Plume_Fluxes/oceSPflx.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_Salt_Plume_Fluxes/oceSPflx.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_Salt_Plume_Fluxes/oceSPflx.png  used on input line 3345.
@@ -6985,7 +6984,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3383--3400
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_Velocity/SIuice.png, id=4316, 690.6603pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_Velocity/SIuice.png, id=4315, 690.6603pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_Velocity/SIuice.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_Velocity/SIuice.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_Velocity/SIuice.png  used on input line 3404.
@@ -7020,7 +7019,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3414--3431
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea-Ice_Velocity/SIvice.png, id=4322, 690.6603pt x 343.7643pt>
+<../images/plots/native_plots/Sea-Ice_Velocity/SIvice.png, id=4321, 690.6603pt x 343.7643pt>
 File: ../images/plots/native_plots/Sea-Ice_Velocity/SIvice.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea-Ice_Velocity/SIvice.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea-Ice_Velocity/SIvice.png  used on input line 3435.
@@ -7065,7 +7064,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3475--3490
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea_Surface_Height/ETAN.png, id=4334, 508.7808pt x 510.2262pt>
+<../images/plots/native_plots/Sea_Surface_Height/ETAN.png, id=4333, 508.7808pt x 510.2262pt>
 File: ../images/plots/native_plots/Sea_Surface_Height/ETAN.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea_Surface_Height/ETAN.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea_Surface_Height/ETAN.png  used on input line 3494.
@@ -7100,7 +7099,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3504--3520
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea_Surface_Height/SSH.png, id=4340, 518.4168pt x 510.2262pt>
+<../images/plots/native_plots/Sea_Surface_Height/SSH.png, id=4339, 518.4168pt x 510.2262pt>
 File: ../images/plots/native_plots/Sea_Surface_Height/SSH.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea_Surface_Height/SSH.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea_Surface_Height/SSH.png  used on input line 3524.
@@ -7140,7 +7139,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3534--3549
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea_Surface_Height/SSHIBC.png, id=4346, 597.432pt x 510.2262pt>
+<../images/plots/native_plots/Sea_Surface_Height/SSHIBC.png, id=4345, 597.432pt x 510.2262pt>
 File: ../images/plots/native_plots/Sea_Surface_Height/SSHIBC.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea_Surface_Height/SSHIBC.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea_Surface_Height/SSHIBC.png  used on input line 3553.
@@ -7175,7 +7174,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 3563--3578
  [] [] [] [] 
  []
 
-<../images/plots/native_plots/Sea_Surface_Height/SSHNOIBC.png, id=4352, 518.4168pt x 510.2262pt>
+<../images/plots/native_plots/Sea_Surface_Height/SSHNOIBC.png, id=4351, 518.4168pt x 510.2262pt>
 File: ../images/plots/native_plots/Sea_Surface_Height/SSHNOIBC.png Graphic file (type png)
 <use ../images/plots/native_plots/Sea_Surface_Height/SSHNOIBC.png>
 Package pdftex.def Info: ../images/plots/native_plots/Sea_Surface_Height/SSHNOIBC.png  used on input line 3582.
@@ -7215,7 +7214,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 30--43
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/Depth.png, id=4362, 638.1441pt x 360.8682pt>
+<../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/Depth.png, id=4361, 638.1441pt x 360.8682pt>
 File: ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/Depth.png Graphic file (type png)
 <use ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/Depth.png>
 Package pdftex.def Info: ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/Depth.png  used on input line 47.
@@ -7250,7 +7249,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 57--70
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/area.png, id=4369, 628.749pt x 360.8682pt>
+<../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/area.png, id=4368, 628.749pt x 360.8682pt>
 File: ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/area.png Graphic file (type png)
 <use ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/area.png>
 Package pdftex.def Info: ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/area.png  used on input line 74.
@@ -7285,7 +7284,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 84--97
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/drF.png, id=4375, 509.7444pt x 611.4042pt>
+<../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/drF.png, id=4374, 509.7444pt x 611.4042pt>
 File: ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/drF.png Graphic file (type png)
 <use ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/drF.png>
 Package pdftex.def Info: ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/drF.png  used on input line 101.
@@ -7320,7 +7319,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 111--123
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/hFacC.png, id=4381, 641.5167pt x 360.8682pt>
+<../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/hFacC.png, id=4380, 641.5167pt x 360.8682pt>
 File: ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/hFacC.png Graphic file (type png)
 <use ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/hFacC.png>
 Package pdftex.def Info: ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/hFacC.png  used on input line 127.
@@ -7350,7 +7349,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 137--148
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/maskC.png, id=4387, 615.0177pt x 360.8682pt>
+<../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/maskC.png, id=4386, 615.0177pt x 360.8682pt>
 File: ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/maskC.png Graphic file (type png)
 <use ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/maskC.png>
 Package pdftex.def Info: ../images/plots/latlon_plots_coords/Geometry_Parameters_for_the_0.5_degree_Lat-Lon_Model_Grid_(Version_4_Release_4)/maskC.png  used on input line 152.
@@ -7390,7 +7389,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 31--47
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png, id=4397, 647.7801pt x 362.5545pt>
+<../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png, id=4396, 647.7801pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFaqh.png  used on input line 51.
@@ -7425,7 +7424,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 61--77
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFatemp.png, id=4404, 632.1216pt x 362.5545pt>
+<../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFatemp.png, id=4403, 632.1216pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFatemp.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFatemp.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFatemp.png  used on input line 81.
@@ -7460,7 +7459,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 91--107
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFewind.png, id=4410, 633.8079pt x 362.5545pt>
+<../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFewind.png, id=4409, 633.8079pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFewind.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFewind.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFewind.png  used on input line 111.
@@ -7495,7 +7494,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 121--137
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFnwind.png, id=4416, 633.8079pt x 362.5545pt>
+<../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFnwind.png, id=4415, 633.8079pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFnwind.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFnwind.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFnwind.png  used on input line 141.
@@ -7530,7 +7529,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 151--167
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFpress.png, id=4422, 650.9118pt x 362.5545pt>
+<../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFpress.png, id=4421, 650.9118pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFpress.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFpress.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFpress.png  used on input line 171.
@@ -7565,7 +7564,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 181--197
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFwspee.png, id=4429, 625.3764pt x 362.5545pt>
+<../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFwspee.png, id=4428, 625.3764pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFwspee.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFwspee.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Atmosphere_Surface_Temperature_Humidity_Wind_and_Pressure/EXFwspee.png  used on input line 201.
@@ -7610,7 +7609,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 241--257
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFempmr.png, id=4440, 627.5445pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFempmr.png, id=4439, 627.5445pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFempmr.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFempmr.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFempmr.png  used on input line 261.
@@ -7645,7 +7644,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 271--288
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFevap.png, id=4446, 627.5445pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFevap.png, id=4445, 627.5445pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFevap.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFevap.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFevap.png  used on input line 292.
@@ -7680,7 +7679,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 302--319
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFpreci.png, id=4452, 627.5445pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFpreci.png, id=4451, 627.5445pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFpreci.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFpreci.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFpreci.png  used on input line 323.
@@ -7715,7 +7714,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 333--350
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFroff.png, id=4458, 627.5445pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFroff.png, id=4457, 627.5445pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFroff.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFroff.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/EXFroff.png  used on input line 354.
@@ -7750,7 +7749,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 364--380
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SFLUX.png, id=4464, 649.9482pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SFLUX.png, id=4463, 649.9482pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SFLUX.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SFLUX.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SFLUX.png  used on input line 384.
@@ -7790,7 +7789,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 394--411
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIacSubl.png, id=4470, 627.5445pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIacSubl.png, id=4469, 627.5445pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIacSubl.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIacSubl.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIacSubl.png  used on input line 415.
@@ -7825,7 +7824,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 425--442
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIatmFW.png, id=4477, 656.2116pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIatmFW.png, id=4476, 656.2116pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIatmFW.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIatmFW.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIatmFW.png  used on input line 446.
@@ -7860,7 +7859,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 456--472
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIfwThru.png, id=4483, 637.1805pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIfwThru.png, id=4482, 637.1805pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIfwThru.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIfwThru.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIfwThru.png  used on input line 476.
@@ -7895,7 +7894,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 486--502
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIrsSubl.png, id=4489, 627.5445pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIrsSubl.png, id=4488, 627.5445pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIrsSubl.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIrsSubl.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIrsSubl.png  used on input line 506.
@@ -7930,7 +7929,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 516--533
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIsnPrcp.png, id=4495, 627.5445pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIsnPrcp.png, id=4494, 627.5445pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIsnPrcp.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIsnPrcp.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/SIsnPrcp.png  used on input line 537.
@@ -7965,7 +7964,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 547--564
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/oceFWflx.png, id=4501, 656.2116pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/oceFWflx.png, id=4500, 656.2116pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/oceFWflx.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/oceFWflx.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Freshwater_Fluxes/oceFWflx.png  used on input line 568.
@@ -8005,7 +8004,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 609--626
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png, id=4512, 640.3122pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png, id=4511, 640.3122pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhl.png  used on input line 630.
@@ -8040,7 +8039,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 640--657
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png, id=4518, 640.3122pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png, id=4517, 640.3122pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFhs.png  used on input line 661.
@@ -8075,7 +8074,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 671--688
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png, id=4524, 640.3122pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png, id=4523, 640.3122pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwdn.png  used on input line 692.
@@ -8110,7 +8109,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 702--719
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png, id=4531, 640.3122pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png, id=4530, 640.3122pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFlwnet.png  used on input line 723.
@@ -8145,7 +8144,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 733--749
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png, id=4537, 640.3122pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png, id=4536, 640.3122pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFqnet.png  used on input line 753.
@@ -8180,7 +8179,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 763--780
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png, id=4543, 640.3122pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png, id=4542, 640.3122pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswdn.png  used on input line 784.
@@ -8215,7 +8214,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 794--811
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png, id=4550, 640.3122pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png, id=4549, 640.3122pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/EXFswnet.png  used on input line 815.
@@ -8250,7 +8249,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 825--841
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png, id=4556, 627.5445pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png, id=4555, 627.5445pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIaaflux.png  used on input line 845.
@@ -8285,7 +8284,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 855--872
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png, id=4562, 640.3122pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png, id=4561, 640.3122pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/SIatmQnt.png  used on input line 876.
@@ -8320,7 +8319,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 886--902
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png, id=4568, 640.3122pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png, id=4567, 640.3122pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/TFLUX.png  used on input line 906.
@@ -8355,7 +8354,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 916--933
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQnet.png, id=4574, 640.3122pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQnet.png, id=4573, 640.3122pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQnet.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQnet.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQnet.png  used on input line 937.
@@ -8390,7 +8389,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 947--963
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png, id=4580, 640.3122pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png, id=4579, 640.3122pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Heat_Fluxes/oceQsw.png  used on input line 967.
@@ -8430,7 +8429,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1000--1017
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaue.png, id=4591, 643.4439pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaue.png, id=4590, 643.4439pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaue.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaue.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaue.png  used on input line 1021.
@@ -8465,7 +8464,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1031--1048
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaun.png, id=4597, 643.4439pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaun.png, id=4596, 643.4439pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaun.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaun.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/EXFtaun.png  used on input line 1052.
@@ -8500,7 +8499,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1062--1079
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUE.png, id=4603, 643.4439pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUE.png, id=4602, 643.4439pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUE.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUE.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUE.png  used on input line 1083.
@@ -8535,7 +8534,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1093--1110
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUN.png, id=4609, 637.1805pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUN.png, id=4608, 637.1805pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUN.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUN.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_and_Sea-Ice_Surface_Stress/oceTAUN.png  used on input line 1114.
@@ -8575,7 +8574,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1148--1164
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/EVELSTAR.png, id=4620, 637.1805pt x 362.5545pt>
+<../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/EVELSTAR.png, id=4619, 637.1805pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/EVELSTAR.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/EVELSTAR.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/EVELSTAR.png  used on input line 1168.
@@ -8615,7 +8614,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1178--1194
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/NVELSTAR.png, id=4627, 637.1805pt x 362.5545pt>
+<../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/NVELSTAR.png, id=4625, 637.1805pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/NVELSTAR.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/NVELSTAR.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/NVELSTAR.png  used on input line 1198.
@@ -8650,7 +8649,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1208--1225
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/WVELSTAR.png, id=4633, 656.2116pt x 362.5545pt>
+<../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/WVELSTAR.png, id=4632, 656.2116pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/WVELSTAR.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/WVELSTAR.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Gent-McWilliams_Ocean_Bolus_Velocity/WVELSTAR.png  used on input line 1229.
@@ -8690,7 +8689,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1260--1275
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_Bottom_Pressure/OBP.png, id=4643, 625.3764pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_Bottom_Pressure/OBP.png, id=4642, 625.3764pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_Bottom_Pressure/OBP.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_Bottom_Pressure/OBP.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_Bottom_Pressure/OBP.png  used on input line 1279.
@@ -8730,7 +8729,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1289--1304
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_Bottom_Pressure/OBPGMAP.png, id=4649, 673.5564pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_Bottom_Pressure/OBPGMAP.png, id=4648, 673.5564pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_Bottom_Pressure/OBPGMAP.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_Bottom_Pressure/OBPGMAP.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_Bottom_Pressure/OBPGMAP.png  used on input line 1308.
@@ -8775,7 +8774,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1342--1358
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/DRHODR.png, id=4660, 649.9482pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/DRHODR.png, id=4659, 649.9482pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/DRHODR.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/DRHODR.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/DRHODR.png  used on input line 1362.
@@ -8810,7 +8809,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1372--1387
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYD.png, id=4666, 631.8807pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYD.png, id=4665, 631.8807pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYD.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYD.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/PHIHYD.png  used on input line 1391.
@@ -8845,7 +8844,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1401--1416
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/RHOAnoma.png, id=4672, 633.8079pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/RHOAnoma.png, id=4671, 633.8079pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/RHOAnoma.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/RHOAnoma.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_Density_Stratification_and_Hydrostatic_Pressure/RHOAnoma.png  used on input line 1420.
@@ -8890,7 +8889,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1450--1466
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_Mixed_Layer_Depth/MXLDEPTH.png, id=4682, 639.5895pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_Mixed_Layer_Depth/MXLDEPTH.png, id=4681, 639.5895pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_Mixed_Layer_Depth/MXLDEPTH.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_Mixed_Layer_Depth/MXLDEPTH.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_Mixed_Layer_Depth/MXLDEPTH.png  used on input line 1470.
@@ -8930,7 +8929,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1503--1519
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_Temperature_and_Salinity/SALT.png, id=4693, 625.3764pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_Temperature_and_Salinity/SALT.png, id=4692, 625.3764pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_Temperature_and_Salinity/SALT.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_Temperature_and_Salinity/SALT.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_Temperature_and_Salinity/SALT.png  used on input line 1523.
@@ -8965,7 +8964,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1533--1550
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_Temperature_and_Salinity/THETA.png, id=4699, 625.6173pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_Temperature_and_Salinity/THETA.png, id=4698, 625.6173pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_Temperature_and_Salinity/THETA.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_Temperature_and_Salinity/THETA.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_Temperature_and_Salinity/THETA.png  used on input line 1554.
@@ -9005,7 +9004,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1588--1604
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_Velocity/EVEL.png, id=4709, 637.1805pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_Velocity/EVEL.png, id=4708, 637.1805pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_Velocity/EVEL.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_Velocity/EVEL.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_Velocity/EVEL.png  used on input line 1608.
@@ -9040,7 +9039,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1618--1634
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_Velocity/NVEL.png, id=4715, 637.1805pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_Velocity/NVEL.png, id=4714, 637.1805pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_Velocity/NVEL.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_Velocity/NVEL.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_Velocity/NVEL.png  used on input line 1638.
@@ -9075,7 +9074,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1648--1665
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Ocean_Velocity/WVEL.png, id=4723, 627.5445pt x 362.5545pt>
+<../images/plots/latlon_plots/Ocean_Velocity/WVEL.png, id=4722, 627.5445pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Ocean_Velocity/WVEL.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Ocean_Velocity/WVEL.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Ocean_Velocity/WVEL.png  used on input line 1669.
@@ -9115,7 +9114,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1702--1718
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIarea.png, id=4733, 682.2288pt x 360.8682pt>
+<../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIarea.png, id=4732, 682.2288pt x 360.8682pt>
 File: ../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIarea.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIarea.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIarea.png  used on input line 1722.
@@ -9150,7 +9149,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1732--1748
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIheff.png, id=4739, 682.2288pt x 360.8682pt>
+<../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIheff.png, id=4738, 682.2288pt x 360.8682pt>
 File: ../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIheff.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIheff.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIheff.png  used on input line 1752.
@@ -9185,7 +9184,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1762--1778
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIhsnow.png, id=4745, 682.2288pt x 360.8682pt>
+<../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIhsnow.png, id=4744, 682.2288pt x 360.8682pt>
 File: ../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIhsnow.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIhsnow.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/SIhsnow.png  used on input line 1782.
@@ -9220,7 +9219,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1792--1808
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/sIceLoad.png, id=4751, 682.2288pt x 360.8682pt>
+<../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/sIceLoad.png, id=4750, 682.2288pt x 360.8682pt>
 File: ../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/sIceLoad.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/sIceLoad.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Sea-Ice_and_Snow_Concentration_and_Thickness/sIceLoad.png  used on input line 1812.
@@ -9260,7 +9259,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1843--1859
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Sea-Ice_Velocity/SIeice.png, id=4762, 690.6603pt x 360.8682pt>
+<../images/plots/latlon_plots/Sea-Ice_Velocity/SIeice.png, id=4761, 690.6603pt x 360.8682pt>
 File: ../images/plots/latlon_plots/Sea-Ice_Velocity/SIeice.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Sea-Ice_Velocity/SIeice.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Sea-Ice_Velocity/SIeice.png  used on input line 1863.
@@ -9295,7 +9294,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1873--1889
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Sea-Ice_Velocity/SInice.png, id=4768, 690.6603pt x 360.8682pt>
+<../images/plots/latlon_plots/Sea-Ice_Velocity/SInice.png, id=4767, 690.6603pt x 360.8682pt>
 File: ../images/plots/latlon_plots/Sea-Ice_Velocity/SInice.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Sea-Ice_Velocity/SInice.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Sea-Ice_Velocity/SInice.png  used on input line 1893.
@@ -9335,7 +9334,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1925--1941
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Sea_Surface_Height/SSH.png, id=4778, 637.1805pt x 362.5545pt>
+<../images/plots/latlon_plots/Sea_Surface_Height/SSH.png, id=4777, 637.1805pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Sea_Surface_Height/SSH.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Sea_Surface_Height/SSH.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Sea_Surface_Height/SSH.png  used on input line 1945.
@@ -9375,7 +9374,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1955--1970
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Sea_Surface_Height/SSHIBC.png, id=4784, 663.4386pt x 362.5545pt>
+<../images/plots/latlon_plots/Sea_Surface_Height/SSHIBC.png, id=4783, 663.4386pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Sea_Surface_Height/SSHIBC.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Sea_Surface_Height/SSHIBC.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Sea_Surface_Height/SSHIBC.png  used on input line 1974.
@@ -9410,7 +9409,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 1984--1999
  [] [] [] [] 
  []
 
-<../images/plots/latlon_plots/Sea_Surface_Height/SSHNOIBC.png, id=4791, 637.1805pt x 362.5545pt>
+<../images/plots/latlon_plots/Sea_Surface_Height/SSHNOIBC.png, id=4790, 637.1805pt x 362.5545pt>
 File: ../images/plots/latlon_plots/Sea_Surface_Height/SSHNOIBC.png Graphic file (type png)
 <use ../images/plots/latlon_plots/Sea_Surface_Height/SSHNOIBC.png>
 Package pdftex.def Info: ../images/plots/latlon_plots/Sea_Surface_Height/SSHNOIBC.png  used on input line 2003.
@@ -9445,7 +9444,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 21--37
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/Global_Mean_Atmospheric_Pressure/Pa_global.png, id=4801, 760.5213pt x 446.6286pt>
+<../images/plots/oneD_plots/Global_Mean_Atmospheric_Pressure/Pa_global.png, id=4800, 760.5213pt x 446.6286pt>
 File: ../images/plots/oneD_plots/Global_Mean_Atmospheric_Pressure/Pa_global.png Graphic file (type png)
 <use ../images/plots/oneD_plots/Global_Mean_Atmospheric_Pressure/Pa_global.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/Global_Mean_Atmospheric_Pressure/Pa_global.png  used on input line 41.
@@ -9505,7 +9504,7 @@ Overfull \hbox (49.99994pt too wide) in alignment at lines 68--84
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_barystatic_sea_level_anomaly.png, id=4811, 741.7311pt x 446.6286pt>
+<../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_barystatic_sea_level_anomaly.png, id=4810, 741.7311pt x 446.6286pt>
 File: ../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_barystatic_sea_level_anomaly.png Graphic file (type png)
 <use ../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_barystatic_sea_level_anomaly.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_barystatic_sea_level_anomaly.png  used on input line 88.
@@ -9545,7 +9544,7 @@ Overfull \hbox (49.99994pt too wide) in alignment at lines 98--114
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_sea_level_anomaly.png, id=4818, 730.6497pt x 446.6286pt>
+<../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_sea_level_anomaly.png, id=4817, 730.6497pt x 446.6286pt>
 File: ../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_sea_level_anomaly.png Graphic file (type png)
 <use ../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_sea_level_anomaly.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_sea_level_anomaly.png  used on input line 118.
@@ -9595,7 +9594,7 @@ Overfull \hbox (49.99994pt too wide) in alignment at lines 128--144
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_sterodynamic_sea_level_anomaly.png, id=4825, 748.2354pt x 446.6286pt>
+<../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_sterodynamic_sea_level_anomaly.png, id=4824, 748.2354pt x 446.6286pt>
 File: ../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_sterodynamic_sea_level_anomaly.png Graphic file (type png)
 <use ../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_sterodynamic_sea_level_anomaly.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/Global_Mean_Sea_Level/global_mean_sterodynamic_sea_level_anomaly.png  used on input line 148.
@@ -9630,7 +9629,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 198--213
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/mass.png, id=4835, 715.9548pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/mass.png, id=4834, 715.9548pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/mass.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/mass.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/mass.png  used on input line 217.
@@ -9665,7 +9664,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 227--242
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/mass_fw.png, id=4841, 727.0362pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/mass_fw.png, id=4840, 727.0362pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/mass_fw.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/mass_fw.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/mass_fw.png  used on input line 246.
@@ -9700,7 +9699,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 256--271
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/mass_gc.png, id=4847, 754.4988pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/mass_gc.png, id=4846, 754.4988pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/mass_gc.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/mass_gc.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/mass_gc.png  used on input line 275.
@@ -9735,7 +9734,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 285--300
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/mass_si.png, id=4853, 722.2182pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/mass_si.png, id=4852, 722.2182pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/mass_si.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/mass_si.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/mass_si.png  used on input line 304.
@@ -9770,7 +9769,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 314--329
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/sboarea.png, id=4860, 722.2182pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/sboarea.png, id=4859, 722.2182pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/sboarea.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/sboarea.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/sboarea.png  used on input line 333.
@@ -9805,7 +9804,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 343--358
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/xcom.png, id=4866, 757.6305pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/xcom.png, id=4865, 757.6305pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/xcom.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/xcom.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/xcom.png  used on input line 362.
@@ -9840,7 +9839,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 372--387
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/xcom_fw.png, id=4872, 735.4677pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/xcom_fw.png, id=4871, 735.4677pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/xcom_fw.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/xcom_fw.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/xcom_fw.png  used on input line 391.
@@ -9875,7 +9874,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 401--416
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/xoamc.png, id=4878, 736.9131pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/xoamc.png, id=4877, 736.9131pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/xoamc.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/xoamc.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/xoamc.png  used on input line 420.
@@ -9910,7 +9909,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 430--445
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/xoamc_si.png, id=4884, 746.5491pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/xoamc_si.png, id=4883, 746.5491pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/xoamc_si.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/xoamc_si.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/xoamc_si.png  used on input line 449.
@@ -9950,7 +9949,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 459--474
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/xoamp.png, id=4890, 738.1176pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/xoamp.png, id=4889, 738.1176pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/xoamp.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/xoamp.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/xoamp.png  used on input line 478.
@@ -9995,7 +9994,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 488--503
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/xoamp_dsl.png, id=4897, 891.0891pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/xoamp_dsl.png, id=4896, 891.0891pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/xoamp_dsl.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/xoamp_dsl.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/xoamp_dsl.png  used on input line 507.
@@ -10040,7 +10039,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 517--532
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/xoamp_fw.png, id=4903, 738.1176pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/xoamp_fw.png, id=4902, 738.1176pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/xoamp_fw.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/xoamp_fw.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/xoamp_fw.png  used on input line 536.
@@ -10075,7 +10074,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 546--561
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/ycom.png, id=4909, 732.0951pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/ycom.png, id=4908, 732.0951pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/ycom.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/ycom.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/ycom.png  used on input line 565.
@@ -10110,7 +10109,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 575--590
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/ycom_fw.png, id=4916, 732.0951pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/ycom_fw.png, id=4915, 732.0951pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/ycom_fw.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/ycom_fw.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/ycom_fw.png  used on input line 594.
@@ -10145,7 +10144,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 604--619
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/yoamc.png, id=4922, 736.9131pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/yoamc.png, id=4921, 736.9131pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/yoamc.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/yoamc.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/yoamc.png  used on input line 623.
@@ -10180,7 +10179,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 633--648
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/yoamc_si.png, id=4928, 746.5491pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/yoamc_si.png, id=4927, 746.5491pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/yoamc_si.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/yoamc_si.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/yoamc_si.png  used on input line 652.
@@ -10220,7 +10219,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 662--677
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/yoamp.png, id=4935, 738.1176pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/yoamp.png, id=4934, 738.1176pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/yoamp.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/yoamp.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/yoamp.png  used on input line 681.
@@ -10265,7 +10264,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 691--706
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/yoamp_dsl.png, id=4941, 891.0891pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/yoamp_dsl.png, id=4940, 891.0891pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/yoamp_dsl.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/yoamp_dsl.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/yoamp_dsl.png  used on input line 710.
@@ -10310,7 +10309,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 720--735
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/yoamp_fw.png, id=4947, 738.1176pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/yoamp_fw.png, id=4946, 738.1176pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/yoamp_fw.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/yoamp_fw.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/yoamp_fw.png  used on input line 739.
@@ -10345,7 +10344,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 749--764
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/zcom.png, id=4953, 757.6305pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/zcom.png, id=4952, 757.6305pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/zcom.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/zcom.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/zcom.png  used on input line 768.
@@ -10380,7 +10379,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 778--793
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/zcom_fw.png, id=4959, 735.4677pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/zcom_fw.png, id=4958, 735.4677pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/zcom_fw.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/zcom_fw.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/zcom_fw.png  used on input line 797.
@@ -10415,7 +10414,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 807--822
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/zoamc.png, id=4965, 738.1176pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/zoamc.png, id=4964, 738.1176pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/zoamc.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/zoamc.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/zoamc.png  used on input line 826.
@@ -10450,7 +10449,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 836--851
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/zoamc_si.png, id=4972, 736.9131pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/zoamc_si.png, id=4971, 736.9131pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/zoamc_si.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/zoamc_si.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/zoamc_si.png  used on input line 855.
@@ -10490,7 +10489,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 865--880
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/zoamp.png, id=4978, 734.9859pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/zoamp.png, id=4977, 734.9859pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/zoamp.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/zoamp.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/zoamp.png  used on input line 884.
@@ -10535,7 +10534,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 894--909
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/zoamp_dsl.png, id=4984, 889.8846pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/zoamp_dsl.png, id=4983, 889.8846pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/zoamp_dsl.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/zoamp_dsl.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/zoamp_dsl.png  used on input line 913.
@@ -10580,7 +10579,7 @@ Overfull \hbox (17.11365pt too wide) in alignment at lines 923--938
  [] [] [] [] 
  []
 
-<../images/plots/oneD_plots/SBO_Core_Products/zoamp_fw.png, id=4990, 738.1176pt x 446.6286pt>
+<../images/plots/oneD_plots/SBO_Core_Products/zoamp_fw.png, id=4989, 738.1176pt x 446.6286pt>
 File: ../images/plots/oneD_plots/SBO_Core_Products/zoamp_fw.png Graphic file (type png)
 <use ../images/plots/oneD_plots/SBO_Core_Products/zoamp_fw.png>
 Package pdftex.def Info: ../images/plots/oneD_plots/SBO_Core_Products/zoamp_fw.png  used on input line 942.
@@ -10616,10 +10615,10 @@ pdfTeX warning (dest): name{https://podaac.jpl.nasa.gov/} has been referenced bu
 pdfTeX warning (dest): name{https://en.wikipedia.org/wiki/Zarr_\(data_format\)} has been referenced but does not exist, replaced by a fixed one
 
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cabin/cbn_taosrr.enc}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cabin/cbn_i3ioen.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/impallari/cabin/Cabin-Bold.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/impallari/cabin/Cabin-Regular.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/lm/lmtt8.pfb>
-Output written on ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.pdf (288 pages, 68899427 bytes).
+Output written on ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.pdf (288 pages, 68900579 bytes).
 PDF statistics:
- 5265 PDF objects out of 6186 (max. 8388607)
- 4499 compressed objects within 45 object streams
+ 5264 PDF objects out of 6186 (max. 8388607)
+ 4498 compressed objects within 45 object streams
  1067 named destinations out of 1200 (max. 500000)
  3559 words of extra memory for PDF output out of 10000 (max. 10000000)
 

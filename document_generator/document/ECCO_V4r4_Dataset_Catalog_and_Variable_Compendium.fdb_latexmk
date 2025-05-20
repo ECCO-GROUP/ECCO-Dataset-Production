@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1747683229 "/Users/houndegno/Documents/ECCO-PROD/ECCO-Dataset-Production/document_generator/document/ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.tex" "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.pdf" "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium" 1747683299
+["pdflatex"] 1747755347 "/Users/houndegno/Documents/ECCO-PROD/ECCO-Dataset-Production/document_generator/document/ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.tex" "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.pdf" "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium" 1747755417
   "../images/ecco_logo_800_726.png" 1740438498 322158 c234b7b189996b3ac5c73956c2137a1f ""
   "../images/ecco_teams_sjsu.png" 1743460718 24077 bd75789f6808024c01e07ac30c7da065 ""
   "../images/logo-nasa.jpg" 1743462072 225246 644003dde9aef51f274cb26035d1faa5 ""
@@ -337,12 +337,12 @@
   "/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1647878959 4410336 7d30a02e9fa9a16d7d1f8d037ba69641 ""
   "/usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1673749557 2826443 551a314da17d574bc4a2fcd4c26e412f ""
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
-  "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.aux" 1747683299 249822 7a8fcf3b8394f4e7f47831af59f17645 "pdflatex"
-  "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.lof" 1747683299 29709 9e481e3f0e14170ef9728181b0009858 "pdflatex"
-  "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.lot" 1747683299 44278 aef832ad0b332423e345aeadf80e178f "pdflatex"
-  "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.out" 1747683299 62789 28633b24efc6c3c7896e074ae38db160 "pdflatex"
+  "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.aux" 1747755416 249822 7a8fcf3b8394f4e7f47831af59f17645 "pdflatex"
+  "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.lof" 1747755416 29709 9e481e3f0e14170ef9728181b0009858 "pdflatex"
+  "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.lot" 1747755416 44278 aef832ad0b332423e345aeadf80e178f "pdflatex"
+  "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.out" 1747755416 62789 28633b24efc6c3c7896e074ae38db160 "pdflatex"
   "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.tex" 1747280895 2300 73a39cc3a157e5c317f55a129800c6e0 ""
-  "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.toc" 1747683299 32171 f6cfe8f25d8f576d3e75d5e015f0d1ff "pdflatex"
+  "ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.toc" 1747755416 32171 f6cfe8f25d8f576d3e75d5e015f0d1ff "pdflatex"
   "latex/ECCO_overview.tex" 1743119113 15012 aae853c1e384d000b821cb38f3b83e0d ""
   "latex/ECCO_team.tex" 1747683229 5870 1a0f0c760048288fe13f63855279ce02 ""
   "latex/LOF.tex" 1742946074 152 848ad3debc778f6e950d12ec57c34b69 ""
@@ -366,7 +366,7 @@
   "latex/dataset/native_dataset_tables.tex" 1747289038 270734 6f18d74909c9a72fa975bbd37be839f9 ""
   "latex/dataset/oneD_dataset.tex" 1742247752 862 57d7972201a3101861251f300d0829d5 ""
   "latex/dataset/oneD_dataset_tables.tex" 1747289040 59867 18f0c486185c69188c849b77f1827eb9 ""
-  "latex/doc_records.tex" 1747327453 3423 16a908709bb040bb5fef733ebbba6a13 ""
+  "latex/doc_records.tex" 1747755347 3414 847ee54995e98bdf0acb9332b788de97 ""
   "latex/executive_summary.tex" 1743032598 4720 69de46fce6457c884d330f991e335e33 ""
   "latex/filenames_conventions.tex" 1743459587 27366 1659bf887a7a29608bd906d548aeadf6 ""
   "latex/front_pages.tex" 1747291033 2085 4c10957a8639e9b5d3b9d0b567df1eba ""
