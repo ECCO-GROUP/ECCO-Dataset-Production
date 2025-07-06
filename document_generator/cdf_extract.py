@@ -120,12 +120,13 @@ def formatList(cdl:list[str], name : str = "example")->list[str]:
 
 
 def latex_example_netcdf(fileType)->list[str]:
+    data_version_to_get, _ ,_ = get_dataset_version()
     if fileType == 'native':
-        file = 'granule_datasets/natives/OCEAN_3D_MIXING_COEFFS_ECCO_V4r4_native_llc0090.nc'#OCEAN_3D_SALINITY_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc'
+        file = 'granule_datasets/'+data_version_to_get+'/natives/OCEAN_3D_MIXING_COEFFS_ECCO_V4r4_native_llc0090.nc'#OCEAN_3D_SALINITY_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc'
     elif fileType == 'latlon':
-        file = 'granule_datasets/latlon/OCEAN_MIXED_LAYER_DEPTH_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc'#OCEAN_AND_ICE_SURFACE_HEAT_FLUX_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc'
+        file = 'granule_datasets/'+data_version_to_get+'/latlon/OCEAN_MIXED_LAYER_DEPTH_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc'#OCEAN_AND_ICE_SURFACE_HEAT_FLUX_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc'
     else:
-        file = 'granule_datasets/oneD/GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r4_1D.nc'
+        file = 'granule_datasets/'+data_version_to_get+'/oneD/GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r4_1D.nc'
 
     ds = xr.open_dataset(file, decode_times=False, decode_cf=False, decode_coords=False, decode_timedelta=False)
     ll = []
@@ -279,7 +280,7 @@ def extract_field_info(field:xr.DataArray)->dict[str, str]:
 
 
 
-def search_and_extract(substring:str, directory:str="granule_datasets/natives/", get_coords:bool=False)->tuple[list[xr.DataArray], xr.Dataset]:
+def search_and_extract(substring:str, directory:str="granule_datasets/v4r4/natives/", get_coords:bool=False)->tuple[list[xr.DataArray], xr.Dataset]:
     """
     Searches for a NetCDF file in the given directory that contains the specified substring
     in its name, and extracts information from it.
@@ -551,3 +552,15 @@ def get_Global_or_CoordsDimsVarsList(netCDFpath:str,jsonFileName:str,saveTo:str)
     GlobalAttrsCollect = sorted(list(set(GlobalAttrsCollect)))
     with open(os.path.join(saveTo,jsonFileName), 'w') as output_file:
         output_file.write(str(json.dumps(GlobalAttrsCollect)))
+
+def get_dataset_version(d_source = "granule_datasets/data_version.json"):
+    """
+    This function alow loading the dataset versio and release info!
+    """
+    with open(d_source, 'r') as file:
+        data_version_to_get = json.load(file)
+        d_vers_rel = data_version_to_get["dataset_version"]
+        d_vers     = data_version_to_get["version"]
+        d_rel      = data_version_to_get["release"]
+    # print(data_version_to_get["dataset_version"])
+    return d_vers_rel, d_vers, d_rel

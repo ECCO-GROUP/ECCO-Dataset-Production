@@ -60,23 +60,24 @@ def write_data_attributes_tables():
 
 
 def write_datasets(dataset_type:str)->None:
-    native_coords_groupings = 'granule_datasets/native_coords.json'
-    native_groupings_json = 'granule_datasets/ECCOv4r4_groupings_for_native_datasets.json'
-    latlon_coords_groupings = 'granule_datasets/latlon_coords.json'
-    latlon_groupings_json = 'granule_datasets/ECCOv4r4_groupings_for_latlon_datasets.json'
-    oneD_groupings_json = 'granule_datasets/ECCOv4r4_groupings_for_1D_datasets.json'
+    data_version_to_get, _ ,_ = cdf_extract.get_dataset_version()
+    native_coords_groupings = 'granule_datasets/'+data_version_to_get+'/native_coords.json'
+    native_groupings_json = 'granule_datasets/'+data_version_to_get+'/ECCOv4r4_groupings_for_native_datasets.json'
+    latlon_coords_groupings = 'granule_datasets/'+data_version_to_get+'/latlon_coords.json'
+    latlon_groupings_json = 'granule_datasets/'+data_version_to_get+'/ECCOv4r4_groupings_for_latlon_datasets.json'
+    oneD_groupings_json = 'granule_datasets/'+data_version_to_get+'/ECCOv4r4_groupings_for_1D_datasets.json'
 
-    native_coords_dir = 'granule_datasets/natives_coords/'
-    native_ds_dir = 'granule_datasets/natives/'
-    latlon_coords_dir = 'granule_datasets/latlon_coords/'
-    latlon_ds_dir = 'granule_datasets/latlon/'
-    oneD_ds_dir = 'granule_datasets/oneD/'
+    native_coords_dir = 'granule_datasets/'+data_version_to_get+'/natives_coords/'
+    native_ds_dir = 'granule_datasets/'+data_version_to_get+'/natives/'
+    latlon_coords_dir = 'granule_datasets/'+data_version_to_get+'/latlon_coords/'
+    latlon_ds_dir = 'granule_datasets/'+data_version_to_get+'/latlon/'
+    oneD_ds_dir = 'granule_datasets/'+data_version_to_get+'/oneD/'
 
-    native_coords_images_dir = 'images/plots/native_plots_coords/'
-    native_images_dir = 'images/plots/native_plots/'
-    latlon_coords_images_dir = 'images/plots/latlon_plots_coords/'
-    latlon_images_dir = 'images/plots/latlon_plots/'
-    oneD_images_dir = 'images/plots/oneD_plots/'
+    native_coords_images_dir = 'images/plots/'+data_version_to_get+'/native_plots_coords/'
+    native_images_dir = 'images/plots/'+data_version_to_get+'/native_plots/'
+    latlon_coords_images_dir = 'images/'+data_version_to_get+'/plots/latlon_plots_coords/'
+    latlon_images_dir = 'images/plots/'+data_version_to_get+'/latlon_plots/'
+    oneD_images_dir = 'images/plots/'+data_version_to_get+'/oneD_plots/'
 
     if dataset_type == 'native':
         
