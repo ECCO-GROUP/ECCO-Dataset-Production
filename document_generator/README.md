@@ -36,6 +36,68 @@ pip install -r requirements.txt
 conda install --file requirements.txt
 ```
 
+<h1>2. How to run the documewnt generator?</h1>
+<div align="justify">
+  
+If the Python environment is properly configured, you are now ready to start. In this section, you will learn how to run the program. We will provide you with a step-by-step guide to running the document generator program. The first time you do this, everything needs to be done one by one. Follow the order indicated below.
+
+</div>
+<h2>2.1 Clone the github repository</h1>
+<div align="justify">
+
+The document generator program is available on the [ECCO-group](https://github.com/ECCO-GROUP) GitHub space in the repository named [ECCO-Dataset-Production](https://github.com/ECCO-GROUP/ECCO-Dataset-Production). You will need to fork the repository to your personal GitHub account, assuming you have one. Then, clone your forked repository to your local machine. This could be a laptop, virtual machine, or cloud-based computer. In its current version, the program is fully configured to generate a user-friendly document for the ECCO V4r4 Dataset Catalog and Variable Compendium. To clone the program to your local machine, use the following command:
+
+</div>
+
+```bash
+git clone <repository-url>
+```
+Replace `<repository-url>` with the URL of your forked repository. For example:
+
+```bash
+git clone https://github.com/YOUR_GITHUB_USERNAME/ECCO-Dataset-Production.git
+```
+Note that this clone process should be done in your desired local folder as you wish.
+
+<h2>2.2 Dataset version specification</h1>
+
+By default, the program comes with the ECCO dataset specification for version 4, release 4 (v4r4), and is ready to run after the dataset sample has been collected. You can specify the ECCO dataset version for which you want to generate the document. To do this, you will need to run the initial Python script: `data_version.py`. This program is located in `document_generator/granule_datasets` (Don't worry about the folder structure. You will know more about it in the following!). The program will ask you to specify the version number (which should be an integer, such as `4`) and the release information, such as `4`, `4.1`, or `4.1.a`, depending on your target. Let's assume you are targeting ECCO v4r5 (version 4 release 5), the program will display the following on your screen:
+
+```python
+python data_version.py
+Insert the dataset version number you're willing 
+ to generate the document for. Note, only 
+ the number is required ...:  4
+Insert the dataset release number you're willing 
+ to generate the document for. Note, only 
+ the number is required ...:  5
+
+Folder need to be created for v4r5
+Folder is now created for v4r5. You're all set! Go for it!
+```
+By the end of the program excecution, a `json` file `data_version.json` is generated and store all provided information in the following structure:
+
+```json
+{"version": "4", "release": "5", "dataset_version": "v4r5"}
+```
+This `json` file is used by `cdf_extract.get_dataset_version()` to handle folder specification for dataset sample collection and figures saving directory for the finale document generation (Don't worry about the package `cdf_extract`. You will know more about it in the following!).
+
+<h2>2.2 Dowload the targeted dataset sample</h1>
+<div align="justify">
+
+This script (in `/document_generator/granule_datasets/`) aims to download a sample of ECCO data sets that will be documented by the document generator. The local environment settings in order to make `download_granules.py` works can be found in [/granule_datasets/download_instructions.txt](/granule_datasets/download_instructions.txt/). It will mainly target native datasets ([native.txt](/granule_datasets/native.txt)), native coordinates ([native_coords.txt](/granule_datasets/native_coords.txt)), coordinates in longitude and latitude format ([latlon.txt](/granule_datasets/latlon.txt)) and global mean time series of certain variables ([oneD.txt](/granule_datasets/oneD.txt/)). Each of the aforementioned files is manually edited with the appropriate links where the datasets are hosted on the [Earthdata platform](https://search.earthdata.nasa.gov/search).
+
+</div>
+
+Runing this script will aneble you to dowload your targeted ECCO datasets samples. Before that, you need to edit three `.txt` files: `native.txt`, `latlon.txt` and `oneD.txt`.
+
+| Text file | Role |
+|----------|----------|
+| native.txt    | Data 1   |
+| latlon.txt    | Data 2   |
+|oneD.txt ||
+
+
 <h1>2. Folder configuration</h1>
 
 <h1>3. Independent Internal package</h1>
