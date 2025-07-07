@@ -17,9 +17,9 @@ For the python environment setting and external package dependence for the prese
 On Mac OS, the following softwares is required along with the python environment setting: [GEOS](https://libgeos.org/) and [PROJ](https://proj.org/en/stable/). They can be installed using [Homebrew](https://brew.sh/) as follow:
 
 ```bash
-brew update
-brew install geos
-brew install proj
+> brew update
+> brew install geos
+> brew install proj
 ```
 
 Preferably, install `geos` and `proj` before setting the python environment. To install the python package dependencies, one of the followings methods can be used:
@@ -27,13 +27,13 @@ Preferably, install `geos` and `proj` before setting the python environment. To 
 - with pip
 
 ```bash
-pip install -r requirements.txt
+> pip install -r requirements.txt
 ```
 
 - with conda
 
 ```bash
-conda install --file requirements.txt
+> conda install --file requirements.txt
 ```
 
 <h1>2. How to run the documewnt generator?</h1>
@@ -50,12 +50,12 @@ The document generator program is available on the [ECCO-group](https://github.c
 </div>
 
 ```bash
-git clone <repository-url>
+> git clone <repository-url>
 ```
 Replace `<repository-url>` with the URL of your forked repository. For example:
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/ECCO-Dataset-Production.git
+> git clone https://github.com/YOUR_GITHUB_USERNAME/ECCO-Dataset-Production.git
 ```
 Note that this clone process should be done in your desired local folder as you wish.
 
@@ -64,7 +64,7 @@ Note that this clone process should be done in your desired local folder as you 
 By default, the program comes with the ECCO dataset specification for version 4, release 4 (v4r4), and is ready to run after the dataset sample has been collected. You can specify the ECCO dataset version for which you want to generate the document. To do this, you will need to run the initial Python script: `data_version.py`. This program is located in `document_generator/granule_datasets` (Don't worry about the folder structure. You will know more about it in the following!). The program will ask you to specify the version number (which should be an integer, such as `4`) and the release information, such as `4`, `4.1`, or `4.1.a`, depending on your target. Let's assume you are targeting ECCO v4r5 (version 4 release 5), the program will display the following on your screen:
 
 ```python
-python data_version.py
+>> python data_version.py
 Insert the dataset version number you're willing 
  to generate the document for. Note, only 
  the number is required ...:  4
