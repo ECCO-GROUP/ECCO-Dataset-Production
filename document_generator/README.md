@@ -80,23 +80,68 @@ By the end of the program excecution, a `json` file `data_version.json` is gener
 ```json
 {"version": "4", "release": "5", "dataset_version": "v4r5"}
 ```
-This `json` file is used by `cdf_extract.get_dataset_version()` to handle folder specification for dataset sample collection and figures saving directory for the finale document generation (Don't worry about the package `cdf_extract`. You will know more about it in the following!).
+This `json` file is used by `cdf_extract.get_dataset_version()` to handle folder specification for dataset sample collection and figures saving directory for the finale document generation (Don't worry about the package `cdf_extract`. You will know more about it in the following!). Note that by the end, a folder `v4r5` is created in `granule_datasets`. By default, it is `v4r4` that contains all needed datasets samples for the document.
 
-<h2>2.2 Dowload the targeted dataset sample</h1>
+<h2>2.2 Download the targeted dataset sample</h1>
 <div align="justify">
 
-This script (in `/document_generator/granule_datasets/`) aims to download a sample of ECCO data sets that will be documented by the document generator. The local environment settings in order to make `download_granules.py` works can be found in [/granule_datasets/download_instructions.txt](/granule_datasets/download_instructions.txt/). It will mainly target native datasets ([native.txt](/granule_datasets/native.txt)), native coordinates ([native_coords.txt](/granule_datasets/native_coords.txt)), coordinates in longitude and latitude format ([latlon.txt](/granule_datasets/latlon.txt)) and global mean time series of certain variables ([oneD.txt](/granule_datasets/oneD.txt/)). Each of the aforementioned files is manually edited with the appropriate links where the datasets are hosted on the [Earthdata platform](https://search.earthdata.nasa.gov/search).
+This script (in `/document_generator/granule_datasets/`) aims to download a sample of ECCO data sets that will be documented by the document generator. The local environment settings in order to make `download_granules.py` works can be found in [/granule_datasets/download_instructions.txt](/granule_datasets/download_instructions.txt/). If it is yur first time to download data from NASA Earthdata platform, you have to create an account, and then run the following `bash` script (works for Mac OS and Linux distrbution. If other OS, go ask Google!):
+
+```bash
+  > cd ~
+  > touch .netrc
+  > echo "machine urs.earthdata.nasa.gov login uid_goes_here password password_goes_here" > .netrc
+  > chmod 0600 .netrc
+  > touch .urs_cookies
+```
 
 </div>
 
-Runing this script will aneble you to dowload your targeted ECCO datasets samples. Before that, you need to edit three `.txt` files: `native.txt`, `latlon.txt` and `oneD.txt`.
+<h3>2.2.1 Text files setting for datasets sample collection</h3>
+
+Runing this script will aneble you to download your targeted ECCO datasets samples. Before that, you need to edit three `.txt` files: `native.txt`, `latlon.txt`, `oneD.txt`, `natives_coords.txt` and `latlon_coords.txt`. These `text` files contain a list of links of datasets samples to be downloaded. They are used by `download_granules.py` based on `wget` method to download all needed datasets samples. By default, these text are already created for the ECCO v4r4 datasets samples. Indeed, each of them is manually edited with the appropriate links where the datasets are hosted on the [Earthdata platform](https://search.earthdata.nasa.gov/search).
 
 | Text file | Role |
 |----------|----------|
-| native.txt    | Data 1   |
-| latlon.txt    | Data 2   |
-|oneD.txt ||
+| native.txt       | This file contains all links to ECCO v4r4 dataset samples in native lat-lon-cap 90 (llc90) coordinates (tiles) format.|
+| latlon.txt       | This file contains all links to ECCO v4r4 dataset samples in regular 0.05 latitude-longitude grid coordinates format.|
+| oneD.txt         | This file contains all links to ECCO v4r4 dataset samples of global mean time series of certain variables.|
+| native_coords.txt| This file contains a link to ECCO v4r4 dataset native lat-lon-cap 90 (llc90) coordinates and grid geometry data.|
+| latlon_coords.txt| This file contains a link to ECCO v4r4 dataset 0.5 lat-lon coordinates and grid geometry data.|
 
+*Note:* By default, all of these text files already exist in `v4r4` folder with all needed links. If you are targeting another version of ECCO datasets, you will have to creat all of these text files in the appropriate data version folder. See bellow an example for `native.txt` file:
+
+```txt
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_ATM_STATE_LLC0090GRID_DAILY_V4R4/ATM_SURFACE_TEMP_HUM_WIND_PRES_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_MIXED_LAYER_DEPTH_LLC0090GRID_DAILY_V4R4/OCEAN_MIXED_LAYER_DEPTH_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_STRESS_LLC0090GRID_DAILY_V4R4/OCEAN_AND_ICE_SURFACE_STRESS_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SEA_ICE_CONC_THICKNESS_LLC0090GRID_DAILY_V4R4/SEA_ICE_CONC_THICKNESS_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SEA_ICE_VELOCITY_LLC0090GRID_DAILY_V4R4/SEA_ICE_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SEA_ICE_HORIZ_VOLUME_FLUX_LLC0090GRID_DAILY_V4R4/SEA_ICE_HORIZ_VOLUME_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_BOLUS_STREAMFUNCTION_LLC0090GRID_DAILY_V4R4/OCEAN_BOLUS_STREAMFUNCTION_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_3D_VOLUME_FLUX_LLC0090GRID_DAILY_V4R4/OCEAN_3D_VOLUME_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_3D_SALINITY_FLUX_LLC0090GRID_DAILY_V4R4/OCEAN_3D_SALINITY_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SEA_ICE_SALT_PLUME_FLUX_LLC0090GRID_DAILY_V4R4/SEA_ICE_SALT_PLUME_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_3D_TEMPERATURE_FLUX_LLC0090GRID_DAILY_V4R4/OCEAN_3D_TEMPERATURE_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OBP_LLC0090GRID_DAILY_V4R4/OCEAN_BOTTOM_PRESSURE_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_HEAT_FLUX_LLC0090GRID_DAILY_V4R4/OCEAN_AND_ICE_SURFACE_HEAT_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_FRESH_FLUX_LLC0090GRID_DAILY_V4R4/OCEAN_AND_ICE_SURFACE_FW_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_TEMP_SALINITY_LLC0090GRID_DAILY_V4R4/OCEAN_TEMPERATURE_SALINITY_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_DENS_STRAT_PRESS_LLC0090GRID_DAILY_V4R4/OCEAN_DENS_STRAT_PRESS_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_BOLUS_LLC0090GRID_DAILY_V4R4/OCEAN_BOLUS_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_VEL_LLC0090GRID_DAILY_V4R4/OCEAN_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_3D_MOMENTUM_TEND_LLC0090GRID_DAILY_V4R4/OCEAN_3D_MOMENTUM_TEND_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_3D_MIX_COEFFS_LLC0090GRID_V4R4/OCEAN_3D_MIXING_COEFFS_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SSH_LLC0090GRID_DAILY_V4R4/SEA_SURFACE_HEIGHT_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+```
+
+<h3>2.2.1 Runing "download_granules.py"</h3>
+
+Now, it is time to run `download_granules.py`. To do so, go to the folder `document_generator/granule_datasets` and run the script as follow:
+
+```bash
+>> python download_granules.py
+```
 
 <h1>2. Folder configuration</h1>
 
