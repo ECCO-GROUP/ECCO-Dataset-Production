@@ -12,11 +12,11 @@ data_vers = "v"+str(data_version)+"r"+data_release
 data_vers_json = {"version": str(data_version),
                   "release": str(data_release),
                   "dataset_version": data_vers}
-print(data_vers)
+# print(data_vers)
 
 output = subprocess.check_output('ls -d v*/', shell=True, text=True)
-print(type(output))
-print(output)
+# print(type(output))
+# print(output)
 if data_vers in output:
     # Write the variable to a JSON file
     with open('data_version.json', 'w') as f:
@@ -29,5 +29,5 @@ else:
     # Write the variable to a JSON file
     with open('data_version.json', 'w') as f:
         json.dump(data_vers_json, f)
-    print("Folder is now created for"+data_vers+". You're all set! Go for it!")
+    print("Folder is now created for "+data_vers+". You're all set! Go for it!")
 #----------------------------------------------------------------

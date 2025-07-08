@@ -1,7 +1,10 @@
-import argparse 
 import os
 import sys
-
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+import argparse 
+import cdf_extract
 
 def file_exists(file_path):
     if not os.path.exists(file_path):
@@ -9,6 +12,7 @@ def file_exists(file_path):
         sys.exit(1)
 
 if __name__ == '__main__':
+    data_version_to_get, _ ,_ = cdf_extract.get_dataset_version(d_source="../granule_datasets/data_version.json")
     user_input = input('Have you created the prerequisite files in your home directory?\n'
                        'They can be referred to in the download_insturctions.txt in this directory. (y/n): ')
     if user_input.lower() != 'y':
@@ -27,7 +31,7 @@ if __name__ == '__main__':
                         default='here')
     args = parser.parse_args()
 
-    root_dir = os.path.dirname(os.path.realpath(__file__)) # <= this line alow to get the current path, "/document_generator/granule_datasets/"
+    root_dir = os.path.dirname(os.path.realpath(__file__))+'/'+data_version_to_get# <= this line alow to get the current path, "/document_generator/granule_datasets/"
 
     if args.to == 'here':
         dataset_dir = root_dir
