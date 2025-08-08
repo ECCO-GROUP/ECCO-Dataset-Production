@@ -128,7 +128,7 @@ def sync_local_to_remote( src=None, dest=None, nproc=1, dryrun=False,
 
                 update_credentials(log_level,**kwargs)
 
-                cmd = [ 'aws', 's3', 'sync',
+                cmd = [ 'aws', 's3', 'sync', '--quiet',
                     dirpath,                # "source"
                     dest_s3uri]             # "destination"
                 if kwargs.get('profile',None):
@@ -211,7 +211,7 @@ def sync_remote_to_remote_or_local( src=None, dest=None,
             sys.exit(1)
         log.info('...done')
 
-    cmd = [ 'aws', 's3', 'sync', src, dest]
+    cmd = [ 'aws', 's3', 'sync', '--quiet', src, dest]
     if kwargs.get('profile',None):
         cmd.extend(['--profile',kwargs['profile']])
     if dryrun:

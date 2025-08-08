@@ -17,7 +17,6 @@ dependencies = [
 #   'pyresample',
     'requests',
     'scipy',
-    'tqdm',         # ecco_v4_py dependency
     'xarray',
     'xmitgcm',
     'xgcm',

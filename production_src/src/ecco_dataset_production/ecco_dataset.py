@@ -183,6 +183,13 @@ class ECCOMDSDataset(object):
                         log.error('%s %s',e1,e2)
                         raise RuntimeError(f'{e1} {e2}')
 
+                    # find the precision of the mds file, stored in the '*.meta'
+                    # file in the line 'dataprec'.
+
+                    mds_meta_file_tmp = mds_file
+                    mds_meta_file_tmp.ext = 'meta'
+                    mds_datatype = self.determine_mds_prec(os.path.join(tmpdir,mds_meta_file_tmp.filestr))
+
                     self.ds = ecco_v4_py.read_bin_llc.load_ecco_vars_from_mds(
                         mds_var_dir             = tmpdir,
                         mds_grid_dir            = self.grid.grid_dir,
@@ -195,6 +202,7 @@ class ECCOMDSDataset(object):
                         model_time_steps_to_load= [mds_file.time],
                         read_grid               = True,
                         #read_grid               = self.cfg['read_grid'],
+                        mds_datatype            = mds_datatype,
                         model_start_datetime    = np.datetime64(self.cfg['model_start_time']))
 
                     if mds_file.prefix != variable:
@@ -309,6 +317,34 @@ class ECCOMDSDataset(object):
                     raise RuntimeError(e1+e2+e3)
 
 
+    def determine_mds_prec( self, mds_meta_file):
+        """Get data precision (dataprec string) from MITgcm meta file, return as
+        file datatype specifier ('>f4', '>f8').
+
+        Raises:
+            RuntimeError if dataprec is not either of 'float32' ('f4') or
+            'float64' ('>f8').
+
+        """
+        file_dtype = None
+        with open(mds_meta_file, 'r') as file:
+            for line in file:
+                # Find the line containing 'dataprec'
+                if 'dataprec' in line:
+                    if 'float64' in line:
+                        file_dtype = '>f8'
+                    elif 'float32' in line:
+                        file_dtype = '>f4'
+                    else:
+                        raise RuntimeError(f"Unrecoginized data precision in line: '{line}'")
+                    break
+
+        if file_dtype:
+            return file_dtype
+        else:
+            raise RuntimeError(f'Could not determine data precision from {mds_meta_file}')
+
+
     def as_latlon( self, variable=None):
         """Recast variable in latlon format, return as a named (using variable
         string) xarray DataArray.
@@ -328,7 +364,7 @@ class ECCOMDSDataset(object):
                                                                     # no singleton dimensions,
                                                                     # surface wet points only,
                                                                     # as vector
-            var_latlon = self.mapping_factors.native_to_latlon_mapping_factors(level=0).T.dot(var)
+            var_latlon = self.mapping_factors.native_to_latlon_mapping_factors(level=0).T.dot(var.compute())
                                                                     # numpy (vector) array,
                                                                     # as latlon
             var_latlon_land_masked = np.where(
@@ -370,7 +406,7 @@ class ECCOMDSDataset(object):
                                                                         # level z wet points only,
                                                                         # as vector
                 var_z_latlon = \
-                    self.mapping_factors.native_to_latlon_mapping_factors(level=z).T.dot(var_z)
+                    self.mapping_factors.native_to_latlon_mapping_factors(level=z).T.dot(var_z.compute())
                                                                         # numpy (vector) array,
                                                                         # level z, as latlon
                 var_z_latlon_land_masked = np.where(
