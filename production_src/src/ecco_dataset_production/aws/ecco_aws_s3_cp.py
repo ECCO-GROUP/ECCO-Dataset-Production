@@ -56,7 +56,7 @@ def aws_s3_cp(
             sys.exit(1)
         log.debug('...done')
 
-    cmd = [ 'aws', 's3', 'cp', src, dest]
+    cmd = [ 'aws', 's3', 'cp', '--quiet', src, dest]
     if kwargs.get('profile',None):
         cmd.extend(['--profile',kwargs['profile']])
     if dryrun:
@@ -73,4 +73,5 @@ def aws_s3_cp(
     else:
         # error return:
         log.error('%s', bytes.decode(p.stderr.read()))
+        raise RuntimeError(f'aws s3 cp returned {rtn}')
 

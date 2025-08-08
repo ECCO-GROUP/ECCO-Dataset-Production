@@ -114,6 +114,7 @@ def ecco_make_granule( task, cfg,
         else:
             raise RuntimeError('Could not determine output granule type (latlon or native)')
 
+
         # set miscellaneous granule attributes and properties:
         merged_variable_dataset_with_ancillary_data = set_granule_ancillary_data(
             dataset=merged_variable_dataset, task=this_task,
@@ -128,7 +129,7 @@ def ecco_make_granule( task, cfg,
 
         # write:
         if this_task.is_granule_local:
-            if not os.path.exists(os.path.dirname(this_task['granule'])):
+            if os.path.dirname(this_task['granule']) and not os.path.exists(os.path.dirname(this_task['granule'])):
                 os.makedirs(os.path.dirname(this_task['granule']))
             merged_variable_dataset_with_all_metadata.to_netcdf(
                 this_task['granule'], encoding=encoding)
@@ -421,8 +422,6 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
         pm = ecco_podaac_metadata.ECCOPODAACMetadata(
             metadata_src=os.path.join(task['ecco_metadata_loc'],cfg['podaac_metadata_filename']),
             **kwargs).metadata
-        #pm = pd.read_csv( os.path.join(
-        #    task['ecco_metadata_loc'], cfg['podaac_metadata_filename']))
         # get PO.DAAC metadata (row) corresponding to 'DATASET.FILENAME' column
         # element that matches "generic" granule file string (i.e., without date and
         # version):
@@ -430,13 +429,14 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
         granule_filestr.date = None
         granule_filestr.version = None
         pm_row_for_this_granule = pm[pm['DATASET.FILENAME'].str.match(granule_filestr.re_filestr)]
-        if len(pm_row_for_this_granule) != 1:
+        if pm_row_for_this_granule.empty:
             e1 = f'granule regular expression, {granule_filestr.re_filestr},'
-            if not len(pm_row_for_this_granule):
-                e2 = 'did not match any PO.DAAC DATASET.FILENAME column elements.'
-            else:
-                e2 = 'matched more that one PO.DAAC DATASET.FILENAME column element.'
-            raise RuntimeError(' '.join([e1,e2]))
+            e2 = 'did not match any PO.DAAC DATASET.FILENAME column elements.'
+            raise RuntimeError(f'{e1} {e2}')
+        elif pm_row_for_this_granule.shape[0] > 1:
+            e1 = f'granule regular expression, {granule_filestr.re_filestr},'
+            e2 = 'matched more than one PO.DAAC DATASET.FILENAME column element.'
+            raise RuntimeError(f'{e1} {e2}')
         dataset.attrs['id'] = \
             pm_row_for_this_granule['DATASET.PERSISTENT_ID'].iloc[0].\
             replace('PODAAC-',f"{cfg['doi_prefix']}/")
@@ -448,8 +448,8 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
         # additional specific PO.DAAC metadata request:
         dataset.attrs['coordinates_comment'] = \
             "Note: the global 'coordinates' attribute describes auxillary coordinates."
-    except:
-        log.info('Skipping PO.DAAC metadata inclusion')
+    except Exception as e:
+        log.info('%s -- %s', e, 'Skipping PO.DAAC metadata inclusion.')
         pass
 
     dataset.attrs = dict(sorted(dataset.attrs.items(),key = lambda x : x[0].casefold()))

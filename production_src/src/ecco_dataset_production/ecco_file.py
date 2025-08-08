@@ -47,6 +47,8 @@ class ECCOMDSFilestr(object):
             # use filestr to set all attributes (a little complicated because
             # ECCO variable names may include underscores):
             try:
+                #tmp: quick fix for Darwin:
+                #re_so = re.search('_day_snap|_mon_snap|_snap|_day_mean|_mon_mean',filestr)
                 re_so = re.search('_day_snap|_day_mean|_mon_mean',filestr)
                 self.prefix = filestr[:re_so.span()[0]]
                 self.averaging_period = filestr[re_so.span()[0]+1:re_so.span()[1]]
@@ -156,7 +158,9 @@ class ECCOGranuleFilestr(object):
             # use filestr to set all attributes (a little complicated because
             # ECCO variable names may include underscores):
             try:
-                re_so = re.search('_day_snap|_day_mean|_mon_mean',filestr)  # TODO: just 'snap' in future
+                #tmp: quick fix for Darwin:
+                #re_so = re.search('_day_snap|_mon_snap|_snap|_day_mean|_mon_mean',filestr)
+                re_so = re.search('_snap|_day_mean|_mon_mean',filestr)
                 self.prefix = filestr[:re_so.span()[0]]
                 self.averaging_period = filestr[re_so.span()[0]+1:re_so.span()[1]]
                 date_version_grid_type_grid_label_and_ext = filestr[re_so.span()[1]+1:]

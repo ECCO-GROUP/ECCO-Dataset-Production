@@ -426,4 +426,6 @@
 ------------------------------------------------------------------------------------
   Num  |<-Name->|Levs|  mate |<- code ->|<--  Units   -->|<- Tile (max=80c)         
 ------------------------------------------------------------------------------------
+   410 |OBPAnoma|  1 |       |SM      M1|m^2/s^2         |Ocean Bottom Pressure Anomaly
+   411 |OBPGMAPA|  1 |       |SM      M1|m^2/s^2         |Ocean Bottom Pressure Including Global Mean Atmospheric Pressure Anomaly
 
