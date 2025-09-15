@@ -10,7 +10,7 @@ import os
 import copy
 import cmocean
 import argparse
-
+import cdf_extract
 #-------------------------------------------------------------------------------------------------
 #----------------------------------------- Plotting Functions ------------------------------------
 def data_var_plot(ds:xr.Dataset, field:xr.DataArray, directory:str='none', colorbar:bool=True, coords:bool=False)->str:
@@ -35,11 +35,12 @@ def data_var_plot(ds:xr.Dataset, field:xr.DataArray, directory:str='none', color
     #print(f'Dataset: {ds.attrs["product_name"]}, Field: {field.name}, Shape: {field.shape}')
     fig = plt.figure(figsize=(12,6))
     #plt.rcParams['font.size'] = 5
+    data_version_to_get, _ ,_ = cdf_extract.get_dataset_version()
     if 'native' in ds.attrs['product_name']:
         if directory == 'none' and not coords:
-            directory = 'images/plots/native_plots/'
+            directory = 'images/plots/'+data_version_to_get+'/native_plots/'
         elif directory == 'none' and coords:
-            directory = 'images/plots/native_plots_coords/'
+            directory = 'images/plots/'+data_version_to_get+'/native_plots_coords/'
         if coords and 'tile' in field.dims and len(field.dims) > 2 and 'bnds' not in field.name:
             figure_path  = os.path.join(directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
             TrueFalse = os.path.exists(figure_path)
@@ -61,9 +62,9 @@ def data_var_plot(ds:xr.Dataset, field:xr.DataArray, directory:str='none', color
                 address = '../'+figure_path[figure_path.find('images'):]
     elif 'latlon' in ds.attrs['product_name']:
         if directory == 'none' and not coords:
-            directory = 'images/plots/latlon_plots/'
+            directory = 'images/plots/'+data_version_to_get+'/latlon_plots/'
         elif directory == 'none' and coords:
-            directory = 'images/plots/latlon_plots_coords/'
+            directory = 'images/plots/'+data_version_to_get+'/latlon_plots_coords/'
         if coords and len(field.dims) > 2:
             figure_path  = os.path.join(directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
             TrueFalse = os.path.exists(figure_path)

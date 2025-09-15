@@ -1,206 +1,206 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: XC\relax }}{45}{figure.caption.7}%
-\contentsline {figure}{\numberline {2}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: YC\relax }}{46}{figure.caption.8}%
-\contentsline {figure}{\numberline {3}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: XG\relax }}{47}{figure.caption.9}%
-\contentsline {figure}{\numberline {4}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: YG\relax }}{48}{figure.caption.10}%
-\contentsline {figure}{\numberline {5}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: CS\relax }}{49}{figure.caption.11}%
-\contentsline {figure}{\numberline {6}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: SN\relax }}{50}{figure.caption.12}%
-\contentsline {figure}{\numberline {7}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: rA\relax }}{51}{figure.caption.13}%
-\contentsline {figure}{\numberline {8}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: dxG\relax }}{52}{figure.caption.14}%
-\contentsline {figure}{\numberline {9}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: dyG\relax }}{53}{figure.caption.15}%
-\contentsline {figure}{\numberline {10}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: Depth\relax }}{54}{figure.caption.16}%
-\contentsline {figure}{\numberline {11}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: rAz\relax }}{55}{figure.caption.17}%
-\contentsline {figure}{\numberline {12}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: dxC\relax }}{56}{figure.caption.18}%
-\contentsline {figure}{\numberline {13}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: dyC\relax }}{57}{figure.caption.19}%
-\contentsline {figure}{\numberline {14}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: rAw\relax }}{58}{figure.caption.20}%
-\contentsline {figure}{\numberline {15}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: rAs\relax }}{59}{figure.caption.21}%
-\contentsline {figure}{\numberline {16}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: hFacC\relax }}{60}{figure.caption.22}%
-\contentsline {figure}{\numberline {17}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: hFacW\relax }}{61}{figure.caption.23}%
-\contentsline {figure}{\numberline {18}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: hFacS\relax }}{62}{figure.caption.24}%
-\contentsline {figure}{\numberline {19}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: maskC\relax }}{63}{figure.caption.25}%
-\contentsline {figure}{\numberline {20}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: maskW\relax }}{64}{figure.caption.26}%
-\contentsline {figure}{\numberline {21}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: maskS\relax }}{65}{figure.caption.27}%
-\contentsline {figure}{\numberline {22}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFaqh\relax }}{67}{figure.caption.28}%
-\contentsline {figure}{\numberline {23}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFatemp\relax }}{68}{figure.caption.29}%
-\contentsline {figure}{\numberline {24}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFpress\relax }}{69}{figure.caption.30}%
-\contentsline {figure}{\numberline {25}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFuwind\relax }}{70}{figure.caption.31}%
-\contentsline {figure}{\numberline {26}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFvwind\relax }}{71}{figure.caption.32}%
-\contentsline {figure}{\numberline {27}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFwspee\relax }}{72}{figure.caption.33}%
-\contentsline {figure}{\numberline {28}{\ignorespaces Dataset: OCEAN\_3D\_MIXING\_COEFFS, Variable: DIFFKR\relax }}{74}{figure.caption.34}%
-\contentsline {figure}{\numberline {29}{\ignorespaces Dataset: OCEAN\_3D\_MIXING\_COEFFS, Variable: KAPGM\relax }}{75}{figure.caption.35}%
-\contentsline {figure}{\numberline {30}{\ignorespaces Dataset: OCEAN\_3D\_MIXING\_COEFFS, Variable: KAPREDI\relax }}{76}{figure.caption.36}%
-\contentsline {figure}{\numberline {31}{\ignorespaces Dataset: OCEAN\_3D\_MOMENTUM\_TEND, Variable: Um\_dPHdx\relax }}{78}{figure.caption.37}%
-\contentsline {figure}{\numberline {32}{\ignorespaces Dataset: OCEAN\_3D\_MOMENTUM\_TEND, Variable: Vm\_dPHdy\relax }}{79}{figure.caption.38}%
-\contentsline {figure}{\numberline {33}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: ADVr\_SLT\relax }}{81}{figure.caption.39}%
-\contentsline {figure}{\numberline {34}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: ADVx\_SLT\relax }}{82}{figure.caption.40}%
-\contentsline {figure}{\numberline {35}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: ADVy\_SLT\relax }}{83}{figure.caption.41}%
-\contentsline {figure}{\numberline {36}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: DFrE\_SLT\relax }}{84}{figure.caption.42}%
-\contentsline {figure}{\numberline {37}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: DFrI\_SLT\relax }}{85}{figure.caption.43}%
-\contentsline {figure}{\numberline {38}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: DFxE\_SLT\relax }}{86}{figure.caption.44}%
-\contentsline {figure}{\numberline {39}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: DFyE\_SLT\relax }}{87}{figure.caption.45}%
-\contentsline {figure}{\numberline {40}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: oceSPtnd\relax }}{88}{figure.caption.46}%
-\contentsline {figure}{\numberline {41}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: ADVr\_TH\relax }}{90}{figure.caption.47}%
-\contentsline {figure}{\numberline {42}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: ADVx\_TH\relax }}{91}{figure.caption.48}%
-\contentsline {figure}{\numberline {43}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: ADVy\_TH\relax }}{92}{figure.caption.49}%
-\contentsline {figure}{\numberline {44}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: DFrE\_TH\relax }}{93}{figure.caption.50}%
-\contentsline {figure}{\numberline {45}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: DFrI\_TH\relax }}{94}{figure.caption.51}%
-\contentsline {figure}{\numberline {46}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: DFxE\_TH\relax }}{95}{figure.caption.52}%
-\contentsline {figure}{\numberline {47}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: DFyE\_TH\relax }}{96}{figure.caption.53}%
-\contentsline {figure}{\numberline {48}{\ignorespaces Dataset: OCEAN\_3D\_VOLUME\_FLUX, Variable: UVELMASS\relax }}{98}{figure.caption.54}%
-\contentsline {figure}{\numberline {49}{\ignorespaces Dataset: OCEAN\_3D\_VOLUME\_FLUX, Variable: VVELMASS\relax }}{99}{figure.caption.55}%
-\contentsline {figure}{\numberline {50}{\ignorespaces Dataset: OCEAN\_3D\_VOLUME\_FLUX, Variable: WVELMASS\relax }}{100}{figure.caption.56}%
-\contentsline {figure}{\numberline {51}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFempmr\relax }}{102}{figure.caption.57}%
-\contentsline {figure}{\numberline {52}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFevap\relax }}{103}{figure.caption.58}%
-\contentsline {figure}{\numberline {53}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFpreci\relax }}{104}{figure.caption.59}%
-\contentsline {figure}{\numberline {54}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFroff\relax }}{105}{figure.caption.60}%
-\contentsline {figure}{\numberline {55}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SFLUX\relax }}{106}{figure.caption.61}%
-\contentsline {figure}{\numberline {56}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIacSubl\relax }}{107}{figure.caption.62}%
-\contentsline {figure}{\numberline {57}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIatmFW\relax }}{108}{figure.caption.63}%
-\contentsline {figure}{\numberline {58}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIfwThru\relax }}{109}{figure.caption.64}%
-\contentsline {figure}{\numberline {59}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIrsSubl\relax }}{110}{figure.caption.65}%
-\contentsline {figure}{\numberline {60}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIsnPrcp\relax }}{111}{figure.caption.66}%
-\contentsline {figure}{\numberline {61}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: oceFWflx\relax }}{112}{figure.caption.67}%
-\contentsline {figure}{\numberline {62}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFhl\relax }}{114}{figure.caption.68}%
-\contentsline {figure}{\numberline {63}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFhs\relax }}{115}{figure.caption.69}%
-\contentsline {figure}{\numberline {64}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFlwdn\relax }}{116}{figure.caption.70}%
-\contentsline {figure}{\numberline {65}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFlwnet\relax }}{117}{figure.caption.71}%
-\contentsline {figure}{\numberline {66}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFqnet\relax }}{118}{figure.caption.72}%
-\contentsline {figure}{\numberline {67}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFswdn\relax }}{119}{figure.caption.73}%
-\contentsline {figure}{\numberline {68}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFswnet\relax }}{120}{figure.caption.74}%
-\contentsline {figure}{\numberline {69}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: SIaaflux\relax }}{121}{figure.caption.75}%
-\contentsline {figure}{\numberline {70}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: SIatmQnt\relax }}{122}{figure.caption.76}%
-\contentsline {figure}{\numberline {71}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: TFLUX\relax }}{123}{figure.caption.77}%
-\contentsline {figure}{\numberline {72}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: oceQnet\relax }}{124}{figure.caption.78}%
-\contentsline {figure}{\numberline {73}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: oceQsw\relax }}{125}{figure.caption.79}%
-\contentsline {figure}{\numberline {74}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: EXFtaux\relax }}{127}{figure.caption.80}%
-\contentsline {figure}{\numberline {75}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: EXFtauy\relax }}{128}{figure.caption.81}%
-\contentsline {figure}{\numberline {76}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: oceTAUX\relax }}{129}{figure.caption.82}%
-\contentsline {figure}{\numberline {77}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: oceTAUY\relax }}{130}{figure.caption.83}%
-\contentsline {figure}{\numberline {78}{\ignorespaces Dataset: OCEAN\_BOLUS\_STREAMFUNCTION, Variable: GM\_PsiX\relax }}{132}{figure.caption.84}%
-\contentsline {figure}{\numberline {79}{\ignorespaces Dataset: OCEAN\_BOLUS\_STREAMFUNCTION, Variable: GM\_PsiY\relax }}{133}{figure.caption.85}%
-\contentsline {figure}{\numberline {80}{\ignorespaces Dataset: OCEAN\_BOLUS\_VELOCITY, Variable: UVELSTAR\relax }}{135}{figure.caption.86}%
-\contentsline {figure}{\numberline {81}{\ignorespaces Dataset: OCEAN\_BOLUS\_VELOCITY, Variable: VVELSTAR\relax }}{136}{figure.caption.87}%
-\contentsline {figure}{\numberline {82}{\ignorespaces Dataset: OCEAN\_BOLUS\_VELOCITY, Variable: WVELSTAR\relax }}{137}{figure.caption.88}%
-\contentsline {figure}{\numberline {83}{\ignorespaces Dataset: OCEAN\_BOTTOM\_PRESSURE, Variable: OBP\relax }}{139}{figure.caption.89}%
-\contentsline {figure}{\numberline {84}{\ignorespaces Dataset: OCEAN\_BOTTOM\_PRESSURE, Variable: OBPGMAP\relax }}{140}{figure.caption.90}%
-\contentsline {figure}{\numberline {85}{\ignorespaces Dataset: OCEAN\_BOTTOM\_PRESSURE, Variable: PHIBOT\relax }}{141}{figure.caption.91}%
-\contentsline {figure}{\numberline {86}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: DRHODR\relax }}{143}{figure.caption.92}%
-\contentsline {figure}{\numberline {87}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: PHIHYD\relax }}{144}{figure.caption.93}%
-\contentsline {figure}{\numberline {88}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: PHIHYDcR\relax }}{145}{figure.caption.94}%
-\contentsline {figure}{\numberline {89}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: RHOAnoma\relax }}{146}{figure.caption.95}%
-\contentsline {figure}{\numberline {90}{\ignorespaces Dataset: OCEAN\_MIXED\_LAYER\_DEPTH, Variable: MXLDEPTH\relax }}{148}{figure.caption.96}%
-\contentsline {figure}{\numberline {91}{\ignorespaces Dataset: OCEAN\_TEMPERATURE\_SALINITY, Variable: SALT\relax }}{150}{figure.caption.97}%
-\contentsline {figure}{\numberline {92}{\ignorespaces Dataset: OCEAN\_TEMPERATURE\_SALINITY, Variable: THETA\relax }}{151}{figure.caption.98}%
-\contentsline {figure}{\numberline {93}{\ignorespaces Dataset: OCEAN\_VELOCITY, Variable: UVEL\relax }}{153}{figure.caption.99}%
-\contentsline {figure}{\numberline {94}{\ignorespaces Dataset: OCEAN\_VELOCITY, Variable: VVEL\relax }}{154}{figure.caption.100}%
-\contentsline {figure}{\numberline {95}{\ignorespaces Dataset: OCEAN\_VELOCITY, Variable: WVEL\relax }}{155}{figure.caption.101}%
-\contentsline {figure}{\numberline {96}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: SIarea\relax }}{157}{figure.caption.102}%
-\contentsline {figure}{\numberline {97}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: SIheff\relax }}{158}{figure.caption.103}%
-\contentsline {figure}{\numberline {98}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: SIhsnow\relax }}{159}{figure.caption.104}%
-\contentsline {figure}{\numberline {99}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: sIceLoad\relax }}{160}{figure.caption.105}%
-\contentsline {figure}{\numberline {100}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: ADVxHEFF\relax }}{162}{figure.caption.106}%
-\contentsline {figure}{\numberline {101}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: ADVxSNOW\relax }}{163}{figure.caption.107}%
-\contentsline {figure}{\numberline {102}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: ADVyHEFF\relax }}{164}{figure.caption.108}%
-\contentsline {figure}{\numberline {103}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: ADVySNOW\relax }}{165}{figure.caption.109}%
-\contentsline {figure}{\numberline {104}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: DFxEHEFF\relax }}{166}{figure.caption.110}%
-\contentsline {figure}{\numberline {105}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: DFxESNOW\relax }}{167}{figure.caption.111}%
-\contentsline {figure}{\numberline {106}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: DFyEHEFF\relax }}{168}{figure.caption.112}%
-\contentsline {figure}{\numberline {107}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: DFyESNOW\relax }}{169}{figure.caption.113}%
-\contentsline {figure}{\numberline {108}{\ignorespaces Dataset: SEA\_ICE\_SALT\_PLUME\_FLUX, Variable: oceSPDep\relax }}{171}{figure.caption.114}%
-\contentsline {figure}{\numberline {109}{\ignorespaces Dataset: SEA\_ICE\_SALT\_PLUME\_FLUX, Variable: oceSPflx\relax }}{172}{figure.caption.115}%
-\contentsline {figure}{\numberline {110}{\ignorespaces Dataset: SEA\_ICE\_VELOCITY, Variable: SIuice\relax }}{174}{figure.caption.116}%
-\contentsline {figure}{\numberline {111}{\ignorespaces Dataset: SEA\_ICE\_VELOCITY, Variable: SIvice\relax }}{175}{figure.caption.117}%
-\contentsline {figure}{\numberline {112}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: ETAN\relax }}{177}{figure.caption.118}%
-\contentsline {figure}{\numberline {113}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: SSH\relax }}{178}{figure.caption.119}%
-\contentsline {figure}{\numberline {114}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: SSHIBC\relax }}{179}{figure.caption.120}%
-\contentsline {figure}{\numberline {115}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: SSHNOIBC\relax }}{180}{figure.caption.121}%
-\contentsline {figure}{\numberline {116}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: Depth\relax }}{182}{figure.caption.122}%
-\contentsline {figure}{\numberline {117}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: area\relax }}{183}{figure.caption.123}%
-\contentsline {figure}{\numberline {118}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: drF\relax }}{184}{figure.caption.124}%
-\contentsline {figure}{\numberline {119}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: hFacC\relax }}{185}{figure.caption.125}%
-\contentsline {figure}{\numberline {120}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: maskC\relax }}{186}{figure.caption.126}%
-\contentsline {figure}{\numberline {121}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFaqh\relax }}{188}{figure.caption.127}%
-\contentsline {figure}{\numberline {122}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFatemp\relax }}{189}{figure.caption.128}%
-\contentsline {figure}{\numberline {123}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFewind\relax }}{190}{figure.caption.129}%
-\contentsline {figure}{\numberline {124}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFnwind\relax }}{191}{figure.caption.130}%
-\contentsline {figure}{\numberline {125}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFpress\relax }}{192}{figure.caption.131}%
-\contentsline {figure}{\numberline {126}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFwspee\relax }}{193}{figure.caption.132}%
-\contentsline {figure}{\numberline {127}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFempmr\relax }}{195}{figure.caption.133}%
-\contentsline {figure}{\numberline {128}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFevap\relax }}{196}{figure.caption.134}%
-\contentsline {figure}{\numberline {129}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFpreci\relax }}{197}{figure.caption.135}%
-\contentsline {figure}{\numberline {130}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFroff\relax }}{198}{figure.caption.136}%
-\contentsline {figure}{\numberline {131}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SFLUX\relax }}{199}{figure.caption.137}%
-\contentsline {figure}{\numberline {132}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIacSubl\relax }}{200}{figure.caption.138}%
-\contentsline {figure}{\numberline {133}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIatmFW\relax }}{201}{figure.caption.139}%
-\contentsline {figure}{\numberline {134}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIfwThru\relax }}{202}{figure.caption.140}%
-\contentsline {figure}{\numberline {135}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIrsSubl\relax }}{203}{figure.caption.141}%
-\contentsline {figure}{\numberline {136}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIsnPrcp\relax }}{204}{figure.caption.142}%
-\contentsline {figure}{\numberline {137}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: oceFWflx\relax }}{205}{figure.caption.143}%
-\contentsline {figure}{\numberline {138}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFhl\relax }}{207}{figure.caption.144}%
-\contentsline {figure}{\numberline {139}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFhs\relax }}{208}{figure.caption.145}%
-\contentsline {figure}{\numberline {140}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFlwdn\relax }}{209}{figure.caption.146}%
-\contentsline {figure}{\numberline {141}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFlwnet\relax }}{210}{figure.caption.147}%
-\contentsline {figure}{\numberline {142}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFqnet\relax }}{211}{figure.caption.148}%
-\contentsline {figure}{\numberline {143}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFswdn\relax }}{212}{figure.caption.149}%
-\contentsline {figure}{\numberline {144}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFswnet\relax }}{213}{figure.caption.150}%
-\contentsline {figure}{\numberline {145}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: SIaaflux\relax }}{214}{figure.caption.151}%
-\contentsline {figure}{\numberline {146}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: SIatmQnt\relax }}{215}{figure.caption.152}%
-\contentsline {figure}{\numberline {147}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: TFLUX\relax }}{216}{figure.caption.153}%
-\contentsline {figure}{\numberline {148}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: oceQnet\relax }}{217}{figure.caption.154}%
-\contentsline {figure}{\numberline {149}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: oceQsw\relax }}{218}{figure.caption.155}%
-\contentsline {figure}{\numberline {150}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: EXFtaue\relax }}{220}{figure.caption.156}%
-\contentsline {figure}{\numberline {151}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: EXFtaun\relax }}{221}{figure.caption.157}%
-\contentsline {figure}{\numberline {152}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: oceTAUE\relax }}{222}{figure.caption.158}%
-\contentsline {figure}{\numberline {153}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: oceTAUN\relax }}{223}{figure.caption.159}%
-\contentsline {figure}{\numberline {154}{\ignorespaces Dataset: OCEAN\_BOLUS\_VELOCITY, Variable: EVELSTAR\relax }}{225}{figure.caption.160}%
-\contentsline {figure}{\numberline {155}{\ignorespaces Dataset: OCEAN\_BOLUS\_VELOCITY, Variable: NVELSTAR\relax }}{226}{figure.caption.161}%
-\contentsline {figure}{\numberline {156}{\ignorespaces Dataset: OCEAN\_BOLUS\_VELOCITY, Variable: WVELSTAR\relax }}{227}{figure.caption.162}%
-\contentsline {figure}{\numberline {157}{\ignorespaces Dataset: OCEAN\_BOTTOM\_PRESSURE, Variable: OBP\relax }}{229}{figure.caption.163}%
-\contentsline {figure}{\numberline {158}{\ignorespaces Dataset: OCEAN\_BOTTOM\_PRESSURE, Variable: OBPGMAP\relax }}{230}{figure.caption.164}%
-\contentsline {figure}{\numberline {159}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: DRHODR\relax }}{232}{figure.caption.165}%
-\contentsline {figure}{\numberline {160}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: PHIHYD\relax }}{233}{figure.caption.166}%
-\contentsline {figure}{\numberline {161}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: RHOAnoma\relax }}{234}{figure.caption.167}%
-\contentsline {figure}{\numberline {162}{\ignorespaces Dataset: OCEAN\_MIXED\_LAYER\_DEPTH, Variable: MXLDEPTH\relax }}{236}{figure.caption.168}%
-\contentsline {figure}{\numberline {163}{\ignorespaces Dataset: OCEAN\_TEMPERATURE\_SALINITY, Variable: SALT\relax }}{238}{figure.caption.169}%
-\contentsline {figure}{\numberline {164}{\ignorespaces Dataset: OCEAN\_TEMPERATURE\_SALINITY, Variable: THETA\relax }}{239}{figure.caption.170}%
-\contentsline {figure}{\numberline {165}{\ignorespaces Dataset: OCEAN\_VELOCITY, Variable: EVEL\relax }}{241}{figure.caption.171}%
-\contentsline {figure}{\numberline {166}{\ignorespaces Dataset: OCEAN\_VELOCITY, Variable: NVEL\relax }}{242}{figure.caption.172}%
-\contentsline {figure}{\numberline {167}{\ignorespaces Dataset: OCEAN\_VELOCITY, Variable: WVEL\relax }}{243}{figure.caption.173}%
-\contentsline {figure}{\numberline {168}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: SIarea\relax }}{245}{figure.caption.174}%
-\contentsline {figure}{\numberline {169}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: SIheff\relax }}{246}{figure.caption.175}%
-\contentsline {figure}{\numberline {170}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: SIhsnow\relax }}{247}{figure.caption.176}%
-\contentsline {figure}{\numberline {171}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: sIceLoad\relax }}{248}{figure.caption.177}%
-\contentsline {figure}{\numberline {172}{\ignorespaces Dataset: SEA\_ICE\_VELOCITY, Variable: SIeice\relax }}{250}{figure.caption.178}%
-\contentsline {figure}{\numberline {173}{\ignorespaces Dataset: SEA\_ICE\_VELOCITY, Variable: SInice\relax }}{251}{figure.caption.179}%
-\contentsline {figure}{\numberline {174}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: SSH\relax }}{253}{figure.caption.180}%
-\contentsline {figure}{\numberline {175}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: SSHIBC\relax }}{254}{figure.caption.181}%
-\contentsline {figure}{\numberline {176}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: SSHNOIBC\relax }}{255}{figure.caption.182}%
-\contentsline {figure}{\numberline {177}{\ignorespaces Dataset: GLOBAL\_MEAN\_ATM\_SURFACE\_PRES, Variable: Pa\_global\relax }}{257}{figure.caption.183}%
-\contentsline {figure}{\numberline {178}{\ignorespaces Dataset: GLOBAL\_MEAN\_SEA\_LEVEL, Variable: global\_mean\_barystatic\_sea\_level\_anomaly\relax }}{259}{figure.caption.184}%
-\contentsline {figure}{\numberline {179}{\ignorespaces Dataset: GLOBAL\_MEAN\_SEA\_LEVEL, Variable: global\_mean\_sea\_level\_anomaly\relax }}{260}{figure.caption.185}%
-\contentsline {figure}{\numberline {180}{\ignorespaces Dataset: GLOBAL\_MEAN\_SEA\_LEVEL, Variable: global\_mean\_sterodynamic\_sea\_level\_anomaly\relax }}{261}{figure.caption.186}%
-\contentsline {figure}{\numberline {181}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: mass\relax }}{263}{figure.caption.187}%
-\contentsline {figure}{\numberline {182}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: mass\_fw\relax }}{264}{figure.caption.188}%
-\contentsline {figure}{\numberline {183}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: mass\_gc\relax }}{265}{figure.caption.189}%
-\contentsline {figure}{\numberline {184}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: mass\_si\relax }}{266}{figure.caption.190}%
-\contentsline {figure}{\numberline {185}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: sboarea\relax }}{267}{figure.caption.191}%
-\contentsline {figure}{\numberline {186}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xcom\relax }}{268}{figure.caption.192}%
-\contentsline {figure}{\numberline {187}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xcom\_fw\relax }}{269}{figure.caption.193}%
-\contentsline {figure}{\numberline {188}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xoamc\relax }}{270}{figure.caption.194}%
-\contentsline {figure}{\numberline {189}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xoamc\_si\relax }}{271}{figure.caption.195}%
-\contentsline {figure}{\numberline {190}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xoamp\relax }}{272}{figure.caption.196}%
-\contentsline {figure}{\numberline {191}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xoamp\_dsl\relax }}{273}{figure.caption.197}%
-\contentsline {figure}{\numberline {192}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xoamp\_fw\relax }}{274}{figure.caption.198}%
-\contentsline {figure}{\numberline {193}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: ycom\relax }}{275}{figure.caption.199}%
-\contentsline {figure}{\numberline {194}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: ycom\_fw\relax }}{276}{figure.caption.200}%
-\contentsline {figure}{\numberline {195}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: yoamc\relax }}{277}{figure.caption.201}%
-\contentsline {figure}{\numberline {196}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: yoamc\_si\relax }}{278}{figure.caption.202}%
-\contentsline {figure}{\numberline {197}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: yoamp\relax }}{279}{figure.caption.203}%
-\contentsline {figure}{\numberline {198}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: yoamp\_dsl\relax }}{280}{figure.caption.204}%
-\contentsline {figure}{\numberline {199}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: yoamp\_fw\relax }}{281}{figure.caption.205}%
-\contentsline {figure}{\numberline {200}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zcom\relax }}{282}{figure.caption.206}%
-\contentsline {figure}{\numberline {201}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zcom\_fw\relax }}{283}{figure.caption.207}%
-\contentsline {figure}{\numberline {202}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zoamc\relax }}{284}{figure.caption.208}%
-\contentsline {figure}{\numberline {203}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zoamc\_si\relax }}{285}{figure.caption.209}%
-\contentsline {figure}{\numberline {204}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zoamp\relax }}{286}{figure.caption.210}%
-\contentsline {figure}{\numberline {205}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zoamp\_dsl\relax }}{287}{figure.caption.211}%
-\contentsline {figure}{\numberline {206}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zoamp\_fw\relax }}{288}{figure.caption.212}%
+\contentsline {figure}{\numberline {1}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: XC}}{44}{figure.caption.7}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: YC}}{45}{figure.caption.8}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: XG}}{46}{figure.caption.9}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: YG}}{47}{figure.caption.10}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: CS}}{48}{figure.caption.11}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: SN}}{49}{figure.caption.12}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: rA}}{50}{figure.caption.13}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: dxG}}{51}{figure.caption.14}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: dyG}}{52}{figure.caption.15}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: Depth}}{53}{figure.caption.16}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: rAz}}{54}{figure.caption.17}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: dxC}}{55}{figure.caption.18}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: dyC}}{56}{figure.caption.19}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: rAw}}{57}{figure.caption.20}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: rAs}}{58}{figure.caption.21}%
+\contentsline {figure}{\numberline {16}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: hFacC}}{59}{figure.caption.22}%
+\contentsline {figure}{\numberline {17}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: hFacW}}{60}{figure.caption.23}%
+\contentsline {figure}{\numberline {18}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: hFacS}}{61}{figure.caption.24}%
+\contentsline {figure}{\numberline {19}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: maskC}}{62}{figure.caption.25}%
+\contentsline {figure}{\numberline {20}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: maskW}}{63}{figure.caption.26}%
+\contentsline {figure}{\numberline {21}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: maskS}}{64}{figure.caption.27}%
+\contentsline {figure}{\numberline {22}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFaqh}}{66}{figure.caption.28}%
+\contentsline {figure}{\numberline {23}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFatemp}}{67}{figure.caption.29}%
+\contentsline {figure}{\numberline {24}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFpress}}{68}{figure.caption.30}%
+\contentsline {figure}{\numberline {25}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFuwind}}{69}{figure.caption.31}%
+\contentsline {figure}{\numberline {26}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFvwind}}{70}{figure.caption.32}%
+\contentsline {figure}{\numberline {27}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFwspee}}{71}{figure.caption.33}%
+\contentsline {figure}{\numberline {28}{\ignorespaces Dataset: OCEAN\_3D\_MIXING\_COEFFS, Variable: DIFFKR}}{73}{figure.caption.34}%
+\contentsline {figure}{\numberline {29}{\ignorespaces Dataset: OCEAN\_3D\_MIXING\_COEFFS, Variable: KAPGM}}{74}{figure.caption.35}%
+\contentsline {figure}{\numberline {30}{\ignorespaces Dataset: OCEAN\_3D\_MIXING\_COEFFS, Variable: KAPREDI}}{75}{figure.caption.36}%
+\contentsline {figure}{\numberline {31}{\ignorespaces Dataset: OCEAN\_3D\_MOMENTUM\_TEND, Variable: Um\_dPHdx}}{77}{figure.caption.37}%
+\contentsline {figure}{\numberline {32}{\ignorespaces Dataset: OCEAN\_3D\_MOMENTUM\_TEND, Variable: Vm\_dPHdy}}{78}{figure.caption.38}%
+\contentsline {figure}{\numberline {33}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: ADVr\_SLT}}{80}{figure.caption.39}%
+\contentsline {figure}{\numberline {34}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: ADVx\_SLT}}{81}{figure.caption.40}%
+\contentsline {figure}{\numberline {35}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: ADVy\_SLT}}{82}{figure.caption.41}%
+\contentsline {figure}{\numberline {36}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: DFrE\_SLT}}{83}{figure.caption.42}%
+\contentsline {figure}{\numberline {37}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: DFrI\_SLT}}{84}{figure.caption.43}%
+\contentsline {figure}{\numberline {38}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: DFxE\_SLT}}{85}{figure.caption.44}%
+\contentsline {figure}{\numberline {39}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: DFyE\_SLT}}{86}{figure.caption.45}%
+\contentsline {figure}{\numberline {40}{\ignorespaces Dataset: OCEAN\_3D\_SALINITY\_FLUX, Variable: oceSPtnd}}{87}{figure.caption.46}%
+\contentsline {figure}{\numberline {41}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: ADVr\_TH}}{89}{figure.caption.47}%
+\contentsline {figure}{\numberline {42}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: ADVx\_TH}}{90}{figure.caption.48}%
+\contentsline {figure}{\numberline {43}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: ADVy\_TH}}{91}{figure.caption.49}%
+\contentsline {figure}{\numberline {44}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: DFrE\_TH}}{92}{figure.caption.50}%
+\contentsline {figure}{\numberline {45}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: DFrI\_TH}}{93}{figure.caption.51}%
+\contentsline {figure}{\numberline {46}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: DFxE\_TH}}{94}{figure.caption.52}%
+\contentsline {figure}{\numberline {47}{\ignorespaces Dataset: OCEAN\_3D\_TEMPERATURE\_FLUX, Variable: DFyE\_TH}}{95}{figure.caption.53}%
+\contentsline {figure}{\numberline {48}{\ignorespaces Dataset: OCEAN\_3D\_VOLUME\_FLUX, Variable: UVELMASS}}{97}{figure.caption.54}%
+\contentsline {figure}{\numberline {49}{\ignorespaces Dataset: OCEAN\_3D\_VOLUME\_FLUX, Variable: VVELMASS}}{98}{figure.caption.55}%
+\contentsline {figure}{\numberline {50}{\ignorespaces Dataset: OCEAN\_3D\_VOLUME\_FLUX, Variable: WVELMASS}}{99}{figure.caption.56}%
+\contentsline {figure}{\numberline {51}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFempmr}}{101}{figure.caption.57}%
+\contentsline {figure}{\numberline {52}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFevap}}{102}{figure.caption.58}%
+\contentsline {figure}{\numberline {53}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFpreci}}{103}{figure.caption.59}%
+\contentsline {figure}{\numberline {54}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFroff}}{104}{figure.caption.60}%
+\contentsline {figure}{\numberline {55}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SFLUX}}{105}{figure.caption.61}%
+\contentsline {figure}{\numberline {56}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIacSubl}}{106}{figure.caption.62}%
+\contentsline {figure}{\numberline {57}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIatmFW}}{107}{figure.caption.63}%
+\contentsline {figure}{\numberline {58}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIfwThru}}{108}{figure.caption.64}%
+\contentsline {figure}{\numberline {59}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIrsSubl}}{109}{figure.caption.65}%
+\contentsline {figure}{\numberline {60}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIsnPrcp}}{110}{figure.caption.66}%
+\contentsline {figure}{\numberline {61}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: oceFWflx}}{111}{figure.caption.67}%
+\contentsline {figure}{\numberline {62}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFhl}}{113}{figure.caption.68}%
+\contentsline {figure}{\numberline {63}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFhs}}{114}{figure.caption.69}%
+\contentsline {figure}{\numberline {64}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFlwdn}}{115}{figure.caption.70}%
+\contentsline {figure}{\numberline {65}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFlwnet}}{116}{figure.caption.71}%
+\contentsline {figure}{\numberline {66}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFqnet}}{117}{figure.caption.72}%
+\contentsline {figure}{\numberline {67}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFswdn}}{118}{figure.caption.73}%
+\contentsline {figure}{\numberline {68}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFswnet}}{119}{figure.caption.74}%
+\contentsline {figure}{\numberline {69}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: SIaaflux}}{120}{figure.caption.75}%
+\contentsline {figure}{\numberline {70}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: SIatmQnt}}{121}{figure.caption.76}%
+\contentsline {figure}{\numberline {71}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: TFLUX}}{122}{figure.caption.77}%
+\contentsline {figure}{\numberline {72}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: oceQnet}}{123}{figure.caption.78}%
+\contentsline {figure}{\numberline {73}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: oceQsw}}{124}{figure.caption.79}%
+\contentsline {figure}{\numberline {74}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: EXFtaux}}{126}{figure.caption.80}%
+\contentsline {figure}{\numberline {75}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: EXFtauy}}{127}{figure.caption.81}%
+\contentsline {figure}{\numberline {76}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: oceTAUX}}{128}{figure.caption.82}%
+\contentsline {figure}{\numberline {77}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: oceTAUY}}{129}{figure.caption.83}%
+\contentsline {figure}{\numberline {78}{\ignorespaces Dataset: OCEAN\_BOLUS\_STREAMFUNCTION, Variable: GM\_PsiX}}{131}{figure.caption.84}%
+\contentsline {figure}{\numberline {79}{\ignorespaces Dataset: OCEAN\_BOLUS\_STREAMFUNCTION, Variable: GM\_PsiY}}{132}{figure.caption.85}%
+\contentsline {figure}{\numberline {80}{\ignorespaces Dataset: OCEAN\_BOLUS\_VELOCITY, Variable: UVELSTAR}}{134}{figure.caption.86}%
+\contentsline {figure}{\numberline {81}{\ignorespaces Dataset: OCEAN\_BOLUS\_VELOCITY, Variable: VVELSTAR}}{135}{figure.caption.87}%
+\contentsline {figure}{\numberline {82}{\ignorespaces Dataset: OCEAN\_BOLUS\_VELOCITY, Variable: WVELSTAR}}{136}{figure.caption.88}%
+\contentsline {figure}{\numberline {83}{\ignorespaces Dataset: OCEAN\_BOTTOM\_PRESSURE, Variable: OBP}}{138}{figure.caption.89}%
+\contentsline {figure}{\numberline {84}{\ignorespaces Dataset: OCEAN\_BOTTOM\_PRESSURE, Variable: OBPGMAP}}{139}{figure.caption.90}%
+\contentsline {figure}{\numberline {85}{\ignorespaces Dataset: OCEAN\_BOTTOM\_PRESSURE, Variable: PHIBOT}}{140}{figure.caption.91}%
+\contentsline {figure}{\numberline {86}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: DRHODR}}{142}{figure.caption.92}%
+\contentsline {figure}{\numberline {87}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: PHIHYD}}{143}{figure.caption.93}%
+\contentsline {figure}{\numberline {88}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: PHIHYDcR}}{144}{figure.caption.94}%
+\contentsline {figure}{\numberline {89}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: RHOAnoma}}{145}{figure.caption.95}%
+\contentsline {figure}{\numberline {90}{\ignorespaces Dataset: OCEAN\_MIXED\_LAYER\_DEPTH, Variable: MXLDEPTH}}{147}{figure.caption.96}%
+\contentsline {figure}{\numberline {91}{\ignorespaces Dataset: OCEAN\_TEMPERATURE\_SALINITY, Variable: SALT}}{149}{figure.caption.97}%
+\contentsline {figure}{\numberline {92}{\ignorespaces Dataset: OCEAN\_TEMPERATURE\_SALINITY, Variable: THETA}}{150}{figure.caption.98}%
+\contentsline {figure}{\numberline {93}{\ignorespaces Dataset: OCEAN\_VELOCITY, Variable: UVEL}}{152}{figure.caption.99}%
+\contentsline {figure}{\numberline {94}{\ignorespaces Dataset: OCEAN\_VELOCITY, Variable: VVEL}}{153}{figure.caption.100}%
+\contentsline {figure}{\numberline {95}{\ignorespaces Dataset: OCEAN\_VELOCITY, Variable: WVEL}}{154}{figure.caption.101}%
+\contentsline {figure}{\numberline {96}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: SIarea}}{156}{figure.caption.102}%
+\contentsline {figure}{\numberline {97}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: SIheff}}{157}{figure.caption.103}%
+\contentsline {figure}{\numberline {98}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: SIhsnow}}{158}{figure.caption.104}%
+\contentsline {figure}{\numberline {99}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: sIceLoad}}{159}{figure.caption.105}%
+\contentsline {figure}{\numberline {100}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: ADVxHEFF}}{161}{figure.caption.106}%
+\contentsline {figure}{\numberline {101}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: ADVxSNOW}}{162}{figure.caption.107}%
+\contentsline {figure}{\numberline {102}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: ADVyHEFF}}{163}{figure.caption.108}%
+\contentsline {figure}{\numberline {103}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: ADVySNOW}}{164}{figure.caption.109}%
+\contentsline {figure}{\numberline {104}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: DFxEHEFF}}{165}{figure.caption.110}%
+\contentsline {figure}{\numberline {105}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: DFxESNOW}}{166}{figure.caption.111}%
+\contentsline {figure}{\numberline {106}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: DFyEHEFF}}{167}{figure.caption.112}%
+\contentsline {figure}{\numberline {107}{\ignorespaces Dataset: SEA\_ICE\_HORIZ\_VOLUME\_FLUX, Variable: DFyESNOW}}{168}{figure.caption.113}%
+\contentsline {figure}{\numberline {108}{\ignorespaces Dataset: SEA\_ICE\_SALT\_PLUME\_FLUX, Variable: oceSPDep}}{170}{figure.caption.114}%
+\contentsline {figure}{\numberline {109}{\ignorespaces Dataset: SEA\_ICE\_SALT\_PLUME\_FLUX, Variable: oceSPflx}}{171}{figure.caption.115}%
+\contentsline {figure}{\numberline {110}{\ignorespaces Dataset: SEA\_ICE\_VELOCITY, Variable: SIuice}}{173}{figure.caption.116}%
+\contentsline {figure}{\numberline {111}{\ignorespaces Dataset: SEA\_ICE\_VELOCITY, Variable: SIvice}}{174}{figure.caption.117}%
+\contentsline {figure}{\numberline {112}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: ETAN}}{176}{figure.caption.118}%
+\contentsline {figure}{\numberline {113}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: SSH}}{177}{figure.caption.119}%
+\contentsline {figure}{\numberline {114}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: SSHIBC}}{178}{figure.caption.120}%
+\contentsline {figure}{\numberline {115}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: SSHNOIBC}}{179}{figure.caption.121}%
+\contentsline {figure}{\numberline {116}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: Depth}}{181}{figure.caption.122}%
+\contentsline {figure}{\numberline {117}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: area}}{182}{figure.caption.123}%
+\contentsline {figure}{\numberline {118}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: drF}}{183}{figure.caption.124}%
+\contentsline {figure}{\numberline {119}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: hFacC}}{184}{figure.caption.125}%
+\contentsline {figure}{\numberline {120}{\ignorespaces Dataset: GRID\_GEOMETRY\_ECCO, Variable: maskC}}{185}{figure.caption.126}%
+\contentsline {figure}{\numberline {121}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFaqh}}{187}{figure.caption.127}%
+\contentsline {figure}{\numberline {122}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFatemp}}{188}{figure.caption.128}%
+\contentsline {figure}{\numberline {123}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFewind}}{189}{figure.caption.129}%
+\contentsline {figure}{\numberline {124}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFnwind}}{190}{figure.caption.130}%
+\contentsline {figure}{\numberline {125}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFpress}}{191}{figure.caption.131}%
+\contentsline {figure}{\numberline {126}{\ignorespaces Dataset: ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES, Variable: EXFwspee}}{192}{figure.caption.132}%
+\contentsline {figure}{\numberline {127}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFempmr}}{194}{figure.caption.133}%
+\contentsline {figure}{\numberline {128}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFevap}}{195}{figure.caption.134}%
+\contentsline {figure}{\numberline {129}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFpreci}}{196}{figure.caption.135}%
+\contentsline {figure}{\numberline {130}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: EXFroff}}{197}{figure.caption.136}%
+\contentsline {figure}{\numberline {131}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SFLUX}}{198}{figure.caption.137}%
+\contentsline {figure}{\numberline {132}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIacSubl}}{199}{figure.caption.138}%
+\contentsline {figure}{\numberline {133}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIatmFW}}{200}{figure.caption.139}%
+\contentsline {figure}{\numberline {134}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIfwThru}}{201}{figure.caption.140}%
+\contentsline {figure}{\numberline {135}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIrsSubl}}{202}{figure.caption.141}%
+\contentsline {figure}{\numberline {136}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: SIsnPrcp}}{203}{figure.caption.142}%
+\contentsline {figure}{\numberline {137}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_FW\_FLUX, Variable: oceFWflx}}{204}{figure.caption.143}%
+\contentsline {figure}{\numberline {138}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFhl}}{206}{figure.caption.144}%
+\contentsline {figure}{\numberline {139}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFhs}}{207}{figure.caption.145}%
+\contentsline {figure}{\numberline {140}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFlwdn}}{208}{figure.caption.146}%
+\contentsline {figure}{\numberline {141}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFlwnet}}{209}{figure.caption.147}%
+\contentsline {figure}{\numberline {142}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFqnet}}{210}{figure.caption.148}%
+\contentsline {figure}{\numberline {143}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFswdn}}{211}{figure.caption.149}%
+\contentsline {figure}{\numberline {144}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: EXFswnet}}{212}{figure.caption.150}%
+\contentsline {figure}{\numberline {145}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: SIaaflux}}{213}{figure.caption.151}%
+\contentsline {figure}{\numberline {146}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: SIatmQnt}}{214}{figure.caption.152}%
+\contentsline {figure}{\numberline {147}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: TFLUX}}{215}{figure.caption.153}%
+\contentsline {figure}{\numberline {148}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: oceQnet}}{216}{figure.caption.154}%
+\contentsline {figure}{\numberline {149}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_HEAT\_FLUX, Variable: oceQsw}}{217}{figure.caption.155}%
+\contentsline {figure}{\numberline {150}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: EXFtaue}}{219}{figure.caption.156}%
+\contentsline {figure}{\numberline {151}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: EXFtaun}}{220}{figure.caption.157}%
+\contentsline {figure}{\numberline {152}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: oceTAUE}}{221}{figure.caption.158}%
+\contentsline {figure}{\numberline {153}{\ignorespaces Dataset: OCEAN\_AND\_ICE\_SURFACE\_STRESS, Variable: oceTAUN}}{222}{figure.caption.159}%
+\contentsline {figure}{\numberline {154}{\ignorespaces Dataset: OCEAN\_BOLUS\_VELOCITY, Variable: EVELSTAR}}{224}{figure.caption.160}%
+\contentsline {figure}{\numberline {155}{\ignorespaces Dataset: OCEAN\_BOLUS\_VELOCITY, Variable: NVELSTAR}}{225}{figure.caption.161}%
+\contentsline {figure}{\numberline {156}{\ignorespaces Dataset: OCEAN\_BOLUS\_VELOCITY, Variable: WVELSTAR}}{226}{figure.caption.162}%
+\contentsline {figure}{\numberline {157}{\ignorespaces Dataset: OCEAN\_BOTTOM\_PRESSURE, Variable: OBP}}{228}{figure.caption.163}%
+\contentsline {figure}{\numberline {158}{\ignorespaces Dataset: OCEAN\_BOTTOM\_PRESSURE, Variable: OBPGMAP}}{229}{figure.caption.164}%
+\contentsline {figure}{\numberline {159}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: DRHODR}}{231}{figure.caption.165}%
+\contentsline {figure}{\numberline {160}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: PHIHYD}}{232}{figure.caption.166}%
+\contentsline {figure}{\numberline {161}{\ignorespaces Dataset: OCEAN\_DENS\_STRAT\_PRESS, Variable: RHOAnoma}}{233}{figure.caption.167}%
+\contentsline {figure}{\numberline {162}{\ignorespaces Dataset: OCEAN\_MIXED\_LAYER\_DEPTH, Variable: MXLDEPTH}}{235}{figure.caption.168}%
+\contentsline {figure}{\numberline {163}{\ignorespaces Dataset: OCEAN\_TEMPERATURE\_SALINITY, Variable: SALT}}{237}{figure.caption.169}%
+\contentsline {figure}{\numberline {164}{\ignorespaces Dataset: OCEAN\_TEMPERATURE\_SALINITY, Variable: THETA}}{238}{figure.caption.170}%
+\contentsline {figure}{\numberline {165}{\ignorespaces Dataset: OCEAN\_VELOCITY, Variable: EVEL}}{240}{figure.caption.171}%
+\contentsline {figure}{\numberline {166}{\ignorespaces Dataset: OCEAN\_VELOCITY, Variable: NVEL}}{241}{figure.caption.172}%
+\contentsline {figure}{\numberline {167}{\ignorespaces Dataset: OCEAN\_VELOCITY, Variable: WVEL}}{242}{figure.caption.173}%
+\contentsline {figure}{\numberline {168}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: SIarea}}{244}{figure.caption.174}%
+\contentsline {figure}{\numberline {169}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: SIheff}}{245}{figure.caption.175}%
+\contentsline {figure}{\numberline {170}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: SIhsnow}}{246}{figure.caption.176}%
+\contentsline {figure}{\numberline {171}{\ignorespaces Dataset: SEA\_ICE\_CONC\_THICKNESS, Variable: sIceLoad}}{247}{figure.caption.177}%
+\contentsline {figure}{\numberline {172}{\ignorespaces Dataset: SEA\_ICE\_VELOCITY, Variable: SIeice}}{249}{figure.caption.178}%
+\contentsline {figure}{\numberline {173}{\ignorespaces Dataset: SEA\_ICE\_VELOCITY, Variable: SInice}}{250}{figure.caption.179}%
+\contentsline {figure}{\numberline {174}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: SSH}}{252}{figure.caption.180}%
+\contentsline {figure}{\numberline {175}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: SSHIBC}}{253}{figure.caption.181}%
+\contentsline {figure}{\numberline {176}{\ignorespaces Dataset: SEA\_SURFACE\_HEIGHT, Variable: SSHNOIBC}}{254}{figure.caption.182}%
+\contentsline {figure}{\numberline {177}{\ignorespaces Dataset: GLOBAL\_MEAN\_ATM\_SURFACE\_PRES, Variable: Pa\_global}}{256}{figure.caption.183}%
+\contentsline {figure}{\numberline {178}{\ignorespaces Dataset: GLOBAL\_MEAN\_SEA\_LEVEL, Variable: global\_mean\_barystatic\_sea\_level\_anomaly}}{258}{figure.caption.184}%
+\contentsline {figure}{\numberline {179}{\ignorespaces Dataset: GLOBAL\_MEAN\_SEA\_LEVEL, Variable: global\_mean\_sea\_level\_anomaly}}{259}{figure.caption.185}%
+\contentsline {figure}{\numberline {180}{\ignorespaces Dataset: GLOBAL\_MEAN\_SEA\_LEVEL, Variable: global\_mean\_sterodynamic\_sea\_level\_anomaly}}{260}{figure.caption.186}%
+\contentsline {figure}{\numberline {181}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: mass}}{262}{figure.caption.187}%
+\contentsline {figure}{\numberline {182}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: mass\_fw}}{263}{figure.caption.188}%
+\contentsline {figure}{\numberline {183}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: mass\_gc}}{264}{figure.caption.189}%
+\contentsline {figure}{\numberline {184}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: mass\_si}}{265}{figure.caption.190}%
+\contentsline {figure}{\numberline {185}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: sboarea}}{266}{figure.caption.191}%
+\contentsline {figure}{\numberline {186}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xcom}}{267}{figure.caption.192}%
+\contentsline {figure}{\numberline {187}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xcom\_fw}}{268}{figure.caption.193}%
+\contentsline {figure}{\numberline {188}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xoamc}}{269}{figure.caption.194}%
+\contentsline {figure}{\numberline {189}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xoamc\_si}}{270}{figure.caption.195}%
+\contentsline {figure}{\numberline {190}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xoamp}}{271}{figure.caption.196}%
+\contentsline {figure}{\numberline {191}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xoamp\_dsl}}{272}{figure.caption.197}%
+\contentsline {figure}{\numberline {192}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: xoamp\_fw}}{273}{figure.caption.198}%
+\contentsline {figure}{\numberline {193}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: ycom}}{274}{figure.caption.199}%
+\contentsline {figure}{\numberline {194}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: ycom\_fw}}{275}{figure.caption.200}%
+\contentsline {figure}{\numberline {195}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: yoamc}}{276}{figure.caption.201}%
+\contentsline {figure}{\numberline {196}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: yoamc\_si}}{277}{figure.caption.202}%
+\contentsline {figure}{\numberline {197}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: yoamp}}{278}{figure.caption.203}%
+\contentsline {figure}{\numberline {198}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: yoamp\_dsl}}{279}{figure.caption.204}%
+\contentsline {figure}{\numberline {199}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: yoamp\_fw}}{280}{figure.caption.205}%
+\contentsline {figure}{\numberline {200}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zcom}}{281}{figure.caption.206}%
+\contentsline {figure}{\numberline {201}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zcom\_fw}}{282}{figure.caption.207}%
+\contentsline {figure}{\numberline {202}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zoamc}}{283}{figure.caption.208}%
+\contentsline {figure}{\numberline {203}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zoamc\_si}}{284}{figure.caption.209}%
+\contentsline {figure}{\numberline {204}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zoamp}}{285}{figure.caption.210}%
+\contentsline {figure}{\numberline {205}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zoamp\_dsl}}{286}{figure.caption.211}%
+\contentsline {figure}{\numberline {206}{\ignorespaces Dataset: SBO\_CORE\_PRODUCTS, Variable: zoamp\_fw}}{287}{figure.caption.212}%
