@@ -1,13 +1,12 @@
-*/tmp/**/*.nc
-*.dump
-*.diff
-*/tmp/**/*.meta
-*/tmp/**/*.data
 *.pyc
 job_logs*.json
-*.DS_Store
+
+# macOS folder attributes:
+.DS_Store
+
 # emacs temporary files:
 *~
 *._*
 \#*\#
-*ipynb_checkpoints*
+
+.ipynb_checkpoints/
