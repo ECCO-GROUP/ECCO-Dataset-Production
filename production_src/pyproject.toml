@@ -8,20 +8,17 @@ version = '1.0'
 dependencies = [
     'boto3',
     'bs4',
-#   'cartopy',
     'importlib.resources',
     'lxml',
-#   'matplotlib',
     'netCDF4',
     'numpy',
-#   'pyresample',
     'requests',
     'scipy',
     'xarray',
     'xmitgcm',
     'xgcm',
     'ecco_cloud_utils @ git+https://github.com/ECCO-GROUP/ECCO-ACCESS/#subdirectory=ecco-cloud-utils',
-    'ecco_v4_py @ git+https://github.com/ECCO-GROUP/ECCOv4-py',
+    'ecco_v4_py @ git+https://github.com/gjmoore/ECCOv4-py@s3fs_build'
 ]
 
 #[tool.setuptools]

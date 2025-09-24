@@ -14,8 +14,8 @@ from . import ecco_task
 class ECCOMappingFactors(object):
     """Container class for ECCO mapping factors access. Primarily intended to
     optimize i/o performance by allowing operations, e.g. collections of
-    ECCOMDSDataset objects, to share a single repository of ECCO mapping factors
-    data.
+    ECCOMDSDataset objects, to share a single ECCO mapping factors data
+    resource.
 
     Args:
         task (str, dict, or taskobj): Optional (path and) name of json-formatted
