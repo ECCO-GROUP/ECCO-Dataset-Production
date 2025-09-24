@@ -7,8 +7,5 @@ def main():
     # outline.write_datasets('latlon')
     # outline.write_datasets('1D')
 
-
-
 main()
-
 

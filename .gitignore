@@ -9,4 +9,7 @@ job_logs*.json
 *._*
 \#*\#
 
-.ipynb_checkpoints/
+*ipynb_checkpoints*
+
+document_generator/document/final_doc.fdb_latexmk
+document_generator/document/final_doc.fls
