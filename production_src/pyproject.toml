@@ -14,6 +14,7 @@ dependencies = [
     'numpy',
     'requests',
     'scipy',
+    'sphinx_rtd_theme',
     'xarray',
     'xmitgcm',
     'xgcm',

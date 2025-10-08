@@ -1,7 +1,7 @@
 
 # ECCO Dataset Production
 
-ECCO Dataset Production is a toolset that supports [NASA's Open
+ECCO Dataset Production is a toolset that supports NASA's [Open
 Science](https://science.nasa.gov/open-science/) initiative by making
 ECCO's multidecadal, physically- and statistically-consistent ocean
 state estimates available in
@@ -14,10 +14,11 @@ grid formats, for wide use by the broader scientific research
 community.
 
 ECCO Dataset Production can run either locally or in the cloud, the
-latter mode used regularly by the ECCO group to generate the
+latter mode in regular by the ECCO group to generate the
 multi-terabyte datasets available through the Physical Oceanography
 Distributed Active Archive Center
-([PO.DAAC](https://podaac.jpl.nasa.gov/)).
+([PO.DAAC](https://podaac.jpl.nasa.gov/)) and NASA's Earthdata [ESDIS
+Project](https://www.earthdata.nasa.gov/about/esdis).
 
 See readthedocs.io for more information.
 

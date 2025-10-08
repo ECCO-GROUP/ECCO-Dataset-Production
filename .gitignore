@@ -9,7 +9,9 @@ job_logs*.json
 *._*
 \#*\#
 
-*ipynb_checkpoints*
+# checkpoints and unsaved notebooks:
+.ipynb_checkpoints*
+Untitled*.ipynb
 
 document_generator/document/final_doc.fdb_latexmk
 document_generator/document/final_doc.fls
