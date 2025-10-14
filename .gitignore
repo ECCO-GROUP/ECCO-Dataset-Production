@@ -9,6 +9,9 @@ job_logs*.json
 *._*
 \#*\#
 
+# sphinx documentation:
+docs/build/
+
 # checkpoints and unsaved notebooks:
 .ipynb_checkpoints*
 Untitled*.ipynb
