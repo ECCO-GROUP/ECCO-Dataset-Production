@@ -114,7 +114,6 @@ def ecco_make_granule( task, cfg,
         else:
             raise RuntimeError('Could not determine output granule type (latlon or native)')
 
-
         # set miscellaneous granule attributes and properties:
         merged_variable_dataset_with_ancillary_data = set_granule_ancillary_data(
             dataset=merged_variable_dataset, task=this_task,
@@ -241,7 +240,7 @@ def set_granule_ancillary_data(
 
 
 def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None, **kwargs):
-    """Primary routine for aggregrating and setting mtadata collected from all
+    """Primary routine for aggregrating and setting metadata collected from all
     sources, e.g., ECCO configuration data, task list references, etc.  Note
     that set_granule_metadata operations depend in large part on functionality
     provided by ecco_v4_py.ecco_utils.
@@ -313,6 +312,11 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
     elif task.is_native:
         dataset = ecco_v4_py.ecco_utils.add_coordinate_metadata(
             all_metadata['coord_native'],dataset)
+
+    # doi-related metadata:
+    dataset.attrs['metadata_link'] = cfg['doi_prefix']
+    dataset.attrs['identifier_product_doi'] = cfg['doi_prefix']
+    dataset.attrs['identifier_product_doi_authority'] = cfg['doi_authority']
 
     # global metadata:
     dataset = ecco_v4_py.ecco_utils.add_global_metadata(
@@ -438,11 +442,9 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
             e2 = 'matched more than one PO.DAAC DATASET.FILENAME column element.'
             raise RuntimeError(f'{e1} {e2}')
         dataset.attrs['id'] = \
-            pm_row_for_this_granule['DATASET.PERSISTENT_ID'].iloc[0].\
-            replace('PODAAC-',f"{cfg['doi_prefix']}/")
-        dataset.attrs['metadata_link'] = \
-            cfg['metadata_link_root'] + \
             pm_row_for_this_granule['DATASET.SHORT_NAME'].iloc[0]
+        dataset.attrs['metadata_link'] = \
+            cfg['doi_prefix']
         dataset.attrs['title'] = \
             pm_row_for_this_granule['DATASET.LONG_NAME'].iloc[0]
         # additional specific PO.DAAC metadata request:
