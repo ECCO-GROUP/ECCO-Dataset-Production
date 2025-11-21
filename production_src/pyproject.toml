@@ -19,7 +19,7 @@ dependencies = [
     'xmitgcm',
     'xgcm',
     'ecco_cloud_utils @ git+https://github.com/ECCO-GROUP/ECCO-ACCESS/#subdirectory=ecco-cloud-utils',
-    'ecco_v4_py @ git+https://github.com/gjmoore/ECCOv4-py@s3fs_build'
+    'ecco_v4_py @ git+https://github.com/ECCO-GROUP/ECCOv4-py'
 ]
 
 #[tool.setuptools]
@@ -42,5 +42,5 @@ edp_aws_s3_sync             = 'ecco_dataset_production.apps.aws_s3_sync:main'
 edp_create_factors          = 'ecco_dataset_production.apps.create_factors:main'
 edp_create_job_files        = 'ecco_dataset_production.apps.create_job_files:main'
 edp_create_job_task_list    = 'ecco_dataset_production.apps.create_job_task_list:main'
-edp_generate_dataproducts   = 'ecco_dataset_production.apps.generate_dataproducts:main'
+edp_generate_datasets       = 'ecco_dataset_production.apps.generate_datasets:main'
 

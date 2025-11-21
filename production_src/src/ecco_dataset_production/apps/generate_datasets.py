@@ -3,7 +3,7 @@
 import argparse
 import logging
 
-from .. import ecco_generate_dataproducts
+from .. import ecco_generate_datasets
 
 
 # initialize root logger:
@@ -12,7 +12,7 @@ logging.basicConfig(
 
 
 def create_parser():
-    """Set up list of command-line arguments to generate_dataproducts.
+    """Set up list of command-line arguments to generate_datasets.
 
     Returns:
         argparser.ArgumentParser instance.
@@ -49,7 +49,7 @@ def main():
     log = logging.getLogger('edp')
     log.setLevel(args.log_level)
 
-    ecco_generate_dataproducts.generate_dataproducts(
+    ecco_generate_datasets.generate_datasets(
         tasklist=args.tasklist,
         #log_level=args.log_level,  # logger hierarchy makes this redundant
         keygen=args.keygen, profile=args.profile)

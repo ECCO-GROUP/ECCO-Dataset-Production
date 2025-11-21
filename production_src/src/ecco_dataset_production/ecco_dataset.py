@@ -43,9 +43,6 @@ class ECCOMDSDataset(object):
             fields include:
             ecco_native_grid_filename: ECCO NetCDF native grid file name (e.g.,
                 GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc).
-            model_geometry: ECCO model geometry (e.g., 'llc').
-            read_grid: Passed via the read_bin_llc.load_ecco_vars_from_mds input
-                parameter of the same name (e.g., 'False').
         tmpdir (str): Optional temporary directory for task list variable input
             data store. If not defined, temporary storage will be created
             locally, and separately, for each variable. The primary intent of
@@ -200,8 +197,6 @@ class ECCOMDSDataset(object):
                         grid_vars_to_coords     = False,
                         output_freq_code        = output_freq_code,
                         model_time_steps_to_load= [mds_file.time],
-                        read_grid               = True,
-                        #read_grid               = self.cfg['read_grid'],
                         mds_datatype            = mds_datatype,
                         model_start_datetime    = np.datetime64(self.cfg['model_start_time']))
 
@@ -262,8 +257,6 @@ class ECCOMDSDataset(object):
                                 grid_vars_to_coords     = False,
                                 output_freq_code        = output_freq_code,
                                 model_time_steps_to_load= [mds_file.time],
-                                read_grid               = True,
-                                #read_grid               = self.cfg['read_grid'],
                                 model_start_datetime    = np.datetime64(self.cfg['model_start_time'])) )
 
                 # ds[0], ds[1] will each contain 'x' or 'y' type fields (e.g.,
@@ -444,7 +437,7 @@ class ECCOMDSDataset(object):
         of 'native' results type.
 
         Args:
-            variable (str): ECCO resuls variable name.
+            variable (str): ECCO results variable name.
 
         Returns:
             No return; self.ds[variable] masked in-place.

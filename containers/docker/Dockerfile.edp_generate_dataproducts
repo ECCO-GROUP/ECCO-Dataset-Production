@@ -1,5 +1,0 @@
-FROM ecco_dataset_production:latest
-
-COPY ./production_scripts/edp_generate_dataproducts.sh  .
-
-ENTRYPOINT ["./edp_generate_dataproducts.sh"]

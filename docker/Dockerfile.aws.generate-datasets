@@ -1,0 +1,9 @@
+ARG AWS_ACCOUNT_ID
+ARG AWS_REGION
+ARG COMPOSE_PROJECT_NAME
+
+FROM ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${COMPOSE_PROJECT_NAME}-aws-base:latest
+
+COPY ./docker/entrypoint_edp_generate_datasets.sh  .
+
+ENTRYPOINT ["./entrypoint_edp_generate_datasets.sh"]

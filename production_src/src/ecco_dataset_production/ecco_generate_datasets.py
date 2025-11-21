@@ -30,8 +30,8 @@ from . import ecco_task
 
 def ecco_make_granule( task, cfg,
     grid=None, mapping_factors=None, metadata=None, log_level=None, **kwargs):
-    """Create PO.DAAC-ready ECCO granule per instructions provided in input task
-    descriptor.
+    """Create PO.DAAC/ESDIS-ready ECCO granule per instructions provided in
+    input task descriptor.
 
     Args:
         task (dict): Single task from parsed ECCO dataset production
@@ -122,9 +122,7 @@ def ecco_make_granule( task, cfg,
         # append metadata:
         merged_variable_dataset_with_all_metadata, encoding = set_granule_metadata(
             dataset=merged_variable_dataset_with_ancillary_data,
-            task=this_task,
-            ecco_metadata=metadata,
-            cfg=cfg)
+            task=this_task, ecco_metadata=metadata, cfg=cfg)
 
         # write:
         if this_task.is_granule_local:
@@ -459,8 +457,8 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
     return (dataset,encoding)
 
 
-def generate_dataproducts( tasklist, log_level=None, **kwargs):
-    """Generate PO.DAAC-ready ECCO granule(s) for all tasks in tasklist.
+def generate_datasets( tasklist, log_level=None, **kwargs):
+    """Generate PO.DAAC/ESDIS-ready ECCO granule(s) for all tasks in tasklist.
 
     Args:
         tasklist: (Path and) name, or similar AWS S3 object name of
@@ -481,7 +479,7 @@ def generate_dataproducts( tasklist, log_level=None, **kwargs):
                 with keygen (e.g., 'saml-pub', 'default', etc.)
 
     Returns:
-        PO.DAAC-ready ECCO granule(s) to location(s) defined in tasklist.
+        PO.DAAC/ESDIS-ready ECCO granule(s) to location(s) defined in tasklist.
 
     """
     log = logging.getLogger('edp.'+__name__)

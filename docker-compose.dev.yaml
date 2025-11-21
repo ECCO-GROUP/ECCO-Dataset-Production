@@ -1,0 +1,21 @@
+
+name: 'ecco-dataset-production'
+
+services:
+
+  dev-base:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.dev.base
+
+# in progress:
+# dev-create-tasklist:
+#   build:
+#     context: .
+#     dockerfile: ./docker/Dockerfile.dev.create-tasklist
+
+  dev-generate-datasets:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.dev.generate-datasets
+
