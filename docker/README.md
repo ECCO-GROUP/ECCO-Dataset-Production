@@ -5,8 +5,8 @@ The Dockerfiles and scripts included here support both local, and
 cloud-based Docker image builds and can either be run directly
 (`docker build ...`) or invoked using the Docker Compose files at the
 repository top level (`docker compose -f ... build ...`). In addition,
-the shell scripts included here automate calls to Docker Compose so
-that building, and pushing, the entire ECCO Dataset Production
+the included shell scripts automate calls to Docker Compose so that
+building, and pushing, the entire ECCO Dataset Production
 container-based toolchain can be accomplished with just one or two
 commands:
 
@@ -38,28 +38,33 @@ Docker-related build files and scripts include:
 
 ### Setup
 
-Other than ensuring the Docker daemon is running (`docker version`),
+Other than ensuring the Docker daemon is running (`$ docker version`),
 no configuration is necesary for local Docker image builds.
 
 For [AWS ECR](https://aws.amazon.com/ecr/)-targeted builds it is
 assumed that an AWS account with appropriate privileges has been set
 up, and that the AWS Command Line Interface
-([CLI](https://aws.amazon.com/cli/)) has been installed. In addition,
-the following self-explanatory environment variables apply:
+([CLI](https://aws.amazon.com/cli/)) has been locally installed. In
+addition, the following environment variables apply:
 
 - `AWS_ACCOUNT_ID` (no default)
 - `AWS_REGION` (no default)
 - `BUILD_PLATFORM` (default: `linux/amd64`)
 
 If not provided, `docker_aws_build.sh` and `docker_aws_push.sh` will
-attmept to set the `AWS_`-type variables by querying AWS account and
-configuration data using the CLI.
+attempt to set the `AWS_`-type variables by querying AWS account and
+configuration data using the CLI. These two scripts also use
+`BUILD_PLATFORM` to set the Docker Compose [`platform`
+option](https://docs.docker.com/reference/compose-file/services/#platform)
+and can be set to a value other than the default of `linux/amd64` if
+targeting other AWS compute instance types (i.e., `linux/arm64`,
+etc.).
 
 ### Building and Deploying
 
 #### Local Test/Development
 
-Even if targeting AWS, a local development build is a good "getting
+Even if targeting AWS, a local development build is a useful "getting
 started" exercise. All that is required to build the Docker base, and
 "executable" images is:
 
@@ -71,8 +76,9 @@ started" exercise. All that is required to build the Docker base, and
     REPOSITORY                                      TAG       IMAGE ID       CREATED          SIZE
     ecco-dataset-production-dev-generate-datasets   latest    aa040dab86dc   4 minutes ago    3.32GB
     ecco-dataset-production-dev-base                latest    94e56150fc7c   5 minutes ago    3.32GB
+	...etc...
 
-where `./docker_dev_build.sh` simply wraps/automates calls to
+where `./docker_dev_build.sh` wraps/automates calls to
 `../docker-compose.dev.yaml`.
 
 The resulting base image can be run interactively, for example, to
@@ -117,6 +123,7 @@ noted earlier, using the "build" and "push" scripts that wrap calls to
     $ aws ecr describe-repositories | grep repositoryName | sed 's/.*: //'
     "ecco-dataset-production-aws-base",
     "ecco-dataset-production-aws-generate-datasets",
+	...etc...
 
 Docker images that have been pushed to AWS ECR can be used in multiple
 ways: they can be pulled into AWS EC2 instances, invoked using AWS
@@ -125,9 +132,9 @@ as AWS Fargate and Lambda.  The AWS Batch/Fargate approach is used by
 the ECCO central production group and is discussed further in
 readthedocs.
 
-If an [EC2](https://aws.amazon.com/ec2/) instance is available, a good
-first-level check of image availability and [AWS
-IAM](https://aws.amazon.com/iam/) role/policy settings is to pull the
+If an [EC2](https://aws.amazon.com/ec2/) instance is available, a
+useful first-level check of image availability and AWS
+[IAM](https://aws.amazon.com/iam/) role/policy settings is to pull the
 base image from the ECR and explore the contents interactively from
 the EC2 instance, much as was done in the local development case:
 
@@ -146,7 +153,7 @@ the EC2 instance, much as was done in the local development case:
     # and pull from repo:
     $ sudo docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/ecco-dataset-production-aws-base
 
-    # run interactively to test basic functionality::
+    # run interactively to test basic functionality:
     $ sudo docker run --rm -it ecco-dataset-production-aws-base /bin/bash
 
 See the readthdocs.io pages for further discussion regarding AWS

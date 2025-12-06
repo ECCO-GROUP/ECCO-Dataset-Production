@@ -25,8 +25,8 @@ See readthedocs.io for more information.
 
 ## Project Dependencies
 
-In addition to MITgcm, much of the core computation in ECCO Dataset
-Production is provided by [xmitgcm](https://xmitgcm.readthedocs.io),
+Much of the core computation in ECCO Dataset Production is provided by
+[xmitgcm](https://xmitgcm.readthedocs.io),
 [ECCOv4-py](https://github.com/ECCO-GROUP/ECCOv4-py), and the cloud
 utilities package from
 [ECCO-ACCESS](https://github.com/ECCO-GROUP/ECCO-ACCESS).
@@ -65,8 +65,8 @@ install the ECCO-v4-Configurations submodule:
     $ git submodule init
     $ git submodule update
 
-Thereafter, `./tests/native_latlon_local` provides a good "getting started" example
-illustrating how to generate local NetCDF files from local input files.
+`./tests/native_latlon_local` provides a good "getting started"
+example that generates local NetCDF files from local input files.
 
 
 ## History
