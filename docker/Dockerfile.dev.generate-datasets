@@ -1,0 +1,5 @@
+FROM ecco-dataset-production-dev-base:latest
+
+COPY ./docker/entrypoint_edp_generate_datasets.sh  .
+
+ENTRYPOINT ["./entrypoint_edp_generate_datasets.sh"]

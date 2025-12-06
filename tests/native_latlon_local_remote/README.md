@@ -27,7 +27,7 @@ the submittal scripts here.
   
 - Granule generation based on generated task list:
   `$ ./edp_generate_dataproducts.sh <ver>` where `<ver>` is either
-  'V4r4' or 'V4r5'.  Note that the KEYGEN and PROFILE variables can be
-  removed if not running within an AWS IAM Identity Center (SSO)
-  environment.  Results can be compared with local results generated
-  in `../native_latlon_local`.
+  'V4r4' or 'V4r5'.  Note that the KEYGEN and PROFILE variables are
+  not necessary and can be removed if not running within an AWS IAM
+  Identity Center (SSO) environment.  Results can be compared with
+  local results generated in `../native_latlon_local`.

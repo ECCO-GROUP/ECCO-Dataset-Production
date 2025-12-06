@@ -1,15 +1,20 @@
-*/tmp/**/*.nc
-*.dump
-*.diff
-*/tmp/**/*.meta
-*/tmp/**/*.data
 *.pyc
 job_logs*.json
-*.DS_Store
+
+# macOS folder attributes:
+.DS_Store
+
 # emacs temporary files:
 *~
 *._*
 \#*\#
-*ipynb_checkpoints*
+
+# sphinx documentation:
+docs/build/
+
+# checkpoints and unsaved notebooks:
+.ipynb_checkpoints*
+Untitled*.ipynb
+
 document_generator/document/final_doc.fdb_latexmk
 document_generator/document/final_doc.fls

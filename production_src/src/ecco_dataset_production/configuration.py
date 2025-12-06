@@ -32,10 +32,8 @@ class ECCODatasetProductionConfig(dict):
     """
     def __init__( self, cfgfile=None, **kwargs):
         super().__init__()
-        #self.cfgfile = kwargs.pop('cfgfile',None)
         if cfgfile:
             self.cfgfile = cfgfile
-        #if self.cfgfile:
             if aws.ecco_aws.is_s3_uri(self.cfgfile):
                 with tempfile.TemporaryDirectory() as tmpdir:
                     tmpdir_and_fname = os.path.join(tmpdir,os.path.basename(self.cfgfile))

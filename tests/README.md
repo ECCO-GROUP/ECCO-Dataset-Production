@@ -6,12 +6,12 @@
 The following examples can either be run as configured, or used as
 starting points for other datatype production examples:
 
-- SSH\_native\_latlon\_local: Generation of native and latlon format
+- native\_latlon\_local: Generation of native and latlon format
   granules from local input, with output to local directory. See
   "Configuring ECCO Dataset Production to run locally" in ../README.md
   for description.
 
-- SSH\_native\_latlon\_local\_remote: Generation of native and latlon
+- native\_latlon\_local\_remote: Generation of native and latlon
   format granules from remote input data, with output to local
   directory.  See "Configuring ECCO Dataset Production to run in
   local/remote mode" in ../README.md for description.
@@ -26,8 +26,6 @@ starting points for other datatype production examples:
 
 ## Test data:
 
-- ./data/config/: ECCO Dataset Production configuration file examples.
-
 - ./data/ecco_grids/: ECCO grid definitions and download script.
 
 - ./data/ecco\_mapping\_factors: ECCO mapping factors (interpolation
@@ -35,7 +33,8 @@ starting points for other datatype production examples:
 
 - ./data/ecco\_results/: Sample ECCO MDS results data.  See also
   download\_selected\_data.sh helper script that downloads selected
-  MDS files used in edp\_create\_job\_task\_list (above).
+  MDS files used in edp\_create\_job\_task\_list,
+  native\_latlon\_local, and native\_latlon\_local\_remote test cases.
 
 ## Remarks
 

@@ -1,0 +1,30 @@
+
+name: 'ecco-dataset-production'
+
+services:
+
+  aws-base:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${COMPOSE_PROJECT_NAME}-aws-base:latest
+    platform: ${BUILD_PLATFORM}
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.aws.base
+
+# in progress:
+# aws-create-tasklist:
+#   platform: ${BUILD_PLATFORM
+#   build:
+#     context: .
+#     dockerfile: ./docker/Dockerfile.aws.create-tasklist
+
+  aws-generate-datasets:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${COMPOSE_PROJECT_NAME}-aws-generate-datasets:latest
+    platform: ${BUILD_PLATFORM}
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.aws.generate-datasets
+      args:
+        - AWS_ACCOUNT_ID=${AWS_ACCOUNT_ID}
+        - AWS_REGION=${AWS_REGION}
+        - COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}
+
