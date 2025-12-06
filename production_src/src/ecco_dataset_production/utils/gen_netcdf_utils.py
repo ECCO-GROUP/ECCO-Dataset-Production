@@ -988,8 +988,8 @@ def set_metadata(ecco,
 
     # --- SNAPSHOT
     elif output_freq_code == 'SNAPSHOT':
-        G.attrs['time_coverage_duration'] = 'P0S'
-        G.attrs['time_coverage_resolution'] = 'P0S'
+        G.attrs['time_coverage_duration'] = 'PT0S'
+        G.attrs['time_coverage_resolution'] = 'PT0S'
 
         G.time.attrs.pop('bounds')
 
