@@ -39,14 +39,18 @@ cloud-based (i.e., multi-terabyte) production and distribution.
 ## Installation and Usage
 
 ECCO Dataset Production can be pip-installed as with any other Python
-package. Just clone the repo, `cd` to the package directory and
+package. Just clone the repo, `cd` to the top-level directory and
 install:
 
     $ git clone https://github.com/ECCO-GROUP/ECCO-Dataset-Production.git
-	$ cd ECCO-Dataset-Production/production_src
+	$ cd ECCO-Dataset-Production
     $ pip install .
 
-ECCO Dataset Production also exposes several command-line scripts, two
+Dockerfiles, Docker Compose files, and automated scripts have also
+been included to support local, and AWS-targeted container-based
+solutions. See `./docker/README.md` for details.
+
+ECCO Dataset Production exposes several command-line scripts, two
 of the more important ones being `edp_create_job_task_list` for
 creating a `json`-formatted explicit list of NetCDF files that are to
 be produced, and `edp_generate_dataproducts` that then reads this task
@@ -57,16 +61,17 @@ via:
 	$ edp_generate_dataproducts --help
 
 Test/demonstration examples illustrating dataset production in local
-and cloud-based modes are in `./tests`, with further discussion in
-readthedocs.io.  In order to run the test cases, you'll need to
-install the ECCO-v4-Configurations submodule:
+and cloud-based modes are in `./demos`, with further discussion in
+readthedocs.io.  In order to run the demonstration examples, you'll
+need to install the ECCO-v4-Configurations submodule (that is, unless
+ECCO-Dataset-Production hasn't originally been cloned using the `--recurse-submodules` option):
 
-    # from ECCO-Dataset-Production/production_src:
     $ git submodule init
     $ git submodule update
 
-`./tests/native_latlon_local` provides a good "getting started"
-example that generates local NetCDF files from local input files.
+`./demos/native_latlon_local` provides a good "getting started"
+example illustrating generation of local NetCDF files from local input
+files.
 
 
 ## History
@@ -86,6 +91,6 @@ Houndegnonto](https://science.jpl.nasa.gov/people/houndegn/).
 
 ## Contributing
 
-Contributions and use case examples are always welcome. Please feel
+Contributions and use case examples are always welcome! Please feel
 free to fork this repo and issue a pull request or
 [contact](https://ecco-group.org/contact.htm) the ECCO Group.

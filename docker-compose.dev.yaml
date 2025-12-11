@@ -4,18 +4,23 @@ name: 'ecco-dataset-production'
 services:
 
   dev-base:
+    image: ${COMPOSE_PROJECT_NAME}-dev-base:${VERSION:-latest}
     build:
       context: .
       dockerfile: ./docker/Dockerfile.dev.base
 
 # in progress:
 # dev-create-tasklist:
+#   image: ${COMPOSE_PROJECT_NAME}-dev-create-tasklist:${VERSION:-latest}
 #   build:
 #     context: .
 #     dockerfile: ./docker/Dockerfile.dev.create-tasklist
 
   dev-generate-datasets:
+    image: ${COMPOSE_PROJECT_NAME}-dev-generate-datasets:${VERSION:-latest}
     build:
       context: .
       dockerfile: ./docker/Dockerfile.dev.generate-datasets
+      args:
+        - VERSION=${VERSION:-latest}
 

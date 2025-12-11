@@ -4,7 +4,7 @@ name: 'ecco-dataset-production'
 services:
 
   aws-base:
-    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${COMPOSE_PROJECT_NAME}-aws-base:latest
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${COMPOSE_PROJECT_NAME}-aws-base:${VERSION:-latest}
     platform: ${BUILD_PLATFORM}
     build:
       context: .
@@ -12,13 +12,14 @@ services:
 
 # in progress:
 # aws-create-tasklist:
+#   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${COMPOSE_PROJECT_NAME}-aws-create-tasklist:${VERSION:-latest}
 #   platform: ${BUILD_PLATFORM
 #   build:
 #     context: .
 #     dockerfile: ./docker/Dockerfile.aws.create-tasklist
 
   aws-generate-datasets:
-    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${COMPOSE_PROJECT_NAME}-aws-generate-datasets:latest
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${COMPOSE_PROJECT_NAME}-aws-generate-datasets:${VERSION:-latest}
     platform: ${BUILD_PLATFORM}
     build:
       context: .
@@ -27,4 +28,5 @@ services:
         - AWS_ACCOUNT_ID=${AWS_ACCOUNT_ID}
         - AWS_REGION=${AWS_REGION}
         - COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}
+        - VERSION=${VERSION:-latest}
 

@@ -10,9 +10,12 @@
 #
 #---------------------------------------------------------------------
 
-cd "$(dirname "$0")"
+# value here can overrride .env settings:
+#export VERSION=1.0.0
 
 COMPOSE_FILE='../docker-compose.aws.yaml'
+
+cd "$(dirname "$0")"
 
 if ! command -v aws &>/dev/null; then
     echo 'AWS CLI has not been installed; see https://aws.amazon.com/cli/.'

@@ -1,3 +1,3 @@
 [submodule "ECCO-v4-Configurations"]
-	path = tests/ECCO-v4-Configurations
+	path = demos/ECCO-v4-Configurations
 	url = https://github.com/ECCO-GROUP/ECCO-v4-Configurations.git
