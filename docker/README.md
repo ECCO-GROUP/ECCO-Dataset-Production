@@ -3,10 +3,10 @@
 
 The Dockerfiles and scripts included here support both local, and
 cloud-based Docker image builds and can either be run directly
-(`docker build ...`) or invoked using the Docker Compose files at the
-repository top level (`docker compose -f ... build ...`). In addition,
-the included shell scripts automate calls to Docker Compose so that
-building, and pushing, the entire ECCO Dataset Production
+(`docker build ...`) or invoked using the Docker Compose files located
+at the repository top level (`docker compose -f ... build ...`). In
+addition, the included shell scripts automate calls to Docker Compose
+so that building, and pushing, the entire ECCO Dataset Production
 container-based toolchain can be accomplished with just one or two
 commands:
 
@@ -21,6 +21,8 @@ commands:
 ### Contents
 
 Docker-related build files and scripts include:
+
+    ../.env                                 Docker VERSION tag default
 
     ../docker-compose.aws.yaml              Docker compose file to build and push AWS ECR images
     ../docker-compose.dev.yaml              Docker compose file to build images for local development and testing
@@ -39,11 +41,13 @@ Docker-related build files and scripts include:
 ### Setup
 
 Other than ensuring the Docker daemon is running (`$ docker version`),
-no configuration is necesary for local Docker image builds.
+no configuration is necesary for local Docker image builds. `../.env`
+can be edited to set a numerical version tag if desired but, if not,
+all images will be built using a tag of ":latest".
 
 For [AWS ECR](https://aws.amazon.com/ecr/)-targeted builds it is
-assumed that an AWS account with appropriate privileges has been set
-up, and that the AWS Command Line Interface
+assumed that an AWS account with appropriate privileges has been
+established, and that the AWS Command Line Interface
 ([CLI](https://aws.amazon.com/cli/)) has been locally installed. In
 addition, the following environment variables apply:
 
@@ -98,8 +102,9 @@ that the corresponding command-line utilities can be invoked:
     >>> import ecco_dataset_production as edp
     >>> help(edp)
 
-An example demonstrating the use of a local Docker build on local data
-can be found in `./tests/SSH_native_latlon_local_docker`.
+An example demonstrating the use of a local Docker build on data
+available locally can be found in
+`./demos/SSH_native_latlon_local_docker`.
 
 #### AWS ECR
 
@@ -150,8 +155,8 @@ the EC2 instance, much as was done in the local development case:
 
     $ aws ecr get-login-password | sudo docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
 
-    # and pull from repo:
-    $ sudo docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/ecco-dataset-production-aws-base
+    # and pull from repo (optionally, set VERSION tag variable):
+    $ sudo docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/ecco-dataset-production-aws-base:${VERSION:-latest}
 
     # run interactively to test basic functionality:
     $ sudo docker run --rm -it ecco-dataset-production-aws-base /bin/bash

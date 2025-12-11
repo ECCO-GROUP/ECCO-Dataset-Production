@@ -1,4 +1,6 @@
-FROM ecco-dataset-production-dev-base:latest
+ARG VERSION
+
+FROM ecco-dataset-production-dev-base:${VERSION:-latest}
 
 COPY ./docker/entrypoint_edp_generate_datasets.sh  .
 
