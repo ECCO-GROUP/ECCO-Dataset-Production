@@ -20,8 +20,6 @@ Distributed Active Archive Center
 ([PO.DAAC](https://podaac.jpl.nasa.gov/)) and NASA's Earthdata [ESDIS
 Project](https://www.earthdata.nasa.gov/about/esdis).
 
-See readthedocs.io for more information.
-
 
 ## Project Dependencies
 
@@ -46,7 +44,7 @@ install:
 	$ cd ECCO-Dataset-Production
     $ pip install .
 
-Dockerfiles, Docker Compose files, and automated scripts have also
+Dockerfiles, Docker Compose files, and automation scripts have also
 been included to support local, and AWS-targeted container-based
 solutions. See `./docker/README.md` for details.
 
@@ -61,17 +59,18 @@ via:
 	$ edp_generate_dataproducts --help
 
 Test/demonstration examples illustrating dataset production in local
-and cloud-based modes are in `./demos`, with further discussion in
-readthedocs.io.  In order to run the demonstration examples, you'll
-need to install the ECCO-v4-Configurations submodule (that is, unless
-ECCO-Dataset-Production hasn't originally been cloned using the `--recurse-submodules` option):
+and cloud-based modes are in `./demos`.  In order to run the
+demonstration examples, you'll need to install the
+ECCO-v4-Configurations submodule (that is, unless
+ECCO-Dataset-Production hasn't originally been cloned using the
+`--recurse-submodules` option):
 
     $ git submodule init
     $ git submodule update
 
-`./demos/native_latlon_local` provides a good "getting started"
-example illustrating generation of local NetCDF files from local input
-files.
+`./demos/native_latlon_local` is a useful "getting started" example
+illustrating generation of local NetCDF files from local input files,
+with a discussion of problem setup, input formats, and job submittal.
 
 
 ## History

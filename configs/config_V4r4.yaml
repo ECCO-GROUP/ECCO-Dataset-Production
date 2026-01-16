@@ -99,6 +99,7 @@ netcdf4_compression_encodings:
 variable_coordinates_as_encoded_attributes: ['latitude','longitude','tile','time','XC','XG','YC','YG','Z','Zp1','Zl','Zu']
 
 # Assigned DOI prefix (ref. https://www.doi.org/):
+doi_authority: 'org.doi'
 doi_prefix: '10.5067'
 
 # metadata link root:

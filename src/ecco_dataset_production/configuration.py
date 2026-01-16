@@ -1,6 +1,7 @@
 """
 """
 
+from collections import UserDict
 import logging
 import os
 import tempfile
@@ -11,7 +12,7 @@ from . import aws
 log = logging.getLogger('edp.'+__name__)
 
 
-class ECCODatasetProductionConfig(dict):
+class ECCODatasetProductionConfig(UserDict):
     """Wrapper class for storage of, and basic operations on, ECCO Dataset
     Production configuration data.
 
@@ -43,6 +44,25 @@ class ECCODatasetProductionConfig(dict):
             else:
                 self.update(yaml.safe_load(open(self.cfgfile)))
 
+            log.debug('Using configuration data per "%s":', cfgfile)
             for k,v in self.items():
                 log.debug(' %s: %s', k, v)
+
+
+    def __getitem__(self,key):
+        """In case of an undefined key, log a WARNING and return an empty string
+        ('') instead of raising a key error.
+
+        """
+        # Since standard dict behaviour in the case of an undefined key is to
+        # raise an exception with the (uninformative) message f"{key}", simply
+        # log a WARNING and return an empty string instead, since omitted keys
+        # may be intentional (such as is the case with intentionally undefined
+        # metadata).
+
+        try:
+            return self.data[key]
+        except:
+            log.warning(f'Undefined configuration parameter reference, "%s".', key)
+            return ''
 

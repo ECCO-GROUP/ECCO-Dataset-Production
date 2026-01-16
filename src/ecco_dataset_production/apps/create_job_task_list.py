@@ -36,8 +36,7 @@ def create_parser():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('--jobfile', help="""
-        (Path and) filename of ECCO Dataset Production jobs simple text
-        file.""")
+        (Path and) filename of ECCO Dataset Production jobs text file.""")
     parser.add_argument('--ecco_source_root', help="""
         ECCO results unique root location, either directory path (e.g.,
         /ecco_nfs_1/shared/ECCOV4r5) or AWS S3 bucket
@@ -112,8 +111,8 @@ def create_job_task_list(
 
     Args:
         jobfile (str): (Path and) filename of ECCO Dataset Production jobs
-            simple text file, each line containing a Python case insensitive
-            list-style specifier of the form
+            text file, each line containing a Python case insensitive list-style
+            specifier of the form
             "[<metadata_groupings_id>,<product_type>,<frequency>,<time_steps>]"
             where metadata_groupings_id is an integer from 0 through N,
             product_type is one of '1D', 'latlon', or 'native', frequency is one
