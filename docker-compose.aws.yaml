@@ -10,10 +10,9 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.aws.base
 
-# in progress:
 # aws-create-tasklist:
 #   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${COMPOSE_PROJECT_NAME}-aws-create-tasklist:${VERSION:-latest}
-#   platform: ${BUILD_PLATFORM
+#   platform: ${BUILD_PLATFORM}
 #   build:
 #     context: .
 #     dockerfile: ./docker/Dockerfile.aws.create-tasklist

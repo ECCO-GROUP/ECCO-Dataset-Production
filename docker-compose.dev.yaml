@@ -9,7 +9,6 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.dev.base
 
-# in progress:
 # dev-create-tasklist:
 #   image: ${COMPOSE_PROJECT_NAME}-dev-create-tasklist:${VERSION:-latest}
 #   build:

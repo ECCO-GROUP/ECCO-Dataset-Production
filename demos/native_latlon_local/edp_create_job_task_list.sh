@@ -16,6 +16,6 @@ edp_create_job_task_list \
     --ecco_grid_loc ../data/ecco_grids/${ver}/grid_ECCO${ver} \
     --ecco_mapping_factors_loc ../data/ecco_mapping_factors/${ver} \
     --ecco_metadata_loc "../ECCO-v${ver:1:1}-Configurations/ECCOv${ver:1:1} Release ${ver:3:1}/metadata" \
-    --ecco_cfg_loc ../../config/config_${ver}.yaml \
+    --ecco_cfg_loc ../../configs/config_${ver}.yaml \
     --outfile tasks_${ver}.json \
     --log DEBUG

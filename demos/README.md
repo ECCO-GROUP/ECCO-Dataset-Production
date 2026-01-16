@@ -1,20 +1,17 @@
 
-# ECCO Dataset Production system-level tests
+# ECCO Dataset Production demonstration examples and system-level tests
 
-## Integration and system-level end-to-end test/demonstration examples:
+## Integration and system-level end-to-end demonstration/test examples:
 
 The following examples can either be run as configured, or used as
 starting points for other datatype production examples:
 
 - native\_latlon\_local: Generation of native and latlon format
-  granules from local input, with output to local directory. See
-  "Configuring ECCO Dataset Production to run locally" in ../README.md
-  for description.
+  granules from local input, with output to local directory.
 
 - native\_latlon\_local\_remote: Generation of native and latlon
   format granules from remote input data, with output to local
-  directory.  See "Configuring ECCO Dataset Production to run in
-  local/remote mode" in ../README.md for description.
+  directory.
 
 ## Functionality
 

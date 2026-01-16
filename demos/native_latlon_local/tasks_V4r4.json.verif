@@ -27,7 +27,7 @@
                 ]
             ]
         },
-        "ecco_cfg_loc": "../../config/config_V4r4.yaml",
+        "ecco_cfg_loc": "../../configs/config_V4r4.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
@@ -72,7 +72,7 @@
                 ]
             ]
         },
-        "ecco_cfg_loc": "../../config/config_V4r4.yaml",
+        "ecco_cfg_loc": "../../configs/config_V4r4.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
@@ -117,7 +117,7 @@
                 ]
             ]
         },
-        "ecco_cfg_loc": "../../config/config_V4r4.yaml",
+        "ecco_cfg_loc": "../../configs/config_V4r4.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
@@ -156,7 +156,7 @@
                 ]
             ]
         },
-        "ecco_cfg_loc": "../../config/config_V4r4.yaml",
+        "ecco_cfg_loc": "../../configs/config_V4r4.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
@@ -194,7 +194,7 @@
                 ]
             ]
         },
-        "ecco_cfg_loc": "../../config/config_V4r4.yaml",
+        "ecco_cfg_loc": "../../configs/config_V4r4.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
@@ -232,7 +232,7 @@
                 ]
             ]
         },
-        "ecco_cfg_loc": "../../config/config_V4r4.yaml",
+        "ecco_cfg_loc": "../../configs/config_V4r4.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
@@ -270,7 +270,7 @@
                 ]
             ]
         },
-        "ecco_cfg_loc": "../../config/config_V4r4.yaml",
+        "ecco_cfg_loc": "../../configs/config_V4r4.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
@@ -309,7 +309,7 @@
                 ]
             ]
         },
-        "ecco_cfg_loc": "../../config/config_V4r4.yaml",
+        "ecco_cfg_loc": "../../configs/config_V4r4.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
@@ -348,7 +348,7 @@
                 ]
             ]
         },
-        "ecco_cfg_loc": "../../config/config_V4r4.yaml",
+        "ecco_cfg_loc": "../../configs/config_V4r4.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
@@ -395,7 +395,7 @@
                 ]
             ]
         },
-        "ecco_cfg_loc": "../../config/config_V4r4.yaml",
+        "ecco_cfg_loc": "../../configs/config_V4r4.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
@@ -455,7 +455,7 @@
                 ]
             ]
         },
-        "ecco_cfg_loc": "../../config/config_V4r4.yaml",
+        "ecco_cfg_loc": "../../configs/config_V4r4.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
@@ -515,7 +515,7 @@
                 ]
             ]
         },
-        "ecco_cfg_loc": "../../config/config_V4r4.yaml",
+        "ecco_cfg_loc": "../../configs/config_V4r4.yaml",
         "ecco_grid_loc": "../data/ecco_grids/V4r4/grid_ECCOV4r4",
         "ecco_mapping_factors_loc": "../data/ecco_mapping_factors/V4r4",
         "ecco_metadata_loc": "../ECCO-v4-Configurations/ECCOv4 Release 4/metadata",
