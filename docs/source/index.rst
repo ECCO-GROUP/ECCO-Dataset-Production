@@ -29,6 +29,5 @@ ECCO Dataset Production toolset in both local and cloud compute modes.
 
    introduction
    installation
-   setup
-   execution
+   cli_scripts
 
