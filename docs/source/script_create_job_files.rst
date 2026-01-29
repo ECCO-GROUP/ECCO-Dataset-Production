@@ -173,48 +173,59 @@ Examples
 Execution Flow Diagram
 ----------------------
 
-.. code-block:: text
+.. mermaid::
 
-    main()
-      |
-      +---> create_parser()
-      |       |
-      |       +---> Define CLI arguments (groupings_file, output_dir, log)
-      |
-      +---> Parse command-line arguments
-      |
-      +---> create_job_files()
-              |
-              +---> Determine grid_type from filename
-              |       |
-              |       +---> Check for 'native', 'latlon', or '1d' in filename
-              |       |
-              |       +---> Raise RuntimeException if not found
-              |
-              +---> Set timesteps = 'all'
-              |
-              +---> Load groupings JSON file
-              |       |
-              |       +---> json.load() -> list of dictionaries
-              |
-              +---> Create output_dir if needed
-              |
-              +---> For each group in groupings:
-                      |
-                      +---> For each frequency in group['frequency']:
-                              |
-                              +---> Build job_filename
-                              |       |
-                              |       +---> "{filename}_{grid_type}_{freq}_jobs.txt"
-                              |
-                              +---> Build job_description
-                              |       |
-                              |       +---> [id, grid_type, freq, timesteps]
-                              |
-                              +---> Write job file
-                                      |
-                                      +---> "# {name}:"
-                                      +---> "[id, grid_type, freq, timesteps]"
+   %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
+   flowchart TD
+       subgraph init["INITIALIZATION"]
+           main["<b>main()</b>"]
+           parser["create_parser()<br/>Define CLI arguments"]
+           parse["Parse command-line arguments"]
+       end
+
+       subgraph setup["SETUP"]
+           create_job["<b>create_job_files()</b>"]
+           grid_type["Determine grid_type from filename<br/>(native, latlon, or 1d)"]
+           set_ts["Set timesteps = 'all'"]
+           load_json["Load groupings JSON file"]
+           create_dir["Create output_dir if needed"]
+       end
+
+       subgraph generate["JOB FILE GENERATION"]
+           group_loop["For each group in groupings"]
+           freq_loop["For each frequency in group"]
+           build_name["Build job_filename<br/>{filename}_{grid_type}_{freq}_jobs.txt"]
+           build_desc["Build job_description<br/>[id, grid_type, freq, timesteps]"]
+           write_file["Write job file<br/># {name}:<br/>[id, grid_type, freq, timesteps]"]
+       end
+
+       init --> setup
+       setup --> generate
+
+       main --> parser --> parse
+       create_job --> grid_type --> set_ts --> load_json --> create_dir
+       group_loop --> freq_loop --> build_name --> build_desc --> write_file
+       write_file --> freq_loop
+
+       style init fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#0d47a1
+       style setup fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+       style generate fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#bf360c
+
+       style main fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style parser fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style parse fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style create_job fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style grid_type fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style set_ts fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style load_json fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style create_dir fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style group_loop fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style freq_loop fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style build_name fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style build_desc fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style write_file fill:#ffe0b2,stroke:#e65100,color:#bf360c
+
+       linkStyle default stroke:#333,stroke-width:2px
 
 
 Detailed Flow Description

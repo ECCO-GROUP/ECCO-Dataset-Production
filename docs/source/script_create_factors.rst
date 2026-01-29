@@ -199,71 +199,76 @@ Examples
 Execution Flow Diagram
 ----------------------
 
-.. code-block:: text
+.. mermaid::
 
-    main()
-      |
-      +---> create_parser()
-      |       |
-      |       +---> Define CLI arguments (cfgfile, workingdir, dims, log)
-      |
-      +---> Parse command-line arguments
-      |
-      +---> create_factors()
-              |
-              +---> Initialize ECCODatasetProductionConfig
-              |       |
-              |       +---> Load YAML configuration file
-              |       |
-              |       +---> set_default_paths(workingdir)
-              |
-              +---> Convert dims to format ['2D', '3D']
-              |
-              +---> create_all_factors()  [mapping_factors_utils]
-                      |
-                      +---> [If custom_grid_and_factors]
-                      |       |
-                      |       +---> create_custom_grid_values()
-                      |
-                      +---> [Else standard ECCO grid]
-                      |       |
-                      |       +---> create_ecco_grid_values()
-                      |               |
-                      |               +---> Load ECCO grid (NetCDF)
-                      |               |
-                      |               +---> Create source swath definitions
-                      |               |
-                      |               +---> Create target lat/lon grid
-                      |               |
-                      |               +---> Calculate grid parameters
-                      |               |
-                      |               +---> Save latlon_grid.xz
-                      |
-                      +---> For each dimension in dims:
-                      |       |
-                      |       +---> create_mapping_factors()
-                      |       |       |
-                      |       |       +---> Create grid_mappings_all.xz
-                      |       |       |
-                      |       |       +---> Create grid_mappings_{2D,3D}_{k}.xz
-                      |       |
-                      |       +---> create_land_mask()  [if not custom]
-                      |               |
-                      |               +---> Load grid_mappings_all
-                      |               |
-                      |               +---> Transform land mask per level
-                      |               |
-                      |               +---> Save land_mask_{k}.xz
-                      |
-                      +---> create_sparse_matrix()
-                              |
-                              +---> For each vertical level k:
-                                      |
-                                      +---> Load land_mask and mapping_factors
-                                      |
-                                      +---> Build sparse weight matrix
-                                      |
-                                      +---> Save sparse_matrix_{k}.npz
+   %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
+   flowchart TD
+       subgraph init["INITIALIZATION"]
+           main["<b>main()</b>"]
+           parser["create_parser()<br/>Define CLI arguments"]
+           parse["Parse command-line arguments"]
+       end
+
+       subgraph config["CONFIGURATION"]
+           create_factors["<b>create_factors()</b>"]
+           init_config["Initialize ECCODatasetProductionConfig<br/>Load YAML, set_default_paths()"]
+           convert_dims["Convert dims to ['2D', '3D']"]
+       end
+
+       subgraph grid["GRID PREPARATION"]
+           create_all["<b>create_all_factors()</b>"]
+           custom_check{{"custom_grid_and_factors?"}}
+           custom_grid["create_custom_grid_values()"]
+           ecco_grid["create_ecco_grid_values()<br/>Load NetCDF, create swaths,<br/>define target grid, save latlon_grid.xz"]
+       end
+
+       subgraph factors["FACTOR GENERATION"]
+           dim_loop["For each dimension in dims"]
+           mapping["create_mapping_factors()<br/>Create grid_mappings_all.xz<br/>Create grid_mappings_{2D,3D}_{k}.xz"]
+           land_mask["create_land_mask()<br/>Transform land mask per level<br/>Save land_mask_{k}.xz"]
+       end
+
+       subgraph sparse["SPARSE MATRIX"]
+           sparse_create["<b>create_sparse_matrix()</b>"]
+           level_loop["For each vertical level k:<br/>Load masks, build weights,<br/>save sparse_matrix_{k}.npz"]
+       end
+
+       init --> config
+       config --> grid
+       grid --> factors
+       factors --> sparse
+
+       main --> parser --> parse
+       create_factors --> init_config
+       create_all --> custom_check
+       custom_check -->|Yes| custom_grid
+       custom_check -->|No| ecco_grid
+       dim_loop --> mapping --> land_mask
+       sparse_create --> level_loop
+
+       style init fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#0d47a1
+       style config fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+       style grid fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#bf360c
+       style factors fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
+       style sparse fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#880e4f
+
+       style main fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style parser fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style parse fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style create_factors fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style init_config fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style convert_dims fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style create_all fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style custom_check fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style custom_grid fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style ecco_grid fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style dim_loop fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style mapping fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style land_mask fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style sparse_create fill:#f8bbd9,stroke:#c2185b,color:#880e4f
+       style level_loop fill:#f8bbd9,stroke:#c2185b,color:#880e4f
+
+       linkStyle default stroke:#333,stroke-width:2px
 
 
 Detailed Flow Description

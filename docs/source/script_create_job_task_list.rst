@@ -269,73 +269,101 @@ Examples
 Execution Flow Diagram
 ----------------------
 
-.. code-block:: text
+.. mermaid::
 
-    main()
-      |
-      +---> create_parser()
-      |       |
-      |       +---> Define CLI arguments
-      |
-      +---> Parse command-line arguments
-      |
-      +---> create_job_task_list()
-              |
-              +---> Initialize ECCODatasetProductionConfig
-              |
-              +---> Validate ecco_source_root and ecco_destination_root
-              |
-              +---> [If S3 source]
-              |       |
-              |       +---> Update SSO credentials (if keygen provided)
-              |       |
-              |       +---> Setup boto3 session
-              |       |
-              |       +---> Create S3 client
-              |
-              +---> Load ECCOMetadata (dataset_groupings)
-              |
-              +---> For each line in jobfile:
-              |       |
-              |       +---> Parse job specification [id, type, freq, timesteps]
-              |       |
-              |       +---> Get job_metadata from dataset_groupings
-              |       |
-              |       +---> Determine frequency patterns (path_freq_pat, file_freq_pat)
-              |       |
-              |       +---> STEP 1: Collect variable inputs
-              |       |       |
-              |       |       +---> For each variable in job_metadata['fields']:
-              |       |               |
-              |       |               +---> [If field_components exist]
-              |       |               |       |
-              |       |               |       +---> Collect inputs for each component
-              |       |               |       +---> Group by timestep
-              |       |               |
-              |       |               +---> [Else single input]
-              |       |                       |
-              |       |                       +---> Scan for matching .data/.meta files
-              |       |                       +---> Group pairs by timestep
-              |       |
-              |       +---> [If variable_rename] Apply rename
-              |       |
-              |       +---> STEP 2: Build task list
-              |               |
-              |               +---> Get union of all available timesteps
-              |               |
-              |               +---> For each timestep:
-              |                       |
-              |                       +---> Calculate time bounds
-              |                       |
-              |                       +---> Build output filename
-              |                       |
-              |                       +---> Create task dictionary
-              |                       |
-              |                       +---> Append to task_list
-              |
-              +---> Return task_list
-      |
-      +---> Write task_list to outfile (JSON)
+   %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
+   flowchart TD
+       subgraph init["INITIALIZATION"]
+           main["<b>main()</b>"]
+           parser["create_parser()<br/>Define CLI arguments"]
+           parse["Parse command-line arguments"]
+       end
+
+       subgraph setup["SETUP & VALIDATION"]
+           create_task["<b>create_job_task_list()</b>"]
+           init_config["Initialize ECCODatasetProductionConfig"]
+           validate["Validate ecco_source_root<br/>and ecco_destination_root"]
+           s3_check{{"S3 source?"}}
+           s3_setup["Update SSO credentials<br/>Setup boto3 session<br/>Create S3 client"]
+           load_meta["Load ECCOMetadata<br/>(dataset_groupings)"]
+       end
+
+       subgraph collect["STEP 1: COLLECT INPUTS"]
+           job_loop["For each line in jobfile"]
+           parse_job["Parse job spec<br/>[id, type, freq, timesteps]"]
+           get_meta["Get job_metadata<br/>from dataset_groupings"]
+           freq_pat["Determine frequency patterns"]
+           var_loop["For each variable in fields"]
+           comp_check{{"field_components?"}}
+           collect_comp["Collect inputs for<br/>each component"]
+           scan_files["Scan for .data/.meta files<br/>Group pairs by timestep"]
+           rename["Apply variable_rename<br/>(if specified)"]
+       end
+
+       subgraph build["STEP 2: BUILD TASKS"]
+           get_ts["Get union of all<br/>available timesteps"]
+           ts_loop["For each timestep"]
+           calc_time["Calculate time bounds"]
+           build_name["Build output filename"]
+           create_dict["Create task dictionary"]
+           append["Append to task_list"]
+       end
+
+       subgraph output["OUTPUT"]
+           return_list["Return task_list"]
+           write_json["Write task_list to outfile (JSON)"]
+       end
+
+       init --> setup
+       setup --> collect
+       collect --> build
+       build --> output
+
+       main --> parser --> parse
+       create_task --> init_config --> validate --> s3_check
+       s3_check -->|Yes| s3_setup --> load_meta
+       s3_check -->|No| load_meta
+       job_loop --> parse_job --> get_meta --> freq_pat --> var_loop
+       var_loop --> comp_check
+       comp_check -->|Yes| collect_comp --> rename
+       comp_check -->|No| scan_files --> rename
+       get_ts --> ts_loop --> calc_time --> build_name --> create_dict --> append
+       return_list --> write_json
+
+       style init fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#0d47a1
+       style setup fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+       style collect fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#bf360c
+       style build fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
+       style output fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#880e4f
+
+       style main fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style parser fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style parse fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style create_task fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style init_config fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style validate fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style s3_check fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style s3_setup fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style load_meta fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style job_loop fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style parse_job fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style get_meta fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style freq_pat fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style var_loop fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style comp_check fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style collect_comp fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style scan_files fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style rename fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style get_ts fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style ts_loop fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style calc_time fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style build_name fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style create_dict fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style append fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style return_list fill:#f8bbd9,stroke:#c2185b,color:#880e4f
+       style write_json fill:#f8bbd9,stroke:#c2185b,color:#880e4f
+
+       linkStyle default stroke:#333,stroke-width:2px
 
 
 Detailed Flow Description

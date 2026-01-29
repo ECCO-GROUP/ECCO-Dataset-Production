@@ -263,88 +263,112 @@ Examples
 Execution Flow Diagram
 ----------------------
 
-.. code-block:: text
+.. mermaid::
 
-    main()
-      |
-      +---> create_parser()
-      |       |
-      |       +---> Define CLI arguments (tasklist, keygen, profile, log)
-      |
-      +---> Parse command-line arguments
-      |
-      +---> generate_datasets()  [ecco_generate_datasets module]
-              |
-              +---> [If tasklist is S3 URI]
-              |       |
-              |       +---> Download to temporary directory
-              |
-              +---> Parse tasklist JSON
-              |
-              +---> Initialize shared resources (first task):
-              |       |
-              |       +---> ECCOGrid (grid coordinates, masks)
-              |       |
-              |       +---> ECCOMappingFactors (interpolation weights)
-              |       |
-              |       +---> ECCOMetadata (attribute dictionaries)
-              |
-              +---> For each task in task_list:
-                      |
-                      +---> Load ECCODatasetProductionConfig
-                      |
-                      +---> ecco_make_granule()
-                              |
-                              +---> Create ECCOTask wrapper
-                              |
-                              +---> Create temporary build directory
-                              |
-                              +---> [If latlon output]
-                              |       |
-                              |       +---> For each variable:
-                              |               |
-                              |               +---> Create ECCOMDSDataset
-                              |               +---> drop_all_variables_except()
-                              |               +---> as_latlon() -> interpolate
-                              |               +---> Append DataArray to list
-                              |       |
-                              |       +---> xr.merge() variable datasets
-                              |
-                              +---> [If native output]
-                              |       |
-                              |       +---> For each variable:
-                              |               |
-                              |               +---> Create ECCOMDSDataset
-                              |               +---> drop_all_variables_except()
-                              |               +---> apply_land_mask_to_native_variable()
-                              |               +---> Append to list
-                              |       |
-                              |       +---> xr.merge() variable datasets
-                              |
-                              +---> set_granule_ancillary_data()
-                              |       |
-                              |       +---> Set array precision (float32/64)
-                              |       +---> Calculate valid_min/valid_max
-                              |       +---> Apply fill values
-                              |       +---> Set time bounds
-                              |       +---> Set coordinate bounds
-                              |
-                              +---> set_granule_metadata()
-                              |       |
-                              |       +---> Load all metadata JSON files
-                              |       +---> Add variable metadata
-                              |       +---> Add coordinate metadata
-                              |       +---> Add global metadata
-                              |       +---> Set encoding options
-                              |
-                              +---> [If local destination]
-                              |       |
-                              |       +---> to_netcdf(granule_path)
-                              |
-                              +---> [If S3 destination]
-                                      |
-                                      +---> to_netcdf(temp_file)
-                                      +---> aws_s3_cp() upload
+   %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
+   flowchart TD
+       subgraph init["INITIALIZATION"]
+           main["<b>main()</b>"]
+           parser["create_parser()<br/>Define CLI arguments"]
+           parse["Parse command-line arguments"]
+       end
+
+       subgraph load["LOAD TASK LIST"]
+           gen_ds["<b>generate_datasets()</b>"]
+           s3_check{{"tasklist is S3 URI?"}}
+           download["Download to temporary directory"]
+           parse_json["Parse tasklist JSON"]
+       end
+
+       subgraph shared["SHARED RESOURCES (once)"]
+           init_shared["Initialize shared resources"]
+           ecco_grid["ECCOGrid<br/>(grid coordinates, masks)"]
+           factors["ECCOMappingFactors<br/>(interpolation weights)"]
+           metadata["ECCOMetadata<br/>(attribute dictionaries)"]
+       end
+
+       subgraph process["TASK PROCESSING"]
+           task_loop["For each task in task_list"]
+           load_config["Load ECCODatasetProductionConfig"]
+           make_granule["<b>ecco_make_granule()</b>"]
+           create_task["Create ECCOTask wrapper<br/>Create temp build directory"]
+       end
+
+       subgraph transform["GRID TRANSFORMATION"]
+           output_check{{"Output type?"}}
+           latlon_proc["<b>Lat/Lon Processing</b><br/>For each variable:<br/>Create ECCOMDSDataset<br/>as_latlon() → interpolate"]
+           native_proc["<b>Native Processing</b><br/>For each variable:<br/>Create ECCOMDSDataset<br/>apply_land_mask()"]
+           merge["xr.merge() variable datasets"]
+       end
+
+       subgraph finalize["FINALIZE GRANULE"]
+           ancillary["set_granule_ancillary_data()<br/>Precision, valid_min/max,<br/>fill values, bounds"]
+           set_meta["set_granule_metadata()<br/>Variable, coordinate,<br/>global metadata, encoding"]
+       end
+
+       subgraph output["OUTPUT"]
+           dest_check{{"Destination?"}}
+           local_write["to_netcdf(granule_path)"]
+           s3_write["to_netcdf(temp_file)<br/>aws_s3_cp() upload"]
+       end
+
+       init --> load
+       load --> shared
+       shared --> process
+       process --> transform
+       transform --> finalize
+       finalize --> output
+
+       main --> parser --> parse
+       gen_ds --> s3_check
+       s3_check -->|Yes| download --> parse_json
+       s3_check -->|No| parse_json
+       init_shared --> ecco_grid
+       init_shared --> factors
+       init_shared --> metadata
+       task_loop --> load_config --> make_granule --> create_task
+       create_task --> output_check
+       output_check -->|latlon| latlon_proc --> merge
+       output_check -->|native| native_proc --> merge
+       merge --> ancillary --> set_meta
+       set_meta --> dest_check
+       dest_check -->|Local| local_write
+       dest_check -->|S3| s3_write
+
+       style init fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#0d47a1
+       style load fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+       style shared fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#bf360c
+       style process fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
+       style transform fill:#e0f2f1,stroke:#00695c,stroke-width:2px,color:#004d40
+       style finalize fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#880e4f
+       style output fill:#f5f5f5,stroke:#424242,stroke-width:2px,color:#212121
+
+       style main fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style parser fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style parse fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style gen_ds fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style s3_check fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style download fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style parse_json fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style init_shared fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style ecco_grid fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style factors fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style metadata fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style task_loop fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style load_config fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style make_granule fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style create_task fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style output_check fill:#b2dfdb,stroke:#00695c,color:#004d40
+       style latlon_proc fill:#b2dfdb,stroke:#00695c,color:#004d40
+       style native_proc fill:#b2dfdb,stroke:#00695c,color:#004d40
+       style merge fill:#b2dfdb,stroke:#00695c,color:#004d40
+       style ancillary fill:#f8bbd9,stroke:#c2185b,color:#880e4f
+       style set_meta fill:#f8bbd9,stroke:#c2185b,color:#880e4f
+       style dest_check fill:#e0e0e0,stroke:#424242,color:#212121
+       style local_write fill:#e0e0e0,stroke:#424242,color:#212121
+       style s3_write fill:#e0e0e0,stroke:#424242,color:#212121
+
+       linkStyle default stroke:#333,stroke-width:2px
 
 
 Detailed Flow Description

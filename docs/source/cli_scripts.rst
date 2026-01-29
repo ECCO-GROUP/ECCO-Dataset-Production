@@ -12,34 +12,39 @@ Workflow Overview
 
 The typical production workflow follows these steps:
 
-.. code-block:: text
+.. mermaid::
 
-    ┌─────────────────────────────────────────────────────────────────────────┐
-    │                         ONE-TIME SETUP                                  │
-    ├─────────────────────────────────────────────────────────────────────────┤
-    │  1. edp_create_factors     Generate grid mapping factors                │
-    │                            (interpolation weights, land masks)          │
-    └─────────────────────────────────────────────────────────────────────────┘
-                                       │
-                                       ▼
-    ┌─────────────────────────────────────────────────────────────────────────┐
-    │                      PRODUCTION PIPELINE                                │
-    ├─────────────────────────────────────────────────────────────────────────┤
-    │  2. edp_create_job_files   Parse metadata groupings → job files (.txt)  │
-    │                                       │                                 │
-    │                                       ▼                                 │
-    │  3. edp_create_job_task_list  Scan source files → task lists (.json)    │
-    │                                       │                                 │
-    │                                       ▼                                 │
-    │  4. edp_generate_datasets  Execute tasks → NetCDF granules (.nc)        │
-    └─────────────────────────────────────────────────────────────────────────┘
-                                       │
-                                       ▼
-    ┌─────────────────────────────────────────────────────────────────────────┐
-    │                         DISTRIBUTION                                    │
-    ├─────────────────────────────────────────────────────────────────────────┤
-    │  5. edp_aws_s3_sync        Sync datasets to/from AWS S3                 │
-    └─────────────────────────────────────────────────────────────────────────┘
+   flowchart TD
+       subgraph setup["ONE-TIME SETUP"]
+           factors["<b>1. edp_create_factors</b><br/>Generate grid mapping factors<br/>(interpolation weights, land masks)"]
+       end
+
+       subgraph pipeline["PRODUCTION PIPELINE"]
+           jobs["<b>2. edp_create_job_files</b><br/>Parse metadata groupings → job files (.txt)"]
+           tasks["<b>3. edp_create_job_task_list</b><br/>Scan source files → task lists (.json)"]
+           generate["<b>4. edp_generate_datasets</b><br/>Execute tasks → NetCDF granules (.nc)"]
+       end
+
+       subgraph dist["DISTRIBUTION"]
+           sync["<b>5. edp_aws_s3_sync</b><br/>Sync datasets to/from AWS S3"]
+       end
+
+       setup --> pipeline
+       pipeline --> dist
+       jobs --> tasks
+       tasks --> generate
+
+       style setup fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+       style pipeline fill:#bbdefb,stroke:#1565c0,stroke-width:2px,color:#0d47a1
+       style dist fill:#ffe0b2,stroke:#e65100,stroke-width:2px,color:#bf360c
+
+       style factors fill:#a5d6a7,stroke:#2e7d32,color:#1b5e20
+       style jobs fill:#90caf9,stroke:#1565c0,color:#0d47a1
+       style tasks fill:#90caf9,stroke:#1565c0,color:#0d47a1
+       style generate fill:#90caf9,stroke:#1565c0,color:#0d47a1
+       style sync fill:#ffcc80,stroke:#e65100,color:#bf360c
+
+       linkStyle default stroke:#333,stroke-width:2px
 
 
 Script Documentation

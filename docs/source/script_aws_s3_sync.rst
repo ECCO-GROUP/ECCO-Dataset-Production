@@ -160,49 +160,77 @@ Examples
 Execution Flow Diagram
 ----------------------
 
-.. code-block:: text
+.. mermaid::
 
-    main()
-      |
-      +---> create_parser()
-      |       |
-      |       +---> Define CLI arguments (src, dest, nproc, keygen, profile, dryrun, log)
-      |
-      +---> Parse command-line arguments
-      |
-      +---> aws_s3_sync()  [ecco_dataset_production.aws.ecco_aws_s3_sync]
-              |
-              +---> Determine sync mode based on src/dest types
-              |
-              +---> [If local -> S3]
-              |       |
-              |       +---> sync_local_to_remote()
-              |               |
-              |               +---> Walk source directory tree (bottom-up)
-              |               |
-              |               +---> For each directory:
-              |                       |
-              |                       +---> Check for blocking child syncs
-              |                       |
-              |                       +---> Wait for process slot (nproc limit)
-              |                       |
-              |                       +---> update_credentials() [if keygen provided]
-              |                       |
-              |                       +---> Spawn subprocess: aws s3 sync
-              |                       |
-              |                       +---> Add to process list
-              |               |
-              |               +---> Wait for all processes to complete
-              |
-              +---> [If S3 -> S3 or S3 -> local]
-                      |
-                      +---> sync_remote_to_remote_or_local()
-                              |
-                              +---> update_credentials() [if keygen provided]
-                              |
-                              +---> Execute single subprocess: aws s3 sync
-                              |
-                              +---> Wait for completion
+   %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
+   flowchart TD
+       subgraph init["INITIALIZATION"]
+           main["<b>main()</b>"]
+           parser["create_parser()<br/>Define CLI arguments"]
+           parse["Parse command-line arguments"]
+       end
+
+       subgraph detect["MODE DETECTION"]
+           aws_sync["<b>aws_s3_sync()</b>"]
+           mode_check{{"Sync mode?"}}
+       end
+
+       subgraph local_s3["LOCAL → S3 (Multiprocess)"]
+           sync_local["<b>sync_local_to_remote()</b>"]
+           walk["Walk source directory tree<br/>(bottom-up)"]
+           dir_loop["For each directory"]
+           check_block["Check for blocking child syncs"]
+           wait_slot["Wait for process slot<br/>(nproc limit)"]
+           update_creds1["update_credentials()<br/>(if keygen provided)"]
+           spawn["Spawn subprocess:<br/>aws s3 sync"]
+           add_list["Add to process list"]
+           wait_all["Wait for all processes<br/>to complete"]
+       end
+
+       subgraph remote["S3 → S3 or S3 → LOCAL"]
+           sync_remote["<b>sync_remote_to_remote_or_local()</b>"]
+           update_creds2["update_credentials()<br/>(if keygen provided)"]
+           exec_sync["Execute single subprocess:<br/>aws s3 sync"]
+           wait_done["Wait for completion"]
+       end
+
+       init --> detect
+
+       main --> parser --> parse
+       aws_sync --> mode_check
+       mode_check -->|"Local → S3"| local_s3
+       mode_check -->|"S3 → S3<br/>S3 → Local"| remote
+       sync_local --> walk --> dir_loop
+       dir_loop --> check_block --> wait_slot --> update_creds1 --> spawn --> add_list
+       add_list --> dir_loop
+       dir_loop --> wait_all
+       sync_remote --> update_creds2 --> exec_sync --> wait_done
+
+       style init fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#0d47a1
+       style detect fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+       style local_s3 fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#bf360c
+       style remote fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
+
+       style main fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style parser fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style parse fill:#bbdefb,stroke:#1565c0,color:#0d47a1
+       style aws_sync fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style mode_check fill:#c8e6c9,stroke:#2e7d32,color:#1b5e20
+       style sync_local fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style walk fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style dir_loop fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style check_block fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style wait_slot fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style update_creds1 fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style spawn fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style add_list fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style wait_all fill:#ffe0b2,stroke:#e65100,color:#bf360c
+       style sync_remote fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style update_creds2 fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style exec_sync fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+       style wait_done fill:#e1bee7,stroke:#7b1fa2,color:#4a148c
+
+       linkStyle default stroke:#333,stroke-width:2px
 
 
 Detailed Flow Description
