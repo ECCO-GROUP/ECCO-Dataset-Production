@@ -1,3 +1,5 @@
+import sys
+sys.path.append('/Users/brucel/ECCOv4-py')
 import ecco_v4_py as ecco
 import matplotlib.colors
 import matplotlib.pyplot as plt
@@ -31,7 +33,7 @@ def data_var_plot(ds:xr.Dataset, field:xr.DataArray, directory:str='none', color
     str
         The LaTeX command to include the saved figure.
     """
-    # TESTING  :  current progress 
+    # TESTING  :  current progress
     #print(f'Dataset: {ds.attrs["product_name"]}, Field: {field.name}, Shape: {field.shape}')
     fig = plt.figure(figsize=(12,6))
     #plt.rcParams['font.size'] = 5
@@ -122,9 +124,9 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
     tmp_plt = field
     if 'time' in field.dims:
         tmp_plt = field.isel(time=0)
-    
+
     # GENERALLY PLOT THE K=0 (OR K_L=0) LAYER EXCEPT
-    # FOR WVEL AND DRHODR BECAUSE THEIR VALUES ARE 
+    # FOR WVEL AND DRHODR BECAUSE THEIR VALUES ARE
     # 0 OR NAN AT THE SURFACE
     target_k = 0
     if 'WVEL' in field.name or 'DRHO' in field.name:
@@ -141,7 +143,7 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
     cmax = np.nanmax(tmp_plt)
     # default
     cmap = copy.copy(plt.get_cmap('jet'))
-    cmap.set_bad(color='dimgray')#, alpha=0 
+    cmap.set_bad(color='dimgray')#, alpha=0
 
     shortname_tmp = ds.metadata_link.split('ShortName=')[1]
     # create function for editing cmap, cmin and cmax
@@ -170,7 +172,7 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
                                     cmin=cmin,\
                                     cmax=cmax
                                           )
-                                    
+
         if show_colorbar:
             cax1 = cbar1.ax  # cax is now the `Axes` object for the colorbar
             bbox1 = cax1.get_position()  # this gets the current position of the colorbar
@@ -198,31 +200,31 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
                                     cmax=cmax
                                     )
         if show_colorbar:
-            cax2 = cbar2.ax  
-            bbox2 = cax2.get_position()  
+            cax2 = cbar2.ax
+            bbox2 = cax2.get_position()
             ax2pos = ax2.get_position()
             new_bbox2 = [bbox2.x0, ax2pos.y0, bbox2.width, ax2pos.height]
-            cax2.set_position(new_bbox2) 
+            cax2.set_position(new_bbox2)
             cbar2.set_label(tmp_plt.attrs['units'])
             # if not is_coord:
             #     cbar2.set_label(tmp_plt.attrs['units'])
             #else:
                 #cbar2.set_label('Axis:'+ field.attrs['axis'])
-        
+
         # title settings
         fig = plt.gcf()  # get the current figure
         fig.set_size_inches(12, 6)
         if 'time' in field.dims:
             fig.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.45,y=.90,weight='bold', fontsize=16)
             fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
-            plt.figtext(0.45, 0.13, 
-                            s=dataseteName, 
+            plt.figtext(0.45, 0.13,
+                            s=dataseteName,
                             wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+str(field.time.values[0])[:10]+',\n '
         else:
             fig.suptitle(str(field.name),ha='center',x=.45,y=.90,weight='bold', fontsize=16)
             fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
-            plt.figtext(0.45, 0.13, 
-                            s=dataseteName, 
+            plt.figtext(0.45, 0.13,
+                            s=dataseteName,
                             wrap=True,horizontalalignment='center', fontsize=11)#'Example fied :\n '+
 
     else:
@@ -239,15 +241,15 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
                                     show_colorbar=show_colorbar, show_tile_labels= False, fig_size=8, cbar_label=label, show_cbar_label=show_label) #fig_size=8 was original
         if show_colorbar:
             cbar_ax = fig.axes[-1]
-            bbox = cbar_ax.get_position()  
+            bbox = cbar_ax.get_position()
             axpos = fig.axes[-2].get_position()
             new_bbox = [bbox.x0, axpos.y0, bbox.width, axpos.height * 5]
             cbar_ax.set_position(new_bbox)
-        
+
         #OJH: Adding tiile' x-axis and y-axis direction guide on the plot
         # left, bottom, width, height = [0.5, 0.23, 0.25, 0.25]#<= to small x-axis and y-axis as inset
-        left, bottom, width, height = [0.1, 0.08, 0.75, 0.8]#<= to x-axis and y-axis around the entire figure. 
-        ax_ojh = fig.add_axes([left, bottom, width, height],axes_class=AxesZero)    
+        left, bottom, width, height = [0.1, 0.08, 0.75, 0.8]#<= to x-axis and y-axis around the entire figure.
+        ax_ojh = fig.add_axes([left, bottom, width, height],axes_class=AxesZero)
         for direction in ["xzero", "yzero"]:
             ## adds arrows at the ends of each axis
             ax_ojh.axis[direction].set_axisline_style("-|>")
@@ -259,22 +261,22 @@ def plot_native(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
         ax_ojh.set_xticklabels('',fontsize=24);ax_ojh.set_yticklabels('',fontsize=24)
         ax_ojh.set_xlabel('tiles x-axis',fontsize=24);ax_ojh.set_ylabel('tiles y-axis',fontsize=24)
         ax_ojh.set_facecolor('none')#<= to x-axis and y-axis background color fully transparent.
-        
+
         # title settings
         if 'time' in field.dims:
             # fig.suptitle(f'{field.name}: {field.attrs["long_name"]}\n{str(field.time.values[0])[:10]}\n ', wrap=True, fontsize='x-large')
             fig.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.5,y=.968,weight='bold', fontsize=16)
             fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
-            plt.figtext(0.5, -0.02, 
-                            s=dataseteName, 
+            plt.figtext(0.5, -0.02,
+                            s=dataseteName,
                             wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+str(field.time.values[0])[:10]+',\n '
 
         else:
             # fig.suptitle(f'{field.name}: \n{field.attrs["long_name"]}\n ', wrap=True, fontsize='x-large')
             fig.suptitle(str(field.name),ha='center',x=.5,y=.968,weight='bold', fontsize=16)
             fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
-            plt.figtext(0.5, -0.02, 
-                        s=dataseteName, 
+            plt.figtext(0.5, -0.02,
+                        s=dataseteName,
                         wrap=True,horizontalalignment='center', fontsize=11)#'Example fied: \n '+
 
 
@@ -321,30 +323,30 @@ def plot_latlon(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
     else:
         cbarLabel = None
     if ds.attrs['product_name'].startswith('SEA_ICE'):
-        
-        fig = plt.gcf() 
+
+        fig = plt.gcf()
         fig.set_size_inches(12, 6)
-        
+
         ax1 = plt.subplot(1,2,1, projection=ccrs.NorthPolarStereo())
         ecco.plot_pstereo(ds.longitude, ds.latitude, tmp_plt, 4326, cmap=cmap,cmin=cmin, cmax=cmax,\
                            show_colorbar=show_colorbar, colorbar_label=cbarLabel, ax=ax1, lat_lim=45)
-        
+
         if show_colorbar:
-            cax1 = fig.axes[-1]  
-            bbox1 = cax1.get_position() 
+            cax1 = fig.axes[-1]
+            bbox1 = cax1.get_position()
             ax1pos = ax1.get_position()
             new_bbox1 = [bbox1.x0, ax1pos.y0, bbox1.width, ax1pos.height]
-            cax1.set_position(new_bbox1) 
+            cax1.set_position(new_bbox1)
 
         ax2 = plt.subplot(1,2,2, projection=ccrs.SouthPolarStereo())
         ecco.plot_pstereo(ds.longitude, ds.latitude, tmp_plt, 4326, cmap=cmap, cmin=cmin, cmax=cmax,\
                            show_colorbar=show_colorbar, colorbar_label=cbarLabel,ax=ax2, lat_lim=-65)
         if show_colorbar:
-            cax2 = fig.axes[-1] 
-            bbox2 = cax2.get_position()  
+            cax2 = fig.axes[-1]
+            bbox2 = cax2.get_position()
             ax2pos = ax2.get_position()
             new_bbox2 = [bbox2.x0, ax2pos.y0, bbox2.width, ax2pos.height]
-            cax2.set_position(new_bbox2) 
+            cax2.set_position(new_bbox2)
 
         # plt.suptitle(f'{field.name}: {str(field.time.values[0])[:10]}\n{field.attrs["long_name"]}\n', wrap=True, fontsize='x-large')
         fig.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.45,y=.91,weight='bold', fontsize=16)
@@ -362,7 +364,7 @@ def plot_latlon(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
         plt.xticks(np.arange(0,490.1,50))
         plt.xlabel(field.long_name.capitalize()+ " [m]",wrap=True)
         plt.ylabel("Depth of the grid cell center [m]")
-        
+
         fig.suptitle(str(field.name),ha='center',x=.5,y=.95,weight='bold', fontsize=16)
         plt.title(field.attrs["long_name"]+"\n", wrap=True, fontsize=12)
         # fig.text(s=field.attrs["long_name"]+"\n", x=0.45, y=.82, fontsize=12, ha='center', va='center')
@@ -379,26 +381,26 @@ def plot_latlon(ds:xr.Dataset, field:xr.DataArray, dataseteName:str, show_colorb
         p, gl, cbar = ecco.plot_global(ds.longitude, ds.latitude, tmp_plt, data_epsg_code=4326, cmin=cmin, cmax=cmax, ax=ax,cmap=cmap, \
                                         show_colorbar=show_colorbar, colorbar_label=cbarLabel)
         if show_colorbar:
-            cax = cbar.ax  
-            bbox = cax.get_position()  
+            cax = cbar.ax
+            bbox = cax.get_position()
             axpos = ax.get_position()
             new_bbox = [bbox.x0, axpos.y0, bbox.width, axpos.height]
-            cax.set_position(new_bbox)  
-        
+            cax.set_position(new_bbox)
+
         if 'time' in field.dims:
             # plt.suptitle(f'{field.name}: {str(field.time.values[0])[:10]}\n{field.attrs["long_name"]}', wrap=True, fontsize='x-large')
             plt.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.45,y=.91,weight='bold', fontsize=16)
             plt.title(field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", wrap=True, fontsize=12)
-            plt.figtext(0.45, 0.1, 
-                        s=str(field.time.values[0])[:10]+',\n '+dataseteName, 
+            plt.figtext(0.45, 0.1,
+                        s=str(field.time.values[0])[:10]+',\n '+dataseteName,
                         wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+
         else:
             # plt.suptitle(f'{field.name}: \n{field.attrs["long_name"]}', wrap=True, fontsize='x-large')
             plt.suptitle(str(field.name),ha='center',x=.45,y=.91,weight='bold', fontsize=16)
             # plt.title(field.attrs["long_name"]+"\n", wrap=True, fontsize=12)
             plt.title(field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", wrap=True, fontsize=12)
-            plt.figtext(0.45, 0.1, 
-                        s=dataseteName, 
+            plt.figtext(0.45, 0.1,
+                        s=dataseteName,
                         wrap=True,horizontalalignment='center', fontsize=11)#'Example fied: \n '+
 
 def plot_oneD(ds:xr.Dataset, field:xr.DataArray, dataseteName:str)->None:
@@ -423,8 +425,8 @@ def plot_oneD(ds:xr.Dataset, field:xr.DataArray, dataseteName:str)->None:
     # plt.suptitle(f'{field.name}: {str(field.time.values[0])[:10]}\n{field.attrs["long_name"]}', wrap=True, fontsize='x-large')
     # plt.suptitle(str(field.name),ha='center',x=.45,y=.91,weight='bold', fontsize=16)
     plt.title(field.attrs["long_name"]+"\n", wrap=True,weight='bold', fontsize=16)# fontsize=12)
-    plt.figtext(0.45, -0.05, 
-                s=dataseteName, 
+    plt.figtext(0.45, -0.05,
+                s=dataseteName,
                 wrap=True,horizontalalignment='center', fontsize=11) #'Example fied: '+
 
 
@@ -437,7 +439,7 @@ def plot_datasetPicEg(ds:xr.Dataset,save_to:str):
     if 'time' in Dims_box:
         tmp_plt = ds[Var_box[var_sel]].isel(time=0)
     # GENERALLY PLOT THE K=0 (OR K_L=0) LAYER EXCEPT
-    # FOR WVEL AND DRHODR BECAUSE THEIR VALUES ARE 
+    # FOR WVEL AND DRHODR BECAUSE THEIR VALUES ARE
     # 0 OR NAN AT THE SURFACE
     target_k = 0
     if 'WVEL' in tmp_plt.name or 'DRHO' in tmp_plt.name:
@@ -454,7 +456,7 @@ def plot_datasetPicEg(ds:xr.Dataset,save_to:str):
     # default
     cmap = copy.copy(plt.get_cmap('jet'))
     #PLOTTING PART#
-    fig = plt.gcf() 
+    fig = plt.gcf()
     fig.set_size_inches(12, 6)
     if 'tile' in Dims_box:
         cmap.set_bad(color='dimgray')#<= to change the NaN values by a unique color
@@ -476,7 +478,7 @@ def plot_datasetPicEg(ds:xr.Dataset,save_to:str):
     plt.close('all')
 
 ############################################################################################################
-#                                   Helper functions                
+#                                   Helper functions
 ############################################################################################################
 def even_cax(cmin:float, cmax:float, fac:float=1.0)->tuple[float, float]:
     """
@@ -490,18 +492,18 @@ def even_cax(cmin:float, cmax:float, fac:float=1.0)->tuple[float, float]:
     --------
         (cmin:float, cmax:float) : tuple of float | The new cmin and cmax values.
     """
-    
+
     tmp = np.max([np.abs(cmin), np.abs(cmax)])
     cmin = -tmp*fac
     cmax =  tmp*fac
     return cmin, cmax
 
-def cal_cmin_cmax(cmap:matplotlib.colors.LinearSegmentedColormap, 
+def cal_cmin_cmax(cmap:matplotlib.colors.LinearSegmentedColormap,
                   cmin:float, cmax:float,
                   shortname_tmp:str, product_type:str):
         """
         Create a plot in native projection.
-        
+
         Parameters
         ----------
         cmap : matplotlib.colors.LinearSegmentedColormap
@@ -621,7 +623,7 @@ def save_plt(figure, dir_path: str, plot_name: str) -> str:
     fig_path = os.path.join(dir_path, plot_name)
 
     # Save the figure
-    
+
     #figure.tight_layout()
     dpi = 300
     plt.savefig(fig_path, dpi=dpi, facecolor='w', bbox_inches='tight', pad_inches = 0.05)
@@ -664,15 +666,15 @@ if __name__ == '__main__':
     file = args.file
     field= args.field
     directory = args.directory
-    
+
     cbar = True
     if args.cbar == 'False':
         cbar = False
 
-    coords = False    
+    coords = False
     if args.coords == 'True':
         coords = True
-    
+
     #cbar = True if args.cbar is None or 'True' else False
     #coords = False if args.coords is None or 'False' else True
 
@@ -695,7 +697,7 @@ if __name__ == '__main__':
         type = 'latlon'
     else:
         type = 'oneD'
-        
+
     print(fields)
     for fi, f in enumerate(fields):
         print(f'{fi} {f}')
@@ -703,7 +705,7 @@ if __name__ == '__main__':
 
         if directory is None:
             directory = 'images/plots/' + type + '_plots/'
- 
+
 
         data_var_plot(ds, field, directory, cbar, coords)
 
@@ -743,11 +745,11 @@ if __name__ == '__main__':
         # elif type == 'latlon':
         #     if len(field.dims) > 2:
         #         plot_latlon(ds, field, directory, cbar)
-        
+
         # elif type == 'oneD':
         #     plot_oneD(ds, field, directory)
-        
+
         # if not skip:
         #     address = save_plt(fig, directory + utils.get_ds_title(ds).replace(',', ''), str(field.name).replace(' ', '_') + '.png')
-        #     print(address) 
-        
+        #     print(address)
+

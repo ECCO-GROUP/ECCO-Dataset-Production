@@ -14,7 +14,7 @@ For the python environment setting and external package dependence for the prese
 
 </div>
 
-On Mac OS, the following softwares is required along with the python environment setting: [GEOS](https://libgeos.org/) and [PROJ](https://proj.org/en/stable/). They can be installed using [Homebrew](https://brew.sh/) as follow:
+On Mac OS, the following software is required along with the python environment setting: [GEOS](https://libgeos.org/) and [PROJ](https://proj.org/en/stable/). They can be installed using [Homebrew](https://brew.sh/) as follow:
 
 ```bash
 > brew update
@@ -36,7 +36,7 @@ Preferably, install `geos` and `proj` before setting the python environment. To 
 > conda install --file requirements.txt
 ```
 
-<h1>2. How to run the documewnt generator?</h1>
+<h1>2. How to run the document generator?</h1>
 <div align="justify">
   
 If the Python environment is properly configured, you are now ready to start. In this section, you will learn how to run the program. We will provide you with a step-by-step guide to running the document generator program. The first time you do this, everything needs to be done one by one. Follow the order indicated below.

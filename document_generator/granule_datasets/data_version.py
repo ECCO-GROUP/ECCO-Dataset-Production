@@ -6,9 +6,9 @@ import os
 # This information is saved into a json file to be used in the 
 # following step for the document generator. Do this first !!!
 #----------------------------------------------------------------
-data_version = int(input("Insert the dataset version number you're willing \n to generate the document for. Note, only \n the number is required ...:  "))
+data_version = str(input("Insert the dataset version number you're willing \n to generate the document for. Note, only \n the number is required ...:  "))
 data_release = str(input("Insert the dataset release number you're willing \n to generate the document for. Note, only \n the number is required ...:  "))
-data_vers = "v"+str(data_version)+"r"+data_release
+data_vers = f"v{data_version}r{data_release}"
 data_vers_json = {"version": str(data_version),
                   "release": str(data_release),
                   "dataset_version": data_vers}

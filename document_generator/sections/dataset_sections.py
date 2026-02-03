@@ -26,7 +26,7 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
         is_coord = True
     if section != '1D':
         section = section.capitalize()
-    
+
     l = []
 
     # Load the JSON data
@@ -48,9 +48,9 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
         # new page breaker addded here on May 14
         # l.append(r'\pagebreak')
         l.append(r'\subsection{'+ f'{section}' + complementText + f'{netCDF_ds}' + r'}')
-        # l.append(r'\par\vspace{0.5cm}') # activated!! 
+        # l.append(r'\par\vspace{0.5cm}') # activated!!
         l.append(r'\newp') # Deasctived!!
-        
+
         fields, ds = cdf_extract.search_and_extract(filename, directory, is_coord)
 
         # l.append(r'\subsubsection{Overview of '+ f'{netCDF_ds}' + r' dataset content}')
@@ -60,7 +60,7 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
         else:
             summary_content = item["Introduction"]+" "
         l.append(summary_content)
-        # insert table function for each field in ds here ! 
+        # insert table function for each field in ds here !
         l.extend(cdf_extract.fieldTable(ds, is_coord)) #<== Modified!!! in order to remove the table that contain a list of variable per dataset.
         l.append(r'\newp') # Deasctived!!
         for field in fields:
@@ -73,15 +73,15 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
             l.append(r'\pagebreak') # Page break -- added ## <= is this utils? => yes, but I remove it to have continious fluent paging
             l.append(fr'\subsubsection{{{section} Variable: {cleanName}}}')
             dataVarTable = cdf_extract.data_var_table(fieldName, attrs, filename)
-            l.extend(dataVarTable)    
+            l.extend(dataVarTable)
 
             # Create latex plot for each variable
             dataVarPlot = cdf_plotter.data_var_plot(ds, ds[fieldName], imageDirectory, True, is_coord)
             l.append(r'\begin{figure}[H]')
             l.append(r'\centering')
             l.append(dataVarPlot) #testing right here
-            # l.append(fr"\caption{{\\Dataset: {s.sanitize(filename)}\\Variable: {s.sanitize(fieldName)}}}") #Just 
-            l.append(fr"\caption{{Dataset: {s.sanitize(filename)}, Variable: {s.sanitize(fieldName)}}}") #Just 
+            # l.append(fr"\caption{{\\Dataset: {s.sanitize(filename)}\\Variable: {s.sanitize(fieldName)}}}") #Just
+            l.append(fr"\caption{{Dataset: {s.sanitize(filename)}, Variable: {s.sanitize(fieldName)}}}") #Just
             l.append(fr'\label{{tab:table-{filename}_{fieldName}-Plot}}')
             l.append(r'\end{figure}')
             l.append(r'\newpage')
@@ -92,7 +92,7 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
 
 
 ############################################################################################################
-#                                   Helper functions                
+#                                   Helper functions
 ############################################################################################################
 # def create_coord_section(data, filePath:str, directory:str, imageDirectory:str, section:str)->list[str]:
 #     # Iterate through the JSON objects
@@ -103,9 +103,9 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
 #         l.append(r'\subsection{'+ f'{section}' + ' NetCDF '+ f'{netCDF_ds}' + r'}')
 #         #l.append(r'\par\vspace{0.5cm}')
 #         l.append(r'\newp')
-        
+
 #         fields, ds = cdf_extract.search_and_extract(filename, directory)
-#         # insert table function for each field in ds here ! 
+#         # insert table function for each field in ds here !
 #         l.extend(cdf_extract.fieldTable(ds))
 #         for field in fields:
 #             attrs = cdf_extract.extract_field_info(field)
@@ -114,17 +114,17 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
 #             # Create latex table for each variable
 #             fieldName = attrs['Variable Name']
 #             cleanName = s.sanitize(fieldName)
-#             l.append(r'\pagebreak') # Page break -- added 
+#             l.append(r'\pagebreak') # Page break -- added
 #             l.append(fr'\subsubsection{{{section} Variable {cleanName}}}')
 #             dataVarTable = cdf_extract.data_var_table(fieldName, attrs, filename)
-#             l.extend(dataVarTable)    
+#             l.extend(dataVarTable)
 
 #             # Create latex plot for each variable
 #             dataVarPlot = cdf_plotter.data_var_plot(ds, ds[fieldName], imageDirectory)
 #             l.append(r'\begin{figure}[H]')
 #             l.append(r'\centering')
 #             l.append(dataVarPlot) #testing right here
-#             l.append(fr"\caption{{\\Dataset: {s.sanitize(filename)}\\Variable: {s.sanitize(fieldName)}}}") #Just 
+#             l.append(fr"\caption{{\\Dataset: {s.sanitize(filename)}\\Variable: {s.sanitize(fieldName)}}}") #Just
 #             l.append(fr'\label{{tab:table-{filename}_{fieldName}-Plot}}')
 #             l.append(r'\end{figure}')
 #     return l

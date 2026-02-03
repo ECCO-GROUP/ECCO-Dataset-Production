@@ -3,7 +3,7 @@ import sys
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if parent_dir not in sys.path:
     sys.path.insert(0, parent_dir)
-import argparse 
+import argparse
 import cdf_extract
 
 def file_exists(file_path):
@@ -22,12 +22,12 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Download granules for a given dataset type.')
     parser.add_argument('--type', required=False, type=str,
-                        help="Type of the dataset to write. Should be one of 'native', 'latlon', '1D','coords', 'all'.", 
+                        help="Type of the dataset to write. Should be one of 'native', 'latlon', '1D','coords', 'all'.",
                         choices=['native', 'latlon', '1D','coords', 'all'],
                         default='all')
     # parser.add_argument('--to', required=False, type=str,
     parser.add_argument('--to', required=False, type=str,
-                        help="What directory will the files will be saved", 
+                        help="What directory will the files will be saved",
                         default='here')
     args = parser.parse_args()
 
@@ -37,7 +37,7 @@ if __name__ == '__main__':
         dataset_dir = root_dir
     else:
         dataset_dir = os.path.join(root_dir, args.to)
-    
+
     os.makedirs(dataset_dir, exist_ok=True)#<= this line create the folder where the granuls_datasets will be saved whether it exists or not!
 
     if args.type == 'native':
@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
         os.system(f'mkdir -p {dataset_dir}/natives')#<= create the folder where to save native granules datasts
         os.system(f'wget --no-verbose --no-clobber --continue -i {natives_txt} -P {dataset_dir}/natives/')#<= download with 'wget' tool
-    
+
     elif args.type == 'latlon':
         latlon_txt = os.path.join(dataset_dir, 'latlon.txt')
         file_exists(latlon_txt)
@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
         os.system(f'mkdir -p {dataset_dir}/latlon_coords')
         os.system(f'wget --no-verbose --no-clobber --continue -i {ll_coords_txt} -P {dataset_dir}/latlon_coords/')
-    
+
     else: # args.type == 'all'
         natives_txt = os.path.join(dataset_dir, 'natives.txt')
         file_exists(natives_txt)
@@ -88,7 +88,7 @@ if __name__ == '__main__':
         file_exists(oneD_txt)
         os.system(f'mkdir -p {dataset_dir}/oneD')
         os.system(f'wget --no-verbose --no-clobber --continue -i {oneD_txt} -P {dataset_dir}/oneD/')
-    
+
         nat_coords_txt = os.path.join(dataset_dir, 'natives_coords.txt')
         file_exists(nat_coords_txt)
         os.system(f'mkdir -p {dataset_dir}/natives_coords')
