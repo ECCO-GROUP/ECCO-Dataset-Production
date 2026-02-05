@@ -231,7 +231,59 @@ def collect_usedby_for_object(app: Sphinx, what: str, name: str, obj, options, l
     app.env.usedby_pending[name] = all_usages
 
 
-def create_usedby_field(app: Sphinx, all_usages: List[dict]) -> nodes.field:
+def compute_relative_url(current_docname: str, target_doc_path: str, anchor: str) -> str:
+    """
+    Compute a relative URL from the current document to the target document.
+
+    Args:
+        current_docname: The current document name (e.g., 'api/apps/create_job_task_list')
+        target_doc_path: The target document path (e.g., 'apps/create_job_task_list')
+        anchor: The anchor fragment (e.g., 'module-ecco_dataset_production.apps')
+
+    Returns:
+        A proper relative URL from current to target
+    """
+    # Get the directory of the current document
+    current_dir = os.path.dirname(current_docname)
+
+    # The target_doc_path is relative to 'api/' directory
+    # Construct the full target docname
+    target_docname = f"api/{target_doc_path}"
+
+    # Compute relative path from current directory to target
+    if current_dir:
+        # Count how many levels deep we are
+        current_parts = current_dir.split('/')
+        target_dir = os.path.dirname(target_docname)
+        target_parts = target_dir.split('/') if target_dir else []
+
+        # Find common prefix
+        common_length = 0
+        for i in range(min(len(current_parts), len(target_parts))):
+            if current_parts[i] == target_parts[i]:
+                common_length = i + 1
+            else:
+                break
+
+        # Go up from current to common ancestor
+        up_count = len(current_parts) - common_length
+        up_path = '../' * up_count
+
+        # Go down from common ancestor to target
+        down_parts = target_parts[common_length:]
+        down_path = '/'.join(down_parts)
+
+        if down_path:
+            relative_path = f"{up_path}{down_path}/{os.path.basename(target_docname)}.html"
+        else:
+            relative_path = f"{up_path}{os.path.basename(target_docname)}.html"
+    else:
+        relative_path = f"{target_docname}.html"
+
+    return f"{relative_path}#{anchor}"
+
+
+def create_usedby_field(app: Sphinx, all_usages: List[dict], current_docname: str) -> nodes.field:
     """Create a field node for the 'Used By' section."""
     package_prefix = app.config.usedby_package_name
 
@@ -256,25 +308,27 @@ def create_usedby_field(app: Sphinx, all_usages: List[dict]) -> nodes.field:
         full_module = f"{package_prefix}.{module}" if package_prefix else module
 
         for context in contexts:
+            # Target document path (relative to api/ directory)
+            doc_path = module.replace('.', '/')
+
             if context == "<module>":
-                doc_path = module.replace('.', '/')
                 display_name = full_module
                 anchor = f"module-{full_module}"
-                url = f"{doc_path}.html#{anchor}"
             elif '.' in context:
                 class_name, method_name = context.rsplit('.', 1)
-                doc_path = module.replace('.', '/')
                 full_target = f"{full_module}.{class_name}.{method_name}"
                 display_name = f"{full_module}.{class_name}.{method_name}()"
-                url = f"{doc_path}.html#{full_target}"
+                anchor = full_target
             else:
-                doc_path = module.replace('.', '/')
                 full_target = f"{full_module}.{context}"
                 if context[0].isupper():
                     display_name = f"{full_module}.{context}"
                 else:
                     display_name = f"{full_module}.{context}()"
-                url = f"{doc_path}.html#{full_target}"
+                anchor = full_target
+
+            # Compute proper relative URL
+            url = compute_relative_url(current_docname, doc_path, anchor)
 
             # Create list item with reference
             list_item = nodes.list_item()
@@ -327,8 +381,11 @@ def process_desc_content(app: Sphinx, domain: str, objtype: str, contentnode: ad
 
     all_usages = app.env.usedby_pending[obj_name]
 
+    # Get the current document name for computing relative URLs
+    current_docname = app.env.docname
+
     # Create the Used By field
-    usedby_field = create_usedby_field(app, all_usages)
+    usedby_field = create_usedby_field(app, all_usages, current_docname)
 
     # Find existing field list or create one
     field_list = None
