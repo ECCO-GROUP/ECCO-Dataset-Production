@@ -1,3 +1,5 @@
+#BL: Everything that's hardcoded should be read from a config file (like the hardcoded tex lines, etc)
+
 #import cdf_reader
 import argparse
 from pathlib import Path
@@ -18,7 +20,7 @@ def write_data_attributes_tables():
     """
         This function writes the data product tables to the latex document.
     """
-    global_lines = [
+    global_attributes_lines = [
         r'% Table 8-1 Mandatory global attributes for GDS 2.0 netCDF data files',
         r'\begin{longtable}{|p{0.276\textwidth}|p{0.092\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}',
         r'\caption{Mandatory global attributes for GDS 2.0 netCDF data files}',
@@ -27,13 +29,13 @@ def write_data_attributes_tables():
         r'\hline \endfoot',
         r'\rowcolor{lightgray} \textbf{Global Attribute Name} & \textbf{Type} & \textbf{Description} & \textbf{Source} \\ \hline',
     ]
-    global_vars = readJSON.obtain_json_data('data/global_attributes.json')
-    global_lines.extend(readJSON.establish_table(global_vars))
-    global_lines.append(r'\end{longtable}')
+    global_attributes_dictionary_list = readJSON.obtain_json_data('data/global_attributes.json')
+    global_attributes_lines.extend(readJSON.establish_table(global_attributes_dictionary_list))
+    global_attributes_lines.append(r'\end{longtable}')
     with open('document/latex/data_product/global_attributes.tex', 'w') as output_file:
-        output_file.write('\n'.join(global_lines))
+        output_file.write('\n'.join(global_attributes_lines))
 
-    var_attr_lines = [
+    var_attributes_lines = [
         r'% Table 8-2 Variable attributes for GDS 2.0 netCDF data files',
         r'\begin{longtable}{|p{0.168\textwidth}|p{0.20\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}',
         r'\caption{Table 8-2. Variable attributes for GDS 2.0 netCDF data files}',
@@ -42,12 +44,13 @@ def write_data_attributes_tables():
         r'\hline \endfoot',
         r'\rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline',
     ]
-    variable_vars = readJSON.obtain_json_data('data/variable_attributes.json')
-    var_attr_lines.extend(readJSON.establish_table(variable_vars))
-    var_attr_lines.append(r'\end{longtable}')
+    variable_attributes_dictionary_list = readJSON.obtain_json_data('data/variable_attributes.json')
+    var_attributes_lines.extend(readJSON.establish_table(variable_attributes_dictionary_list))
+    var_attributes_lines.append(r'\end{longtable}')
     with open('document/latex/data_product/variable_attributes.tex', 'w') as output_file:
-        output_file.write('\n'.join(var_attr_lines))
+        output_file.write('\n'.join(var_attributes_lines))
 
+# DO WE REALLY WANT ALL OF THIS HARDCODING???????
 
     example_native_lines = cdf_extract.latex_example_netcdf('native')
     with open('document/latex/data_product/example_native_table.tex', 'w') as output_file:
@@ -71,11 +74,17 @@ def write_data_attributes_tables():
 
 def write_datasets(dataset_type:str)->None:
     data_version_to_get, _ ,_ = cdf_extract.get_dataset_version()
+
+    # -----------------------------------------------------------------------------------------------------------
+    # All of these json files seem internal to ECCO, with some internal to a specific release; 
+    # shouldn't they be safely stored higher up in the file tree?
+    # -----------------------------------------------------------------------------------------------------------
     native_coords_groupings = 'granule_datasets/'+data_version_to_get+'/native_coords.json'
     native_groupings_json = 'granule_datasets/'+data_version_to_get+'/ECCOv4r4_groupings_for_native_datasets.json'
     latlon_coords_groupings = 'granule_datasets/'+data_version_to_get+'/latlon_coords.json'
     latlon_groupings_json = 'granule_datasets/'+data_version_to_get+'/ECCOv4r4_groupings_for_latlon_datasets.json'
     oneD_groupings_json = 'granule_datasets/'+data_version_to_get+'/ECCOv4r4_groupings_for_1D_datasets.json'
+    # -----------------------------------------------------------------------------------------------------------
 
     native_coords_dir = 'granule_datasets/'+data_version_to_get+'/natives_coords/'
     native_ds_dir = 'granule_datasets/'+data_version_to_get+'/natives/'

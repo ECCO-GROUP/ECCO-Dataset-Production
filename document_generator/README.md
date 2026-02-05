@@ -85,7 +85,7 @@ This `json` file is used by `cdf_extract.get_dataset_version()` to handle folder
 <h2>2.2 Download the targeted dataset sample</h1>
 <div align="justify">
 
-This script (in `/document_generator/granule_datasets/`) aims to download a sample of ECCO data sets that will be documented by the document generator. The local environment settings in order to make `download_granules.py` works can be found in [/granule_datasets/download_instructions.txt](/granule_datasets/download_instructions.txt/). If it is yur first time to download data from NASA Earthdata platform, you have to create an account, and then run the following `bash` script (works for Mac OS and Linux distrbution. If other OS, go ask Google!):
+This script (in `/document_generator/granule_datasets/`) aims to download a sample of ECCO data sets that will be documented by the document generator. The local environment settings in order to make `download_granules.py` work can be found in [/granule_datasets/download_instructions.txt](/granule_datasets/download_instructions.txt/). If it is yur first time to download data from NASA Earthdata platform, you have to create an account, and then run the following `bash` script (works for Mac OS and Linux distrbution. If other OS, go ask Google!):
 
 ```bash
   > cd ~

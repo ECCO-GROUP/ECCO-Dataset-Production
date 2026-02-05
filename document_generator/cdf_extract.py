@@ -56,7 +56,7 @@ def fieldTable(ds:xr.Dataset, is_coord:bool)->list[str]:
 
 
 
-def formatList(cdl:list[str], name : str = "example")->list[str]:
+def formatExampleNetCDFTable(cdl:list[str], name : str = "example")->list[str]:
 
     latex_lines = [r'\begin{longtable}{|p{\textwidth}|}', 
                     r'\caption{Example CDL description of ' +name+ r' dataset}',
@@ -69,7 +69,7 @@ def formatList(cdl:list[str], name : str = "example")->list[str]:
     dimensions_start = False
     coordinates_start = False
     variables_start = False
-    independent_vars = []
+#    independent_vars = [] # NEVER USED
     for line in cdl:
         new_line = utils.sanitize_with_math(line)
         if line.startswith('netcdf'):
@@ -100,9 +100,9 @@ def formatList(cdl:list[str], name : str = "example")->list[str]:
 
         if dimensions_start:
                 latex_lines.append(r'\rowcolor{YellowGreen}' + new_line + r'\\')
-                independent_vars.append(utils.get_substring(new_line))
+#                independent_vars.append(utils.get_substring(new_line)) # NEVER USED
         elif coordinates_start:
-                data_var = utils.get_substring(line)
+#                data_var = utils.get_substring(line) # NEVER USED
                 latex_lines.append(r'\rowcolor{Apricot}' + new_line + r'\\')
                 # if "\t\t" not in line and data_var + "(" + data_var + ")" not in line:
                 #     variables_start = False
@@ -172,8 +172,9 @@ def latex_example_netcdf(fileType)->list[str]:
         for dv_attr in dv.attrs:
             ll.append(f'\t\t{dv.name}:{dv_attr} = "{dv.attrs[dv_attr]}"')
 
-    
-    return formatList(ll, fileType)
+    # Now that we have the list of tex lines for the table, we pass it to formatExampleNetCDFTable()
+    # to add color commands etc to the beginnings of appropriate lines
+    return formatExampleNetCDFTable(ll, fileType)
 
 
 

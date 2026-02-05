@@ -25,19 +25,20 @@ if __name__ == '__main__':
                         help="Type of the dataset to write. Should be one of 'native', 'latlon', '1D','coords', 'all'.",
                         choices=['native', 'latlon', '1D','coords', 'all'],
                         default='all')
-    # parser.add_argument('--to', required=False, type=str,
     parser.add_argument('--to', required=False, type=str,
                         help="What directory will the files will be saved",
                         default='here')
     args = parser.parse_args()
 
-    root_dir = os.path.dirname(os.path.realpath(__file__))+'/'+data_version_to_get# <= this line alow to get the current path, "/document_generator/granule_datasets/"
+    #root_dir = os.path.dirname(os.path.realpath(__file__))+'/'+data_version_to_get# <= this line alow to get the current path, "/document_generator/granule_datasets/"
+    root_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), data_version_to_get) # <= this line alow to get the current path, "/document_generator/granule_datasets/"
 
     if args.to == 'here':
         dataset_dir = root_dir
     else:
         dataset_dir = os.path.join(root_dir, args.to)
 
+    # BL: Note that "exist_ok=True" means that the directory will NOT be created if it already exists
     os.makedirs(dataset_dir, exist_ok=True)#<= this line create the folder where the granuls_datasets will be saved whether it exists or not!
 
     if args.type == 'native':

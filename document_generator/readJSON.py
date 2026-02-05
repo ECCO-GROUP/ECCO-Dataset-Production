@@ -2,15 +2,16 @@ import json
 import utils as u
 
 
-def obtain_json_data(filename: str) -> dict:
+def obtain_json_data(filename: str) -> list:
+#def obtain_json_data(filename: str) -> dict:
     """
     Read JSON data from a file and return a dictionary.
     :param filename: string
-    :return: dictionary
+    :return: list of dictionaries
     """
     with open(filename, "r") as file:
-        json_data = json.load(file)
-    return json_data
+        json_data_dictionary_list = json.load(file)
+    return json_data_dictionary_list
 
 
 def obtain_keys(json_data: list) -> set:
@@ -35,21 +36,22 @@ def verify_columns(available_columns: set, user_columns: list) -> list:
     return [u.sanitize(col) for col in user_columns if col in available_columns]
 
 
-def establish_table(json:dict)->list:
+def establish_table(dictionary_list_from_json:list)->list:
+#def establish_table(json:dict)->list:
     """
     Establishes the table for the json data
-    :param json: json data
+    :param dictionary_list_from_json: list of dictionaries from a json file
     :return: list of strings
     """
     latex_lines = []
 
     max_col = 0
-    for row in json:
-        formatted_row = [u.sanitize_with_url(str(row.get(key, "N/A"))) for key in row]
-        max_col = len(formatted_row) if len(formatted_row) > max_col else max_col
-        if len(formatted_row) < max_col:
-            formatted_row.extend([""] * (max_col - len(formatted_row)))
-        latex_lines.append(r'\rowcolor{LightCyan} ' + ' & '.join(formatted_row) + r' \\ \hline' + '\n')
+    for dictionary in dictionary_list_from_json:
+        formatted_dictionary_as_list = [u.sanitize_with_url(str(dictionary.get(key, "N/A"))) for key in dictionary]
+        max_col = len(formatted_dictionary_as_list) if len(formatted_dictionary_as_list) > max_col else max_col
+        if len(formatted_dictionary_as_list) < max_col:
+            formatted_dictionary_as_list.extend([""] * (max_col - len(formatted_dictionary_as_list)))
+        latex_lines.append(r'\rowcolor{LightCyan} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n')
 
     return latex_lines
 
