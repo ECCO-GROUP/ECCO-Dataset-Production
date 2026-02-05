@@ -26,6 +26,7 @@ release = '1.0'
 extensions = [
     'sphinx_rtd_theme',
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'sphinxcontrib.mermaid',
     'usedby',  # Custom extension for automatic "Used By" sections
