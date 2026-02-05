@@ -1,4 +1,25 @@
-"""
+"""Sparse matrix mapping factors for grid transformations.
+
+This module provides the :class:`ECCOMappingFactors` class for loading and
+accessing precomputed sparse interpolation matrices that transform data from
+the native LLC90 grid to a regular lat/lon grid.
+
+Key capabilities:
+
+- Loading LZMA-compressed sparse matrices from local or S3 storage
+- Depth-level-specific transformation matrices
+- Land mask access for lat/lon grid points
+- Coordinate bounds for latitude, longitude, and depth
+
+The mapping factors enable efficient interpolation using sparse matrix
+multiplication rather than repeated interpolation calculations.
+
+Example:
+    >>> from ecco_dataset_production import ecco_mapping_factors
+    >>> mf = ecco_mapping_factors.ECCOMappingFactors(task=task)
+    >>> sparse_matrix = mf.native_to_latlon_mapping_factors(level=0)
+    >>> land_mask = mf.latlon_land_mask(level=0)
+
 """
 
 import lzma

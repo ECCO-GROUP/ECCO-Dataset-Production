@@ -1,3 +1,29 @@
+"""Main entry points for ECCO granule generation.
+
+This module provides the primary functions for generating PO.DAAC/ESDIS-ready
+NetCDF granules from ECCO model output. It serves as the main orchestration
+layer for the dataset production pipeline.
+
+Key functions:
+
+- :func:`generate_datasets`: Top-level entry point that processes a task list
+  and generates granules for each task, managing shared resources efficiently.
+- :func:`ecco_make_granule`: Creates a single granule from a task descriptor,
+  handling variable loading, grid transformation, and metadata application.
+- :func:`set_granule_ancillary_data`: Sets array precision, fill values, and
+  coordinate bounds.
+- :func:`set_granule_metadata`: Aggregates and applies all metadata from
+  configuration files, task descriptors, and JSON metadata sources.
+
+Typical usage:
+    >>> from ecco_dataset_production import ecco_generate_datasets
+    >>> ecco_generate_datasets.generate_datasets('tasks.json')
+
+Or from the command line::
+
+    $ edp_generate_datasets --tasklist tasks.json
+
+"""
 
 from collections import defaultdict
 import datetime

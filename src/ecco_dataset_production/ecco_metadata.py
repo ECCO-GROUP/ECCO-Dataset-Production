@@ -1,4 +1,24 @@
-"""
+"""ECCO metadata JSON file access.
+
+This module provides the :class:`ECCOMetadata` class for loading and accessing
+ECCO metadata from JSON source files. These files define variable attributes,
+coordinate metadata, global attributes, and dataset groupings.
+
+Metadata file categories:
+
+- **Variable metadata**: Names, units, long_name, standard_name for each variable
+- **Coordinate metadata**: Dimension definitions for 1D, lat/lon, and native grids
+- **Global metadata**: Dataset-level attributes (history, source, references)
+- **Groupings**: Variable collections defining which variables go into each granule
+
+The metadata is used during granule production to populate NetCDF attributes
+and ensure CF compliance.
+
+Example:
+    >>> from ecco_dataset_production import ecco_metadata
+    >>> meta = ecco_metadata.ECCOMetadata(task=task)
+    >>> groupings = meta.dataset_groupings['latlon']
+
 """
 
 import glob

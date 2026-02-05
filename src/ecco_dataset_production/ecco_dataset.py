@@ -1,4 +1,26 @@
-"""
+"""ECCO MDS dataset loading and transformation.
+
+This module provides the :class:`ECCOMDSDataset` class, the core data container
+for loading ECCO model output from MITgcm Data System (MDS) binary files and
+transforming them for NetCDF granule production.
+
+Key capabilities:
+
+- Loading MDS binary ``.data``/``.meta`` file pairs via ``ecco_v4_py``
+- Vector field transformations (UV to EW/NS components)
+- Native LLC90 grid to lat/lon interpolation using sparse matrices
+- Land masking for both native and lat/lon grids
+
+The class integrates with :class:`~ecco_dataset_production.ecco_grid.ECCOGrid`
+and :class:`~ecco_dataset_production.ecco_mapping_factors.ECCOMappingFactors`
+for coordinate data and transformation matrices.
+
+Example:
+    >>> from ecco_dataset_production import ecco_dataset, ecco_task
+    >>> task = ecco_task.ECCOTask(task_dict)
+    >>> ds = ecco_dataset.ECCOMDSDataset(task=task, variable='SSH', cfg=cfg)
+    >>> latlon_data = ds.as_latlon('SSH')
+
 """
 
 import logging
