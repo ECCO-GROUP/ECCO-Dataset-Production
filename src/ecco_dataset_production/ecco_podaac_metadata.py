@@ -25,7 +25,7 @@ class ECCOPODAACMetadata(object):
         Args:
             metadata_src (str): (Path and) filename of ECCO-related PO.DAAC
                 metadata, or similar AWS S3 bucket/prefix/name.
-            **kwargs: If metadata_src references an AWS S3 endpoint and if
+            \*\*kwargs: If metadata_src references an AWS S3 endpoint and if
                 running within an institutionally-managed AWS IAM Identity
                 Center (SSO) environment, additional arguments that may be
                 necessary include:

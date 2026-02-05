@@ -15,14 +15,12 @@ class ECCOMDSFilestr(object):
 
     Args:
         filestr (str): ECCO MDS filename string. (default=None)
-        **kwargs: Instead of filestr, individual file components may be provided
-            and can be used to build up file-matching expressions.  Possible
-            arguments include:
-                prefix (str): Product prefix/name.
-                averaging_period (str): Averaging period ('mon_mean',
-                    'day_mean', or 'day_snap', case_insensitive).
-                time (str): Time string with or without zero padding.
-                ext (str): File extension.
+        \*\*kwargs: Instead of filestr, individual file components may be provided
+            and can be used to build up file-matching expressions. Possible
+            arguments include: ``prefix`` (str) - Product prefix/name.
+            ``averaging_period`` (str) - Averaging period ('mon_mean',
+            'day_mean', or 'day_snap', case_insensitive). ``time`` (str) - Time
+            string with or without zero padding. ``ext`` (str) - File extension.
 
     Attributes:
         prefix (str): 'prefix' from either input filestr or kwarg.
@@ -111,26 +109,22 @@ class ECCOGranuleFilestr(object):
 
     Args:
         filestr (str): ECCO file string. (default=None)
-        **kwargs: Instead of filestr, individual file components may be provided
-            and can be used to build up file-matching expressions.  Possible
-            arguments include:
-                prefix (str): Product prefix/name.
-                averaging_period (str): Averaging period ('mon_mean',
-                    'day_mean', or 'day_snap', case insensitive).
-                date (str): Averaging period end date, in ISO Date or Date Time
-                    format (e.g., 'YYYY-MM-DD' or 'YYYY-MM-DDThh:mm:ss').
-                    Regardless of input, filestr date may be truncated, or
-                    extended, according to averaging period. For example, if
-                    averaging_period='mon_mean' and date is in 'YYYY-MM-DD'
-                    format, only the 'YYYY-MM' portion will be used in filestr.
-                    And, if averaging_period is 'snap' or 'day_snap', a time
-                    string will be appended, e.g., 'YYYY-MM-DDT000000'.
-                version (str): ECCO version, e.g. 'V4r4', 'V4r5', etc.
-                grid_type (str): Grid, or product type, e.g. 'latlon', 'native'
-                    or 'snap'.
-                grid_label (str): Additional grid attributes, e.g., 'llc0090',
-                    '0p50deg', etc.
-                ext (str): File extension. (default: 'nc')
+        \*\*kwargs: Instead of filestr, individual file components may be provided
+            and can be used to build up file-matching expressions. Possible
+            arguments include: ``prefix`` (str) - Product prefix/name.
+            ``averaging_period`` (str) - Averaging period ('mon_mean',
+            'day_mean', or 'day_snap', case insensitive). ``date`` (str) -
+            Averaging period end date, in ISO Date or Date Time format (e.g.,
+            'YYYY-MM-DD' or 'YYYY-MM-DDThh:mm:ss'). Regardless of input, filestr
+            date may be truncated, or extended, according to averaging period.
+            For example, if averaging_period='mon_mean' and date is in
+            'YYYY-MM-DD' format, only the 'YYYY-MM' portion will be used in
+            filestr. And, if averaging_period is 'snap' or 'day_snap', a time
+            string will be appended, e.g., 'YYYY-MM-DDT000000'. ``version``
+            (str) - ECCO version, e.g. 'V4r4', 'V4r5', etc. ``grid_type`` (str)
+            - Grid, or product type, e.g. 'latlon', 'native' or 'snap'.
+            ``grid_label`` (str) - Additional grid attributes, e.g., 'llc0090',
+            '0p50deg', etc. ``ext`` (str) - File extension. (default: 'nc')
 
     Attributes:
         prefix (str): 'prefix' from either input filestr or kwarg.

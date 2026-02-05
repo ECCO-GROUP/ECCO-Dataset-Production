@@ -25,6 +25,30 @@ class ECCOMDSDataset(object):
     """Class that supports dataset production-oriented operations on ECCO
     results datasets.
 
+    .. mermaid::
+
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
+        flowchart TD
+            A[Validate inputs] --> B{Grid provided?}
+            B -->|No| C[Create ECCOGrid from task]
+            B -->|Yes| D[Use provided grid]
+            C --> E{Mapping factors provided?}
+            D --> E
+            E -->|No| F[Create ECCOMappingFactors]
+            E -->|Yes| G[Use provided factors]
+            F --> H[Setup temp directory]
+            G --> H
+            H --> I{Input local?}
+            I -->|Yes| J[Copy files to tmpdir]
+            I -->|No| K[Download from S3]
+            J --> L{Single component?}
+            K --> L
+            L -->|Yes| M[Direct MDS ingest]
+            L -->|No| N[Load vector components]
+            M --> O[Store dataset]
+            N --> P[Transform UV to EW/NS]
+            P --> Q[Store zonal or meridional]
+
     Args:
         task (str, dict, or taskobj): (Path and) name of json-formatted file
             defining a single task, single task description dictionary, or
@@ -40,39 +64,41 @@ class ECCOMDSDataset(object):
             performance by allowing collections to share a single copy of an
             ECCOMappingFactors object created by the calling application.
         cfg (dict): Parsed ECCO dataset production yaml file. Referenced
-            fields include:
-            ecco_native_grid_filename: ECCO NetCDF native grid file name (e.g.,
-                GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc).
+            fields include ``ecco_native_grid_filename`` - ECCO NetCDF native
+            grid file name (e.g., GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc).
         tmpdir (str): Optional temporary directory for task list variable input
             data store. If not defined, temporary storage will be created
             locally, and separately, for each variable. The primary intent of
             this shared storage space is to minimize data download for those
             cases in which variables (re)use data such as vector transformed
             fields (UV -> EW/NS).
-        **kwargs: If task references AWS S3 endpoint data and if running within
+        \*\*kwargs: If task references AWS S3 endpoint data and if running within
             an institutionally-managed AWS IAM Identity Center (SSO)
             environment, additional arguments that may be necessary include:
+<<<<<<< HEAD
             keygen (str): Federated login key generation script (e.g.,
                 /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile to be used in combination with
                 keygen (e.g., 'default', 'saml-pub', etc.)
+=======
+            ``keygen`` (str) - Federated login key generation script (e.g.,
+            /usr/local/bin/aws-login-pub.darwin.amd64). ``profile`` (str) -
+            Optional profile to be used in combination with keygen (e.g.,
+            'default', 'saml-pub', etc.)
+>>>>>>> c864369 (API reference docs)
 
     Attributes:
         cfg (dict): Local store of cfg input.
-        ds (xarray.Dataset, or list of same): ECCO MDS dataset(s) for specified
+        ds (xarray.Dataset or list): ECCO MDS dataset(s) for specified
             task and variable (list of xarray.Datasets if variable is a
             vector-transformed quantity, single xarray.Dataset otherwise).
-        #data_dir (str): Temporary directory name for local store of input ECCO
-        #    MDS files specified by task and variable.
-        grid (ECCOGrid object): Local reference to ecco_grid input, if
+        grid (ECCOGrid): Local reference to ecco_grid input, if
             provided, or local object if not (and thus fetched using task object
             specifier).
-        mapping_factors (ECCOMappingFactors object): Local reference to
+        mapping_factors (ECCOMappingFactors): Local reference to
             ecco_mapping_factors input, if provided, or local object if not (and
             thus fetched using task object specifier).
         task (ECCOTask): Local object store of input task descriptor.
-        #tmp_data_dir (TemporaryDirectory): Temporary local ECCO MDS file storage
-        #    for task and variable combination.
         tmpdir (TemporaryDirectory): Local store of TemporaryDirectory instance
             if tmpdir input argument not provided.
 
@@ -314,9 +340,14 @@ class ECCOMDSDataset(object):
         """Get data precision (dataprec string) from MITgcm meta file, return as
         file datatype specifier ('>f4', '>f8').
 
+        Args:
+            mds_meta_file (str): Path to the MITgcm meta file.
+
+        Returns:
+            str: File datatype specifier ('>f4' for float32, '>f8' for float64).
+
         Raises:
-            RuntimeError if dataprec is not either of 'float32' ('f4') or
-            'float64' ('>f8').
+            RuntimeError: If dataprec is not 'float32' or 'float64'.
 
         """
         file_dtype = None
@@ -341,6 +372,29 @@ class ECCOMDSDataset(object):
     def as_latlon( self, variable=None):
         """Recast variable in latlon format, return as a named (using variable
         string) xarray DataArray.
+
+        .. mermaid::
+
+            %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
+            flowchart TD
+                A{2D or 3D?} -->|2D| B[Allocate lat x lon array]
+                A -->|3D| C[Allocate depth x lat x lon array]
+                B --> D[Extract surface wet points]
+                D --> E[Apply sparse matrix transform]
+                E --> F[Apply land mask]
+                F --> G[Reshape to lat x lon]
+                G --> H[Add time axis]
+                C --> I[For each depth level z]
+                I --> J[Extract wet points at level z]
+                J --> K[Apply sparse matrix transform]
+                K --> L[Apply land mask]
+                L --> M[Reshape to lat x lon]
+                M --> N{More levels?}
+                N -->|Yes| I
+                N -->|No| O[Add time axis]
+                H --> P[Create xarray DataArray]
+                O --> P
+                P --> Q[Return DataArray]
 
         """
         if self.task.is_2d:

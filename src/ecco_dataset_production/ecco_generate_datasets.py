@@ -33,6 +33,29 @@ def ecco_make_granule( task, cfg,
     """Create PO.DAAC/ESDIS-ready ECCO granule per instructions provided in
     input task descriptor.
 
+    .. mermaid::
+
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
+        flowchart TD
+            A[Create ECCOTask wrapper] --> B{Grid type?}
+            B -->|latlon| C[For each variable]
+            C --> D[Create ECCOMDSDataset]
+            D --> E[Transform to latlon grid]
+            E --> F{More variables?}
+            F -->|Yes| C
+            F -->|No| G[Merge variables]
+            B -->|native| H[For each variable]
+            H --> I[Create ECCOMDSDataset]
+            I --> J[Apply land mask]
+            J --> K{More variables?}
+            K -->|Yes| H
+            K -->|No| G
+            G --> L[set_granule_ancillary_data]
+            L --> M[set_granule_metadata]
+            M --> N{Output location?}
+            N -->|Local| O[Write NetCDF locally]
+            N -->|S3| P[Write to temp, upload to S3]
+
     Args:
         task (dict): Single task from parsed ECCO dataset production
             json-formatted task list.
@@ -45,6 +68,7 @@ def ecco_make_granule( task, cfg,
             task ('DEBUG', 'INFO', 'WARNING', 'ERROR' or 'CRITICAL').  If called
             by a top-level application, the default will be that of the parent
             logger ('edp').
+<<<<<<< HEAD
         **kwargs: Depending on run context:
             keygen (str): If tasklist descriptors reference AWS S3 endpoints and
                 if running in an institutionally-managed AWS IAM Identity Center
@@ -53,6 +77,15 @@ def ecco_make_granule( task, cfg,
                 /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile name to be used in combination
                 with keygen (e.g., 'saml-pub', 'default', etc.)
+=======
+        \*\*kwargs: Depending on run context: ``keygen`` (str) - If tasklist
+            descriptors reference AWS S3 endpoints and if running in an
+            institutionally-managed AWS IAM Identity Center (SSO) environment,
+            (path and) name of federated login key generation script (e.g.,
+            /usr/local/bin/aws-login-pub.darwin.amd64). ``profile`` (str) -
+            Optional profile name to be used in combination with keygen (e.g.,
+            'saml-pub', 'default', etc.)
+>>>>>>> c864369 (API reference docs)
 
     Returns:
         Indirectly, NetCDF4-formatted ECCO granule, named according to, and
@@ -149,6 +182,24 @@ def set_granule_ancillary_data(
     variable-level min/max values, time bounds, and additional coordinate data
     not already established during the process of Dataset granule creation.
 
+    .. mermaid::
+
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
+        flowchart TD
+            A[Get array precision from cfg] --> B[For each data variable]
+            B --> C[Cast to specified precision]
+            C --> D[Calculate valid_min/max]
+            D --> E[Replace NaN with fill value]
+            E --> F{More variables?}
+            F -->|Yes| B
+            F -->|No| G[Set time coordinate bounds]
+            G --> H[Remove timestep coordinate]
+            H --> I{Latlon or Native?}
+            I -->|Latlon| J[Assign bounds from mapping factors]
+            I -->|Native| K[Assign bounds from grid]
+            J --> L[Return dataset]
+            K --> L
+
     Args:
         dataset (xarray.Dataset): ECCO results data container to which
             additional ancillary data, and data conventions, are to be applied.
@@ -243,6 +294,27 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
     that set_granule_metadata operations depend in large part on functionality
     provided by ecco_v4_py.ecco_utils.
 
+    .. mermaid::
+
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
+        flowchart TD
+            A[Load ECCOMetadata if not provided] --> B[Load all JSON metadata files]
+            B --> C[Add variable-specific metadata]
+            C --> D[Add coordinate metadata]
+            D --> E[Add DOI metadata]
+            E --> F[Add global metadata]
+            F --> G[Add time metadata]
+            G --> H[Set production timestamps]
+            H --> I[Add cfg-sourced attributes]
+            I --> J[Create variable encodings]
+            J --> K[Set compression and fill values]
+            K --> L[Create coordinate encodings]
+            L --> M[Merge GCMD keywords]
+            M --> N[Generate UUID]
+            N --> O[Add PO.DAAC metadata]
+            O --> P[Sort attributes alphabetically]
+            P --> Q[Return dataset and encoding]
+
     Args:
         dataset (xarray.Dataset): ECCO results data container to which metadata
             are to be applied.
@@ -252,6 +324,7 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
             provided, instance will be locally instantiated using
             task['ecco_metadata_loc'] descriptor.
         cfg (dict): Parsed ECCO dataset production configuration file.
+<<<<<<< HEAD
         **kwargs: Depending on run context:
             keygen (str): If ecco_metadata is not provided and task object key
                 'ecco_metadata_loc' references an AWS S3 endpoint and if running
@@ -260,6 +333,16 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
                 script (e.g., /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile name to be used in combination
                 with keygen (e.g., 'saml-pub', 'default', etc.)
+=======
+        \*\*kwargs: Depending on run context: ``keygen`` (str) - If ecco_metadata
+            is not provided and task object key 'ecco_metadata_loc' references
+            an AWS S3 endpoint and if running in an institutionally-managed AWS
+            IAM Identity Center (SSO) environment, (path and) name of federated
+            login key generation script (e.g.,
+            /usr/local/bin/aws-login-pub.darwin.amd64). ``profile`` (str) -
+            Optional profile name to be used in combination with keygen (e.g.,
+            'saml-pub', 'default', etc.)
+>>>>>>> c864369 (API reference docs)
 
     Returns:
         Input xarray.Datatset, with all metadata applied.
@@ -460,6 +543,26 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
 def generate_datasets( tasklist, log_level=None, **kwargs):
     """Generate PO.DAAC/ESDIS-ready ECCO granule(s) for all tasks in tasklist.
 
+    .. mermaid::
+
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
+        flowchart TD
+            A[Load tasklist JSON] --> B{Is S3 URI?}
+            B -->|Yes| C[Download from S3]
+            B -->|No| D[Load local file]
+            C --> E[Parse tasklist]
+            D --> E
+            E --> F[Initialize shared resources]
+            F --> G[ECCOGrid]
+            G --> H[ECCOMappingFactors]
+            H --> I[ECCOMetadata]
+            I --> J[For each task in tasklist]
+            J --> K[Load ECCODatasetProductionConfig]
+            K --> L[ecco_make_granule]
+            L --> M{More tasks?}
+            M -->|Yes| J
+            M -->|No| N[Done]
+
     Args:
         tasklist: (Path and) name, or similar AWS S3 object name of
             json-formatted file containing list of ECCO dataset generation task
@@ -469,6 +572,7 @@ def generate_datasets( tasklist, log_level=None, **kwargs):
             'WARNING', 'ERROR' or 'CRITICAL').  If called by a top-level
             application, the default will be that of the parent logger ('edp'),
             or 'WARNING' if called in standalone mode.
+<<<<<<< HEAD
         **kwargs: Depending on run context:
             keygen (str): If tasklist, or tasklist descriptors reference AWS S3
                 endpoints and if running in an institutionally-managed AWS IAM
@@ -477,6 +581,15 @@ def generate_datasets( tasklist, log_level=None, **kwargs):
                 /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile name to be used in combination
                 with keygen (e.g., 'saml-pub', 'default', etc.)
+=======
+        \*\*kwargs: Depending on run context: ``keygen`` (str) - If tasklist, or
+            tasklist descriptors reference AWS S3 endpoints and if running in an
+            institutionally-managed AWS IAM Identity Center (SSO) environment,
+            (path and) name of federated login key generation script (e.g.,
+            /usr/local/bin/aws-login-pub.darwin.amd64). ``profile`` (str) -
+            Optional profile name to be used in combination with keygen (e.g.,
+            'saml-pub', 'default', etc.)
+>>>>>>> c864369 (API reference docs)
 
     Returns:
         PO.DAAC/ESDIS-ready ECCO granule(s) to location(s) defined in tasklist.

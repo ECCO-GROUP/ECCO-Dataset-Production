@@ -5,16 +5,16 @@ import argparse
 def split_json(input_file, num_files, output_base):
     """
     Splits a JSON file into multiple smaller JSON files.
-    
-    Arguments:
-    - input_file (str): Path to the input JSON file to split.
-    - num_files (int): Number of output JSON files to create.
-    - output_base (str): Base name for the output files. Each file will be named 
-                         as `output_base_001.json`, `output_base_002.json`, etc.
-    
-    The script reads a JSON file, divides it into `num_files` parts, and writes 
-    each part into a new JSON file. Each new file will contain a roughly equal 
+
+    The function reads a JSON file, divides it into ``num_files`` parts, and writes
+    each part into a new JSON file. Each new file will contain a roughly equal
     number of entries from the original JSON file.
+
+    Args:
+        input_file (str): Path to the input JSON file to split.
+        num_files (int): Number of output JSON files to create.
+        output_base (str): Base name for the output files. Each file will be named
+            as ``output_base_001.json``, ``output_base_002.json``, etc.
     """
     
     # Load the original JSON file

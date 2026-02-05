@@ -30,4 +30,5 @@ ECCO Dataset Production toolset in both local and cloud compute modes.
    introduction
    installation
    cli_scripts
+   api_reference
 

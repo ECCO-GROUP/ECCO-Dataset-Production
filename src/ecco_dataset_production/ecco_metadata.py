@@ -19,7 +19,7 @@ log = logging.getLogger('edp.'+__name__)
 
 
 class ECCOMetadata(object):
-    """Class to manage ECCO metadata *json file access, cleanup.
+    """Class to manage ECCO metadata JSON file access, cleanup.
 
     Args:
         task (str, dict, or taskobj): Optional (path and) name of json-formatted
@@ -29,7 +29,7 @@ class ECCOMetadata(object):
         ecco_metadata_loc (str): Optional pathname of either ECCO metadata directory,
             or similar remote location given by AWS S3 bucket/prefix. Either
             ecco_metadata_loc or task may be provided but not both.
-        **kwargs: If either task or ecco_metadata_loc references an AWS S3
+        \*\*kwargs: If either task or ecco_metadata_loc references an AWS S3
             endpoint and if running within an institutionally-managed AWS IAM
             Identity Center (SSO) environment, additional arguments that may be
             necessary include:

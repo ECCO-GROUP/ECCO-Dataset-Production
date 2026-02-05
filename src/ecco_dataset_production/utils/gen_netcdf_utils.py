@@ -63,13 +63,12 @@ def get_files(use_S3,
         vector_rotate (bool): Boolean specifying if the current grouping needs vector rotation. If True, then .meta files are downloaded
 
     Returns:
-        (status, (data_file_paths, meta_file_paths, curr_num_downloaded, download_time)) (tuple):
-            status (str): String that is either "SUCCESS" or "ERROR {error message}"
-            data_file_paths (dict): Dictionary where key=field name, value=downloaded data file path at cur_ts for field
-            meta_file_paths (dict): Dictionary where key=field name, value=downloaded meta file path at cur_ts for field
-            curr_num_downloaded (int): Number of files downloaded (to be added to the total number of downloaded files),
-                considered to be 0 for local processing
-            download_time (float): The time spent downloading files from S3, considered to be 0 for local processing
+        tuple: A tuple (status, (data_file_paths, meta_file_paths, curr_num_downloaded, download_time)) where
+        ``status`` (str) is either "SUCCESS" or "ERROR {error message}",
+        ``data_file_paths`` (dict) has key=field name and value=downloaded data file path at cur_ts for field,
+        ``meta_file_paths`` (dict) has key=field name and value=downloaded meta file path at cur_ts for field,
+        ``curr_num_downloaded`` (int) is the number of files downloaded (considered 0 for local processing),
+        ``download_time`` (float) is the time spent downloading files from S3 (considered 0 for local processing).
     """
     download_time = 0
     curr_num_downloaded = 0
@@ -356,13 +355,14 @@ def get_latlon_grid(mapping_factors_dir,
         extra_prints (optional, bool): Boolean to enable more print statements
 
     Returns:
-        (status, latlon_grid) (tuple):
-            status (str): String that is either "SUCCESS" or "ERROR {error message}"
-            latlon_grid (list): List containing other lists/dictionaries describing the latlon grid:
-                latlon_bounds: Contains the lat and lon bounds for each grid cell
-                depth_bounds: Contains the vertical bounds for each vertical level
-                target_grid_dict: Contains latlon grid 'shape', and lists of all the 'lats_1D' and 'lons_1D'
-                wet_pts_k: Dictionary with key=vertical level index, and value=tuple of numpy.arrays of source grid wet points
+        tuple: A tuple (status, latlon_grid) where ``status`` (str) is either
+        "SUCCESS" or "ERROR {error message}", and ``latlon_grid`` (list)
+        contains lists/dictionaries describing the latlon grid including
+        latlon_bounds (lat and lon bounds for each grid cell), depth_bounds
+        (vertical bounds for each vertical level), target_grid_dict (latlon
+        grid 'shape', and lists of all 'lats_1D' and 'lons_1D'), and wet_pts_k
+        (dictionary with key=vertical level index, and value=tuple of
+        numpy.arrays of source grid wet points).
     """
     if extra_prints: print('\nGetting latlon grid')
 

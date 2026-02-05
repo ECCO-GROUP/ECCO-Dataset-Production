@@ -75,21 +75,12 @@ def create_factors( cfgfile=None, workingdir=None, dims=None, log_level=None):
 
     Note:
         Configuration parameters referenced by this, and all called routines,
-        include:
-            custom_grid_and_factors
-            ecco_grid_dir
-            ecco_grid_filename
-            ecco_version
-            grid_files_dir
-            latlon_effective_grid_radius
-            latlon_grid_area_extent
-            latlon_grid_dims
-            latlon_grid_resolution
-            latlon_max_lat
-            mapping_factors_dir
-            num_vertical_levels
-            source_grid_min_L
-            source_grid_max_L
+        include: ``custom_grid_and_factors``, ``ecco_grid_dir``,
+        ``ecco_grid_filename``, ``ecco_version``, ``grid_files_dir``,
+        ``latlon_effective_grid_radius``, ``latlon_grid_area_extent``,
+        ``latlon_grid_dims``, ``latlon_grid_resolution``, ``latlon_max_lat``,
+        ``mapping_factors_dir``, ``num_vertical_levels``, ``source_grid_min_L``,
+        ``source_grid_max_L``.
     """
     log = logging.getLogger(__name__)
     if log_level:
