@@ -14,7 +14,7 @@ sys.path.append(docgen_dir)
 
 import readJSON
 import cdf_extract
-import sections.dataset_sections as ds_s
+import sections.dataset_sections as dataset_sections
 
 def write_data_attributes_tables():
     """
@@ -79,6 +79,7 @@ def write_datasets(dataset_type:str)->None:
     # All of these json files seem internal to ECCO, with some internal to a specific release; 
     # shouldn't they be safely stored higher up in the file tree?
     # -----------------------------------------------------------------------------------------------------------
+    #native_coords_groupings = 'granule_datasets/'+data_version_to_get+'/natives_coords.json'
     native_coords_groupings = 'granule_datasets/'+data_version_to_get+'/native_coords.json'
     native_groupings_json = 'granule_datasets/'+data_version_to_get+'/ECCOv4r4_groupings_for_native_datasets.json'
     latlon_coords_groupings = 'granule_datasets/'+data_version_to_get+'/latlon_coords.json'
@@ -99,38 +100,32 @@ def write_datasets(dataset_type:str)->None:
     oneD_images_dir = 'images/plots/'+data_version_to_get+'/oneD_plots/'
 
     if dataset_type == 'native':
-
-        native_coord_ds_lines = ds_s.data_products(native_coords_groupings, native_coords_dir,
-                                                   native_coords_images_dir, dataset_type + " Coordinates")
+        native_coord_latex_lines = dataset_sections.data_products(native_coords_groupings, native_coords_dir, 
+                                                                  native_coords_images_dir, dataset_type + " Coordinates")
         with open('document/latex/dataset/native_coords_dataset_tables.tex', 'w') as output_file:
-            output_file.write('\n'.join(native_coord_ds_lines))
+            output_file.write('\n'.join(native_coord_latex_lines))
 
-
-        native_ds_lines = ds_s.data_products(native_groupings_json, native_ds_dir,
-                                            native_images_dir, dataset_type)
+        native_latex_lines = dataset_sections.data_products(native_groupings_json, native_ds_dir,
+                                                            native_images_dir, dataset_type)
         with open('document/latex/dataset/native_dataset_tables.tex', 'w') as output_file:
-            output_file.write('\n'.join(native_ds_lines))
-            #output_file.write('example of native dataset table\n')
+            output_file.write('\n'.join(native_latex_lines))
 
     elif dataset_type == 'latlon':
-        latlon_coord_ds_lines = ds_s.data_products(latlon_coords_groupings, latlon_coords_dir,
-                                                   latlon_coords_images_dir, dataset_type) #+ " Coordinates"
+        latlon_coord_latex_lines = dataset_sections.data_products(latlon_coords_groupings, latlon_coords_dir,
+                                                                  latlon_coords_images_dir, dataset_type) #+ " Coordinates"
         with open('document/latex/dataset/latlon_coords_dataset_tables.tex', 'w') as output_file:
-            output_file.write('\n'.join(latlon_coord_ds_lines))
+            output_file.write('\n'.join(latlon_coord_latex_lines))
 
-
-
-        latlon_ds_lines = ds_s.data_products(latlon_groupings_json, latlon_ds_dir,
-                                            latlon_images_dir, dataset_type)
+        latlon_latex_lines = dataset_sections.data_products(latlon_groupings_json, latlon_ds_dir,
+                                                            latlon_images_dir, dataset_type)
         with open('document/latex/dataset/latlon_dataset_tables.tex', 'w') as output_file:
-            output_file.write('\n'.join(latlon_ds_lines))
-            #output_file.write('example of latlon dataset table\n')
+            output_file.write('\n'.join(latlon_latex_lines))
 
     elif dataset_type == '1D':
-        oneD_ds_lines = ds_s.data_products(oneD_groupings_json, oneD_ds_dir,
-                                        oneD_images_dir, dataset_type)
+        oneD_latex_lines = dataset_sections.data_products(oneD_groupings_json, oneD_ds_dir,
+                                                          oneD_images_dir, dataset_type)
         with open('document/latex/dataset/oneD_dataset_tables.tex', 'w') as output_file:
-            output_file.write('\n'.join(oneD_ds_lines))
+            output_file.write('\n'.join(oneD_latex_lines))
 
     else:
         print(f"Invalid dataset type: {dataset_type}. Please select from 'Native', 'Latlon', '1D'.")

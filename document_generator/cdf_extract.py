@@ -7,111 +7,83 @@ import json
 ## ----------------------------------------------------------------------------
 ## ---------------------- Extracting CDL For Examples -------------------------
 ## ----------------------------------------------------------------------------
-def fieldTable(ds:xr.Dataset, is_coord:bool)->list[str]:
+def fieldTable(dataset:xr.Dataset, is_coord:bool)->list[str]:
 
-    dataset = get_product_name(ds)
-    # fields = fields_in_ds(ds, is_coord=True)
-    field_var1,field_var_des1,field_var_unit1 = get_coord_vars_in_ds(ds=ds,CoordsOrVar=True)
-    field_var2,field_var_des2,field_var_unit2 = get_coord_vars_in_ds(ds=ds,CoordsOrVar=False)
+    product_name = get_product_name(dataset)
+    datavar_shortname, datavar_longname, datavar_units = get_coord_vars_in_dataset(dataset=dataset, isCoord=False)
+    coordvar_shortname, coordvar_longname, coordvar_units = get_coord_vars_in_dataset(dataset=dataset, isCoord=True)
     # Managing the table cells' lenght for "Variable Name" and "Description"
-    a,b = table_cellSize(field_var1+field_var2)
-    # maxVarlen = []
-    # for ik in field_var:
-    #     maxVarlen.append(len(ik))
-    # maxVarlen = np.max(maxVarlen)
-    # if maxVarlen>=29:
-    #     a = 0.4;b = 0.39
-    # else:
-    #     a =0.15 ;b = 0.64
-    ll = []
-    # ll.append(r'\begin{longtable}{|p{0.25\textwidth}|p{0.5\textwidth}|p{0.11\textwidth}|}')
-    ll.append(r'\begin{longtable}{|m{'+str(a)+r'\textwidth}|m{'+str(b)+r'\textwidth}|m{0.12\textwidth}|}')
+    a,b = table_cellSize(datavar_shortname+coordvar_shortname)
+    latex_lines = []
+    latex_lines.append(r'\begin{longtable}{|m{'+str(a)+r'\textwidth}|m{'+str(b)+r'\textwidth}|m{0.12\textwidth}|}')
     # make a table that displays the fields in the dataset
-    ll.append(fr'\caption{{Coordinates and Variables in the dataset {utils.sanitize(dataset)}}}')
-    ll.append(fr'\label{{tab:table-{dataset}-fields}} \\ ')
-    ll.append(r'\hline \endhead \hline \endfoot')
-    # ll.append(r'\rowcolor{lightgray} \textbf{Dataset:} & \textbf{'+f'{utils.sanitize(dataset)}'+r'} \\ \hline')
-    ll.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Coordinates}} & \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
+    latex_lines.append(fr'\caption{{Coordinates and Variables in the dataset {utils.sanitize(product_name)}}}')
+    latex_lines.append(fr'\label{{tab:table-{dataset}-fields}} \\ ')
+    latex_lines.append(r'\hline \endhead \hline \endfoot')
+    latex_lines.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Coordinates}} & \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
     
-    # ll.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Variables}} & \multicolumn{1}{|c|}{\textbf{Description of data variables}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
 
-    # for field in fields:
     ## Here, dataset's variables are filled out with description and the corresponding unit!
-    for ij in np.arange(len(field_var2)):
-        # ll.append(r'Field: &' + f'{utils.sanitize(field)}'+r' \\ \hline')
-        ll.append(f'{utils.sanitize(field_var2[ij])} &' + f'{utils.sanitize(field_var_des2[ij])} &'+ rf'{utils.sanitize(field_var_unit2[ij])}  \\ \hline')
+    for ij in np.arange(len(coordvar_shortname)):
+        latex_lines.append(f'{utils.sanitize(coordvar_shortname[ij])} &' + f'{utils.sanitize(coordvar_longname[ij])} &'+ rf'{utils.sanitize(coordvar_units[ij])}  \\ \hline')
     
-    ll.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Variables}} & \multicolumn{1}{|c|}{\textbf{Description of data variables}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
+    latex_lines.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Variables}} & \multicolumn{1}{|c|}{\textbf{Description of data variables}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
     
-    # ll.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Coordinates}} & \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
     ## Here, dataset's coordinates are filled out with description and the corresponding unit!
-    for ij in np.arange(len(field_var1)):
-        # ll.append(r'Field: &' + f'{utils.sanitize(field)}'+r' \\ \hline')
-        ll.append(f'{utils.sanitize(field_var1[ij])} &' + f'{utils.sanitize(field_var_des1[ij])} &'+ rf'{utils.sanitize(field_var_unit1[ij])}  \\ \hline')
+    for ij in np.arange(len(datavar_shortname)):
+        latex_lines.append(f'{utils.sanitize(datavar_shortname[ij])} &' + f'{utils.sanitize(datavar_longname[ij])} &'+ rf'{utils.sanitize(datavar_units[ij])}  \\ \hline')
     
-    ll.append(r'\end{longtable}')
-    ll.append(r"")
-    return ll
+    latex_lines.append(r'\end{longtable}')
+    latex_lines.append(r"")
+    return latex_lines
 
 
 
 
-def formatExampleNetCDFTable(cdl:list[str], name : str = "example")->list[str]:
+def format_example_netCDF_table(latex_lines_unformatted:list[str], name : str = "example")->list[str]:
 
     latex_lines = [r'\begin{longtable}{|p{\textwidth}|}', 
                     r'\caption{Example CDL description of ' +name+ r' dataset}',
                     r'\label{tab:cdl-'+name+r'} \\', 
                     r'\hline \endhead',
                     r'\hline \endfoot',
-
     ]
  
     dimensions_start = False
     coordinates_start = False
     variables_start = False
-#    independent_vars = [] # NEVER USED
-    for line in cdl:
-        new_line = utils.sanitize_with_math(line)
+    for line in latex_lines_unformatted:
+        line_formatted = utils.sanitize_with_math(line)
+        #if line_formatted.startswith('netcdf'):
         if line.startswith('netcdf'):
-            latex_lines.append(new_line + r'\\')
+            latex_lines.append(line_formatted + r'\\')
             continue
         if not dimensions_start and not coordinates_start and not variables_start and "dimensions" in line:
             dimensions_start = True
-            latex_lines.append(new_line + r'\\')
+            latex_lines.append(line_formatted + r'\\')
             latex_lines.append(r'\hline')
-            #latex_lines.append(r'\rowcolor{YellowGreen}')
             continue
         elif dimensions_start and "coordinates" in line:
             dimensions_start = False
             coordinates_start = True
             latex_lines.append(r'\hline')
-            latex_lines.append(new_line + r'\\')
+            latex_lines.append(line_formatted + r'\\')
             latex_lines.append(r'\hline')
-            #latex_lines.append(r'\rowcolor{YellowGreen}')
             continue
         elif coordinates_start and "data variables" in line:
             coordinates_start = False
             variables_start = True
             latex_lines.append(r'\hline')
-            latex_lines.append(new_line + r'\\')
+            latex_lines.append(line_formatted + r'\\')
             latex_lines.append(r'\hline')
-            #latex_lines.append(r'\rowcolor{Apricot}')
             continue
 
         if dimensions_start:
-                latex_lines.append(r'\rowcolor{YellowGreen}' + new_line + r'\\')
-#                independent_vars.append(utils.get_substring(new_line)) # NEVER USED
+                latex_lines.append(r'\rowcolor{YellowGreen}' + line_formatted + r'\\')
         elif coordinates_start:
-#                data_var = utils.get_substring(line) # NEVER USED
-                latex_lines.append(r'\rowcolor{Apricot}' + new_line + r'\\')
-                # if "\t\t" not in line and data_var + "(" + data_var + ")" not in line:
-                #     variables_start = False
-                #     latex_lines.append(r'\hline')
-                #     latex_lines.append(new_line + r'\\')
-                # else:
-                #     latex_lines.append(r'\rowcolor{Apricot}' + new_line + r'\\')
+                latex_lines.append(r'\rowcolor{Apricot}' + line_formatted + r'\\')
         else:
-            latex_lines.append(new_line + r'\\')
+            latex_lines.append(line_formatted + r'\\')
 
     latex_lines.append(r'\hline')
     latex_lines.append(r'\end{longtable}')
@@ -128,53 +100,51 @@ def latex_example_netcdf(fileType)->list[str]:
     else:
         file = 'granule_datasets/'+data_version_to_get+'/oneD/GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r4_1D.nc'
 
-    ds = xr.open_dataset(file, decode_times=False, decode_cf=False, decode_coords=False, decode_timedelta=False)
-    ll = []
-    ll.append(f'netcdf {fileType} example')
-    ll.append('dimensions')
-    for d in ds.dims:
-        ll.append(f'  {d} = {len(ds[d])}')
-    ll.append('\ncoordinates')
-    for c in ds.coords:
-        c = ds[c]
-        c_dt = str(c.dtype)
-        c_dims = ', '.join([str(x) for x in c.dims])
+    dataset = xr.open_dataset(file, decode_times=False, decode_cf=False, decode_coords=False, decode_timedelta=False)
+    latex_lines_list = []
+    latex_lines_list.append(f'netcdf {fileType} example')
+    latex_lines_list.append('dimensions')
+    for dimension_name in dataset.sizes:
+        latex_lines_list.append(f'  {dimension_name} = {len(dataset[dimension_name])}')
+    latex_lines_list.append('\ncoordinates')
+    for coord_name in dataset.coords:
+        coord = dataset[coord_name]
+        coord_dt = str(coord.dtype)
+        coord_dims = ', '.join([str(x) for x in coord.dims])
 
-        ll.append(f'\t{c_dt} {c.name} ({c_dims})')
-        for c_attr in c.attrs:
-            ll.append(f'\t\t{c.name}:{c_attr} = "{c.attrs[c_attr]}"')
-
+        latex_lines_list.append(f'\t{coord_dt} {coord.name} ({coord_dims})')
+        for coord_attr in coord.attrs:
+            latex_lines_list.append(f'\t\t{coord.name}:{coord_attr} = "{coord.attrs[coord_attr]}"')
 
     # separate extra coordinates and data variables
     coords = [] # list of coordinates
     data_vars = [] # list of data variables
-    for dv in ds.data_vars:
-        if ds[dv].attrs['coverage_content_type'] == 'coordinate':
-            coords.append(ds[dv])
+    for datavar_name in dataset.data_vars:
+        if dataset[datavar_name].attrs['coverage_content_type'] == 'coordinate':
+            coords.append(dataset[datavar_name])
         else:
-            data_vars.append(ds[dv])
-
+            data_vars.append(dataset[datavar_name])
 
     for coord in coords:
-        c_dt = str(coord.dtype)
-        c_dims = ', '.join([str(x) for x in coord.dims])
+        coord_dt = str(coord.dtype)
+        coord_dims = ', '.join([str(dim) for dim in coord.dims])
 
-        ll.append(f'\t{c_dt} {coord.name} ({c_dims})')
-        for c_attr in coord.attrs:
-            ll.append(f'\t\t{coord.name}:{c_attr} = "{coord.attrs[c_attr]}"')
+        latex_lines_list.append(f'\t{coord_dt} {coord.name} ({coord_dims})')
+        for coord_attr in coord.attrs:
+            latex_lines_list.append(f'\t\t{coord.name}:{coord_attr} = "{coord.attrs[coord_attr]}"')
 
-    ll.append('\ndata variables')
-    for dv in data_vars:
-        dv_dt = str(dv.dtype)
-        dv_dims = ', '.join([str(x) for x in dv.dims])
+    latex_lines_list.append('\ndata variables')
+    for datavar in data_vars:
+        datavar_dt = str(datavar.dtype)
+        datavar_dims = ', '.join([str(x) for x in datavar.dims])
 
-        ll.append(f'\t{dv_dt} {dv.name} ({dv_dims})')
-        for dv_attr in dv.attrs:
-            ll.append(f'\t\t{dv.name}:{dv_attr} = "{dv.attrs[dv_attr]}"')
+        latex_lines_list.append(f'\t{datavar_dt} {datavar.name} ({datavar_dims})')
+        for datavar_attr in datavar.attrs:
+            latex_lines_list.append(f'\t\t{datavar.name}:{datavar_attr} = "{datavar.attrs[datavar_attr]}"')
 
-    # Now that we have the list of tex lines for the table, we pass it to formatExampleNetCDFTable()
+    # Now that we have the list of tex lines for the table, we pass it to format_example_netCDF_table()
     # to add color commands etc to the beginnings of appropriate lines
-    return formatExampleNetCDFTable(ll, fileType)
+    return format_example_netCDF_table(latex_lines_list, fileType)
 
 
 
@@ -189,41 +159,42 @@ def get_non_coordinate_vars(filename:str)->list[xr.DataArray]:
         Returns:
             list[xr.DataArray]: A list of the non-coordinate variables in the given NetCDF file.
     """
-    ds = xr.open_dataset(filename, decode_times=False, decode_coords=False, decode_cf=False, decode_timedelta=False)
+    dataset = xr.open_dataset(filename, decode_times=False, decode_coords=False, decode_cf=False, decode_timedelta=False)
     non_coordinate = []
-    for var in ds.data_vars:
-        if ds[var].attrs['coverage_content_type'] != 'coordinate':
+    for var in dataset.data_vars:
+        if dataset[var].attrs['coverage_content_type'] != 'coordinate':
             non_coordinate.append(var)
     non_coordinate = sorted(non_coordinate)
-    fields = [ds[field] for field in non_coordinate]
-    return fields
+    data_array_list = [dataset[field] for field in non_coordinate]
+    return data_array_list
 
+# BL: Some of the conditions in here feel sketchy to me!!!  (see the determination of whether a native variable is a coordinate variable!)
 def get_coordinate_vars(filename:str)->list[xr.DataArray]:
     """
-        Returns a list of the non-coordinate variables in the given NetCDF file.
+        Returns a list of the coordinate variables in the given NetCDF file.
         Parameters:
             filename (str): The path to the NetCDF file.
         Returns:
             list[xr.DataArray]: A list of the non-coordinate variables in the given NetCDF file.
     """
-    ds = xr.open_dataset(filename, decode_times=False, decode_coords=False, decode_cf=False, decode_timedelta=False)
+    dataset = xr.open_dataset(filename, decode_times=False, decode_coords=False, decode_cf=False, decode_timedelta=False)
     coordinate = []
 
-    ds_type = 'native' if 'native' in ds.attrs['product_name'] else 'latlon'
+    dataset_type = 'native' if 'native' in dataset.attrs['product_name'] else 'latlon'
 
-    if ds_type == 'native':
-        for var in ds.data_vars:
-            var = ds[var]
+    if dataset_type == 'native':
+        for var in dataset.data_vars:
+            var = dataset[var]
             if 'tile' in var.dims and len(var.dims) > 2 and 'bnds' not in var.name:
                 coordinate.append(var)
     else:
-        for var in ds.data_vars:
-            var = ds[var]
+        for var in dataset.data_vars:
+            var = dataset[var]
             if len(var.dims) > 2:
                 coordinate.append(var)
     #coordinate = sorted(coordinate)
-    fields = [ds[field.name] for field in coordinate]
-    return fields
+    data_array_list = [dataset[field.name] for field in coordinate]
+    return data_array_list
 
 
 
@@ -292,7 +263,6 @@ def search_and_extract(substring:str, directory:str="granule_datasets/v4r4/nativ
 
     Returns:
         list: A list of xr.DataArrays, each a field in the dataset.
-        #list: A list of dictionaries, each containing information about one variable in the dataset.
         xr.Dataset: The dataset itself.
     """
 
@@ -301,28 +271,28 @@ def search_and_extract(substring:str, directory:str="granule_datasets/v4r4/nativ
             if substring in file and file.endswith(".nc"):
                 filepath = os.path.join(root, file)
                 if not get_coords:
-                    fields = get_non_coordinate_vars(filepath)
+                    data_array_list = get_non_coordinate_vars(filepath)
                 else:
-                    fields = get_coordinate_vars(filepath)
-                ds = xr.open_dataset(filepath) # might DELETE THIS LINE
-                return fields, ds
+                    data_array_list = get_coordinate_vars(filepath)
+                dataset = xr.open_dataset(filepath) # might DELETE THIS LINE
+                return data_array_list, dataset
 
     raise ValueError(f"No NetCDF file containing '{substring}' found in directory '{directory}'")
 
 
 
 
-def data_var_table(field_name:str, attrs:dict, ds_name:str)->list[str]:
+def data_var_table(field_name:str, attrs:dict, dataset_name:str)->list[str]:
     """
     Create a latex table of the data variable.
     Parameters: 
         fieldName (str): The name of the data variable.
         da (dict): The dictionary of the data variable.
-        ds_name (str): The name of the dataset.
+        dataset_name (str): The name of the dataset.
     Returns:
         list: A list containing the latex table of the data variable.
     """
-    new_sani = utils.sanitize(ds_name)
+    new_sani = utils.sanitize(dataset_name)
     # Obtain the important attributes
     storageType = utils.sanitize(attrs["Storage Type"])
     varName = utils.sanitize(attrs["Variable Name"])
@@ -350,7 +320,7 @@ def data_var_table(field_name:str, attrs:dict, ds_name:str)->list[str]:
             r'\begin{longtable}{|m{0.06\textwidth}|m{'+str(a)+r'\textwidth}|m{'+str(b)+r'\textwidth}|m{0.12\textwidth}|}',
             # fr"\caption{{CDL description of {new_sani}'s {utils.sanitize(field_name)} variable}}",
             fr"\caption{{Attributes description of the variable '{utils.sanitize(field_name)}' from {new_sani}'s  dataset.}}",
-            fr'\label{{tab:table-{ds_name}_{field_name}}} \\ ',
+            fr'\label{{tab:table-{dataset_name}_{field_name}}} \\ ',
             r'\hline \endhead \hline \endfoot',
         ]
     #daName = utils.sanitize(field_name)
@@ -388,16 +358,16 @@ def data_var_table(field_name:str, attrs:dict, ds_name:str)->list[str]:
 ########################################### Helper Functions #################################################
 ##############################################################################################################
 
-def get_product_name(ds:xr.Dataset)->str:
+def get_product_name(dataset:xr.Dataset)->str:
     """
     Returns the product name of the dataset.
     Parameters:
-        ds (xarray.Dataset): The dataset to extract the product name from.
+        dataset (xarray.Dataset): The dataset to extract the product name from.
     Returns:
         str: The product name of the dataset.
     """
     # find the product name, i.e. the first part of product_name attribute which is all capital letters
-    h = ds.attrs['product_name'].split('_')
+    h = dataset.attrs['product_name'].split('_')
     product_name = ''
     for i in h:
         if i.isupper():
@@ -407,81 +377,82 @@ def get_product_name(ds:xr.Dataset)->str:
             break
     return product_name
 
-def fields_in_ds(ds:xr.Dataset, is_coord:bool)->list[str]:
+def fields_in_ds(dataset:xr.Dataset, is_coord:bool)->list[str]:
     """
     Returns a list of all the fields in the dataset.
     Parameters:
-        ds (xarray.Dataset): The dataset to extract the fields from.
+        dataset (xarray.Dataset): The dataset to extract the fields from.
     Returns:
         list[str]: A list of all the fields in the dataset.
     """
     # find all the fields in the dataset
     fields = []
-    ds_type = ''
-    if 'native' in ds.attrs['product_name']:
-        ds_type = 'native' 
-    elif 'latlon' in ds.attrs['product_name']:
-        ds_type = 'latlon'
+    dataset_type = ''
+    if 'native' in dataset.attrs['product_name']:
+        dataset_type = 'native' 
+    elif 'latlon' in dataset.attrs['product_name']:
+        dataset_type = 'latlon'
 
     if is_coord:
-        if ds_type == 'native':
-            for coord in ds.coords:
-                coord = ds.coords[coord]
+        if dataset_type == 'native':
+            for coord in dataset.coords:
+                coord = dataset.coords[coord]
                 if 'tile' in coord.dims and len(coord.dims) > 2 and 'bnds' not in coord.name:
                     fields.append(coord.name)
-            for coord in ds.data_vars:
-                coord = ds.data_vars[coord]
+            for coord in dataset.data_vars:
+                coord = dataset.data_vars[coord]
                 if 'tile' in coord.dims and len(coord.dims) > 2 and 'bnds' not in coord.name:
                     fields.append(coord.name)
-        elif ds_type == 'latlon':
-            for coord in ds.coords:
-                coord = ds.coords[coord]
+        elif dataset_type == 'latlon':
+            for coord in dataset.coords:
+                coord = dataset.coords[coord]
                 if len(coord.dims) > 2:
                     fields.append(coord.name)
-            for coord in ds.data_vars:
-                coord = ds.data_vars[coord]
+            for coord in dataset.data_vars:
+                coord = dataset.data_vars[coord]
                 if len(coord.dims) > 2:
                     fields.append(coord.name)
     else: 
-        for i in ds.data_vars:
+        for i in dataset.data_vars:
             fields.append(i)
     # else:
 
     return fields
 
 
-def get_coord_vars_in_ds(ds:xr.Dataset,CoordsOrVar:bool=True)->list[str,str,str]:
+def get_coord_vars_in_dataset(dataset:xr.Dataset,isCoord:bool=False)->tuple[list[str],list[str],list[str]]:
+#def get_coord_vars_in_dataset(dataset:xr.Dataset,isCoord:bool=False)->tuple[str,str,str]:
     """
     This function get coordinates, data variavles and their unit from the dataset field.
-    input:-> ds: dataset field in xarray dataset format
-    CoordsOrVar:-> to select "data_vars" (Default, -> True) or "coords" (-> False)
+    input:-> dataset: dataset field in xarray dataset format
+    isCoord:-> to select "data_vars" (Default, -> False) or "coords" (-> True)
     output:-> list of coords, var and unit
     """
-    if CoordsOrVar == True:
-        var_list = list(ds.data_vars)
-        VARI =         []
-        DESCRIP_VARI = []
-        VARI_UNIT =    []
+    if isCoord == False:
+        var_list = list(dataset.data_vars)
+        shortnames_list =         []
+        longnames_list = []
+        units_list =    []
         for ij in np.arange(len(var_list)):
-            VARI.append(var_list[ij])
-            DESCRIP_VARI.append(str(ds[var_list[ij]].long_name).capitalize())
-            if 'units' in ds[var_list[ij]].attrs.keys():
-                VARI_UNIT.append(ds[var_list[ij]].units)
+            shortnames_list.append(var_list[ij])
+            longnames_list.append(str(dataset[var_list[ij]].long_name).capitalize())
+            if 'units' in dataset[var_list[ij]].attrs.keys():
+                units_list.append(dataset[var_list[ij]].units)
             else:
-                VARI_UNIT.append('--none--')
-    if CoordsOrVar == False:
-        var_list = list(ds.coords)
-        VARI =         []
-        DESCRIP_VARI = []
-        VARI_UNIT =    []
+                units_list.append('--none--')
+    if isCoord == True:
+        var_list = list(dataset.coords)
+        shortnames_list =         []
+        longnames_list = []
+        units_list =    []
         for ij in np.arange(len(var_list)):
-            VARI.append(var_list[ij])
-            DESCRIP_VARI.append(str(ds[var_list[ij]].long_name).capitalize())
-            if 'units' in ds[var_list[ij]].attrs.keys():
-                VARI_UNIT.append(ds[var_list[ij]].units)
+            shortnames_list.append(var_list[ij])
+            longnames_list.append(str(dataset[var_list[ij]].long_name).capitalize())
+            if 'units' in dataset[var_list[ij]].attrs.keys():
+                units_list.append(dataset[var_list[ij]].units)
             else:
-                VARI_UNIT.append('--none--')
-    return VARI, DESCRIP_VARI, VARI_UNIT
+                units_list.append('--none--')
+    return shortnames_list, longnames_list, units_list
 
 def table_cellSize(field_var:list):
     """
@@ -517,7 +488,7 @@ def global_attrs_for_ECCOnetCDF(jsonFileRef:str,
             GlobAttrsFilledECCO.update({itk:{"type":data[itk]['type'],"description":data[itk]['description'],"sourc":data[itk]['sourc']}}) 
         else:
             GlobAttrsFilledECCO.update({itk:{"type":"TBD","description":"TBD","sourc":"TBD"}})
-    ll = [
+    latex_lines = [
         r'\begin{longtable}{|p{0.28\textwidth}|p{0.06\textwidth}|p{0.51\textwidth}|p{0.07\textwidth}|}',
         r'\caption{'+rf'{tableCaption}'+r'}',
         r'\label{tab:variable-attributes} \\ ',
@@ -530,12 +501,12 @@ def global_attrs_for_ECCOnetCDF(jsonFileRef:str,
         GAFormat = GlobAttrsFilledECCO[i]["type"]
         GAdescription = GlobAttrsFilledECCO[i]["description"]
         GASource = GlobAttrsFilledECCO[i]["sourc"]
-        ll.append(r'\rowcolor{cyan!25}')
-        ll.append(rf'{utils.sanitize(GAttrsNam)} & {GAFormat} & {utils.sanitize(GAdescription)} & {GASource} \\ \hline')
-    ll.append(r'\end{longtable}')
-    ll.append(r"")
+        latex_lines.append(r'\rowcolor{cyan!25}')
+        latex_lines.append(rf'{utils.sanitize(GAttrsNam)} & {GAFormat} & {utils.sanitize(GAdescription)} & {GASource} \\ \hline')
+    latex_lines.append(r'\end{longtable}')
+    latex_lines.append(r"")
     with open(saveTo+latexFilename, 'w') as output_file:
-            output_file.write('\n'.join(ll))
+            output_file.write('\n'.join(latex_lines))
 
 
 
@@ -548,8 +519,8 @@ def get_Global_or_CoordsDimsVarsList(netCDFpath:str,jsonFileName:str,saveTo:str)
     contentlist = sorted(os.listdir(path=netCDFpath))
     GlobalAttrsCollect = []
     for i in range(len(contentlist)):
-        dsopened = xr.open_dataset(netCDFpath+contentlist[i])
-        GlobalAttrsCollect = GlobalAttrsCollect + list(dsopened.attrs)
+        dataset = xr.open_dataset(netCDFpath+contentlist[i])
+        GlobalAttrsCollect = GlobalAttrsCollect + list(dataset.attrs)
     GlobalAttrsCollect = sorted(list(set(GlobalAttrsCollect)))
     with open(os.path.join(saveTo,jsonFileName), 'w') as output_file:
         output_file.write(str(json.dumps(GlobalAttrsCollect)))

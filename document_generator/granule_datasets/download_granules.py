@@ -1,3 +1,5 @@
+# BL:  NOWHERE IS THE DOWNLOADING OR CREATION OF THE ACCOMPANYING JSON GROUPINGS FILES DESCRIBED!!!!
+
 import os
 import sys
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))

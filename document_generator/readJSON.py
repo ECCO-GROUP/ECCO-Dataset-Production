@@ -3,7 +3,6 @@ import utils as u
 
 
 def obtain_json_data(filename: str) -> list:
-#def obtain_json_data(filename: str) -> dict:
     """
     Read JSON data from a file and return a dictionary.
     :param filename: string
@@ -37,7 +36,6 @@ def verify_columns(available_columns: set, user_columns: list) -> list:
 
 
 def establish_table(dictionary_list_from_json:list)->list:
-#def establish_table(json:dict)->list:
     """
     Establishes the table for the json data
     :param dictionary_list_from_json: list of dictionaries from a json file
@@ -90,34 +88,5 @@ def set_table(json_data: dict, caption: str = None, col_names: list = None, wide
     latex_table.append('\\end{document}\n')
 
     return latex_table
-def main():
-    filename = "./data/sorted_metadata_for_V4r4_v2.json"
 
-    # Validate file name
-    #while True:
-    #    verify = input(f'Is "{filename}" the correct file? (Y/N): ')
-    #    if verify.lower() == "y":
-    #        break
-    #    filename = input("Enter absolute/relative file name: ")
 
-    # Obtain data and column keys from JSON file
-
-    """
-    json_data = obtain_json_data(filename)
-    available_columns = obtain_keys(json_data)
-
-    # Set the caption and user-defined column names
-    caption = "Mandatory global attributes for GDS 2.0 netCDF data files"
-    user_columns = ["Name", "Format", "Description", "Source"]
-    verified_columns = verify_columns(available_columns, user_columns)
-
-    # Set up list of strings to write to the LaTeX file
-    latex_lines = set_preamble() + set_table(json_data, caption, verified_columns, wider_col="Description", wider_col_width=2.5)
-
-    # Write the LaTeX file
-    with open('variables.tex', 'w') as file:
-        file.writelines(latex_lines)
-
-    print("LaTeX file has been written")
-
-    """

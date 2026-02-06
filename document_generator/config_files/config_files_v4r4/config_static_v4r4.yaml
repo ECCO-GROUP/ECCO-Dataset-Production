@@ -1,0 +1,53 @@
+ecco_groupings:
+  - ECCOv4r4_groupings_for_1D_datasets.json
+  - ECCOv4r4_groupings_for_latlon_datasets.json
+  - ECCOv4r4_groupings_for_native_datasets.json
+  - latlon_coords.json
+  - native_coords.json
+ecco_attributes:
+  - CoordsDimsVarsAttrs_GDS20r5.json
+  - ECCO_global_Attrs_name.json
+  - global_attributes.json
+  - global_attrs_GDS20r5.json
+  - variable_attributes.json
+latex_support_general:
+  - acry_abbrev_list.tex
+  - app_ref_docs.tex
+  - closing_statement.tex
+  - doc_changes.tex
+  - doc_management_policies.tex
+  - doc_records.tex
+  - document_conventions.tex
+  - ECCO_overview.tex
+  - ECCO_team.tex
+  - executive_summary.tex
+  - filenames_conventions.tex
+  - front_pages.tex
+  - LOF.tex
+  - metadata_specification.tex
+  - preamble.tex
+  - scope_content_doc.tex
+  - TOC.tex
+latex_support_data_product:
+  - Coordinates_Dimensions_Variables_Attribute_tablev1.tex
+  - Coordinates_table.tex
+  - data_product_file_struct.tex
+  - data_product_file_structure_Attrs.tex
+  - Dimensions_table.tex
+  - example_latlon_table.tex
+  - example_native_table.tex
+  - example_oneD_table.tex
+  - global_attributes.tex
+  - GlobalAttribute_tableV1.tex
+  - variable_attributes.tex
+latex_support_dataset:
+  - latlon_coords_dataset_tables.tex
+  - latlon_coords_dataset.tex
+  - latlon_dataset_tables.tex
+  - latlon_dataset.tex
+  - native_coords_dataset_tables.tex
+  - native_coords_dataset.tex
+  - native_dataset_tables.tex
+  - native_dataset.tex
+  - oneD_dataset_tables.tex
+  - oneD_dataset.tex

@@ -1,3 +1,4 @@
+# BL: SEE COMMENT AROUND LINE 46
 import utils
 import json
 import cdf_extract
@@ -23,66 +24,54 @@ def data_products(filePath:str, directory:str, imageDirectory:str, section:str='
     if section != '1D':
         section = section.capitalize()
 
-    l = []
+    latex_lines = []
 
     # Load the JSON data
     with open(filePath, 'r') as json_file:
-        data = json.load(json_file)
+        list_of_json_dicts = json.load(json_file)
 
-
-    #coord_list = create_coord_section(data, filePath, directory, imageDirectory, section)
     # Iterate through the JSON objects
-    for item in data:
+    for item in list_of_json_dicts:
         filename = item["filename"]
-        netCDF_ds = utils.sanitize(filename)
-        # l.append(r'\pagebreak') # Page break -- added ## <= is this utils? => yes, but I remove it to have continious paging
-        # l.append(r'\subsection{'+ f'{section}' + ' NetCDF '+ f'{netCDF_ds}' + r'}')
+        filename_formatted = utils.sanitize(filename)
         if "coordinates" in section:
             complementText = " "
         else:
             complementText = ' dataset of '
-        # new page breaker addded here on May 14
-        # l.append(r'\pagebreak')
-        l.append(r'\subsection{'+ f'{section}' + complementText + f'{netCDF_ds}' + r'}')
-        # l.append(r'\par\vspace{0.5cm}') # activated!!
-        l.append(r'\newp') # Deasctived!!
+        latex_lines.append(r'\subsection{'+ f'{section}' + complementText + f'{filename_formatted}' + r'}')
+        latex_lines.append(r'\newp') # Deasctived!!
 
-        fields, ds = cdf_extract.search_and_extract(filename, directory, is_coord)
+        data_array_list, dataset = cdf_extract.search_and_extract(filename, directory, is_coord)
 
-        # l.append(r'\subsubsection{Overview of '+ f'{netCDF_ds}' + r' dataset content}')
-        l.append(r'\subsubsection{Overview}')
+        latex_lines.append(r'\subsubsection{Overview}')
+# BL: HERE'S WHERE THE SMASHING OF INTRO AND COMMENT IS HAPPENING
         if "comment" in item.keys():
             summary_content = item["Introduction"]+' '+utils.sanitize(item["comment"])+" "
         else:
             summary_content = item["Introduction"]+" "
-        l.append(summary_content)
-        # insert table function for each field in ds here !
-        l.extend(cdf_extract.fieldTable(ds, is_coord)) #<== Modified!!! in order to remove the table that contain a list of variable per dataset.
-        l.append(r'\newp') # Deasctived!!
-        for field in fields:
+        latex_lines.append(summary_content)
+        latex_lines.extend(cdf_extract.fieldTable(dataset, is_coord)) #<== Modified!!! in order to remove the table that contain a list of variable per dataset.
+        latex_lines.append(r'\newp') # Deasctived!!
+        for field in data_array_list:
             attrs = cdf_extract.extract_field_info(field)
-            #l.extend(newLines)
 
             # Create latex table for each variable
             fieldName = attrs['Variable Name']
             cleanName = utils.sanitize(fieldName)
-            l.append(r'\pagebreak') # Page break -- added ## <= is this utils? => yes, but I remove it to have continious fluent paging
-            l.append(fr'\subsubsection{{{section} Variable: {cleanName}}}')
+            latex_lines.append(r'\pagebreak') # Page break -- added ## <= is this utils? => yes, but I remove it to have continious fluent paging
+            latex_lines.append(fr'\subsubsection{{{section} Variable: {cleanName}}}')
             dataVarTable = cdf_extract.data_var_table(fieldName, attrs, filename)
-            l.extend(dataVarTable)
+            latex_lines.extend(dataVarTable)
 
             # Create latex plot for each variable
-            dataVarPlot = cdf_plotter.data_var_plot(ds, ds[fieldName], imageDirectory, True, is_coord)
-            l.append(r'\begin{figure}[H]')
-            l.append(r'\centering')
-            l.append(dataVarPlot) #testing right here
-            # l.append(fr"\caption{{\\Dataset: {utils.sanitize(filename)}\\Variable: {utils.sanitize(fieldName)}}}") #Just
-            l.append(fr"\caption{{Dataset: {utils.sanitize(filename)}, Variable: {utils.sanitize(fieldName)}}}") #Just
-            l.append(fr'\label{{tab:table-{filename}_{fieldName}-Plot}}')
-            l.append(r'\end{figure}')
-            l.append(r'\newpage')
-        # if is_coord:
-        #     break
+            dataVarPlot = cdf_plotter.data_var_plot(dataset, dataset[fieldName], imageDirectory, True, is_coord)
+            latex_lines.append(r'\begin{figure}[H]')
+            latex_lines.append(r'\centering')
+            latex_lines.append(dataVarPlot) #testing right here
+            latex_lines.append(fr"\caption{{Dataset: {utils.sanitize(filename)}, Variable: {utils.sanitize(fieldName)}}}") #Just
+            latex_lines.append(fr'\label{{tab:table-{filename}_{fieldName}-Plot}}')
+            latex_lines.append(r'\end{figure}')
+            latex_lines.append(r'\newpage')
 
-    return l
+    return latex_lines
 

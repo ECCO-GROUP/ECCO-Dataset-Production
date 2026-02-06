@@ -153,6 +153,20 @@ Now, it is time to run `download_granules.py`. To do so, go to the folder `docum
 
 If the download process goes well, you are ready to proceed to the next step. 
 
+<h3>2.2.9million Runing "main.py"</h3>
+
+<div align="justify">
+
+Manifest the 5 json groupings files, i.e.:
+
+```txt
+ECCOv4r4_groupings_for_1D_datasets.json
+ECCOv4r4_groupings_for_latlon_datasets.json
+ECCOv4r4_groupings_for_native_datasets.json
+latlon_coords.json
+native_coords.json
+'''
+
 <h3>2.2.3 Runing "main.py"</h3>
 
 <div align="justify">
