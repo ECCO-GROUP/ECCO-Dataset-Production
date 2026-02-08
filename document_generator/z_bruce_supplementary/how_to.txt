@@ -1,41 +1,66 @@
-
-# ------------------------------------ BASH ---------------------------------------
-
-# Hotkey to open iterm
-# (see https://www.reddit.com/r/MacOS/comments/opzma9/keyboard_shortcut_for_launching_system_app_like/)
-# Also see, for troubleshooting (basically, must really find unused shortcut): https://www.reddit.com/r/MacOS/comments/ty2aso/comment/iw7lq4s/
-
-#-------------
-cntrl+shift+m
-#-------------
-
-
-# Compile latex file
-pdflatex <file.tex>   (NOT pdftex <file.tex>)
-
-
-# View image from command line
-qm <file>
-
-# Open new tab in current directory
-cmd + shift + t
-
-# Print man page to file with readable formatting
-man [command_name] | col -bx > filename.txt
-
-# Print correct number of files in a directory
-ls <dir> | wc -l
-
-# also work but wow the above is fine
-#ls -l <dir> | grep -v total | wc -l
-#ls -1 <dir> | wc -l
-#find <dir> -type f | wc -l
-
-
-
-
+# Random notes for accomplishing small tasks in various environments/languages
 
 # ------------------------------------ VIM ---------------------------------------
+
+# pasting: 
+# p (Put after): Pastes character-wise text after the cursor or line-wise text on a new line below.
+# P (Put before): Pastes character-wise text before the cursor or line-wise text on a new line above.
+
+# Yank current word
+yiw
+
+# -> Replace current word with last word yanked
+viwp
+
+# repeat last action with "."
+
+
+# Delete without placing in clipbard: Use the "black hole" register!  it is "_", and, like 
+# all register specification in normal mode, you must start the command with a double quote.
+# ex: delete word under cursor into the black hole register:
+"_diw
+
+# Jump to next occurance of symbol on current line
+f{char}
+# Previous
+F{char}
+# until char before next
+t{char}
+# until char just after previous
+T{char}
+
+# Yank from cursor to symbol, inclusive.  (Then "p" to paste wherever cursor is)
+yf{char}   ex:  yf]   yanks from cursor to ], inclusive
+# Same but exclusive
+yt{char}
+
+# Same as above, but for deleting
+df{char}
+dt{char}      (usually more useful, for example if deleting between quotations)
+
+# Move cursor half page down/up
+ctrl + d    /    ctrl + u
+
+# Move 5 lines down/up
+5 j      /      5 k
+
+# Enter insert mode at position after cursor: a
+# Enter insert mode at end of line: A
+# Enter insert mode at beginning of line: I
+
+# delete current word, leaving whitespace intact: diw
+# delete current word, and any single space after (or before if none after): daw
+# delete from cursor to end of word, including following space: dw
+# delete from cursor to end of word, but not the following space: de
+# substidue "c" in the above 4 commands to enter insert mode aftewards
+
+# create new line above, enter insert mode: O
+# create new line below, enter insert mode: o
+
+# forward one word: w
+# forward one word to end of next word: e
+# back one word: b
+# back one word to end of previous word: ge
 
 # macros/recording
 q a   to start recording in register a,   the q again to stop recording
@@ -47,11 +72,14 @@ To apply macro @a to lines 3-6, use:
 
 :g/pattern/normal! @a executes the macro on all lines containing the specified pattern. 
 
-
+# delete forawards
+d$ (or c$ to enter insert mode) or D (or C), respectively
 
 # delete backwards 
+( I think you can substitude "c" for "d" to delete and enter insert mode)
 d0 from cursor to begining of line, excluding character under cursor
 dv0 from cursor to begining of line, including character under cursor
+x deletes character under
 X deletes character immediately before cursor
 dh deletes characture under corsor and moves ... haven't figured these out
 db deletes backward to beginning of current word, not including character under cursor 
@@ -84,12 +112,57 @@ OPTION + (mouse select) for selection, CMD + v for paste
 
 ###hold OPTION down while selecting, then three finger tap the trackpad (no other middle click available)
 
+# --------------------------------------------------------------------------------
 
 
 
 
+
+
+
+
+
+
+# ------------------------------------ BASH ---------------------------------------
+
+# Hotkey to open iterm
+cntrl+shift+m
+
+# (see https://www.reddit.com/r/MacOS/comments/opzma9/keyboard_shortcut_for_launching_system_app_like/)
+# Also see, for troubleshooting (basically, must really find unused shortcut): https://www.reddit.com/r/MacOS/comments/ty2aso/comment/iw7lq4s/
+
+# copy cat output to macos clipboard:
+cat <file> | pbcopy
+# paste clipboard to stdout or newfile.txt:
+pbpaste
+pbpaste > newfile.txt
+
+
+# Compile latex file
+pdflatex <file.tex>   (NOT pdftex <file.tex>)
+
+
+# View image from command line
+qm <file>
+
+# Open new tab in current directory
+cmd + shift + t
+
+# Print man page to file with readable formatting
+man [command_name] | col -bx > filename.txt
+
+# Print correct number of files in a directory
+ls <dir> | wc -l
+
+# also work but wow the above is fine
+#ls -l <dir> | grep -v total | wc -l
+#ls -1 <dir> | wc -l
+#find <dir> -type f | wc -l
 
 # --------------------------------------------------------------------------------
+
+
+
 
 
 

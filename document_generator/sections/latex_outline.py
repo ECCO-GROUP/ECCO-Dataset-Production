@@ -1,73 +1,98 @@
-#BL: Everything that's hardcoded should be read from a config file (like the hardcoded tex lines, etc)
+# BL:  I am still a bit confused - we are loading in Latex tables, and then... writing to them... so they are templates?
+# i.e. document/latex/data_product/variable_attributes.tex
+# I guess I'm wondering if that will be provided to the user to begin with.  I know that there are other template Tex files
+# which must be provided, but for these ones, which are written to with "w", I'm not sure if that's the intention?
 
-#import cdf_reader
 import argparse
 from pathlib import Path
 import sys
 import os
 
-# BL: I modified these imports, because some of the absolute paths were wrong.  It still feels perhaps risky
-# to hardcode these paths, i.e.:   docgen_dir = str(Path(__file__).parent.parent); sys.path.append(docgen_dir);
+import yaml
+try:
+    from yaml import CLoader as Loader
+except ImportError:
+    from yaml import Loader
 
-docgen_dir = str(Path(__file__).parent.parent)
-sys.path.append(docgen_dir)
+# BL: I modified these imports, because some of the absolute paths were wrong.  It still feels perhaps risky
+# to hardcode these paths, i.e.:   document_generator_dir = str(Path(__file__).parent.parent); sys.path.append(document_generator_dir);
+# This adds the base "document_generator" directory to the Python PATH, so that modules and files(?) with paths relative to it can be used
+# (Maybe this should only be a temporary approach).
+
+document_generator_dir = str(Path(__file__).parent.parent)
+sys.path.append(document_generator_dir)
 
 import readJSON
 import cdf_extract
 import sections.dataset_sections as dataset_sections
 
-def write_data_attributes_tables():
+def write_data_attributes_tables(config_file_static, config_file_user):
+#def write_data_attributes_tables(config_file):
     """
         This function writes the data product tables to the latex document.
     """
-    global_attributes_lines = [
-        r'% Table 8-1 Mandatory global attributes for GDS 2.0 netCDF data files',
-        r'\begin{longtable}{|p{0.276\textwidth}|p{0.092\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}',
-        r'\caption{Mandatory global attributes for GDS 2.0 netCDF data files}',
-        r'\label{tab:global-attributes} \\ ',
-        r'\hline \endhead',
-        r'\hline \endfoot',
-        r'\rowcolor{lightgray} \textbf{Global Attribute Name} & \textbf{Type} & \textbf{Description} & \textbf{Source} \\ \hline',
-    ]
-    global_attributes_dictionary_list = readJSON.obtain_json_data('data/global_attributes.json')
-    global_attributes_lines.extend(readJSON.establish_table(global_attributes_dictionary_list))
-    global_attributes_lines.append(r'\end{longtable}')
-    with open('document/latex/data_product/global_attributes.tex', 'w') as output_file:
-        output_file.write('\n'.join(global_attributes_lines))
 
-    var_attributes_lines = [
-        r'% Table 8-2 Variable attributes for GDS 2.0 netCDF data files',
-        r'\begin{longtable}{|p{0.168\textwidth}|p{0.20\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}',
-        r'\caption{Table 8-2. Variable attributes for GDS 2.0 netCDF data files}',
-        r'\label{tab:variable-attributes} \\ ',
-        r'\hline \endhead',
-        r'\hline \endfoot',
-        r'\rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline',
-    ]
-    variable_attributes_dictionary_list = readJSON.obtain_json_data('data/variable_attributes.json')
-    var_attributes_lines.extend(readJSON.establish_table(variable_attributes_dictionary_list))
-    var_attributes_lines.append(r'\end{longtable}')
-    with open('document/latex/data_product/variable_attributes.tex', 'w') as output_file:
-        output_file.write('\n'.join(var_attributes_lines))
+    with open(config_file_static,'r') as stream:
+        config_dict_static = yaml.safe_load(stream)
+    
+    config_json_list_name = 'ecco_attributes'
+    config_latex_list_name = 'latex_support_data_product'
 
-# DO WE REALLY WANT ALL OF THIS HARDCODING???????
+    config_latex_list_name = 'global_attributes_latex_lines'
+    global_attributes_latex_lines = config_dict_static[config_latex_list_name]
+    
+    found_flag = False
+    search_string = 'global_attributes'
+    for i_config in range(len(config_dict_static[config_json_list_name])):
+        if search_string  in config_dict_static[config_json_list_name][i_config]:
+            global_attributes_dictionary_list = readJSON.obtain_json_data(config_dict_static[config_json_list_name][i_config])
+            global_attributes_latex_lines.extend(readJSON.establish_table(global_attributes_dictionary_list))
+            global_attributes_latex_lines.append(r'\end{longtable}')
+            for j_config in range(len(config_dict_static[config_latex_list_name])):
+                if search_string in config_dict_static[config_latex_list_name][j_config]:
+                    with open(config_dict_static[config_latex_list_name][j_config], 'w') as output_file:
+                        output_file.write('\n'.join(global_attributes_latex_lines))
+                    found_flag = True
+                    break
+            break
 
-    example_native_lines = cdf_extract.latex_example_netcdf('native')
-    with open('document/latex/data_product/example_native_table.tex', 'w') as output_file:
-        output_file.write('\n'.join(example_native_lines))
+    if not found_flag:
+        sys.exit(f"'{search_string}' elements not found in config file {config_file_static}")
 
 
-    example_latlon_lines = cdf_extract.latex_example_netcdf('latlon')
-    with open('document/latex/data_product/example_latlon_table.tex', 'w') as output_file:
-        output_file.write('\n'.join(example_latlon_lines))
+    config_latex_list_name = 'variable_attributes_latex_lines'
+    variable_attributes_latex_lines = config_dict_static[config_latex_list_name]
 
-    example_1D_lines = cdf_extract.latex_example_netcdf('1D')
-    with open('document/latex/data_product/example_oneD_table.tex', 'w') as output_file:
-        output_file.write('\n'.join(example_1D_lines))
+    found_flag = False
+    search_string = 'variable_attributes'
+    for i_config in range(len(config_dict_static[config_json_list_name])):
+        if search_string  in config_dict_static[config_json_list_name][i_config]:
+            variable_attributes_dictionary_list = readJSON.obtain_json_data(config_dict_static[config_json_list_name][i_config])
+            variable_attributes_latex_lines.extend(readJSON.establish_table(variable_attributes_dictionary_list))
+            variable_attributes_latex_lines.append(r'\end{longtable}')
+            for j_config in range(len(config_dict_static[config_latex_list_name])):
+                if search_string in config_dict_static[config_latex_list_name][j_config]:
+                    with open(config_dict_static[config_latex_list_name][j_config], 'w') as output_file:
+                        output_file.write('\n'.join(variable_attributes_latex_lines))
+                    found_flag = True
+                    break
+            break
+
+    if not found_flag:
+        sys.exit(f"'{search_string}' elements not found in config file {config_file_static}")
 
 
 
-
+    with open(config_file_user,'r') as stream:
+        config_dict_user = yaml.safe_load(stream)
+    
+    config_list_name = 'variable_type_list'
+    for data_type in config_dict_user[config_list_name]:
+        example_latex_lines = cdf_extract.latex_example_netcdf(data_type)
+        for i_config in range(len(config_dict_user[config_latex_list_name])):
+            if f"example_{data_type}_table" in config_dict_user[config_latex_list_name][i_config]:
+                with open(config_dict_user[config_latex_list_name][i_config], 'w') as output_file:
+                    output_file.write('\n'.join(example_latex_lines))
 
 
 
