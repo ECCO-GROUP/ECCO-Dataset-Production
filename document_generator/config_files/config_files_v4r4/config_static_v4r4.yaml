@@ -1,11 +1,24 @@
 # This is the static configuration file, which should be provided with each ECCO release version
 
+image_directories:
+  - images/plots/v4r4/native_plots_coords
+  - images/plots/v4r4/native_plots
+  - images/v4r4/plots/latlon_plots_coords
+  - images/plots/v4r4/latlon_plots
+  - images/plots/v4r4/oneD_plots
+dataset_directories:
+  - granule_datasets/v4r4/natives_coords
+  - granule_datasets/v4r4/natives
+  - granule_datasets/v4r4/latlon_coords
+  - granule_datasets/v4r4/latlon
+  - granule_datasets/v4r4/oneD
 ecco_groupings:
   - granule_datasets/v4r4/ECCOv4r4_groupings_for_1D_datasets.json
   - granule_datasets/v4r4/ECCOv4r4_groupings_for_latlon_datasets.json
   - granule_datasets/v4r4/ECCOv4r4_groupings_for_native_datasets.json
   - granule_datasets/v4r4/latlon_coords.json
   - granule_datasets/v4r4/native_coords.json
+  #- granule_datasets/v4r4/native_coords.json
 ecco_attributes:
   - data/CoordsDimsVarsAttrs_GDS20r5.json
   - data/ECCO_global_Attrs_name.json

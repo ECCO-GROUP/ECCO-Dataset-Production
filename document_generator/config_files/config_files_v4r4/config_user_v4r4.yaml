@@ -2,9 +2,9 @@
 # Here, the user should specify which ECCO variables they'd like described in their compendium
 # by providing:
 #
-#   - "variable_type_list" (which should have a maximum of three elements from the options "native", "latlon", and "1d")
+#   - "variable_type_list" (which should have a maximum of three elements from the options "native", "latlon", and "oneD")
 #     (note that quotations need not be used)
-#   - "*_granules_url_list" (where * is replaced by a variable type, i.e. native, latlon, or 1D) (so a maximum of three
+#   - "*_granules_url_list" (where * is replaced by a variable type, i.e. native, latlon, or oneD) (so a maximum of three
 #     such collections); these lists list all of the urls for ECCO output files to be described in the compendium.
 #     (only one granule file is needed per granule, i.e. a single timestep)
 #   - "*_example_nc" (where * is replaced by a variable type); these specifry a single netcdf filename (just the filename,
@@ -25,7 +25,7 @@
 variable_type_list:
   - native
   - latlon
-  - 1D
+  - oneD
 # -----------------------------------------------------------------------------------------------------------------
 
 
@@ -34,7 +34,7 @@ variable_type_list:
 # -----------------------------------------------------------------------------------------------------------------
 # GRANULE URL LISTS:
 # Individual ECCO data files are called "granules", hence the "*_granules_url_list" yaml lists specified below (where * is the ECCO variable type,
-# i.e. native, latlon, or 1D).
+# i.e. native, latlon, or oneD).
 #
 # -----------------------------------------------------------------------------------------------------------------
 native_granules_url_list:
@@ -75,10 +75,10 @@ latlon_granules_url_list:
   - https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_VEL_05DEG_DAILY_V4R4/OCEAN_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
   - https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_BOLUS_05DEG_DAILY_V4R4/OCEAN_BOLUS_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
 
-1D_granules_url_list:
-  - https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_GMAP_TIME_SERIES_SNAPSHOT_V4R4/GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r4_1D.nc
-  - https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_GMSL_TIME_SERIES_DAILY_V4R4/GLOBAL_MEAN_SEA_LEVEL_day_mean_ECCO_V4r4_1D.nc
-  - https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SBO_CORE_TIME_SERIES_SNAPSHOT_V4R4/SBO_CORE_PRODUCTS_snap_ECCO_V4r4_1D.nc
+oneD_granules_url_list:
+  - https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_GMAP_TIME_SERIES_SNAPSHOT_V4R4/GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r4_oneD.nc
+  - https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_GMSL_TIME_SERIES_DAILY_V4R4/GLOBAL_MEAN_SEA_LEVEL_day_mean_ECCO_V4r4_oneD.nc
+  - https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SBO_CORE_TIME_SERIES_SNAPSHOT_V4R4/SBO_CORE_PRODUCTS_snap_ECCO_V4r4_oneD.nc
 # -----------------------------------------------------------------------------------------------------------------
 
 
@@ -89,12 +89,12 @@ latlon_granules_url_list:
 # (SELECT A SINGLE "*.nc" FILE FROM EACH OF THE ABOVE LISTS, WITHOUT THE PATH)
 #
 # EXAMPLE FILENAMES:
-# Create/modify a single yaml element for each ECCO variable type, i.e. "*_example_nc", where "*" is replaced by the variable type (native/latlon/1D), and specify
+# Create/modify a single yaml element for each ECCO variable type, i.e. "*_example_nc", where "*" is replaced by the variable type (native/latlon/oneD), and specify
 # an example filename (without the full path, just the filename) from the appropriate granules list above to be used for the data description tables 
 # which will be printed in the compendium before 
 #
 # -----------------------------------------------------------------------------------------------------------------
 native_example_nc: OCEAN_3D_MIXING_COEFFS_ECCO_V4r4_native_llc0090.nc
 latlon_example_nc: OCEAN_MIXED_LAYER_DEPTH_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
-1D_example_nc: GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r4_1D.nc
+oneD_example_nc: GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r4_oneD.nc
 # -----------------------------------------------------------------------------------------------------------------
