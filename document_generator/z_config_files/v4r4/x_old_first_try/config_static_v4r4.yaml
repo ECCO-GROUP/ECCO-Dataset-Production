@@ -1,0 +1,84 @@
+# This is the static configuration file, which should be provided with each ECCO release version
+
+image_directories:
+  - images/plots/v4r4/native_plots_coords
+  - images/plots/v4r4/native_plots
+  - images/v4r4/plots/latlon_plots_coords
+  - images/plots/v4r4/latlon_plots
+  - images/plots/v4r4/oneD_plots
+dataset_directories:
+  - granule_datasets/v4r4/natives_coords
+  - granule_datasets/v4r4/natives
+  - granule_datasets/v4r4/latlon_coords
+  - granule_datasets/v4r4/latlon
+  - granule_datasets/v4r4/oneD
+ecco_groupings:
+  - granule_datasets/v4r4/ECCOv4r4_groupings_for_1D_datasets.json
+  - granule_datasets/v4r4/ECCOv4r4_groupings_for_latlon_datasets.json
+  - granule_datasets/v4r4/ECCOv4r4_groupings_for_native_datasets.json
+  - granule_datasets/v4r4/latlon_coords.json
+  - granule_datasets/v4r4/native_coords.json
+  #- granule_datasets/v4r4/native_coords.json
+ecco_attributes:
+  - data/CoordsDimsVarsAttrs_GDS20r5.json
+  - data/ECCO_global_Attrs_name.json
+  - data/global_attributes.json
+  - data/global_attrs_GDS20r5.json
+  - data/variable_attributes.json
+latex_support_general:
+  - document/latex/acry_abbrev_list.tex
+  - document/latex/app_ref_docs.tex
+  - document/latex/closing_statement.tex
+  - document/latex/doc_changes.tex
+  - document/latex/doc_management_policies.tex
+  - document/latex/doc_records.tex
+  - document/latex/document_conventions.tex
+  - document/latex/ECCO_overview.tex
+  - document/latex/ECCO_team.tex
+  - document/latex/executive_summary.tex
+  - document/latex/filenames_conventions.tex
+  - document/latex/front_pages.tex
+  - document/latex/LOF.tex
+  - document/latex/metadata_specification.tex
+  - document/latex/preamble.tex
+  - document/latex/scope_content_doc.tex
+  - document/latex/TOC.tex
+latex_support_data_product:
+  - document/latex/data_product/Coordinates_Dimensions_Variables_Attribute_tablev1.tex
+  - document/latex/data_product/Coordinates_table.tex
+  - document/latex/data_product/data_product_file_struct.tex
+  - document/latex/data_product/data_product_file_structure_Attrs.tex
+  - document/latex/data_product/Dimensions_table.tex
+  - document/latex/data_product/example_latlon_table.tex
+  - document/latex/data_product/example_native_table.tex
+  - document/latex/data_product/example_oneD_table.tex
+  - document/latex/data_product/global_attributes.tex
+  - document/latex/data_product/GlobalAttribute_tableV1.tex
+  - document/latex/data_product/variable_attributes.tex
+latex_support_dataset:
+  - document/latex/dataset/latlon_coords_dataset_tables.tex
+  - document/latex/dataset/latlon_coords_dataset.tex
+  - document/latex/dataset/latlon_dataset_tables.tex
+  - document/latex/dataset/latlon_dataset.tex
+  - document/latex/dataset/native_coords_dataset_tables.tex
+  - document/latex/dataset/native_coords_dataset.tex
+  - document/latex/dataset/native_dataset_tables.tex
+  - document/latex/dataset/native_dataset.tex
+  - document/latex/dataset/oneD_dataset_tables.tex
+  - document/latex/dataset/oneD_dataset.tex
+global_attributes_latex_lines:
+  - r'% Table 8-1 Mandatory global attributes for GDS 2.0 netCDF data files'
+  - r'\begin{longtable}{|p{0.276\textwidth}|p{0.092\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}'
+  - r'\caption{Mandatory global attributes for GDS 2.0 netCDF data files}'
+  - r'\label{tab:global-attributes} \\ '
+  - r'\hline \endhead'
+  - r'\hline \endfoot'
+  - r'\rowcolor{lightgray} \textbf{Global Attribute Name} & \textbf{Type} & \textbf{Description} & \textbf{Source} \\ \hline'
+variable_attributes_latex_lines:
+  - r'% Table 8-2 Variable attributes for GDS 2.0 netCDF data files',
+  - r'\begin{longtable}{|p{0.168\textwidth}|p{0.20\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}',
+  - r'\caption{Table 8-2. Variable attributes for GDS 2.0 netCDF data files}',
+  - r'\label{tab:variable-attributes} \\ ',
+  - r'\hline \endhead',
+  - r'\hline \endfoot',
+  - r'\rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline',

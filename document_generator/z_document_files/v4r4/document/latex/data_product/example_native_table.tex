@@ -1,0 +1,183 @@
+\begin{longtable}{|p{\textwidth}|}
+\caption{Example CDL description of native dataset}
+\label{tab:cdl-native} \\
+\hline \endhead
+\hline \endfoot
+netcdf native example\\
+dimensions\\
+\hline
+\rowcolor{YellowGreen}  tile = 13\\
+\rowcolor{YellowGreen}  j = 90\\
+\rowcolor{YellowGreen}  i = 90\\
+\rowcolor{YellowGreen}  j\_g = 90\\
+\rowcolor{YellowGreen}  i\_g = 90\\
+\rowcolor{YellowGreen}  k = 50\\
+\rowcolor{YellowGreen}  k\_p1 = 51\\
+\rowcolor{YellowGreen}  k\_u = 50\\
+\rowcolor{YellowGreen}  k\_l = 50\\
+\rowcolor{YellowGreen}  nb = 4\\
+\rowcolor{YellowGreen}  nv = 2\\
+\hline
+
+coordinates\\
+\hline
+\rowcolor{Apricot}\hspace{0.5cm}int32 i (i)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:axis = "X"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:long\_name = "grid index in x for variables at tracer and 'v' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:swap\_dim = "XC"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'v' variables (e.g., VVEL) have the same x coordinate on the model grid."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 i\_g (i\_g)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:axis = "X"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:long\_name = "grid index in x for variables at 'u' and 'g' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:swap\_dim = "XG"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:comment = "In the Arakawa C-grid system, 'u' (e.g., UVEL) and 'g' variables (e.g., XG) have the same x coordinate on the model grid."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 j (j)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:axis = "Y"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:long\_name = "grid index in y for variables at tracer and 'u' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:swap\_dim = "YC"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'u' variables (e.g., UVEL) have the same y coordinate on the model grid."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 j\_g (j\_g)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:axis = "Y"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:long\_name = "grid index in y for variables at 'v' and 'g' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:swap\_dim = "YG"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:comment = "In the Arakawa C-grid system, 'v' (e.g., VVEL) and 'g' variables (e.g., XG) have the same y coordinate."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 k (k)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k:axis = "Z"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k:long\_name = "grid index in z for tracer variables"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k:swap\_dim = "Z"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 k\_u (k\_u)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:axis = "Z"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:long\_name = "grid index in z corresponding to the bottom face of tracer grid cells ('w' locations)"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:c\_grid\_axis\_shift = "0.5"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:swap\_dim = "Zu"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:comment = "First index corresponds to the bottom face of the uppermost tracer grid cell. The use of 'u' in the variable name follows the MITgcm convention for naming the bottom face of ocean tracer grid cells."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_u:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 k\_l (k\_l)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:axis = "Z"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:long\_name = "grid index in z corresponding to the top face of tracer grid cells ('w' locations)"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:swap\_dim = "Zl"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:comment = "First index corresponds to the top face of the uppermost tracer grid cell. The use of 'l' in the variable name follows the MITgcm convention for naming the top face of ocean tracer grid cells."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_l:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 k\_p1 (k\_p1)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_p1:axis = "Z"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_p1:long\_name = "grid index in z for variables at 'w' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_p1:c\_grid\_axis\_shift = "[-0.5  0.5]"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_p1:swap\_dim = "Zp1"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_p1:comment = "Includes top of uppermost model tracer cell (k\_p1=0) and bottom of lowermost tracer cell (k\_p1=51)."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}k\_p1:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 tile (tile)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:long\_name = "lat-lon-cap tile index"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:comment = "The ECCO V4 horizontal model grid is divided into 13 tiles of 90x90 cells for convenience."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 XC (tile, j, i)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:long\_name = "longitude of tracer grid cell center"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:units = "degrees\_east"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:coordinate = "YC XC"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:bounds = "XC\_bnds"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:comment = "nonuniform grid spacing"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:standard\_name = "longitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 YC (tile, j, i)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:long\_name = "latitude of tracer grid cell center"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:units = "degrees\_north"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:coordinate = "YC XC"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:bounds = "YC\_bnds"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:comment = "nonuniform grid spacing"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:standard\_name = "latitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 XG (tile, j\_g, i\_g)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:long\_name = "longitude of 'southwest' corner of tracer grid cell"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:units = "degrees\_east"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:coordinate = "YG XG"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:comment = "Nonuniform grid spacing. Note: 'southwest' does not correspond to geographic orientation but is used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:standard\_name = "longitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 YG (tile, j\_g, i\_g)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:long\_name = "latitude of 'southwest' corner of tracer grid cell"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:units = "degrees\_north"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:comment = "Nonuniform grid spacing. Note: 'southwest' does not correspond to geographic orientation but is used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:standard\_name = "latitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coordinates = "YG XG"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 Z (k)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z:long\_name = "depth of tracer grid cell center"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z:units = "m"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z:positive = "up"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z:bounds = "Z\_bnds"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z:comment = "Non-uniform vertical spacing."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z:standard\_name = "depth"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 Zp1 (k\_p1)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:long\_name = "depth of top/bottom face of tracer grid cell"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:units = "m"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:positive = "up"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:comment = "Contains one element more than the number of vertical layers. First element is 0m, the depth of the top face of the uppermost grid cell. Last element is the depth of the bottom face of the deepest grid cell."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zp1:standard\_name = "depth"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 Zu (k\_u)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:long\_name = "depth of bottom face of tracer grid cell"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:units = "m"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:positive = "up"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:comment = "First element is -10m, the depth of the bottom face of the uppermost tracer grid cell. Last element is the depth of the bottom face of the deepest grid cell. The use of 'u' in the variable name follows the MITgcm convention for naming the bottom face of ocean tracer grid cells."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zu:standard\_name = "depth"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 Zl (k\_l)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:long\_name = "depth of top face of tracer grid cell"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:units = "m"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:positive = "up"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:comment = "First element is 0m, the depth of the top face of the uppermost tracer grid cell (i.e., the ocean surface). Last element is the depth of the top face of the deepest grid cell. The use of 'l' in the variable name follows the MITgcm convention for naming the top face of ocean tracer grid cells."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Zl:standard\_name = "depth"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 XC\_bnds (tile, j, i, nb)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:comment = "Bounds array follows CF conventions. XC\_bnds[i,j,0] = 'southwest' corner (j-1, i-1), XC\_bnds[i,j,1] = 'southeast' corner (j-1, i+1), XC\_bnds[i,j,2] = 'northeast' corner (j+1, i+1), XC\_bnds[i,j,3]  = 'northwest' corner (j+1, i-1). Note: 'southwest', 'southeast', northwest', and 'northeast' do not correspond to geographic orientation but are used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:long\_name = "longitudes of tracer grid cell corners"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 YC\_bnds (tile, j, i, nb)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:comment = "Bounds array follows CF conventions. YC\_bnds[i,j,0] = 'southwest' corner (j-1, i-1), YC\_bnds[i,j,1] = 'southeast' corner (j-1, i+1), YC\_bnds[i,j,2] = 'northeast' corner (j+1, i+1), YC\_bnds[i,j,3]  = 'northwest' corner (j+1, i-1). Note: 'southwest', 'southeast', northwest', and 'northeast' do not correspond to geographic orientation but are used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:long\_name = "latitudes of tracer grid cell corners"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 Z\_bnds (k, nv)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z\_bnds:comment = "One pair of depths for each vertical level."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z\_bnds:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}Z\_bnds:long\_name = "depths of top and bottom faces of tracer grid cell"\\
+\hline
+
+data variables\\
+\hline
+\hspace{0.5cm}float32 DIFFKR (k, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:long\_name = "Vertical diffusivity"\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:units = "m2 s-1"\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:comment = "Background vertical diffusion coefficient for temperature and salinity. Total vertical diffusivity includes background diffusivity plus contributions from the GGL90 vertical mixing and the Gent-McWilliams/Redi parameterizations. Note: DIFFKR is a model control variable and has been optimized from a spatially-invariant first-guess value of 1e-5 m2 s-1."\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:valid\_min = "9.999999974752427e-07"\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:valid\_max = "0.00018549950618762523"\\
+\hspace{0.5cm}\hspace{0.5cm}DIFFKR:coordinates = "Z XC YC"\\
+\hspace{0.5cm}float32 KAPGM (k, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:long\_name = "Gent-McWilliams diffusivity"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:units = "m2 s-1"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:comment = "Gent-McWilliams diffusivity coefficient as described in Gent and McWilliams (1990, JPO). Note: KAPGM is a model control variable and has been optimized from a spatially invariant first guess of 1e3 m2 s-1."\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:valid\_min = "100.0"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:valid\_max = "10000.0"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPGM:coordinates = "Z XC YC"\\
+\hspace{0.5cm}float32 KAPREDI (k, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:long\_name = "Along-isopycnal diffusivity"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:units = "m2 s-1"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:comment = "Redi along-isopycnal diffusivity coefficient as described in Redi (1982, JPO). Note: KAPREDI is a model control variable and has been optimized from a spatially invariant first guess of 1e3 m2 s-1."\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:valid\_min = "100.0"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:valid\_max = "10000.0"\\
+\hspace{0.5cm}\hspace{0.5cm}KAPREDI:coordinates = "Z XC YC"\\
+\hline
+\end{longtable}

@@ -1,0 +1,37 @@
+\begin{longtable}{|p{0.1\textwidth}|p{0.15\textwidth}|m{0.65\textwidth}|}
+\caption{Dimensions used in used in ECCO V4r4 data netCDF files}
+\label{tab:variable-attributes} \\ 
+\hline \endhead
+\hline \endfoot
+\rowcolor{blue!25} \textbf{Name} & \textbf{Length} & \textbf{Description} \\ \hline
+\rowcolor{magenta!25}
+i & 90 & grid index in x for variables at tracer and 'v' locations \\ \hline
+\rowcolor{magenta!25}
+i\_g & 90 & grid index in x for variables at 'u' and 'g' locations \\ \hline
+\rowcolor{magenta!25}
+j & 90 & grid index in y for variables at tracer and 'u' locations \\ \hline
+\rowcolor{magenta!25}
+j\_g & 90 & grid index in y for variables at 'v' and 'g' locations \\ \hline
+\rowcolor{magenta!25}
+k & 50 & grid index in z for tracer variables \\ \hline
+\rowcolor{magenta!25}
+k\_u & 50 & grid index in z corresponding to the bottom face of tracer grid cells ('w' locations) \\ \hline
+\rowcolor{magenta!25}
+k\_l & 50 & grid index in z corresponding to the top face of tracer grid cells ('w' locations) \\ \hline
+\rowcolor{magenta!25}
+k\_p1 & 51 & grid index in z for variables at 'w' locations \\ \hline
+\rowcolor{magenta!25}
+tile & 13 & lat-lon-cap tile index \\ \hline
+\rowcolor{magenta!25}
+nb & 4 & It is a kind of dummy dimension of length 4 and is used by XC\_bnds and YC\_bnds to store coordinates for the 4 corners of each tracer grid cell. \\ \hline
+\rowcolor{magenta!25}
+nv & 2 & It is a kind of dummy dimension of length 2 for the coordiante time\_bnds which has both a starting and ending time for each one averaging period. \\ \hline
+\rowcolor{magenta!25}
+time & Depend on the data frequence: SANP, AVG\_DAY or AVG\_MON & indicates the center time of the averaging period \\ \hline
+\rowcolor{magenta!25}
+latitude & 360 & latitude at grid cell center \\ \hline
+\rowcolor{magenta!25}
+longitude & 720 & longitude at grid cell center \\ \hline
+\rowcolor{magenta!25}
+Z & 50 & depth of grid cell center \\ \hline
+\end{longtable}

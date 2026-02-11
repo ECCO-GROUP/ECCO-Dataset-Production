@@ -1,7 +1,7 @@
 # MUST FIX LACK OF READABLE INDENTATION IN THE EXAMPLE TABLES (cdf_extract.py)
 
 import os
-import sections.latex_outline as outline
+import z_utility_scripts.sections.latex_outline as outline
 
 def main():
 
@@ -10,11 +10,14 @@ def main():
 
     version_string = "v4r4"
 
-    config_file_static = os.path.join(document_generator_dir, "config_files", f"config_files_{version_string}", f"config_static_{version_string}.yaml")
-    config_file_user = os.path.join(document_generator_dir, "config_files", f"config_files_{version_string}", f"config_user_{version_string}.yaml")
+    #config_file_static = os.path.join(document_generator_dir, "config_files", f"config_files_{version_string}", f"config_static_{version_string}.yaml")
+    #config_file_user = os.path.join(document_generator_dir, "config_files", f"config_files_{version_string}", f"config_user_{version_string}.yaml")
 
     outline.write_data_attributes_tables(config_file_static, config_file_user)
     outline.write_datasets(config_file_static, config_file_user)
+    
+    outline.write_data_attributes_tables(version_string)
+    outline.write_datasets(version_string)
 
     #outline.write_datasets('native')
     #outline.write_datasets('latlon')
