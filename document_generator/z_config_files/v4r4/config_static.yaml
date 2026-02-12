@@ -5,70 +5,69 @@ possible_grid_types:
   - native
   - 1D
 
+
 global_attributes_json_file: z_document_files/v4r4/input_files_json/attribute_files/global_attributes.json
-global_attribues_tex_file: z_document_files/v4r4/document/latex/data_product/global_attributes.tex
-
+global_attributes_tex_file: z_document_files/v4r4/document/user_generated/global_attributes.tex
+#
 variable_attributes_json_file: z_document_files/v4r4/input_files_json/attribute_files/variable_attributes.json
-variable_attribues_tex_file: z_document_files/v4r4/document/latex/data_product/variable_attributes.tex
+variable_attributes_tex_file: z_document_files/v4r4/document/user_generated/variable_attributes.tex
 
-example_latlon_table_tex_file: document/latex/data_product/example_latlon_table.tex
-example_native_table_tex_file: document/latex/data_product/example_native_table.tex
-example_1D_table_tex_file: document/latex/data_product/example_1D_table.tex
+example_latlon_table_tex_file: z_document_files/v4r4/document/user_generated/example_latlon_table.tex
+example_native_table_tex_file: z_document_files/v4r4/document/user_generated/example_native_table.tex
+example_1D_table_tex_file: z_document_files/v4r4/document/user_generated/example_1D_table.tex
 
 
 
 groupings_coordinates_native_json_file: z_document_files/v4r4/input_files_json/wecandobetter/native_coords.json
 groupings_coordinates_latlon_json_file: z_document_files/v4r4/input_files_json/wecandobetter/latlon_coords.json
-
-coordinate_files_native_dir: z_document_files/v4r4/granule_datasets/coordinate_files/coordinate_files_native
-coordinate_files_latlon_dir: z_document_files/v4r4/granule_datasets/coordinate_files/coordinate_files_latlon
-
-figures_coordinates_native_dir: z_document_files/v4r4/figures/figures_coordinates_native 
-figures_coordinates_latlon_dir: z_document_files/v4r4/figures/figures_coordinates_latlon 
-
-# FIX FIX FIX
-# FIX FIX FIX
-# FIX FIX FIX
-# FIX FIX FIX
-# FIX FIX FIX
-coordinate_table_native_tex_file: document/latex/dataset/native_coords_dataset_tables.tex
-coordinate_table_latlon_tex_file: document/latex/dataset/latlon_coords_dataset_tables.tex
-# FIX FIX FIX
-# FIX FIX FIX
-# FIX FIX FIX
-# FIX FIX FIX
-# FIX FIX FIX
-
-
+#
 groupings_variables_native_json_file: z_document_files/v4r4/input_files_json/groupings/ECCOv4r4_groupings_for_native_datasets.json
 groupings_variables_latlon_json_file: z_document_files/v4r4/input_files_json/groupings/ECCOv4r4_groupings_for_latlon_datasets.json
 groupings_variables_1D_json_file: z_document_files/v4r4/input_files_json/groupings/ECCOv4r4_groupings_for_1D_datasets.json
 
+
+coordinate_files_native_dir: z_document_files/v4r4/granule_datasets/coordinate_files/coordinate_files_native
+coordinate_files_latlon_dir: z_document_files/v4r4/granule_datasets/coordinate_files/coordinate_files_latlon
+#
 variable_files_native_dir: z_document_files/v4r4/granule_datasets/granule_files/granules_native
 variable_files_latlon_dir: z_document_files/v4r4/granule_datasets/granule_files/granules_latlon
 variable_files_1D_dir: z_document_files/v4r4/granule_datasets/granule_files/granules_1D
 
+
+figures_coordinates_native_dir: z_document_files/v4r4/figures/figures_coordinates_native 
+figures_coordinates_latlon_dir: z_document_files/v4r4/figures/figures_coordinates_latlon 
+#
 figures_variables_native_dir: z_document_files/v4r4/figures/figures_granules_native 
 figures_variables_latlon_dir: z_document_files/v4r4/figures/figures_granules_latlon 
 figures_variables_1D_dir: z_document_files/v4r4/figures/figures_granules_1D 
 
 
-
-# FIX FIX FIX
-# FIX FIX FIX
-# FIX FIX FIX
-# FIX FIX FIX
-# FIX FIX FIX
-dataset_tables_native_tex_file: document/latex/dataset/native_coords_tables.tex
-dataset_tables_latlon_tex_file: document/latex/dataset/latlon_coords_tables.tex
-dataset_tables_1D_tex_file: document/latex/dataset/1D_coords_tables.tex
-# FIX FIX FIX
-# FIX FIX FIX
-# FIX FIX FIX
-# FIX FIX FIX
-# FIX FIX FIX
+coordinate_table_native_tex_file: z_document_files/v4r4/document/user_generated/native_coords_dataset_table.tex
+coordinate_table_latlon_tex_file: z_document_files/v4r4/document/user_generated/latlon_coords_dataset_table.tex
+#
+dataset_tables_native_tex_file: z_document_files/v4r4/document/user_generated/native_coords_tables.tex
+dataset_tables_latlon_tex_file: z_document_files/v4r4/document/user_generated/latlon_coords_tables.tex
+dataset_tables_1D_tex_file: z_document_files/v4r4/document/user_generated/1D_coords_tables.tex
 
 
+
+global_attributes_latex_lines:
+  - r'% Table 8-1 Mandatory global attributes for GDS 2.0 netCDF data files'
+  - r'\begin{longtable}{|p{0.276\textwidth}|p{0.092\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}'
+  - r'\caption{Mandatory global attributes for GDS 2.0 netCDF data files}'
+  - r'\label{tab:global-attributes} \\ '
+  - r'\hline \endhead'
+  - r'\hline \endfoot'
+  - r'\rowcolor{lightgray} \textbf{Global Attribute Name} & \textbf{Type} & \textbf{Description} & \textbf{Source} \\ \hline'
+#
+variable_attributes_latex_lines:
+  - r'% Table 8-2 Variable attributes for GDS 2.0 netCDF data files',
+  - r'\begin{longtable}{|p{0.168\textwidth}|p{0.20\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}',
+  - r'\caption{Table 8-2. Variable attributes for GDS 2.0 netCDF data files}',
+  - r'\label{tab:variable-attributes} \\ ',
+  - r'\hline \endhead',
+  - r'\hline \endfoot',
+  - r'\rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline',
 
 
 
@@ -139,19 +138,3 @@ latex_support_dataset:
   - document/latex/dataset/native_dataset.tex
   - document/latex/dataset/oneD_dataset_tables.tex
   - document/latex/dataset/oneD_dataset.tex
-global_attributes_latex_lines:
-  - r'% Table 8-1 Mandatory global attributes for GDS 2.0 netCDF data files'
-  - r'\begin{longtable}{|p{0.276\textwidth}|p{0.092\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}'
-  - r'\caption{Mandatory global attributes for GDS 2.0 netCDF data files}'
-  - r'\label{tab:global-attributes} \\ '
-  - r'\hline \endhead'
-  - r'\hline \endfoot'
-  - r'\rowcolor{lightgray} \textbf{Global Attribute Name} & \textbf{Type} & \textbf{Description} & \textbf{Source} \\ \hline'
-variable_attributes_latex_lines:
-  - r'% Table 8-2 Variable attributes for GDS 2.0 netCDF data files',
-  - r'\begin{longtable}{|p{0.168\textwidth}|p{0.20\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}',
-  - r'\caption{Table 8-2. Variable attributes for GDS 2.0 netCDF data files}',
-  - r'\label{tab:variable-attributes} \\ ',
-  - r'\hline \endhead',
-  - r'\hline \endfoot',
-  - r'\rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline',

@@ -2,6 +2,14 @@
 
 # ------------------------------------ VIM ---------------------------------------
 
+ma  # sets a local mark named "a" at the current cursor position (line and column) within the current file.
+mA  # sets a global mark named "A" that can be jumped to from any file. 
+'a  # (apostrophe + letter) jumps to the beginning of the line where mark "a" was set.
+`a  # (backtick + letter) jumps to the exact line and column where mark "a" was set.
+'A  # or `A will jump to the specified global mark, even opening the correct file if you are in a different buffer. 
+
+
+
 # Replace all instances of "static" with "user" on the current and next 2 lines
 :,+2s/static/user/g
 

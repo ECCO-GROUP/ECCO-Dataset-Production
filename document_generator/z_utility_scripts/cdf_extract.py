@@ -1,9 +1,20 @@
 import os
-import xarray as xr
-import subprocess
-import utils
 import numpy as np
+import xarray as xr
 import json
+import subprocess
+from pathlib import Path
+import sys
+
+project_base_dir = str(Path(__file__).parent.parent)
+sys.path.append(project_base_dir)
+
+import z_utility_scripts.utils_docgen as utils
+import z_utility_scripts.cdf_plotter_ojh as cdf_plotter
+#import z_utility_scripts.cdf_plotter as cdf_plotter # This line wasn't here, I'm just wondering if _ojh is indeed the one to use
+
+
+
 ## ----------------------------------------------------------------------------
 ## ---------------------- Extracting CDL For Examples -------------------------
 ## ----------------------------------------------------------------------------
@@ -91,18 +102,13 @@ def format_example_netCDF_table(latex_lines_unformatted:list[str], name : str = 
 
 
 
-def latex_example_netcdf(fileType)->list[str]:
-    data_version_to_get, _ ,_ = get_dataset_version()
-    if fileType == 'native':
-        file = 'granule_datasets/'+data_version_to_get+'/natives/OCEAN_3D_MIXING_COEFFS_ECCO_V4r4_native_llc0090.nc'#OCEAN_3D_SALINITY_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc'
-    elif fileType == 'latlon':
-        file = 'granule_datasets/'+data_version_to_get+'/latlon/OCEAN_MIXED_LAYER_DEPTH_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc'#OCEAN_AND_ICE_SURFACE_HEAT_FLUX_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc'
-    else:
-        file = 'granule_datasets/'+data_version_to_get+'/oneD/GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r4_1D.nc'
+def latex_example_netcdf(grid_type, nc_dir)->list[str]:
+
+    file = utils.get_a_file_with_max_num_vars(nc_dir)    
 
     dataset = xr.open_dataset(file, decode_times=False, decode_cf=False, decode_coords=False, decode_timedelta=False)
     latex_lines_list = []
-    latex_lines_list.append(f'netcdf {fileType} example')
+    latex_lines_list.append(f'netcdf {grid_type} example')
     latex_lines_list.append('dimensions')
     for dimension_name in dataset.sizes:
         latex_lines_list.append(f'  {dimension_name} = {len(dataset[dimension_name])}')
@@ -144,7 +150,7 @@ def latex_example_netcdf(fileType)->list[str]:
 
     # Now that we have the list of tex lines for the table, we pass it to format_example_netCDF_table()
     # to add color commands etc to the beginnings of appropriate lines
-    return format_example_netCDF_table(latex_lines_list, fileType)
+    return format_example_netCDF_table(latex_lines_list, grid_type)
 
 
 
@@ -525,14 +531,80 @@ def get_Global_or_CoordsDimsVarsList(netCDFpath:str,jsonFileName:str,saveTo:str)
     with open(os.path.join(saveTo,jsonFileName), 'w') as output_file:
         output_file.write(str(json.dumps(GlobalAttrsCollect)))
 
-def get_dataset_version(d_source = "granule_datasets/data_version.json"):
+
+
+def data_products(version_string, filePath:str, directory:str, imageDirectory:str, section:str='native')->list:
     """
-    This function alow loading the dataset versio and release info!
+
+    Generates a list of LaTeX lines for the Data Products section of the report.
+    Parameters:
+        filePath (str): The path to the JSON file containing the data products.
+        directory (str): The directory in which to search for the NetCDF files.
+        imageDirectory (str): The directory in which to search for the images.
+        section (str): The section of the report to generate.
+            accepted values: "Native", "Latlon", "1D" , default="natives"
+    Returns:
+        list: A list of LaTeX lines for the Data Products section of the report.
+
     """
-    with open(d_source, 'r') as file:
-        data_version_to_get = json.load(file)
-        d_vers_rel = data_version_to_get["dataset_version"]
-        d_vers     = data_version_to_get["version"]
-        d_rel      = data_version_to_get["release"]
-    # print(data_version_to_get["dataset_version"])
-    return d_vers_rel, d_vers, d_rel
+    is_coord = False
+    if 'Coordinate' in section:
+        is_coord = True
+    if section != '1D':
+        section = section.capitalize()
+
+    latex_lines = []
+
+    # Load the JSON data
+    with open(filePath, 'r') as json_file:
+        list_of_json_dicts = json.load(json_file)
+
+    # Iterate through the JSON objects
+    for item in list_of_json_dicts:
+        filename = item["filename"]
+        filename_formatted = utils.sanitize(filename)
+        if "coordinates" in section:
+            complementText = " "
+        else:
+            complementText = ' dataset of '
+        latex_lines.append(r'\subsection{'+ f'{section}' + complementText + f'{filename_formatted}' + r'}')
+        latex_lines.append(r'\newp') # Deasctived!!
+
+        data_array_list, dataset = search_and_extract(filename, directory, is_coord)
+
+        latex_lines.append(r'\subsubsection{Overview}')
+# BL: HERE'S WHERE THE SMASHING OF INTRO AND COMMENT IS HAPPENING
+        if "comment" in item.keys():
+            summary_content = item["Introduction"]+' '+utils.sanitize(item["comment"])+" "
+        else:
+            summary_content = item["Introduction"]+" "
+        latex_lines.append(summary_content)
+        latex_lines.extend(fieldTable(dataset, is_coord)) #<== Modified!!! in order to remove the table that contain a list of variable per dataset.
+        latex_lines.append(r'\newp') # Deasctived!!
+        for field in data_array_list:
+            attrs = extract_field_info(field)
+
+            # Create latex table for each variable
+            fieldName = attrs['Variable Name']
+            cleanName = utils.sanitize(fieldName)
+            latex_lines.append(r'\pagebreak') # Page break -- added ## <= is this utils? => yes, but I remove it to have continious fluent paging
+            latex_lines.append(fr'\subsubsection{{{section} Variable: {cleanName}}}')
+            dataVarTable = data_var_table(fieldName, attrs, filename)
+            latex_lines.extend(dataVarTable)
+
+            # Create latex plot for each variable
+            dataVarPlot = cdf_plotter.data_var_plot(version_string, dataset, dataset[fieldName], imageDirectory, True, is_coord)
+            latex_lines.append(r'\begin{figure}[H]')
+            latex_lines.append(r'\centering')
+            latex_lines.append(dataVarPlot) #testing right here
+            latex_lines.append(fr"\caption{{Dataset: {utils.sanitize(filename)}, Variable: {utils.sanitize(fieldName)}}}") #Just
+            latex_lines.append(fr'\label{{tab:table-{filename}_{fieldName}-Plot}}')
+            latex_lines.append(r'\end{figure}')
+            latex_lines.append(r'\newpage')
+
+    return latex_lines
+
+
+
+
+

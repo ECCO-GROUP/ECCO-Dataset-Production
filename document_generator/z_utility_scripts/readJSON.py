@@ -1,5 +1,11 @@
 import json
-import utils as u
+from pathlib import Path
+import sys
+
+document_generator_dir = str(Path(__file__).parent.parent)
+sys.path.append(document_generator_dir)
+
+import z_utility_scripts.utils_docgen as utils
 
 
 def obtain_json_data(filename: str) -> list:
@@ -32,7 +38,7 @@ def verify_columns(available_columns: set, user_columns: list) -> list:
     :param user_columns: list of user-defined columns
     :return: list of strings
     """
-    return [u.sanitize(col) for col in user_columns if col in available_columns]
+    return [utils.sanitize(col) for col in user_columns if col in available_columns]
 
 
 def establish_table(dictionary_list_from_json:list)->list:
@@ -45,7 +51,7 @@ def establish_table(dictionary_list_from_json:list)->list:
 
     max_col = 0
     for dictionary in dictionary_list_from_json:
-        formatted_dictionary_as_list = [u.sanitize_with_url(str(dictionary.get(key, "N/A"))) for key in dictionary]
+        formatted_dictionary_as_list = [utils.sanitize_with_url(str(dictionary.get(key, "N/A"))) for key in dictionary]
         max_col = len(formatted_dictionary_as_list) if len(formatted_dictionary_as_list) > max_col else max_col
         if len(formatted_dictionary_as_list) < max_col:
             formatted_dictionary_as_list.extend([""] * (max_col - len(formatted_dictionary_as_list)))
@@ -80,7 +86,7 @@ def set_table(json_data: dict, caption: str = None, col_names: list = None, wide
 
     for row in json_data[1:]:
         latex_table.append("\\rowcolor{LightCyan}\n")
-        formatted_row = [u.sanitize(str(row.get(key, "N/A"))) for key in col_names]
+        formatted_row = [utils.sanitize(str(row.get(key, "N/A"))) for key in col_names]
         latex_table.append(" & ".join(formatted_row) + " \\\\\n")
         latex_table.append("\\hline\n")
 

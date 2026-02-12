@@ -1,27 +1,23 @@
 # MUST FIX LACK OF READABLE INDENTATION IN THE EXAMPLE TABLES (cdf_extract.py)
 
 import os
-import z_utility_scripts.sections.latex_outline as outline
+import z_utility_scripts.utils_docgen as utils_docgen
+import z_utility_scripts.latex_outline as latex_outline
 
 def main():
-
-    document_generator_dir = os.path.dirname(os.path.realpath(__file__))
-    #version_string = input("Enter four-letter ECCO version string for compendium generation (e.g. v4r4):").lower()
-
-    version_string = "v4r4"
-
-    #config_file_static = os.path.join(document_generator_dir, "config_files", f"config_files_{version_string}", f"config_static_{version_string}.yaml")
-    #config_file_user = os.path.join(document_generator_dir, "config_files", f"config_files_{version_string}", f"config_user_{version_string}.yaml")
-
-    outline.write_data_attributes_tables(config_file_static, config_file_user)
-    outline.write_datasets(config_file_static, config_file_user)
     
-    outline.write_data_attributes_tables(version_string)
-    outline.write_datasets(version_string)
+    version_string = "v4r4" # Should not be hardcoded!   
+   
+    overwrite_granules = False # User can choose to skip downloading previousy downloaded granules
 
-    #outline.write_datasets('native')
-    #outline.write_datasets('latlon')
-    #outline.write_datasets('1D')
+    #z_utility_scripts.utils_docgen.download_granules(version_string, overwrite_granules)
+    #z_utility_scripts.latex_outline.write_data_attributes_tables(version_string)
+    #z_utility_scripts.latex_outline.write_datasets(version_string)
+    
+    utils_docgen.download_granules(version_string, overwrite_granules)
+    latex_outline.write_data_attributes_tables(version_string)
+    latex_outline.write_datasets(version_string)
+
 
 if __name__ == "__main__":
     main()
