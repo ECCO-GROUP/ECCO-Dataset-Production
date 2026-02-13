@@ -1,0 +1,116 @@
+\begin{longtable}{|p{\textwidth}|}
+\caption{Example CDL description of latlon dataset}
+\label{tab:cdl-latlon} \\
+\hline \endhead
+\hline \endfoot
+netcdf latlon example\\
+dimensions\\
+\hline
+\rowcolor{YellowGreen}  time = 1\\
+\rowcolor{YellowGreen}  latitude = 360\\
+\rowcolor{YellowGreen}  longitude = 720\\
+\rowcolor{YellowGreen}  nv = 2\\
+\hline
+
+coordinates\\
+\hline
+\rowcolor{Apricot}\hspace{0.5cm}int32 time (time)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:bounds = "time\_bnds"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "center time of averaging period"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 latitude (latitude)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:axis = "Y"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:bounds = "latitude\_bnds"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:comment = "uniform grid spacing from -89.75 to 89.75 by 0.5"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:long\_name = "latitude at grid cell center"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:standard\_name = "latitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:units = "degrees\_north"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 longitude (longitude)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:axis = "X"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:bounds = "longitude\_bnds"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:comment = "uniform grid spacing from -179.75 to 179.75 by 0.5"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:long\_name = "longitude at grid cell center"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:standard\_name = "longitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:units = "degrees\_east"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 time\_bnds (time, nv)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:comment = "Start and end times of averaging period."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:long\_name = "time bounds of averaging period"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 latitude\_bnds (latitude, nv)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude\_bnds:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude\_bnds:long\_name = "latitude bounds grid cells"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 longitude\_bnds (longitude, nv)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude\_bnds:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude\_bnds:long\_name = "longitude bounds grid cells"\\
+\hline
+
+data variables\\
+\hline
+\hspace{0.5cm}float32 EXFatemp (time, latitude, longitude)\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:long\_name = "Atmosphere surface (2 m) air temperature "\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:standard\_name = "air\_temperature"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:units = "degree\_K"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:comment = "Surface (2 m) air temperature over open water. Note: sum of ERA-Interim surface air temperature and the control adjustment from ocean state estimation."\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:coordinates = "time"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:valid\_min = "195.37054443359375"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:valid\_max = "312.8451232910156"\\
+\hspace{0.5cm}float32 EXFaqh (time, latitude, longitude)\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:long\_name = "Atmosphere surface (2 m) specific humidity "\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:standard\_name = "surface\_specific\_humidity"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:units = "kg kg-1"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:comment = "Surface (2 m) specific humidity over open water. Note: sum of ERA-Interim surface specific humidity and the control adjustment from ocean state estimation."\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:coordinates = "time"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:valid\_min = "-0.0014020215021446347"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:valid\_max = "0.03014513850212097"\\
+\hspace{0.5cm}float32 EXFewind (time, latitude, longitude)\\
+\hspace{0.5cm}\hspace{0.5cm}EXFewind:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFewind:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFewind:long\_name = "Zonal (east-west) wind speed"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFewind:standard\_name = "eastward\_wind"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFewind:units = "m s-1"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFewind:comment = "Zonal (east-west) component of ocean surface wind. Note: EXFewind is calculated by interpolating the model's x and y components of wind velocity (EXFuwind and EXFvwind) to tracer cell centers and then finding the zonal component of the interpolated vectors. ECCO V4r4 is forced with wind stress (see EXFtaux, EXFtauy), not vector winds + bulk formulae. EXFewind is calculated by converting wind stress to vector wind using bulk formulae."\\
+\hspace{0.5cm}\hspace{0.5cm}EXFewind:coordinates = "time"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFewind:valid\_min = "-33.524742126464844"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFewind:valid\_max = "39.48556900024414"\\
+\hspace{0.5cm}float32 EXFnwind (time, latitude, longitude)\\
+\hspace{0.5cm}\hspace{0.5cm}EXFnwind:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFnwind:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFnwind:long\_name = "Meridional (north-south) wind speed"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFnwind:standard\_name = "northward\_wind"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFnwind:units = "m s-1"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFnwind:comment = "Meridional (north-south) component of ocean surface wind. Note: EXFnwind is calculated by interpolating the model's x and y components of wind velocity (EXFuwind and EXFvwind) to tracer cell centers and then finding the meridional component of the interpolated vectors. ECCO V4r4 is forced with wind stress (see EXFtaux, EXFtauy), not vector winds + bulk formulae.  EXFnwind is calculated by converting wind stress to vector wind using bulk formulae."\\
+\hspace{0.5cm}\hspace{0.5cm}EXFnwind:coordinates = "time"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFnwind:valid\_min = "-30.042686462402344"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFnwind:valid\_max = "33.95014190673828"\\
+\hspace{0.5cm}float32 EXFwspee (time, latitude, longitude)\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:long\_name = "Wind speed"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:standard\_name = "wind\_speed"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:units = "m s-1"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:comment = "10-m wind speed magnitude (>= 0 ) over open water. Only used for the calculation of air-sea fluxes using bulk formulae. Note: not adjusted by the ocean state estimation and not necesarily consistent with EXFuwind and EXFvwind because EXFuwind and EXFvwind are calculated from EXFtaux and EXFtauy using bulk formulae. EXFwspee != sqrt(EXFuwind**2 + EXFvwind**2."\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:coordinates = "time"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:valid\_min = "0.27271032333374023"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:valid\_max = "45.87086486816406"\\
+\hspace{0.5cm}float32 EXFpress (time, latitude, longitude)\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:long\_name = "Atmosphere surface pressure"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:standard\_name = "surface\_air\_pressure"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:units = "N m-2"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:comment = "Atmospheric pressure field at sea level. Note: ERA-Interim atmospheric pressure, with air tides removed using a variety of methods. Not adjusted by the ocean state estimation."\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:coordinates = "time"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:valid\_min = "92090.3125"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:valid\_max = "106314.7734375"\\
+\hline
+\end{longtable}

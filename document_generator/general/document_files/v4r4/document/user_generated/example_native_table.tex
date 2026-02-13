@@ -1,0 +1,166 @@
+\begin{longtable}{|p{\textwidth}|}
+\caption{Example CDL description of native dataset}
+\label{tab:cdl-native} \\
+\hline \endhead
+\hline \endfoot
+netcdf native example\\
+dimensions\\
+\hline
+\rowcolor{YellowGreen}  tile = 13\\
+\rowcolor{YellowGreen}  j = 90\\
+\rowcolor{YellowGreen}  i = 90\\
+\rowcolor{YellowGreen}  j\_g = 90\\
+\rowcolor{YellowGreen}  i\_g = 90\\
+\rowcolor{YellowGreen}  time = 1\\
+\rowcolor{YellowGreen}  nv = 2\\
+\rowcolor{YellowGreen}  nb = 4\\
+\hline
+
+coordinates\\
+\hline
+\rowcolor{Apricot}\hspace{0.5cm}int32 i (i)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:axis = "X"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:long\_name = "grid index in x for variables at tracer and 'v' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:swap\_dim = "XC"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'v' variables (e.g., VVEL) have the same x coordinate on the model grid."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 i\_g (i\_g)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:axis = "X"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:long\_name = "grid index in x for variables at 'u' and 'g' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:swap\_dim = "XG"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:comment = "In the Arakawa C-grid system, 'u' (e.g., UVEL) and 'g' variables (e.g., XG) have the same x coordinate on the model grid."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 j (j)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:axis = "Y"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:long\_name = "grid index in y for variables at tracer and 'u' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:swap\_dim = "YC"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'u' variables (e.g., UVEL) have the same y coordinate on the model grid."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 j\_g (j\_g)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:axis = "Y"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:long\_name = "grid index in y for variables at 'v' and 'g' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:swap\_dim = "YG"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:comment = "In the Arakawa C-grid system, 'v' (e.g., VVEL) and 'g' variables (e.g., XG) have the same y coordinate."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 tile (tile)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:long\_name = "lat-lon-cap tile index"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:comment = "The ECCO V4 horizontal model grid is divided into 13 tiles of 90x90 cells for convenience."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 time (time)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "center time of averaging period"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:bounds = "time\_bnds"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 XC (tile, j, i)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:long\_name = "longitude of tracer grid cell center"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:units = "degrees\_east"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:coordinate = "YC XC"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:bounds = "XC\_bnds"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:comment = "nonuniform grid spacing"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:standard\_name = "longitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 YC (tile, j, i)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:long\_name = "latitude of tracer grid cell center"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:units = "degrees\_north"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:coordinate = "YC XC"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:bounds = "YC\_bnds"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:comment = "nonuniform grid spacing"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:standard\_name = "latitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 XG (tile, j\_g, i\_g)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:long\_name = "longitude of 'southwest' corner of tracer grid cell"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:units = "degrees\_east"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:coordinate = "YG XG"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:comment = "Nonuniform grid spacing. Note: 'southwest' does not correspond to geographic orientation but is used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:standard\_name = "longitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 YG (tile, j\_g, i\_g)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:long\_name = "latitude of 'southwest' corner of tracer grid cell"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:units = "degrees\_north"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coordinate = "YG XG"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:comment = "Nonuniform grid spacing. Note: 'southwest' does not correspond to geographic orientation but is used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:standard\_name = "latitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 time\_bnds (time, nv)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:comment = "Start and end times of averaging period."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:long\_name = "time bounds of averaging period"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 XC\_bnds (tile, j, i, nb)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:comment = "Bounds array follows CF conventions. XC\_bnds[i,j,0] = 'southwest' corner (j-1, i-1), XC\_bnds[i,j,1] = 'southeast' corner (j-1, i+1), XC\_bnds[i,j,2] = 'northeast' corner (j+1, i+1), XC\_bnds[i,j,3]  = 'northwest' corner (j+1, i-1). Note: 'southwest', 'southeast', northwest', and 'northeast' do not correspond to geographic orientation but are used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:long\_name = "longitudes of tracer grid cell corners"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 YC\_bnds (tile, j, i, nb)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:comment = "Bounds array follows CF conventions. YC\_bnds[i,j,0] = 'southwest' corner (j-1, i-1), YC\_bnds[i,j,1] = 'southeast' corner (j-1, i+1), YC\_bnds[i,j,2] = 'northeast' corner (j+1, i+1), YC\_bnds[i,j,3]  = 'northwest' corner (j+1, i-1). Note: 'southwest', 'southeast', northwest', and 'northeast' do not correspond to geographic orientation but are used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:long\_name = "latitudes of tracer grid cell corners"\\
+\hline
+
+data variables\\
+\hline
+\hspace{0.5cm}float32 EXFatemp (time, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:long\_name = "Atmosphere surface (2 m) air temperature "\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:units = "degree\_K"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:standard\_name = "air\_temperature"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:comment = "Surface (2 m) air temperature over open water. Note: sum of ERA-Interim surface air temperature and the control adjustment from ocean state estimation."\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:coordinates = "time XC YC"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:valid\_min = "195.37054443359375"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFatemp:valid\_max = "312.8451232910156"\\
+\hspace{0.5cm}float32 EXFaqh (time, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:long\_name = "Atmosphere surface (2 m) specific humidity "\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:units = "kg kg-1"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:standard\_name = "surface\_specific\_humidity"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:comment = "Surface (2 m) specific humidity over open water. Note: sum of ERA-Interim surface specific humidity and the control adjustment from ocean state estimation."\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:coordinates = "time XC YC"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:valid\_min = "-0.0014020215021446347"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFaqh:valid\_max = "0.03014513850212097"\\
+\hspace{0.5cm}float32 EXFuwind (time, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}EXFuwind:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFuwind:long\_name = "Wind speed at 10m in the model +x direction"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFuwind:units = "m s-1"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFuwind:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFuwind:standard\_name = "x\_wind"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFuwind:comment = "Wind speed at 10m in the +x direction at the tracer cell on the native model grid. Note: ECCO v4r4 is forced with wind stress (see EXFtaux) not vector winds converted to wind stress using bulk formulae. EXFuwind is calculated by converting wind stress to vector wind using bulk formulae."\\
+\hspace{0.5cm}\hspace{0.5cm}EXFuwind:coordinates = "time XC YC"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFuwind:valid\_min = "-34.528900146484375"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFuwind:valid\_max = "29.92486572265625"\\
+\hspace{0.5cm}float32 EXFvwind (time, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}EXFvwind:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFvwind:long\_name = "Wind speed at 10m in the model +y direction"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFvwind:units = "m s-1"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFvwind:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFvwind:standard\_name = "y\_wind"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFvwind:comment = "Wind speed at 10m in the +y direction at the tracer cell on the native model grid. Note: ECCO v4r4 is forced with wind stress (see EXFtauy) not vector winds converted to wind stress using bulk formulae. EXFvwind is calculated by converting wind stress to vector wind using bulk formulae."\\
+\hspace{0.5cm}\hspace{0.5cm}EXFvwind:coordinates = "time XC YC"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFvwind:valid\_min = "-27.9254093170166"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFvwind:valid\_max = "45.065101623535156"\\
+\hspace{0.5cm}float32 EXFwspee (time, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:long\_name = "Wind speed"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:units = "m s-1"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:standard\_name = "wind\_speed"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:comment = "10-m wind speed magnitude (>= 0 ) over open water. Only used for the calculation of air-sea fluxes using bulk formulae. Note: not adjusted by the ocean state estimation and not necesarily consistent with EXFuwind and EXFvwind because EXFuwind and EXFvwind are calculated from EXFtaux and EXFtauy using bulk formulae. EXFwspee != sqrt(EXFuwind**2 + EXFvwind**2."\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:coordinates = "time XC YC"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:valid\_min = "0.27271032333374023"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFwspee:valid\_max = "45.87086486816406"\\
+\hspace{0.5cm}float32 EXFpress (time, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:long\_name = "Atmosphere surface pressure"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:units = "N m-2"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:standard\_name = "surface\_air\_pressure"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:comment = "Atmospheric pressure field at sea level. Note: ERA-Interim atmospheric pressure, with air tides removed using a variety of methods. Not adjusted by the ocean state estimation."\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:coordinates = "time XC YC"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:valid\_min = "92044.171875"\\
+\hspace{0.5cm}\hspace{0.5cm}EXFpress:valid\_max = "106314.7734375"\\
+\hline
+\end{longtable}

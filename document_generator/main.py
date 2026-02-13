@@ -1,19 +1,19 @@
+# Feels funny that the user must construct a json file for each of their granules/variables, 
+# but maybe that's fine.  Just seems like those should be made automatically based on the config
+# file, since I think the data they hold comes from there....
+
 # MUST FIX LACK OF READABLE INDENTATION IN THE EXAMPLE TABLES (cdf_extract.py)
 
 import os
-import z_utility_scripts.utils_docgen as utils_docgen
-import z_utility_scripts.latex_outline as latex_outline
+import general.utility_scripts.utils_docgen as utils_docgen
+import general.utility_scripts.latex_outline as latex_outline
 
 def main():
     
     version_string = "v4r4" # Should not be hardcoded!   
    
-    overwrite_granules = False # User can choose to skip downloading previousy downloaded granules
+    overwrite_granules = False # User can choose to avoid overwriting granules
 
-    #z_utility_scripts.utils_docgen.download_granules(version_string, overwrite_granules)
-    #z_utility_scripts.latex_outline.write_data_attributes_tables(version_string)
-    #z_utility_scripts.latex_outline.write_datasets(version_string)
-    
     utils_docgen.download_granules(version_string, overwrite_granules)
     latex_outline.write_data_attributes_tables(version_string)
     latex_outline.write_datasets(version_string)

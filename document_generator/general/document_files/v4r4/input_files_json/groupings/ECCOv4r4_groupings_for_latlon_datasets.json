@@ -1,0 +1,11 @@
+[
+    {
+        "name": "atmosphere surface temperature, humidity, wind, and pressure",
+        "fields": "EXFatemp, EXFaqh, EXFewind, EXFnwind, EXFwspee, EXFpress",
+        "product": "latlon",
+        "filename": "ATM_SURFACE_TEMP_HUM_WIND_PRES",
+        "dimension": "2D",
+        "frequency": "AVG_DAY, AVG_MON",
+        "Introduction":"This dataset provides 2D fields of atmosphere surface temperature, humidity, wind, and pressure interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution."
+    }
+]
