@@ -1,3 +1,6 @@
+# BL: added "overwrite_granules_switch" as an argument, thinking that we should allow for only re-plotting newly downloaded/overwritten granules....
+# But maybe I'll implement that later
+
 import os
 import argparse
 from pathlib import Path
@@ -9,8 +12,10 @@ sys.path.append(general_base_dir)
 
 import utility_scripts.readJSON as readJSON
 import utility_scripts.cdf_extract as cdf_extract
+import utility_scripts.utils_docgen as utils
 
-def write_data_attributes_tables(version_string):
+
+def write_data_attributes_tables(version_string, overwrite_granules_switch):
     """
         This function writes the data product tables to the latex document.
     """
@@ -65,7 +70,7 @@ def write_data_attributes_tables(version_string):
 
 
 
-def write_datasets(version_string):
+def write_datasets(version_string, overwrite_granules_switch):
 
     config_file_static = os.path.join(general_base_dir, "config_files", version_string, "config_static.yaml")
     with open(config_file_static,'r') as stream:
@@ -85,23 +90,39 @@ def write_datasets(version_string):
     
                 # Coordinates (Note that the 1D grid does not have a coordinate file)
                 if grid_type != "1D":
-                    coordinate_latex_lines = cdf_extract.data_products(version_string, 
+
+                    coordinate_latex_lines = []
+                    # PLACEHOLDER SECTION NAMES - where should these come from?
+                    coordinate_document_section_title = f"{grid_type} STUFF"
+                    coordinate_document_section_title= utils.sanitize(coordinate_document_section_title)
+                    coordinate_latex_lines.append(r'\section{'+ f'{coordinate_document_section_title}' + r'}')
+
+                    #coordinate_latex_lines = cdf_extract.data_products(version_string, 
+                    coordinate_latex_lines.extend(cdf_extract.data_products(version_string, 
                                                                        os.path.join(general_base_dir, config_dictionary_static[f"groupings_coordinates_{grid_type}_json_file"]),
                                                                        os.path.join(general_base_dir, config_dictionary_static[f"coordinate_files_{grid_type}_dir"]),
                                                                        os.path.join(general_base_dir, config_dictionary_static[f"figures_coordinates_{grid_type}_dir"]),
-                                                                       grid_type + "Coordinate") # Odilon magic
-
+                                                                       grid_type + "Coordinate")) # The elegance
+                                                                      
+            
                     coordinate_latex_output_file = os.path.join(general_base_dir, config_dictionary_static[f'coordinate_table_{grid_type}_tex_file'])
                     Path(coordinate_latex_output_file).parent.mkdir(parents=True, exist_ok=True)
                     with open(coordinate_latex_output_file, 'w') as output_file:
                         output_file.write('\n'.join(coordinate_latex_lines))
 
                 # Variables
-                variables_latex_lines = cdf_extract.data_products(version_string, 
+                variables_latex_lines = []
+                # PLACEHOLDER SECTION NAMES - where should these come from?
+                variables_document_section_title = f"{grid_type} GROUPINGS STUFF"
+                variables_document_section_title= utils.sanitize(variables_document_section_title)
+                variables_latex_lines.append(r'\section{'+ f'{variables_document_section_title}' + r'}')
+                
+                variables_latex_lines.extend(cdf_extract.data_products(version_string, 
+                #variables_latex_lines = cdf_extract.data_products(version_string, 
                                                                   os.path.join(general_base_dir, config_dictionary_static[f"groupings_variables_{grid_type}_json_file"]),
                                                                   os.path.join(general_base_dir, config_dictionary_static[f"variable_files_{grid_type}_dir"]),
                                                                   os.path.join(general_base_dir, config_dictionary_static[f"figures_variables_{grid_type}_dir"]),
-                                                                  grid_type)
+                                                                  grid_type))
 
                 variable_latex_output_file = os.path.join(general_base_dir, config_dictionary_static[f'variable_tables_{grid_type}_tex_file'])
                 Path(variable_latex_output_file).parent.mkdir(parents=True, exist_ok=True)

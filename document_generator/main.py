@@ -1,4 +1,4 @@
-# Feels funny that the user must construct a json file for each of their granules/variables, 
+# Feels funny that the user must construct a json "groupings" file for each of their granules/variables, 
 # but maybe that's fine.  Just seems like those should be made automatically based on the config
 # file, since I think the data they hold comes from there....
 
@@ -12,12 +12,11 @@ def main():
     
     version_string = "v4r4" # Should not be hardcoded!   
    
-    overwrite_granules = False # User can choose to avoid overwriting granules
+    overwrite_granules_switch = False # User can choose to avoid overwriting granules - should also not be hardcoded!
 
-    utils_docgen.download_granules(version_string, overwrite_granules)
-    latex_outline.write_data_attributes_tables(version_string)
-    latex_outline.write_datasets(version_string)
-
+    utils_docgen.download_granules(version_string, overwrite_granules_switch)
+    latex_outline.write_data_attributes_tables(version_string, overwrite_granules_switch)
+    latex_outline.write_datasets(version_string, overwrite_granules_switch)
 
 if __name__ == "__main__":
     main()

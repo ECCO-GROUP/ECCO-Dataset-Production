@@ -52,65 +52,33 @@ coordinates\\
 
 data variables\\
 \hline
-\hspace{0.5cm}float32 EXFatemp (time, latitude, longitude)\\
-\hspace{0.5cm}\hspace{0.5cm}EXFatemp:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFatemp:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFatemp:long\_name = "Atmosphere surface (2 m) air temperature "\\
-\hspace{0.5cm}\hspace{0.5cm}EXFatemp:standard\_name = "air\_temperature"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFatemp:units = "degree\_K"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFatemp:comment = "Surface (2 m) air temperature over open water. Note: sum of ERA-Interim surface air temperature and the control adjustment from ocean state estimation."\\
-\hspace{0.5cm}\hspace{0.5cm}EXFatemp:coordinates = "time"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFatemp:valid\_min = "195.37054443359375"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFatemp:valid\_max = "312.8451232910156"\\
-\hspace{0.5cm}float32 EXFaqh (time, latitude, longitude)\\
-\hspace{0.5cm}\hspace{0.5cm}EXFaqh:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFaqh:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFaqh:long\_name = "Atmosphere surface (2 m) specific humidity "\\
-\hspace{0.5cm}\hspace{0.5cm}EXFaqh:standard\_name = "surface\_specific\_humidity"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFaqh:units = "kg kg-1"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFaqh:comment = "Surface (2 m) specific humidity over open water. Note: sum of ERA-Interim surface specific humidity and the control adjustment from ocean state estimation."\\
-\hspace{0.5cm}\hspace{0.5cm}EXFaqh:coordinates = "time"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFaqh:valid\_min = "-0.0014020215021446347"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFaqh:valid\_max = "0.03014513850212097"\\
-\hspace{0.5cm}float32 EXFewind (time, latitude, longitude)\\
-\hspace{0.5cm}\hspace{0.5cm}EXFewind:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFewind:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFewind:long\_name = "Zonal (east-west) wind speed"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFewind:standard\_name = "eastward\_wind"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFewind:units = "m s-1"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFewind:comment = "Zonal (east-west) component of ocean surface wind. Note: EXFewind is calculated by interpolating the model's x and y components of wind velocity (EXFuwind and EXFvwind) to tracer cell centers and then finding the zonal component of the interpolated vectors. ECCO V4r4 is forced with wind stress (see EXFtaux, EXFtauy), not vector winds + bulk formulae. EXFewind is calculated by converting wind stress to vector wind using bulk formulae."\\
-\hspace{0.5cm}\hspace{0.5cm}EXFewind:coordinates = "time"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFewind:valid\_min = "-33.524742126464844"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFewind:valid\_max = "39.48556900024414"\\
-\hspace{0.5cm}float32 EXFnwind (time, latitude, longitude)\\
-\hspace{0.5cm}\hspace{0.5cm}EXFnwind:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFnwind:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFnwind:long\_name = "Meridional (north-south) wind speed"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFnwind:standard\_name = "northward\_wind"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFnwind:units = "m s-1"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFnwind:comment = "Meridional (north-south) component of ocean surface wind. Note: EXFnwind is calculated by interpolating the model's x and y components of wind velocity (EXFuwind and EXFvwind) to tracer cell centers and then finding the meridional component of the interpolated vectors. ECCO V4r4 is forced with wind stress (see EXFtaux, EXFtauy), not vector winds + bulk formulae.  EXFnwind is calculated by converting wind stress to vector wind using bulk formulae."\\
-\hspace{0.5cm}\hspace{0.5cm}EXFnwind:coordinates = "time"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFnwind:valid\_min = "-30.042686462402344"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFnwind:valid\_max = "33.95014190673828"\\
-\hspace{0.5cm}float32 EXFwspee (time, latitude, longitude)\\
-\hspace{0.5cm}\hspace{0.5cm}EXFwspee:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFwspee:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFwspee:long\_name = "Wind speed"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFwspee:standard\_name = "wind\_speed"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFwspee:units = "m s-1"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFwspee:comment = "10-m wind speed magnitude (>= 0 ) over open water. Only used for the calculation of air-sea fluxes using bulk formulae. Note: not adjusted by the ocean state estimation and not necesarily consistent with EXFuwind and EXFvwind because EXFuwind and EXFvwind are calculated from EXFtaux and EXFtauy using bulk formulae. EXFwspee != sqrt(EXFuwind**2 + EXFvwind**2."\\
-\hspace{0.5cm}\hspace{0.5cm}EXFwspee:coordinates = "time"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFwspee:valid\_min = "0.27271032333374023"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFwspee:valid\_max = "45.87086486816406"\\
-\hspace{0.5cm}float32 EXFpress (time, latitude, longitude)\\
-\hspace{0.5cm}\hspace{0.5cm}EXFpress:\_FillValue = "9.969209968386869e+36"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFpress:coverage\_content\_type = "modelResult"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFpress:long\_name = "Atmosphere surface pressure"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFpress:standard\_name = "surface\_air\_pressure"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFpress:units = "N m-2"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFpress:comment = "Atmospheric pressure field at sea level. Note: ERA-Interim atmospheric pressure, with air tides removed using a variety of methods. Not adjusted by the ocean state estimation."\\
-\hspace{0.5cm}\hspace{0.5cm}EXFpress:coordinates = "time"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFpress:valid\_min = "92090.3125"\\
-\hspace{0.5cm}\hspace{0.5cm}EXFpress:valid\_max = "106314.7734375"\\
+\hspace{0.5cm}float32 SSH (time, latitude, longitude)\\
+\hspace{0.5cm}\hspace{0.5cm}SSH:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}SSH:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}SSH:long\_name = "Dynamic sea surface height anomaly"\\
+\hspace{0.5cm}\hspace{0.5cm}SSH:standard\_name = "sea\_surface\_height\_above\_geoid"\\
+\hspace{0.5cm}\hspace{0.5cm}SSH:units = "m"\\
+\hspace{0.5cm}\hspace{0.5cm}SSH:comment = "Dynamic sea surface height anomaly above the geoid, suitable for comparisons with altimetry sea surface height data products that apply the inverse barometer (IB) correction. Note: SSH is calculated by correcting model sea level anomaly ETAN for three effects: a) global mean steric sea level changes related to density changes in the Boussinesq volume-conserving model (Greatbatch correction, see sterGloH), b) the inverted barometer (IB) effect (see SSHIBC) and c) sea level displacement due to sea-ice and snow pressure loading (see sIceLoad). SSH can be compared with the similarly-named SSH variable in previous ECCO products that did not include atmospheric pressure loading (e.g., Version 4 Release 3). Use SSHNOIBC for comparisons with altimetry data products that do NOT apply the IB correction."\\
+\hspace{0.5cm}\hspace{0.5cm}SSH:coordinates = "time"\\
+\hspace{0.5cm}\hspace{0.5cm}SSH:valid\_min = "-2.4861555099487305"\\
+\hspace{0.5cm}\hspace{0.5cm}SSH:valid\_max = "2.2875382900238037"\\
+\hspace{0.5cm}float32 SSHIBC (time, latitude, longitude)\\
+\hspace{0.5cm}\hspace{0.5cm}SSHIBC:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}SSHIBC:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}SSHIBC:long\_name = "The inverted barometer (IB) correction to sea surface height due to atmospheric pressure loading"\\
+\hspace{0.5cm}\hspace{0.5cm}SSHIBC:units = "m"\\
+\hspace{0.5cm}\hspace{0.5cm}SSHIBC:comment = "Not an SSH itself, but a correction to model sea level anomaly (ETAN) required to account for the static part of sea surface displacement by atmosphere pressure loading: SSH = SSHNOIBC - SSHIBC. Note: Use SSH for model-data comparisons with altimetry data products that DO apply the IB correction and SSHNOIBC for comparisons with altimetry data products that do NOT apply the IB correction."\\
+\hspace{0.5cm}\hspace{0.5cm}SSHIBC:coordinates = "time"\\
+\hspace{0.5cm}\hspace{0.5cm}SSHIBC:valid\_min = "-0.5228679180145264"\\
+\hspace{0.5cm}\hspace{0.5cm}SSHIBC:valid\_max = "0.8955588340759277"\\
+\hspace{0.5cm}float32 SSHNOIBC (time, latitude, longitude)\\
+\hspace{0.5cm}\hspace{0.5cm}SSHNOIBC:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}SSHNOIBC:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}SSHNOIBC:long\_name = "Sea surface height anomaly without the inverted barometer (IB) correction"\\
+\hspace{0.5cm}\hspace{0.5cm}SSHNOIBC:units = "m"\\
+\hspace{0.5cm}\hspace{0.5cm}SSHNOIBC:comment = "Sea surface height anomaly above the geoid without the inverse barometer (IB) correction, suitable for comparisons with altimetry sea surface height data products that do NOT apply the inverse barometer (IB) correction. Note: SSHNOIBC is calculated by correcting model sea level anomaly ETAN for two effects: a) global mean steric sea level changes related to density changes in the Boussinesq volume-conserving model (Greatbatch correction, see sterGloH), b) sea level displacement due to sea-ice and snow pressure loading (see sIceLoad). In ECCO Version 4 Release 4 the model is forced with atmospheric pressure loading. SSHNOIBC does not correct for the static part of the effect of atmosphere pressure loading on sea surface height (the so-called inverse barometer (IB) correction). Use SSH for comparisons with altimetry data products that DO apply the IB correction."\\
+\hspace{0.5cm}\hspace{0.5cm}SSHNOIBC:coordinates = "time"\\
+\hspace{0.5cm}\hspace{0.5cm}SSHNOIBC:valid\_min = "-2.45104718208313"\\
+\hspace{0.5cm}\hspace{0.5cm}SSHNOIBC:valid\_max = "2.2390522956848145"\\
 \hline
 \end{longtable}

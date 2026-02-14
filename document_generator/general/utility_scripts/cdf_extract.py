@@ -10,7 +10,7 @@ general_base_dir = str(Path(__file__).parent.parent)
 sys.path.append(general_base_dir)
 
 import utility_scripts.utils_docgen as utils
-import utility_scripts.cdf_plotter_ojh as cdf_plotter
+import utility_scripts.cdf_plotter as cdf_plotter
 #import utility_scripts.cdf_plotter as cdf_plotter # This line wasn't here, I'm just wondering if _ojh is indeed the one to use
 
 
@@ -258,32 +258,32 @@ def extract_field_info(field:xr.DataArray)->dict[str, str]:
 
 
 
-def search_and_extract(substring:str, directory:str, get_coords:bool=False)->tuple[list[xr.DataArray], xr.Dataset]:
+def search_and_extract(granule_filename_truncated_stem:str, granule_directory:str, is_coord:bool=False)->tuple[list[xr.DataArray], xr.Dataset]:
     """
     Searches for a NetCDF file in the given directory that contains the specified substring
     in its name, and extracts information from it.
 
     Parameters:
-        substring (str): The substring to search for in the file names.
-        directory (str): The directory in which to search for the file.
+        granule_filename_truncated_stem (str): The substring to search for in the file names.
+        granule_directory (str): The directory in which to search for the file.
 
     Returns:
         list: A list of xr.DataArrays, each a field in the dataset.
         xr.Dataset: The dataset itself.
     """
 
-    for root, dirs, files in os.walk(directory):
+    for root, dirs, files in os.walk(granule_directory):
         for file in files:
-            if substring in file and file.endswith(".nc"):
+            if granule_filename_truncated_stem in file and file.endswith(".nc"):
                 filepath = os.path.join(root, file)
-                if not get_coords:
+                if not is_coord:
                     data_array_list = get_non_coordinate_vars(filepath)
                 else:
                     data_array_list = get_coordinate_vars(filepath)
                 dataset = xr.open_dataset(filepath) # might DELETE THIS LINE
                 return data_array_list, dataset
 
-    raise ValueError(f"No NetCDF file containing '{substring}' found in directory '{directory}'")
+    raise ValueError(f"No NetCDF file containing '{granule_filename_truncated_stem}' found in granule_directory '{directory}'")
 
 
 
@@ -533,77 +533,90 @@ def get_Global_or_CoordsDimsVarsList(netCDFpath:str,jsonFileName:str,saveTo:str)
 
 
 
-def data_products(version_string, filePath:str, directory:str, imageDirectory:str, section:str='native')->list:
+def data_products(ecco_version_string, json_groupings_filepath:str, granule_directory:str, image_directory:str, grid_type:str='native')->list:
     """
 
-    Generates a list of LaTeX lines for the Data Products section of the report.
+    Generates a list of LaTeX lines for the Data Products grid_type of the report.
     Parameters:
-        filePath (str): The path to the JSON file containing the data products.
-        directory (str): The directory in which to search for the NetCDF files.
-        imageDirectory (str): The directory in which to search for the images.
-        section (str): The section of the report to generate.
+        json_groupings_filepath (str): The path to the JSON file containing the data products.
+        granule_directory (str): The directory in which to search for the NetCDF files.
+        image_directory (str): The directory in which to search for the images.
+        grid_type (str): The grid_type of the report to generate.
             accepted values: "Native", "Latlon", "1D" , default="natives"
     Returns:
-        list: A list of LaTeX lines for the Data Products section of the report.
+        list: A list of LaTeX lines for the Data Products grid_type of the report.
 
     """
     is_coord = False
-    if 'Coordinate' in section:
+    if 'Coordinate' in grid_type:
         is_coord = True
-    if section != '1D':
-        section = section.capitalize()
+    if grid_type != '1D':
+        grid_type = grid_type.capitalize()
 
     latex_lines = []
 
     # Load the JSON data
-    with open(filePath, 'r') as json_file:
-        list_of_json_dicts = json.load(json_file)
+    with open(json_groupings_filepath, 'r') as json_file:
+        list_of_json_dictionaries = json.load(json_file)
 
     # Iterate through the JSON objects
-    for item in list_of_json_dicts:
-        filename = item["filename"]
-        filename_formatted = utils.sanitize(filename)
-        if "coordinates" in section:
+    for json_dictionary in list_of_json_dictionaries:
+        granule_filename_truncated_stem = json_dictionary["filename"]
+        granule_filename_truncated_stem_formatted = utils.sanitize(granule_filename_truncated_stem)
+        #if "coordinates" in grid_type:  ???? Isn't this the same hackiness as above?
+        if 'Coordinate' in grid_type:   #???? Isn't this the same hackiness as above?
             complementText = " "
         else:
             complementText = ' dataset of '
-        latex_lines.append(r'\subsection{'+ f'{section}' + complementText + f'{filename_formatted}' + r'}')
+        latex_lines.append(r'\subsection{'+ f'{grid_type}' + complementText + f'{granule_filename_truncated_stem_formatted}' + r'}')
+        #latex_lines.append(r'\section{'+ f'{grid_type}' + complementText + f'{granule_filename_truncated_stem_formatted}' + r'}')
         latex_lines.append(r'\newp') # Deasctived!!
 
-        #print(directory)
-        #print(filename)
+        #print(granule_directory)
+        #print(granule_filename_truncated_stem)
         #print()
 
-        data_array_list, dataset = search_and_extract(filename, os.path.join(general_base_dir, directory), is_coord)
+        # data_array_list: a list of data arrays, either of all coordinate or non-coordinate variables, from the given granule
+        # dataset: the xr dataset for the whole granule (opened in a fancy way, with many options - see "search_and_extract()")
+        data_array_list, dataset = search_and_extract(granule_filename_truncated_stem, os.path.join(general_base_dir, granule_directory), is_coord)
 
         latex_lines.append(r'\subsubsection{Overview}')
+        #latex_lines.append(r'\subsection{Overview}')
 # BL: HERE'S WHERE THE SMASHING OF INTRO AND COMMENT IS HAPPENING
-        if "comment" in item.keys():
-            summary_content = item["Introduction"]+' '+utils.sanitize(item["comment"])+" "
+        if "comment" in json_dictionary.keys():
+            summary_content = json_dictionary["Introduction"]+' '+utils.sanitize(json_dictionary["comment"])+" "
         else:
-            summary_content = item["Introduction"]+" "
+            summary_content = json_dictionary["Introduction"]+" "
         latex_lines.append(summary_content)
         latex_lines.extend(fieldTable(dataset, is_coord)) #<== Modified!!! in order to remove the table that contain a list of variable per dataset.
         latex_lines.append(r'\newp') # Deasctived!!
-        for field in data_array_list:
-            attrs = extract_field_info(field)
+        for variable in data_array_list:
+
+            # attrs is a dictionary of variable attributes
+            attrs = extract_field_info(variable)
 
             # Create latex table for each variable
-            fieldName = attrs['Variable Name']
-            cleanName = utils.sanitize(fieldName)
+            variable_name = attrs['Variable Name']
+            cleanName = utils.sanitize(variable_name)
             latex_lines.append(r'\pagebreak') # Page break -- added ## <= is this utils? => yes, but I remove it to have continious fluent paging
-            latex_lines.append(fr'\subsubsection{{{section} Variable: {cleanName}}}')
-            dataVarTable = data_var_table(fieldName, attrs, filename)
+            latex_lines.append(fr'\subsubsection{{{grid_type} Variable: {cleanName}}}')
+            #latex_lines.append(fr'\subsection{{{grid_type} Variable: {cleanName}}}')
+            dataVarTable = data_var_table(variable_name, attrs, granule_filename_truncated_stem)
             latex_lines.extend(dataVarTable)
 
             # Create latex plot for each variable
-            dataVarPlot = cdf_plotter.data_var_plot(version_string, dataset, dataset[fieldName], imageDirectory, True, is_coord)
+            #if not is_coord: # I think this is what they wanted
+
+            dataVarPlot = cdf_plotter.data_var_plot(ecco_version_string, dataset, dataset[variable_name], image_directory)
+            #dataVarPlot = cdf_plotter.data_var_plot(ecco_version_string, dataset, dataset[variable_name], image_directory, is_coord)  # BL: EPIC
+            #dataVarPlot = cdf_plotter.data_var_plot(ecco_version_string, dataset, dataset[variable_name], image_directory, True, is_coord)  # BL: EPIC
             latex_lines.append(r'\begin{figure}[H]')
             latex_lines.append(r'\centering')
             latex_lines.append(dataVarPlot) #testing right here
-            latex_lines.append(fr"\caption{{Dataset: {utils.sanitize(filename)}, Variable: {utils.sanitize(fieldName)}}}") #Just
-            latex_lines.append(fr'\label{{tab:table-{filename}_{fieldName}-Plot}}')
+            latex_lines.append(fr"\caption{{Dataset: {utils.sanitize(granule_filename_truncated_stem)}, Variable: {utils.sanitize(variable_name)}}}") #Just
+            latex_lines.append(fr'\label{{tab:table-{granule_filename_truncated_stem}_{variable_name}-Plot}}')
             latex_lines.append(r'\end{figure}')
+
             latex_lines.append(r'\newpage')
 
     return latex_lines
