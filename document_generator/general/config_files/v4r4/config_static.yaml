@@ -9,14 +9,17 @@ possible_grid_types:
   - native
   - 1D
 
-possible_granule_types_latlon:
+possible_granule_types:
   - coordinate
   - variable
-possible_granule_types_native:
-  - coordinate
-  - variable
-possible_granule_types_1D:
-  - variable
+
+table_section_titles:
+  coordinate_native: "Native lat-lon-cap 90 (llc90) Coordinates and Grid Geometry"
+  coordinate_latlon: "Lat-Lon Coordinates and Grid Geometry" 
+  variable_native: "Native Dataset Groupings"
+  variable_latlon: "Lat-Lon Dataset Groupings"
+  variable_1D: "1-D Dataset Groupings"
+
 
 global_attributes_json_file: document_files/v4r4/input_files_json/attribute_files/global_attributes.json
 global_attributes_tex_file: document_files/v4r4/document/static/global_attributes.tex
@@ -29,12 +32,12 @@ example_native_table_tex_file: document_files/v4r4/document/user_generated/examp
 example_1D_table_tex_file: document_files/v4r4/document/user_generated/example_1D_table.tex
 
 
-groupings_coordinates_native_json_file: document_files/v4r4/input_files_json/wecandobetter/native_coords.json
-groupings_coordinates_latlon_json_file: document_files/v4r4/input_files_json/wecandobetter/latlon_coords.json
+groupings_coordinate_native_json_file: document_files/v4r4/input_files_json/wecandobetter/native_coords.json
+groupings_coordinate_latlon_json_file: document_files/v4r4/input_files_json/wecandobetter/latlon_coords.json
 #
-groupings_variables_native_json_file: document_files/v4r4/input_files_json/groupings/ECCOv4r4_groupings_for_native_datasets.json
-groupings_variables_latlon_json_file: document_files/v4r4/input_files_json/groupings/ECCOv4r4_groupings_for_latlon_datasets.json
-groupings_variables_1D_json_file: document_files/v4r4/input_files_json/groupings/ECCOv4r4_groupings_for_1D_datasets.json
+groupings_variable_native_json_file: document_files/v4r4/input_files_json/groupings/ECCOv4r4_groupings_for_native_datasets.json
+groupings_variable_latlon_json_file: document_files/v4r4/input_files_json/groupings/ECCOv4r4_groupings_for_latlon_datasets.json
+groupings_variable_1D_json_file: document_files/v4r4/input_files_json/groupings/ECCOv4r4_groupings_for_1D_datasets.json
 
 
 coordinate_files_native_dir: document_files/v4r4/granule_datasets/coordinate_files/coordinate_files_native
@@ -45,20 +48,20 @@ variable_files_latlon_dir: document_files/v4r4/granule_datasets/granule_files/gr
 variable_files_1D_dir: document_files/v4r4/granule_datasets/granule_files/granules_1D
 
 
-figures_coordinates_native_dir: document_files/v4r4/figures/figures_coordinates_native 
-figures_coordinates_latlon_dir: document_files/v4r4/figures/figures_coordinates_latlon 
+figures_coordinate_native_dir: document_files/v4r4/figures/figures_coordinates_native 
+figures_coordinate_latlon_dir: document_files/v4r4/figures/figures_coordinates_latlon 
 #
-figures_variables_native_dir: document_files/v4r4/figures/figures_granules_native 
-figures_variables_latlon_dir: document_files/v4r4/figures/figures_granules_latlon 
-figures_variables_1D_dir: document_files/v4r4/figures/figures_granules_1D 
+figures_variable_native_dir: document_files/v4r4/figures/figures_granules_native 
+figures_variable_latlon_dir: document_files/v4r4/figures/figures_granules_latlon 
+figures_variable_1D_dir: document_files/v4r4/figures/figures_granules_1D 
 
 
 coordinate_table_native_tex_file: document_files/v4r4/document/user_generated/native_coords_table.tex
 coordinate_table_latlon_tex_file: document_files/v4r4/document/user_generated/latlon_coords_table.tex
 #
-variable_tables_native_tex_file: document_files/v4r4/document/user_generated/native_variables_tables.tex
-variable_tables_latlon_tex_file: document_files/v4r4/document/user_generated/latlon_variables_tables.tex
-variable_tables_1D_tex_file: document_files/v4r4/document/user_generated/1D_variables_tables.tex
+variable_table_native_tex_file: document_files/v4r4/document/user_generated/native_variables_tables.tex
+variable_table_latlon_tex_file: document_files/v4r4/document/user_generated/latlon_variables_tables.tex
+variable_table_1D_tex_file: document_files/v4r4/document/user_generated/1D_variables_tables.tex
 
 
 global_attributes_latex_lines:

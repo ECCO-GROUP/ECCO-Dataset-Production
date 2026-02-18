@@ -348,12 +348,12 @@ def data_var_table(field_name:str, attrs:dict, dataset_name:str)->list[str]:
     # Finally create the latex line
     la.append(r'\rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline')
     la.append(rf'{storageType} & {varName} & {description.capitalize()} & {unit} \\ \hline')
-    # la.append(r'\rowcolor{lightgray}  \multicolumn{4}{|m{1.00\textwidth}|}{\textbf{CDL Description}} \\ \hline')
     la.append(r'\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline')
     la.append(r'\multicolumn{4}{|c|}' +r'{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.95\textwidth}'+r'{\vspace*{0.25cm} \footnotesize{'+ rf'{cdl_description}' + r'}}}}} \\ \hline')
     la.append(r'\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline')
-    # la.append(r'\multicolumn{4}{|p{1\textwidth}|}' + rf'{{{comment.capitalize()}}}' + r' \\ \hline')
-    la.append(r'\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{' + rf'{{{comment.capitalize()}}}' + r'}} \\ \hline')
+    
+    la.append(r'\\ \\ \multicolumn{4}{|p{1\textwidth}|}{\footnotesize{' + rf'{{{comment.capitalize()}}}' + r'}} \\ \hline')
+    #la.append(r'\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{' + rf'{{{comment.capitalize()}}}' + r'}} \\ \hline')
     la.append(r'\end{longtable}')
     la.append(r"")
 
@@ -533,7 +533,8 @@ def get_Global_or_CoordsDimsVarsList(netCDFpath:str,jsonFileName:str,saveTo:str)
 
 
 
-def data_products(ecco_version_string, json_groupings_filepath:str, granule_directory:str, image_directory:str, grid_type:str='native')->list:
+#def data_products(ecco_version_string, json_groupings_filepath:str, granule_directory:str, image_directory:str, grid_type:str='native')->list:
+def data_products(ecco_version_string, json_groupings_filepath:str, granule_directory:str, image_directory:str, grid_type:str, granule_type: str)->list:
     """
 
     Generates a list of LaTeX lines for the Data Products grid_type of the report.
@@ -547,9 +548,8 @@ def data_products(ecco_version_string, json_groupings_filepath:str, granule_dire
         list: A list of LaTeX lines for the Data Products grid_type of the report.
 
     """
-    is_coord = False
-    if 'Coordinate' in grid_type:
-        is_coord = True
+    is_coord = granule_type == "coordinate"
+    
     if grid_type != '1D':
         grid_type = grid_type.capitalize()
 
@@ -563,53 +563,34 @@ def data_products(ecco_version_string, json_groupings_filepath:str, granule_dire
     for json_dictionary in list_of_json_dictionaries:
         granule_filename_truncated_stem = json_dictionary["filename"]
         granule_filename_truncated_stem_formatted = utils.sanitize(granule_filename_truncated_stem)
-        #if "coordinates" in grid_type:  ???? Isn't this the same hackiness as above?
-        if 'Coordinate' in grid_type:   #???? Isn't this the same hackiness as above?
-            complementText = " "
-        else:
-            complementText = ' dataset of '
-        latex_lines.append(r'\subsection{'+ f'{grid_type}' + complementText + f'{granule_filename_truncated_stem_formatted}' + r'}')
-        #latex_lines.append(r'\section{'+ f'{grid_type}' + complementText + f'{granule_filename_truncated_stem_formatted}' + r'}')
+        latex_lines.append(r'\subsection{'+ f'{grid_type}' + ' dataset of ' + f'{granule_filename_truncated_stem_formatted}' + r'}')
         latex_lines.append(r'\newp') # Deasctived!!
 
-        #print(granule_directory)
-        #print(granule_filename_truncated_stem)
-        #print()
-
-        # data_array_list: a list of data arrays, either of all coordinate or non-coordinate variables, from the given granule
-        # dataset: the xr dataset for the whole granule (opened in a fancy way, with many options - see "search_and_extract()")
         data_array_list, dataset = search_and_extract(granule_filename_truncated_stem, os.path.join(general_base_dir, granule_directory), is_coord)
 
         latex_lines.append(r'\subsubsection{Overview}')
-        #latex_lines.append(r'\subsection{Overview}')
 # BL: HERE'S WHERE THE SMASHING OF INTRO AND COMMENT IS HAPPENING
         if "comment" in json_dictionary.keys():
-            summary_content = json_dictionary["Introduction"]+' '+utils.sanitize(json_dictionary["comment"])+" "
+            summary_content = json_dictionary["Introduction"]
+            summary_content += f"\n\n\nSpecial note: {utils.sanitize(json_dictionary['comment'])} "
         else:
             summary_content = json_dictionary["Introduction"]+" "
         latex_lines.append(summary_content)
-        latex_lines.extend(fieldTable(dataset, is_coord)) #<== Modified!!! in order to remove the table that contain a list of variable per dataset.
+        latex_lines.extend(fieldTable(dataset, is_coord)) 
         latex_lines.append(r'\newp') # Deasctived!!
         for variable in data_array_list:
 
-            # attrs is a dictionary of variable attributes
-            attrs = extract_field_info(variable)
+            attributes_dictionary = extract_field_info(variable)
 
             # Create latex table for each variable
-            variable_name = attrs['Variable Name']
+            variable_name = attributes_dictionary['Variable Name']
             cleanName = utils.sanitize(variable_name)
-            latex_lines.append(r'\pagebreak') # Page break -- added ## <= is this utils? => yes, but I remove it to have continious fluent paging
+            latex_lines.append(r'\pagebreak')
             latex_lines.append(fr'\subsubsection{{{grid_type} Variable: {cleanName}}}')
-            #latex_lines.append(fr'\subsection{{{grid_type} Variable: {cleanName}}}')
-            dataVarTable = data_var_table(variable_name, attrs, granule_filename_truncated_stem)
+            dataVarTable = data_var_table(variable_name, attributes_dictionary, granule_filename_truncated_stem)
             latex_lines.extend(dataVarTable)
 
-            # Create latex plot for each variable
-            #if not is_coord: # I think this is what they wanted
-
             dataVarPlot = cdf_plotter.data_var_plot(ecco_version_string, dataset, dataset[variable_name], image_directory)
-            #dataVarPlot = cdf_plotter.data_var_plot(ecco_version_string, dataset, dataset[variable_name], image_directory, is_coord)  # BL: EPIC
-            #dataVarPlot = cdf_plotter.data_var_plot(ecco_version_string, dataset, dataset[variable_name], image_directory, True, is_coord)  # BL: EPIC
             latex_lines.append(r'\begin{figure}[H]')
             latex_lines.append(r'\centering')
             latex_lines.append(dataVarPlot) #testing right here

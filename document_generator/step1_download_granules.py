@@ -6,7 +6,6 @@
 
 import os
 import general.utility_scripts.utils_docgen as utils_docgen
-import general.utility_scripts.latex_outline as latex_outline
 
 def main():
     
@@ -15,8 +14,6 @@ def main():
     overwrite_granules_switch = False # User can choose to avoid overwriting granules - should also not be hardcoded!
 
     utils_docgen.download_granules(version_string, overwrite_granules_switch)
-    latex_outline.write_data_attributes_tables(version_string, overwrite_granules_switch)
-    latex_outline.write_datasets(version_string, overwrite_granules_switch)
 
 if __name__ == "__main__":
     main()

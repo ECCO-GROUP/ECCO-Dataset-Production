@@ -32,8 +32,9 @@ yiw
 # -> Replace current word with last word yanked
 viwp
 
-# repeat last action with "."
-
+# repeat last action:
+word modification: "."
+substitution: "&"
 
 # Delete without placing in clipbard: Use the "black hole" register!  it is "_", and, like 
 # all register specification in normal mode, you must start the command with a double quote.

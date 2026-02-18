@@ -1,4 +1,4 @@
-# BL: added "overwrite_granules_switch" as an argument, thinking that we should allow for only re-plotting newly downloaded/overwritten granules....
+# BL: added "overwrite_switch" as an argument, thinking that we should allow for only re-plotting newly downloaded/overwritten granules....
 # But maybe I'll implement that later
 
 import os
@@ -15,7 +15,7 @@ import utility_scripts.cdf_extract as cdf_extract
 import utility_scripts.utils_docgen as utils
 
 
-def write_data_attributes_tables(version_string, overwrite_granules_switch):
+def write_data_attributes_tables(version_string, overwrite_switch):
     """
         This function writes the data product tables to the latex document.
     """
@@ -70,7 +70,7 @@ def write_data_attributes_tables(version_string, overwrite_granules_switch):
 
 
 
-def write_datasets(version_string, overwrite_granules_switch):
+def write_datasets(version_string, overwrite_switch):
 
     config_file_static = os.path.join(general_base_dir, "config_files", version_string, "config_static.yaml")
     with open(config_file_static,'r') as stream:
@@ -81,57 +81,36 @@ def write_datasets(version_string, overwrite_granules_switch):
         config_dictionary_user = yaml.safe_load(stream)
 
     possible_grid_types = config_dictionary_static["possible_grid_types"]
+    possible_granule_types = config_dictionary_static["possible_granule_types"]
+    table_section_titles_dictionary = config_dictionary_static["table_section_titles"]
     grid_types_to_ignore = []
 
     for grid_type in possible_grid_types:
         for key in config_dictionary_user.keys():
             if grid_type in key and grid_type not in grid_types_to_ignore:
                 grid_types_to_ignore.append(grid_type)
-    
-                # Coordinates (Note that the 1D grid does not have a coordinate file)
-                if grid_type != "1D":
+                for granule_type in possible_granule_types:
+                        
+                    print(f"{granule_type} {grid_type}")
+        
+                    if not (grid_type == "1D" and granule_type == "coordinate"):
 
-                    coordinate_latex_lines = []
-                    # PLACEHOLDER SECTION NAMES - where should these come from?
-                    coordinate_document_section_title = f"{grid_type} STUFF"
-                    coordinate_document_section_title= utils.sanitize(coordinate_document_section_title)
-                    coordinate_latex_lines.append(r'\section{'+ f'{coordinate_document_section_title}' + r'}')
-
-                    #coordinate_latex_lines = cdf_extract.data_products(version_string, 
-                    coordinate_latex_lines.extend(cdf_extract.data_products(version_string, 
-                                                                       os.path.join(general_base_dir, config_dictionary_static[f"groupings_coordinates_{grid_type}_json_file"]),
-                                                                       os.path.join(general_base_dir, config_dictionary_static[f"coordinate_files_{grid_type}_dir"]),
-                                                                       os.path.join(general_base_dir, config_dictionary_static[f"figures_coordinates_{grid_type}_dir"]),
-                                                                       grid_type + "Coordinate")) # The elegance
-                                                                      
-            
-                    coordinate_latex_output_file = os.path.join(general_base_dir, config_dictionary_static[f'coordinate_table_{grid_type}_tex_file'])
-                    Path(coordinate_latex_output_file).parent.mkdir(parents=True, exist_ok=True)
-                    with open(coordinate_latex_output_file, 'w') as output_file:
-                        output_file.write('\n'.join(coordinate_latex_lines))
-
-                # Variables
-                variables_latex_lines = []
-                # PLACEHOLDER SECTION NAMES - where should these come from?
-                variables_document_section_title = f"{grid_type} GROUPINGS STUFF"
-                variables_document_section_title= utils.sanitize(variables_document_section_title)
-                variables_latex_lines.append(r'\section{'+ f'{variables_document_section_title}' + r'}')
+                        granule_latex_lines = []
+                        granule_document_section_title = config_dictionary_static["table_section_titles"][f"{granule_type}_{grid_type}"]
+                        granule_document_section_title= utils.sanitize(granule_document_section_title)
+                        granule_latex_lines.append(r'\section{'+ f'{granule_document_section_title}' + r'}')
+                        granule_latex_lines.extend(cdf_extract.data_products(version_string, 
+                                                                           os.path.join(general_base_dir, config_dictionary_static[f"groupings_{granule_type}_{grid_type}_json_file"]),
+                                                                           os.path.join(general_base_dir, config_dictionary_static[f"{granule_type}_files_{grid_type}_dir"]),
+                                                                           os.path.join(general_base_dir, config_dictionary_static[f"figures_{granule_type}_{grid_type}_dir"]),
+                                                                           grid_type, granule_type))
                 
-                variables_latex_lines.extend(cdf_extract.data_products(version_string, 
-                #variables_latex_lines = cdf_extract.data_products(version_string, 
-                                                                  os.path.join(general_base_dir, config_dictionary_static[f"groupings_variables_{grid_type}_json_file"]),
-                                                                  os.path.join(general_base_dir, config_dictionary_static[f"variable_files_{grid_type}_dir"]),
-                                                                  os.path.join(general_base_dir, config_dictionary_static[f"figures_variables_{grid_type}_dir"]),
-                                                                  grid_type))
+                        granule_latex_output_file = os.path.join(general_base_dir, config_dictionary_static[f'{granule_type}_table_{grid_type}_tex_file'])
+                        Path(granule_latex_output_file).parent.mkdir(parents=True, exist_ok=True)
+                        with open(granule_latex_output_file, 'w') as output_file:
+                            output_file.write('\n'.join(granule_latex_lines))
 
-                variable_latex_output_file = os.path.join(general_base_dir, config_dictionary_static[f'variable_tables_{grid_type}_tex_file'])
-                Path(variable_latex_output_file).parent.mkdir(parents=True, exist_ok=True)
-                with open(variable_latex_output_file, 'w') as output_file:
-                    output_file.write('\n'.join(variables_latex_lines))
-
-
-
-
+                        #print(f"{granule_type} {grid_type}")
 
 
 
