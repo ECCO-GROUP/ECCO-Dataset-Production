@@ -1,11 +1,11 @@
 \section{Lat-Lon Dataset Groupings}
-\subsection{Latlon dataset of OCEAN\_BOTTOM\_PRESSURE}
+\subsection{latlon dataset of OCEAN\_BOTTOM\_PRESSURE}
 \newp
 \subsubsection{Overview}
 This dataset provides 2D fields of ocean bottom pressure interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution.
-
-
-Special note: Ocean bottom pressure given in equivalent water thickness excluding (OBP) and including (OBPGMAP) the contribution from global mean atmospheric pressure. 
+\\\\
+Note: Ocean bottom pressure given in equivalent water thickness excluding (OBP) and including (OBPGMAP) the contribution from global mean atmospheric pressure.
+\\
 \begin{longtable}{|m{0.15\textwidth}|m{0.64\textwidth}|m{0.12\textwidth}|}
 \caption{Coordinates and Variables in the dataset OCEAN\_BOTTOM\_PRESSURE}
 \label{tab:table-<xarray.Dataset> Size: 2MB
@@ -50,7 +50,7 @@ OBPGMAP &Ocean bottom pressure given as equivalent water thickness, includes glo
 
 \newp
 \pagebreak
-\subsubsection{Latlon Variable: OBP}
+\subsubsection{latlon Variable: OBP}
 \begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
 \caption{Attributes description of the variable 'OBP' from OCEAN\_BOTTOM\_PRESSURE's  dataset.}
 \label{tab:table-OCEAN_BOTTOM_PRESSURE_OBP} \\ 
@@ -68,7 +68,7 @@ float32 & OBP & Ocean bottom pressure given as equivalent water thickness & m \\
 \hspace*{0.5cm}OBP: valid\_min = -2.544442892074585\\
 }}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
-\\ \\ \multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Obp excludes the contribution from global mean atmospheric pressure and is therefore suitable for comparisons with grace data products. obp is calculated as follows. first, we calculate ocean hydrostatic bottom pressure anomaly, phibot, with phibot = p\_b/rhoconst - gh(t), where p\_b = model ocean hydrostatic bottom pressure, rhoconst = reference density (1029 kg m-3), g is acceleration due to gravity (9.81 m s-2), and h(t) is model depth at time t. then, obp = phibot/g + corrections for i) global mean steric sea level changes related to density changes in the boussinesq volume-conserving model (greatbatch correction, see stergloh) and ii) global mean atmospheric pressure variations. use obp for comparisons with ocean bottom pressure data products that have been corrected for global mean atmospheric pressure variations. grace data typically are corrected for global mean atmospheric pressure variations. in contrast, ocean bottom pressure gauge data typically are not corrected for global mean atmospheric pressure variations.}}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Obp excludes the contribution from global mean atmospheric pressure and is therefore suitable for comparisons with grace data products. obp is calculated as follows. first, we calculate ocean hydrostatic bottom pressure anomaly, phibot, with phibot = p\_b/rhoconst - gh(t), where p\_b = model ocean hydrostatic bottom pressure, rhoconst = reference density (1029 kg m-3), g is acceleration due to gravity (9.81 m s-2), and h(t) is model depth at time t. then, obp = phibot/g + corrections for i) global mean steric sea level changes related to density changes in the boussinesq volume-conserving model (greatbatch correction, see stergloh) and ii) global mean atmospheric pressure variations. use obp for comparisons with ocean bottom pressure data products that have been corrected for global mean atmospheric pressure variations. grace data typically are corrected for global mean atmospheric pressure variations. in contrast, ocean bottom pressure gauge data typically are not corrected for global mean atmospheric pressure variations.}}} \\ \hline
 \end{longtable}
 
 \begin{figure}[H]
@@ -79,7 +79,7 @@ float32 & OBP & Ocean bottom pressure given as equivalent water thickness & m \\
 \end{figure}
 \newpage
 \pagebreak
-\subsubsection{Latlon Variable: OBPGMAP}
+\subsubsection{latlon Variable: OBPGMAP}
 \begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
 \caption{Attributes description of the variable 'OBPGMAP' from OCEAN\_BOTTOM\_PRESSURE's  dataset.}
 \label{tab:table-OCEAN_BOTTOM_PRESSURE_OBPGMAP} \\ 
@@ -97,7 +97,7 @@ float32 & OBPGMAP & Ocean bottom pressure given as equivalent water thickness, i
 \hspace*{0.5cm}OBPGMAP: valid\_min = 7.395928859710693\\
 }}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
-\\ \\ \multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Obpgmap includes the contribution from global mean atmospheric pressure and is therefore suitable for comparisons with ocean bottom pressure gauge data products. obpgmap is calculated as follows. first, we calculate ocean hydrostatic bottom pressure anomaly, phibot, with phibot = p\_b/rhoconst - gh(t), where p\_b = model ocean hydrostatic bottom pressure, rhoconst = reference density (1029 kg m-3), g is acceleration due to gravity (9.81 m s-2), and h(t) is model depth at time t. then, obpgmap= phibot/g + corrections for global mean steric sea level changes related to density changes in the boussinesq volume-conserving model (greatbatch correction, see stergloh). use obpgmap for comparisons with ocean bottom pressure data products that have not been corrected for global mean atmospheric pressure variations. grace data typically are corrected for global mean atmospheric pressure variations. in contrast, ocean bottom pressure gauge data typically are not corrected for global mean atmospheric pressure variations.}}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Obpgmap includes the contribution from global mean atmospheric pressure and is therefore suitable for comparisons with ocean bottom pressure gauge data products. obpgmap is calculated as follows. first, we calculate ocean hydrostatic bottom pressure anomaly, phibot, with phibot = p\_b/rhoconst - gh(t), where p\_b = model ocean hydrostatic bottom pressure, rhoconst = reference density (1029 kg m-3), g is acceleration due to gravity (9.81 m s-2), and h(t) is model depth at time t. then, obpgmap= phibot/g + corrections for global mean steric sea level changes related to density changes in the boussinesq volume-conserving model (greatbatch correction, see stergloh). use obpgmap for comparisons with ocean bottom pressure data products that have not been corrected for global mean atmospheric pressure variations. grace data typically are corrected for global mean atmospheric pressure variations. in contrast, ocean bottom pressure gauge data typically are not corrected for global mean atmospheric pressure variations.}}} \\ \hline
 \end{longtable}
 
 \begin{figure}[H]
@@ -107,13 +107,13 @@ float32 & OBPGMAP & Ocean bottom pressure given as equivalent water thickness, i
 \label{tab:table-OCEAN_BOTTOM_PRESSURE_OBPGMAP-Plot}
 \end{figure}
 \newpage
-\subsection{Latlon dataset of SEA\_SURFACE\_HEIGHT}
+\subsection{latlon dataset of SEA\_SURFACE\_HEIGHT}
 \newp
 \subsubsection{Overview}
 This dataset provides 2D fields of dynamic sea surface height interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution.
-
-
-Special note: SSH (dynamic sea surface height) = SSHNOIBC (dynamic sea surface without the inverse barometer correction) - SSHIBC (inverse barometer correction). The inverted barometer correction accounts for variations in sea surface height due to atmospheric pressure variations. 
+\\\\
+Note: SSH (dynamic sea surface height) = SSHNOIBC (dynamic sea surface without the inverse barometer correction) - SSHIBC (inverse barometer correction). The inverted barometer correction accounts for variations in sea surface height due to atmospheric pressure variations.
+\\
 \begin{longtable}{|m{0.15\textwidth}|m{0.64\textwidth}|m{0.12\textwidth}|}
 \caption{Coordinates and Variables in the dataset SEA\_SURFACE\_HEIGHT}
 \label{tab:table-<xarray.Dataset> Size: 3MB
@@ -160,7 +160,7 @@ SSHNOIBC &Sea surface height anomaly without the inverted barometer (ib) correct
 
 \newp
 \pagebreak
-\subsubsection{Latlon Variable: SSH}
+\subsubsection{latlon Variable: SSH}
 \begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
 \caption{Attributes description of the variable 'SSH' from SEA\_SURFACE\_HEIGHT's  dataset.}
 \label{tab:table-SEA_SURFACE_HEIGHT_SSH} \\ 
@@ -179,7 +179,7 @@ float32 & SSH & Dynamic sea surface height anomaly & m \\ \hline
 \hspace*{0.5cm}SSH: valid\_min = -2.4861555099487305\\
 }}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
-\\ \\ \multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Dynamic sea surface height anomaly above the geoid, suitable for comparisons with altimetry sea surface height data products that apply the inverse barometer (ib) correction. note: ssh is calculated by correcting model sea level anomaly etan for three effects: a) global mean steric sea level changes related to density changes in the boussinesq volume-conserving model (greatbatch correction, see stergloh), b) the inverted barometer (ib) effect (see sshibc) and c) sea level displacement due to sea-ice and snow pressure loading (see siceload). ssh can be compared with the similarly-named ssh variable in previous ecco products that did not include atmospheric pressure loading (e.g., version 4 release 3). use sshnoibc for comparisons with altimetry data products that do not apply the ib correction.}}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Dynamic sea surface height anomaly above the geoid, suitable for comparisons with altimetry sea surface height data products that apply the inverse barometer (ib) correction. note: ssh is calculated by correcting model sea level anomaly etan for three effects: a) global mean steric sea level changes related to density changes in the boussinesq volume-conserving model (greatbatch correction, see stergloh), b) the inverted barometer (ib) effect (see sshibc) and c) sea level displacement due to sea-ice and snow pressure loading (see siceload). ssh can be compared with the similarly-named ssh variable in previous ecco products that did not include atmospheric pressure loading (e.g., version 4 release 3). use sshnoibc for comparisons with altimetry data products that do not apply the ib correction.}}} \\ \hline
 \end{longtable}
 
 \begin{figure}[H]
@@ -190,7 +190,7 @@ float32 & SSH & Dynamic sea surface height anomaly & m \\ \hline
 \end{figure}
 \newpage
 \pagebreak
-\subsubsection{Latlon Variable: SSHIBC}
+\subsubsection{latlon Variable: SSHIBC}
 \begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
 \caption{Attributes description of the variable 'SSHIBC' from SEA\_SURFACE\_HEIGHT's  dataset.}
 \label{tab:table-SEA_SURFACE_HEIGHT_SSHIBC} \\ 
@@ -208,7 +208,7 @@ float32 & SSHIBC & The inverted barometer (ib) correction to sea surface height 
 \hspace*{0.5cm}SSHIBC: valid\_min = -0.5228679180145264\\
 }}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
-\\ \\ \multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Not an ssh itself, but a correction to model sea level anomaly (etan) required to account for the static part of sea surface displacement by atmosphere pressure loading: ssh = sshnoibc - sshibc. note: use ssh for model-data comparisons with altimetry data products that do apply the ib correction and sshnoibc for comparisons with altimetry data products that do not apply the ib correction.}}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Not an ssh itself, but a correction to model sea level anomaly (etan) required to account for the static part of sea surface displacement by atmosphere pressure loading: ssh = sshnoibc - sshibc. note: use ssh for model-data comparisons with altimetry data products that do apply the ib correction and sshnoibc for comparisons with altimetry data products that do not apply the ib correction.}}} \\ \hline
 \end{longtable}
 
 \begin{figure}[H]
@@ -219,7 +219,7 @@ float32 & SSHIBC & The inverted barometer (ib) correction to sea surface height 
 \end{figure}
 \newpage
 \pagebreak
-\subsubsection{Latlon Variable: SSHNOIBC}
+\subsubsection{latlon Variable: SSHNOIBC}
 \begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
 \caption{Attributes description of the variable 'SSHNOIBC' from SEA\_SURFACE\_HEIGHT's  dataset.}
 \label{tab:table-SEA_SURFACE_HEIGHT_SSHNOIBC} \\ 
@@ -237,7 +237,7 @@ float32 & SSHNOIBC & Sea surface height anomaly without the inverted barometer (
 \hspace*{0.5cm}SSHNOIBC: valid\_min = -2.45104718208313\\
 }}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
-\\ \\ \multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Sea surface height anomaly above the geoid without the inverse barometer (ib) correction, suitable for comparisons with altimetry sea surface height data products that do not apply the inverse barometer (ib) correction. note: sshnoibc is calculated by correcting model sea level anomaly etan for two effects: a) global mean steric sea level changes related to density changes in the boussinesq volume-conserving model (greatbatch correction, see stergloh), b) sea level displacement due to sea-ice and snow pressure loading (see siceload). in ecco version 4 release 4 the model is forced with atmospheric pressure loading. sshnoibc does not correct for the static part of the effect of atmosphere pressure loading on sea surface height (the so-called inverse barometer (ib) correction). use ssh for comparisons with altimetry data products that do apply the ib correction.}}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Sea surface height anomaly above the geoid without the inverse barometer (ib) correction, suitable for comparisons with altimetry sea surface height data products that do not apply the inverse barometer (ib) correction. note: sshnoibc is calculated by correcting model sea level anomaly etan for two effects: a) global mean steric sea level changes related to density changes in the boussinesq volume-conserving model (greatbatch correction, see stergloh), b) sea level displacement due to sea-ice and snow pressure loading (see siceload). in ecco version 4 release 4 the model is forced with atmospheric pressure loading. sshnoibc does not correct for the static part of the effect of atmosphere pressure loading on sea surface height (the so-called inverse barometer (ib) correction). use ssh for comparisons with altimetry data products that do apply the ib correction.}}} \\ \hline
 \end{longtable}
 
 \begin{figure}[H]

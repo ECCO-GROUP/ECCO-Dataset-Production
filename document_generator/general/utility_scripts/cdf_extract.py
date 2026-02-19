@@ -204,7 +204,7 @@ def get_coordinate_vars(filename:str)->list[xr.DataArray]:
 
 
 
-
+# BL: this is so annoying
 def extract_field_info(field:xr.DataArray)->dict[str, str]:
     """
     Extracts information from the given field.
@@ -299,6 +299,7 @@ def data_var_table(field_name:str, attrs:dict, dataset_name:str)->list[str]:
         list: A list containing the latex table of the data variable.
     """
     new_sani = utils.sanitize(dataset_name)
+    
     # Obtain the important attributes
     storageType = utils.sanitize(attrs["Storage Type"])
     varName = utils.sanitize(attrs["Variable Name"])
@@ -320,30 +321,11 @@ def data_var_table(field_name:str, attrs:dict, dataset_name:str)->list[str]:
     # Create the latex table
     la = [
             # ADJUST SIZE OF TABLE HERE
-            # r'\begin{longtable}{|p{0.1\textwidth}|p{0.35\textwidth}|p{0.45\textwidth}|p{0.1\textwidth}|}',
-            # r'\begin{longtable}{|p{0.06\textwidth}|p{0.41\textwidth}|p{0.39\textwidth}|p{0.06\textwidth}|}',
-            # r'\begin{longtable}{|m{0.06\textwidth}|m{0.39\textwidth}|m{0.37\textwidth}|m{0.11\textwidth}|}',
             r'\begin{longtable}{|m{0.06\textwidth}|m{'+str(a)+r'\textwidth}|m{'+str(b)+r'\textwidth}|m{0.12\textwidth}|}',
-            # fr"\caption{{CDL description of {new_sani}'s {utils.sanitize(field_name)} variable}}",
             fr"\caption{{Attributes description of the variable '{utils.sanitize(field_name)}' from {new_sani}'s  dataset.}}",
             fr'\label{{tab:table-{dataset_name}_{field_name}}} \\ ',
             r'\hline \endhead \hline \endfoot',
         ]
-    #daName = utils.sanitize(field_name)
-
-    # Obtain the important attributes
-    # storageType = utils.sanitize(attrs["Storage Type"])
-    # varName = utils.sanitize(attrs["Variable Name"])
-    # description = utils.sanitize(attrs["Description"])
-    # unit = utils.sanitize(attrs["Units"])
-    # comment = utils.sanitize(attrs["Comments"])
-
-    # # Treat 'Example CDL Description' as a string
-    # cdl_description = utils.sanitize_with_math(attrs['CDL Description']) # might have math
-    # cdl_description = cdl_description.replace(r'\\', '\'')
-    # cdl_description = cdl_description.replace('\n', '\\\\\n')
-    # cdl_description = cdl_description.replace('    ', r'\hspace*{0.5cm}')
-
 
     # Finally create the latex line
     la.append(r'\rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline')
@@ -351,13 +333,10 @@ def data_var_table(field_name:str, attrs:dict, dataset_name:str)->list[str]:
     la.append(r'\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline')
     la.append(r'\multicolumn{4}{|c|}' +r'{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.95\textwidth}'+r'{\vspace*{0.25cm} \footnotesize{'+ rf'{cdl_description}' + r'}}}}} \\ \hline')
     la.append(r'\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline')
-    
-    la.append(r'\\ \\ \multicolumn{4}{|p{1\textwidth}|}{\footnotesize{' + rf'{{{comment.capitalize()}}}' + r'}} \\ \hline')
-    #la.append(r'\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{' + rf'{{{comment.capitalize()}}}' + r'}} \\ \hline')
+    la.append(r'\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{' + rf'{{{comment.capitalize()}}}' + r'}} \\ \hline')
     la.append(r'\end{longtable}')
     la.append(r"")
 
-    # 1.08 or 0.92
     return la
 
 ##############################################################################################################
@@ -533,7 +512,6 @@ def get_Global_or_CoordsDimsVarsList(netCDFpath:str,jsonFileName:str,saveTo:str)
 
 
 
-#def data_products(ecco_version_string, json_groupings_filepath:str, granule_directory:str, image_directory:str, grid_type:str='native')->list:
 def data_products(ecco_version_string, json_groupings_filepath:str, granule_directory:str, image_directory:str, grid_type:str, granule_type: str)->list:
     """
 
@@ -550,8 +528,8 @@ def data_products(ecco_version_string, json_groupings_filepath:str, granule_dire
     """
     is_coord = granule_type == "coordinate"
     
-    if grid_type != '1D':
-        grid_type = grid_type.capitalize()
+    #if grid_type != '1D':
+    #    grid_type = grid_type.capitalize()
 
     latex_lines = []
 
@@ -569,13 +547,16 @@ def data_products(ecco_version_string, json_groupings_filepath:str, granule_dire
         data_array_list, dataset = search_and_extract(granule_filename_truncated_stem, os.path.join(general_base_dir, granule_directory), is_coord)
 
         latex_lines.append(r'\subsubsection{Overview}')
+
 # BL: HERE'S WHERE THE SMASHING OF INTRO AND COMMENT IS HAPPENING
+
+        latex_lines.append(utils.sanitize(json_dictionary["Introduction"])) 
+        latex_lines.append(r"\\\\")
+
         if "comment" in json_dictionary.keys():
-            summary_content = json_dictionary["Introduction"]
-            summary_content += f"\n\n\nSpecial note: {utils.sanitize(json_dictionary['comment'])} "
-        else:
-            summary_content = json_dictionary["Introduction"]+" "
-        latex_lines.append(summary_content)
+            latex_lines.append(utils.sanitize(f"Note: {json_dictionary['comment']}"))
+            latex_lines.append(r"\\")
+        
         latex_lines.extend(fieldTable(dataset, is_coord)) 
         latex_lines.append(r'\newp') # Deasctived!!
         for variable in data_array_list:

@@ -2,7 +2,8 @@
 \subsection{1D dataset of GLOBAL\_MEAN\_ATM\_SURFACE\_PRES}
 \newp
 \subsubsection{Overview}
-This dataset provides a 1D field of global mean atmospheric surface pressure over the ocean and sea-ice from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on instantaneous hourly, daily-average and monthly-average time resolution. 
+This dataset provides a 1D field of global mean atmospheric surface pressure over the ocean and sea-ice from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on instantaneous hourly, daily-average and monthly-average time resolution.
+\\\\
 \begin{longtable}{|m{0.15\textwidth}|m{0.64\textwidth}|m{0.12\textwidth}|}
 \caption{Coordinates and Variables in the dataset GLOBAL\_MEAN\_ATM\_SURFACE\_PRES}
 \label{tab:table-<xarray.Dataset> Size: 4MB
@@ -53,7 +54,7 @@ float64 & Pa\_global & Global mean atmospheric surface pressure over the ocean a
 \hspace*{0.5cm}Pa\_global: valid\_min = 100873.14755283327\\
 }}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
-\\ \\ \multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{N/a}}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{N/a}}} \\ \hline
 \end{longtable}
 
 \begin{figure}[H]
@@ -66,7 +67,8 @@ float64 & Pa\_global & Global mean atmospheric surface pressure over the ocean a
 \subsection{1D dataset of GLOBAL\_MEAN\_SEA\_LEVEL}
 \newp
 \subsubsection{Overview}
-This dataset provides a 1D field of global mean sea level anomalies including barystatic and sterodynamic terms from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution. 
+This dataset provides a 1D field of global mean sea level anomalies including barystatic and sterodynamic terms from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution.
+\\\\
 \begin{longtable}{|m{0.4\textwidth}|m{0.39\textwidth}|m{0.12\textwidth}|}
 \caption{Coordinates and Variables in the dataset GLOBAL\_MEAN\_SEA\_LEVEL}
 \label{tab:table-<xarray.Dataset> Size: 228kB
@@ -121,7 +123,7 @@ float32 & global\_mean\_barystatic\_sea\_level\_anomaly & Global mean of barysta
 \hspace*{0.5cm}global\_mean\_barystatic\_sea\_level\_anomaly: valid\_min = -0.045110904\\
 }}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
-\\ \\ \multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Global mean barystatic sea level anomaly due to changes in total ocean mass. note: eccov4 uses a volume-conserving boussinesq formulation of the mitgcm with a free-surface boundary condition with real freshwater flux forcing. changes in ocean mass due to evaporation, precipitation, runoff, and sea-ice growth/melt are reflected in model sea level. however, as a consequence of the boussinsq formulation, changes to seawater density due to net buoyancy fluxes (e.g., global mean surface heating/cooling) do not change model sea level anomaly (etan) via seawater expansion/contraction. changes in global ocean density therefore induce a spurious change in model ocean bottom pressure (phibot) via 'virtual mass fluxes'. the 'greatbatch correction' is a time varying, globally-uniform correction to account for changes in global mean density in boussinesq models. this correction is used to calculate dynamic sea surface height (ssh) and ocean bottom pressure (obp). importantly, there is no dynamical significance to the greatbatch correction but it is required to account for steric changes in global sea level. see greatbatch, 1994. j. of geophys. res. oceans, doi.org/10.1029/94jc00847}}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Global mean barystatic sea level anomaly due to changes in total ocean mass. note: eccov4 uses a volume-conserving boussinesq formulation of the mitgcm with a free-surface boundary condition with real freshwater flux forcing. changes in ocean mass due to evaporation, precipitation, runoff, and sea-ice growth/melt are reflected in model sea level. however, as a consequence of the boussinsq formulation, changes to seawater density due to net buoyancy fluxes (e.g., global mean surface heating/cooling) do not change model sea level anomaly (etan) via seawater expansion/contraction. changes in global ocean density therefore induce a spurious change in model ocean bottom pressure (phibot) via 'virtual mass fluxes'. the 'greatbatch correction' is a time varying, globally-uniform correction to account for changes in global mean density in boussinesq models. this correction is used to calculate dynamic sea surface height (ssh) and ocean bottom pressure (obp). importantly, there is no dynamical significance to the greatbatch correction but it is required to account for steric changes in global sea level. see greatbatch, 1994. j. of geophys. res. oceans, doi.org/10.1029/94jc00847}}} \\ \hline
 \end{longtable}
 
 \begin{figure}[H]
@@ -151,7 +153,7 @@ float32 & global\_mean\_sea\_level\_anomaly & Global mean of dynamic ssh & m \\ 
 \hspace*{0.5cm}global\_mean\_sea\_level\_anomaly: valid\_min = -0.055836163\\
 }}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
-\\ \\ \multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Global mean of dynamic sea level anomaly, equivalent to global mean sea level change. note: eccov4 uses a volume-conserving boussinesq formulation of the mitgcm with a free-surface boundary condition with real freshwater flux forcing. changes in ocean mass due to evaporation, precipitation, runoff, and sea-ice growth/melt are reflected in model sea level. however, as a consequence of the boussinsq formulation, changes to seawater density due to net buoyancy fluxes (e.g., global mean surface heating/cooling) do not change model sea level anomaly (etan) via seawater expansion/contraction. changes in global ocean density therefore induce a spurious change in model ocean bottom pressure (phibot) via 'virtual mass fluxes'. the 'greatbatch correction' is a time varying, globally-uniform correction to account for changes in global mean density in boussinesq models. this correction is used to calculate dynamic sea surface height (ssh) and ocean bottom pressure (obp). importantly, there is no dynamical significance to the greatbatch correction but it is required to account for steric changes in global sea level. see greatbatch, 1994. j. of geophys. res. oceans, doi.org/10.1029/94jc00847}}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Global mean of dynamic sea level anomaly, equivalent to global mean sea level change. note: eccov4 uses a volume-conserving boussinesq formulation of the mitgcm with a free-surface boundary condition with real freshwater flux forcing. changes in ocean mass due to evaporation, precipitation, runoff, and sea-ice growth/melt are reflected in model sea level. however, as a consequence of the boussinsq formulation, changes to seawater density due to net buoyancy fluxes (e.g., global mean surface heating/cooling) do not change model sea level anomaly (etan) via seawater expansion/contraction. changes in global ocean density therefore induce a spurious change in model ocean bottom pressure (phibot) via 'virtual mass fluxes'. the 'greatbatch correction' is a time varying, globally-uniform correction to account for changes in global mean density in boussinesq models. this correction is used to calculate dynamic sea surface height (ssh) and ocean bottom pressure (obp). importantly, there is no dynamical significance to the greatbatch correction but it is required to account for steric changes in global sea level. see greatbatch, 1994. j. of geophys. res. oceans, doi.org/10.1029/94jc00847}}} \\ \hline
 \end{longtable}
 
 \begin{figure}[H]
@@ -181,7 +183,7 @@ float64 & global\_mean\_sterodynamic\_sea\_level\_anomaly & Global mean of stero
 \hspace*{0.5cm}global\_mean\_sterodynamic\_sea\_level\_anomaly: valid\_min = -0.017658796143049296\\
 }}}}} \\ \hline
 \rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
-\\ \\ \multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Steric sea level anomaly associated with seawater expansion/contraction due to density changes. note: eccov4 uses a volume-conserving boussinesq formulation of the mitgcm with a free-surface boundary condition with real freshwater flux forcing. changes in ocean mass due to evaporation, precipitation, runoff, and sea-ice growth/melt are reflected in model sea level. however, as a consequence of the boussinsq formulation, changes to seawater density due to net buoyancy fluxes (e.g., global mean surface heating/cooling) do not change model sea level anomaly (etan) via seawater expansion/contraction. changes in global ocean density therefore induce a spurious change in model ocean bottom pressure (phibot) via 'virtual mass fluxes'. the 'greatbatch correction' is a time varying, globally-uniform correction to account for changes in global mean density in boussinesq models. this correction is used to calculate dynamic sea surface height (ssh) and ocean bottom pressure (obp). importantly, there is no dynamical significance to the greatbatch correction but it is required to account for steric changes in global sea level. see greatbatch, 1994. j. of geophys. res. oceans, doi.org/10.1029/94jc00847}}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Steric sea level anomaly associated with seawater expansion/contraction due to density changes. note: eccov4 uses a volume-conserving boussinesq formulation of the mitgcm with a free-surface boundary condition with real freshwater flux forcing. changes in ocean mass due to evaporation, precipitation, runoff, and sea-ice growth/melt are reflected in model sea level. however, as a consequence of the boussinsq formulation, changes to seawater density due to net buoyancy fluxes (e.g., global mean surface heating/cooling) do not change model sea level anomaly (etan) via seawater expansion/contraction. changes in global ocean density therefore induce a spurious change in model ocean bottom pressure (phibot) via 'virtual mass fluxes'. the 'greatbatch correction' is a time varying, globally-uniform correction to account for changes in global mean density in boussinesq models. this correction is used to calculate dynamic sea surface height (ssh) and ocean bottom pressure (obp). importantly, there is no dynamical significance to the greatbatch correction but it is required to account for steric changes in global sea level. see greatbatch, 1994. j. of geophys. res. oceans, doi.org/10.1029/94jc00847}}} \\ \hline
 \end{longtable}
 
 \begin{figure}[H]
