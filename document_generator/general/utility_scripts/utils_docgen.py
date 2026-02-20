@@ -8,6 +8,7 @@ from pathlib import Path
 import sys
 import netrc
 import requests
+from PIL import Image
 
 general_base_dir = str(Path(__file__).parent.parent)
 sys.path.append(general_base_dir)
@@ -41,7 +42,7 @@ def download_granules(version_string, overwrite_granules = False):
                 if grid_type in key and grid_type not in grid_types_to_ignore:
                     grid_types_to_ignore.append(grid_type)
 
-                    for granule_type in config_dictionary_static[f"possible_granule_types_{grid_type}"]:
+                    for granule_type in config_dictionary_static["possible_granule_types"]:
 
                         if f"{grid_type}_{granule_type}_file_paths_remote" in config_dictionary_user.keys():
                         
@@ -73,6 +74,41 @@ def download_granules(version_string, overwrite_granules = False):
                                     print(f"An error occurred: {e}")
     else:
         print(f"No entry found for {hostname} in .netrc file.  Please refer to the README for the ECCO document generator for help")
+
+def get_a_file_with_min_num_vars(nc_dir):
+    """
+    Determines the number occurrances of the string "long_name" in the attribute strings of a netCDF file,
+    which is assumed to be the number of variables (coordinate and data) represented in a file.  
+    Returns a path to a netCDF file containing the minimum number of variables found in a file.
+
+    Parameters:
+        string (nc_dir): The directory in which to search
+
+    Returns:
+        str: A path to a file containing the minimum number of variables found across all netCDF files in <nc_dir>
+    """
+
+    num_vars_per_file_list = []
+    num_vars_min = 9999 #professional coding
+    nc_files = glob.glob(f"{os.path.join(general_base_dir,nc_dir)}/*.nc")
+    for nc_file in nc_files:
+        cmd1 = ["ncdump", "-h", nc_file]
+        cmd2 = ["grep", "long_name"]
+        cmd3 = ["wc", "-l"]
+        p1 = subprocess.Popen(cmd1, stdout=subprocess.PIPE, text=True)
+        p2 = subprocess.Popen(cmd2, stdin=p1.stdout, stdout=subprocess.PIPE, text=True)
+        p3 = subprocess.Popen(cmd3, stdin=p2.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        p2.stdout.close()
+        p1.stdout.close()
+        stdout, stderr = p3.communicate()
+        if stdout:
+            num_vars = int(stdout)
+            num_vars_per_file_list.append(num_vars)
+            num_vars_min = num_vars if num_vars < num_vars_min else num_vars_min
+        if stderr:
+            print("STDERR Output:")
+            print(stderr)
+    return nc_files[num_vars_per_file_list.index(num_vars_min)]
 
 
 def get_a_file_with_max_num_vars(nc_dir):
@@ -297,5 +333,29 @@ def get_ds_title(ds:xr.Dataset)->str:
             title += word + '_'
     return title[:-1]
         
+
+def generate_thumbnail(input_path, output_path, size):
+    """
+    Generates a thumbnail from an image file.
+
+    :param input_path: Path to the source image file.
+    :param output_path: Path where the thumbnail will be saved.
+    :param size: A tuple (width, height) for the maximum thumbnail dimensions.
+    """
+    
+    try:
+        img = Image.open(input_path)
+
+        img.thumbnail(size)
+
+        img.save(output_path, "JPEG")
+        print(f"Thumbnail saved to {output_path}")
+
+    except IOError:
+        print(f"Cannot create thumbnail for {input_path}")
+
+
+
+
 
 

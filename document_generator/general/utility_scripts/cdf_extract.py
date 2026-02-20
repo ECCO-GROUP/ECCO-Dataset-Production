@@ -104,6 +104,7 @@ def format_example_netCDF_table(latex_lines_unformatted:list[str], name : str = 
 
 def latex_example_netcdf(grid_type, nc_dir)->list[str]:
 
+    #file = utils.get_a_file_with_min_num_vars(nc_dir)    
     file = utils.get_a_file_with_max_num_vars(nc_dir)    
 
     dataset = xr.open_dataset(file, decode_times=False, decode_cf=False, decode_coords=False, decode_timedelta=False)
@@ -512,7 +513,8 @@ def get_Global_or_CoordsDimsVarsList(netCDFpath:str,jsonFileName:str,saveTo:str)
 
 
 
-def data_products(ecco_version_string, json_groupings_filepath:str, granule_directory:str, image_directory:str, grid_type:str, granule_type: str)->list:
+def data_products(ecco_version_string, json_groupings_filepath:str, granule_directory:str, image_directory:str, grid_type:str, granule_type: str, overwrite_switch:str=False)->list:
+#def data_products(ecco_version_string, json_groupings_filepath:str, granule_directory:str, image_directory:str, grid_type:str, granule_type: str)->list:
     """
 
     Generates a list of LaTeX lines for the Data Products grid_type of the report.
@@ -548,8 +550,6 @@ def data_products(ecco_version_string, json_groupings_filepath:str, granule_dire
 
         latex_lines.append(r'\subsubsection{Overview}')
 
-# BL: HERE'S WHERE THE SMASHING OF INTRO AND COMMENT IS HAPPENING
-
         latex_lines.append(utils.sanitize(json_dictionary["Introduction"])) 
         latex_lines.append(r"\\\\")
 
@@ -571,7 +571,8 @@ def data_products(ecco_version_string, json_groupings_filepath:str, granule_dire
             dataVarTable = data_var_table(variable_name, attributes_dictionary, granule_filename_truncated_stem)
             latex_lines.extend(dataVarTable)
 
-            dataVarPlot = cdf_plotter.data_var_plot(ecco_version_string, dataset, dataset[variable_name], image_directory)
+            dataVarPlot = cdf_plotter.data_var_plot(ecco_version_string, dataset, dataset[variable_name], image_directory, overwrite_switch)
+            #dataVarPlot = cdf_plotter.data_var_plot(ecco_version_string, dataset, dataset[variable_name], image_directory)
             latex_lines.append(r'\begin{figure}[H]')
             latex_lines.append(r'\centering')
             latex_lines.append(dataVarPlot) #testing right here

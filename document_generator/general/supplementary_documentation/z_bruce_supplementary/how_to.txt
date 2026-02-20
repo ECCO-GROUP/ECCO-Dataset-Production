@@ -2,6 +2,35 @@
 
 # ------------------------------------ VIM ---------------------------------------
 
+search and replace in line, starting at current column in line:
+s/\%>.c<search pattern>/<replacement text>     (replace first matche after cursor)
+s/\%>.c<search pattern>/<replacement text>/g   (replace all matches after cursor)
+
+
+In Vim, the capital I command switches to insert mode at the beginning of the current line 
+(specifically, the first non-whitespace character, or the very beginning if you are already in the first column), 
+regardless of the current cursor position
+
+From Normal mode, pressing I performs the following actions in one keystroke: 
+- Moves the cursor to the start of the line.
+- Switches from Normal mode to Insert mode.
+- Allows you to start typing text immediately at the beginning of that line.
+
+The I command is also extremely powerful when used with Visual Block mode (Ctrl + v) for inserting text into multiple lines simultaneously.
+- Enter Visual Block mode by pressing Ctrl + v.
+- Select the desired lines using movement keys like j (down) or k (up).
+- Press Shift + i (capital I).
+- Type the text you want to insert. It will only appear on the first line initially.
+- Press Esc. The text you typed will then be applied to the beginning of all selected lines.
+
+r - Replace a single character under the cursor. After pressing r, the next single character you type will replace the character under the cursor, and you will remain in Normal mode.
+R - Enter Replace mode (capital R). This mode allows you to type over existing characters, overwriting them until you press Esc to return to Normal mode.
+C - Change (replace) from the cursor to the end of the current line. This deletes the rest of the line and switches you to Insert mode. 
+cw - Change (replace) from the cursor to the end of the current word. This deletes the word and switches you to Insert mode to type a new word.
+ciw - Change an inner word. If your cursor is anywhere inside a word, this will select and delete the whole word and switch to Insert mode.
+cc - Change the entire current line and switch to Insert mode. 
+
+
 ma  # sets a local mark named "a" at the current cursor position (line and column) within the current file.
 mA  # sets a global mark named "A" that can be jumped to from any file. 
 'a  # (apostrophe + letter) jumps to the beginning of the line where mark "a" was set.
@@ -12,6 +41,8 @@ mA  # sets a global mark named "A" that can be jumped to from any file.
 
 # Replace all instances of "static" with "user" on the current and next 2 lines
 :,+2s/static/user/g
+# Replace all instances of "static" with "user" on the current and previous 2 lines
+:,-2s/static/user/g
 
 # Jump to last cursor position
 ctrl + o
@@ -145,6 +176,13 @@ OPTION + (mouse select) for selection, CMD + v for paste
 
 
 # ------------------------------------ BASH ---------------------------------------
+
+# save output of bash command to clipboard
+<command> | pbcopy
+
+# Print path to "filename.txt", relative to /path/to/directory
+# (i.e. use "." for the directory path to print path relative to the current directory)
+find /path/to/directory -name "filename.txt"
 
 # Print all files in current directory which do NOT match the given search string
 find . -maxdepth 1 -type f ! -name "*.tex" -print

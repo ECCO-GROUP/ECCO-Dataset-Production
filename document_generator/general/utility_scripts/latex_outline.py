@@ -68,8 +68,6 @@ def write_data_attributes_tables(version_string, overwrite_switch):
 
 
 
-
-
 def write_datasets(version_string, overwrite_switch):
 
     config_file_static = os.path.join(general_base_dir, "config_files", version_string, "config_static.yaml")
@@ -103,14 +101,13 @@ def write_datasets(version_string, overwrite_switch):
                                                                            os.path.join(general_base_dir, config_dictionary_static[f"groupings_{granule_type}_{grid_type}_json_file"]),
                                                                            os.path.join(general_base_dir, config_dictionary_static[f"{granule_type}_files_{grid_type}_dir"]),
                                                                            os.path.join(general_base_dir, config_dictionary_static[f"figures_{granule_type}_{grid_type}_dir"]),
-                                                                           grid_type, granule_type))
+                                                                           grid_type, granule_type, overwrite_switch))
                 
                         granule_latex_output_file = os.path.join(general_base_dir, config_dictionary_static[f'{granule_type}_table_{grid_type}_tex_file'])
                         Path(granule_latex_output_file).parent.mkdir(parents=True, exist_ok=True)
                         with open(granule_latex_output_file, 'w') as output_file:
                             output_file.write('\n'.join(granule_latex_lines))
 
-                        #print(f"{granule_type} {grid_type}")
 
 
 
