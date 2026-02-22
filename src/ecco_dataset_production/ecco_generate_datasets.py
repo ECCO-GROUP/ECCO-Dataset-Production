@@ -48,9 +48,9 @@ def ecco_make_granule( task, cfg,
         **kwargs: Depending on run context:
             keygen (str): If tasklist descriptors reference AWS S3 endpoints and
                 if running in an institutionally-managed AWS IAM Identity Center
-                (SSO) environment, path and) name of federated login key
+                (SSO) environment, (path and) name of federated login key
                 generation script (e.g.,
-                /usr/local/bin/aws-login-pub.darwin.amd64)
+                /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile name to be used in combination
                 with keygen (e.g., 'saml-pub', 'default', etc.)
 
@@ -257,7 +257,7 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
                 'ecco_metadata_loc' references an AWS S3 endpoint and if running
                 in an institutionally-managed AWS IAM Identity Center (SSO)
                 environment, (path and) name of federated login key generation
-                script (e.g., /usr/local/bin/aws-login-pub.darwin.amd64)
+                script (e.g., /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile name to be used in combination
                 with keygen (e.g., 'saml-pub', 'default', etc.)
 
@@ -474,7 +474,7 @@ def generate_datasets( tasklist, log_level=None, **kwargs):
                 endpoints and if running in an institutionally-managed AWS IAM
                 Identity Center (SSO) environment, (path and) name of federated
                 login key generation script (e.g.,
-                /usr/local/bin/aws-login-pub.darwin.amd64)
+                /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile name to be used in combination
                 with keygen (e.g., 'saml-pub', 'default', etc.)
 
@@ -489,7 +489,7 @@ def generate_datasets( tasklist, log_level=None, **kwargs):
     shared_ecco_resources = False
     shared_ecco_grid = shared_ecco_mapping_factors = shared_ecco_metadata = None
 
-    if aws.ecco_aws.is_s3_uri(tasklist):
+    if aws.utils.is_s3_uri(tasklist):
         with tempfile.TemporaryDirectory() as tmpdir:
             _dest = os.path.join(tmpdir,os.path.basename(tasklist))
             aws.ecco_aws_s3_cp.aws_s3_cp( src=tasklist, dest=_dest, **kwargs)

@@ -22,9 +22,7 @@ def aws_s3_cp(
             keygen (str): If aws_s3_cp is invoked within an SSO environment,
                 keygen can be used to provide the name of a requried federated
                 login key generation script (e.g.,
-                /usr/local/bin/aws-login-pub.darwin.amd64). Note that keygen is
-                not necessary if aws_s3_cp is invoked within an AWS IAM-managed
-                application.
+                /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile to be used in combination with
                 keygen (e.g., 'saml-pub', 'default', etc.)
 

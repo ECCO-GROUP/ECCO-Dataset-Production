@@ -33,7 +33,7 @@ class ECCOMappingFactors(object):
             Identity Center (SSO) environment, additional arguments that may be
             necessary include:
             keygen (str): Federated login key generation script (e.g.,
-                /usr/local/bin/aws-login-pub.darwin.amd64).
+                /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile to be used in combination with
                 keygen (e.g., 'default', 'saml-pub', etc.)
 
@@ -72,7 +72,7 @@ class ECCOMappingFactors(object):
                 self.task = task
             mapping_factors_loc = self.task['ecco_mapping_factors_loc']
 
-        if aws.ecco_aws.is_s3_uri(mapping_factors_loc):
+        if aws.utils.is_s3_uri(mapping_factors_loc):
             # retrieve mapping factors to temporary local storage:
             self.tmpdir = tempfile.TemporaryDirectory()
             self.mapping_factors_dir = self.tmpdir.name

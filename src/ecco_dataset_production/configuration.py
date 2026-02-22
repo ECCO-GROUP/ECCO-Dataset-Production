@@ -23,7 +23,7 @@ class ECCODatasetProductionConfig(UserDict):
             an institutionally-managed AWS IAM Identity Center (SSO)
             environment, additional arguments that may be necessary include:
             keygen (str): Federated login key generation script (e.g.,
-                /usr/local/bin/aws-login-pub.darwin.amd64).
+                /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile to be used in combination with
                 keygen (e.g., 'default', 'saml-pub', etc.)
 
@@ -35,7 +35,7 @@ class ECCODatasetProductionConfig(UserDict):
         super().__init__()
         if cfgfile:
             self.cfgfile = cfgfile
-            if aws.ecco_aws.is_s3_uri(self.cfgfile):
+            if aws.utils.is_s3_uri(self.cfgfile):
                 with tempfile.TemporaryDirectory() as tmpdir:
                     tmpdir_and_fname = os.path.join(tmpdir,os.path.basename(self.cfgfile))
                     log.debug('Fetching %s to %s', self.cfgfile, tmpdir_and_fname)

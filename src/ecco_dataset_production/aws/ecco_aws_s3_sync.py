@@ -8,7 +8,7 @@ import subprocess
 import sys
 import time
 
-from . import ecco_aws
+from . import utils
 
 SLEEP_SECONDS = 5
 
@@ -57,9 +57,7 @@ def sync_local_to_remote( src=None, dest=None, nproc=1, dryrun=False,
             keygen (str): If aws_s3_sync is invoked within an SSO environment,
                 keygen can be used to provide the name of a requried federated
                 login key generation script (e.g.,
-                /usr/local/bin/aws-login-pub.darwin.amd64). Note that keygen is
-                not necessary if aws_s3_sync is invoked within an AWS
-                IAM-managed application.
+                /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile to be used in combination with
                 keygen (e.g., 'saml-pub', 'default', etc.)
 
@@ -186,9 +184,7 @@ def sync_remote_to_remote_or_local( src=None, dest=None,
             keygen (str): If aws_s3_sync is invoked within an SSO environment,
                 keygen can be used to provide the name of a requried federated
                 login key generation script (e.g.,
-                /usr/local/bin/aws-login-pub.darwin.amd64). Note that keygen is
-                not necessary if aws_s3_sync is invoked within an AWS
-                IAM-managed application.
+                /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile to be used in combination with
                 keygen (e.g., 'saml-pub', 'default', etc.)
 
@@ -253,9 +249,7 @@ def aws_s3_sync(
             keygen (str): If aws_s3_sync is invoked within an SSO environment,
                 keygen can be used to provide the name of a requried federated
                 login key generation script (e.g.,
-                /usr/local/bin/aws-login-pub.darwin.amd64). Note that keygen is
-                not necessary if aws_s3_sync is invoked within an AWS
-                IAM-managed application.
+                /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile to be used in combination with
                 keygen (e.g., 'saml-pub', 'default', etc.)
 
@@ -275,15 +269,15 @@ def aws_s3_sync(
     if kwargs.get('profile',None):
         log.info('profile: %s', kwargs['profile'])
 
-    if not ecco_aws.is_s3_uri(src) and ecco_aws.is_s3_uri(dest):
+    if not utils.is_s3_uri(src) and utils.is_s3_uri(dest):
         # upload:
         sync_local_to_remote( src, dest, nproc, dryrun, log_level, **kwargs)
 
-    elif ecco_aws.is_s3_uri(src) and ecco_aws.is_s3_uri(dest):
+    elif utils.is_s3_uri(src) and utils.is_s3_uri(dest):
         # remote sync:
         sync_remote_to_remote_or_local( src, dest, dryrun, log_level, **kwargs)
 
-    elif ecco_aws.is_s3_uri(src) and not ecco_aws.is_s3_uri(dest):
+    elif utils.is_s3_uri(src) and not utils.is_s3_uri(dest):
         # download:
         sync_remote_to_remote_or_local( src, dest, dryrun, **kwargs)
 

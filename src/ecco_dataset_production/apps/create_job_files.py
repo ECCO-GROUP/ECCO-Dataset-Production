@@ -20,11 +20,9 @@ def create_parser():
 
     """
     parser = argparse.ArgumentParser(
-        description="""
-            Utility for generating ECCO Dataset Production job files from ECCO
-            Configuration groupings files (one job file per item in groupings
-            file).""",
-        epilog=""" """)
+        description="""Utility for generating ECCO Dataset Production job files
+            from ECCO Configuration groupings files (one job file per item in
+            groupings file).""")
     parser.add_argument('--groupings_file', help="""
         (Path and) filename of ECCO Configurations groupings json file from
         which list of production job files will be generated (e.g.,

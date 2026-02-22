@@ -41,7 +41,7 @@ class ECCOGrid(object):
             (SSO) environment, additional arguments that may be necessary
             include:
             keygen (str): Federated login key generation script (e.g.,
-                /usr/local/bin/aws-login-pub.darwin.amd64).
+                /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile to be used in combination with
                 keygen (e.g., 'default', 'saml-pub', etc.)
 
