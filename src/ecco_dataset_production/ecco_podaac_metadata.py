@@ -30,7 +30,7 @@ class ECCOPODAACMetadata(object):
                 Center (SSO) environment, additional arguments that may be
                 necessary include:
                 keygen (str): Login key generation script (e.g.,
-                    /usr/local/bin/aws-login-pub.darwin.amd64).
+                    /usr/local/bin/aws-login.darwin.universal, etc.).
                 profile (str): Optional profile to be used in combination with
                     keygen (e.g., 'default', 'saml-pub', etc.)
 
@@ -39,7 +39,7 @@ class ECCOPODAACMetadata(object):
         self.tmpdir = None
 
         if metadata_src:
-            if aws.ecco_aws.is_s3_uri(metadata_src):
+            if aws.utils.is_s3_uri(metadata_src):
                 # retrieve remote metadata to temporary local storage:
                 self.tmpdir = tempfile.TemporaryDirectory()
                 aws.ecco_aws_s3_cp.aws_s3_cp( src=metadata_src, dest=self.tmpdir.name, **kwargs)

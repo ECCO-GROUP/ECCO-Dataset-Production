@@ -34,7 +34,7 @@ class ECCOMetadata(object):
             Identity Center (SSO) environment, additional arguments that may be
             necessary include:
             keygen (str): Login key generation script (e.g.,
-                /usr/local/bin/aws-login-pub.darwin.amd64).
+                /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile to be used in combination with
                 keygen (e.g., 'default', 'saml-pub', etc.)
 
@@ -70,7 +70,7 @@ class ECCOMetadata(object):
                 self.task = task
             ecco_metadata_loc = self.task['ecco_metadata_loc']
 
-        if aws.ecco_aws.is_s3_uri(ecco_metadata_loc):
+        if aws.utils.is_s3_uri(ecco_metadata_loc):
             # retrieve ecco metadata to temporary local storage:
             self.tmpdir = tempfile.TemporaryDirectory()
             self.metadata_dir = self.tmpdir.name

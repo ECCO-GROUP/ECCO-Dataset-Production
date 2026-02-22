@@ -34,7 +34,9 @@ def create_parser():
         argparser.ArgumentParser instance.
 
     """
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="""Create a list of task inputs and outputs from an ECCO
+        Dataset Production job file.""")
     parser.add_argument('--jobfile', help="""
         (Path and) filename of ECCO Dataset Production jobs text file.""")
     parser.add_argument('--ecco_source_root', help="""
@@ -71,7 +73,7 @@ def create_parser():
         If ecco_source_root references an S3 bucket and if running in an
         institutionally-managed AWS IAM Identity Center (SSO) environment
         domain, federated login key generation script (e.g.,
-        /usr/local/bin/aws-login-pub.darwin.amd64).""")
+        /usr/local/bin/aws-login.darwin.universal, etc.)""")
     parser.add_argument('--profile', help="""
         If ecco_source_root references an S3 bucket and if running in an SSO
         environment, AWS credential profile name (e.g., 'saml-pub', 'default',
@@ -139,10 +141,11 @@ def create_job_task_list(
             configuration file (yaml format), or similar remote location given
             by AWS S3 bucket/prefix/filename.
         keygen (str): If ecco_source_root references an S3 bucket and if running
-            in JPL domain, federated login key generation script (e.g.,
-            /usr/local/bin/aws-login-pub.darwin.amd64).  (default: None)
+            in an institutionally-managed AWS IAM Identity Center (SSO)
+            environment, name of federated login key generation script (e.g.,
+            /usr/local/bin/aws-login.darwin.universal, etc.).
         profile (str): If ecco_source_root references an AWS S3 bucket and
-            if running in JPL domain, AWS credential profile name (e.g.,
+            if running in an SSO environment, AWS credential profile name (e.g.,
             'saml-pub', 'default', etc.)
         log_level (str): log_level choices per Python logging module
             ('DEBUG','INFO','WARNING','ERROR' or 'CRITICAL'; default='WARNING').
@@ -185,7 +188,7 @@ def create_job_task_list(
         err += ' must be provided'
         raise RuntimeError(err)
 
-    if aws.ecco_aws.is_s3_uri(ecco_source_root):
+    if aws.utils.is_s3_uri(ecco_source_root):
         if keygen:
             # running in SSO environment; update login credentials:
             log.info('updating credentials...')
@@ -316,7 +319,7 @@ def create_job_task_list(
 
                         variable_input_component_files = []
 
-                        if aws.ecco_aws.is_s3_uri(ecco_source_root):
+                        if aws.utils.is_s3_uri(ecco_source_root):
                             all_var_files_in_bucket = s3_list_files(
                                 s3_client=s3c,
                                 bucket=s3_parts.netloc,
@@ -327,7 +330,7 @@ def create_job_task_list(
 
                         if isinstance(job.time_steps,str) and 'all'==job.time_steps.lower():
                             # get all possible time matches:
-                            if aws.ecco_aws.is_s3_uri(ecco_source_root):
+                            if aws.utils.is_s3_uri(ecco_source_root):
 
                                 s3_variable_input_component_pat = re.compile(
                                     s3_parts.path.strip('/')    # remove leading '/' from urlpath
@@ -362,7 +365,7 @@ def create_job_task_list(
                                         prefix=variable_input_component,
                                         averaging_period=file_freq_pat,
                                         time=time).re_filestr)
-                                if aws.ecco_aws.is_s3_uri(ecco_source_root):
+                                if aws.utils.is_s3_uri(ecco_source_root):
                                     variable_input_component_files.extend(
                                         [os.path.join(
                                             urllib.parse.urlunparse(
@@ -440,7 +443,7 @@ def create_job_task_list(
 
                     variable_files = []
 
-                    if aws.ecco_aws.is_s3_uri(ecco_source_root):
+                    if aws.utils.is_s3_uri(ecco_source_root):
                         prefix=os.path.join(
                                 s3_parts.path,
                                 path_freq_pat,
@@ -454,7 +457,7 @@ def create_job_task_list(
                     if isinstance(job.time_steps,str) and 'all'==job.time_steps.lower():
                     #if 'all' == job.time_steps.lower():
                         # get all possible time matches:
-                        if aws.ecco_aws.is_s3_uri(ecco_source_root):
+                        if aws.utils.is_s3_uri(ecco_source_root):
                             s3_key_pat = re.compile(
                                 s3_parts.path.strip('/')    # remove leading '/' from urlpath
                                 + '.*'                      # allow anything between path and filename
@@ -486,7 +489,7 @@ def create_job_task_list(
                                     prefix=variable,
                                     averaging_period=file_freq_pat,
                                     time=time).re_filestr)
-                            if aws.ecco_aws.is_s3_uri(ecco_source_root):
+                            if aws.utils.is_s3_uri(ecco_source_root):
                                 variable_files.extend(
                                     [os.path.join(
                                         urllib.parse.urlunparse(

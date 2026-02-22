@@ -18,7 +18,9 @@ def create_parser():
         argparser.ArgumentParser instance.
 
     """
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="""Generate PO.DAAC/ESDIS-ready ECCO granule(s) for all
+        tasks in tasklist.""")
     parser.add_argument('--tasklist', help="""
         (Path and) name of json-formatted file containing list of ECCO dataset
         generation task descriptions.""")
@@ -30,7 +32,7 @@ def create_parser():
         If tasklist descriptors reference AWS S3 endpoints and if running in an
         institutionally-managed AWS IAM Identity Center (SSO) environment, (path
         and) name of federated login key generation script (e.g.,
-        /usr/local/bin/aws-login-pub.darwin.amd64)""")
+        /usr/local/bin/aws-login.darwin.universal, etc.)""")
     parser.add_argument('--profile', help="""
         Optional profile name to be used in combination with keygen (e.g.,
         'saml-pub', 'default', etc.)""")

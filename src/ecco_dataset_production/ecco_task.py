@@ -4,7 +4,6 @@
 import json
 
 from . import aws
-#from . import ecco_aws
 from . import ecco_file
 
 
@@ -56,7 +55,7 @@ class ECCOTask(dict):
     def is_ecco_grid_dir_local(self):
         """
         """
-        if aws.ecco_aws.is_s3_uri(self.__getitem__('ecco_grid_dir')):
+        if aws.utils.is_s3_uri(self.__getitem__('ecco_grid_dir')):
             return False
         else:
             return True
@@ -64,7 +63,7 @@ class ECCOTask(dict):
 
     @property
     def is_granule_local(self):
-        if aws.ecco_aws.is_s3_uri(self.__getitem__('granule')):
+        if aws.utils.is_s3_uri(self.__getitem__('granule')):
             return False
         else:
             return True
@@ -104,7 +103,7 @@ class ECCOTask(dict):
         # just look at first file in list (reasonable assumption is that all are
         # local or all are remote (s3://...))
 
-        if aws.ecco_aws.is_s3_uri(self.__getitem__('variables')[variable][0][0]):
+        if aws.utils.is_s3_uri(self.__getitem__('variables')[variable][0][0]):
             return False
         else:
             return True

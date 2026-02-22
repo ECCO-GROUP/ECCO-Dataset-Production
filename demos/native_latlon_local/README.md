@@ -7,7 +7,7 @@ directories.
 
 ### Setup:
 
-The ECCO-Dataset-Production Python package must be installed per
+The ECCO-Dataset-Production Python package must first be installed per
 `../../README.md`.
 
 If the ECCO-Dataset-Production repository has not been cloned using
@@ -65,13 +65,13 @@ input and output requirements:
     # Phase 2 dataset generation:
     $ edp_generate_datasets --help
 
-From the `--help` output, note that task list generation requires an
-input "jobfile" (not to be confused with "jobs" in the AWS Batch
-processing sense), along with references to directories containing
-ECCO source (results) files, ECCO grid files, ECCO mapping factors,
-ECCO metadata, and an ECCO Dataset Production configuration
-file. Phase 2, ECCO dataset generation, requires only the tasklist
-generated in Phase 1.
+From the `--help` output (not reproduced here), note that task list
+generation requires an input "jobfile" (not to be confused with "jobs"
+in the AWS Batch processing sense), along with references to
+directories containing ECCO source (results) files, ECCO grid files,
+ECCO mapping factors, ECCO metadata, and an ECCO Dataset Production
+configuration file. Phase 2, ECCO dataset generation, requires only
+the tasklist generated in Phase 1.
 
 The jobfile input to Phase 1 tasklist generation deserves further
 explanation:
@@ -81,7 +81,7 @@ predefined ECCO response "collection", projection type ("1D", "native"
 or "latlon"), time averaging interval (i.e., "frequency"), and output
 time steps. It does so via reference to the "groupings" json files in
 the `ECCO-v4-Configurations` submodule,
-`./ECCO-v4-Configurations/ECCO*Release*/metadata`. Using
+`./ECCO-v4-Configurations/ECCO*Release*/metadata`. To take
 `jobs_V4r4.txt` as an example:
 
     # native groupings:
@@ -106,7 +106,8 @@ where `<metadata_groupings_id>` is a zeros-based integer object ID from
 `<frequency>` is one of 'SNAP', 'AVG\_MON', or 'AVG\_DAY', and `<time_steps>`
 is either a Python list of integer time steps or 'all'.
 
-To take the first entry in `jobs_V4r4.txt` as an example, a
+In the first entry
+of `jobs_V4r4.txt`, for example, a
 `metadata_groupings_id` of '0' and `product_type` of "native" together
 select the first (zero-th) object defined in
 `ECCOv4r4_groupings_for_native_datasets.json`, reproduced here:
@@ -125,14 +126,14 @@ select the first (zero-th) object defined in
 
 Thus, a set of datasets will be produced for "all" available ECCO
 monthly averages (based, in other words, on the input quantities found
-in `../data/ecco_results/`, as specified by the `--ecco_source_root`
-argument to `edp_create_job_task_list`), will include the filename
-string "SEA\_SURFACE\_HEIGHT", and will contain the response
-variables, "SSH", "SSHIBC", "SSHNOIBC", and "ETAN".
+in `../data/ecco_results/`, as indicated by the `--ecco_source_root`
+argument to `edp_create_job_task_list`), and will be identified by the
+filename string "SEA\_SURFACE\_HEIGHT". The response variables in the
+dataset will include "SSH", "SSHIBC", "SSHNOIBC", and "ETAN".
 
 Similarly, the last latlon grouping in `jobs_V4r4.txt`, selects the
 11-th (zeros-based) object in
-`ECCOv4r4_groupings_for_latlon_datasets.json`, or:
+`ECCOv4r4_groupings_for_latlon_datasets.json`, again, reproduced here:
 
     ...
     {
@@ -151,8 +152,8 @@ Similarly, the last latlon grouping in `jobs_V4r4.txt`, selects the
 Thus a collection of 3D "OCEAN_VELOCITY" datasets will be produced for
 all available months, and will include the variables "EVEL", "NVEL",
 and "WVELMASS". Additionally, the latlon variables "EVEL" and "NVEL"
-will be vector summed using the underlying ECCO x and y component
-velocity fields, here identified as "UVEL" and "VVEL", respectively.
+are created as vector sums using the underlying ECCO x and y component
+velocity fields, "UVEL" and "VVEL", respectively.
 
 Since the Phase 2 dataset generation process is entirely driven by the
 Phase 1-generated task lists, it's worth inspecting the json task list
@@ -160,4 +161,5 @@ file(s) first to ensure the datasets that are to be created are as
 expected. Note, too, that since the task lists simply define a list of
 objects, they may be easily broken up into separate files for
 stepwise, parallel, or cloud-hosted batch dataset generation, and may
-also be used to verify coverage, job completion status, and so on.
+be used as a basis for verifying coverage, job completion status, and
+so on.

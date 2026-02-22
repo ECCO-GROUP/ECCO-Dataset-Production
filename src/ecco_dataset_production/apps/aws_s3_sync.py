@@ -46,7 +46,7 @@ def create_parser():
     parser.add_argument('--keygen', help="""
         If running in an institutionally-managed AWS IAM Identity Center (SSO)
         environment, federated login key generation script (e.g.,
-        /usr/local/bin/aws-login-pub.darwin.amd64)""")
+        /usr/local/bin/aws-login.darwin.universal, etc.)""")
     parser.add_argument('--profile', help="""
         If running in an SSO environment, AWS credential profile name (e.g.,
         'saml-pub', 'default', etc.)""")
