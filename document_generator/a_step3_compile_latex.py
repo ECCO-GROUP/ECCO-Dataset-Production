@@ -6,7 +6,7 @@ general_base_dir = str(Path(__file__).parent)
 
 def main():
 
-    version_string = "v4r4"
+    ecco_version_string = "v4r4"
     output_directory = "final_compendium_files"
     
     os.makedirs(output_directory, exist_ok=True)

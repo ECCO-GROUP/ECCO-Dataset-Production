@@ -4,6 +4,13 @@
 
 remote_server_hostname: urs.earthdata.nasa.gov
 
+url_grid_type_substrings:
+  - _native
+  - _latlon
+  - _1D
+
+url_coordinate_substring: GRID_GEOMETRY
+
 possible_grid_types:
   - latlon
   - native

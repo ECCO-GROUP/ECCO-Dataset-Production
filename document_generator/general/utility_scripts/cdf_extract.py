@@ -513,10 +513,9 @@ def get_Global_or_CoordsDimsVarsList(netCDFpath:str,jsonFileName:str,saveTo:str)
 
 
 
-def data_products(ecco_version_string, json_groupings_filepath:str, granule_directory:str, image_directory:str, grid_type:str, granule_type: str, overwrite_switch:str=False)->list:
-#def data_products(ecco_version_string, json_groupings_filepath:str, granule_directory:str, image_directory:str, grid_type:str, granule_type: str)->list:
+def data_products(ecco_version_string, config_dictionary, granule_directory, overwrite_switch)->list:
+    
     """
-
     Generates a list of LaTeX lines for the Data Products grid_type of the report.
     Parameters:
         json_groupings_filepath (str): The path to the JSON file containing the data products.
@@ -528,12 +527,21 @@ def data_products(ecco_version_string, json_groupings_filepath:str, granule_dire
         list: A list of LaTeX lines for the Data Products grid_type of the report.
 
     """
+    
+    latex_lines = []
+
+    granule_type, grid_type = utils.get_type_of_granule_and_grid(granule_directory)
+    
+    granule_document_section_title = config_dictionary["table_section_titles"][f"{granule_type}_{grid_type}"]
+    granule_document_section_title= utils.sanitize(granule_document_section_title)
+    latex_lines.append(r'\section{'+ f'{granule_document_section_title}' + r'}')
+
     is_coord = granule_type == "coordinate"
     
-    #if grid_type != '1D':
-    #    grid_type = grid_type.capitalize()
+    json_groupings_filepath = os.path.join(general_base_dir, config_dictionary[f"groupings_{granule_type}_{grid_type}_json_file"])
+    granule_directory = os.path.join(general_base_dir, config_dictionary[f"{granule_type}_files_{grid_type}_dir"])
+    image_directory = os.path.join(general_base_dir, config_dictionary[f"figures_{granule_type}_{grid_type}_dir"])
 
-    latex_lines = []
 
     # Load the JSON data
     with open(json_groupings_filepath, 'r') as json_file:
@@ -582,7 +590,10 @@ def data_products(ecco_version_string, json_groupings_filepath:str, granule_dire
 
             latex_lines.append(r'\newpage')
 
-    return latex_lines
+        granule_latex_output_file = os.path.join(general_base_dir, config_dictionary[f'{granule_type}_table_{grid_type}_tex_file'])
+        utils.write_latex_lines_to_file(latex_lines, granule_latex_output_file)
+    
+    #return latex_lines
 
 
 

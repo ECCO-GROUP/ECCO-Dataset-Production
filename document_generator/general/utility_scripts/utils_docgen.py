@@ -14,66 +14,74 @@ general_base_dir = str(Path(__file__).parent.parent)
 sys.path.append(general_base_dir)
 
 
+def save_latex_lines_to_file(latex_lines, output_file):
+        Path(output_file).parent.mkdir(parents=True, exist_ok=True)
+        with open(output_file, 'w') as output_file:
+            output_file.write('\n'.join(latex_lines))
+
+
+
 def download_granules(version_string, overwrite_granules = False):
     
-    config_file_static = os.path.join(general_base_dir, "config_files", version_string, "config_static.yaml")
+    config_file_static = os.path.join(general_base_dir, "config_files", version_string, "config.yaml")
     with open(config_file_static,'r') as stream:
         config_dictionary_static = yaml.safe_load(stream)
 
-    possible_grid_types = config_dictionary_static["possible_grid_types"]
-    grid_types_to_ignore = []
-
-    config_file_user = os.path.join(general_base_dir, "config_files", version_string, "config_user.yaml")
-    with open(config_file_user,'r') as stream:
-        config_dictionary_user = yaml.safe_load(stream)
+    granule_list_filepath = os.path.join(general_base_dir, "config_files", version_string, "granules_to_download.txt")
+    
+    granule_url_list = []
+    with open(granule_list_filepath, 'r', encoding='utf-8') as file:
+        for line in file:
+            if not line.strip().startswith('#'):
+                if line.strip():
+                    granule_url_list.append(line.strip())
 
     hostname = config_dictionary_static["remote_server_hostname"]
 
     # Parse the local .netrc file (the user must create this according to the README instructions)
     netrc_info = netrc.netrc()
 
-    # Get the login, account, and password for a specific machine
+    # Get the login, account, and password to be used on the remote host
     auth_info = netrc_info.authenticators(hostname)
     
     if auth_info:
         login, account, password = auth_info
-        for grid_type in possible_grid_types:
-            for key in config_dictionary_user.keys():
-                if grid_type in key and grid_type not in grid_types_to_ignore:
-                    grid_types_to_ignore.append(grid_type)
-
-                    for granule_type in config_dictionary_static["possible_granule_types"]:
-
-                        if f"{grid_type}_{granule_type}_file_paths_remote" in config_dictionary_user.keys():
-                        
-                            dataset_dir_pre = config_dictionary_static[f"{granule_type}_files_{grid_type}_dir"]
+            
+        for grid_type_substring in config_dictionary_static["url_grid_type_substrings"]:
+            for granule_url in granule_url_list:
+                if grid_type_substring in granule_url:
+                    if config_dictionary_static["url_coordinate_substring"] in granule_url:
+                        if grid_type_substring.startswith("_"):
+                            dataset_dir_pre = config_dictionary_static[f"coordinate_files_{grid_type_substring[1:]}_dir"]
+                        else: 
+                            dataset_dir_pre = config_dictionary_static[f"coordinate_files_{grid_type_substring}_dir"]
+                        dataset_dir = os.path.join(os.path.realpath(general_base_dir), dataset_dir_pre)
+                    else: 
+                        if grid_type_substring.startswith("_"):
+                            dataset_dir_pre = config_dictionary_static[f"variable_files_{grid_type_substring[1:]}_dir"]
+                        else:
+                            dataset_dir_pre = config_dictionary_static[f"variable_files_{grid_type_substring}_dir"]
                             dataset_dir = os.path.join(os.path.realpath(general_base_dir), dataset_dir_pre)
-                            os.makedirs(os.path.join(dataset_dir), exist_ok=True)                
-                            
-                            url_list = config_dictionary_user[f"{grid_type}_{granule_type}_file_paths_remote"]
-                            
-                            if overwrite_granules:
-                                existing_files = glob.glob(f"{dataset_dir}/*.nc")
-                                for local_path in existing_files:
-                                    local_path_not_in_url_list_index_list = [Path(local_path).stem not in url for url in url_list]
-                                    url_list = [url for url, boolean in zip(url_list, local_path_not_in_url_list_index_list) if boolean]
+                    
+                    os.makedirs(os.path.join(dataset_dir), exist_ok=True)  
+                    local_filename = os.path.join(dataset_dir,Path(granule_url).name)
 
-                            for url in url_list:
-                                local_filename = os.path.join(dataset_dir,Path(url).name)
-                                if not overwrite_granules:
-                                    if os.path.exists(local_filename):
-                                        continue
-                                try:
-                                    response = requests.get(url, auth=(login, password), stream=True)
-                                    response.raise_for_status() 
-                                    with open(local_filename, 'wb') as fd:
-                                        for chunk in response.iter_content(chunk_size=8192):
-                                            fd.write(chunk)
-                                    print(f"successfully downloaded:      {url}")
-                                except requests.exceptions.RequestException as e:
-                                    print(f"An error occurred: {e}")
+                    if not overwrite_granules:
+                        if os.path.exists(local_filename):
+                            continue
+                    try:
+                        response = requests.get(granule_url, auth=(login, password), stream=True)
+                        response.raise_for_status() 
+                        with open(local_filename, 'wb') as fd:
+                            for chunk in response.iter_content(chunk_size=8192):
+                                fd.write(chunk)
+                        print(f"successfully downloaded:      {granule_url}")
+                    except requests.exceptions.RequestException as e:
+                        print(f"An error occurred: {e}")
     else:
         print(f"No entry found for {hostname} in .netrc file.  Please refer to the README for the ECCO document generator for help")
+
+
 
 def get_a_file_with_min_num_vars(nc_dir):
     """
@@ -333,6 +341,11 @@ def get_ds_title(ds:xr.Dataset)->str:
             title += word + '_'
     return title[:-1]
         
+
+def get_type_of_granule_and_grid(granule_directory):
+    relevant_strings_list = granule_directory.split("/")[-2:]
+    return (relevant_strings_list[0].split("_")[0], relevant_strings_list[1].split("_")[1]) 
+
 
 def generate_thumbnail(input_path, output_path, size):
     """

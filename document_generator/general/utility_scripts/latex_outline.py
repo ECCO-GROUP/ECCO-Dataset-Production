@@ -15,41 +15,41 @@ import utility_scripts.cdf_extract as cdf_extract
 import utility_scripts.utils_docgen as utils
 
 
-def write_data_attributes_tables(version_string, overwrite_switch):
+def write_data_attributes_tables(ecco_version_string, overwrite_switch):
     """
         This function writes the data product tables to the latex document.
     """
 
-    # Construct path to the static configuration file, and load the file into a dictionary
-    config_file_static = os.path.join(general_base_dir, "config_files", version_string, "config_static.yaml")
-    with open(config_file_static,'r') as stream:
-        config_dictionary_static = yaml.safe_load(stream)
+    # Construct path to the configuration file, and load the file into a dictionary
+    config_file = os.path.join(general_base_dir, "config_files", ecco_version_string, "config.yaml")
+    with open(config_file,'r') as stream:
+        config_dictionary = yaml.safe_load(stream)
 
     # Construct the "global_attributes.tex" file
-    global_attributes_latex_lines = config_dictionary_static['global_attributes_latex_lines']
-    global_attributes_json_list = readJSON.obtain_json_data(config_dictionary_static['global_attributes_json_file'])
+    global_attributes_latex_lines = config_dictionary['global_attributes_latex_lines']
+    global_attributes_json_list = readJSON.obtain_json_data(config_dictionary['global_attributes_json_file'])
     global_attributes_latex_lines.extend(readJSON.establish_table(global_attributes_json_list))
     global_attributes_latex_lines.append(r'\end{longtable}')
-    global_attributes_latex_output_file = os.path.join(general_base_dir, config_dictionary_static["global_attributes_tex_file"])
+    global_attributes_latex_output_file = os.path.join(general_base_dir, config_dictionary["global_attributes_tex_file"])
     Path(global_attributes_latex_output_file).parent.mkdir(parents=True, exist_ok=True)
     with open(global_attributes_latex_output_file, 'w') as output_file:
         output_file.write('\n'.join(global_attributes_latex_lines))
 
     # Construct the "variable_attributes.tex" file
-    variable_attributes_latex_lines = config_dictionary_static['variable_attributes_latex_lines']
-    variable_attributes_json_list = readJSON.obtain_json_data(config_dictionary_static['variable_attributes_json_file'])
+    variable_attributes_latex_lines = config_dictionary['variable_attributes_latex_lines']
+    variable_attributes_json_list = readJSON.obtain_json_data(config_dictionary['variable_attributes_json_file'])
     variable_attributes_latex_lines.extend(readJSON.establish_table(variable_attributes_json_list))
     variable_attributes_latex_lines.append(r'\end{longtable}')
-    variable_attributes_latex_output_file = os.path.join(general_base_dir, config_dictionary_static["variable_attributes_tex_file"])
+    variable_attributes_latex_output_file = os.path.join(general_base_dir, config_dictionary["variable_attributes_tex_file"])
     Path(variable_attributes_latex_output_file).parent.mkdir(parents=True, exist_ok=True)
     with open(variable_attributes_latex_output_file, 'w') as output_file:
         output_file.write('\n'.join(variable_attributes_latex_lines))
 
     # Construct the "example_{grid_type}_table.tex" files (which draw from variable granules, not coordinate granules)
-    possible_grid_types = config_dictionary_static["possible_grid_types"]
+    possible_grid_types = config_dictionary["possible_grid_types"]
     grid_types_to_ignore = []
 
-    config_file_user = os.path.join(general_base_dir, "config_files", version_string, "config_user.yaml")
+    config_file_user = os.path.join(general_base_dir, "config_files", ecco_version_string, "config_user.yaml")
     with open(config_file_user,'r') as stream:
         config_dictionary_user = yaml.safe_load(stream)
     
@@ -57,8 +57,8 @@ def write_data_attributes_tables(version_string, overwrite_switch):
         for key in config_dictionary_user.keys():
             if grid_type in key and "variable" in key and grid_type not in grid_types_to_ignore:
                 grid_types_to_ignore.append(grid_type)
-                grid_example_latex_lines = cdf_extract.latex_example_netcdf(grid_type, config_dictionary_static[f"variable_files_{grid_type}_dir"])
-                grid_example_latex_output_file = os.path.join(general_base_dir, config_dictionary_static[f"example_{grid_type}_table_tex_file"])
+                grid_example_latex_lines = cdf_extract.latex_example_netcdf(grid_type, config_dictionary[f"variable_files_{grid_type}_dir"])
+                grid_example_latex_output_file = os.path.join(general_base_dir, config_dictionary[f"example_{grid_type}_table_tex_file"])
                 Path(grid_example_latex_output_file).parent.mkdir(parents=True, exist_ok=True)
                 with open(grid_example_latex_output_file, 'w') as output_file:
                     output_file.write('\n'.join(grid_example_latex_lines))
@@ -68,45 +68,23 @@ def write_data_attributes_tables(version_string, overwrite_switch):
 
 
 
-def write_datasets(version_string, overwrite_switch):
+def write_datasets(ecco_version_string, overwrite_switch):
 
-    config_file_static = os.path.join(general_base_dir, "config_files", version_string, "config_static.yaml")
-    with open(config_file_static,'r') as stream:
-        config_dictionary_static = yaml.safe_load(stream)
-    
-    config_file_user = os.path.join(general_base_dir, "config_files", version_string, "config_user.yaml")
-    with open(config_file_user,'r') as stream:
-        config_dictionary_user = yaml.safe_load(stream)
+    config_file = os.path.join(general_base_dir, "config_files", ecco_version_string, "config.yaml")
+    with open(config_file,'r') as stream:
+        config_dictionary = yaml.safe_load(stream)
+   
+    # Obtain relative path of the parent granules directory (may need adjustment of following line if file structure changes), then make list of all granules
+    granules_parent_directory = os.path.join(general_base_dir, "/".join(config_dictionary["coordinate_files_native_dir"].split("/")[:-2]))
+    granule_directories = [root for root, dirs, files in os.walk(granules_parent_directory) if not dirs]
 
-    possible_grid_types = config_dictionary_static["possible_grid_types"]
-    possible_granule_types = config_dictionary_static["possible_granule_types"]
-    table_section_titles_dictionary = config_dictionary_static["table_section_titles"]
-    grid_types_to_ignore = []
+    for granule_directory in granule_directories:
+        granule_latex_lines = cdf_extract.data_products(ecco_version_string, config_dictionary, granule_directory)
 
-    for grid_type in possible_grid_types:
-        for key in config_dictionary_user.keys():
-            if grid_type in key and grid_type not in grid_types_to_ignore:
-                grid_types_to_ignore.append(grid_type)
-                for granule_type in possible_granule_types:
-                        
-                    print(f"{granule_type} {grid_type}")
-        
-                    if not (grid_type == "1D" and granule_type == "coordinate"):
-
-                        granule_latex_lines = []
-                        granule_document_section_title = config_dictionary_static["table_section_titles"][f"{granule_type}_{grid_type}"]
-                        granule_document_section_title= utils.sanitize(granule_document_section_title)
-                        granule_latex_lines.append(r'\section{'+ f'{granule_document_section_title}' + r'}')
-                        granule_latex_lines.extend(cdf_extract.data_products(version_string, 
-                                                                           os.path.join(general_base_dir, config_dictionary_static[f"groupings_{granule_type}_{grid_type}_json_file"]),
-                                                                           os.path.join(general_base_dir, config_dictionary_static[f"{granule_type}_files_{grid_type}_dir"]),
-                                                                           os.path.join(general_base_dir, config_dictionary_static[f"figures_{granule_type}_{grid_type}_dir"]),
-                                                                           grid_type, granule_type, overwrite_switch))
-                
-                        granule_latex_output_file = os.path.join(general_base_dir, config_dictionary_static[f'{granule_type}_table_{grid_type}_tex_file'])
-                        Path(granule_latex_output_file).parent.mkdir(parents=True, exist_ok=True)
-                        with open(granule_latex_output_file, 'w') as output_file:
-                            output_file.write('\n'.join(granule_latex_lines))
+        #granule_latex_output_file = os.path.join(general_base_dir, config_dictionary[f'{granule_type}_table_{grid_type}_tex_file'])
+        #Path(granule_latex_output_file).parent.mkdir(parents=True, exist_ok=True)
+        #with open(granule_latex_output_file, 'w') as output_file:
+        #    output_file.write('\n'.join(granule_latex_lines))
 
 
 

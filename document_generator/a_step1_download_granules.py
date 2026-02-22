@@ -9,13 +9,14 @@ import general.utility_scripts.utils_docgen as utils_docgen
 
 def main():
     
-    version_string = "v4r4" # Should not be hardcoded!   
+    ecco_version_string = "v4r4" # Should not be hardcoded!   
    
-    overwrite_granules_switch = False # User can choose to avoid overwriting granules - should also not be hardcoded!
+    overwrite_granules_switch = True
+    #overwrite_granules_switch = False 
 
     print("\n Grownloading Danules: \n")
 
-    utils_docgen.download_granules(version_string, overwrite_granules_switch)
+    utils_docgen.download_granules(ecco_version_string, overwrite_granules_switch)
 
 if __name__ == "__main__":
     main()

@@ -244,6 +244,19 @@ ls <dir> | wc -l
 instance = MyClass()
 attributes = [name for name, value in inspect.getmembers(instance) if not inspect.ismethod(value) and not name.startswith('__') and not name.startswith('_')]
 
+
+string_methods_44 = {
+    'convert': ['join','split', 'rsplit','splitlines', 'partition', 'rpartition'],
+    'edit': ['replace', 'lstrip', 'rstrip', 'strip'],
+    'search': ['endswith', 'startswith', 'count', 'index', 'find','rindex', 'rfind',],
+    'condition': ['isalnum', 'isalpha', 'isdecimal', 'isdigit', 'isnumeric','isidentifier',
+                  'islower','istitle', 'isupper','isprintable', 'isspace', ],
+    'text': ['lower', 'upper', 'capitalize', 'title', 'swapcase',
+             'center', 'ljust', 'rjust', 'zfill', 'expandtabs','casefold'],
+    'encode': ['translate', 'maketrans', 'encode'],
+    'format': ['format', 'format_map']}
+
+
 # --------------------------------------------------------------------------------
 
 
