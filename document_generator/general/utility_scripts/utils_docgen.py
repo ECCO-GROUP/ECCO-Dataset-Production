@@ -61,11 +61,12 @@ def download_granules(version_string, overwrite_granules = False):
                             dataset_dir_pre = config_dictionary_static[f"variable_files_{grid_type_substring[1:]}_dir"]
                         else:
                             dataset_dir_pre = config_dictionary_static[f"variable_files_{grid_type_substring}_dir"]
-                            dataset_dir = os.path.join(os.path.realpath(general_base_dir), dataset_dir_pre)
-                    
-                    os.makedirs(os.path.join(dataset_dir), exist_ok=True)  
+                        dataset_dir = os.path.join(os.path.realpath(general_base_dir), dataset_dir_pre)
+
+                    os.makedirs(dataset_dir, exist_ok=True)  
                     local_filename = os.path.join(dataset_dir,Path(granule_url).name)
 
+                    #"""
                     if not overwrite_granules:
                         if os.path.exists(local_filename):
                             continue
@@ -78,6 +79,7 @@ def download_granules(version_string, overwrite_granules = False):
                         print(f"successfully downloaded:      {granule_url}")
                     except requests.exceptions.RequestException as e:
                         print(f"An error occurred: {e}")
+                    #"""
     else:
         print(f"No entry found for {hostname} in .netrc file.  Please refer to the README for the ECCO document generator for help")
 

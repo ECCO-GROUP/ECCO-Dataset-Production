@@ -45,27 +45,13 @@ def write_data_attributes_tables(ecco_version_string, overwrite_switch):
     with open(variable_attributes_latex_output_file, 'w') as output_file:
         output_file.write('\n'.join(variable_attributes_latex_lines))
 
-    # Construct the "example_{grid_type}_table.tex" files (which draw from variable granules, not coordinate granules)
-    possible_grid_types = config_dictionary["possible_grid_types"]
-    grid_types_to_ignore = []
 
-    config_file_user = os.path.join(general_base_dir, "config_files", ecco_version_string, "config_user.yaml")
-    with open(config_file_user,'r') as stream:
-        config_dictionary_user = yaml.safe_load(stream)
-    
-    for grid_type in possible_grid_types:
-        for key in config_dictionary_user.keys():
-            if grid_type in key and "variable" in key and grid_type not in grid_types_to_ignore:
-                grid_types_to_ignore.append(grid_type)
-                grid_example_latex_lines = cdf_extract.latex_example_netcdf(grid_type, config_dictionary[f"variable_files_{grid_type}_dir"])
-                grid_example_latex_output_file = os.path.join(general_base_dir, config_dictionary[f"example_{grid_type}_table_tex_file"])
-                Path(grid_example_latex_output_file).parent.mkdir(parents=True, exist_ok=True)
-                with open(grid_example_latex_output_file, 'w') as output_file:
-                    output_file.write('\n'.join(grid_example_latex_lines))
-                break
-
-
-
+    variable_granules_parent_directory = os.path.join(general_base_dir, "/".join(config_dictionary["coordinate_files_native_dir"].split("/")[:-1]))
+    variable_granule_directories = [root for root, dirs, files in os.walk(granules_parent_directory) if not dirs]
+    for granule_directory in variable_granule_directories:
+        granule_type, grid_type = utils.get_type_of_granule_and_grid(granule_directory)
+        cdf_extract.latex_example_netcdf(grid_type, config_dictionary[f"variable_files_{grid_type}_dir"], config_dictionary)
+        
 
 
 def write_datasets(ecco_version_string, overwrite_switch):
@@ -79,7 +65,10 @@ def write_datasets(ecco_version_string, overwrite_switch):
     granule_directories = [root for root, dirs, files in os.walk(granules_parent_directory) if not dirs]
 
     for granule_directory in granule_directories:
-        granule_latex_lines = cdf_extract.data_products(ecco_version_string, config_dictionary, granule_directory)
+        #granule_latex_lines = cdf_extract.data_products(ecco_version_string, config_dictionary, granule_directory)
+        
+        # This writes a latex table to a file
+        cdf_extract.data_products(ecco_version_string, config_dictionary, granule_directory)
 
         #granule_latex_output_file = os.path.join(general_base_dir, config_dictionary[f'{granule_type}_table_{grid_type}_tex_file'])
         #Path(granule_latex_output_file).parent.mkdir(parents=True, exist_ok=True)

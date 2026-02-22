@@ -14,7 +14,7 @@ def main():
     overwrite_granules_switch = True
     #overwrite_granules_switch = False 
 
-    print("\n Grownloading Danules: \n")
+    print("\n downloading granules: \n")
 
     utils_docgen.download_granules(ecco_version_string, overwrite_granules_switch)
 
