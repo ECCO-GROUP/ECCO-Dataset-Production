@@ -8,18 +8,11 @@ import os
 import general.utility_scripts.latex_outline as latex_outline
 
 def main():
-    
     ecco_version_string = "v4r4" # Should not be hardcoded!   
-   
     overwrite_files_switch = False # User can choose to avoid overwriting files - should also not be hardcoded!
-
     print("\nGenerating supporting latex table and image files:\n")
-    #print("\n Generating supporting latex table and image files \n")
-
     latex_outline.write_data_attributes_tables(ecco_version_string, overwrite_files_switch)
     latex_outline.write_datasets(ecco_version_string, overwrite_files_switch)
-
     print()
-
 if __name__ == "__main__":
     main()

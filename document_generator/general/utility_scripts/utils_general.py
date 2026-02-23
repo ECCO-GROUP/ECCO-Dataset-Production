@@ -25,7 +25,7 @@ def download_granules(ecco_version_string, overwrite_granules = False):
     
     config_file = os.path.join(general_base_dir, "files_general/version_specific", ecco_version_string, "input_and_templates/config", "config.yaml")
     with open(config_file,'r') as stream:
-        config_dictionary_static = yaml.safe_load(stream)
+        config_dictionary = yaml.safe_load(stream)
 
     granule_list_filepath = os.path.join(general_base_dir, "files_general/version_specific", ecco_version_string, "input_and_templates/granules_to_download/granules_to_download.txt")
     
@@ -36,7 +36,7 @@ def download_granules(ecco_version_string, overwrite_granules = False):
                 if line.strip():
                     granule_url_list.append(line.strip())
 
-    hostname = config_dictionary_static["remote_server_hostname"]
+    hostname = config_dictionary["remote_server_hostname"]
 
     # Parse the local .netrc file (the user must create this according to the README instructions)
     netrc_info = netrc.netrc()
@@ -47,20 +47,20 @@ def download_granules(ecco_version_string, overwrite_granules = False):
     if auth_info:
         login, account, password = auth_info
             
-        for grid_type_substring in config_dictionary_static["url_grid_type_substrings"]:
+        for grid_type_substring in config_dictionary["url_grid_type_substrings"]:
             for granule_url in granule_url_list:
                 if grid_type_substring in granule_url:
-                    if config_dictionary_static["url_coordinate_substring"] in granule_url:
+                    if config_dictionary["url_coordinate_substring"] in granule_url:
                         if grid_type_substring.startswith("_"):
-                            dataset_dir_pre = config_dictionary_static[f"coordinate_files_{grid_type_substring[1:]}_dir"]
+                            dataset_dir_pre = config_dictionary[f"coordinate_files_{grid_type_substring[1:]}_dir"]
                         else: 
-                            dataset_dir_pre = config_dictionary_static[f"coordinate_files_{grid_type_substring}_dir"]
+                            dataset_dir_pre = config_dictionary[f"coordinate_files_{grid_type_substring}_dir"]
                         dataset_dir = os.path.join(os.path.realpath(general_base_dir), dataset_dir_pre)
                     else: 
                         if grid_type_substring.startswith("_"):
-                            dataset_dir_pre = config_dictionary_static[f"variable_files_{grid_type_substring[1:]}_dir"]
+                            dataset_dir_pre = config_dictionary[f"variable_files_{grid_type_substring[1:]}_dir"]
                         else:
-                            dataset_dir_pre = config_dictionary_static[f"variable_files_{grid_type_substring}_dir"]
+                            dataset_dir_pre = config_dictionary[f"variable_files_{grid_type_substring}_dir"]
                         dataset_dir = os.path.join(os.path.realpath(general_base_dir), dataset_dir_pre)
 
                     os.makedirs(dataset_dir, exist_ok=True)  

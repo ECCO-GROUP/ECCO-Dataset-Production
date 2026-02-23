@@ -89,3 +89,24 @@ variable_attributes_latex_lines:
   - r'\hline \endhead',
   - r'\hline \endfoot',
   - r'\rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline',
+
+
+final_compendium_files_dir: "final_compendium_files"
+
+compendium_tex_filepath: "general/files_general/version_specific/v4r4/input_and_templates/latex/compendium_template_do_not_modify/ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.tex"
+
+static_support_tex_dir_relative: "general/files_general/version_specific/v4r4/input_and_templates/latex//"
+user_generated_tex_dir_relative: "general/files_general/version_specific/v4r4/runtime_generated/latex"
+
+compendium_compilation_runtime_message_string: |+
+  
+  Compiling the final latex document (if successful, will be found in the directory 'final_compendium_files'
+  
+  Note: if there is an error during compilation, it should print to the screen.  If compilation seems hung up, 
+  we suggest you terminate this process (e.g. type'ctrl + c' and hit 'return'), and look for error messages in the 
+  '__.log' file, which should be found in the 'final_compendium_files' directory.
+
+dummy_entry_to_set_number_of_blank_lines_at_the_end_of_the_above_message: blah
+
+
+
