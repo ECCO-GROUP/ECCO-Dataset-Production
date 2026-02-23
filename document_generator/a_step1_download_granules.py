@@ -5,7 +5,7 @@
 # MUST FIX LACK OF READABLE INDENTATION IN THE EXAMPLE TABLES (cdf_extract.py)
 
 import os
-import general.utility_scripts.utils_docgen as utils_docgen
+import general.utility_scripts.utils_general as utils_general
 
 def main():
     
@@ -16,7 +16,7 @@ def main():
 
     print("\n downloading granules: \n")
 
-    utils_docgen.download_granules(ecco_version_string, overwrite_granules_switch)
+    utils_general.download_granules(ecco_version_string, overwrite_granules_switch)
 
 if __name__ == "__main__":
     main()

@@ -6,8 +6,26 @@ import os
 general_base_dir = str(Path(__file__).parent.parent)
 sys.path.append(general_base_dir)
 
-import utility_scripts.utils_docgen as utils
+import utility_scripts.utils_general as utils_general
 
+
+def write_attributes_tables_tex(config_dictionary):
+    processed_attribute_types = []
+    for key in config_dictionary.keys():
+        if "_attributes_" in key:
+            attribute_type = key.split("_")[0]
+            if not attribute_type in processed_attribute_types:
+                print(f"writing '{attribute_type}_attributes' latex table")
+                processed_attribute_types.append(attribute_type)
+                latex_lines = config_dictionary[f"{attribute_type}_attributes_latex_lines"]
+                json_list = obtain_json_data(config_dictionary[f"{attribute_type}_attributes_json_file"])
+                latex_lines.extend(establish_table(json_list))
+                latex_lines.append(r'\end{longtable}')
+                latex_output_file = os.path.join(general_base_dir, config_dictionary[f"{attribute_type}_attributes_tex_file"])
+                Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
+                with open(latex_output_file, 'w') as output_file:
+                    output_file.write('\n'.join(latex_lines))
+                
 
 def obtain_json_data(filename: str) -> list:
     """
@@ -39,7 +57,7 @@ def verify_columns(available_columns: set, user_columns: list) -> list:
     :param user_columns: list of user-defined columns
     :return: list of strings
     """
-    return [utils.sanitize(col) for col in user_columns if col in available_columns]
+    return [utils_general.sanitize(col) for col in user_columns if col in available_columns]
 
 
 def establish_table(dictionary_list_from_json:list)->list:
@@ -52,7 +70,7 @@ def establish_table(dictionary_list_from_json:list)->list:
 
     max_col = 0
     for dictionary in dictionary_list_from_json:
-        formatted_dictionary_as_list = [utils.sanitize_with_url(str(dictionary.get(key, "N/A"))) for key in dictionary]
+        formatted_dictionary_as_list = [utils_general.sanitize_with_url(str(dictionary.get(key, "N/A"))) for key in dictionary]
         max_col = len(formatted_dictionary_as_list) if len(formatted_dictionary_as_list) > max_col else max_col
         if len(formatted_dictionary_as_list) < max_col:
             formatted_dictionary_as_list.extend([""] * (max_col - len(formatted_dictionary_as_list)))
@@ -87,7 +105,7 @@ def set_table(json_data: dict, caption: str = None, col_names: list = None, wide
 
     for row in json_data[1:]:
         latex_table.append("\\rowcolor{LightCyan}\n")
-        formatted_row = [utils.sanitize(str(row.get(key, "N/A"))) for key in col_names]
+        formatted_row = [utils_general.sanitize(str(row.get(key, "N/A"))) for key in col_names]
         latex_table.append(" & ".join(formatted_row) + " \\\\\n")
         latex_table.append("\\hline\n")
 

@@ -21,7 +21,7 @@ from pathlib import Path
 general_base_dir = str(Path(__file__).parent.parent)
 sys.path.append(general_base_dir)
 
-import utility_scripts.utils_docgen as utils
+import utility_scripts.utils_general as utils
 import utility_scripts.cdf_extract as cdf_extract
 
 

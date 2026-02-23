@@ -1,0 +1,116 @@
+\begin{longtable}{|p{\textwidth}|}
+\caption{Example CDL description of native dataset}
+\label{tab:cdl-native} \\
+\hline \endhead
+\hline \endfoot
+netcdf native example\\
+dimensions\\
+\hline
+\rowcolor{YellowGreen}  tile = 13\\
+\rowcolor{YellowGreen}  j = 90\\
+\rowcolor{YellowGreen}  i = 90\\
+\rowcolor{YellowGreen}  j\_g = 90\\
+\rowcolor{YellowGreen}  i\_g = 90\\
+\rowcolor{YellowGreen}  time = 1\\
+\rowcolor{YellowGreen}  nv = 2\\
+\rowcolor{YellowGreen}  nb = 4\\
+\hline
+
+coordinates\\
+\hline
+\rowcolor{Apricot}\hspace{0.5cm}int32 i (i)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:axis = "X"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:long\_name = "grid index in x for variables at tracer and 'v' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:swap\_dim = "XC"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'v' variables (e.g., VVEL) have the same x coordinate on the model grid."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 i\_g (i\_g)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:axis = "X"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:long\_name = "grid index in x for variables at 'u' and 'g' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:swap\_dim = "XG"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:comment = "In the Arakawa C-grid system, 'u' (e.g., UVEL) and 'g' variables (e.g., XG) have the same x coordinate on the model grid."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 j (j)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:axis = "Y"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:long\_name = "grid index in y for variables at tracer and 'u' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:swap\_dim = "YC"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'u' variables (e.g., UVEL) have the same y coordinate on the model grid."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 j\_g (j\_g)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:axis = "Y"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:long\_name = "grid index in y for variables at 'v' and 'g' locations"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:swap\_dim = "YG"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:comment = "In the Arakawa C-grid system, 'v' (e.g., VVEL) and 'g' variables (e.g., XG) have the same y coordinate."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 tile (tile)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:long\_name = "lat-lon-cap tile index"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:comment = "The ECCO V4 horizontal model grid is divided into 13 tiles of 90x90 cells for convenience."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 time (time)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "center time of averaging period"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:bounds = "time\_bnds"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 XC (tile, j, i)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:long\_name = "longitude of tracer grid cell center"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:units = "degrees\_east"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:coordinate = "YC XC"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:bounds = "XC\_bnds"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:comment = "nonuniform grid spacing"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:standard\_name = "longitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 YC (tile, j, i)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:long\_name = "latitude of tracer grid cell center"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:units = "degrees\_north"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:coordinate = "YC XC"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:bounds = "YC\_bnds"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:comment = "nonuniform grid spacing"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:standard\_name = "latitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 XG (tile, j\_g, i\_g)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:long\_name = "longitude of 'southwest' corner of tracer grid cell"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:units = "degrees\_east"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:coordinate = "YG XG"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:comment = "Nonuniform grid spacing. Note: 'southwest' does not correspond to geographic orientation but is used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:standard\_name = "longitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 YG (tile, j\_g, i\_g)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:long\_name = "latitude of 'southwest' corner of tracer grid cell"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:units = "degrees\_north"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coordinate = "YG XG"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:comment = "Nonuniform grid spacing. Note: 'southwest' does not correspond to geographic orientation but is used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:standard\_name = "latitude"\\
+\rowcolor{Apricot}\hspace{0.5cm}int32 time\_bnds (time, nv)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:comment = "Start and end times of averaging period."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:long\_name = "time bounds of averaging period"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 XC\_bnds (tile, j, i, nb)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:comment = "Bounds array follows CF conventions. XC\_bnds[i,j,0] = 'southwest' corner (j-1, i-1), XC\_bnds[i,j,1] = 'southeast' corner (j-1, i+1), XC\_bnds[i,j,2] = 'northeast' corner (j+1, i+1), XC\_bnds[i,j,3]  = 'northwest' corner (j+1, i-1). Note: 'southwest', 'southeast', northwest', and 'northeast' do not correspond to geographic orientation but are used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:long\_name = "longitudes of tracer grid cell corners"\\
+\rowcolor{Apricot}\hspace{0.5cm}float32 YC\_bnds (tile, j, i, nb)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:comment = "Bounds array follows CF conventions. YC\_bnds[i,j,0] = 'southwest' corner (j-1, i-1), YC\_bnds[i,j,1] = 'southeast' corner (j-1, i+1), YC\_bnds[i,j,2] = 'northeast' corner (j+1, i+1), YC\_bnds[i,j,3]  = 'northwest' corner (j+1, i-1). Note: 'southwest', 'southeast', northwest', and 'northeast' do not correspond to geographic orientation but are used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:long\_name = "latitudes of tracer grid cell corners"\\
+\hline
+
+data variables\\
+\hline
+\hspace{0.5cm}float32 MXLDEPTH (time, tile, j, i)\\
+\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:long\_name = "Mixed-layer depth diagnosed using the temperature difference criterion of Kara et al., 2000"\\
+\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:units = "m"\\
+\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:standard\_name = "ocean\_mixed\_layer\_thickness"\\
+\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:comment = "Mixed-layer depth as determined by the depth where waters are first 0.8 degrees Celsius colder than the surface. See Kara et al. (JGR, 2000). . Note: the Kara et al. criterion may not be appropriate for some applications. If needed, mixed layer depth can be calculated using different criteria. See vertical density stratification (DRHODR) and density anomaly (RHOAnoma)."\\
+\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:coordinates = "time XC YC"\\
+\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:valid\_min = "5.000001430511475"\\
+\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:valid\_max = "5331.2001953125"\\
+\hline
+\end{longtable}

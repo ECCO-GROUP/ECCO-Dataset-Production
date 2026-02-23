@@ -14,20 +14,20 @@ general_base_dir = str(Path(__file__).parent.parent)
 sys.path.append(general_base_dir)
 
 
-def save_latex_lines_to_file(latex_lines, output_file):
+def write_latex_lines_to_file(latex_lines, output_file):
         Path(output_file).parent.mkdir(parents=True, exist_ok=True)
         with open(output_file, 'w') as output_file:
             output_file.write('\n'.join(latex_lines))
 
 
 
-def download_granules(version_string, overwrite_granules = False):
+def download_granules(ecco_version_string, overwrite_granules = False):
     
-    config_file_static = os.path.join(general_base_dir, "config_files", version_string, "config.yaml")
-    with open(config_file_static,'r') as stream:
+    config_file = os.path.join(general_base_dir, "files_general/version_specific", ecco_version_string, "input_and_templates/config", "config.yaml")
+    with open(config_file,'r') as stream:
         config_dictionary_static = yaml.safe_load(stream)
 
-    granule_list_filepath = os.path.join(general_base_dir, "config_files", version_string, "granules_to_download.txt")
+    granule_list_filepath = os.path.join(general_base_dir, "files_general/version_specific", ecco_version_string, "input_and_templates/granules_to_download/granules_to_download.txt")
     
     granule_url_list = []
     with open(granule_list_filepath, 'r', encoding='utf-8') as file:
@@ -66,7 +66,6 @@ def download_granules(version_string, overwrite_granules = False):
                     os.makedirs(dataset_dir, exist_ok=True)  
                     local_filename = os.path.join(dataset_dir,Path(granule_url).name)
 
-                    #"""
                     if not overwrite_granules:
                         if os.path.exists(local_filename):
                             continue
@@ -79,7 +78,6 @@ def download_granules(version_string, overwrite_granules = False):
                         print(f"successfully downloaded:      {granule_url}")
                     except requests.exceptions.RequestException as e:
                         print(f"An error occurred: {e}")
-                    #"""
     else:
         print(f"No entry found for {hostname} in .netrc file.  Please refer to the README for the ECCO document generator for help")
 
@@ -346,7 +344,7 @@ def get_ds_title(ds:xr.Dataset)->str:
 
 def get_type_of_granule_and_grid(granule_directory):
     relevant_strings_list = granule_directory.split("/")[-2:]
-    return (relevant_strings_list[0].split("_")[0], relevant_strings_list[1].split("_")[1]) 
+    return (relevant_strings_list[0].split("_")[0], relevant_strings_list[1].split("_")[-1]) 
 
 
 def generate_thumbnail(input_path, output_path, size):

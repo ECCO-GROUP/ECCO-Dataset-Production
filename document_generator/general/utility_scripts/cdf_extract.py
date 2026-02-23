@@ -9,7 +9,7 @@ import sys
 general_base_dir = str(Path(__file__).parent.parent)
 sys.path.append(general_base_dir)
 
-import utility_scripts.utils_docgen as utils
+import utility_scripts.utils_general as utils
 import utility_scripts.cdf_plotter as cdf_plotter
 #import utility_scripts.cdf_plotter as cdf_plotter # This line wasn't here, I'm just wondering if _ojh is indeed the one to use
 
