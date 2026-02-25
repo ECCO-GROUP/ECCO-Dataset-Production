@@ -58,6 +58,7 @@ def format_example_netCDF_table(latex_lines_unformatted:list[str], name : str = 
                     r'\label{tab:cdl-'+name+r'} \\', 
                     r'\hline \endhead',
                     r'\hline \endfoot',
+                    #r'\hangindent=1.5em\hangafter=1'
     ]
  
     dimensions_start = False
