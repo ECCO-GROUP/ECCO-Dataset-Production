@@ -1,12 +1,22 @@
 import os
+import sys
+from pathlib import Path
 import general.utility_scripts.utils_general as utils_general
+import yaml
+
+base_dir = str(Path(__file__).parent)
+sys.path.append(base_dir)
+
+# User must specify path to config file; this could be given as input, or handled another way...
+config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/general/files_general/version_specific/v4r4/input_and_templates/config/config.yaml"
+
+with open(config_file,'r') as stream:
+    config_dictionary = yaml.safe_load(stream)
 
 def main():
-    ecco_version_string = "v4r4" # Should not be hardcoded!   
-    overwrite_granules_switch = True
-    #overwrite_granules_switch = False 
     print("\ndownloading granules:\n")
-    utils_general.download_granules(ecco_version_string, overwrite_granules_switch)
+    utils_general.download_granules(base_dir, config_dictionary)
     print()
+
 if __name__ == "__main__":
     main()

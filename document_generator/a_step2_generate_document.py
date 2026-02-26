@@ -1,18 +1,22 @@
-# Feels funny that the user must construct a json "groupings" file for each of their granules/variables, 
-# but maybe that's fine.  Just seems like those should be made automatically based on the config
-# file, since I think the data they hold comes from there....
-
-# MUST FIX LACK OF READABLE INDENTATION IN THE EXAMPLE TABLES (cdf_extract.py)
-
 import os
+import sys
+import yaml
+from pathlib import Path
 import general.utility_scripts.latex_outline as latex_outline
 
+base_dir = str(Path(__file__).parent)
+sys.path.append(base_dir)
+
+# User must specify path to config file; this could be given as input, or handled another way...
+config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/general/files_general/version_specific/v4r4/input_and_templates/config/config.yaml"
+
+with open(config_file,'r') as stream:
+    config_dictionary = yaml.safe_load(stream)
+
 def main():
-    ecco_version_string = "v4r4" # Should not be hardcoded!   
-    overwrite_files_switch = False # User can choose to avoid overwriting files - should also not be hardcoded!
     print("\nGenerating supporting latex table and image files:\n")
-    latex_outline.write_data_attributes_tables(ecco_version_string, overwrite_files_switch)
-    latex_outline.write_datasets(ecco_version_string, overwrite_files_switch)
+    latex_outline.write_data_attributes_tables(base_dir, config_dictionary)
+    latex_outline.write_datasets(base_dir, config_dictionary)
     print()
 if __name__ == "__main__":
     main()

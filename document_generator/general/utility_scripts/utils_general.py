@@ -10,9 +10,6 @@ import netrc
 import requests
 from PIL import Image
 
-general_base_dir = str(Path(__file__).parent.parent)
-sys.path.append(general_base_dir)
-
 
 def write_latex_lines_to_file(latex_lines, output_file):
         Path(output_file).parent.mkdir(parents=True, exist_ok=True)
@@ -20,14 +17,9 @@ def write_latex_lines_to_file(latex_lines, output_file):
             output_file.write('\n'.join(latex_lines))
 
 
+def download_granules(base_dir, config_dictionary):
 
-def download_granules(ecco_version_string, overwrite_granules = False):
-    
-    config_file = os.path.join(general_base_dir, "files_general/version_specific", ecco_version_string, "input_and_templates/config", "config.yaml")
-    with open(config_file,'r') as stream:
-        config_dictionary = yaml.safe_load(stream)
-
-    granule_list_filepath = os.path.join(general_base_dir, "files_general/version_specific", ecco_version_string, "input_and_templates/granules_to_download/granules_to_download.txt")
+    granule_list_filepath = os.path.join(base_dir, config_dictionary['granules_url_list_file_relative'])
     
     granule_url_list = []
     with open(granule_list_filepath, 'r', encoding='utf-8') as file:
@@ -55,18 +47,18 @@ def download_granules(ecco_version_string, overwrite_granules = False):
                             dataset_dir_pre = config_dictionary[f"coordinate_files_{grid_type_substring[1:]}_dir"]
                         else: 
                             dataset_dir_pre = config_dictionary[f"coordinate_files_{grid_type_substring}_dir"]
-                        dataset_dir = os.path.join(os.path.realpath(general_base_dir), dataset_dir_pre)
+                        dataset_dir = os.path.join(os.path.realpath(base_dir), dataset_dir_pre)
                     else: 
                         if grid_type_substring.startswith("_"):
                             dataset_dir_pre = config_dictionary[f"variable_files_{grid_type_substring[1:]}_dir"]
                         else:
                             dataset_dir_pre = config_dictionary[f"variable_files_{grid_type_substring}_dir"]
-                        dataset_dir = os.path.join(os.path.realpath(general_base_dir), dataset_dir_pre)
+                        dataset_dir = os.path.join(os.path.realpath(base_dir), dataset_dir_pre)
 
                     os.makedirs(dataset_dir, exist_ok=True)  
                     local_filename = os.path.join(dataset_dir,Path(granule_url).name)
 
-                    if not overwrite_granules:
+                    if not config_dictionary['overwrite_switch']:
                         if os.path.exists(local_filename):
                             continue
                     try:
@@ -83,7 +75,7 @@ def download_granules(ecco_version_string, overwrite_granules = False):
 
 
 
-def get_a_file_with_min_num_vars(nc_dir):
+def get_a_file_with_min_num_vars(base_dir, nc_dir):
     """
     Determines the number occurrances of the string "long_name" in the attribute strings of a netCDF file,
     which is assumed to be the number of variables (coordinate and data) represented in a file.  
@@ -98,7 +90,7 @@ def get_a_file_with_min_num_vars(nc_dir):
 
     num_vars_per_file_list = []
     num_vars_min = 9999 #professional coding
-    nc_files = glob.glob(f"{os.path.join(general_base_dir,nc_dir)}/*.nc")
+    nc_files = glob.glob(f"{os.path.join(base_dir,nc_dir)}/*.nc")
     for nc_file in nc_files:
         cmd1 = ["ncdump", "-h", nc_file]
         cmd2 = ["grep", "long_name"]
@@ -119,7 +111,7 @@ def get_a_file_with_min_num_vars(nc_dir):
     return nc_files[num_vars_per_file_list.index(num_vars_min)]
 
 
-def get_a_file_with_max_num_vars(nc_dir):
+def get_a_file_with_max_num_vars(base_dir, nc_dir):
     """
     Determines the number occurrances of the string "long_name" in the attribute strings of a netCDF file,
     which is assumed to be the number of variables (coordinate and data) represented in a file.  
@@ -134,7 +126,7 @@ def get_a_file_with_max_num_vars(nc_dir):
 
     num_vars_per_file_list = []
     num_vars_max = 0
-    nc_files = glob.glob(f"{os.path.join(general_base_dir,nc_dir)}/*.nc")
+    nc_files = glob.glob(f"{os.path.join(base_dir,nc_dir)}/*.nc")
     for nc_file in nc_files:
         cmd1 = ["ncdump", "-h", nc_file]
         cmd2 = ["grep", "long_name"]
@@ -342,7 +334,7 @@ def get_ds_title(ds:xr.Dataset)->str:
     return title[:-1]
         
 
-def get_type_of_granule_and_grid(granule_directory):
+def get_granule_and_grid_types(granule_directory):
     relevant_strings_list = granule_directory.split("/")[-2:]
     return (relevant_strings_list[0].split("_")[0], relevant_strings_list[1].split("_")[-1]) 
 
@@ -366,9 +358,6 @@ def generate_thumbnail(input_path, output_path, size):
 
     except IOError:
         print(f"Cannot create thumbnail for {input_path}")
-
-
-
 
 
 

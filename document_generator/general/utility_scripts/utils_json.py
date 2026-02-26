@@ -2,14 +2,10 @@ import json
 from pathlib import Path
 import sys
 import os
-
-general_base_dir = str(Path(__file__).parent.parent)
-sys.path.append(general_base_dir)
-
-import utility_scripts.utils_general as utils_general
+from . import utils_general as utils_general
 
 
-def write_attributes_tables_tex(config_dictionary):
+def write_attributes_tables_tex(base_dir, config_dictionary):
     processed_attribute_types = []
     for key in config_dictionary.keys():
         if "_attributes_" in key:
@@ -18,22 +14,22 @@ def write_attributes_tables_tex(config_dictionary):
                 print(f"writing '{attribute_type}_attributes' latex table")
                 processed_attribute_types.append(attribute_type)
                 latex_lines = config_dictionary[f"{attribute_type}_attributes_latex_lines"]
-                json_list = obtain_json_data(config_dictionary[f"{attribute_type}_attributes_json_file"])
+                json_list = obtain_json_data(base_dir, config_dictionary[f"{attribute_type}_attributes_json_file"])
                 latex_lines.extend(establish_table(json_list))
                 latex_lines.append(r'\end{longtable}')
-                latex_output_file = os.path.join(general_base_dir, config_dictionary[f"{attribute_type}_attributes_tex_file"])
+                latex_output_file = os.path.join(base_dir, config_dictionary[f"{attribute_type}_attributes_tex_file"])
                 Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
                 with open(latex_output_file, 'w') as output_file:
                     output_file.write('\n'.join(latex_lines))
                 
 
-def obtain_json_data(filename: str) -> list:
+def obtain_json_data(base_dir, filename: str) -> list:
     """
     Read JSON data from a file and return a dictionary.
     :param filename: string
     :return: list of dictionaries
     """
-    with open(os.path.join(general_base_dir,filename), "r") as file:
+    with open(os.path.join(base_dir,filename), "r") as file:
         json_data_dictionary_list = json.load(file)
     return json_data_dictionary_list
 

@@ -1,52 +1,39 @@
-# BL: added "overwrite_switch" as an argument, thinking that we should allow for only re-plotting newly downloaded/overwritten granules....
-# But maybe I'll implement that later
-
 import os
 import argparse
 from pathlib import Path
 import sys
 import yaml
 
-general_base_dir = str(Path(__file__).parent.parent)
-sys.path.append(general_base_dir)
-
-import utility_scripts.utils_general as utils_general
-import utility_scripts.utils_json as utils_json
-import utility_scripts.cdf_extract as cdf_extract
+from . import utils_general as utils_general
+from . import utils_json as utils_json
+from . import cdf_extract as cdf_extract
 
 
-def write_data_attributes_tables(ecco_version_string, overwrite_switch):
+def write_data_attributes_tables(base_dir, config_dictionary):
     """
         This function writes the data product tables to the latex document.
     """
-    config_file = os.path.join(general_base_dir, "files_general/version_specific", ecco_version_string, "input_and_templates/config", "config.yaml")
-    with open(config_file,'r') as stream:
-        config_dictionary = yaml.safe_load(stream)
-
+    
     # Write attribute (global and variable) tables
-    utils_json.write_attributes_tables_tex(config_dictionary)
+    utils_json.write_attributes_tables_tex(base_dir, config_dictionary)
 
     # Write example variable tables
-    variable_granules_parent_directory = os.path.join(general_base_dir, "/".join(config_dictionary["variable_files_native_dir"].split("/")[:-1]))
+    variable_granules_parent_directory = os.path.join(base_dir, "/".join(config_dictionary["variable_files_native_dir"].split("/")[:-1]))
     variable_granule_directories = [root for root, dirs, files in os.walk(variable_granules_parent_directory) if not dirs]
     for granule_directory in variable_granule_directories:
-        granule_type, grid_type = utils_general.get_type_of_granule_and_grid(granule_directory)
-        cdf_extract.latex_example_netcdf(grid_type, config_dictionary[f"variable_files_{grid_type}_dir"], config_dictionary)
+        granule_type, grid_type = utils_general.get_granule_and_grid_types(granule_directory)
+        cdf_extract.latex_example_netcdf(base_dir, config_dictionary, grid_type)
 
 
-def write_datasets(ecco_version_string, overwrite_switch):
+def write_datasets(base_dir, config_dictionary):
 
-    config_file = os.path.join(general_base_dir, "files_general/version_specific", ecco_version_string, "input_and_templates/config", "config.yaml")
-    with open(config_file,'r') as stream:
-        config_dictionary = yaml.safe_load(stream)
-  
     # The following line depends on the project file tree structure
-    granules_parent_directory = os.path.join(general_base_dir, "/".join(config_dictionary["coordinate_files_native_dir"].split("/")[:-2]))
+    granules_parent_directory = os.path.join(base_dir, "/".join(config_dictionary["coordinate_files_native_dir"].split("/")[:-2]))
     granule_directories = [root for root, dirs, files in os.walk(granules_parent_directory) if not dirs]
 
     for granule_directory in granule_directories:
         print(f"writing latex table and figure files for granules in the '{'/'.join(granule_directory.split('/')[-2:])}' directory" )
-        cdf_extract.data_products(ecco_version_string, config_dictionary, granule_directory, overwrite_switch)
+        cdf_extract.data_products(base_dir, config_dictionary, granule_directory)
 
 
 

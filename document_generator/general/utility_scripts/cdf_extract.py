@@ -6,12 +6,8 @@ import subprocess
 from pathlib import Path
 import sys
 
-general_base_dir = str(Path(__file__).parent.parent)
-sys.path.append(general_base_dir)
-
-import utility_scripts.utils_general as utils
-import utility_scripts.cdf_plotter as cdf_plotter
-#import utility_scripts.cdf_plotter as cdf_plotter # This line wasn't here, I'm just wondering if _ojh is indeed the one to use
+from . import utils_general as utils
+from . import cdf_plotter as cdf_plotter
 
 
 
@@ -103,13 +99,15 @@ def format_example_netCDF_table(latex_lines_unformatted:list[str], name : str = 
 
 
 
-def latex_example_netcdf(grid_type, nc_dir, config_dictionary):
-#def latex_example_netcdf(grid_type, nc_dir)->list[str]:
+def latex_example_netcdf(base_dir, config_dictionary, grid_type):
 
-    file = utils.get_a_file_with_min_num_vars(nc_dir)    
-    #file = utils.get_a_file_with_max_num_vars(nc_dir)    
+    granule_directory = config_dictionary[f"variable_files_{grid_type}_dir"]
 
-    dataset = xr.open_dataset(file, decode_times=False, decode_cf=False, decode_coords=False, decode_timedelta=False)
+    # DO WE WANT MIN OR MAX NUMBER OF VARIABLES IN EXAMPLE?
+    example_granule = utils.get_a_file_with_min_num_vars(base_dir, granule_directory)    
+    #example_granule = utils.get_a_file_with_max_num_vars(base_dir, granule_directory)    
+
+    dataset = xr.open_dataset(example_granule, decode_times=False, decode_cf=False, decode_coords=False, decode_timedelta=False)
     latex_lines_list = []
     latex_lines_list.append(f'netcdf {grid_type} example')
     latex_lines_list.append('dimensions')
@@ -156,7 +154,7 @@ def latex_example_netcdf(grid_type, nc_dir, config_dictionary):
     #return format_example_netCDF_table(latex_lines_list, grid_type)
     formatted_latex_lines = format_example_netCDF_table(latex_lines_list, grid_type)
 
-    latex_output_file = os.path.join(general_base_dir, config_dictionary[f"example_{grid_type}_table_tex_file"])
+    latex_output_file = os.path.join(base_dir, config_dictionary[f"example_{grid_type}_table_tex_file"])
     Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
     with open(latex_output_file, 'w') as output_file:
         output_file.write('\n'.join(formatted_latex_lines))
@@ -521,7 +519,7 @@ def get_Global_or_CoordsDimsVarsList(netCDFpath:str,jsonFileName:str,saveTo:str)
 
 
 
-def data_products(ecco_version_string, config_dictionary, granule_directory, overwrite_switch)->list:
+def data_products(base_dir, config_dictionary, granule_directory)->list:
     
     """
     Generates a list of LaTeX lines for the Data Products grid_type of the report.
@@ -536,9 +534,11 @@ def data_products(ecco_version_string, config_dictionary, granule_directory, ove
 
     """
     
+    ecco_version_string = config_dictionary["ecco_version_string"]
+
     latex_lines = []
 
-    granule_type, grid_type = utils.get_type_of_granule_and_grid(granule_directory)
+    granule_type, grid_type = utils.get_granule_and_grid_types(granule_directory)
     
     granule_document_section_title = config_dictionary["table_section_titles"][f"{granule_type}_{grid_type}"]
     granule_document_section_title= utils.sanitize(granule_document_section_title)
@@ -546,9 +546,9 @@ def data_products(ecco_version_string, config_dictionary, granule_directory, ove
 
     is_coord = granule_type == "coordinate"
     
-    json_groupings_filepath = os.path.join(general_base_dir, config_dictionary[f"groupings_{granule_type}_{grid_type}_json_file"])
-    granule_directory = os.path.join(general_base_dir, config_dictionary[f"{granule_type}_files_{grid_type}_dir"])
-    image_directory = os.path.join(general_base_dir, config_dictionary[f"figures_{granule_type}_{grid_type}_dir"])
+    json_groupings_filepath = os.path.join(base_dir, config_dictionary[f"groupings_{granule_type}_{grid_type}_json_file"])
+    granule_directory = os.path.join(base_dir, config_dictionary[f"{granule_type}_files_{grid_type}_dir"])
+    image_directory = os.path.join(base_dir, config_dictionary[f"figures_{granule_type}_{grid_type}_dir"])
 
 
     # Load the JSON data
@@ -562,7 +562,7 @@ def data_products(ecco_version_string, config_dictionary, granule_directory, ove
         latex_lines.append(r'\subsection{'+ f'{grid_type}' + ' dataset of ' + f'{granule_filename_truncated_stem_formatted}' + r'}')
         latex_lines.append(r'\newp') # Deasctived!!
 
-        data_array_list, dataset = search_and_extract(granule_filename_truncated_stem, os.path.join(general_base_dir, granule_directory), is_coord)
+        data_array_list, dataset = search_and_extract(granule_filename_truncated_stem, os.path.join(base_dir, granule_directory), is_coord)
 
         latex_lines.append(r'\subsubsection{Overview}')
 
@@ -587,8 +587,7 @@ def data_products(ecco_version_string, config_dictionary, granule_directory, ove
             dataVarTable = data_var_table(variable_name, attributes_dictionary, granule_filename_truncated_stem)
             latex_lines.extend(dataVarTable)
 
-            dataVarPlot = cdf_plotter.data_var_plot(ecco_version_string, dataset, dataset[variable_name], image_directory, overwrite_switch)
-            #dataVarPlot = cdf_plotter.data_var_plot(ecco_version_string, dataset, dataset[variable_name], image_directory)
+            dataVarPlot = cdf_plotter.data_var_plot(config_dictionary["ecco_version_string"], dataset, dataset[variable_name], image_directory, config_dictionary['overwrite_switch'])
             latex_lines.append(r'\begin{figure}[H]')
             latex_lines.append(r'\centering')
             latex_lines.append(dataVarPlot) #testing right here
@@ -598,7 +597,7 @@ def data_products(ecco_version_string, config_dictionary, granule_directory, ove
 
             latex_lines.append(r'\newpage')
 
-        granule_latex_output_file = os.path.join(general_base_dir, config_dictionary[f'{granule_type}_table_{grid_type}_tex_file'])
+        granule_latex_output_file = os.path.join(base_dir, config_dictionary[f'{granule_type}_table_{grid_type}_tex_file'])
         utils.write_latex_lines_to_file(latex_lines, granule_latex_output_file)
     
     #return latex_lines

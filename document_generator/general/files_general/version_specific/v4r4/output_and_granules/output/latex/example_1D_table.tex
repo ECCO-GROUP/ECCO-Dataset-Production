@@ -1,0 +1,36 @@
+\begin{longtable}{|p{\textwidth}|}
+\caption{Example CDL description of 1D dataset}
+\label{tab:cdl-1D} \\
+\hline \endhead
+\hline \endfoot
+netcdf 1D example\\
+dimensions\\
+\hline
+\rowcolor{YellowGreen}  time = 227904\\
+\hline
+
+coordinates\\
+\hline
+\rowcolor{Apricot}\hspace{0.5cm}int32 time (time)\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:comment = ""\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "snapshot time"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
+\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
+\hline
+
+data variables\\
+\hline
+\hspace{0.5cm}float64 Pa\_global (time)\\
+\hspace{0.5cm}\hspace{0.5cm}Pa\_global:\_FillValue = "9.969209968386869e+36"\\
+\hspace{0.5cm}\hspace{0.5cm}Pa\_global:coverage\_content\_type = "modelResult"\\
+\hspace{0.5cm}\hspace{0.5cm}Pa\_global:long\_name = "Global mean atmospheric surface pressure over the ocean and sea-ice"\\
+\hspace{0.5cm}\hspace{0.5cm}Pa\_global:standard\_name = "air\_pressure\_at\_sea\_level"\\
+\hspace{0.5cm}\hspace{0.5cm}Pa\_global:units = "N m-2"\\
+\hspace{0.5cm}\hspace{0.5cm}Pa\_global:valid\_min = "100873.14755283327"\\
+\hspace{0.5cm}\hspace{0.5cm}Pa\_global:valid\_max = "101257.45252296235"\\
+\hspace{0.5cm}\hspace{0.5cm}Pa\_global:coordinates = "time"\\
+\hline
+\end{longtable}

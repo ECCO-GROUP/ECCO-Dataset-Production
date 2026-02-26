@@ -1,0 +1,127 @@
+{"_FillValue":
+  {
+    "type":"Must be the same as the variable type",
+    "description":"A value used to indicate array elements containing no valid data. This value must be of the same type as the storage (packed) type; should be set as the minimum value for this type. Note that some netCDF readers are unable to cope with signed bytes and may, in these cases, report fill as 128. Some cases will be reported as unsigned bytes 0 to 255. Required for the majority of variables except mask and l2p_flags.",
+    "sourc":"CF"
+  },
+  "units":
+  {
+    "type":"string",
+    "description":"Text description of the units, preferably S.I., and must be compatible with the Unidata UDUNITS-2 package [AD-5]. For a given variable (e.g. wind speed), these must be the same for each dataset. Required for the majority of variables except mask, quality_level, and l2p_flags.",
+    "sourc":"CF, ACDD"
+  },
+  "scale_factor":
+  {
+    "type":"Must be expressed in the unpacked data type",
+    "description":"To be multiplied by the variable to recover the original value. Defined by the producing RDAC. Valid values within value_min and valid_max should be transformed by scale_factor and add_offset, otherwise skipped to avoid floating point errors.",
+    "sourc":"CF"
+  },
+  "add_offset":
+  {
+    "type":"Must be expressed in the unpacked data type",
+    "description":"To be added to the variable after multiplying by the scale factor to recover the original value. If only one of 'scale_factor' or 'add_offset' is needed, then both should be included anyway to avoid ambiguity, with 'scale_factor' defaulting to 1.0 and 'add_offset' defaulting to 0.0. Defined by the producing RDAC.",
+    "sourc":"CF"
+  },
+  "long_name":
+  {
+    "type":"string",
+    "description":"A free-text descriptive variable name.",
+    "sourc":"CF, ACDD"
+  },
+  "valid_min":
+  {
+    "type":"Expressed in same data type as variable",
+    "description":"Minimum valid value for this variable once they are packed (in storage type). The fill value should be outside this valid range. Note that some netCDF readers are unable to cope with signed bytes and may, in these cases, report valid min as 129. Some cases as unsigned bytes 0 to 255. Values outside of 'valid_min' and 'valid_max' will be treated as missing values. Required for all variables except variable time.",
+    "sourc":"CF"
+  },
+  "valid_max":
+  {
+    "type":"Expressed in same data type as variable",
+    "description":"Maximum valid value for this variable once they are packed (in storage type). The fill value should be outside this valid range. Note that some netCDF readers are unable to cope with signed bytes and may, in these cases, report valid min as 127. Required for all variables except variable time.",
+    "sourc":"CF"
+  },
+  "standard_name":
+  {
+    "type":"string",
+    "description":"Provides a standard and unique description of a physical quantity. The standard name table can be found at http://cfpcmdi.llnl.gov/documents/cf-standard-names/standard-name-table/11/standard-name-table.",
+    "sourc":"CF, ACDD"
+  },
+  "comment":
+  {
+    "type":"string",
+    "description":"Miscellaneous information about the variable or the methods used to produce it.",
+    "sourc":"CF"
+  },
+  "source":
+  {
+    "type":"string",
+    "description":"Method of production of the original data. For L2P and L3 files, if the data variable contains multiple sources, set this string to be the relevant “sources of” variable name. For example, if multiple wind speed sources are used, set 'source = sources_of_wind_speed'. For L4 and GMPE files, it follows the source convention used for the global attribute of the same name, but provide in the commaseparated list only the sources relevant to this variable.",
+    "sourc":"CF"
+  },
+  "references":
+  {
+    "type":"string",
+    "description":"Published or web-based references that describe the data or methods used to produce it. Note that while at least one reference is required in the global attributes, references to this specific data variable may also be given.",
+    "sourc":"CF"
+  },
+  "axis":
+  {
+    "type":"string",
+    "description":"For use with coordinate variables only. The attribute 'axis' may be attached to a coordinate variable and given one of the values 'X', 'Y', 'Z', or 'T', which stand for a longitude, latitude, vertical, or time axis respectively.",
+    "sourc":"CF"
+  },
+  "positive":
+  {
+    "type":"string",
+    "description":"For use with a vertical coordinate variables only. May have the value 'up' or 'down'. For example, if an oceanographic netCDF file encodes the depth of the surface as 0 and the depth of 1000 meters as 1000 then the axis would set positive to 'down'. If a depth of 1000 meters was encoded as -1000, then positive would be set to 'up'.",
+    "sourc":"CF"
+  },
+  "coordinates":
+  {
+    "type":"string",
+    "description":"Identifies auxiliary coordinate variables, label variables, and alternate coordinate variables. See the section on coordinate-system in the CF Metadata Conventions version 1.4 available from http://cf-pcmdi.llnl.gov/documents/cf-conventions/1.4/cf-conventions-multi.html. This attribute must be provided if the data are on a non-regular lat/lon grid (map projection or swath data).",
+    "sourc":"CF"
+  },
+  "grid_mapping":
+  {
+    "type":"string",
+    "description":"Use this for data variables that are on a projected grid. The attribute takes a string value that is the name of another variable in the file that provides the description of the mapping via a collection of attached attributes. That named variable is called a grid mapping variable and is of arbitrary type since it contains no data. Its purpose is to act as a container for the attributes that define the mapping. See the section on mappings-andprojections in the CF Metadata Conventions version 1.4 available from http://cf-pcmdi.llnl.gov/documents/cf-conventions/1.4/cf-conventions-multi.html.",
+    "sourc":"CF"
+  },
+  "flag_meanings":
+  {
+    "type":"string",
+    "description":"Space-separated list of text descriptions associated in strict order with conditions set by either 'flag_values' or 'flag_masks'. Words within a phrase should be connected with underscores.",
+    "sourc":"CF"
+  },
+  "flag_values":
+  {
+    "type":"Must be the same as the variable type",
+    "description":"Comma-separated array of valid, mutually exclusive variable values (required when the bit field contains enumerated values; i.e., a 'list' of conditions). Used primarily for quality_level and 'sources_of_xxx' variables.",
+    "sourc":"CF"
+  },
+  "flag_masks":
+  {
+    "type":"Must be the same as the variable type",
+    "description":"Comma-separated array of valid variable masks (required when the bit field contains independent Boolean conditions; i.e., a bit 'mask'). Used primarily for l2p_flags variable. Note: CF allows the use of both flag_masks and flag_values attributes in a single variable to create sets of masks that each have their own list of flag_values (see http://cfpcmdi.llnl.gov/documents/cfconventions/1.5/ch03s05.html#id2710752 for examples), but this practice is discouraged.",
+    "sourc":"CF"
+  },
+  "depth":
+  {
+    "type":"string",
+    "description":"Use this to indicate the depth for which the data are valid.",
+    "sourc":"GDS"
+  },
+  "height":
+  {
+    "type":"string",
+    "description":"Use this to indicate the height for which the wind data are specified.",
+    "sourc":"GDS"
+  },
+  "time_offset":
+  {
+    "type":"Must be expressed in the unpacked data type",
+    "description":"Difference in hours between an ancillary field such as wind_speed and the SST observation time for instance.",
+    "sourc":"GDS"
+  }
+}
