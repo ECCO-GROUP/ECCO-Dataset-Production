@@ -10,16 +10,16 @@
 
 \rowcolor{LightCyan} scale\_factor & Must be expressed in the unpacked data type & To be multiplied by the variable to recover the
 original value. Defined by the producing
-RDAC. Valid values within \texttt\{value\_min\} and
-\texttt\{valid\_max\} should be transformed by
-\texttt\{scale\_factor\} and \texttt\{add\_offset\}, otherwise
+RDAC. Valid values within \hspace{0.5cm}exttt\{value\_min\} and
+\hspace{0.5cm}exttt\{valid\_max\} should be transformed by
+\hspace{0.5cm}exttt\{scale\_factor\} and \hspace{0.5cm}exttt\{add\_offset\}, otherwise
 skipped to avoid floating point errors. & CF \\ \hline
 
-\rowcolor{LightCyan} add\_offset & Must be expressed in the unpacked data type & To be added to the variable after multiplying by the scale factor to recover the original value. If only one of \texttt\{scale\_factor\} or \texttt\{add\_offset\} is needed, then both should be included anyway to avoid ambiguity, with \texttt\{scale\_factor\} defaulting to 1.0 and add\_offset defaulting to 0.0. Defined by the producing RDAC. & CF \\ \hline
+\rowcolor{LightCyan} add\_offset & Must be expressed in the unpacked data type & To be added to the variable after multiplying by the scale factor to recover the original value. If only one of \hspace{0.5cm}exttt\{scale\_factor\} or \hspace{0.5cm}exttt\{add\_offset\} is needed, then both should be included anyway to avoid ambiguity, with \hspace{0.5cm}exttt\{scale\_factor\} defaulting to 1.0 and add\_offset defaulting to 0.0. Defined by the producing RDAC. & CF \\ \hline
 
 \rowcolor{LightCyan} long\_name & string & A free-text descriptive variable name. & CF, ACDD \\ \hline
 
-\rowcolor{LightCyan} valid\_min & Expressed in same data type as variable & Minimum valid value for this variable once they are packed (in storage type). The fill value should be outside this valid range. Note that some netCDF readers are unable to cope with signed bytes and may, in these cases, report valid min as 129. Some cases as unsigned bytes 0 to 255. Values outside of \texttt\{valid\_min\} and \texttt\{valid\_max\} will be treated as missing values. Required for all variables except variable time. & CF \\ \hline
+\rowcolor{LightCyan} valid\_min & Expressed in same data type as variable & Minimum valid value for this variable once they are packed (in storage type). The fill value should be outside this valid range. Note that some netCDF readers are unable to cope with signed bytes and may, in these cases, report valid min as 129. Some cases as unsigned bytes 0 to 255. Values outside of \hspace{0.5cm}exttt\{valid\_min\} and \hspace{0.5cm}exttt\{valid\_max\} will be treated as missing values. Required for all variables except variable time. & CF \\ \hline
 
 \rowcolor{LightCyan} valid\_max & Expressed in same data type as variable & Maximum valid value for this variable once
 they are packed (in storage type). The fill
@@ -32,12 +32,12 @@ variables except variable time. & CF \\ \hline
 \rowcolor{LightCyan} standard\_name & string & Where defined, a standard and unique
 description of a physical quantity. For the
 complete list of standard name strings, see
-[AD-8]. \textbf\{Do not\} include this attribute if no
-\texttt\{standard\_name\} exists. & CF, ACDD \\ \hline
+[AD-8]. \hspace{0.5cm}extbf\{Do not\} include this attribute if no
+\hspace{0.5cm}exttt\{standard\_name\} exists. & CF, ACDD \\ \hline
 
 \rowcolor{LightCyan} comment & string & Miscellaneous information about the variable or the methods used to produce it. & CF \\ \hline
 
-\rowcolor{LightCyan} source & string & \textbf\{For L2P and L3 files\}: For a data variable with
+\rowcolor{LightCyan} source & string & \hspace{0.5cm}extbf\{For L2P and L3 files\}: For a data variable with
 a single source, use the GHRSST unique
 string listed in Table 7-10 if the source is a
 GHRSST SST product. For other sources,
@@ -47,10 +47,10 @@ Section 7.9 to create the character string.
 If the data variable contains multiple sources,
 set this string to be the relevant “sources of”
 variable name. For example, if multiple wind
-speed sources are used, set \texttt\{source =\}
+speed sources are used, set \hspace{0.5cm}exttt\{source =\}
 sources\_of\_wind\_speed.
 
-\textbf\{For L4 and GMPE files\}: follow the \texttt\{source\}
+\hspace{0.5cm}extbf\{For L4 and GMPE files\}: follow the \hspace{0.5cm}exttt\{source\}
 convention used for the global attribute of the
 same name, but provide in the commaseparated list only the sources relevant to this
 variable. & CF \\ \hline
@@ -76,12 +76,12 @@ on vertical-coordinate in [AD-3] & CF \\ \hline
 \rowcolor{LightCyan} flag\_mappings & String & Space-separated list of text descriptions associated in strict order with conditions set by either flag\_values or flag\_masks. Words within a phrase should be connected with underscores. & CF \\ \hline
 
 \rowcolor{LightCyan} flag\_values & Must be the same as
-the variable type & Comma-separated array of valid, mutually exclusive variable values (required when the bit field contains enumerated values; i.e., a “list” of conditions). Used primarily for \texttt\{quality\_level\} and “\texttt\{sources\_of\_xxx\}” variables. & CF \\ \hline
+the variable type & Comma-separated array of valid, mutually exclusive variable values (required when the bit field contains enumerated values; i.e., a “list” of conditions). Used primarily for \hspace{0.5cm}exttt\{quality\_level\} and “\hspace{0.5cm}exttt\{sources\_of\_xxx\}” variables. & CF \\ \hline
 
 \rowcolor{LightCyan} flag\_masks & Must be the same as the variable type & Comma-separated array of valid variable
 masks (required when the bit field contains
 independent Boolean conditions; i.e., a bit
-“mask”). Used primarily for \texttt\{l2p\_flags\}
+“mask”). Used primarily for \hspace{0.5cm}exttt\{l2p\_flags\}
 variable.
 
 \emph\{Note: CF allows the use of both flag\_masks
@@ -97,6 +97,6 @@ SST data are valid. & GDS \\ \hline
 
 \rowcolor{LightCyan} time\_offset & Must be expressed in
 the unpacked data
-type & Difference in hours between an ancillary field such as \texttt\{wind\_speed\} and the SST observation time & GDS \\ \hline
+type & Difference in hours between an ancillary field such as \hspace{0.5cm}exttt\{wind\_speed\} and the SST observation time & GDS \\ \hline
 
 \end{longtable}

@@ -15,7 +15,7 @@ def write_attributes_tables_tex(base_dir, config_dictionary):
                 processed_attribute_types.append(attribute_type)
                 latex_lines = config_dictionary[f"{attribute_type}_attributes_latex_lines"]
                 json_list = obtain_json_data(base_dir, config_dictionary[f"{attribute_type}_attributes_json_file"])
-                latex_lines.extend(establish_table(json_list))
+                latex_lines.extend(establish_table(json_list, config_dictionary))
                 latex_lines.append(r'\end{longtable}')
                 latex_output_file = os.path.join(base_dir, config_dictionary[f"{attribute_type}_attributes_tex_file"])
                 Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
@@ -53,10 +53,10 @@ def verify_columns(available_columns: set, user_columns: list) -> list:
     :param user_columns: list of user-defined columns
     :return: list of strings
     """
-    return [utils_general.sanitize(col) for col in user_columns if col in available_columns]
+    return [utils_general.sanitize(config_dictionary, col) for col in user_columns if col in available_columns]
 
 
-def establish_table(dictionary_list_from_json:list)->list:
+def establish_table(dictionary_list_from_json:list, config_dictionary)->list:
     """
     Establishes the table for the json data
     :param dictionary_list_from_json: list of dictionaries from a json file
@@ -66,7 +66,7 @@ def establish_table(dictionary_list_from_json:list)->list:
 
     max_col = 0
     for dictionary in dictionary_list_from_json:
-        formatted_dictionary_as_list = [utils_general.sanitize_with_url(str(dictionary.get(key, "N/A"))) for key in dictionary]
+        formatted_dictionary_as_list = [utils_general.sanitize_with_url(config_dictionary, str(dictionary.get(key, "N/A"))) for key in dictionary]
         max_col = len(formatted_dictionary_as_list) if len(formatted_dictionary_as_list) > max_col else max_col
         if len(formatted_dictionary_as_list) < max_col:
             formatted_dictionary_as_list.extend([""] * (max_col - len(formatted_dictionary_as_list)))
@@ -101,7 +101,7 @@ def set_table(json_data: dict, caption: str = None, col_names: list = None, wide
 
     for row in json_data[1:]:
         latex_table.append("\\rowcolor{LightCyan}\n")
-        formatted_row = [utils_general.sanitize(str(row.get(key, "N/A"))) for key in col_names]
+        formatted_row = [utils_general.sanitize(config_dictionary, str(row.get(key, "N/A"))) for key in col_names]
         latex_table.append(" & ".join(formatted_row) + " \\\\\n")
         latex_table.append("\\hline\n")
 

@@ -1,6 +1,11 @@
 # This is the static configuration file for the ECCO document generator product; it should be provided to the user with each ECCO release
 # All paths are relative to the base document generator directory
 
+#tab_char: "\t"
+tab_char: \t
+tab_width_cm: 0.5
+
+
 overwrite_switch: True
 #overwrite_switch: False
 
@@ -91,15 +96,15 @@ variable_attributes_latex_lines:
   - \hline \endfoot
   - \rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline
 
+example_table_latex_lines:
+  - \begin{longtable}{|p{\textwidth}|}
+  - \caption{Example CDL description of ' +name+ r' dataset}
+  - rlabel{tab:cdl-'+name+r'} \\'
+  - \hline \endhead
+  - \hline \endfoot
 
-final_compendium_files_dir: "final_compendium_files"
 
-compendium_tex_filepath: "general/files_general/version_specific/v4r4/input_and_templates/latex/main_compendium_template_DO_NOT_MODIFY/ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.tex"
-
-static_support_tex_dir_relative: "general/files_general/version_specific/v4r4/input_and_templates/latex/components"
-#static_support_tex_dir_relative: "general/files_general/version_specific/v4r4/input_and_templates/latex//"
-user_generated_tex_dir_relative: "general/files_general/version_specific/v4r4/output_and_granules/output/latex"
-
+# -----------------------------------------------------------------------------------------------------------------------------------
 compendium_compilation_runtime_message_string: |+
   
   Compiling the final latex document (if successful, will be found in the directory 'final_compendium_files'
@@ -109,5 +114,12 @@ compendium_compilation_runtime_message_string: |+
   and look for error messages in the '__.log' file, which should be found in the 'final_compendium_files' directory.
 
 dummy_entry_to_set_number_of_blank_lines_at_the_end_of_the_above_message: blah
+# -----------------------------------------------------------------------------------------------------------------------------------
+
+final_compendium_files_dir: "final_compendium_files"
+compendium_tex_filepath: "general/files_general/version_specific/v4r4/input_and_templates/latex/main_compendium_template_DO_NOT_MODIFY/ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.tex"
+static_support_tex_dir_relative: "general/files_general/version_specific/v4r4/input_and_templates/latex/components"
+user_generated_tex_dir_relative: "general/files_general/version_specific/v4r4/output_and_granules/output/latex"
+
 
 remote_server_hostname: urs.earthdata.nasa.gov

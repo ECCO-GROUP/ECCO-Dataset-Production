@@ -1,4 +1,3 @@
-/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/general/document_files/v4r4/figures/*
 *.pdf
 *.nc
 *.aux
@@ -7,3 +6,5 @@
 *.lot
 *.out
 *.toc
+*.png
+*.jpg

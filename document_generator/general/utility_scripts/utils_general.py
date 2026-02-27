@@ -12,10 +12,15 @@ from PIL import Image
 
 
 def write_latex_lines_to_file(latex_lines, output_file):
-        Path(output_file).parent.mkdir(parents=True, exist_ok=True)
-        with open(output_file, 'w') as output_file:
-            output_file.write('\n'.join(latex_lines))
+    Path(output_file).parent.mkdir(parents=True, exist_ok=True)
+    with open(output_file, 'w') as output_file:
+        output_file.write('\n'.join(latex_lines))
 
+def append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list):
+    latex_lines_list.append("")
+    latex_lines_list.append(f"\hangindent={(num_tabs + 1) * config_dictionary['tab_width_cm']}cm")
+    latex_lines_list.append("\hangafter1")
+    return latex_lines_list
 
 def download_granules(base_dir, config_dictionary):
 
@@ -148,7 +153,7 @@ def get_a_file_with_max_num_vars(base_dir, nc_dir):
     return nc_files[num_vars_per_file_list.index(num_vars_max)]
 
 
-def sanitize(string:str)->str:
+def sanitize(config_dictionary, string:str)->str:
     """
     Sanitizes a string for use in LaTeX by replacing any reserved characters
     with their LaTeX equivalent.
@@ -173,7 +178,9 @@ def sanitize(string:str)->str:
         r"^": r"\textasciicircum",
         r"\\": r"\textbackslash",
         r"|": r"\textbar",
-        "\t": r"\hspace*{0.5cm} ",
+        config_dictionary['tab_char']: f"\hspace{{{config_dictionary['tab_width_cm']}cm}}" ,
+        #"\t": f"\hspace{{{tab_width_cm}cm}}" ,
+        #"\t": r"\hspace*{0.5cm} ",
         #r"'": r'\'', might not be needed
     }
 
@@ -185,7 +192,7 @@ def sanitize(string:str)->str:
 
 
 
-def sanitize_with_math(string:str)->str:
+def sanitize_with_math(config_dictionary, string:str)->str:
     """
     Sanitizes a string for use in LaTeX by replacing any reserved characters
     with their LaTeX equivalent, except within math environments (delimited by $).
@@ -209,7 +216,9 @@ def sanitize_with_math(string:str)->str:
         r"^": r"\textasciicircum",
         r"\\": r"\textbackslash",
         r"|": r"\textbar",
-        "\t": r"\hspace{0.5cm}",
+        config_dictionary['tab_char']: f"\hspace{{{config_dictionary['tab_width_cm']}cm}}" ,
+        #"\t": f"\hspace{{{config_dictionary['tab_width_cm']}cm}}" ,
+        #"\t": r"\hspace{0.5cm}",
         #r"'": '\'',
     }
 
@@ -230,7 +239,7 @@ def sanitize_with_math(string:str)->str:
     # Reassemble the string
     return '$'.join(parts)
 
-def sanitize_with_url(string:str)->str:
+def sanitize_with_url(config_dictionary, string:str)->str:
     """
     Sanitizes a string for use in LaTeX by replacing any reserved characters
     with their LaTeX equivalent, ignoring parts between \\url{ and }.
@@ -263,7 +272,8 @@ def sanitize_with_url(string:str)->str:
         r"^": r"\textasciicircum",
         r"\\": r"\textbackslash",
         r"|": r"\textbar",
-        "\t": r"\hspace{0.5cm} ",
+        config_dictionary['tab_char']: f"\hspace{{{config_dictionary['tab_width_cm']}cm}}" ,
+        #"\t": r"\hspace{0.5cm} ",
         #r"'": r'\'',
     }
 

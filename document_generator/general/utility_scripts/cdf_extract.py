@@ -14,7 +14,7 @@ from . import cdf_plotter as cdf_plotter
 ## ----------------------------------------------------------------------------
 ## ---------------------- Extracting CDL For Examples -------------------------
 ## ----------------------------------------------------------------------------
-def fieldTable(dataset:xr.Dataset, is_coord:bool)->list[str]:
+def fieldTable(config_dictionary, dataset:xr.Dataset, is_coord:bool)->list[str]:
 
     product_name = get_product_name(dataset)
     datavar_shortname, datavar_longname, datavar_units = get_coord_vars_in_dataset(dataset=dataset, isCoord=False)
@@ -24,7 +24,7 @@ def fieldTable(dataset:xr.Dataset, is_coord:bool)->list[str]:
     latex_lines = []
     latex_lines.append(r'\begin{longtable}{|m{'+str(a)+r'\textwidth}|m{'+str(b)+r'\textwidth}|m{0.12\textwidth}|}')
     # make a table that displays the fields in the dataset
-    latex_lines.append(fr'\caption{{Coordinates and Variables in the dataset {utils.sanitize(product_name)}}}')
+    latex_lines.append(fr'\caption{{Coordinates and Variables in the dataset {utils.sanitize(config_dictionary, product_name)}}}')
     latex_lines.append(fr'\label{{tab:table-{dataset}-fields}} \\ ')
     latex_lines.append(r'\hline \endhead \hline \endfoot')
     latex_lines.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Coordinates}} & \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
@@ -32,13 +32,13 @@ def fieldTable(dataset:xr.Dataset, is_coord:bool)->list[str]:
 
     ## Here, dataset's variables are filled out with description and the corresponding unit!
     for ij in np.arange(len(coordvar_shortname)):
-        latex_lines.append(f'{utils.sanitize(coordvar_shortname[ij])} &' + f'{utils.sanitize(coordvar_longname[ij])} &'+ rf'{utils.sanitize(coordvar_units[ij])}  \\ \hline')
+        latex_lines.append(f'{utils.sanitize(config_dictionary, coordvar_shortname[ij])} &' + f'{utils.sanitize(config_dictionary, coordvar_longname[ij])} &'+ rf'{utils.sanitize(config_dictionary, coordvar_units[ij])}  \\ \hline')
     
     latex_lines.append(r'\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Variables}} & \multicolumn{1}{|c|}{\textbf{Description of data variables}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline')
     
     ## Here, dataset's coordinates are filled out with description and the corresponding unit!
     for ij in np.arange(len(datavar_shortname)):
-        latex_lines.append(f'{utils.sanitize(datavar_shortname[ij])} &' + f'{utils.sanitize(datavar_longname[ij])} &'+ rf'{utils.sanitize(datavar_units[ij])}  \\ \hline')
+        latex_lines.append(f'{utils.sanitize(config_dictionary, datavar_shortname[ij])} &' + f'{utils.sanitize(config_dictionary, datavar_longname[ij])} &'+ rf'{utils.sanitize(config_dictionary, datavar_units[ij])}  \\ \hline')
     
     latex_lines.append(r'\end{longtable}')
     latex_lines.append(r"")
@@ -47,21 +47,18 @@ def fieldTable(dataset:xr.Dataset, is_coord:bool)->list[str]:
 
 
 
-def format_example_netCDF_table(latex_lines_unformatted:list[str], name : str = "example")->list[str]:
+def format_example_netCDF_table(config_dictionary, latex_lines_unformatted:list[str], name : str = "example")->list[str]:
 
-    latex_lines = [r'\begin{longtable}{|p{\textwidth}|}', 
-                    r'\caption{Example CDL description of ' +name+ r' dataset}',
-                    r'\label{tab:cdl-'+name+r'} \\', 
-                    r'\hline \endhead',
-                    r'\hline \endfoot',
-                    #r'\hangindent=1.5em\hangafter=1'
-    ]
- 
+    latex_lines = config_dictionary[f"example_table_latex_lines"]
+
     dimensions_start = False
     coordinates_start = False
     variables_start = False
     for line in latex_lines_unformatted:
-        line_formatted = utils.sanitize_with_math(line)
+        if line.startswith('\\hang'):
+            latex_lines.append(line)
+            continue
+        line_formatted = utils.sanitize_with_math(config_dictionary, line)
         #if line_formatted.startswith('netcdf'):
         if line.startswith('netcdf'):
             latex_lines.append(line_formatted + r'\\')
@@ -87,8 +84,15 @@ def format_example_netCDF_table(latex_lines_unformatted:list[str], name : str = 
             continue
 
         if dimensions_start:
+            if len(line_formatted) == 0:
+                latex_lines.append(line_formatted)
+                #latex_lines.append(line_formatted + r'\\')
+            else:
                 latex_lines.append(r'\rowcolor{YellowGreen}' + line_formatted + r'\\')
         elif coordinates_start:
+            if len(line_formatted) == 0:
+                latex_lines.append(line_formatted)
+            else:
                 latex_lines.append(r'\rowcolor{Apricot}' + line_formatted + r'\\')
         else:
             latex_lines.append(line_formatted + r'\\')
@@ -119,9 +123,13 @@ def latex_example_netcdf(base_dir, config_dictionary, grid_type):
         coord_dt = str(coord.dtype)
         coord_dims = ', '.join([str(x) for x in coord.dims])
 
-        latex_lines_list.append(f'\t{coord_dt} {coord.name} ({coord_dims})')
+        num_tabs = 1
+        latex_lines_list = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list)
+        latex_lines_list.append(f'{config_dictionary["tab_char"]* num_tabs}{coord_dt} {coord.name} ({coord_dims})')
+        num_tabs += 1
         for coord_attr in coord.attrs:
-            latex_lines_list.append(f'\t\t{coord.name}:{coord_attr} = "{coord.attrs[coord_attr]}"')
+            latex_lines_list = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list)
+            latex_lines_list.append(f'{config_dictionary["tab_char"]* num_tabs}{coord.name}:{coord_attr} = "{coord.attrs[coord_attr]}"')
 
     # separate extra coordinates and data variables
     coords = [] # list of coordinates
@@ -135,24 +143,32 @@ def latex_example_netcdf(base_dir, config_dictionary, grid_type):
     for coord in coords:
         coord_dt = str(coord.dtype)
         coord_dims = ', '.join([str(dim) for dim in coord.dims])
-
-        latex_lines_list.append(f'\t{coord_dt} {coord.name} ({coord_dims})')
+        
+        num_tabs = 1
+        latex_lines_list = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list)
+        latex_lines_list.append(f'{config_dictionary["tab_char"]* num_tabs}{coord_dt} {coord.name} ({coord_dims})')
+        num_tabs += 1
         for coord_attr in coord.attrs:
-            latex_lines_list.append(f'\t\t{coord.name}:{coord_attr} = "{coord.attrs[coord_attr]}"')
+            latex_lines_list = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list)
+            latex_lines_list.append(f'{config_dictionary["tab_char"]* num_tabs}{coord.name}:{coord_attr} = "{coord.attrs[coord_attr]}"')
 
     latex_lines_list.append('\ndata variables')
     for datavar in data_vars:
         datavar_dt = str(datavar.dtype)
         datavar_dims = ', '.join([str(x) for x in datavar.dims])
-
-        latex_lines_list.append(f'\t{datavar_dt} {datavar.name} ({datavar_dims})')
+        
+        num_tabs = 1
+        latex_lines_list = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list)
+        latex_lines_list.append(f'{config_dictionary["tab_char"]* num_tabs}{datavar_dt} {datavar.name} ({datavar_dims})')
+        num_tabs += 1
         for datavar_attr in datavar.attrs:
-            latex_lines_list.append(f'\t\t{datavar.name}:{datavar_attr} = "{datavar.attrs[datavar_attr]}"')
+            latex_lines_list = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list)
+            latex_lines_list.append(f'{config_dictionary["tab_char"]* num_tabs}{datavar.name}:{datavar_attr} = "{datavar.attrs[datavar_attr]}"')
 
     # Now that we have the list of tex lines for the table, we pass it to format_example_netCDF_table()
     # to add color commands etc to the beginnings of appropriate lines
     #return format_example_netCDF_table(latex_lines_list, grid_type)
-    formatted_latex_lines = format_example_netCDF_table(latex_lines_list, grid_type)
+    formatted_latex_lines = format_example_netCDF_table(config_dictionary, latex_lines_list, grid_type)
 
     latex_output_file = os.path.join(base_dir, config_dictionary[f"example_{grid_type}_table_tex_file"])
     Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
@@ -295,7 +311,7 @@ def search_and_extract(granule_filename_truncated_stem:str, granule_directory:st
 
 
 
-def data_var_table(field_name:str, attrs:dict, dataset_name:str)->list[str]:
+def data_var_table(config_dictionary, field_name:str, attrs:dict, dataset_name:str)->list[str]:
     """
     Create a latex table of the data variable.
     Parameters: 
@@ -305,17 +321,17 @@ def data_var_table(field_name:str, attrs:dict, dataset_name:str)->list[str]:
     Returns:
         list: A list containing the latex table of the data variable.
     """
-    new_sani = utils.sanitize(dataset_name)
+    new_sani = utils.sanitize(config_dictionary, dataset_name)
     
     # Obtain the important attributes
-    storageType = utils.sanitize(attrs["Storage Type"])
-    varName = utils.sanitize(attrs["Variable Name"])
-    description = utils.sanitize(attrs["Description"])
-    unit = utils.sanitize(attrs["Units"])
-    comment = utils.sanitize(attrs["Comments"])
+    storageType = utils.sanitize(config_dictionary, attrs["Storage Type"])
+    varName = utils.sanitize(config_dictionary, attrs["Variable Name"])
+    description = utils.sanitize(config_dictionary, attrs["Description"])
+    unit = utils.sanitize(config_dictionary, attrs["Units"])
+    comment = utils.sanitize(config_dictionary, attrs["Comments"])
 
     # Treat 'Example CDL Description' as a string
-    cdl_description = utils.sanitize_with_math(attrs['CDL Description']) # might have math
+    cdl_description = utils.sanitize_with_math(config_dictionary, attrs['CDL Description']) # might have math
     cdl_description = cdl_description.replace(r'\\', '\'')
     cdl_description = cdl_description.replace('\n', '\\\\\n')
     # cdl_description = cdl_description.replace('California', '\\\\\n')
@@ -329,7 +345,7 @@ def data_var_table(field_name:str, attrs:dict, dataset_name:str)->list[str]:
     la = [
             # ADJUST SIZE OF TABLE HERE
             r'\begin{longtable}{|m{0.06\textwidth}|m{'+str(a)+r'\textwidth}|m{'+str(b)+r'\textwidth}|m{0.12\textwidth}|}',
-            fr"\caption{{Attributes description of the variable '{utils.sanitize(field_name)}' from {new_sani}'s  dataset.}}",
+            fr"\caption{{Attributes description of the variable '{utils.sanitize(config_dictionary, field_name)}' from {new_sani}'s  dataset.}}",
             fr'\label{{tab:table-{dataset_name}_{field_name}}} \\ ',
             r'\hline \endhead \hline \endfoot',
         ]
@@ -368,48 +384,6 @@ def get_product_name(dataset:xr.Dataset)->str:
             product_name = product_name[:-1]
             break
     return product_name
-
-def fields_in_ds(dataset:xr.Dataset, is_coord:bool)->list[str]:
-    """
-    Returns a list of all the fields in the dataset.
-    Parameters:
-        dataset (xarray.Dataset): The dataset to extract the fields from.
-    Returns:
-        list[str]: A list of all the fields in the dataset.
-    """
-    # find all the fields in the dataset
-    fields = []
-    dataset_type = ''
-    if 'native' in dataset.attrs['product_name']:
-        dataset_type = 'native' 
-    elif 'latlon' in dataset.attrs['product_name']:
-        dataset_type = 'latlon'
-
-    if is_coord:
-        if dataset_type == 'native':
-            for coord in dataset.coords:
-                coord = dataset.coords[coord]
-                if 'tile' in coord.dims and len(coord.dims) > 2 and 'bnds' not in coord.name:
-                    fields.append(coord.name)
-            for coord in dataset.data_vars:
-                coord = dataset.data_vars[coord]
-                if 'tile' in coord.dims and len(coord.dims) > 2 and 'bnds' not in coord.name:
-                    fields.append(coord.name)
-        elif dataset_type == 'latlon':
-            for coord in dataset.coords:
-                coord = dataset.coords[coord]
-                if len(coord.dims) > 2:
-                    fields.append(coord.name)
-            for coord in dataset.data_vars:
-                coord = dataset.data_vars[coord]
-                if len(coord.dims) > 2:
-                    fields.append(coord.name)
-    else: 
-        for i in dataset.data_vars:
-            fields.append(i)
-    # else:
-
-    return fields
 
 
 def get_coord_vars_in_dataset(dataset:xr.Dataset,isCoord:bool=False)->tuple[list[str],list[str],list[str]]:
@@ -494,7 +468,7 @@ def global_attrs_for_ECCOnetCDF(jsonFileRef:str,
         GAdescription = GlobAttrsFilledECCO[i]["description"]
         GASource = GlobAttrsFilledECCO[i]["sourc"]
         latex_lines.append(r'\rowcolor{cyan!25}')
-        latex_lines.append(rf'{utils.sanitize(GAttrsNam)} & {GAFormat} & {utils.sanitize(GAdescription)} & {GASource} \\ \hline')
+        latex_lines.append(rf'{utils.sanitize(config_dictionary, GAttrsNam)} & {GAFormat} & {utils.sanitize(config_dictionary, GAdescription)} & {GASource} \\ \hline')
     latex_lines.append(r'\end{longtable}')
     latex_lines.append(r"")
     with open(saveTo+latexFilename, 'w') as output_file:
@@ -541,7 +515,7 @@ def data_products(base_dir, config_dictionary, granule_directory)->list:
     granule_type, grid_type = utils.get_granule_and_grid_types(granule_directory)
     
     granule_document_section_title = config_dictionary["table_section_titles"][f"{granule_type}_{grid_type}"]
-    granule_document_section_title= utils.sanitize(granule_document_section_title)
+    granule_document_section_title= utils.sanitize(config_dictionary, granule_document_section_title)
     latex_lines.append(r'\section{'+ f'{granule_document_section_title}' + r'}')
 
     is_coord = granule_type == "coordinate"
@@ -558,7 +532,7 @@ def data_products(base_dir, config_dictionary, granule_directory)->list:
     # Iterate through the JSON objects
     for json_dictionary in list_of_json_dictionaries:
         granule_filename_truncated_stem = json_dictionary["filename"]
-        granule_filename_truncated_stem_formatted = utils.sanitize(granule_filename_truncated_stem)
+        granule_filename_truncated_stem_formatted = utils.sanitize(config_dictionary, granule_filename_truncated_stem)
         latex_lines.append(r'\subsection{'+ f'{grid_type}' + ' dataset of ' + f'{granule_filename_truncated_stem_formatted}' + r'}')
         latex_lines.append(r'\newp') # Deasctived!!
 
@@ -566,14 +540,14 @@ def data_products(base_dir, config_dictionary, granule_directory)->list:
 
         latex_lines.append(r'\subsubsection{Overview}')
 
-        latex_lines.append(utils.sanitize(json_dictionary["Introduction"])) 
+        latex_lines.append(utils.sanitize(config_dictionary, json_dictionary["Introduction"])) 
         latex_lines.append(r"\\\\")
 
         if "comment" in json_dictionary.keys():
-            latex_lines.append(utils.sanitize(f"Note: {json_dictionary['comment']}"))
+            latex_lines.append(utils.sanitize(config_dictionary, f"Note: {json_dictionary['comment']}"))
             latex_lines.append(r"\\")
         
-        latex_lines.extend(fieldTable(dataset, is_coord)) 
+        latex_lines.extend(fieldTable(config_dictionary, dataset, is_coord)) 
         latex_lines.append(r'\newp') # Deasctived!!
         for variable in data_array_list:
 
@@ -581,17 +555,17 @@ def data_products(base_dir, config_dictionary, granule_directory)->list:
 
             # Create latex table for each variable
             variable_name = attributes_dictionary['Variable Name']
-            cleanName = utils.sanitize(variable_name)
+            cleanName = utils.sanitize(config_dictionary, variable_name)
             latex_lines.append(r'\pagebreak')
             latex_lines.append(fr'\subsubsection{{{grid_type} Variable: {cleanName}}}')
-            dataVarTable = data_var_table(variable_name, attributes_dictionary, granule_filename_truncated_stem)
+            dataVarTable = data_var_table(config_dictionary, variable_name, attributes_dictionary, granule_filename_truncated_stem)
             latex_lines.extend(dataVarTable)
 
             dataVarPlot = cdf_plotter.data_var_plot(config_dictionary["ecco_version_string"], dataset, dataset[variable_name], image_directory, config_dictionary['overwrite_switch'])
             latex_lines.append(r'\begin{figure}[H]')
             latex_lines.append(r'\centering')
             latex_lines.append(dataVarPlot) #testing right here
-            latex_lines.append(fr"\caption{{Dataset: {utils.sanitize(granule_filename_truncated_stem)}, Variable: {utils.sanitize(variable_name)}}}") #Just
+            latex_lines.append(fr"\caption{{Dataset: {utils.sanitize(config_dictionary, granule_filename_truncated_stem)}, Variable: {utils.sanitize(config_dictionary, variable_name)}}}") #Just
             latex_lines.append(fr'\label{{tab:table-{granule_filename_truncated_stem}_{variable_name}-Plot}}')
             latex_lines.append(r'\end{figure}')
 
