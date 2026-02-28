@@ -17,10 +17,11 @@ def write_latex_lines_to_file(latex_lines, output_file):
         output_file.write('\n'.join(latex_lines))
 
 def append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list):
-    latex_lines_list.append("")
-    latex_lines_list.append(f"\hangindent={(num_tabs + 1) * config_dictionary['tab_width_cm']}cm")
-    latex_lines_list.append("\hangafter1")
+    latex_lines_list.append(sanitize_with_math(config_dictionary, f"\hangindent={(num_tabs + 1) * config_dictionary['tab_width_cm']}cm"))
+    latex_lines_list.append(r"\hangafter1")
+    #latex_lines_list.append(r"\hangafter1\\")
     return latex_lines_list
+
 
 def download_granules(base_dir, config_dictionary):
 
@@ -217,8 +218,6 @@ def sanitize_with_math(config_dictionary, string:str)->str:
         r"\\": r"\textbackslash",
         r"|": r"\textbar",
         config_dictionary['tab_char']: f"\hspace{{{config_dictionary['tab_width_cm']}cm}}" ,
-        #"\t": f"\hspace{{{config_dictionary['tab_width_cm']}cm}}" ,
-        #"\t": r"\hspace{0.5cm}",
         #r"'": '\'',
     }
 

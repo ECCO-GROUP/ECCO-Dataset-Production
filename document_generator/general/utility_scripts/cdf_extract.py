@@ -45,135 +45,90 @@ def fieldTable(config_dictionary, dataset:xr.Dataset, is_coord:bool)->list[str]:
     return latex_lines
 
 
-
-
-def format_example_netCDF_table(config_dictionary, latex_lines_unformatted:list[str], name : str = "example")->list[str]:
-
-    latex_lines = config_dictionary[f"example_table_latex_lines"]
-
-    dimensions_start = False
-    coordinates_start = False
-    variables_start = False
-    for line in latex_lines_unformatted:
-        if line.startswith('\\hang'):
-            latex_lines.append(line)
-            continue
-        line_formatted = utils.sanitize_with_math(config_dictionary, line)
-        #if line_formatted.startswith('netcdf'):
-        if line.startswith('netcdf'):
-            latex_lines.append(line_formatted + r'\\')
-            continue
-        if not dimensions_start and not coordinates_start and not variables_start and "dimensions" in line:
-            dimensions_start = True
-            latex_lines.append(line_formatted + r'\\')
-            latex_lines.append(r'\hline')
-            continue
-        elif dimensions_start and "coordinates" in line:
-            dimensions_start = False
-            coordinates_start = True
-            latex_lines.append(r'\hline')
-            latex_lines.append(line_formatted + r'\\')
-            latex_lines.append(r'\hline')
-            continue
-        elif coordinates_start and "data variables" in line:
-            coordinates_start = False
-            variables_start = True
-            latex_lines.append(r'\hline')
-            latex_lines.append(line_formatted + r'\\')
-            latex_lines.append(r'\hline')
-            continue
-
-        if dimensions_start:
-            if len(line_formatted) == 0:
-                latex_lines.append(line_formatted)
-                #latex_lines.append(line_formatted + r'\\')
-            else:
-                latex_lines.append(r'\rowcolor{YellowGreen}' + line_formatted + r'\\')
-        elif coordinates_start:
-            if len(line_formatted) == 0:
-                latex_lines.append(line_formatted)
-            else:
-                latex_lines.append(r'\rowcolor{Apricot}' + line_formatted + r'\\')
-        else:
-            latex_lines.append(line_formatted + r'\\')
-
-    latex_lines.append(r'\hline')
-    latex_lines.append(r'\end{longtable}')
-    return latex_lines
-
-
-
 def latex_example_netcdf(base_dir, config_dictionary, grid_type):
 
     granule_directory = config_dictionary[f"variable_files_{grid_type}_dir"]
 
     # DO WE WANT MIN OR MAX NUMBER OF VARIABLES IN EXAMPLE?
-    example_granule = utils.get_a_file_with_min_num_vars(base_dir, granule_directory)    
-    #example_granule = utils.get_a_file_with_max_num_vars(base_dir, granule_directory)    
+    #example_granule = utils.get_a_file_with_min_num_vars(base_dir, granule_directory)    
+    example_granule = utils.get_a_file_with_max_num_vars(base_dir, granule_directory)    
 
     dataset = xr.open_dataset(example_granule, decode_times=False, decode_cf=False, decode_coords=False, decode_timedelta=False)
-    latex_lines_list = []
-    latex_lines_list.append(f'netcdf {grid_type} example')
-    latex_lines_list.append('dimensions')
+    latex_lines = []
+    latex_lines.append(r'\begin{longtable}{|p{\textwidth}|}')
+    latex_lines.extend(config_dictionary[f"example_table_first_latex_lines_{grid_type}"])
+    latex_lines.extend(config_dictionary[f"longtable_headers_footers"])
+    latex_lines.append(f'netcdf {grid_type} example \\\\')
+    latex_lines.append(r'dimensions \\')
+    latex_lines.append(r'\hline')
     for dimension_name in dataset.sizes:
-        latex_lines_list.append(f'  {dimension_name} = {len(dataset[dimension_name])}')
-    latex_lines_list.append('\ncoordinates')
+        num_tabs = 1
+        latex_lines.append(r'\rowcolor{YellowGreen}')
+        latex_lines = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines)
+        latex_lines.append(utils.sanitize_with_math(config_dictionary, f'{dimension_name} = {len(dataset[dimension_name])}') + "\\\\")
+    
+    latex_lines.append(r'\hline')
+    latex_lines.append(r'coordinates \\')
+    latex_lines.append(r'\hline')
     for coord_name in dataset.coords:
         coord = dataset[coord_name]
         coord_dt = str(coord.dtype)
         coord_dims = ', '.join([str(x) for x in coord.dims])
 
         num_tabs = 1
-        latex_lines_list = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list)
-        latex_lines_list.append(f'{config_dictionary["tab_char"]* num_tabs}{coord_dt} {coord.name} ({coord_dims})')
+        latex_lines.append(r'\rowcolor{Apricot}')
+        latex_lines = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines)
+        latex_lines.append(utils.sanitize_with_math(config_dictionary, f'{config_dictionary["tab_char"]* num_tabs}{coord_dt} {coord.name} ({coord_dims})') + "\\\\")
         num_tabs += 1
         for coord_attr in coord.attrs:
-            latex_lines_list = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list)
-            latex_lines_list.append(f'{config_dictionary["tab_char"]* num_tabs}{coord.name}:{coord_attr} = "{coord.attrs[coord_attr]}"')
+            latex_lines.append(r'\rowcolor{Apricot}')
+            latex_lines = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines)
+            latex_lines.append(utils.sanitize_with_math(config_dictionary, f'{config_dictionary["tab_char"]* num_tabs}{coord.name}:{coord_attr} = "{coord.attrs[coord_attr]}"') + "\\\\")
 
     # separate extra coordinates and data variables
     coords = [] # list of coordinates
     data_vars = [] # list of data variables
+    latex_lines.append(r'\hline')
+    latex_lines.append(r'data variables \\')
+    latex_lines.append(r'\hline')
     for datavar_name in dataset.data_vars:
         if dataset[datavar_name].attrs['coverage_content_type'] == 'coordinate':
             coords.append(dataset[datavar_name])
         else:
             data_vars.append(dataset[datavar_name])
 
+    '''
     for coord in coords:
         coord_dt = str(coord.dtype)
         coord_dims = ', '.join([str(dim) for dim in coord.dims])
         
         num_tabs = 1
-        latex_lines_list = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list)
-        latex_lines_list.append(f'{config_dictionary["tab_char"]* num_tabs}{coord_dt} {coord.name} ({coord_dims})')
+        latex_lines = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines)
+        latex_lines.append(utils.sanitize_with_math(config_dictionary, f'{config_dictionary["tab_char"]* num_tabs}{coord_dt} {coord.name} ({coord_dims})') + "\\\\")
         num_tabs += 1
         for coord_attr in coord.attrs:
-            latex_lines_list = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list)
-            latex_lines_list.append(f'{config_dictionary["tab_char"]* num_tabs}{coord.name}:{coord_attr} = "{coord.attrs[coord_attr]}"')
+            latex_lines = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines)
+            latex_lines.append(utils.sanitize_with_math(config_dictionary, f'{config_dictionary["tab_char"]* num_tabs}{coord.name}:{coord_attr} = "{coord.attrs[coord_attr]}"') + "\\\\")
+    '''
 
-    latex_lines_list.append('\ndata variables')
     for datavar in data_vars:
         datavar_dt = str(datavar.dtype)
         datavar_dims = ', '.join([str(x) for x in datavar.dims])
         
         num_tabs = 1
-        latex_lines_list = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list)
-        latex_lines_list.append(f'{config_dictionary["tab_char"]* num_tabs}{datavar_dt} {datavar.name} ({datavar_dims})')
+        latex_lines = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines)
+        latex_lines.append(utils.sanitize_with_math(config_dictionary, f'{config_dictionary["tab_char"]* num_tabs}{datavar_dt} {datavar.name} ({datavar_dims})') + "\\\\")
         num_tabs += 1
         for datavar_attr in datavar.attrs:
-            latex_lines_list = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list)
-            latex_lines_list.append(f'{config_dictionary["tab_char"]* num_tabs}{datavar.name}:{datavar_attr} = "{datavar.attrs[datavar_attr]}"')
-
-    # Now that we have the list of tex lines for the table, we pass it to format_example_netCDF_table()
-    # to add color commands etc to the beginnings of appropriate lines
-    #return format_example_netCDF_table(latex_lines_list, grid_type)
-    formatted_latex_lines = format_example_netCDF_table(config_dictionary, latex_lines_list, grid_type)
+            latex_lines = utils.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines)
+            latex_lines.append(utils.sanitize_with_math(config_dictionary, f'{config_dictionary["tab_char"]* num_tabs}{datavar.name}:{datavar_attr} = "{datavar.attrs[datavar_attr]}"') + "\\\\")
+        
+    latex_lines.append(r'\end{longtable}')
 
     latex_output_file = os.path.join(base_dir, config_dictionary[f"example_{grid_type}_table_tex_file"])
     Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
     with open(latex_output_file, 'w') as output_file:
-        output_file.write('\n'.join(formatted_latex_lines))
+        output_file.write('\n'.join(latex_lines))
 
 
 

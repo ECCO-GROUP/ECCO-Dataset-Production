@@ -1,230 +1,517 @@
 \begin{longtable}{|p{\textwidth}|}
-\caption{Example CDL description of ' +name+ r' dataset}
-rlabel{tab:cdl-'+name+r'} \\'
-\hline \endhead
-\hline \endfoot
-netcdf latlon example\\
-dimensions\\
+\caption{Example CDL description of latlon dataset}
+\label{tab:cdl-latlon} \\
 \hline
-\rowcolor{YellowGreen}  time = 1\\
-\rowcolor{YellowGreen}  latitude = 360\\
-\rowcolor{YellowGreen}  longitude = 720\\
-\rowcolor{YellowGreen}  nv = 2\\
+\endfirsthead
 \hline
-
-coordinates\\
+\endhead
 \hline
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 time (time)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:bounds = "time\_bnds"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "center time of averaging period"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 latitude (latitude)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:axis = "Y"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:bounds = "latitude\_bnds"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:comment = "uniform grid spacing from -89.75 to 89.75 by 0.5"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:long\_name = "latitude at grid cell center"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:standard\_name = "latitude"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:units = "degrees\_north"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 longitude (longitude)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:axis = "X"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:bounds = "longitude\_bnds"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:comment = "uniform grid spacing from -179.75 to 179.75 by 0.5"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:long\_name = "longitude at grid cell center"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:standard\_name = "longitude"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:units = "degrees\_east"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 time\_bnds (time, nv)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:comment = "Start and end times of averaging period."\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:long\_name = "time bounds of averaging period"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 latitude\_bnds (latitude, nv)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude\_bnds:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude\_bnds:long\_name = "latitude bounds grid cells"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 longitude\_bnds (longitude, nv)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude\_bnds:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude\_bnds:long\_name = "longitude bounds grid cells"\\
+\endfoot
 \hline
-
-data variables\\
+\endlastfoot
+netcdf latlon example \\
+dimensions \\
 \hline
-\\
+\rowcolor{YellowGreen}
 \hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}float32 OBP (time, latitude, longitude)\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:\_FillValue = "9.969209968386869e+36"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:coverage\_content\_type = "modelResult"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:long\_name = "Ocean bottom pressure given as equivalent water thickness"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:units = "m"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:comment = "OBP excludes the contribution from global mean atmospheric pressure and is therefore suitable for comparisons with GRACE data products. OBP is calculated as follows. First, we calculate ocean hydrostatic bottom pressure anomaly, PHIBOT, with PHIBOT = p\_b/rhoConst - gH(t), where p\_b = model ocean hydrostatic bottom pressure, rhoConst = reference density (1029 kg m-3), g is acceleration due to gravity (9.81 m s-2), and H(t) is model depth at time t. Then, OBP = PHIBOT/g + corrections for i) global mean steric sea level changes related to density changes in the Boussinesq volume-conserving model (Greatbatch correction, see sterGloH) and ii) global mean atmospheric pressure variations. Use OBP for comparisons with ocean bottom pressure data products that have been corrected for global mean atmospheric pressure variations. GRACE data typically ARE corrected for global mean atmospheric pressure variations. In contrast, ocean bottom pressure gauge data typically ARE NOT corrected for global mean atmospheric pressure variations."\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:coordinates = "time"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:valid\_min = "-2.544442892074585"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:valid\_max = "72.1243667602539"\\
-\\
+time = 1\\
+\rowcolor{YellowGreen}
 \hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}float32 OBPGMAP (time, latitude, longitude)\\
-\\
-\hangindent=1.5cm
+latitude = 360\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:\_FillValue = "9.969209968386869e+36"\\
-\\
-\hangindent=1.5cm
+longitude = 720\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:coverage\_content\_type = "modelResult"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:long\_name = "Ocean bottom pressure given as equivalent water thickness, includes global mean atmospheric pressure"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:units = "m"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:comment = "OBPGMAP includes the contribution from global mean atmospheric pressure and is therefore suitable for comparisons with ocean bottom pressure gauge data products. OBPGMAP is calculated as follows. First, we calculate ocean hydrostatic bottom pressure anomaly, PHIBOT, with PHIBOT = p\_b/rhoConst - gH(t), where p\_b = model ocean hydrostatic bottom pressure, rhoConst = reference density (1029 kg m-3), g is acceleration due to gravity (9.81 m s-2), and H(t) is model depth at time t. Then, OBPGMAP= PHIBOT/g + corrections for global mean steric sea level changes related to density changes in the Boussinesq volume-conserving model (Greatbatch correction, see sterGloH). Use OBPGMAP for comparisons with ocean bottom pressure data products that have NOT been corrected for global mean atmospheric pressure variations. GRACE data typically ARE corrected for global mean atmospheric pressure variations. In contrast, ocean bottom pressure gauge data typically ARE NOT corrected for global mean atmospheric pressure variations."\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:coordinates = "time"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:valid\_min = "7.395928859710693"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:valid\_max = "82.14805603027344"\\
+nv = 2\\
 \hline
+coordinates \\
+\hline
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 time (time)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:bounds = "time\_bnds"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "center time of averaging period"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 latitude (latitude)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}latitude:axis = "Y"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}latitude:bounds = "latitude\_bnds"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}latitude:comment = "uniform grid spacing from -89.75 to 89.75 by 0.5"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}latitude:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}latitude:long\_name = "latitude at grid cell center"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}latitude:standard\_name = "latitude"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}latitude:units = "degrees\_north"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 longitude (longitude)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}longitude:axis = "X"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}longitude:bounds = "longitude\_bnds"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}longitude:comment = "uniform grid spacing from -179.75 to 179.75 by 0.5"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}longitude:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}longitude:long\_name = "longitude at grid cell center"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}longitude:standard\_name = "longitude"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}longitude:units = "degrees\_east"\\
+\hline
+data variables \\
+\hline
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 EXFhl (time, latitude, longitude)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhl:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhl:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhl:direction = ">0 increases potential temperature (THETA)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhl:long\_name = "Open ocean air-sea latent heat flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhl:standard\_name = "surface\_downward\_latent\_heat\_flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhl:units = "W m-2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhl:comment = "Air-sea latent heat flux per unit area of open water (not covered by sea-ice). Note: calculated from the bulk formula following Large and Yeager (2004) NCAR/TN-460+STR."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhl:coordinates = "time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhl:valid\_min = "-1772.513671875"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhl:valid\_max = "273.9528503417969"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 EXFhs (time, latitude, longitude)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhs:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhs:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhs:direction = ">0 increases potential temperature (THETA)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhs:long\_name = "Open ocean air-sea sensible heat flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhs:standard\_name = "surface\_downward\_sensible\_heat\_flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhs:units = "W m-2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhs:comment = "Air-sea sensible heat flux per unit area of open water (not covered by sea-ice). Note: calculated from the bulk formula following Large and Yeager (2004) NCAR/TN-460+STR."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhs:coordinates = "time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhs:valid\_min = "-2478.766357421875"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFhs:valid\_max = "357.0105895996094"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 EXFlwdn (time, latitude, longitude)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwdn:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwdn:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwdn:direction = ">0 increases potential temperature (THETA)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwdn:long\_name = "Downward longwave radiative flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwdn:standard\_name = "surface\_downwelling\_longwave\_flux\_in\_air"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwdn:units = "W m-2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwdn:comment = "Downward longwave radiative flux. Note: sum of ERA-Interim downward longwave radiation and the control adjustment from ocean state estimation."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwdn:coordinates = "time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwdn:valid\_min = "4.188045501708984"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwdn:valid\_max = "513.3919067382812"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 EXFswdn (time, latitude, longitude)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswdn:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswdn:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswdn:direction = ">0 increases potential temperature (THETA)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswdn:long\_name = "Downwelling shortwave radiative flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswdn:standard\_name = "surface\_downwelling\_shortwave\_flux\_in\_air"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswdn:units = "W m-2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswdn:comment = "Downward shortwave radiative flux. Note: sum of ERA-Interim downward shortwave radiation and the control adjustment from ocean state estimation."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswdn:coordinates = "time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswdn:valid\_min = "-224.63368225097656"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswdn:valid\_max = "707.345947265625"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 EXFqnet (time, latitude, longitude)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFqnet:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFqnet:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFqnet:direction = ">0 increases potential temperature (THETA)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFqnet:long\_name = "Open ocean net air-sea heat flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFqnet:units = "W m-2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFqnet:comment = "Net air-sea heat flux (turbulent and radiative) per unit area of open water (not covered by sea-ice). Note: net upward heat flux over open water, calculated as EXFlwnet+EXFswnet-EXFlh-EXFhs."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFqnet:coordinates = "time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFqnet:valid\_min = "-687.8736572265625"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFqnet:valid\_max = "3408.977783203125"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 oceQnet (time, latitude, longitude)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQnet:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQnet:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQnet:direction = ">0 increases potential temperature (THETA)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQnet:long\_name = "Net heat flux into the ocean surface"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQnet:standard\_name = "surface\_downward\_heat\_flux\_in\_sea\_water"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQnet:units = "W m-2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQnet:comment = "Net heat flux into the ocean surface from all processes: air-sea turbulent and radiative fluxes and turbulent and conductive fluxes between the ocean and sea-ice and snow. Note: oceQnet does not include the change in ocean heat content due to changing ocean ocean mass (oceFWflx). Mass fluxes from evaporation, precipitation, and runoff (EXFempmr) happen at the same temperature as the ocean surface temperature. Consequently, EmPmR does not change ocean surface temperature. Conversely, mass fluxes due to sea-ice thickening/thinning and snow melt in the model are assumed to happen at a fixed 0C. Consequently, mass fluxes due to phase changes between seawater and sea-ice and snow induce a heat flux when the ocean surface temperaure is not 0C. The variable TFLUX does include the change in ocean heat content due to changing ocean mass."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQnet:coordinates = "time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQnet:valid\_min = "-1708.8460693359375"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQnet:valid\_max = "675.3716430664062"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 SIatmQnt (time, latitude, longitude)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIatmQnt:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIatmQnt:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIatmQnt:direction = ">0 upward, decreases ocean temperature"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIatmQnt:long\_name = "Net upward heat flux to the atmosphere"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIatmQnt:standard\_name = "surface\_upward\_heat\_flux\_in\_air"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIatmQnt:units = "W m-2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIatmQnt:comment = "Net upward heat flux to the atmosphere across open water and sea-ice or snow surfaces. Note: nonzero SIatmQnt may not be associated with a change in ocean potential temperature due to sea-ice growth or melting. To calculate total ocean heat content changes use the variable TFLUX which also accounts for changing ocean mass (e.g. oceFWflx)."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIatmQnt:coordinates = "time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIatmQnt:valid\_min = "-756.0607299804688"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIatmQnt:valid\_max = "1704.7703857421875"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 TFLUX (time, latitude, longitude)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}TFLUX:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}TFLUX:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}TFLUX:direction = ">0 increases potential temperature (THETA)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}TFLUX:long\_name = "Rate of change of ocean heat content per m2 accounting for mass fluxes."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}TFLUX:units = "W m-2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}TFLUX:comment = "The rate of change of ocean heat content due to heat fluxes across the liquid surface and the addition or removal of mass. . Note: the global area integral of TFLUX and geothermal flux (geothermalFlux.bin) matches the time-derivative of ocean heat content (J/s). Unlike oceQnet, TFLUX includes the contribution to the ocean heat content from changing ocean mass (e.g. from oceFWflx)."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}TFLUX:coordinates = "time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}TFLUX:valid\_min = "-1713.51220703125"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}TFLUX:valid\_max = "870.3130493164062"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 EXFswnet (time, latitude, longitude)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswnet:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswnet:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswnet:direction = ">0 increases potential temperature (THETA)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswnet:long\_name = "Open ocean net shortwave radiative flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswnet:standard\_name = "surface\_net\_downward\_shortwave\_flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswnet:units = "W m-2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswnet:comment = "Net shortwave radiative flux per unit area of open water (not covered by sea-ice). Note: net shortwave radiation over open water calculated from downward shortwave flux (EXFswdn) and ocean surface albdeo."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswnet:coordinates = "time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswnet:valid\_min = "-655.6171264648438"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFswnet:valid\_max = "193.89297485351562"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 EXFlwnet (time, latitude, longitude)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwnet:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwnet:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwnet:direction = ">0 increases potential temperature (THETA)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwnet:long\_name = "Net open ocean longwave radiative flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwnet:standard\_name = "surface\_net\_downward\_longwave\_flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwnet:units = "W m-2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwnet:comment = "Net longwave radiative flux per unit area of open water (not covered by sea-ice). Note: net longwave radiation over open water calculated from downward longwave radiation (EXFlwdn) and upward longwave radiation from ocean and sea-ice thermal emission (Stefan-Boltzman law)."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwnet:coordinates = "time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwnet:valid\_min = "-144.3661346435547"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}EXFlwnet:valid\_max = "293.4114990234375"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 oceQsw (time, latitude, longitude)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQsw:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQsw:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQsw:direction = ">0 increases potential temperature (THETA)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQsw:long\_name = "Net shortwave radiative flux across the ocean surface"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQsw:units = "W m-2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQsw:comment = "Net shortwave radiative flux across the ocean surface. Note: Shortwave radiation penetrates below the surface grid cell."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQsw:coordinates = "time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQsw:valid\_min = "-134.39808654785156"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}oceQsw:valid\_max = "655.6171264648438"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 SIaaflux (time, latitude, longitude)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIaaflux:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIaaflux:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIaaflux:direction = ">0 decrease potential temperature (THETA)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIaaflux:long\_name = "Conservative ocean and sea-ice advective heat flux adjustment"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIaaflux:units = "W m-2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIaaflux:comment = "Heat flux associated with the temperature difference between sea surface temperature and sea-ice (assume 0 degree C in the model). Note: heat flux needed to melt/freeze sea-ice at 0 degC to sea water at the ocean surface (at sea surface temperature), excluding the latent heat of fusion."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIaaflux:coordinates = "time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIaaflux:valid\_min = "-16.214622497558594"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SIaaflux:valid\_max = "50.35451889038086"\\
 \end{longtable}

@@ -1,693 +1,684 @@
 \begin{longtable}{|p{\textwidth}|}
-\caption{Example CDL description of ' +name+ r' dataset}
-rlabel{tab:cdl-'+name+r'} \\'
-\hline \endhead
-\hline \endfoot
-netcdf latlon example\\
-dimensions\\
+\caption{Example CDL description of 1D dataset}
+\label{tab:cdl-1D} \\
 \hline
-\rowcolor{YellowGreen}  time = 1\\
-\rowcolor{YellowGreen}  latitude = 360\\
-\rowcolor{YellowGreen}  longitude = 720\\
-\rowcolor{YellowGreen}  nv = 2\\
+\endfirsthead
 \hline
-
-coordinates\\
+\endhead
 \hline
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 time (time)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:bounds = "time\_bnds"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "center time of averaging period"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 latitude (latitude)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:axis = "Y"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:bounds = "latitude\_bnds"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:comment = "uniform grid spacing from -89.75 to 89.75 by 0.5"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:long\_name = "latitude at grid cell center"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:standard\_name = "latitude"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:units = "degrees\_north"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 longitude (longitude)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:axis = "X"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:bounds = "longitude\_bnds"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:comment = "uniform grid spacing from -179.75 to 179.75 by 0.5"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:long\_name = "longitude at grid cell center"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:standard\_name = "longitude"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:units = "degrees\_east"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 time\_bnds (time, nv)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:comment = "Start and end times of averaging period."\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:long\_name = "time bounds of averaging period"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 latitude\_bnds (latitude, nv)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude\_bnds:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude\_bnds:long\_name = "latitude bounds grid cells"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 longitude\_bnds (longitude, nv)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude\_bnds:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude\_bnds:long\_name = "longitude bounds grid cells"\\
+\endfoot
 \hline
-
-data variables\\
+\endlastfoot
+netcdf 1D example \\
+dimensions \\
 \hline
-\\
+\rowcolor{YellowGreen}
 \hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}float32 OBP (time, latitude, longitude)\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:\_FillValue = "9.969209968386869e+36"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:coverage\_content\_type = "modelResult"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:long\_name = "Ocean bottom pressure given as equivalent water thickness"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:units = "m"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:comment = "OBP excludes the contribution from global mean atmospheric pressure and is therefore suitable for comparisons with GRACE data products. OBP is calculated as follows. First, we calculate ocean hydrostatic bottom pressure anomaly, PHIBOT, with PHIBOT = p\_b/rhoConst - gH(t), where p\_b = model ocean hydrostatic bottom pressure, rhoConst = reference density (1029 kg m-3), g is acceleration due to gravity (9.81 m s-2), and H(t) is model depth at time t. Then, OBP = PHIBOT/g + corrections for i) global mean steric sea level changes related to density changes in the Boussinesq volume-conserving model (Greatbatch correction, see sterGloH) and ii) global mean atmospheric pressure variations. Use OBP for comparisons with ocean bottom pressure data products that have been corrected for global mean atmospheric pressure variations. GRACE data typically ARE corrected for global mean atmospheric pressure variations. In contrast, ocean bottom pressure gauge data typically ARE NOT corrected for global mean atmospheric pressure variations."\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:coordinates = "time"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:valid\_min = "-2.544442892074585"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:valid\_max = "72.1243667602539"\\
-\\
-\hangindent=1.0cm
-\hangafter1
-\hspace{0.5cm}float32 OBPGMAP (time, latitude, longitude)\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:\_FillValue = "9.969209968386869e+36"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:coverage\_content\_type = "modelResult"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:long\_name = "Ocean bottom pressure given as equivalent water thickness, includes global mean atmospheric pressure"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:units = "m"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:comment = "OBPGMAP includes the contribution from global mean atmospheric pressure and is therefore suitable for comparisons with ocean bottom pressure gauge data products. OBPGMAP is calculated as follows. First, we calculate ocean hydrostatic bottom pressure anomaly, PHIBOT, with PHIBOT = p\_b/rhoConst - gH(t), where p\_b = model ocean hydrostatic bottom pressure, rhoConst = reference density (1029 kg m-3), g is acceleration due to gravity (9.81 m s-2), and H(t) is model depth at time t. Then, OBPGMAP= PHIBOT/g + corrections for global mean steric sea level changes related to density changes in the Boussinesq volume-conserving model (Greatbatch correction, see sterGloH). Use OBPGMAP for comparisons with ocean bottom pressure data products that have NOT been corrected for global mean atmospheric pressure variations. GRACE data typically ARE corrected for global mean atmospheric pressure variations. In contrast, ocean bottom pressure gauge data typically ARE NOT corrected for global mean atmospheric pressure variations."\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:coordinates = "time"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:valid\_min = "7.395928859710693"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:valid\_max = "82.14805603027344"\\
+time = 227904\\
 \hline
-\end{longtable}
-netcdf native example\\
-dimensions\\
+coordinates \\
 \hline
-\rowcolor{YellowGreen}  tile = 13\\
-\rowcolor{YellowGreen}  j = 90\\
-\rowcolor{YellowGreen}  i = 90\\
-\rowcolor{YellowGreen}  j\_g = 90\\
-\rowcolor{YellowGreen}  i\_g = 90\\
-\rowcolor{YellowGreen}  time = 1\\
-\rowcolor{YellowGreen}  nv = 2\\
-\rowcolor{YellowGreen}  nb = 4\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 time (time)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:comment = ""\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "snapshot time"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
 \hline
-
-coordinates\\
+data variables \\
 \hline
-
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 i (i)\\
-
+\hspace{0.5cm}float64 xoamc (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:axis = "X"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamc:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:long\_name = "grid index in x for variables at tracer and 'v' locations"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamc:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:swap\_dim = "XC"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamc:long\_name = "x-comp of oceanic angular momentum due to currents"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'v' variables (e.g., VVEL) have the same x coordinate on the model grid."\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamc:units = "kg m2 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamc:valid\_min = "-3.783733447704127e+24"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamc:valid\_max = "2.555331552045857e+24"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamc:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 i\_g (i\_g)\\
-
+\hspace{0.5cm}float64 yoamc (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:axis = "X"\\
-
+\hspace{0.5cm}\hspace{0.5cm}yoamc:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:long\_name = "grid index in x for variables at 'u' and 'g' locations"\\
-
+\hspace{0.5cm}\hspace{0.5cm}yoamc:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:c\_grid\_axis\_shift = "-0.5"\\
-
+\hspace{0.5cm}\hspace{0.5cm}yoamc:long\_name = "y-comp of oceanic angular momentum due to currents"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:swap\_dim = "XG"\\
-
+\hspace{0.5cm}\hspace{0.5cm}yoamc:units = "kg m2 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:comment = "In the Arakawa C-grid system, 'u' (e.g., UVEL) and 'g' variables (e.g., XG) have the same x coordinate on the model grid."\\
-
+\hspace{0.5cm}\hspace{0.5cm}yoamc:valid\_min = "-2.19249690136359e+24"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}yoamc:valid\_max = "4.179441018940977e+24"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamc:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 j (j)\\
-
+\hspace{0.5cm}float64 zoamc (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:axis = "Y"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zoamc:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:long\_name = "grid index in y for variables at tracer and 'u' locations"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zoamc:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:swap\_dim = "YC"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zoamc:long\_name = "z-comp of oceanic angular momentum due to currents"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'u' variables (e.g., UVEL) have the same y coordinate on the model grid."\\
-
+\hspace{0.5cm}\hspace{0.5cm}zoamc:units = "kg m2 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zoamc:valid\_min = "7.331764457927521e+24"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamc:valid\_max = "2.207264300276968e+25"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamc:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 j\_g (j\_g)\\
-
+\hspace{0.5cm}float64 xoamp (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:axis = "Y"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamp:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:long\_name = "grid index in y for variables at 'v' and 'g' locations"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamp:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:c\_grid\_axis\_shift = "-0.5"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamp:long\_name = "x-comp of oceanic angular momentum due to pressure"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:swap\_dim = "YG"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamp:units = "kg m2 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:comment = "In the Arakawa C-grid system, 'v' (e.g., VVEL) and 'g' variables (e.g., XG) have the same y coordinate."\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamp:valid\_min = "1.3543642768158851e+29"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamp:valid\_max = "1.3546098666231897e+29"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamp:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 tile (tile)\\
-
+\hspace{0.5cm}float64 yoamp (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:long\_name = "lat-lon-cap tile index"\\
-
+\hspace{0.5cm}\hspace{0.5cm}yoamp:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:comment = "The ECCO V4 horizontal model grid is divided into 13 tiles of 90x90 cells for convenience."\\
-
+\hspace{0.5cm}\hspace{0.5cm}yoamp:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}yoamp:long\_name = "y-comp of oceanic angular momentum due to pressure"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp:units = "kg m2 s-1"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp:valid\_min = "1.0476388397938864e+29"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp:valid\_max = "1.0478581623131764e+29"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 time (time)\\
-
+\hspace{0.5cm}float64 zoamp (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "center time of averaging period"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zoamp:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zoamp:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:bounds = "time\_bnds"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zoamp:long\_name = "z-comp of oceanic angular momentum due to pressure"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zoamp:units = "kg m2 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zoamp:valid\_min = "2.927645942668479e+30"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zoamp:valid\_max = "2.9277200254389854e+30"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zoamp:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 XC (tile, j, i)\\
-
+\hspace{0.5cm}float64 mass (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:long\_name = "longitude of tracer grid cell center"\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:units = "degrees\_east"\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:coordinate = "YC XC"\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass:long\_name = "ocean mass"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:bounds = "XC\_bnds"\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass:units = "kg"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:comment = "nonuniform grid spacing"\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass:valid\_min = "1.3737507447512265e+21"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass:valid\_max = "1.3737832079900274e+21"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:standard\_name = "longitude"\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 YC (tile, j, i)\\
-
+\hspace{0.5cm}float64 xcom (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:long\_name = "latitude of tracer grid cell center"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xcom:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:units = "degrees\_north"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xcom:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:coordinate = "YC XC"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xcom:long\_name = "x-comp of center-of-mass of ocean"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:bounds = "YC\_bnds"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xcom:units = "m"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:comment = "nonuniform grid spacing"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xcom:valid\_min = "-763730.0399730895"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xcom:valid\_max = "-763667.0104211655"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:standard\_name = "latitude"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xcom:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 XG (tile, j\_g, i\_g)\\
-
+\hspace{0.5cm}float64 ycom (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:long\_name = "longitude of 'southwest' corner of tracer grid cell"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ycom:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:units = "degrees\_east"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ycom:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:coordinate = "YG XG"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ycom:long\_name = "y-comp of center-of-mass of ocean"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:comment = "Nonuniform grid spacing. Note: 'southwest' does not correspond to geographic orientation but is used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
-
+\hspace{0.5cm}\hspace{0.5cm}ycom:units = "m"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ycom:valid\_min = "-466387.24450374383"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:standard\_name = "longitude"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ycom:valid\_max = "-466327.21844756586"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ycom:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 YG (tile, j\_g, i\_g)\\
-
+\hspace{0.5cm}float64 zcom (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:long\_name = "latitude of 'southwest' corner of tracer grid cell"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zcom:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:units = "degrees\_north"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zcom:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coordinate = "YG XG"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zcom:long\_name = "z-comp of center-of-mass of ocean"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:comment = "Nonuniform grid spacing. Note: 'southwest' does not correspond to geographic orientation but is used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
-
+\hspace{0.5cm}\hspace{0.5cm}zcom:units = "m"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zcom:valid\_min = "-875420.3898804963"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:standard\_name = "latitude"\\
-
+\hspace{0.5cm}\hspace{0.5cm}zcom:valid\_max = "-875350.3238026679"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zcom:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 time\_bnds (time, nv)\\
-
+\hspace{0.5cm}float64 sboarea (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:comment = "Start and end times of averaging period."\\
-
+\hspace{0.5cm}\hspace{0.5cm}sboarea:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}sboarea:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:long\_name = "time bounds of averaging period"\\
-
+\hspace{0.5cm}\hspace{0.5cm}sboarea:long\_name = "surface area of oceans"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}sboarea:units = "m2"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}sboarea:comment = "Note: ocean surface area is constant but provided as time series for convenience"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}sboarea:valid\_min = "358013861149443.5"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}sboarea:valid\_max = "358013861149443.5"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}sboarea:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 XC\_bnds (tile, j, i, nb)\\
-
+\hspace{0.5cm}float64 xoamc\_si (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:comment = "Bounds array follows CF conventions. XC\_bnds[i,j,0] = 'southwest' corner (j-1, i-1), XC\_bnds[i,j,1] = 'southeast' corner (j-1, i+1), XC\_bnds[i,j,2] = 'northeast' corner (j+1, i+1), XC\_bnds[i,j,3]  = 'northwest' corner (j+1, i-1). Note: 'southwest', 'southeast', northwest', and 'northeast' do not correspond to geographic orientation but are used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamc\_si:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamc\_si:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:long\_name = "longitudes of tracer grid cell corners"\\
-
+\hspace{0.5cm}\hspace{0.5cm}xoamc\_si:long\_name = "x-comp of oceanic angular momentum due to sea-ice motion"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamc\_si:units = "kg m2 s-1"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamc\_si:valid\_min = "-9.76342837969224e+21"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamc\_si:valid\_max = "1.3721188892065168e+22"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamc\_si:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 YC\_bnds (tile, j, i, nb)\\
-
+\hspace{0.5cm}float64 yoamc\_si (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:comment = "Bounds array follows CF conventions. YC\_bnds[i,j,0] = 'southwest' corner (j-1, i-1), YC\_bnds[i,j,1] = 'southeast' corner (j-1, i+1), YC\_bnds[i,j,2] = 'northeast' corner (j+1, i+1), YC\_bnds[i,j,3]  = 'northwest' corner (j+1, i-1). Note: 'southwest', 'southeast', northwest', and 'northeast' do not correspond to geographic orientation but are used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
-
+\hspace{0.5cm}\hspace{0.5cm}yoamc\_si:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}yoamc\_si:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:long\_name = "latitudes of tracer grid cell corners"\\
-\hline
-
-data variables\\
-\hline
-\\
+\hspace{0.5cm}\hspace{0.5cm}yoamc\_si:long\_name = "y-comp of oceanic angular momentum due to sea-ice motion"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamc\_si:units = "kg m2 s-1"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamc\_si:valid\_min = "-1.176556337395274e+22"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamc\_si:valid\_max = "1.6107851446370722e+22"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamc\_si:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}float32 MXLDEPTH (time, tile, j, i)\\
-\\
+\hspace{0.5cm}float64 zoamc\_si (time)\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:\_FillValue = "9.969209968386869e+36"\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}zoamc\_si:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:long\_name = "Mixed-layer depth diagnosed using the temperature difference criterion of Kara et al., 2000"\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}zoamc\_si:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:units = "m"\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}zoamc\_si:long\_name = "z-comp of oceanic angular momentum due to sea-ice motion"\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:coverage\_content\_type = "modelResult"\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}zoamc\_si:units = "kg m2 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:standard\_name = "ocean\_mixed\_layer\_thickness"\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}zoamc\_si:valid\_min = "-5.909426721868294e+21"\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:comment = "Mixed-layer depth as determined by the depth where waters are first 0.8 degrees Celsius colder than the surface. See Kara et al. (JGR, 2000). . Note: the Kara et al. criterion may not be appropriate for some applications. If needed, mixed layer depth can be calculated using different criteria. See vertical density stratification (DRHODR) and density anomaly (RHOAnoma)."\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}zoamc\_si:valid\_max = "5.930388258256482e+21"\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:coordinates = "time XC YC"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:valid\_min = "5.000001430511475"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:valid\_max = "5331.2001953125"\\
-\hline
-\end{longtable}
-netcdf 1D example\\
-dimensions\\
-\hline
-\rowcolor{YellowGreen}  time = 227904\\
-\hline
-
-coordinates\\
-\hline
-
+\hspace{0.5cm}\hspace{0.5cm}zoamc\_si:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 time (time)\\
-
+\hspace{0.5cm}float64 mass\_si (time)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass\_si:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:comment = ""\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass\_si:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass\_si:long\_name = "sea-ice mass"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "snapshot time"\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass\_si:units = "kg"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass\_si:valid\_min = "1.5801085624300974e+16"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
-
+\hspace{0.5cm}\hspace{0.5cm}mass\_si:valid\_max = "3.372421224523182e+16"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
-\hline
-
-data variables\\
-\hline
-\\
+\hspace{0.5cm}\hspace{0.5cm}mass\_si:coordinates = "time"\\
 \hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}float64 Pa\_global (time)\\
-\\
+\hspace{0.5cm}float64 xoamp\_fw (time)\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}Pa\_global:\_FillValue = "9.969209968386869e+36"\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_fw:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}Pa\_global:coverage\_content\_type = "modelResult"\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_fw:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}Pa\_global:long\_name = "Global mean atmospheric surface pressure over the ocean and sea-ice"\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_fw:long\_name = "x-comp of oceanic angular momentum due to freshwater flux"\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}Pa\_global:standard\_name = "air\_pressure\_at\_sea\_level"\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_fw:units = "kg m2 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}Pa\_global:units = "N m-2"\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_fw:valid\_min = "1.805799644912138e+24"\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}Pa\_global:valid\_min = "100873.14755283327"\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_fw:valid\_max = "3.351358892803656e+24"\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}Pa\_global:valid\_max = "101257.45252296235"\\
-\\
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_fw:coordinates = "time"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float64 yoamp\_fw (time)\\
 \hangindent=1.5cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}Pa\_global:coordinates = "time"\\
-\hline
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_fw:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_fw:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_fw:long\_name = "y-comp of oceanic angular momentum due to freshwater flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_fw:units = "kg m2 s-1"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_fw:valid\_min = "2.6255410225894626e+24"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_fw:valid\_max = "4.872705717529432e+24"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_fw:coordinates = "time"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float64 zoamp\_fw (time)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_fw:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_fw:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_fw:long\_name = "z-comp of oceanic angular momentum due to freshwater flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_fw:units = "kg m2 s-1"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_fw:valid\_min = "7.774584605728723e+25"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_fw:valid\_max = "1.442874536478883e+26"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_fw:coordinates = "time"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float64 mass\_fw (time)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_fw:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_fw:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_fw:long\_name = "mass due to freshwater flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_fw:units = "kg"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_fw:valid\_min = "3.7929380693921944e+16"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_fw:valid\_max = "7.0392619494226936e+16"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_fw:coordinates = "time"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float64 xcom\_fw (time)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xcom\_fw:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xcom\_fw:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xcom\_fw:long\_name = "x-comp of center-of-mass of freshwater flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xcom\_fw:units = "m"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xcom\_fw:valid\_min = "-573864.6948562702"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xcom\_fw:valid\_max = "-573864.6948562652"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xcom\_fw:coordinates = "time"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float64 ycom\_fw (time)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ycom\_fw:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ycom\_fw:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ycom\_fw:long\_name = "y-comp of center-of-mass of freshwater flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ycom\_fw:units = "m"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ycom\_fw:valid\_min = "-324750.41529212013"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ycom\_fw:valid\_max = "-324750.4152921157"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ycom\_fw:coordinates = "time"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float64 zcom\_fw (time)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zcom\_fw:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zcom\_fw:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zcom\_fw:long\_name = "z-comp of center-of-mass of freshater flux"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zcom\_fw:units = "m"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zcom\_fw:valid\_min = "-648386.5781734617"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zcom\_fw:valid\_max = "-648386.5781734567"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zcom\_fw:coordinates = "time"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float64 mass\_gc (time)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_gc:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_gc:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_gc:long\_name = "mass due to the Greatbatch correction"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_gc:units = "kg"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_gc:valid\_min = "-1.140148294309558e+19"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_gc:valid\_max = "-1.1388436906537843e+19"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}mass\_gc:coordinates = "time"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float64 xoamp\_dsl (time)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_dsl:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_dsl:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_dsl:long\_name = "x-comp of oceanic angular momentum due to pressure based on dynamic (IB-corrected) sea level"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_dsl:units = "kg m2 s-1"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_dsl:valid\_min = "1.354440386439953e+29"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_dsl:valid\_max = "1.3545518352698056e+29"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}xoamp\_dsl:coordinates = "time"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float64 yoamp\_dsl (time)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_dsl:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_dsl:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_dsl:long\_name = "y-comp of oceanic angular momentum due to pressure based on dynamic (IB-corrected) sea level"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_dsl:units = "kg m2 s-1"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_dsl:valid\_min = "1.0476994334049981e+29"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_dsl:valid\_max = "1.0478187262074598e+29"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}yoamp\_dsl:coordinates = "time"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float64 zoamp\_dsl (time)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_dsl:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_dsl:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_dsl:long\_name = "z-comp of oceanic angular momentum due to pressure based on dynamic (IB-corrected) sea level"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_dsl:units = "kg m2 s-1"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_dsl:valid\_min = "2.9276609546728614e+30"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_dsl:valid\_max = "2.9277328440911863e+30"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}zoamp\_dsl:coordinates = "time"\\
 \end{longtable}

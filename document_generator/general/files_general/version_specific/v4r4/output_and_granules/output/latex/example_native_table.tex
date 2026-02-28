@@ -1,611 +1,577 @@
 \begin{longtable}{|p{\textwidth}|}
-\caption{Example CDL description of ' +name+ r' dataset}
-rlabel{tab:cdl-'+name+r'} \\'
-\hline \endhead
-\hline \endfoot
-netcdf latlon example\\
-dimensions\\
+\caption{Example CDL description of native dataset}
+\label{tab:cdl-native} \\
 \hline
-\rowcolor{YellowGreen}  time = 1\\
-\rowcolor{YellowGreen}  latitude = 360\\
-\rowcolor{YellowGreen}  longitude = 720\\
-\rowcolor{YellowGreen}  nv = 2\\
+\endfirsthead
 \hline
-
-coordinates\\
+\endhead
 \hline
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 time (time)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:bounds = "time\_bnds"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "center time of averaging period"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 latitude (latitude)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:axis = "Y"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:bounds = "latitude\_bnds"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:comment = "uniform grid spacing from -89.75 to 89.75 by 0.5"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:long\_name = "latitude at grid cell center"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:standard\_name = "latitude"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude:units = "degrees\_north"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 longitude (longitude)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:axis = "X"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:bounds = "longitude\_bnds"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:comment = "uniform grid spacing from -179.75 to 179.75 by 0.5"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:long\_name = "longitude at grid cell center"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:standard\_name = "longitude"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude:units = "degrees\_east"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 time\_bnds (time, nv)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:comment = "Start and end times of averaging period."\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:long\_name = "time bounds of averaging period"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 latitude\_bnds (latitude, nv)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude\_bnds:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}latitude\_bnds:long\_name = "latitude bounds grid cells"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 longitude\_bnds (longitude, nv)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude\_bnds:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}longitude\_bnds:long\_name = "longitude bounds grid cells"\\
+\endfoot
 \hline
-
-data variables\\
+\endlastfoot
+netcdf native example \\
+dimensions \\
 \hline
-\\
+\rowcolor{YellowGreen}
 \hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}float32 OBP (time, latitude, longitude)\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:\_FillValue = "9.969209968386869e+36"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:coverage\_content\_type = "modelResult"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:long\_name = "Ocean bottom pressure given as equivalent water thickness"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:units = "m"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:comment = "OBP excludes the contribution from global mean atmospheric pressure and is therefore suitable for comparisons with GRACE data products. OBP is calculated as follows. First, we calculate ocean hydrostatic bottom pressure anomaly, PHIBOT, with PHIBOT = p\_b/rhoConst - gH(t), where p\_b = model ocean hydrostatic bottom pressure, rhoConst = reference density (1029 kg m-3), g is acceleration due to gravity (9.81 m s-2), and H(t) is model depth at time t. Then, OBP = PHIBOT/g + corrections for i) global mean steric sea level changes related to density changes in the Boussinesq volume-conserving model (Greatbatch correction, see sterGloH) and ii) global mean atmospheric pressure variations. Use OBP for comparisons with ocean bottom pressure data products that have been corrected for global mean atmospheric pressure variations. GRACE data typically ARE corrected for global mean atmospheric pressure variations. In contrast, ocean bottom pressure gauge data typically ARE NOT corrected for global mean atmospheric pressure variations."\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:coordinates = "time"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:valid\_min = "-2.544442892074585"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBP:valid\_max = "72.1243667602539"\\
-\\
+tile = 13\\
+\rowcolor{YellowGreen}
 \hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}float32 OBPGMAP (time, latitude, longitude)\\
-\\
-\hangindent=1.5cm
+j = 90\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:\_FillValue = "9.969209968386869e+36"\\
-\\
-\hangindent=1.5cm
+i = 90\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:coverage\_content\_type = "modelResult"\\
-\\
-\hangindent=1.5cm
+j\_g = 90\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:long\_name = "Ocean bottom pressure given as equivalent water thickness, includes global mean atmospheric pressure"\\
-\\
-\hangindent=1.5cm
+i\_g = 90\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:units = "m"\\
-\\
-\hangindent=1.5cm
+k = 50\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:comment = "OBPGMAP includes the contribution from global mean atmospheric pressure and is therefore suitable for comparisons with ocean bottom pressure gauge data products. OBPGMAP is calculated as follows. First, we calculate ocean hydrostatic bottom pressure anomaly, PHIBOT, with PHIBOT = p\_b/rhoConst - gH(t), where p\_b = model ocean hydrostatic bottom pressure, rhoConst = reference density (1029 kg m-3), g is acceleration due to gravity (9.81 m s-2), and H(t) is model depth at time t. Then, OBPGMAP= PHIBOT/g + corrections for global mean steric sea level changes related to density changes in the Boussinesq volume-conserving model (Greatbatch correction, see sterGloH). Use OBPGMAP for comparisons with ocean bottom pressure data products that have NOT been corrected for global mean atmospheric pressure variations. GRACE data typically ARE corrected for global mean atmospheric pressure variations. In contrast, ocean bottom pressure gauge data typically ARE NOT corrected for global mean atmospheric pressure variations."\\
-\\
-\hangindent=1.5cm
+k\_p1 = 51\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:coordinates = "time"\\
-\\
-\hangindent=1.5cm
+k\_u = 50\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:valid\_min = "7.395928859710693"\\
-\\
-\hangindent=1.5cm
+k\_l = 50\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
 \hangafter1
-\hspace{0.5cm}\hspace{0.5cm}OBPGMAP:valid\_max = "82.14805603027344"\\
+time = 1\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+nv = 2\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+nb = 4\\
 \hline
-\end{longtable}
-netcdf native example\\
-dimensions\\
+coordinates \\
 \hline
-\rowcolor{YellowGreen}  tile = 13\\
-\rowcolor{YellowGreen}  j = 90\\
-\rowcolor{YellowGreen}  i = 90\\
-\rowcolor{YellowGreen}  j\_g = 90\\
-\rowcolor{YellowGreen}  i\_g = 90\\
-\rowcolor{YellowGreen}  time = 1\\
-\rowcolor{YellowGreen}  nv = 2\\
-\rowcolor{YellowGreen}  nb = 4\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 i (i)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i:axis = "X"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i:long\_name = "grid index in x for variables at tracer and 'v' locations"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i:swap\_dim = "XC"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'v' variables (e.g., VVEL) have the same x coordinate on the model grid."\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 i\_g (i\_g)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i\_g:axis = "X"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i\_g:long\_name = "grid index in x for variables at 'u' and 'g' locations"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i\_g:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i\_g:swap\_dim = "XG"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i\_g:comment = "In the Arakawa C-grid system, 'u' (e.g., UVEL) and 'g' variables (e.g., XG) have the same x coordinate on the model grid."\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i\_g:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 j (j)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j:axis = "Y"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j:long\_name = "grid index in y for variables at tracer and 'u' locations"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j:swap\_dim = "YC"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'u' variables (e.g., UVEL) have the same y coordinate on the model grid."\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 j\_g (j\_g)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j\_g:axis = "Y"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j\_g:long\_name = "grid index in y for variables at 'v' and 'g' locations"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j\_g:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j\_g:swap\_dim = "YG"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j\_g:comment = "In the Arakawa C-grid system, 'v' (e.g., VVEL) and 'g' variables (e.g., XG) have the same y coordinate."\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j\_g:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 k (k)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k:axis = "Z"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k:long\_name = "grid index in z for tracer variables"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k:swap\_dim = "Z"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 k\_u (k\_u)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_u:axis = "Z"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_u:c\_grid\_axis\_shift = "0.5"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_u:swap\_dim = "Zu"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_u:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_u:long\_name = "grid index in z corresponding to the bottom face of tracer grid cells ('w' locations)"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_u:comment = "First index corresponds to the bottom surface of the uppermost tracer grid cell. The use of 'u' in the variable name follows the MITgcm convention for ocean variables in which the upper (u) face of a tracer grid cell on the logical grid corresponds to the bottom face of the grid cell on the physical grid."\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 k\_l (k\_l)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_l:axis = "Z"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_l:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_l:swap\_dim = "Zl"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_l:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_l:long\_name = "grid index in z corresponding to the top face of tracer grid cells ('w' locations)"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_l:comment = "First index corresponds to the top surface of the uppermost tracer grid cell. The use of 'l' in the variable name follows the MITgcm convention for ocean variables in which the lower (l) face of a tracer grid cell on the logical grid corresponds to the top face of the grid cell on the physical grid."\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 k\_p1 (k\_p1)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_p1:axis = "Z"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_p1:long\_name = "grid index in z for variables at 'w' locations"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_p1:c\_grid\_axis\_shift = "[-0.5  0.5]"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_p1:swap\_dim = "Zp1"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_p1:comment = "Includes top of uppermost model tracer cell (k\_p1=0) and bottom of lowermost tracer cell (k\_p1=51)."\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_p1:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 tile (tile)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}tile:long\_name = "lat-lon-cap tile index"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}tile:comment = "The ECCO V4 horizontal model grid is divided into 13 tiles of 90x90 cells for convenience."\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}tile:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 time (time)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "center time of averaging period"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:bounds = "time\_bnds"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
 \hline
-
-coordinates\\
+data variables \\
 \hline
-
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 i (i)\\
-
+\hspace{0.5cm}float32 ADVx\_SLT (time, k, tile, j, i\_g)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:axis = "X"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:long\_name = "grid index in x for variables at tracer and 'v' locations"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:long\_name = "Lateral advective flux of salinity in the model +x direction"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:swap\_dim = "XC"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:units = "1e-3 m3 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'v' variables (e.g., VVEL) have the same x coordinate on the model grid."\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:mate = "ADVy\_SLT"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:direction = ">0 increases salinity (SALT)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:comment = "Lateral advective flux of salinity (SALT) in the +x direction through the 'u' face of the tracer cell on the native model grid. Note: in the Arakawa-C grid, horizontal flux quantities are staggered relative to the tracer cells with indexing such that +ADVx\_SLT(i\_g,j,k) corresponds to +x fluxes through the 'u' face of the tracer cell at (i,j,k). Also, the model +x direction does not necessarily correspond to the geographical east-west direction because the x and y axes of the model's curvilinear lat-lon-cap (llc) grid have arbitrary orientations which vary within and across tiles. Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:coordinates = "Z time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:valid\_min = "-181830224.0"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVx\_SLT:valid\_max = "260411296.0"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 i\_g (i\_g)\\
-
+\hspace{0.5cm}float32 DFxE\_SLT (time, k, tile, j, i\_g)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:axis = "X"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:long\_name = "grid index in x for variables at 'u' and 'g' locations"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:long\_name = "Lateral diffusive flux of salinity in the model +x direction"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:c\_grid\_axis\_shift = "-0.5"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:units = "1e-3 m3 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:swap\_dim = "XG"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:mate = "DFyE\_SLT"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:comment = "In the Arakawa C-grid system, 'u' (e.g., UVEL) and 'g' variables (e.g., XG) have the same x coordinate on the model grid."\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}i\_g:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:direction = ">0 increases salinity (SALT)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:comment = "Lateral diffusive flux of salinity (SALT) in the +x direction through the 'u' face of the tracer cell on the native model grid. Note: in the Arakawa-C grid, horizontal flux quantities are staggered relative to the tracer cells with indexing such that +DFxE\_SLT(i\_g,j,k) corresponds to +x fluxes through the 'u' face of the tracer cell at (i,j,k). Also, the model +x direction does not necessarily correspond to the geographical east-west direction because the x and y axes of the model's curvilinear lat-lon-cap (llc) grid have arbitrary orientations which vary within and across tiles. Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:coordinates = "Z time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:valid\_min = "-125908.03125"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}DFxE\_SLT:valid\_max = "192716.484375"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 j (j)\\
-
+\hspace{0.5cm}float32 ADVy\_SLT (time, k, tile, j\_g, i)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:axis = "Y"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:long\_name = "grid index in y for variables at tracer and 'u' locations"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:long\_name = "Lateral advective flux of salinity in the model +y direction"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:swap\_dim = "YC"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:units = "1e-3 m3 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'u' variables (e.g., UVEL) have the same y coordinate on the model grid."\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:mate = "ADVx\_SLT"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:direction = ">0 increases salinity (SALT)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:comment = "Lateral advective flux of salinity (SALT) in the +y direction through the 'v' face of the tracer cell on the native model grid. Note: in the Arakawa-C grid, horizontal flux quantities are staggered relative to the tracer cells with indexing such that +ADVy\_SLT(i,j\_g,k) corresponds to +y fluxes through the 'v' face of the tracer cell at (i,j,k). Also, the model +y direction does not necessarily correspond to the geographical north-south direction because the x and y axes of the model's curvilinear lat-lon-cap (llc) grid have arbitrary orientations which vary within and across tiles. Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:coordinates = "Z time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:valid\_min = "-137905760.0"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVy\_SLT:valid\_max = "164271664.0"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 j\_g (j\_g)\\
-
+\hspace{0.5cm}float32 DFyE\_SLT (time, k, tile, j\_g, i)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:axis = "Y"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:long\_name = "grid index in y for variables at 'v' and 'g' locations"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:long\_name = "Lateral diffusive flux of salinity in the model +y direction"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:c\_grid\_axis\_shift = "-0.5"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:units = "1e-3 m3 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:swap\_dim = "YG"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:mate = "DFxE\_SLT"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:comment = "In the Arakawa C-grid system, 'v' (e.g., VVEL) and 'g' variables (e.g., XG) have the same y coordinate."\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}j\_g:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:direction = ">0 increases salinity (SALT)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:comment = "Lateral diffusive flux of salinity (SALT) in the +y direction through the 'v' face of the tracer cell on the native model grid. Note: in the Arakawa-C grid, horizontal flux quantities are staggered relative to the tracer cells with indexing such that +DFyE\_SLT(i,j\_g,k) corresponds to +y fluxes through the 'v' face of the tracer cell at (i,j,k). Also, the model +y direction does not necessarily correspond to the geographical north-south direction because the x and y axes of the model's curvilinear lat-lon-cap (llc) grid have arbitrary orientations which vary within and across tiles. Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:coordinates = "Z time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:valid\_min = "-114959.2109375"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}DFyE\_SLT:valid\_max = "154227.140625"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 tile (tile)\\
-
+\hspace{0.5cm}float32 ADVr\_SLT (time, k\_l, tile, j, i)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:long\_name = "lat-lon-cap tile index"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:comment = "The ECCO V4 horizontal model grid is divided into 13 tiles of 90x90 cells for convenience."\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:long\_name = "Vertical advective flux of salinity"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}tile:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:units = "1e-3 m3 s-1"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:direction = ">0 decreases salinity (SALT)"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:comment = "Vertical advective flux of salinity (SALT) in the +z direction through the top 'w' face of the tracer cell on the native model grid. Note: in the Arakawa-C grid, vertical flux quantities are staggered relative to the tracer cells with indexing such that +ADVr\_SLT(i,j,k\_l) corresponds to upward +z fluxes through the top 'w' face of the tracer cell at (i,j,k). Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:coordinates = "XC Zl YC time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:valid\_min = "-324149856.0"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}ADVr\_SLT:valid\_max = "263294624.0"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 time (time)\\
-
+\hspace{0.5cm}float32 DFrE\_SLT (time, k\_l, tile, j, i)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "center time of averaging period"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:long\_name = "Vertical diffusive flux of salinity (explicit term)"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:bounds = "time\_bnds"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:units = "1e-3 m3 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:direction = ">0 decreases salinity (SALT)"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:comment = "The explicit term of the vertical diffusive flux of salinity (SALT) in the +z direction through the top 'w' face of the tracer cell on the native model grid. In the ECCO V4r4 model, an implicit scheme is used to calculate vertical diffusive tracer fluxes due to background diffusivity and the Kwz component of the GM-Redi tensor (vertical flux as a function of vertical gradient) while an explicit scheme is used to calculate the vertical diffusive fluxes from the Kwx and Kwy components of the GM-Redi tensor (vertical flux as a function of horizontal gradient). Both implicit and explicit components of vertical diffusive flux of salinity are provided. Note: in the Arakawa-C grid, vertical flux quantities are staggered relative to the tracer cells with indexing such that +DFrE\_SLT(i,j,k\_l) corresponds to upward +z fluxes through the top 'w' face of the tracer cell at (i,j,k). Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:coordinates = "XC Zl YC time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:valid\_min = "-1074719.375"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}DFrE\_SLT:valid\_max = "471215.75"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 XC (tile, j, i)\\
-
+\hspace{0.5cm}float32 DFrI\_SLT (time, k\_l, tile, j, i)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:long\_name = "longitude of tracer grid cell center"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:units = "degrees\_east"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:long\_name = "Vertical diffusive flux of salinity (implicit term)"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:coordinate = "YC XC"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:units = "1e-3 m3 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:bounds = "XC\_bnds"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:comment = "nonuniform grid spacing"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:direction = ">0 decreases salinity (SALT)"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:comment = "The implicit term of the vertical diffusive flux of salinity (SALT) in the +z direction through the top 'w' face of the tracer cell on the native model grid. In the ECCO V4r4 model, an implicit scheme is used to calculate vertical diffusive tracer fluxes due to background diffusivity and the Kwz component of the GM-Redi tensor (vertical flux as a function of vertical gradient) while an explicit scheme is used to calculate the vertical diffusive fluxes from the Kwx and Kwy components of the GM-Redi tensor (vertical flux as a function of horizontal gradient). Both implicit and explicit components of vertical diffusive flux of salinity are provided. Note: in the Arakawa-C grid, vertical flux quantities are staggered relative to the tracer cells with indexing such that +DFrI\_SLT(i,j,k\_l) corresponds to upward +z fluxes through the top face 'w' of the tracer cell at (i,j,k). Salinity defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC:standard\_name = "longitude"\\
-
+\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:coordinates = "XC Zl YC time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:valid\_min = "-30609048.0"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}DFrI\_SLT:valid\_max = "3197643.0"\\
 \hangindent=1.0cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 YC (tile, j, i)\\
-
+\hspace{0.5cm}float32 oceSPtnd (time, k, tile, j, i)\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:long\_name = "latitude of tracer grid cell center"\\
-
+\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:\_FillValue = "9.969209968386869e+36"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:units = "degrees\_north"\\
-
+\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:long\_name = "Salt tendency due to the vertical transport of salt in high-salinity brine plumes"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:coordinate = "YC XC"\\
-
+\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:units = "g m-2 s-1"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:bounds = "YC\_bnds"\\
-
+\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:coverage\_content\_type = "modelResult"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:comment = "nonuniform grid spacing"\\
-
+\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:direction = ">0 increases salinity (SALT)"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:coverage\_content\_type = "coordinate"\\
-
+\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:comment = "Salt tendency due to the vertical transport of salt in high-salinity brine plumes. Note: units are grams of salt per square meter per second, not salinity per square meter per second."\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC:standard\_name = "latitude"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 XG (tile, j\_g, i\_g)\\
-
+\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:coordinates = "XC Z YC time"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:long\_name = "longitude of 'southwest' corner of tracer grid cell"\\
-
+\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:valid\_min = "0.0"\\
 \hangindent=1.5cm
 \hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:units = "degrees\_east"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:coordinate = "YG XG"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:comment = "Nonuniform grid spacing. Note: 'southwest' does not correspond to geographic orientation but is used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XG:standard\_name = "longitude"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 YG (tile, j\_g, i\_g)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:long\_name = "latitude of 'southwest' corner of tracer grid cell"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:units = "degrees\_north"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coordinate = "YG XG"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:comment = "Nonuniform grid spacing. Note: 'southwest' does not correspond to geographic orientation but is used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YG:standard\_name = "latitude"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}int32 time\_bnds (time, nv)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:comment = "Start and end times of averaging period."\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}time\_bnds:long\_name = "time bounds of averaging period"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 XC\_bnds (tile, j, i, nb)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:comment = "Bounds array follows CF conventions. XC\_bnds[i,j,0] = 'southwest' corner (j-1, i-1), XC\_bnds[i,j,1] = 'southeast' corner (j-1, i+1), XC\_bnds[i,j,2] = 'northeast' corner (j+1, i+1), XC\_bnds[i,j,3]  = 'northwest' corner (j+1, i-1). Note: 'southwest', 'southeast', northwest', and 'northeast' do not correspond to geographic orientation but are used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}XC\_bnds:long\_name = "longitudes of tracer grid cell corners"\\
-
-\hangindent=1.0cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}float32 YC\_bnds (tile, j, i, nb)\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:comment = "Bounds array follows CF conventions. YC\_bnds[i,j,0] = 'southwest' corner (j-1, i-1), YC\_bnds[i,j,1] = 'southeast' corner (j-1, i+1), YC\_bnds[i,j,2] = 'northeast' corner (j+1, i+1), YC\_bnds[i,j,3]  = 'northwest' corner (j+1, i-1). Note: 'southwest', 'southeast', northwest', and 'northeast' do not correspond to geographic orientation but are used for convenience to describe the computational grid. See MITgcm dcoumentation for details."\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:coverage\_content\_type = "coordinate"\\
-
-\hangindent=1.5cm
-\hangafter1
-\rowcolor{Apricot}\hspace{0.5cm}\hspace{0.5cm}YC\_bnds:long\_name = "latitudes of tracer grid cell corners"\\
-\hline
-
-data variables\\
-\hline
-\\
-\hangindent=1.0cm
-\hangafter1
-\hspace{0.5cm}float32 MXLDEPTH (time, tile, j, i)\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:\_FillValue = "9.969209968386869e+36"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:long\_name = "Mixed-layer depth diagnosed using the temperature difference criterion of Kara et al., 2000"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:units = "m"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:coverage\_content\_type = "modelResult"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:standard\_name = "ocean\_mixed\_layer\_thickness"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:comment = "Mixed-layer depth as determined by the depth where waters are first 0.8 degrees Celsius colder than the surface. See Kara et al. (JGR, 2000). . Note: the Kara et al. criterion may not be appropriate for some applications. If needed, mixed layer depth can be calculated using different criteria. See vertical density stratification (DRHODR) and density anomaly (RHOAnoma)."\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:coordinates = "time XC YC"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:valid\_min = "5.000001430511475"\\
-\\
-\hangindent=1.5cm
-\hangafter1
-\hspace{0.5cm}\hspace{0.5cm}MXLDEPTH:valid\_max = "5331.2001953125"\\
-\hline
+\hspace{0.5cm}\hspace{0.5cm}oceSPtnd:valid\_max = "0.021119138225913048"\\
 \end{longtable}
