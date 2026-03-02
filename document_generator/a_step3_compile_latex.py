@@ -13,9 +13,7 @@ config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator
 with open(config_file,'r') as stream:
     config_dictionary = yaml.safe_load(stream)
 
-
 def main():
-    
     static_support_tex_dir_absolute = f"{base_dir}/{config_dictionary['static_support_tex_dir_relative']}"
     user_generated_tex_dir_absolute = f"{base_dir}/{config_dictionary['user_generated_tex_dir_relative']}"
     os.environ["TEXINPUTS"] = f"{static_support_tex_dir_absolute}:{user_generated_tex_dir_absolute}:"

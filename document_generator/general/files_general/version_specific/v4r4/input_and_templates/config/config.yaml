@@ -87,7 +87,7 @@ global_attributes_latex_lines:
 #
 variable_attributes_latex_lines:
   - \begin{longtable}{|p{0.168\textwidth}|p{0.20\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}
-  - \caption{Table 8-2. Variable attributes for GDS 2.0 netCDF data files}
+  - \caption{Variable attributes for GDS 2.0 netCDF data files}
   - \label{tab:variable-attributes} \\ 
   - \hline \endhead
   - \hline \endfoot
@@ -118,7 +118,7 @@ longtable_headers_footers:
 # -----------------------------------------------------------------------------------------------------------------------------------
 compendium_compilation_runtime_message_string: |+
   
-  Compiling the final latex document (if successful, will be found in the directory 'final_compendium_files'
+  Compiling the final latex document (if successful, will be found in the directory 'final_compendium_files')
   
   Note: 'pdflatex' is running in the background; if execution seems stalled, try typing "X" and pressing Enter. If this works, 
   useful error messages should print to the screen.  Otherwise, terminate the process (e.g. type'ctrl + c' and hit 'return'), 

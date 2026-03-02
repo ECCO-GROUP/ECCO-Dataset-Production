@@ -8,9 +8,8 @@
 \setlength{\cfttabnumwidth}{2.5em}
 \usepackage{graphicx}
 
-% The following paths are relative to the "general_base_dir", as defined in "a_step3_compile_latex.py"
+% The following paths are relative to <base_dir>, which (is defined in/ is the directory containing) "a_step3_compile_latex.py"
 \graphicspath{ {general/files\_general/universal/figures} {general/files\_general/version\_specific/v4r4/output\_and\_granules/output/figures//} }
-
 
 \input{preamble.tex}
 
@@ -19,8 +18,20 @@
 \input{doc_records.tex}
 \input{ECCO_team.tex}
 \input{executive_summary.tex}
-\input{TOC.tex}
-\input{LOF.tex}
+
+\pagebreak
+\section{Table of Contents}
+\tableofcontents
+
+\pagebreak
+\section{Figures in this document}
+\par \vspace{0.5cm}
+\listoffigures
+
+\section{Tables in this document}
+\listoftables
+\par \vspace{0.5cm}
+
 \input{scope_content_doc.tex}
 \input{ECCO_overview.tex}
 \input{filenames_conventions.tex}

@@ -300,7 +300,8 @@ def data_var_table(config_dictionary, field_name:str, attrs:dict, dataset_name:s
     la = [
             # ADJUST SIZE OF TABLE HERE
             r'\begin{longtable}{|m{0.06\textwidth}|m{'+str(a)+r'\textwidth}|m{'+str(b)+r'\textwidth}|m{0.12\textwidth}|}',
-            fr"\caption{{Attributes description of the variable '{utils.sanitize(config_dictionary, field_name)}' from {new_sani}'s  dataset.}}",
+            fr"\caption{{Attributes description for '{utils.sanitize(config_dictionary, field_name)}'}}",
+            #fr"\caption{{Attributes description of the variable '{utils.sanitize(config_dictionary, field_name)}' from {new_sani}'s  dataset.}}",
             fr'\label{{tab:table-{dataset_name}_{field_name}}} \\ ',
             r'\hline \endhead \hline \endfoot',
         ]
@@ -488,8 +489,9 @@ def data_products(base_dir, config_dictionary, granule_directory)->list:
     for json_dictionary in list_of_json_dictionaries:
         granule_filename_truncated_stem = json_dictionary["filename"]
         granule_filename_truncated_stem_formatted = utils.sanitize(config_dictionary, granule_filename_truncated_stem)
-        latex_lines.append(r'\subsection{'+ f'{grid_type}' + ' dataset of ' + f'{granule_filename_truncated_stem_formatted}' + r'}')
-        latex_lines.append(r'\newp') # Deasctived!!
+        latex_lines.append(r'\subsection{'+ f'{grid_type}' + ' dataset ' + f'{granule_filename_truncated_stem_formatted}' + r'}')
+        #latex_lines.append(r'\subsection{'+ f'{grid_type}' + ' dataset of ' + f'{granule_filename_truncated_stem_formatted}' + r'}')
+        latex_lines.append(r'\newp')
 
         data_array_list, dataset = search_and_extract(granule_filename_truncated_stem, os.path.join(base_dir, granule_directory), is_coord)
 
@@ -503,7 +505,7 @@ def data_products(base_dir, config_dictionary, granule_directory)->list:
             latex_lines.append(r"\\")
         
         latex_lines.extend(fieldTable(config_dictionary, dataset, is_coord)) 
-        latex_lines.append(r'\newp') # Deasctived!!
+        latex_lines.append(r'\newp') 
         for variable in data_array_list:
 
             attributes_dictionary = extract_field_info(variable)
@@ -511,16 +513,22 @@ def data_products(base_dir, config_dictionary, granule_directory)->list:
             # Create latex table for each variable
             variable_name = attributes_dictionary['Variable Name']
             cleanName = utils.sanitize(config_dictionary, variable_name)
+            
+            variable_descriptor_string = f"dataset: {utils.sanitize(config_dictionary, granule_filename_truncated_stem)}, variable: {utils.sanitize(config_dictionary, variable_name)}" 
+
             latex_lines.append(r'\pagebreak')
-            latex_lines.append(fr'\subsubsection{{{grid_type} Variable: {cleanName}}}')
+            latex_lines.append(fr'\subsection{{{variable_descriptor_string}}}')
+            ###latex_lines.append(fr'\subsubsection{{variable: {cleanName}}}')
+            ###latex_lines.append(fr'\subsubsection{{{grid_type} variable: {cleanName}}}')
             dataVarTable = data_var_table(config_dictionary, variable_name, attributes_dictionary, granule_filename_truncated_stem)
             latex_lines.extend(dataVarTable)
 
             dataVarPlot = cdf_plotter.data_var_plot(config_dictionary["ecco_version_string"], dataset, dataset[variable_name], image_directory, config_dictionary['overwrite_switch'])
             latex_lines.append(r'\begin{figure}[H]')
             latex_lines.append(r'\centering')
-            latex_lines.append(dataVarPlot) #testing right here
-            latex_lines.append(fr"\caption{{Dataset: {utils.sanitize(config_dictionary, granule_filename_truncated_stem)}, Variable: {utils.sanitize(config_dictionary, variable_name)}}}") #Just
+            latex_lines.append(dataVarPlot)
+            latex_lines.append(fr'\caption{{{variable_descriptor_string}}}')
+            ###latex_lines.append(fr"\caption{{Dataset: {utils.sanitize(config_dictionary, granule_filename_truncated_stem)}, Variable: {utils.sanitize(config_dictionary, variable_name)}}}") #Just
             latex_lines.append(fr'\label{{tab:table-{granule_filename_truncated_stem}_{variable_name}-Plot}}')
             latex_lines.append(r'\end{figure}')
 

@@ -1,0 +1,60 @@
+# README:
+# In this configuration file, the user specifies urls to remotely hosted ECCO output they wish to download.
+# Note that, for data on the ECCO "native" or "latlon" grids, coordinate granules can also be downloaded which
+# contain grid information which may be useful.
+#
+# An example of a url:
+# https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_VARIABLE.nc"
+#
+# The user should edit this file as needed.  Note that commented lines (beginning with #) are ignored during downloading. 
+
+
+# grid type: latlon
+# coordinate url:
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_GEOMETRY_05DEG_V4R4/GRID_GEOMETRY_ECCO_V4r4_latlon_0p50deg.nc
+# variable urls:
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SSH_05DEG_DAILY_V4R4/SEA_SURFACE_HEIGHT_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OBP_05DEG_DAILY_V4R4/OCEAN_BOTTOM_PRESSURE_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_FRESH_FLUX_05DEG_DAILY_V4R4/OCEAN_AND_ICE_SURFACE_FW_FLUX_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_HEAT_FLUX_05DEG_DAILY_V4R4/OCEAN_AND_ICE_SURFACE_HEAT_FLUX_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_ATM_STATE_05DEG_DAILY_V4R4/ATM_SURFACE_TEMP_HUM_WIND_PRES_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_MIXED_LAYER_DEPTH_05DEG_DAILY_V4R4/OCEAN_MIXED_LAYER_DEPTH_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_STRESS_05DEG_DAILY_V4R4/OCEAN_AND_ICE_SURFACE_STRESS_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SEA_ICE_CONC_THICKNESS_05DEG_DAILY_V4R4/SEA_ICE_CONC_THICKNESS_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SEA_ICE_VELOCITY_05DEG_DAILY_V4R4/SEA_ICE_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_TEMP_SALINITY_05DEG_DAILY_V4R4/OCEAN_TEMPERATURE_SALINITY_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_DENS_STRAT_PRESS_05DEG_DAILY_V4R4/OCEAN_DENS_STRAT_PRESS_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_VEL_05DEG_DAILY_V4R4/OCEAN_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_BOLUS_05DEG_DAILY_V4R4/OCEAN_BOLUS_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+
+# grid type: native
+# coordinate url:
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_GEOMETRY_LLC0090GRID_V4R4/GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc
+# variable ursl:
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_ATM_STATE_LLC0090GRID_DAILY_V4R4/ATM_SURFACE_TEMP_HUM_WIND_PRES_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_MIXED_LAYER_DEPTH_LLC0090GRID_DAILY_V4R4/OCEAN_MIXED_LAYER_DEPTH_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_STRESS_LLC0090GRID_DAILY_V4R4/OCEAN_AND_ICE_SURFACE_STRESS_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SEA_ICE_CONC_THICKNESS_LLC0090GRID_DAILY_V4R4/SEA_ICE_CONC_THICKNESS_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SEA_ICE_VELOCITY_LLC0090GRID_DAILY_V4R4/SEA_ICE_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SEA_ICE_HORIZ_VOLUME_FLUX_LLC0090GRID_DAILY_V4R4/SEA_ICE_HORIZ_VOLUME_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_BOLUS_STREAMFUNCTION_LLC0090GRID_DAILY_V4R4/OCEAN_BOLUS_STREAMFUNCTION_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_3D_VOLUME_FLUX_LLC0090GRID_DAILY_V4R4/OCEAN_3D_VOLUME_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_3D_SALINITY_FLUX_LLC0090GRID_DAILY_V4R4/OCEAN_3D_SALINITY_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SEA_ICE_SALT_PLUME_FLUX_LLC0090GRID_DAILY_V4R4/SEA_ICE_SALT_PLUME_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_3D_TEMPERATURE_FLUX_LLC0090GRID_DAILY_V4R4/OCEAN_3D_TEMPERATURE_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OBP_LLC0090GRID_DAILY_V4R4/OCEAN_BOTTOM_PRESSURE_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_HEAT_FLUX_LLC0090GRID_DAILY_V4R4/OCEAN_AND_ICE_SURFACE_HEAT_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_FRESH_FLUX_LLC0090GRID_DAILY_V4R4/OCEAN_AND_ICE_SURFACE_FW_FLUX_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_TEMP_SALINITY_LLC0090GRID_DAILY_V4R4/OCEAN_TEMPERATURE_SALINITY_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_DENS_STRAT_PRESS_LLC0090GRID_DAILY_V4R4/OCEAN_DENS_STRAT_PRESS_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_BOLUS_LLC0090GRID_DAILY_V4R4/OCEAN_BOLUS_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_VEL_LLC0090GRID_DAILY_V4R4/OCEAN_VELOCITY_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_3D_MOMENTUM_TEND_LLC0090GRID_DAILY_V4R4/OCEAN_3D_MOMENTUM_TEND_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_OCEAN_3D_MIX_COEFFS_LLC0090GRID_V4R4/OCEAN_3D_MIXING_COEFFS_ECCO_V4r4_native_llc0090.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SSH_LLC0090GRID_DAILY_V4R4/SEA_SURFACE_HEIGHT_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+
+# grid type: 1D
+# variable urls:
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_GMAP_TIME_SERIES_SNAPSHOT_V4R4/GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r4_1D.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_GMSL_TIME_SERIES_DAILY_V4R4/GLOBAL_MEAN_SEA_LEVEL_day_mean_ECCO_V4r4_1D.nc
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SBO_CORE_TIME_SERIES_SNAPSHOT_V4R4/SBO_CORE_PRODUCTS_snap_ECCO_V4r4_1D.nc
