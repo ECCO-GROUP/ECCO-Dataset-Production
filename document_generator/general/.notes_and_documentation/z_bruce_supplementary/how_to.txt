@@ -176,6 +176,7 @@ OPTION + (mouse select) for selection, CMD + v for paste
 
 
 # ------------------------------------ BASH ---------------------------------------
+### Check bash scripts here:  https://www.shellcheck.net/
 
 # save output of bash command to clipboard
 <command> | pbcopy
@@ -225,6 +226,12 @@ ls <dir> | wc -l
 #ls -l <dir> | grep -v total | wc -l
 #ls -1 <dir> | wc -l
 #find <dir> -type f | wc -l
+
+# Recursively search for all "*.txt" files starting in directory $from, and copy them to directory $to:
+find $from -type f -name "*.txt" -exec cp {} $to \; -print
+
+# Zip all python files in all subdirectories starting at a given directory:
+find /path/to/directory -name "*.py" -print | zip python_files -@
 
 # --------------------------------------------------------------------------------
 

@@ -1,8 +1,7 @@
 \begin{longtable}{|p{0.168\textwidth}|p{0.20\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}
 \caption{Variable attributes for GDS 2.0 netCDF data files}
 \label{tab:variable-attributes} \\
-\hline \endhead
-\hline \endfoot
+\hline \endfirsthead \endhead \endfoot \hline \endlastfoot
 \rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline
 \rowcolor{LightCyan} \_FillValue & Must be the same as the variable type & A value used to indicate array elements containing no valid data. This value must be of the same type as the storage (packed) type; should be set as the minimum value for this type. Note that some netCDF readers are unable to cope with signed bytes and may, in these cases, report fill as 128. Some cases will be reported as unsigned bytes 0 to 255. Required for the majority of variables except mask and l2p\_flags. & CF \\ \hline
 

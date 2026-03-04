@@ -1,13 +1,12 @@
 \section{Lat-Lon Dataset Groupings}
-\subsection{latlon dataset SEA\_SURFACE\_HEIGHT}
+\subsection{Overview  of SEA\_SURFACE\_HEIGHT (lat-lon)}
 \newp
-\subsubsection{Overview}
 This dataset provides 2D fields of dynamic sea surface height interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution.
 \\\\
 Note: SSH (dynamic sea surface height) = SSHNOIBC (dynamic sea surface without the inverse barometer correction) - SSHIBC (inverse barometer correction). The inverted barometer correction accounts for variations in sea surface height due to atmospheric pressure variations.
 \\
 \begin{longtable}{|m{0.15\textwidth}|m{0.64\textwidth}|m{0.12\textwidth}|}
-\caption{Coordinates and Variables in the dataset SEA\_SURFACE\_HEIGHT}
+\caption{Coordinates and variables from SEA\_SURFACE\_HEIGHT (lat-lon)}
 \label{tab:table-<xarray.Dataset> Size: 3MB
 Dimensions:         (time: 1, latitude: 360, longitude: 720, nv: 2)
 Coordinates:
@@ -36,7 +35,7 @@ Attributes: (12/57)
     time_coverage_start:          2017-12-29T00:00:00
     title:                        ECCO Sea Surface Height - Daily Mean 0.5 De...
     uuid:                         7beb77e0-404a-11eb-8bf7-0cc47a3f891b-fields} \\ 
-\hline \endhead \hline \endfoot
+\hline \endfirsthead \endhead \endfoot \hline \endlastfoot
 \rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Coordinates}} & \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} &  \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline
 time &Center time of averaging period &--none--  \\ \hline
 latitude &Latitude at grid cell center &degrees\_north  \\ \hline
@@ -52,10 +51,9 @@ SSHNOIBC &Sea surface height anomaly without the inverted barometer (ib) correct
 
 \newp
 \pagebreak
-\subsection{dataset: SEA\_SURFACE\_HEIGHT, variable: SSH}
+\subsection{SSH from SEA\_SURFACE\_HEIGHT (lat-lon)}
 \begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
-\caption{Attributes description for 'SSH'}
-\label{tab:table-SEA_SURFACE_HEIGHT_SSH} \\ 
+\caption{SSH from SEA\_SURFACE\_HEIGHT (lat-lon)}\label{tab:table-SEA_SURFACE_HEIGHT_SSH} \\ 
 \hline \endhead \hline \endfoot
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float32 & SSH & Dynamic sea surface height anomaly & m \\ \hline
@@ -76,16 +74,15 @@ float32 & SSH & Dynamic sea surface height anomaly & m \\ \hline
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.55]{/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/general/files_general/version_specific/v4r4/output_and_granules/output/figures/figures_variables_latlon/Sea_Surface_Height/SSH.png}
-\caption{dataset: SEA\_SURFACE\_HEIGHT, variable: SSH}
+\includegraphics[scale=0.55]{/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/general/files_general/version_specific/v4r4/output_and_granules/output/figures/figures_variables_lat-lon/Sea_Surface_Height/SSH.png}
+\caption{SSH from SEA\_SURFACE\_HEIGHT (lat-lon)}
 \label{tab:table-SEA_SURFACE_HEIGHT_SSH-Plot}
 \end{figure}
 \newpage
 \pagebreak
-\subsection{dataset: SEA\_SURFACE\_HEIGHT, variable: SSHIBC}
+\subsection{SSHIBC from SEA\_SURFACE\_HEIGHT (lat-lon)}
 \begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
-\caption{Attributes description for 'SSHIBC'}
-\label{tab:table-SEA_SURFACE_HEIGHT_SSHIBC} \\ 
+\caption{SSHIBC from SEA\_SURFACE\_HEIGHT (lat-lon)}\label{tab:table-SEA_SURFACE_HEIGHT_SSHIBC} \\ 
 \hline \endhead \hline \endfoot
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float32 & SSHIBC & The inverted barometer (ib) correction to sea surface height due to atmospheric pressure loading & m \\ \hline
@@ -105,16 +102,15 @@ float32 & SSHIBC & The inverted barometer (ib) correction to sea surface height 
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.55]{/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/general/files_general/version_specific/v4r4/output_and_granules/output/figures/figures_variables_latlon/Sea_Surface_Height/SSHIBC.png}
-\caption{dataset: SEA\_SURFACE\_HEIGHT, variable: SSHIBC}
+\includegraphics[scale=0.55]{/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/general/files_general/version_specific/v4r4/output_and_granules/output/figures/figures_variables_lat-lon/Sea_Surface_Height/SSHIBC.png}
+\caption{SSHIBC from SEA\_SURFACE\_HEIGHT (lat-lon)}
 \label{tab:table-SEA_SURFACE_HEIGHT_SSHIBC-Plot}
 \end{figure}
 \newpage
 \pagebreak
-\subsection{dataset: SEA\_SURFACE\_HEIGHT, variable: SSHNOIBC}
+\subsection{SSHNOIBC from SEA\_SURFACE\_HEIGHT (lat-lon)}
 \begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
-\caption{Attributes description for 'SSHNOIBC'}
-\label{tab:table-SEA_SURFACE_HEIGHT_SSHNOIBC} \\ 
+\caption{SSHNOIBC from SEA\_SURFACE\_HEIGHT (lat-lon)}\label{tab:table-SEA_SURFACE_HEIGHT_SSHNOIBC} \\ 
 \hline \endhead \hline \endfoot
 \rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
 float32 & SSHNOIBC & Sea surface height anomaly without the inverted barometer (ib) correction & m \\ \hline
@@ -134,8 +130,8 @@ float32 & SSHNOIBC & Sea surface height anomaly without the inverted barometer (
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.55]{/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/general/files_general/version_specific/v4r4/output_and_granules/output/figures/figures_variables_latlon/Sea_Surface_Height/SSHNOIBC.png}
-\caption{dataset: SEA\_SURFACE\_HEIGHT, variable: SSHNOIBC}
+\includegraphics[scale=0.55]{/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/general/files_general/version_specific/v4r4/output_and_granules/output/figures/figures_variables_lat-lon/Sea_Surface_Height/SSHNOIBC.png}
+\caption{SSHNOIBC from SEA\_SURFACE\_HEIGHT (lat-lon)}
 \label{tab:table-SEA_SURFACE_HEIGHT_SSHNOIBC-Plot}
 \end{figure}
 \newpage

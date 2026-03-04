@@ -5,7 +5,10 @@
 \usepackage[table]{xcolor}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{tocloft}
-\setlength{\cfttabnumwidth}{2.5em}
+%\setlength{\cfttabnumwidth}{2.5em}
+%\setlength{\cftsubsecnumwidth}{2.5em}
+\setlength{\cfttabnumwidth}{3em}
+\setlength{\cftsubsecnumwidth}{3em}
 \usepackage{graphicx}
 
 % The following paths are relative to <base_dir>, which (is defined in/ is the directory containing) "a_step3_compile_latex.py"
@@ -25,8 +28,9 @@
 
 \pagebreak
 \section{Figures in this document}
-\par \vspace{0.5cm}
+%\par \vspace{0.5cm}
 \listoffigures
+\par \vspace{0.5cm}
 
 \section{Tables in this document}
 \listoftables
@@ -42,8 +46,8 @@
 
 \input{native_coords_table.tex}
 \input{native_variables_tables.tex}
-\input{latlon_coords_table.tex}
-\input{latlon_variables_tables.tex}
+\input{lat-lon_coords_table.tex}
+\input{lat-lon_variables_tables.tex}
 \input{1D_variables_tables.tex}
 
 \input{closing_statement.tex}

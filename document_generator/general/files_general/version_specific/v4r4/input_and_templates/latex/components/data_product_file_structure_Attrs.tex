@@ -1,4 +1,4 @@
-% NOTE: this file assumes that the user is processing data from all three types of grids (native, latlon, 1D) -
+% NOTE: this file assumes that the user is processing data from all three types of grids (native, lat-lon, 1D) -
 % there are no checks/conditionals determining for which types of grids for which the user has made tables.
 
 \pagebreak
@@ -44,14 +44,14 @@ The so-called non-dimension coordinates: i- are variables that (may) contain coo
 \input{coordinates_table.tex}
 
 \subsection*{Regular latitude/longitude grids}
-\par This is for the regular interpolated latlon grid of the ECCO V4r4 dataset geographic localization of each variabile. On such a projection, only two coordinate variables are requested and they are stored as vector arrays. Longitudes range from -180 to +180, corresponding to 180 degrees West to 180 degrees East. Latitudes range from -90 to +90, corresponding to 90 degrees South to 90 degrees North. See example of CDL display in the following table.
+\par This is for the regular interpolated lat-lon grid of the ECCO V4r4 dataset geographic localization of each variabile. On such a projection, only two coordinate variables are requested and they are stored as vector arrays. Longitudes range from -180 to +180, corresponding to 180 degrees West to 180 degrees East. Latitudes range from -90 to +90, corresponding to 90 degrees South to 90 degrees North. See example of CDL display in the following table.
 
 \subsection*{Non-regular latitude/longitude grids}
 \par ECCO V4r4 uses the Lat-Lon-Cap 90 (LLC90) grid, a native specialized global grid designed for ocean and sea-ice modeling. The LLC90 grid divides the globe into five faces, with dimensions: 1- [90x270], 2- [90x270], 3- [90x90], 4- [270x90], and 5- [270x90]. Each face consists of 90x90 tiles, hence the name LLC90. LLC90 grid combines a latitude-longitude grid between 70\textdegree S and 57\textdegree N with an Arctic "cap" in the northern hemisphere to handle polar regions effectively. The horizontal resolution varies spatially from about 22 km in high latitudes to 110 km in mid-latitudes. Redarding the vertical and horizontal resolutions, the grid has 50 vertical levels, with spacing increasing from 10 m near the surface to 457 m near the ocean bottom, which is set at a maximum depth of 6145 m. The Cartesian coordinates (x, y) are locally oriented within each tile, which may differ from traditional longitude-latitude directions. Diagnostic outputs include both native (UVEL, VVEL) and conventional (EVEL, NVEL) velocity components for ease of analysis. The datasets include geometric details such as cell areas, side lengths, rotation angles, bathymetry, and land/ocean masks. LLC90 grid geometric parameters are essential for accurate modeling and budget calculations. The LLC90 grid is particularly suited for global ocean circulation studies due to its efficient handling of polar regions and its variable resolution that balances computational efficiency with detail where needed.
 
 \pagebreak
-\subsection{Example of ECCO V4r4 netCDF latlon grid datasets}
-\input{example_latlon_table.tex}
+\subsection{Example of ECCO V4r4 netCDF lat-lon grid datasets}
+\input{example_lat-lon_table.tex}
 \pagebreak
 \subsection{Example of ECCO V4r4 netCDF native llc90 grid datasets}
 \input{example_native_table.tex}
