@@ -49,7 +49,7 @@ def create_parser():
         AWS S3 bucket/prefix (default: %(default)s).""")
     parser.add_argument('--postfix', default='_first_mid_last', help="""
         Identifying string to be appended to the task list file stem to form
-        output tasklist name(s) (i.e., for the default postfix,
+        output tasklist name(s) (default: %(default)s; for example,
         tasklist_abc.json -> tasklist_abc%(default)s.json).""")
     parser.add_argument('--keygen', help="""
         If tasklist or dest reference an S3 bucket and if running in an

@@ -99,7 +99,7 @@ class ECCOGrid(object):
                 self.task = task
             grid_loc = self.task['ecco_grid_loc']
 
-        if aws.ecco_aws.is_s3_uri(grid_loc):
+        if aws.utils.is_s3_uri(grid_loc):
             # retrieve ecco grid to temporary local storage:
             self.tmpdir = tempfile.TemporaryDirectory()
             self.grid_dir = self.tmpdir.name
