@@ -14,7 +14,7 @@ from . import cdf_plotter as cdf_plotter
 ## ----------------------------------------------------------------------------
 ## ---------------------- Extracting CDL For Examples -------------------------
 ## ----------------------------------------------------------------------------
-def fieldTable(config_dictionary, dataset:xr.Dataset, is_coord:bool, grid_type)->list[str]:
+def fieldTable(config_dictionary:dict, dataset:xr.Dataset, is_coord:bool, grid_type:str) -> list[str]:
 
     product_name = get_product_name(dataset)
     datavar_shortname, datavar_longname, datavar_units = get_coord_vars_in_dataset(dataset=dataset, isCoord=False)
@@ -45,21 +45,29 @@ def fieldTable(config_dictionary, dataset:xr.Dataset, is_coord:bool, grid_type)-
     return latex_lines
 
 
-def latex_example_netcdf(base_dir, config_dictionary, grid_type):
+def latex_example_netcdf(base_dir:str, config_dictionary:dict, grid_type:str) -> None:
 
     granule_directory = config_dictionary[f"variable_files_{grid_type}_dir"]
-
+    
+    # ---------------------------------------------------------------------------------------------------------------------------------
     # DO WE WANT MIN OR MAX NUMBER OF VARIABLES IN EXAMPLE?
     #example_granule = utils.get_a_file_with_min_num_vars(base_dir, granule_directory)    
-    example_granule = utils.get_a_file_with_max_num_vars(base_dir, granule_directory)    
+    #example_granule = utils.get_a_file_with_max_num_vars(base_dir, granule_directory)    
+    # ---------------------------------------------------------------------------------------------------------------------------------
+    
+
+    # Ian asked for example files to be hardcoded
+    example_granule = os.path.join(granule_directory, config_dictionary[f"example_granule_{grid_type}"])
+        
+
+
 
     dataset = xr.open_dataset(example_granule, decode_times=False, decode_cf=False, decode_coords=False, decode_timedelta=False)
     latex_lines = []
     latex_lines.append(r'\begin{longtable}{|p{\textwidth}|}')
     latex_lines.extend(config_dictionary[f"example_table_first_latex_lines_{grid_type}"])
-    #latex_lines.append(config_dictionary[f"longtable_headers_footers"])
-    #latex_lines.extend(config_dictionary[f"longtable_headers_footers"])
-    latex_lines.append(f'netcdf {grid_type} example \\\\')
+    latex_lines.append(f'netcdf {grid_type} example: {dataset.title} \\\\')
+    #latex_lines.append(f'netcdf {grid_type} example \\\\')
     latex_lines.append(r'dimensions \\')
     latex_lines.append(r'\hline')
     for dimension_name in dataset.sizes:
@@ -136,7 +144,7 @@ def latex_example_netcdf(base_dir, config_dictionary, grid_type):
 ## ----------------------------------------------------------------------------
 ## ---------------------- Extracting CDL For Datasets -------------------------
 ## ----------------------------------------------------------------------------
-def get_non_coordinate_vars(filename:str)->list[xr.DataArray]:
+def get_non_coordinate_vars(filename:str) -> list[xr.DataArray]:
     """
         Returns a list of the non-coordinate variables in the given NetCDF file.
         Parameters:
@@ -154,7 +162,7 @@ def get_non_coordinate_vars(filename:str)->list[xr.DataArray]:
     return data_array_list
 
 # BL: Some of the conditions in here feel sketchy to me!!!  (see the determination of whether a native variable is a coordinate variable!)
-def get_coordinate_vars(filename:str)->list[xr.DataArray]:
+def get_coordinate_vars(filename:str) -> list[xr.DataArray]:
     """
         Returns a list of the coordinate variables in the given NetCDF file.
         Parameters:
@@ -170,12 +178,14 @@ def get_coordinate_vars(filename:str)->list[xr.DataArray]:
     if dataset_type == 'native':
         for var in dataset.data_vars:
             var = dataset[var]
-            if 'tile' in var.dims and len(var.dims) > 2 and 'bnds' not in var.name:
+            if 'tile' in var.dims and 'bnds' not in var.name:
+            #if 'tile' in var.dims and len(var.dims) > 2 and 'bnds' not in var.name: # Why were they filtering out 1-D variables?
                 coordinate.append(var)
     else:
         for var in dataset.data_vars:
             var = dataset[var]
-            if len(var.dims) > 2:
+            #if len(var.dims) > 2:  # Why did I add this?  
+            if "bnds" not in var.name:
                 coordinate.append(var)
     #coordinate = sorted(coordinate)
     data_array_list = [dataset[field.name] for field in coordinate]
@@ -184,7 +194,7 @@ def get_coordinate_vars(filename:str)->list[xr.DataArray]:
 
 
 # BL: this is so annoying
-def extract_field_info(field:xr.DataArray)->dict[str, str]:
+def extract_field_info(field:xr.DataArray) -> dict[str, str]:
     """
     Extracts information from the given field.
     Parameters:
@@ -237,7 +247,7 @@ def extract_field_info(field:xr.DataArray)->dict[str, str]:
 
 
 
-def search_and_extract(granule_filename_truncated_stem:str, granule_directory:str, is_coord:bool=False)->tuple[list[xr.DataArray], xr.Dataset]:
+def search_and_extract(granule_filename_truncated_stem:str, granule_directory:str, is_coord:bool=False) -> tuple[list[xr.DataArray], xr.Dataset]:
     """
     Searches for a NetCDF file in the given directory that contains the specified substring
     in its name, and extracts information from it.
@@ -255,19 +265,19 @@ def search_and_extract(granule_filename_truncated_stem:str, granule_directory:st
         for file in files:
             if granule_filename_truncated_stem in file and file.endswith(".nc"):
                 filepath = os.path.join(root, file)
-                if not is_coord:
-                    data_array_list = get_non_coordinate_vars(filepath)
-                else:
+                if is_coord:
                     data_array_list = get_coordinate_vars(filepath)
+                else:
+                    data_array_list = get_non_coordinate_vars(filepath)
                 dataset = xr.open_dataset(filepath) # might DELETE THIS LINE
                 return data_array_list, dataset
 
-    raise ValueError(f"No NetCDF file containing '{granule_filename_truncated_stem}' found in granule_directory '{directory}'")
+    raise ValueError(f"No NetCDF file containing '{granule_filename_truncated_stem}' found in granule_directory '{granule_directory}'")
 
 
 
 
-def data_var_table(config_dictionary, field_name:str, attrs:dict, dataset_name:str, grid_type)->list[str]:
+def data_var_table(config_dictionary, field_name:str, attrs:dict, dataset_name:str, grid_type) -> list[str]:
     """
     Create a latex table of the data variable.
     Parameters: 
@@ -322,7 +332,7 @@ def data_var_table(config_dictionary, field_name:str, attrs:dict, dataset_name:s
 ########################################### Helper Functions #################################################
 ##############################################################################################################
 
-def get_product_name(dataset:xr.Dataset)->str:
+def get_product_name(dataset:xr.Dataset) -> str:
     """
     Returns the product name of the dataset.
     Parameters:
@@ -342,8 +352,7 @@ def get_product_name(dataset:xr.Dataset)->str:
     return product_name
 
 
-def get_coord_vars_in_dataset(dataset:xr.Dataset,isCoord:bool=False)->tuple[list[str],list[str],list[str]]:
-#def get_coord_vars_in_dataset(dataset:xr.Dataset,isCoord:bool=False)->tuple[str,str,str]:
+def get_coord_vars_in_dataset(dataset:xr.Dataset, isCoord:bool=False) -> tuple[list[str], list[str], list[str]]:
     """
     This function get coordinates, data variavles and their unit from the dataset field.
     input:-> dataset: dataset field in xarray dataset format
@@ -376,7 +385,7 @@ def get_coord_vars_in_dataset(dataset:xr.Dataset,isCoord:bool=False)->tuple[list
                 units_list.append('--none--')
     return shortnames_list, longnames_list, units_list
 
-def table_cellSize(field_var:list):
+def table_cellSize(field_var:list) -> tuple[float, float]:
     """
     this function return the proportion 'a' and 'b' of the textwidth to consider for the table.
     """
@@ -393,7 +402,7 @@ def table_cellSize(field_var:list):
 def global_attrs_for_ECCOnetCDF(jsonFileRef:str,
                                 GlobalAttrsCollect:str,
                                 tableCaption:str,
-                                latexFilename:str,saveTo:str):
+                                latexFilename:str,saveTo:str) -> None:
     """
     jsonFileRef: provide the json file that contain the reference attributes meta data.
     GlobalAttrsCollect: list of the attributes to include in the table of the latex file to be generated.
@@ -432,7 +441,7 @@ def global_attrs_for_ECCOnetCDF(jsonFileRef:str,
 
 
 
-def get_Global_or_CoordsDimsVarsList(netCDFpath:str,jsonFileName:str,saveTo:str):
+def get_Global_or_CoordsDimsVarsList(netCDFpath:str, jsonFileName:str, saveTo:str) -> None:
     """
     netCDFpath: path of the folder of a set of ECCO data sample: Gid and Geometry, Dataset and 1D data file. This is used and an exaple to extract the unique global attribute name across ECCO data netCDF files.
     jsonFileName: name of the json file to save the unique globale attributes name list.
@@ -449,7 +458,7 @@ def get_Global_or_CoordsDimsVarsList(netCDFpath:str,jsonFileName:str,saveTo:str)
 
 
 
-def data_products(base_dir, config_dictionary, granule_directory)->list:
+def data_products(base_dir:str, config_dictionary:dict, granule_directory:str, overwrite_switch:bool) -> list:
     
     """
     Generates a list of LaTeX lines for the Data Products grid_type of the report.
@@ -468,13 +477,13 @@ def data_products(base_dir, config_dictionary, granule_directory)->list:
 
     latex_lines = []
 
+    # some sketchiness here
     granule_type, grid_type = utils.get_granule_and_grid_types(granule_directory)
-    
+    is_coord = granule_type == "coordinate"
+  
     granule_document_section_title = config_dictionary["table_section_titles"][f"{granule_type}_{grid_type}"]
     granule_document_section_title= utils.sanitize(config_dictionary, granule_document_section_title)
     latex_lines.append(r'\section{'+ f'{granule_document_section_title}' + r'}')
-
-    is_coord = granule_type == "coordinate"
     
     json_groupings_filepath = os.path.join(base_dir, config_dictionary[f"groupings_{granule_type}_{grid_type}_json_file"])
     granule_directory = os.path.join(base_dir, config_dictionary[f"{granule_type}_files_{grid_type}_dir"])
@@ -489,11 +498,15 @@ def data_products(base_dir, config_dictionary, granule_directory)->list:
     for json_dictionary in list_of_json_dictionaries:
         granule_filename_truncated_stem = json_dictionary["filename"]
         granule_filename_truncated_stem_formatted = utils.sanitize(config_dictionary, granule_filename_truncated_stem)
-        latex_lines.append(fr'\subsection{{Overview  of {granule_filename_truncated_stem_formatted} ({grid_type})}}')
+        latex_lines.append(fr'\subsection{{{granule_filename_truncated_stem_formatted}}}')
+        #latex_lines.append(fr'\subsection{{{granule_filename_truncated_stem_formatted} ({grid_type})}}')
+        #latex_lines.append(fr'\subsection{{Overview  of {granule_filename_truncated_stem_formatted} ({grid_type})}}')
         
         #fr"\caption{{Overview for {granule_filename_truncated_stem_formatted} ({grid_type})}}"
-        
         #latex_lines.append(r'\subsection{'+ f'{grid_type}' + ' dataset ' + f'{granule_filename_truncated_stem_formatted}' + r'}')
+
+        latex_lines.append(fr"\subsubsection{{Overview}}")
+
         latex_lines.append(r'\newp')
 
         data_array_list, dataset = search_and_extract(granule_filename_truncated_stem, os.path.join(base_dir, granule_directory), is_coord)
@@ -517,19 +530,21 @@ def data_products(base_dir, config_dictionary, granule_directory)->list:
             variable_name = attributes_dictionary['Variable Name']
             variable_name_formatted = utils.sanitize(config_dictionary, variable_name)
             
+            #variable_descriptor_string = f"{variable_name_formatted}" 
             #variable_descriptor_string = f"dataset: {utils.sanitize(config_dictionary, granule_filename_truncated_stem)}, variable: {utils.sanitize(config_dictionary, variable_name)}" 
             
-            variable_descriptor_string = f"{variable_name_formatted} from {utils.sanitize(config_dictionary, granule_filename_truncated_stem)} ({grid_type})"
-            #variable_descriptor_string = f"dataset: {utils.sanitize(config_dictionary, granule_filename_truncated_stem)} from {variable_name_formatted} ({grid_type})"
+            variable_descriptor_string = f"{variable_name_formatted} ({grid_type})"
+            #variable_descriptor_string = f"{variable_name_formatted} from {utils.sanitize(config_dictionary, granule_filename_truncated_stem)} ({grid_type})"
+            ###variable_descriptor_string = f"dataset: {utils.sanitize(config_dictionary, granule_filename_truncated_stem)} from {variable_name_formatted} ({grid_type})"
 
             latex_lines.append(r'\pagebreak')
-            latex_lines.append(fr'\subsection{{{variable_descriptor_string}}}')
-            ###latex_lines.append(fr'\subsubsection{{variable: {variable_name_formatted}}}')
-            ###latex_lines.append(fr'\subsubsection{{{grid_type} variable: {variable_name_formatted}}}')
+            latex_lines.append(fr'\subsubsection{{{variable_descriptor_string}}}')
+            #latex_lines.append(fr'\subsection{{{variable_descriptor_string}}}')
             dataVarTable = data_var_table(config_dictionary, variable_name, attributes_dictionary, granule_filename_truncated_stem, grid_type)
             latex_lines.extend(dataVarTable)
 
-            dataVarPlot = cdf_plotter.data_var_plot(config_dictionary, dataset, dataset[variable_name], image_directory)
+            dataVarPlot = cdf_plotter.data_var_plot(config_dictionary, dataset, dataset[variable_name], image_directory, overwrite_switch)
+            #dataVarPlot = cdf_plotter.data_var_plot(config_dictionary, dataset, dataset[variable_name], image_directory)
             #dataVarPlot = cdf_plotter.data_var_plot(config_dictionary["ecco_version_string"], dataset, dataset[variable_name], image_directory, config_dictionary['overwrite_switch'], config_dictionary['thumbnail_size'])
             latex_lines.append(r'\begin{figure}[H]')
             latex_lines.append(r'\centering')

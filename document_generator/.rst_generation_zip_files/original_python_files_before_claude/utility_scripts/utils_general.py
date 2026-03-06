@@ -11,19 +11,30 @@ import requests
 from PIL import Image
 
 
-def write_latex_lines_to_file(latex_lines, output_file):
+def write_latex_lines_to_file(latex_lines:list, output_file:str) -> None:
+    """
+    Determines the number occurrances of the string "long_name" in the attribute strings of a netCDF file,
+    which is assumed to be the number of variables (coordinate and data) represented in a file.  
+    Returns a path to a netCDF file containing the minimum number of variables found in a file.
+
+    Parameters:
+        string (nc_dir): The directory in which to search
+
+    Returns:
+        str: A path to a file containing the minimum number of variables found across all netCDF files in <nc_dir>
+    """
     Path(output_file).parent.mkdir(parents=True, exist_ok=True)
     with open(output_file, 'w') as output_file:
         output_file.write('\n'.join(latex_lines))
 
-def append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines_list):
+def append_hanging_indentation_commands_cm_latex(config_dictionary:dict, num_tabs:int, latex_lines_list:list) -> list[str]:
     latex_lines_list.append(sanitize_with_math(config_dictionary, f"\hangindent={(num_tabs + 1) * config_dictionary['tab_width_cm']}cm"))
     latex_lines_list.append(r"\hangafter1")
     #latex_lines_list.append(r"\hangafter1\\")
     return latex_lines_list
 
 
-def download_granules(base_dir, config_dictionary):
+def download_granules(base_dir:str, config_dictionary:dict) -> None:
 
     granule_list_filepath = os.path.join(base_dir, config_dictionary['granules_url_list_file_relative'])
     
@@ -82,7 +93,7 @@ def download_granules(base_dir, config_dictionary):
 
 
 
-def get_a_file_with_min_num_vars(base_dir, nc_dir):
+def get_a_file_with_min_num_vars(base_dir:str, nc_dir:str) -> str:
     """
     Determines the number occurrances of the string "long_name" in the attribute strings of a netCDF file,
     which is assumed to be the number of variables (coordinate and data) represented in a file.  
@@ -118,7 +129,7 @@ def get_a_file_with_min_num_vars(base_dir, nc_dir):
     return nc_files[num_vars_per_file_list.index(num_vars_min)]
 
 
-def get_a_file_with_max_num_vars(base_dir, nc_dir):
+def get_a_file_with_max_num_vars(base_dir:str, nc_dir:str) -> str:
     """
     Determines the number occurrances of the string "long_name" in the attribute strings of a netCDF file,
     which is assumed to be the number of variables (coordinate and data) represented in a file.  
@@ -155,7 +166,7 @@ def get_a_file_with_max_num_vars(base_dir, nc_dir):
     return nc_files[num_vars_per_file_list.index(num_vars_max)]
 
 
-def sanitize(config_dictionary, string:str)->str:
+def sanitize(config_dictionary:dict, string:str) -> str:
     """
     Sanitizes a string for use in LaTeX by replacing any reserved characters
     with their LaTeX equivalent.
@@ -194,7 +205,7 @@ def sanitize(config_dictionary, string:str)->str:
 
 
 
-def sanitize_with_math(config_dictionary, string:str)->str:
+def sanitize_with_math(config_dictionary:dict, string:str) -> str:
     """
     Sanitizes a string for use in LaTeX by replacing any reserved characters
     with their LaTeX equivalent, except within math environments (delimited by $).
@@ -239,7 +250,7 @@ def sanitize_with_math(config_dictionary, string:str)->str:
     # Reassemble the string
     return '$'.join(parts)
 
-def sanitize_with_url(config_dictionary, string:str)->str:
+def sanitize_with_url(config_dictionary:dict, string:str) -> str:
     """
     Sanitizes a string for use in LaTeX by replacing any reserved characters
     with their LaTeX equivalent, ignoring parts between \\url{ and }.
@@ -290,7 +301,7 @@ def sanitize_with_url(config_dictionary, string:str)->str:
 
 
 
-def get_substring(input_string:str)->str:
+def get_substring(input_string:str) -> str:
     """
         Returns the substring between the first pair of parentheses in the given string.
         Parameters:
@@ -304,7 +315,7 @@ def get_substring(input_string:str)->str:
 
 
 
-def add_to_line(line:str, before:str, after:str)->str:
+def add_to_line(line:str, before:str, after:str) -> str:
     """
         Returns the line with the before string replaced with the after string.
         Parameters:
@@ -324,7 +335,7 @@ def add_to_line(line:str, before:str, after:str)->str:
 
 
 # Function takes in a datasettitle and returns a string of the dataset title
-def get_ds_title(ds:xr.Dataset)->str:
+def get_ds_title(ds:xr.Dataset) -> str:
     """
         Returns the dataset title of the given dataset.
         Parameters:
@@ -344,30 +355,8 @@ def get_ds_title(ds:xr.Dataset)->str:
     return title[:-1]
         
 
-def get_granule_and_grid_types(granule_directory):
+def get_granule_and_grid_types(granule_directory:dict) -> tuple[str, str]:
     relevant_strings_list = granule_directory.split("/")[-2:]
     return (relevant_strings_list[0].split("_")[0], relevant_strings_list[1].split("_")[-1]) 
-
-
-def generate_thumbnail(input_path, output_path, size):
-    """
-    Generates a thumbnail from an image file.
-
-    :param input_path: Path to the source image file.
-    :param output_path: Path where the thumbnail will be saved.
-    :param size: A tuple (width, height) for the maximum thumbnail dimensions.
-    """
-    
-    try:
-        img = Image.open(input_path)
-
-        img.thumbnail(size)
-
-        img.save(output_path, "JPEG")
-        print(f"Thumbnail saved to {output_path}")
-
-    except IOError:
-        print(f"Cannot create thumbnail for {input_path}")
-
 
 

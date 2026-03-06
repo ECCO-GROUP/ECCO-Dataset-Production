@@ -9,7 +9,7 @@ from . import utils_json as utils_json
 from . import cdf_extract as cdf_extract
 
 
-def write_data_attributes_tables(base_dir, config_dictionary):
+def write_data_attributes_tables(base_dir:str, config_dictionary:dict, overwrite_switch:bool) -> None:
     """
         This function writes the data product tables to the latex document.
     """
@@ -25,15 +25,15 @@ def write_data_attributes_tables(base_dir, config_dictionary):
         cdf_extract.latex_example_netcdf(base_dir, config_dictionary, grid_type)
 
 
-def write_datasets(base_dir, config_dictionary):
+def write_datasets(base_dir:str, config_dictionary:dict, overwrite_switch:bool) -> None:
 
-    # The following line depends on the project file tree structure
+    # IMPORTANT: The following line depends on the project file tree structure
     granules_parent_directory = os.path.join(base_dir, "/".join(config_dictionary["coordinate_files_native_dir"].split("/")[:-2]))
     granule_directories = [root for root, dirs, files in os.walk(granules_parent_directory) if not dirs]
 
     for granule_directory in granule_directories:
         print(f"writing latex table and figure files for granules in the '{'/'.join(granule_directory.split('/')[-2:])}' directory" )
-        cdf_extract.data_products(base_dir, config_dictionary, granule_directory)
+        cdf_extract.data_products(base_dir, config_dictionary, granule_directory, overwrite_switch)
 
 
 if __name__ == '__main__':

@@ -1,7 +1,9 @@
 # This is the static configuration file for the ECCO document generator product; it should be provided to the user with each ECCO release
 # All paths are relative to the base document generator directory
 
-thumbnail_size: 128
+thumbnail_size: 512
+#thumbnail_size: 256
+#thumbnail_size: 128
 thumbnail_path_modifier_string: _thumbnail
 
 tab_char: \t
@@ -71,6 +73,10 @@ coordinate_table_lat-lon_tex_file: general/files_general/version_specific/v4r4/o
 variable_table_native_tex_file: general/files_general/version_specific/v4r4/output_and_granules/output/latex/native_variables_tables.tex
 variable_table_lat-lon_tex_file: general/files_general/version_specific/v4r4/output_and_granules/output/latex/lat-lon_variables_tables.tex
 variable_table_1D_tex_file: general/files_general/version_specific/v4r4/output_and_granules/output/latex/1D_variables_tables.tex
+
+example_granule_1D: GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r4_1D.nc
+example_granule_lat-lon: SEA_SURFACE_HEIGHT_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+example_granule_native: OCEAN_TEMPERATURE_SALINITY_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
 
 
 table_section_titles:

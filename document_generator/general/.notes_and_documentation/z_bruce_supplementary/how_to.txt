@@ -233,6 +233,11 @@ find $from -type f -name "*.txt" -exec cp {} $to \; -print
 # Zip all python files in all subdirectories starting at a given directory:
 find /path/to/directory -name "*.py" -print | zip python_files -@
 
+# Same, but ignore the "./docs" dir
+find . -path "./docs" -prune -o -name "*.py" -print | zip python_files -@
+# or
+find . -type d -name "docs" -prune -o -name "*.py" -print | zip python_files -@
+
 # --------------------------------------------------------------------------------
 
 

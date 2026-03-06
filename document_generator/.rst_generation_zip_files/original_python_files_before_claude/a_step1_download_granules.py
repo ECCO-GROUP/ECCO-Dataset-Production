@@ -1,8 +1,8 @@
 import os
 import sys
-import yaml
 from pathlib import Path
-import general.utility_scripts.latex_outline as latex_outline
+import general.utility_scripts.utils_general as utils_general
+import yaml
 
 base_dir = str(Path(__file__).parent)
 sys.path.append(base_dir)
@@ -13,10 +13,10 @@ config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator
 with open(config_file,'r') as stream:
     config_dictionary = yaml.safe_load(stream)
 
-def main():
-    print("\nGenerating supporting latex table and image files:\n")
-    latex_outline.write_data_attributes_tables(base_dir, config_dictionary)
-    latex_outline.write_datasets(base_dir, config_dictionary)
+def main() -> None:
+    print("\ndownloading granules:\n")
+    utils_general.download_granules(base_dir, config_dictionary)
     print()
+
 if __name__ == "__main__":
     main()

@@ -24,6 +24,8 @@
 }
 \urlstyle{same}
 
+%\thispagestyle{empty}
+
 \usepackage{ltablex} % combo of longtable and tabularx
 \usepackage{chngcntr}
 %\usepackage{tabularx}
@@ -45,14 +47,19 @@
 \fancypagestyle{myfancy}{
 \fancyhf{}
 %% OK: the line below specify the note on top-right corner of each page of the document
-\fancyhead[R]{\small ECCO V4r4 Dataset Catalog and Variable Compendium\\
-ECCO version 4 release 4}
+\fancyhead[R]{\small ECCO V4r4 Dataset Catalog and Variable Compendium\\}
+%ECCO version 4 release 4}
+\fancyfoot[R]{\thepage}
+}
+%Last saved: \today{} \currenttime, \\ \Large{-- \thepage{} --}}
+
 %% OK: the line below specify the note on bottom-center of each page of the document
-\fancyfoot[C]{\small ECCO V4r4 Dataset Catalog and Variable Compendium \\
-Last saved: \today{} \currenttime, \\ \Large{-- \thepage{} --}}
+%\fancyfoot[C]{\small ECCO V4r4 Dataset Catalog and Variable Compendium \\
+%Last saved: \today{} \currenttime, \\ \Large{-- \thepage{} --}}
 % Last saved: \today{} \currenttime, \\ \Large{-- \thepage{} --}}
 %\thepage{} -- Last saved: \today{} \currenttime \\ -- \thepage{} --}
-}
+%}
+
 
 % Use the default page style for the rest of the document
 \pagestyle{myfancy}

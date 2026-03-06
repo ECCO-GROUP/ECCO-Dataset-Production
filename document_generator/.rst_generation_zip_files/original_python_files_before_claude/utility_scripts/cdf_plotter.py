@@ -41,8 +41,7 @@ import ecco_v4_py as ecco
 
 
 # This currently does NOT have an option to re-plot existing figures
-#def data_var_plot(ecco_version_string, dataset:xr.Dataset, data_array:xr.DataArray, image_directory:str, overwrite_switch:bool=False)->str:
-def data_var_plot (config_dictionary, dataset, data_array, image_directory):
+def data_var_plot (config_dictionary:dict, dataset:xr.Dataset, data_array:xr.DataArray, image_directory:str, overwrite_switch:bool) -> str:
 
 
             #dataVarPlot = cdf_plotter.data_var_plot(config_dictionary["ecco_version_string"], dataset, dataset[variable_name], image_directory, config_dictionary['overwrite_switch'], config_dictionary['thumbnail_size'])
@@ -73,7 +72,8 @@ def data_var_plot (config_dictionary, dataset, data_array, image_directory):
     
     figure_path_Path_object = Path(figure_path)
 
-    if not figure_path_Path_object.exists():
+    if overwrite_switch:
+    #if not figure_path_Path_object.exists():
 
         figure_path_Path_object.parent.mkdir(parents=True, exist_ok=True)
         
@@ -82,7 +82,7 @@ def data_var_plot (config_dictionary, dataset, data_array, image_directory):
         if 'native' in dataset.attrs['product_name']:
             plot_native(dataset, data_array, figure_path)
             #plot_native(dataset, data_array, image_directory)
-        elif 'latlon' in dataset.attrs['product_name']:
+        elif 'lat-lon' in dataset.attrs['product_name']:
             plot_latlon(dataset, data_array, figure_path)
             #plot_latlon(dataset, data_array, image_directory)
         elif '1D' in dataset.attrs['product_name']:
@@ -110,8 +110,7 @@ def data_var_plot (config_dictionary, dataset, data_array, image_directory):
 
 
 
-def plot_native(dataset:xr.Dataset, field:xr.DataArray, figure_path:str)->None:
-#def plot_native(dataset:xr.Dataset, field:xr.DataArray, imageDirectory:str)->None:
+def plot_native(dataset:xr.Dataset, field:xr.DataArray, figure_path:str) -> None:
     """
     Create a plot in native projection.
 
@@ -277,7 +276,10 @@ def plot_native(dataset:xr.Dataset, field:xr.DataArray, figure_path:str)->None:
         if 'time' in field.dims:
             # fig.suptitle(f'{field.name}: {field.attrs["long_name"]}\n{str(field.time.values[0])[:10]}\n ', wrap=True, fontsize='x-large')
             fig.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.5,y=.968,weight='bold', fontsize=16)
-            fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
+            if len(field.dims) <= 4:
+                fig.text(s=field.attrs["long_name"] + "\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
+            else:
+                fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
             plt.figtext(0.5, -0.02,
                             s=product_name,
                             wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+str(field.time.values[0])[:10]+',\n '
@@ -285,7 +287,10 @@ def plot_native(dataset:xr.Dataset, field:xr.DataArray, figure_path:str)->None:
         else:
             # fig.suptitle(f'{field.name}: \n{field.attrs["long_name"]}\n ', wrap=True, fontsize='x-large')
             fig.suptitle(str(field.name),ha='center',x=.5,y=.968,weight='bold', fontsize=16)
-            fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
+            if len(field.dims) <= 4:
+                fig.text(s=field.attrs["long_name"] + "\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
+            else:
+                fig.text(s=field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
             plt.figtext(0.5, -0.02,
                         s=product_name,
                         wrap=True,horizontalalignment='center', fontsize=11)#'Example fied: \n '+
@@ -297,7 +302,7 @@ def plot_native(dataset:xr.Dataset, field:xr.DataArray, figure_path:str)->None:
 
 
 
-def plot_latlon(dataset:xr.Dataset, field:xr.DataArray, figure_path:str)->None:
+def plot_latlon(dataset:xr.Dataset, field:xr.DataArray, figure_path:str) -> None:
     """
     Create a plot in latlon projection.
 
@@ -408,7 +413,10 @@ def plot_latlon(dataset:xr.Dataset, field:xr.DataArray, figure_path:str)->None:
         if 'time' in field.dims:
             # plt.suptitle(f'{field.name}: {str(field.time.values[0])[:10]}\n{field.attrs["long_name"]}', wrap=True, fontsize='x-large')
             plt.suptitle(str(field.name)+" (Daily Mean)",ha='center',x=.45,y=.91,weight='bold', fontsize=16)
-            plt.title(field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", wrap=True, fontsize=12)
+            if len(field.dims) <= 4:
+                plt.title(field.attrs["long_name"]+"\n", wrap=True, fontsize=12)
+            else:
+                plt.title(field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", wrap=True, fontsize=12)
             plt.figtext(0.45, 0.1,
                         s=str(field.time.values[0])[:10]+',\n '+product_name,
                         wrap=True,horizontalalignment='center', fontsize=11)#'Example fied '+
@@ -416,7 +424,10 @@ def plot_latlon(dataset:xr.Dataset, field:xr.DataArray, figure_path:str)->None:
             # plt.suptitle(f'{field.name}: \n{field.attrs["long_name"]}', wrap=True, fontsize='x-large')
             plt.suptitle(str(field.name),ha='center',x=.45,y=.91,weight='bold', fontsize=16)
             # plt.title(field.attrs["long_name"]+"\n", wrap=True, fontsize=12)
-            plt.title(field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", wrap=True, fontsize=12)
+            if len(field.dims) <= 4:
+                plt.title(field.attrs["long_name"]+"\n", wrap=True, fontsize=12)
+            else:
+                plt.title(field.attrs["long_name"]+"\n (vertical level = "+str(verti_level)+")", wrap=True, fontsize=12)
             plt.figtext(0.45, 0.1,
                         s=product_name,
                         wrap=True,horizontalalignment='center', fontsize=11)#'Example fied: \n '+
@@ -427,7 +438,7 @@ def plot_latlon(dataset:xr.Dataset, field:xr.DataArray, figure_path:str)->None:
 
 
 
-def plot_oneD(dataset:xr.Dataset, field:xr.DataArray, figure_path:str)->None:
+def plot_oneD(dataset:xr.Dataset, field:xr.DataArray, figure_path:str) -> None:
     """
     Create a plot in 1D projection.
 
@@ -459,7 +470,7 @@ def plot_oneD(dataset:xr.Dataset, field:xr.DataArray, figure_path:str)->None:
 
 
 
-def plot_datasetPicEg(dataset:xr.Dataset,save_to:str):
+def plot_datasetPicEg(dataset:xr.Dataset,save_to:str) -> None:
     Dims_box = list(dataset.dims)
     Var_box  = list(dataset.data_vars)
     # Var selection
@@ -509,7 +520,10 @@ def plot_datasetPicEg(dataset:xr.Dataset,save_to:str):
 ############################################################################################################
 #                                   Helper functions
 ############################################################################################################
-def even_cax(cmin:float, cmax:float, fac:float=1.0)->tuple[float, float]:
+
+# Are these really floats being returned, or are the integers?`
+
+def even_cax(cmin:float, cmax:float, fac:float=1.0) -> tuple[float, float]:
     """
     Make the color axis symmetric about zero.
     Parameters:
@@ -527,9 +541,10 @@ def even_cax(cmin:float, cmax:float, fac:float=1.0)->tuple[float, float]:
     cmax =  tmp*fac
     return cmin, cmax
 
+# Are these really floats being returned, or are the integers?`
 def cal_cmin_cmax(cmap:matplotlib.colors.LinearSegmentedColormap,
                   cmin:float, cmax:float,
-                  shortname_tmp:str, product_type:str):
+                  shortname_tmp:str, product_type:str) -> tuple[matplotlib.colors.LinearSegmentedColormap, float, float]:
         """
         Create a plot in native projection.
 
@@ -592,7 +607,8 @@ def cal_cmin_cmax(cmap:matplotlib.colors.LinearSegmentedColormap,
 
 
 
-def compute_cmin_cmax(data, factor=1.5):
+# Are these really floats being returned, or are the integers?`
+def compute_cmin_cmax(data, factor=1.5) -> tuple[float, float]:
     """
     Compute cmin and cmax values (color range) for visualization based on IQR method.
 
@@ -683,10 +699,10 @@ if __name__ == '__main__':
     # find file type
     if 'native' in file:
         type = 'native'
-    elif 'latlon' in file:
-        type = 'latlon'
+    elif 'lat-lon' in file:
+        type = 'lat-lon'
     else:
-        type = 'oneD'
+        type = '1D'
 
     ##print(fields)
     for fi, f in enumerate(fields):

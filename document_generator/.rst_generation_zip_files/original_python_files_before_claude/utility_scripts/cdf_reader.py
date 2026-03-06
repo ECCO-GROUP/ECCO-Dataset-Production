@@ -3,13 +3,13 @@ import utils as u
 import subprocess
 import re
 
-def get_non_coord_vars(ds_grid : xa.Dataset)-> dict:
+def get_non_coord_vars(ds_grid:xa.Dataset) -> dict:
     """Returns a dictionary of non-coordinate variables of the Dataset"""
     non_coord_vars = {key: value for key, value in ds_grid.variables.items() if key not in ds_grid.coords}
     return non_coord_vars
 
 
-def readVarAttr(varName: str, var : xa.Variable) -> dict:
+def readVarAttr(varName:str, var:xa.Variable) -> dict:
     """
     Read a netCDF file and extract variables.
 
@@ -37,7 +37,7 @@ def readVarAttr(varName: str, var : xa.Variable) -> dict:
     return d
 
 
-def readAllVarAttrs(ds_grid : xa.Dataset) -> list:
+def readAllVarAttrs(ds_grid:xa.Dataset) -> list:
     """
     Read a netCDF file and extract variables.
 
@@ -63,7 +63,7 @@ def readAllVarAttrs(ds_grid : xa.Dataset) -> list:
 # All of below were made for the grouping tasks in the native_sets.py, 1D.py, and latlong.py file
 #-------------------------------------------------------------------------------------------------
 
-def process_dict_items(data: dict, sanitation_func) -> list:
+def process_dict_items(data:dict, sanitation_func) -> list:
     """
     Process the items of a dictionary using a sanitation function.
 
@@ -134,7 +134,7 @@ def data_var_table(fieldName, da:dict, ds_name:str)->list:
 
 
 
-def compute_ds_dict(varName: str, var : xa.DataArray) -> dict:
+def compute_ds_dict(varName:str, var:xa.DataArray) -> dict:
     """
     Read a netCDF imported xArray DataArray and extract variables and their attributes.
 
@@ -168,7 +168,7 @@ def compute_ds_dict(varName: str, var : xa.DataArray) -> dict:
 
 
 
-def read_data_vars(ds : xa.Dataset) -> dict:
+def read_data_vars(ds:xa.Dataset) -> dict:
     """
     Reads an xArray Dataset and produces a dict of the data variables / attributes from each DataArray in the Dataset.
 
@@ -191,7 +191,7 @@ def read_data_vars(ds : xa.Dataset) -> dict:
 #----------------------------------------------------------------------------------------
 # Generate example CDL description
 #----------------------------------------------------------------------------------------
-def generate_CDL(original_nc_path : str, new_nc_path : str) -> str:
+def generate_CDL(original_nc_path:str, new_nc_path:str) -> str:
     """
     Generate a CDL description of a netCDF file.
     """
@@ -211,7 +211,7 @@ def generate_CDL(original_nc_path : str, new_nc_path : str) -> str:
 
 
 
-def cdl_to_latex(cdl_string, name : str = "example"):
+def cdl_to_latex(cdl_string, name:str = "example"):
     lines = cdl_string.split('\n')
 
     latex_lines = [r'\begin{longtable}{|p{\textwidth}|}', 
