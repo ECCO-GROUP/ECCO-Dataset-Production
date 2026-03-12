@@ -27,7 +27,7 @@ def create_parser():
         (Path and) filename of ECCO Configurations groupings json file from
         which list of production job files will be generated (e.g.,
         './ECCO-v4-Configurations/ECCOv4 Release 5/metadata/groupings_for_latlon_datasets.json')""")
-    parser.add_argument('--output_dir', default="'.'", help="""
+    parser.add_argument('--output_dir', default=".", help="""
         Directory to which list of production job files will be written.
         output_dir will be created if it does not exist (default:
         %(default)s).""")

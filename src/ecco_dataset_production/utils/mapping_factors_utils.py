@@ -282,6 +282,9 @@ def create_land_mask(mapping_factors_dir,
                                                              mapping_factors_dir, 
                                                              'all')
 
+        if status != 'SUCCESS':
+            raise RuntimeError(status)
+
         source_indices_within_target_radius_i, nearest_source_index_to_target_index_i = grid_mappings_all
 
         if status != 'SUCCESS':
@@ -360,9 +363,9 @@ def create_sparse_matrix(
             
             # get the land mask for level k
             status, land_mask = gen_netcdf_utils.get_land_mask(
-#               mapping_factors_dir,
-                product_generation_config, k
-#               extra_prints=extra_prints)
+                mapping_factors_dir,
+                product_generation_config,
+                k=k
             )
             if status != 'SUCCESS':
                 # stick with this for now (TODO: Pythonic mods to get_land_mask):

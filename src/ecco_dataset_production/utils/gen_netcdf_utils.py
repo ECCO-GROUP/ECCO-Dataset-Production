@@ -291,7 +291,7 @@ def delete_files(data_file_paths,
 # GET LAND MASK
 # =================================================================================================
 def get_land_mask(
-    #mapping_factors_dir,
+    mapping_factors_dir,
     product_generation_config, k=0
     #extra_prints=False):
     ):
@@ -316,7 +316,7 @@ def get_land_mask(
     land_mask_ll = []
 
     # check to see if land mask has already been calculated:
-    land_mask_fdir = Path(product_generation_config['land_mask_dir'])
+    land_mask_fdir = Path(product_generation_config['land_mask_dir']) if 'land_mask_dir' in product_generation_config else Path(mapping_factors_dir) / 'land_mask'
     #land_mask_fdir = Path(mapping_factors_dir) / 'land_mask'
     land_mask_fname = ''
     for lm_file in os.listdir(land_mask_fdir):

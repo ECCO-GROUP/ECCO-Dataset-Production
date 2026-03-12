@@ -44,7 +44,7 @@ def create_parser():
     parser.add_argument('--workingdir', default='.', help="""
         If any configuration path data are unassigned, --workingdir will be used
         to set default path root values (default: '%(default)s')""")
-    parser.add_argument('--dims', nargs='+', help="""
+    parser.add_argument('dims', nargs='+', default=['2', '3'], help="""
         Dimension(s) of mapping factors to be generated, e.g., --dims 2 3 if
         both two- and three-dimensional mapping factors are to be created.""")
     parser.add_argument('-l','--log', dest='log_level',
@@ -88,7 +88,7 @@ def create_factors( cfgfile=None, workingdir=None, dims=None, log_level=None):
 
     log.info('Initializing configuration parameters...')
     cfg = configuration.ECCODatasetProductionConfig(cfgfile=cfgfile)
-    cfg.set_default_paths(workingdir)
+    #cfg.set_default_paths(workingdir)
     log.info('Configuration key value pairs:')
     for k,v in cfg.items():
         log.info('%s: %s', k, v)

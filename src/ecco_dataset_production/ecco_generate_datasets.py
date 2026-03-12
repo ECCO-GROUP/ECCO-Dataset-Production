@@ -494,7 +494,7 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
     encoding = var_encoding | coord_encoding
 
     # merge gcmd keywords:
-    common_gcmd_keywords = dataset.keywords.split(',')
+    common_gcmd_keywords = dataset.keywords.split(',') if 'keywords' in dataset.attrs else []
     gcmd_keywords = sorted(list(set(grouping_gcmd_keywords+common_gcmd_keywords)))  # as list
     gcmd_keywords = ', '.join(gcmd_keywords)                                        # as single cs string
     dataset.attrs['keywords'] = gcmd_keywords
@@ -651,6 +651,7 @@ def generate_datasets( tasklist, log_level=None, **kwargs):
                 # own grid/factors/metadata instances; just take hard exit:
                 errmsg = 'Could not create shared ECCO resources'
                 log.error(errmsg)
+                log.exception(e)
                 raise SystemExit(e)
 
         try:
@@ -662,4 +663,4 @@ def generate_datasets( tasklist, log_level=None, **kwargs):
         except Exception as e:
             # just log the error and continue
             log.error('Error encountered during generation of %s: %s', task['granule'], e)
-
+            log.exception(e)
