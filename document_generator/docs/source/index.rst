@@ -6,13 +6,14 @@
 Ecco Document Generator documentation
 =====================================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+.. Add your content using ``reStructuredText`` syntax. See the
+.. `reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
+.. documentation for details.
 
+Here you'll find documentation of the python code used to generate ECCO compendium documents.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-    document_generator
+   document_generator
