@@ -1,0 +1,244 @@
+\section{Lat-Lon Dataset Groupings}
+\subsection{OCEAN\_BOTTOM\_PRESSURE}
+\subsubsection{Overview}
+\newp
+This dataset provides 2D fields of ocean bottom pressure interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution.
+\\\\
+Note: Ocean bottom pressure given in equivalent water thickness excluding (OBP) and including (OBPGMAP) the contribution from global mean atmospheric pressure.
+\\
+\begin{longtable}{|m{0.15\textwidth}|m{0.64\textwidth}|m{0.12\textwidth}|}
+\caption{Coordinates and variables from OCEAN\_BOTTOM\_PRESSURE (lat-lon)}
+\label{tab:table-<xarray.Dataset> Size: 2MB
+Dimensions:         (time: 1, latitude: 360, longitude: 720, nv: 2)
+Coordinates:
+  * time            (time) datetime64[ns] 8B 2017-12-29T12:00:00
+  * latitude        (latitude) float32 1kB -89.75 -89.25 -88.75 ... 89.25 89.75
+  * longitude       (longitude) float32 3kB -179.8 -179.2 -178.8 ... 179.2 179.8
+    time_bnds       (time, nv) datetime64[ns] 16B ...
+    latitude_bnds   (latitude, nv) float32 3kB ...
+    longitude_bnds  (longitude, nv) float32 6kB ...
+Dimensions without coordinates: nv
+Data variables:
+    OBP             (time, latitude, longitude) float32 1MB ...
+    OBPGMAP         (time, latitude, longitude) float32 1MB ...
+Attributes: (12/57)
+    acknowledgement:              This research was carried out by the Jet Pr...
+    author:                       Ian Fenty and Ou Wang
+    cdm_data_type:                Grid
+    comment:                      Fields provided on a regular lat-lon grid. ...
+    Conventions:                  CF-1.8, ACDD-1.3
+    coordinates_comment:          Note: the global 'coordinates' attribute de...
+    ...                           ...
+    time_coverage_duration:       P1D
+    time_coverage_end:            2017-12-30T00:00:00
+    time_coverage_resolution:     P1D
+    time_coverage_start:          2017-12-29T00:00:00
+    title:                        ECCO Ocean Bottom Pressure - Daily Mean 0.5...
+    uuid:                         4bfbc7be-404b-11eb-b3f5-0cc47a3f7e1d-fields} \\ 
+\hline \endfirsthead \endhead \endfoot \hline \endlastfoot
+\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Coordinates}} & \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} & \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline
+time &Center time of averaging period &--none--  \\ \hline
+latitude &Latitude at grid cell center &degrees\_north  \\ \hline
+longitude &Longitude at grid cell center &degrees\_east  \\ \hline
+time\_bnds &Time bounds of averaging period &--none--  \\ \hline
+latitude\_bnds &Latitude bounds grid cells &--none--  \\ \hline
+longitude\_bnds &Longitude bounds grid cells &--none--  \\ \hline
+\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Variables}} & \multicolumn{1}{|c|}{\textbf{Description of data variables}} & \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline
+OBP &Ocean bottom pressure given as equivalent water thickness &m  \\ \hline
+OBPGMAP &Ocean bottom pressure given as equivalent water thickness, includes global mean atmospheric pressure &m  \\ \hline
+\end{longtable}
+
+\newp
+\pagebreak
+\subsubsection{OBP (lat-lon)}
+\begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
+\caption{OBP from OCEAN\_BOTTOM\_PRESSURE (lat-lon)}\label{tab:table-OCEAN_BOTTOM_PRESSURE_OBP} \\ 
+\hline \endhead \hline \endfoot
+\rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
+float32 & OBP & Ocean bottom pressure given as equivalent water thickness & m \\ \hline
+\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.95\textwidth}{\vspace*{0.25cm} \footnotesize{float32 OBP(time, latitude, longitude)\\\
+\hspace*{0.5cm}OBP: \_FillValue = 9.96921e+36\\\
+\hspace*{0.5cm}OBP: coordinates = time\\\
+\hspace*{0.5cm}OBP: coverage\_content\_type = modelResult\\\
+\hspace*{0.5cm}OBP: long\_name = Ocean bottom pressure given as equivalent water thickness\\\
+\hspace*{0.5cm}OBP: units = m\\\
+\hspace*{0.5cm}OBP: valid\_max = 72.1243667602539\\\
+\hspace*{0.5cm}OBP: valid\_min = -2.544442892074585\\\
+}}}}} \\ \hline
+\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Obp excludes the contribution from global mean atmospheric pressure and is therefore suitable for comparisons with grace data products. obp is calculated as follows. first, we calculate ocean hydrostatic bottom pressure anomaly, phibot, with phibot = p\_b/rhoconst - gh(t), where p\_b = model ocean hydrostatic bottom pressure, rhoconst = reference density (1029 kg m-3), g is acceleration due to gravity (9.81 m s-2), and h(t) is model depth at time t. then, obp = phibot/g + corrections for i) global mean steric sea level changes related to density changes in the boussinesq volume-conserving model (greatbatch correction, see stergloh) and ii) global mean atmospheric pressure variations. use obp for comparisons with ocean bottom pressure data products that have been corrected for global mean atmospheric pressure variations. grace data typically are corrected for global mean atmospheric pressure variations. in contrast, ocean bottom pressure gauge data typically are not corrected for global mean atmospheric pressure variations.}}} \\ \hline
+\end{longtable}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.55]{/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/output_and_granules/output/figures/figures_variables_lat-lon/Ocean_Bottom_Pressure/OBP.png}
+\caption{OBP (lat-lon)}
+\label{tab:table-OCEAN_BOTTOM_PRESSURE_OBP-Plot}
+\end{figure}
+\newpage
+\pagebreak
+\subsubsection{OBPGMAP (lat-lon)}
+\begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
+\caption{OBPGMAP from OCEAN\_BOTTOM\_PRESSURE (lat-lon)}\label{tab:table-OCEAN_BOTTOM_PRESSURE_OBPGMAP} \\ 
+\hline \endhead \hline \endfoot
+\rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
+float32 & OBPGMAP & Ocean bottom pressure given as equivalent water thickness, includes global mean atmospheric pressure & m \\ \hline
+\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.95\textwidth}{\vspace*{0.25cm} \footnotesize{float32 OBPGMAP(time, latitude, longitude)\\\
+\hspace*{0.5cm}OBPGMAP: \_FillValue = 9.96921e+36\\\
+\hspace*{0.5cm}OBPGMAP: coordinates = time\\\
+\hspace*{0.5cm}OBPGMAP: coverage\_content\_type = modelResult\\\
+\hspace*{0.5cm}OBPGMAP: long\_name = Ocean bottom pressure given as equivalent water thickness, includes global mean atmospheric pressure\\\
+\hspace*{0.5cm}OBPGMAP: units = m\\\
+\hspace*{0.5cm}OBPGMAP: valid\_max = 82.14805603027344\\\
+\hspace*{0.5cm}OBPGMAP: valid\_min = 7.395928859710693\\\
+}}}}} \\ \hline
+\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Obpgmap includes the contribution from global mean atmospheric pressure and is therefore suitable for comparisons with ocean bottom pressure gauge data products. obpgmap is calculated as follows. first, we calculate ocean hydrostatic bottom pressure anomaly, phibot, with phibot = p\_b/rhoconst - gh(t), where p\_b = model ocean hydrostatic bottom pressure, rhoconst = reference density (1029 kg m-3), g is acceleration due to gravity (9.81 m s-2), and h(t) is model depth at time t. then, obpgmap= phibot/g + corrections for global mean steric sea level changes related to density changes in the boussinesq volume-conserving model (greatbatch correction, see stergloh). use obpgmap for comparisons with ocean bottom pressure data products that have not been corrected for global mean atmospheric pressure variations. grace data typically are corrected for global mean atmospheric pressure variations. in contrast, ocean bottom pressure gauge data typically are not corrected for global mean atmospheric pressure variations.}}} \\ \hline
+\end{longtable}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.55]{/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/output_and_granules/output/figures/figures_variables_lat-lon/Ocean_Bottom_Pressure/OBPGMAP.png}
+\caption{OBPGMAP (lat-lon)}
+\label{tab:table-OCEAN_BOTTOM_PRESSURE_OBPGMAP-Plot}
+\end{figure}
+\newpage
+\subsection{SEA\_SURFACE\_HEIGHT}
+\subsubsection{Overview}
+\newp
+This dataset provides 2D fields of dynamic sea surface height interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 4 (V4r4) ocean and sea-ice state estimate. The dataset is provided on daily-average and monthly-average time resolution.
+\\\\
+Note: SSH (dynamic sea surface height) = SSHNOIBC (dynamic sea surface without the inverse barometer correction) - SSHIBC (inverse barometer correction). The inverted barometer correction accounts for variations in sea surface height due to atmospheric pressure variations.
+\\
+\begin{longtable}{|m{0.15\textwidth}|m{0.64\textwidth}|m{0.12\textwidth}|}
+\caption{Coordinates and variables from SEA\_SURFACE\_HEIGHT (lat-lon)}
+\label{tab:table-<xarray.Dataset> Size: 3MB
+Dimensions:         (time: 1, latitude: 360, longitude: 720, nv: 2)
+Coordinates:
+  * time            (time) datetime64[ns] 8B 2017-12-29T12:00:00
+  * latitude        (latitude) float32 1kB -89.75 -89.25 -88.75 ... 89.25 89.75
+  * longitude       (longitude) float32 3kB -179.8 -179.2 -178.8 ... 179.2 179.8
+    time_bnds       (time, nv) datetime64[ns] 16B ...
+    latitude_bnds   (latitude, nv) float32 3kB ...
+    longitude_bnds  (longitude, nv) float32 6kB ...
+Dimensions without coordinates: nv
+Data variables:
+    SSH             (time, latitude, longitude) float32 1MB ...
+    SSHIBC          (time, latitude, longitude) float32 1MB ...
+    SSHNOIBC        (time, latitude, longitude) float32 1MB ...
+Attributes: (12/57)
+    acknowledgement:              This research was carried out by the Jet Pr...
+    author:                       Ian Fenty and Ou Wang
+    cdm_data_type:                Grid
+    comment:                      Fields provided on a regular lat-lon grid. ...
+    Conventions:                  CF-1.8, ACDD-1.3
+    coordinates_comment:          Note: the global 'coordinates' attribute de...
+    ...                           ...
+    time_coverage_duration:       P1D
+    time_coverage_end:            2017-12-30T00:00:00
+    time_coverage_resolution:     P1D
+    time_coverage_start:          2017-12-29T00:00:00
+    title:                        ECCO Sea Surface Height - Daily Mean 0.5 De...
+    uuid:                         7beb77e0-404a-11eb-8bf7-0cc47a3f891b-fields} \\ 
+\hline \endfirsthead \endhead \endfoot \hline \endlastfoot
+\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Coordinates}} & \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} & \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline
+time &Center time of averaging period &--none--  \\ \hline
+latitude &Latitude at grid cell center &degrees\_north  \\ \hline
+longitude &Longitude at grid cell center &degrees\_east  \\ \hline
+time\_bnds &Time bounds of averaging period &--none--  \\ \hline
+latitude\_bnds &Latitude bounds grid cells &--none--  \\ \hline
+longitude\_bnds &Longitude bounds grid cells &--none--  \\ \hline
+\rowcolor{lightgray} \multicolumn{1}{|c|}{\textbf{Variables}} & \multicolumn{1}{|c|}{\textbf{Description of data variables}} & \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline
+SSH &Dynamic sea surface height anomaly &m  \\ \hline
+SSHIBC &The inverted barometer (ib) correction to sea surface height due to atmospheric pressure loading &m  \\ \hline
+SSHNOIBC &Sea surface height anomaly without the inverted barometer (ib) correction &m  \\ \hline
+\end{longtable}
+
+\newp
+\pagebreak
+\subsubsection{SSH (lat-lon)}
+\begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
+\caption{SSH from SEA\_SURFACE\_HEIGHT (lat-lon)}\label{tab:table-SEA_SURFACE_HEIGHT_SSH} \\ 
+\hline \endhead \hline \endfoot
+\rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
+float32 & SSH & Dynamic sea surface height anomaly & m \\ \hline
+\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.95\textwidth}{\vspace*{0.25cm} \footnotesize{float32 SSH(time, latitude, longitude)\\\
+\hspace*{0.5cm}SSH: \_FillValue = 9.96921e+36\\\
+\hspace*{0.5cm}SSH: coordinates = time\\\
+\hspace*{0.5cm}SSH: coverage\_content\_type = modelResult\\\
+\hspace*{0.5cm}SSH: long\_name = Dynamic sea surface height anomaly\\\
+\hspace*{0.5cm}SSH: standard\_name = sea surface height above geoid\\\
+\hspace*{0.5cm}SSH: units = m\\\
+\hspace*{0.5cm}SSH: valid\_max = 2.2875382900238037\\\
+\hspace*{0.5cm}SSH: valid\_min = -2.4861555099487305\\\
+}}}}} \\ \hline
+\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Dynamic sea surface height anomaly above the geoid, suitable for comparisons with altimetry sea surface height data products that apply the inverse barometer (ib) correction. note: ssh is calculated by correcting model sea level anomaly etan for three effects: a) global mean steric sea level changes related to density changes in the boussinesq volume-conserving model (greatbatch correction, see stergloh), b) the inverted barometer (ib) effect (see sshibc) and c) sea level displacement due to sea-ice and snow pressure loading (see siceload). ssh can be compared with the similarly-named ssh variable in previous ecco products that did not include atmospheric pressure loading (e.g., version 4 release 3). use sshnoibc for comparisons with altimetry data products that do not apply the ib correction.}}} \\ \hline
+\end{longtable}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.55]{/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/output_and_granules/output/figures/figures_variables_lat-lon/Sea_Surface_Height/SSH.png}
+\caption{SSH (lat-lon)}
+\label{tab:table-SEA_SURFACE_HEIGHT_SSH-Plot}
+\end{figure}
+\newpage
+\pagebreak
+\subsubsection{SSHIBC (lat-lon)}
+\begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
+\caption{SSHIBC from SEA\_SURFACE\_HEIGHT (lat-lon)}\label{tab:table-SEA_SURFACE_HEIGHT_SSHIBC} \\ 
+\hline \endhead \hline \endfoot
+\rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
+float32 & SSHIBC & The inverted barometer (ib) correction to sea surface height due to atmospheric pressure loading & m \\ \hline
+\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.95\textwidth}{\vspace*{0.25cm} \footnotesize{float32 SSHIBC(time, latitude, longitude)\\\
+\hspace*{0.5cm}SSHIBC: \_FillValue = 9.96921e+36\\\
+\hspace*{0.5cm}SSHIBC: coordinates = time\\\
+\hspace*{0.5cm}SSHIBC: coverage\_content\_type = modelResult\\\
+\hspace*{0.5cm}SSHIBC: long\_name = The inverted barometer (IB) correction to sea surface height due to atmospheric pressure loading\\\
+\hspace*{0.5cm}SSHIBC: units = m\\\
+\hspace*{0.5cm}SSHIBC: valid\_max = 0.8955588340759277\\\
+\hspace*{0.5cm}SSHIBC: valid\_min = -0.5228679180145264\\\
+}}}}} \\ \hline
+\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Not an ssh itself, but a correction to model sea level anomaly (etan) required to account for the static part of sea surface displacement by atmosphere pressure loading: ssh = sshnoibc - sshibc. note: use ssh for model-data comparisons with altimetry data products that do apply the ib correction and sshnoibc for comparisons with altimetry data products that do not apply the ib correction.}}} \\ \hline
+\end{longtable}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.55]{/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/output_and_granules/output/figures/figures_variables_lat-lon/Sea_Surface_Height/SSHIBC.png}
+\caption{SSHIBC (lat-lon)}
+\label{tab:table-SEA_SURFACE_HEIGHT_SSHIBC-Plot}
+\end{figure}
+\newpage
+\pagebreak
+\subsubsection{SSHNOIBC (lat-lon)}
+\begin{longtable}{|m{0.06\textwidth}|m{0.3\textwidth}|m{0.45\textwidth}|m{0.12\textwidth}|}
+\caption{SSHNOIBC from SEA\_SURFACE\_HEIGHT (lat-lon)}\label{tab:table-SEA_SURFACE_HEIGHT_SSHNOIBC} \\ 
+\hline \endhead \hline \endfoot
+\rowcolor{lightgray} \textbf{Storage Type} & \textbf{Variable Name} & \textbf{Description} & \textbf{Unit} \\ \hline
+float32 & SSHNOIBC & Sea surface height anomaly without the inverted barometer (ib) correction & m \\ \hline
+\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline
+\multicolumn{4}{|c|}{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.95\textwidth}{\vspace*{0.25cm} \footnotesize{float32 SSHNOIBC(time, latitude, longitude)\\\
+\hspace*{0.5cm}SSHNOIBC: \_FillValue = 9.96921e+36\\\
+\hspace*{0.5cm}SSHNOIBC: coordinates = time\\\
+\hspace*{0.5cm}SSHNOIBC: coverage\_content\_type = modelResult\\\
+\hspace*{0.5cm}SSHNOIBC: long\_name = Sea surface height anomaly without the inverted barometer (IB) correction\\\
+\hspace*{0.5cm}SSHNOIBC: units = m\\\
+\hspace*{0.5cm}SSHNOIBC: valid\_max = 2.2390522956848145\\\
+\hspace*{0.5cm}SSHNOIBC: valid\_min = -2.45104718208313\\\
+}}}}} \\ \hline
+\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline
+\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{{Sea surface height anomaly above the geoid without the inverse barometer (ib) correction, suitable for comparisons with altimetry sea surface height data products that do not apply the inverse barometer (ib) correction. note: sshnoibc is calculated by correcting model sea level anomaly etan for two effects: a) global mean steric sea level changes related to density changes in the boussinesq volume-conserving model (greatbatch correction, see stergloh), b) sea level displacement due to sea-ice and snow pressure loading (see siceload). in ecco version 4 release 4 the model is forced with atmospheric pressure loading. sshnoibc does not correct for the static part of the effect of atmosphere pressure loading on sea surface height (the so-called inverse barometer (ib) correction). use ssh for comparisons with altimetry data products that do apply the ib correction.}}} \\ \hline
+\end{longtable}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.55]{/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/output_and_granules/output/figures/figures_variables_lat-lon/Sea_Surface_Height/SSHNOIBC.png}
+\caption{SSHNOIBC (lat-lon)}
+\label{tab:table-SEA_SURFACE_HEIGHT_SSHNOIBC-Plot}
+\end{figure}
+\newpage

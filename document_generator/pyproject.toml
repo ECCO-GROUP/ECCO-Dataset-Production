@@ -1,0 +1,34 @@
+[build-system]
+requires = ['setuptools']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'ecco_document_generator'
+version = '1.0'
+dependencies = [
+    'numpy',
+    'requests',
+    'sphinx_rtd_theme',
+    'xarray',
+    'ecco_v4_py @ git+https://github.com/ECCO-GROUP/ECCOv4-py'
+]
+
+#[tool.setuptools]
+# include-package-data is true by default, so the following need not be
+# specified and is listed here only for reference:
+#include-package-data = true
+
+#[tool.setuptools.packages.find]
+# namespace package support is true by default, so the following need not be
+# specified and is listed here only for reference:
+#namespaces = true
+#where = ["src"]
+
+[tool.setuptools.package-data]
+"ecco_document_generator" = ["*.json"]
+
+[project.scripts]
+edg_download_granules                   = 'document_generator.apps.download_granules:main'
+edg_generate_compendium_sub_components  = 'document_generator.apps.generate_compendium_sub_components:main'
+edg_compile_compendium                  = 'document_generator.apps.compile_compendium:main'
+
