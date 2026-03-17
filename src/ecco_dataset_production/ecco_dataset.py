@@ -97,17 +97,10 @@ class ECCOMDSDataset(object):
         \*\*kwargs: If task references AWS S3 endpoint data and if running within
             an institutionally-managed AWS IAM Identity Center (SSO)
             environment, additional arguments that may be necessary include:
-<<<<<<< HEAD
             keygen (str): Federated login key generation script (e.g.,
                 /usr/local/bin/aws-login.darwin.universal, etc.).
             profile (str): Optional profile to be used in combination with
                 keygen (e.g., 'default', 'saml-pub', etc.)
-=======
-            ``keygen`` (str) - Federated login key generation script (e.g.,
-            /usr/local/bin/aws-login-pub.darwin.amd64). ``profile`` (str) -
-            Optional profile to be used in combination with keygen (e.g.,
-            'default', 'saml-pub', etc.)
->>>>>>> c864369 (API reference docs)
 
     Attributes:
         cfg (dict): Local store of cfg input.
