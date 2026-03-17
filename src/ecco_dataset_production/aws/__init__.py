@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 """AWS S3 integration utilities.
 
 This subpackage provides utilities for interacting with AWS S3 storage,
@@ -18,7 +16,6 @@ Example:
 
 """
 from . import ecco_aws
->>>>>>> 70e265e (Restructure docs + module docstrings)
 from . import ecco_aws_s3_cp
 from . import ecco_aws_s3_sync
 from . import utils
