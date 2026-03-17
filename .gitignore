@@ -1,5 +1,6 @@
 *.pyc
 job_logs*.json
+*.egg-info
 
 # macOS folder attributes:
 .DS_Store

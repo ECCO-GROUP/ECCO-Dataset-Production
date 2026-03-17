@@ -1,3 +1,27 @@
+"""Time bounds and temporal metadata utilities.
+
+This module provides functions for calculating time coverage metadata for
+ECCO granules, including handling edge cases at model start and end times.
+
+Key functions:
+
+- :func:`make_time_bounds_metadata`: Computes time coverage start, end, and
+  center times for averaging periods, accounting for partial periods at
+  model boundaries.
+
+The time metadata is essential for CF-compliant NetCDF files and enables
+proper temporal subsetting by data users.
+
+Example:
+    >>> from ecco_dataset_production import ecco_time
+    >>> bounds, center = ecco_time.make_time_bounds_metadata(
+    ...     granule_time=732,
+    ...     model_start_time='1992-01-01',
+    ...     model_end_time='2017-12-31',
+    ...     averaging_period='AVG_MON'
+    ... )
+
+"""
 
 import ecco_v4_py
 import numpy as np

@@ -111,6 +111,39 @@ def create_job_task_list(
     """Create a list of task inputs and outputs from an ECCO Dataset Production
     job file.
 
+    .. mermaid::
+
+        %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
+        flowchart TD
+            A[Load configuration] --> B{Source is S3?}
+            B -->|Yes| C[Setup AWS credentials]
+            B -->|No| D[Verify local path exists]
+            C --> E[Load dataset groupings metadata]
+            D --> E
+            E --> F[For each job in jobfile]
+            F --> G[Parse job entry]
+            G --> H[Get job metadata from groupings]
+            H --> I[For each variable in job]
+            I --> J{Has field components?}
+            J -->|Yes| K[Find all component files]
+            J -->|No| L[Find single-input files]
+            K --> M[Group by time]
+            L --> M
+            M --> N[Store in variable_inputs]
+            N --> O{More variables?}
+            O -->|Yes| I
+            O -->|No| P[Get all unique times]
+            P --> Q[For each time step]
+            Q --> R[Calculate time bounds]
+            R --> S[Generate output filename]
+            S --> T[Build task dictionary]
+            T --> U[Append to task_list]
+            U --> V{More times?}
+            V -->|Yes| Q
+            V -->|No| W{More jobs?}
+            W -->|Yes| F
+            W -->|No| X[Return task_list]
+
     Args:
         jobfile (str): (Path and) filename of ECCO Dataset Production jobs
             text file, each line containing a Python case insensitive list-style
@@ -133,9 +166,9 @@ def create_job_task_list(
         ecco_mapping_factors_loc (str): Directory containing ECCO mapping
             factors (3D, land_mask, latlon_grid, and sparse subdirectories), or
             similar remote location given by AWS S3 bucket/prefix.
-        ecco_metadata_loc (str): Directory containing ECCO metadata *.json
-            source files (*_groupings_for_{1D,latlon,native}_datasets.json,
-            *_global_metadata_for_{all,native,latlon}_datasets.json, etc.), or
+        ecco_metadata_loc (str): Directory containing ECCO metadata JSON
+            source files (groupings_for_1D/latlon/native_datasets.json,
+            global_metadata_for_all/native/latlon_datasets.json, etc.), or
             similar remote location given by AWS S3 bucket/prefix.
         ecco_cfg_loc (str): (Path and) filename of ECCO Dataset Production
             configuration file (yaml format), or similar remote location given
@@ -162,8 +195,8 @@ def create_job_task_list(
         ValueError: If ecco_source_root type cannot be determined or if jobfile
             contains format errors.
 
-    Notes:
-        - ECCO version string (e.g., "V4r5") is assumed to be contained in
+    Note:
+        ECCO version string (e.g., "V4r5") is assumed to be contained in
         either directory path or in AWS S3 object names.
 
     """

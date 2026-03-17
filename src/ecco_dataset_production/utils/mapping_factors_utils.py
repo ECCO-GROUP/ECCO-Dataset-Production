@@ -47,41 +47,29 @@ def get_mapping_factors(dataset_dim,
                         k=0):
     """
     Get mapping factors from mapping_factors_dir for level k and the factors
-    requested (factors_to_get)
+    requested (factors_to_get).
 
     Args:
-        dataset_dim (str): Dimension of the dataset to get factors for
+        dataset_dim (str): Dimension of the dataset to get factors for.
         mapping_factors_dir (PosixPath): Path to
-            /ECCO-Dataset-Production/aws/mapping_factors/{ecco_version}
-
+            /ECCO-Dataset-Production/aws/mapping_factors/{ecco_version}.
         factors_to_get (str): 'all'=grid_mappings_all, 'k'=grid_mappings_{k}, or
             'both'=grid_mappings_all and grid_mappings_{k} (grid_mappings_all
-            includes dry points factors)
-
-#        extra_prints (optional, bool): Boolean to enable more print statements
-
-        k (optional, int): Integer vertical level index to retrieve mapping
-            factors for (0-{num_vertical_levels})
+            includes dry points factors).
+        k (int, optional): Integer vertical level index to retrieve mapping
+            factors for (0-{num_vertical_levels}).
 
     Returns:
-        (status, grid_mappings_all, grid_mappings_k) (tuple):
-            status (str): String that is either "SUCCESS" or "ERROR {error message}"
-
-            grid_mappings_all (tuple): Contains two lists:
-                source_indices_within_target_radius_i and
-                nearest_source_index_to_target_index_i
-
-            grid_mappings_k (tuple): Contains two lists:
-                source_indices_within_target_radius_i and
-                nearest_source_index_to_target_index_i
-
-                source_indices_within_target_radius_i: list where index is
-                    target index, and value is -1 if no source indices in target
-                    radius, or a list of source indices within target radius
-
-                nearest_source_index_to_target_index_i: list where index is the
-                    target index, and value is the nearest source index to
-                    target index
+        tuple: A tuple (status, grid_mappings_all, grid_mappings_k) where
+        ``status`` (str) is either "SUCCESS" or "ERROR {error message}",
+        ``grid_mappings_all`` (tuple) contains two lists
+        (source_indices_within_target_radius_i and
+        nearest_source_index_to_target_index_i), and ``grid_mappings_k``
+        (tuple) contains two lists (source_indices_within_target_radius_i
+        where index is target index and value is -1 if no source indices in
+        target radius or a list of source indices within target radius, and
+        nearest_source_index_to_target_index_i where index is the target
+        index and value is the nearest source index to target index).
     """
 
     status = 'SUCCESS'
@@ -294,6 +282,9 @@ def create_land_mask(mapping_factors_dir,
                                                              mapping_factors_dir, 
                                                              'all')
 
+        if status != 'SUCCESS':
+            raise RuntimeError(status)
+
         source_indices_within_target_radius_i, nearest_source_index_to_target_index_i = grid_mappings_all
 
         if status != 'SUCCESS':
@@ -372,9 +363,9 @@ def create_sparse_matrix(
             
             # get the land mask for level k
             status, land_mask = gen_netcdf_utils.get_land_mask(
-#               mapping_factors_dir,
-                product_generation_config, k
-#               extra_prints=extra_prints)
+                mapping_factors_dir,
+                product_generation_config,
+                k=k
             )
             if status != 'SUCCESS':
                 # stick with this for now (TODO: Pythonic mods to get_land_mask):

@@ -1,4 +1,27 @@
-"""
+"""ECCO grid data access and management.
+
+This module provides the :class:`ECCOGrid` class for loading and caching ECCO
+grid coordinate data, including both native LLC90 and lat/lon grid definitions.
+
+Key capabilities:
+
+- Loading grid files from local directories, tar archives, or AWS S3
+- Lazy-loading of native and lat/lon grid datasets
+- Access to coordinate bounds (XC_bnds, YC_bnds, Z_bnds)
+- Wet point indices for efficient sparse matrix operations
+
+The grid data is essential for:
+
+- Coordinate assignment in output NetCDF files
+- Land/ocean masking operations
+- Native-to-latlon interpolation setup
+
+Example:
+    >>> from ecco_dataset_production import ecco_grid
+    >>> grid = ecco_grid.ECCOGrid(task=task)
+    >>> native = grid.native_grid  # xarray Dataset
+    >>> latlon = grid.latlon_grid  # xarray Dataset
+
 """
 
 import fnmatch
@@ -36,7 +59,7 @@ class ECCOGrid(object):
             (containing XC.*, YC.*, *latlon*.nc, *native*.nc, etc. files), or
             similar remote location given by AWS S3 bucket/prefix.  Either
             grid_loc or task may be provided but not both.
-        **kwargs: If either task or grid_loc reference an AWS S3 endpoint and if
+        \*\*kwargs: If either task or grid_loc reference an AWS S3 endpoint and if
             running within an institutionally-managed AWS IAM Identity Center
             (SSO) environment, additional arguments that may be necessary
             include:

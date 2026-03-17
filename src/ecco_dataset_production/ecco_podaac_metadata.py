@@ -1,4 +1,23 @@
-"""
+"""PO.DAAC-specific metadata handling.
+
+This module provides the :class:`ECCOPODAACMetadata` class for loading and
+accessing PO.DAAC (Physical Oceanography Distributed Active Archive Center)
+specific metadata mappings.
+
+PO.DAAC metadata includes:
+
+- Dataset short names and long names for archive cataloging
+- Collection identifiers
+- Filename-to-dataset mappings
+
+This metadata is applied during granule production to ensure compatibility
+with PO.DAAC's data distribution requirements.
+
+Example:
+    >>> from ecco_dataset_production import ecco_podaac_metadata
+    >>> pm = ecco_podaac_metadata.ECCOPODAACMetadata(metadata_src='podaac.csv')
+    >>> df = pm.metadata  # pandas DataFrame
+
 """
 
 import logging
@@ -25,7 +44,7 @@ class ECCOPODAACMetadata(object):
         Args:
             metadata_src (str): (Path and) filename of ECCO-related PO.DAAC
                 metadata, or similar AWS S3 bucket/prefix/name.
-            **kwargs: If metadata_src references an AWS S3 endpoint and if
+            \*\*kwargs: If metadata_src references an AWS S3 endpoint and if
                 running within an institutionally-managed AWS IAM Identity
                 Center (SSO) environment, additional arguments that may be
                 necessary include:

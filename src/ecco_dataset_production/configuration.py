@@ -1,4 +1,22 @@
-"""
+"""Configuration file handling for ECCO Dataset Production.
+
+This module provides the :class:`ECCODatasetProductionConfig` class for loading
+and accessing YAML configuration files that control the dataset production
+pipeline. Configuration files can be loaded from local paths or AWS S3.
+
+Key configuration parameters include:
+
+- Model timing (start/end times, timestep)
+- Output formatting (array precision, compression settings)
+- DOI and version information
+- File naming conventions
+
+Example:
+    >>> from ecco_dataset_production import configuration
+    >>> cfg = configuration.ECCODatasetProductionConfig('config.yaml')
+    >>> print(cfg['ecco_version'])
+    'V4r4'
+
 """
 
 from collections import UserDict
@@ -19,7 +37,7 @@ class ECCODatasetProductionConfig(UserDict):
     Args:
         cfgfile (str): (Path and) filename of configuration file (yaml format),
             or similar remote location given by AWS S3 bucket/prefix/filename.
-        **kwargs: If cfgfile references an AWS S3 endpoint and if running within
+        \*\*kwargs: If cfgfile references an AWS S3 endpoint and if running within
             an institutionally-managed AWS IAM Identity Center (SSO)
             environment, additional arguments that may be necessary include:
             keygen (str): Federated login key generation script (e.g.,
