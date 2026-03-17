@@ -85,6 +85,11 @@ T{char}
 yf{char}   ex:  yf]   yanks from cursor to ], inclusive
 # Same but exclusive
 yt{char}
+# Same but 2nd occurrence (or nth)
+y2f{char}
+y2t{char}
+# Same but LAST occurrence - this is more involved, requires "motions"... visual mode...
+v$T{char}  , then "d" to delete, then "p" to paste.  Can use "F" as well....
 
 # Same as above, but for deleting (capitalize the jump command (f,t) to go backwards)
 df{char}

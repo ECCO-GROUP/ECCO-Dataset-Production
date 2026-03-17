@@ -30,6 +30,12 @@ possible_granule_types:
   - coordinate
   - variable
 
+global_attribute_rowcolor: cyan!25
+variable_attribute_rowcolor: violet!25
+
+#global_attribute_rowcolor: {cyan!25}
+#variable_attribute_rowcolor: {violet!25}
+
 granules_url_list_file_relative: files_general/resource_files/version_specific/v4r4/input_and_templates/granules_to_download/granules_to_download.txt
 
 global_attributes_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json/attribute_files/global_attributes.json
@@ -91,14 +97,17 @@ global_attributes_latex_lines:
   - \caption{Mandatory global attributes for GDS 2.0 netCDF data files}
   - \label{tab:global-attributes} \\ 
   - \hline \endfirsthead \endhead \endfoot \hline \endlastfoot
-  - \rowcolor{lightgray} \textbf{Global Attribute Name} & \textbf{Type} & \textbf{Description} & \textbf{Source} \\ \hline
+  - \rowcolor{blue!25} \textbf{Global Attribute Name} & \textbf{Type} & \textbf{Description} & \textbf{Source} \\ \hline
+  #- \rowcolor{lightgray} \textbf{Global Attribute Name} & \textbf{Type} & \textbf{Description} & \textbf{Source} \\ \hline
 #
 variable_attributes_latex_lines:
   - \begin{longtable}{|p{0.168\textwidth}|p{0.20\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}
-  - \caption{Variable attributes for GDS 2.0 netCDF data files}
+  - \caption{Coordinte, Dimension, and Variable attributes for GDS 2.0 netCDF data files}
+  #- \caption{Variable attributes for GDS 2.0 netCDF data files}
   - \label{tab:variable-attributes} \\ 
   - \hline \endfirsthead \endhead \endfoot \hline \endlastfoot
-  - \rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline
+  - \rowcolor{blue!25} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline
+  #- \rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline
 
 example_table_first_latex_lines_lat-lon:
   - \caption{Example CDL description of lat-lon dataset}

@@ -60,11 +60,7 @@ def write_attributes_tables_tex(base_dir: str, config_dictionary: dict) -> None:
                 print(f"writing '{attribute_type}_attributes' latex table")
                 processed_attribute_types.append(attribute_type)
 
-                # Copy header lines to avoid mutating the original config list
-                latex_lines = list(config_dictionary[f"{attribute_type}_attributes_latex_lines"])
-                json_list = obtain_json_data(base_dir, config_dictionary[f"{attribute_type}_attributes_json_file"])
-                latex_lines.extend(establish_table(json_list, config_dictionary))
-                latex_lines.append(r'\end{longtable}')
+                latex_lines = establish_table(base_dir, config_dictionary, attribute_type)
 
                 latex_output_file = os.path.join(base_dir, config_dictionary[f"{attribute_type}_attributes_tex_file"])
                 # Create any missing parent directories for the output path
@@ -107,7 +103,8 @@ def obtain_keys(json_data: list) -> set:
     return keys
 
 
-def establish_table(dictionary_list_from_json: list, config_dictionary: dict) -> list:
+def establish_table(base_dir: str, config_dictionary: dict, attribute_type: str) -> list:
+#def establish_table(base_dir: str, dictionary_list_from_json: list, config_dictionary: dict, attribute_type: str) -> list:
     """
     Build LaTeX table row lines from a list of JSON records.
 
@@ -129,7 +126,11 @@ def establish_table(dictionary_list_from_json: list, config_dictionary: dict) ->
         row ending with ``\\\\ \\hline``.
     :rtype: list[str]
     """
-    latex_lines = []
+
+    # Copy header lines to avoid mutating the original config list
+    latex_lines = list(config_dictionary[f"{attribute_type}_attributes_latex_lines"])
+    dictionary_list_from_json = obtain_json_data(base_dir, config_dictionary[f"{attribute_type}_attributes_json_file"])
+
     max_col = 0  # Track the widest row to pad narrower rows consistently
 
     for dictionary in dictionary_list_from_json:
@@ -147,7 +148,14 @@ def establish_table(dictionary_list_from_json: list, config_dictionary: dict) ->
             formatted_dictionary_as_list.extend([""] * (max_col - len(formatted_dictionary_as_list)))
 
         latex_lines.append(
-            r'\rowcolor{LightCyan} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
+            r'\rowcolor{' + config_dictionary[f"{attribute_type}_attribute_rowcolor"] + '} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
+            #rf'\rowcolor{config_dictionary[f"{attribute_type}_attribute_rowcolor"]} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
+            #r'\rowcolor{cyan!25} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
+            #r'\rowcolor{LightCyan} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
         )
 
+    latex_lines.append(r'\end{longtable}')
+    
     return latex_lines
+
+

@@ -70,10 +70,10 @@ def main() -> None:
             [
                 'pdflatex',
                 '-halt-on-error',
-                f'--jobname={base_tex_stem}_{timestamp}',
+                f'--jobname={base_tex_stem}',
+                #f'--jobname={base_tex_stem}_{timestamp}',
                 f'--output-directory={output_directory}',
                 compendium_template_path
-                #config_dictionary['compendium_tex_filepath']
             ],
             check=True, text=True, capture_output=True
         )

@@ -1,4 +1,3 @@
-%\begin{longtable}{|p{0.28\textwidth}|p{0.06\textwidth}|p{0.51\textwidth}|p{0.07\textwidth}|}
 \begin{longtable}{>{\hangindent.5cm\hangafter=1\raggedright}p{3cm}
                     >{\hangindent.5cm\hangafter=1\raggedright}p{3cm}
                     >{\hangindent.5cm\hangafter=1\raggedright}p{3cm}
@@ -20,6 +19,8 @@ naming\_authority & string & 	The organization that provides the initial id (see
 cdm\_data\_type & string & The data type, as derived from Unidata's Common Data Model Scientific Data types and understood by THREDDS. This is a THREDDS 'dataType', and is different from the CF NetCDF attribute 'featureType', which indicates a Discrete Sampling Geometry file in CF. For ECCO, it is 'grid'. & ACDD \\ \hline
 \rowcolor{cyan!25}
 comment & string & Miscellaneous information about the data, not captured elsewhere. This attribute is defined in the CF Conventions. & CF, ACDD \\ \hline
+\rowcolor{cyan!25}
+coordinates & string & This is necessary if the variable has coordinates that are not the same as the dimension names of the data. In this case, the coordinates attribute identifies the auxiliary variables that contain geospatial or temporal coordinates. For example,  variables on a trajectory often use the data acquisition time as a single dimension but have auxiliary coordinates that record the latitude and longitude for each datum in the main variable. If a variable “foo” has a coordinate of time but co- exists with variables named “lat” and “lon” with the corresponding geolocation information, then the coordinates variable would read “lat lon” to indicate that the variables hold the appropriate geospatial location information. Without this attribute, tools will not be able to locate the corresponding latitude and longitude for data in a swath, trajectory, or non-rectilinear grid. Note that the auxiliary coordinate variables must still follow the conventions for units that are noted in Section 4.4 and Section 4.5 above. Also, note that the only delimiter between words inside the coordinates attribute should be a space. & CF \\ \hline
 \rowcolor{cyan!25}
 creator\_email & string & The email address of the person (or other creator type specified by the creator\_type attribute) principally responsible for creating this data. & ACDD \\ \hline
 \rowcolor{cyan!25}
