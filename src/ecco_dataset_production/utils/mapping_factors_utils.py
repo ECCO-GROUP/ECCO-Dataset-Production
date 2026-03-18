@@ -713,6 +713,7 @@ def create_ecco_grid_values(
     source_grid_k = {}
     log.info('Swath Definitions')
     log.info('... making swath definitions for latlon grid levels 1..nk')
+    log.info(f' nk = {nk}')
     for k in range(nk):
         wet_pts_k[k] = np.where(ecco_grid.hFacC[k,:] > 0)
         xc_wet_k[k] = ecco_grid.XC.values[wet_pts_k[k]]
