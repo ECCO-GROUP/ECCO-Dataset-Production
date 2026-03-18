@@ -87,7 +87,7 @@
         "Source": "ACDD"
     },
     {
-        "Name": "institution",
+        "Name": "institutions",
         "Format": "string",
         "Description": "The name of the institution principally responsible for originating this data. This attribute is recommended by the CF convention.",
         "Source": "CF, ACDD"

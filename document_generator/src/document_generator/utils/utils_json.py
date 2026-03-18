@@ -148,7 +148,8 @@ def establish_table(base_dir: str, config_dictionary: dict, attribute_type: str)
             formatted_dictionary_as_list.extend([""] * (max_col - len(formatted_dictionary_as_list)))
 
         latex_lines.append(
-            r'\rowcolor{' + config_dictionary[f"{attribute_type}_attribute_rowcolor"] + '} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
+            r'\rowcolor{' + config_dictionary[f"{attribute_type}_attribute_rowcolor"] + '} ' + '\n' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
+            #r'\rowcolor{' + config_dictionary[f"{attribute_type}_attribute_rowcolor"] + '} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
             #rf'\rowcolor{config_dictionary[f"{attribute_type}_attribute_rowcolor"]} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
             #r'\rowcolor{cyan!25} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
             #r'\rowcolor{LightCyan} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'

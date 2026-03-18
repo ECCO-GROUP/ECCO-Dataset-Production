@@ -1,6 +1,23 @@
+import re
 import glob
 from pathlib import Path
 import xarray as xr
+
+print()
+print()
+print()
+print()
+print()
+print()
+print("NOTE: All strings have been set to lowercase, for consistent comparison.  Still may wish to follow the web-format, which includes some capital letters")
+print()
+print()
+print()
+print()
+print()
+print()
+
+
 
 granule_parent_dir = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/output_and_granules/granules"
 
@@ -17,110 +34,456 @@ for granule_path in all_granule_paths:
         dataset = xr.open_dataset(granule_path)
         global_attrs_granules.update(list(dataset.attrs.keys()))
         for var in dataset.data_vars:
-            non_global_attrs_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+            non_global_attrs_granules.update([s.strip().lower() for s in list(dataset[var].attrs.keys())])
         for var in dataset.coords:
-            non_global_attrs_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+            non_global_attrs_granules.update([s.strip().lower() for s in list(dataset[var].attrs.keys())])
         for var in dataset.dims:
-            non_global_attrs_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+            non_global_attrs_granules.update([s.strip().lower() for s in list(dataset[var].attrs.keys())])
 
-global_attr_tex_path = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/z_scratch/GlobalAttribute_tableV1.tex"
-non_global_attr_tex_path = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/z_scratch/Coordinates_Dimensions_Variables_Attribute_tablev1.tex"
+global_attrs_repoExampleDoc_tex_path = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/z_scratch/GlobalAttribute_tableV1.tex"
+non_global_attrs_repoExampleDoc_tex_path = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/z_scratch/Coordinates_Dimensions_Variables_Attribute_tablev1.tex"
 
-global_attrs_document = set()
-non_global_attrs_document = set()
+global_attrs_repoExampleDoc = set()
+non_global_attrs_repoExampleDoc = set()
 
-with open(global_attr_tex_path) as file:
-    for line in file:
-        if line.strip()[0] != "\\":
-            global_attrs_document.add(line.split("&")[0].replace('\\','').strip())
-
-with open(non_global_attr_tex_path) as file:
-    for line in file:
-        if line.strip()[0] != "\\":
-            non_global_attrs_document.add(line.split("&")[0].replace('\\','').strip())
-
-
-
-global_attr_tex_path_new = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/input_and_templates/latex/components/global_attributes_table.tex"
-non_global_attr_tex_path_new = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/output_and_granules/output/latex/variable_attributes.tex"
-
-global_attrs_document_new = set()
-non_global_attrs_document_new = set()
-
-with open(global_attr_tex_path_new) as file:
-    for line in file:
-        if line.strip()[0] != "\\" and line.strip()[0] != ">":
-            global_attrs_document_new.add(line.split("&")[0].replace('\\','').strip())
-
-with open(non_global_attr_tex_path_new) as file:
+with open(global_attrs_repoExampleDoc_tex_path) as file:
     for line in file:
         #if line.strip()[0] != "\\":
+        if line.strip()[0] != "\\" or "".join(line.strip()[:2]) == r"\_":
+            global_attrs_repoExampleDoc.add(line.split("&")[0].replace('\\','').strip().lower())
+
+with open(non_global_attrs_repoExampleDoc_tex_path) as file:
+    for line in file:
+        #if line.strip()[0] != "\\":
+        if line.strip()[0] != "\\" or "".join(line.strip()[:2]) == r"\_":
+            non_global_attrs_repoExampleDoc.add(line.split("&")[0].replace('\\','').strip().lower())
+
+
+
+#global_attrs_jsonDoc_tex_path = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/input_and_templates/latex/components/global_attributes_table.tex"
+global_attrs_jsonDoc_tex_path = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/output_and_granules/output/latex/global_attributes.tex"
+non_global_attrs_jsonDoc_tex_path = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/output_and_granules/output/latex/variable_attributes.tex"
+
+global_attrs_jsonDoc = set()
+non_global_attrs_jsonDoc = set()
+
+with open(global_attrs_jsonDoc_tex_path) as file:
+    for line in file:
         if line.strip() != "":
-            if line.strip()[0] != "\\":
-                non_global_attrs_document_new.add(line.split("&")[0].replace('\\','').strip())
+            if line.strip()[0] != "\\" or "".join(line.strip()[:2]) == r"\_":
+            #if "cyan" in line.strip():
+                global_attrs_jsonDoc.add(line.split("&")[0].replace('\\','').strip().lower())
+
+with open(non_global_attrs_jsonDoc_tex_path) as file:
+    for line in file:
+        if line.strip() != "":
+            if line.strip()[0] != "\\" or "".join(line.strip()[:2]) == r"\_":
+            #if "violet" in line.strip():
+                non_global_attrs_jsonDoc.add(line.split("&")[0].replace('\\','').strip().lower())
 
 
 
-global_attrs_ecco_exclusive = set(["author", "coordinates_comment", "product_name", "product_time_coverage_end", "product_time_coverage_start"])
-non_global_attrs_ecco_exclusive = set(["c_grid_axis_shift", "coordinate", "direction", "mate", "swap_dim"])
+global_attrs_eccoExclusive = set(["author", "coordinates_comment", "product_name", "product_time_coverage_end", "product_time_coverage_start"])
+non_global_attrs_eccoExclusive = set(["c_grid_axis_shift", "coordinate", "direction", "mate", "swap_dim"])
+
+
+
+
+
+
+
+if global_attrs_granules == global_attrs_repoExampleDoc:
+    print()
+    print()
+    print("------------")
+    print("------------")
+    print("NOTE: global attributes are the same for the downloaded granules and the repoExampleDoc")
+    print("------------")
+    print("------------")
+    print()
+    print()
+if non_global_attrs_granules == non_global_attrs_repoExampleDoc:
+    print()
+    print()
+    print("------------")
+    print("------------")
+    print("NOTE: non-global attributes are the same for the downloaded granules and the repoExampleDoc")
+    print("------------")
+    print("------------")
+    print()
+    print()
+
+
 
 print()
-print("global_attrs_document - global_attrs_document_new")
-print(sorted(list(global_attrs_document - global_attrs_document_new)))
+print()
+print()
+print("------------------------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------------")
+print("repoExampleDoc vs jsonDoc")
+print("------------------------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------------")
+print()
+print()
+print()
+
+print("------------------------------------")
+print("global attributes")
+print("------------------------------------")
+print()
+print()
 
 print()
-print("global_attrs_document_new - global_attrs_document")
-print(sorted(list(global_attrs_document_new - global_attrs_document)))
+print(">>>>>>global_attrs_repoExampleDoc - global_attrs_jsonDoc")
+print()
+print(sorted(list(global_attrs_repoExampleDoc - global_attrs_jsonDoc)))
 
 print()
-print("global_attrs_document - global_attrs_document_new - global_attrs_ecco_exclusive")
-print(sorted(list(global_attrs_document - global_attrs_document_new - global_attrs_ecco_exclusive)))
-
-print("-------")
+print()
+print()
+print(">>>>>>global_attrs_jsonDoc - global_attrs_repoExampleDoc")
+print(sorted(list(global_attrs_jsonDoc - global_attrs_repoExampleDoc)))
 
 print()
-print("non_global_attrs_document - non_global_attrs_document_new")
-print(sorted(list(non_global_attrs_document - non_global_attrs_document_new)))
+print(">>>>>>global_attrs_repoExampleDoc - global_attrs_jsonDoc - global_attrs_eccoExclusive")
+print()
+print(sorted(list(global_attrs_repoExampleDoc - global_attrs_jsonDoc - global_attrs_eccoExclusive)))
 
 print()
-print("non_global_attrs_document_new - non_global_attrs_document")
-print(sorted(list(non_global_attrs_document_new - non_global_attrs_document)))
+print()
+print()
+print("------------------------------------")
+print("non-global attributes")
+print("------------------------------------")
+print()
+print()
 
 print()
-print("non_global_attrs_document - non_global_attrs_document_new - non_global_attrs_ecco_exclusive")
-print(sorted(list(non_global_attrs_document - non_global_attrs_document_new - non_global_attrs_ecco_exclusive)))
+print(">>>>>>non_global_attrs_repoExampleDoc - non_global_attrs_jsonDoc")
+print()
+print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_jsonDoc)))
+
+print()
+print()
+print()
+print(">>>>>>non_global_attrs_jsonDoc - non_global_attrs_repoExampleDoc")
+print(sorted(list(non_global_attrs_jsonDoc - non_global_attrs_repoExampleDoc)))
+
+print()
+print(">>>>>>non_global_attrs_repoExampleDoc - non_global_attrs_jsonDoc - non_global_attrs_eccoExclusive")
+print()
+print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_jsonDoc - non_global_attrs_eccoExclusive)))
+
+print()
+print()
+print()
+print()
+print()
+print()
 
 
 
-global_attrs_document_new = sorted(list(global_attrs_document_new))
-non_global_attrs_document_new = sorted(list(non_global_attrs_document_new))
+attr_web_file_path = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/z_scratch/from_web/attrs_from_web_global.txt"
 
+with open(attr_web_file_path) as file:
+    monster_table_line = file.readline()
+
+global_non_global_split_string = "Appendix E"
+
+global_non_global = monster_table_line.split(global_non_global_split_string)
+
+#category_split_string = ">D."
+#categories = monster_table_line.split(category_split_string)
+
+# Note that there is one "erronious" row within one of the global data cells, containing the string "UMM-Var"  ; filter that out of the results below
+row_split_string = "<tr><td>" 
+name_split_string = "</td>"
+
+global_table_rows = global_non_global[0].lower().split(row_split_string)
+#global_table_rows = global_non_global[0].split(row_split_string)
+# first element is all the stuff before the first row of interest
+global_table_rows = global_table_rows[1:]
+global_names = [row.split(name_split_string)[0] for row in global_table_rows]
+erronious_name = "UMM-Var".lower()
+#erronious_name = "UMM-Var"
+global_names.remove(erronious_name)
+
+non_global_table_rows = global_non_global[1].lower().split(row_split_string)
+#non_global_table_rows = global_non_global[1].split(row_split_string)
+# first element is all the stuff before the first row of interest
+non_global_table_rows = non_global_table_rows[1:]
+name_split_string = "</td>"
+non_global_names = [row.split(name_split_string)[0] for row in non_global_table_rows]
+
+bad_strings = ["</p>","<p>"]
+
+for ii in range(len(global_names)):
+    global_names[ii] = global_names[ii].replace("<p>","")
+    global_names[ii] = global_names[ii].replace("</p>","")
+
+for ii in range(len(non_global_names)):
+    non_global_names[ii] = non_global_names[ii].replace("<p>","")
+    non_global_names[ii] = non_global_names[ii].replace("</p>","")
+
+global_names_no_paren = []
+global_names_paren = []
+non_global_names_no_paren = []
+non_global_names_paren = []
+
+for el in global_names:
+    parts = [part.strip() for part in re.split(r'[()]', el) if part.strip()]
+    global_names_no_paren.append(parts[0])
+    if len(parts) > 1:
+        global_names_paren.append(parts[1])
+
+
+for el in non_global_names:
+    parts = [part.strip() for part in re.split(r'[()]', el) if part.strip()]
+    non_global_names_no_paren.append(parts[0])
+    if len(parts) > 1:
+        non_global_names_paren.append(parts[1])
+
+global_attrs_web_no_paren = set(global_names_no_paren)
+global_attrs_web_paren = set(global_names_paren)
+non_global_attrs_web_no_paren = set(non_global_names_no_paren)
+non_global_attrs_web_paren = set(non_global_names_paren)
+
+
+
+global_attrs_web = set(global_names)
+non_global_attrs_web = set(non_global_names)
+
+
+print()
+print()
+print()
+print("------------------------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------------")
+print("repoExampleDoc vs web")
+print("------------------------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------------")
+print()
+print()
+print()
+
+print("------------------------------------")
+print("global attributes")
+print("------------------------------------")
+print()
+print()
+
+
+print()
+#print("global_attrs_repoExampleDoc - global_attrs_web")
+#print(sorted(list(global_attrs_repoExampleDoc - global_attrs_web)))
+print(">>>>>>global_attrs_repoExampleDoc - global_attrs_web_no_paren")
+print()
+print(sorted(list(global_attrs_repoExampleDoc - global_attrs_web_no_paren)))
+
+print()
+print()
+print()
+#print("global_attrs_web - global_attrs_repoExampleDoc")
+#print(sorted(list(global_attrs_web - global_attrs_repoExampleDoc)))
+print(">>>>>>global_attrs_web_no_paren - global_attrs_repoExampleDoc")
+print()
+print(sorted(list(global_attrs_web_no_paren - global_attrs_repoExampleDoc)))
+
+print()
+print()
+print()
+#print("global_attrs_repoExampleDoc - global_attrs_web - global_attrs_eccoExclusive")
+#print(sorted(list(global_attrs_repoExampleDoc - global_attrs_web - global_attrs_eccoExclusive)))
+print(">>>>>>global_attrs_repoExampleDoc - global_attrs_web_no_paren - global_attrs_eccoExclusive")
+print()
+print(sorted(list(global_attrs_repoExampleDoc - global_attrs_web_no_paren - global_attrs_eccoExclusive)))
+
+print()
+print()
+print()
+print("------------------------------------")
+print("non-global attributes")
+print("------------------------------------")
+print()
+print()
+print()
+
+
+print()
+#print("non_global_attrs_repoExampleDoc - non_global_attrs_web")
+#print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_web)))
+print(">>>>>>non_global_attrs_repoExampleDoc - non_global_attrs_web_no_paren")
+print()
+print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_web_no_paren)))
+
+print()
+print()
+print()
+#print("non_global_attrs_web - non_global_attrs_repoExampleDoc")
+#print(sorted(list(non_global_attrs_web - non_global_attrs_repoExampleDoc)))
+print(">>>>>>non_global_attrs_web_no_paren - non_global_attrs_repoExampleDoc")
+print()
+print(sorted(list(non_global_attrs_web_no_paren - non_global_attrs_repoExampleDoc)))
+
+print()
+print()
+print()
+#print("non_global_attrs_repoExampleDoc - non_global_attrs_web - non_global_attrs_eccoExclusive")
+#print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_web - non_global_attrs_eccoExclusive)))
+print(">>>>>>non_global_attrs_repoExampleDoc - non_global_attrs_web_no_paren - non_global_attrs_eccoExclusive")
+print()
+print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_web_no_paren - non_global_attrs_eccoExclusive)))
+
+print()
+print()
+print()
+print("------------------------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------------")
+print("jsonDoc vs web")
+print("------------------------------------------------------------------------------------------------")
+print("------------------------------------------------------------------------------------------------")
+print()
+print()
+print()
+
+print("------------------------------------")
+print("global attributes")
+print("------------------------------------")
+print()
+print()
+
+print()
+print(">>>>>>global_attrs_jsonDoc - global_attrs_web_no_paren")
+print()
+print(sorted(list(global_attrs_jsonDoc - global_attrs_web_no_paren)))
+
+print()
+print()
+print()
+print(">>>>>>global_attrs_web_no_paren - global_attrs_jsonDoc")
+print()
+print(sorted(list(global_attrs_web_no_paren - global_attrs_jsonDoc)))
+
+print()
+print()
+print()
+print(">>>>>>global_attrs_jsonDoc - global_attrs_web_no_paren - global_attrs_eccoExclusive")
+print()
+print(sorted(list(global_attrs_jsonDoc - global_attrs_web_no_paren - global_attrs_eccoExclusive)))
+
+
+print()
+print()
+print()
+print("------------------------------------")
+print("non-global attributes")
+print("------------------------------------")
+print()
+print()
+print()
+
+print()
+print(">>>>>>non_global_attrs_jsonDoc - non_global_attrs_web_no_paren")
+print()
+print(sorted(list(non_global_attrs_jsonDoc - non_global_attrs_web_no_paren)))
+
+print()
+print()
+print()
+print(">>>>>>non_global_attrs_web_no_paren - non_global_attrs_jsonDoc")
+print()
+print(sorted(list(non_global_attrs_web_no_paren - non_global_attrs_jsonDoc)))
+
+print()
+print()
+print()
+print(">>>>>>non_global_attrs_jsonDoc - non_global_attrs_web_no_paren - non_global_attrs_eccoExclusive")
+print()
+print(sorted(list(non_global_attrs_jsonDoc - non_global_attrs_web_no_paren - non_global_attrs_eccoExclusive)))
+
+print()
+print()
+print()
+print()
+print()
+
+
+if global_attrs_granules == global_attrs_repoExampleDoc:
+    print()
+    print()
+    print("------------")
+    print("------------")
+    print("NOTE: global attributes are the same for the downloaded granules and the repoExampleDoc")
+    print("------------")
+    print("------------")
+    print()
+    print()
+if non_global_attrs_granules == non_global_attrs_repoExampleDoc:
+    print()
+    print()
+    print("------------")
+    print("------------")
+    print("NOTE: non-global attributes are the same for the downloaded granules and the repoExampleDoc")
+    print("------------")
+    print("------------")
+    print()
+    print()
+
+
+
+#print()
+#print("non_global_attrs_repoExampleDoc - non_global_attrs_granules")
+#print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_granules)))
+#
+#print()
+#print("non_global_attrs_granules - non_global_attrs_repoExampleDoc")
+#print(sorted(list(non_global_attrs_granules - non_global_attrs_repoExampleDoc)))
+#
+#
+#print()
+#print("non_global_attrs_jsonDoc - non_global_attrs_granules")
+#print(sorted(list(non_global_attrs_jsonDoc - non_global_attrs_granules)))
+#
+#print()
+#print("non_global_attrs_granules - non_global_attrs_jsonDoc")
+#print(sorted(list(non_global_attrs_granules - non_global_attrs_jsonDoc)))
+
+
+
+#print()
+#print("global_attrs_repoExampleDoc - global_attrs_granules")
+#print(sorted(list(global_attrs_repoExampleDoc - global_attrs_granules)))
+#
+#print()
+#print("global_attrs_granules - global_attrs_repoExampleDoc")
+#print(sorted(list(global_attrs_granules - global_attrs_repoExampleDoc)))
+#
+#
+#print()
+#print("global_attrs_jsonDoc - global_attrs_granules")
+#print(sorted(list(global_attrs_jsonDoc - global_attrs_granules)))
+#
+#print()
+#print("global_attrs_granules - global_attrs_jsonDoc")
+#print(sorted(list(global_attrs_granules - global_attrs_jsonDoc)))
+
+
+
+
+
+
+
+'''
 global_attrs_granules = sorted(list(global_attrs_granules)) 
-global_attrs_document = sorted(list(global_attrs_document))
 non_global_attrs_granules = sorted(list(non_global_attrs_granules)) 
-non_global_attrs_document = sorted(list(non_global_attrs_document))
 
-#print(global_attrs_granules == global_attrs_document)
-#print(non_global_attrs_granules == non_global_attrs_document)
-
-
-'''
-print()
-print("global_attrs_granules - global_attrs_document")
-print(global_attrs_granules - global_attrs_document)
-
-print()
-print("global_attrs_document - global_attrs_granules")
-print(global_attrs_document - global_attrs_granules)
-
-print()
-print("non_global_attrs_granules - non_global_attrs_document")
-print(non_global_attrs_granules - non_global_attrs_document)
-
-print()
-print("non_global_attrs_document - non_global_attrs_granules")
-print(non_global_attrs_document - non_global_attrs_granules)
+global_attrs_repoExampleDoc = sorted(list(global_attrs_repoExampleDoc))
+non_global_attrs_repoExampleDoc = sorted(list(non_global_attrs_repoExampleDoc))
+global_attrs_jsonDoc = sorted(list(global_attrs_jsonDoc))
+non_global_attrs_jsonDoc = sorted(list(non_global_attrs_jsonDoc))
 '''
 
+#print(global_attrs_granules == global_attrs_repoExampleDoc)
+#print(non_global_attrs_granules == non_global_attrs_repoExampleDoc)
 
 
