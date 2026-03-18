@@ -45,10 +45,12 @@ class ECCOMDSFilestr(object):
             # use filestr to set all attributes (a little complicated because
             # ECCO variable names may include underscores):
             try:
-                #tmp: quick fix for Darwin:
-                #re_so = re.search('_day_snap|_mon_snap|_snap|_day_mean|_mon_mean',filestr)
-                re_so = re.search('_day_snap|_day_mean|_mon_mean',filestr)
+                #tmp: quick fix for the Darwin ocean biochemistry variables:
+                re_so = re.search('_day_snap|_mon_snap|_snap|_day_mean|_mon_mean',filestr)
+                #re_so = re.search('_day_snap|_day_mean|_mon_mean',filestr)
+                
                 self.prefix = filestr[:re_so.span()[0]]
+
                 self.averaging_period = filestr[re_so.span()[0]+1:re_so.span()[1]]
                 time_and_ext = filestr[re_so.span()[1]+1:]
                 re_mo = re.match(r'\d{10}',time_and_ext)

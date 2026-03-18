@@ -270,6 +270,8 @@ def create_job_task_list(
     Job = collections.namedtuple(
         'Job',['metadata_groupings_id','product_type','frequency','time_steps'])
 
+    log.info(f'abcd Tasklist generation looking in "ecco_source root": {ecco_source_root}')
+
     with open(jobfile,'r') as fh:
         for line in fh:
 
@@ -293,7 +295,8 @@ def create_job_task_list(
                 continue
 
             job_metadata = dataset_groupings[job.product_type][job.metadata_groupings_id]
-            log.debug('job metadata for %s, %d: %s',
+
+            log.debug('\n\nTasklist processing job for %s, %d: %s',
                 job.product_type, job.metadata_groupings_id, job_metadata)
 
             if job.frequency.lower() == 'avg_day':
@@ -310,7 +313,7 @@ def create_job_task_list(
                 dataset_description_head = 'This dataset contains monthly-averaged '
             elif job.frequency.lower() == 'snap':
                 path_freq_pat = 'diags_inst'
-                file_freq_pat = 'day_snap'
+                file_freq_pat = 'mon_snap' # in case of monthly snapshot, otherwise 'day_snap' in the case of daily snapshot; in the future, just 'snap' for both
                 time_long_name = 'snapshot time'
                 time_coverage_duration = time_coverage_resolution = 'PT0S'
                 dataset_description_head = 'This dataset contains instantaneous '
@@ -325,6 +328,8 @@ def create_job_task_list(
                 dataset_description_tail = cfg['dataset_description_tail_native']
             else:
                 raise ValueError("job product type must be one of '1d', 'latlon', or 'native'")
+
+            log.debug(f'path_freq_pat: {path_freq_pat}, file_freq_pat: {file_freq_pat}, time_long_name: {time_long_name}, time_coverage_duration: {time_coverage_duration}, dataset_description_head: {dataset_description_head}, dataset_description_tail: {dataset_description_tail}')
 
             #
             # find all source files referenced by this job/job_metadata combination:
@@ -353,13 +358,16 @@ def create_job_task_list(
                         variable_input_component_files = []
 
                         if aws.utils.is_s3_uri(ecco_source_root):
+                            prefix = os.path.join(
+                                    s3_parts.path,
+                                    path_freq_pat,
+                                    '_'.join([variable_input_component,file_freq_pat]))
+                            log.info(f'looking for field component files in {prefix}')
+
                             all_var_files_in_bucket = s3_list_files(
                                 s3_client=s3c,
                                 bucket=s3_parts.netloc,
-                                prefix=os.path.join(
-                                    s3_parts.path,
-                                    path_freq_pat,
-                                    '_'.join([variable_input_component,file_freq_pat])))
+                                prefix=prefix)
 
                         if isinstance(job.time_steps,str) and 'all'==job.time_steps.lower():
                             # get all possible time matches:
@@ -371,6 +379,8 @@ def create_job_task_list(
                                     + ecco_file.ECCOMDSFilestr(
                                         prefix=variable_input_component,
                                         averaging_period=file_freq_pat).re_filestr)
+                                
+                                log.info(f'looking for s3_variable_input_component_pat {s3_variable_input_component_pat}')
 
                                 variable_input_component_files.extend(
                                     [os.path.join(
@@ -381,6 +391,9 @@ def create_job_task_list(
                                 variable_input_component_file_pat = re.compile( r'.*' + ecco_file.ECCOMDSFilestr(
                                     prefix=variable_input_component,
                                     averaging_period=file_freq_pat).re_filestr)
+
+                                log.info(f'looking for variable_input_component_file_pat {variable_input_component_file_pat}')
+                                
                                 for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                     if cfg['ecco_version'] in dirpath:
                                         variable_input_component_files.extend(
@@ -398,6 +411,9 @@ def create_job_task_list(
                                         prefix=variable_input_component,
                                         averaging_period=file_freq_pat,
                                         time=time).re_filestr)
+                                
+                                log.info(f'looking for s3_variable_input_component_pat {s3_variable_input_component_pat}')
+
                                 if aws.utils.is_s3_uri(ecco_source_root):
                                     variable_input_component_files.extend(
                                         [os.path.join(
@@ -411,6 +427,10 @@ def create_job_task_list(
                                         prefix=variable_input_component,
                                         averaging_period=file_freq_pat,
                                         time=time).re_filestr)
+                                    
+                                    log.info(f'looking for variable_input_component_file_pat {variable_input_component_file_pat}')
+
+
                                     for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                         if cfg['ecco_version'] in dirpath:
                                             variable_input_component_files.extend(
@@ -481,6 +501,9 @@ def create_job_task_list(
                                 s3_parts.path,
                                 path_freq_pat,
                                 '_'.join([variable,file_freq_pat]))
+                        
+                        log.info(f'looking for files in s3://{s3_parts.netloc}{prefix}')
+
                         all_var_files_in_bucket = s3_list_files(
                             s3_client=s3c,
                             bucket=s3_parts.netloc,
@@ -655,14 +678,18 @@ def create_job_task_list(
                     _file_freq_pat,                     # see above test/assignment
                     job_metadata['filename'],
                     output_filename)
+                
                 #task['granule'] = os.path.join(ecco_destination_root,output_filename)
                 task_variables = {}
                 for variable_name,variable_file_list in variable_inputs.items():
                     try:
                         task_variables[variable_name] = variable_file_list[time]
+                        log.debug("Granule %s: input found for variable '%s' at time step '%s'.",
+                            task['granule'], variable_name, time)
                     except:
                         log.warning("Granule %s: missing input detected for variable '%s' at time step '%s'.",
                             task['granule'], variable_name, time)
+                        
                 task['variables'] = task_variables
                 task['ecco_cfg_loc'] = ecco_cfg_loc
                 task['ecco_grid_loc'] = ecco_grid_loc
