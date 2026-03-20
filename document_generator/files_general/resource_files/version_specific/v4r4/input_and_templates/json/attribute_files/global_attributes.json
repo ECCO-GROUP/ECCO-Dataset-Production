@@ -6,6 +6,18 @@
         "Source": "ACDD"    
     },
     {
+        "Name": "author",
+        "Format": "string",
+        "Description": "TBD",
+        "Source": "ECCO"    
+    },
+    {
+        "Name": "coordinates_comment",
+        "Format": "string",
+        "Description": "TBD",
+        "Source": "ECCO"    
+    },
+    {
         "Name": "cdm_data_type",
         "Format": "string",
         "Description": "The data type, as derived from Unidata's Common Data Model Scientific Data types and understood by THREDDS. (This is a THREDDS \"dataType\", and is different from the CF NetCDF attribute 'featureType', which indicates a Discrete Sampling Geometry file in CF.)",
@@ -19,7 +31,13 @@
     {
         "Name": "conventions",
         "Format": "string",
-        "Description": "A text string identifying the netCDF conventions followed (e.g., CF-1.4, ACDD 1-3)."
+        "Description": "A comma-separated list of the conventions that the data follow. For files that follow this version of ACDD, include the string “ACDD-1.3”"
+    },
+    {
+        "Name": "creator_name",
+        "Format": "string",
+        "Description": "The name of the person (or other creator type specified by the creator_type attribute) principally responsible for creating this data.",
+        "Source": "ACDD"
     },
     {
         "Name": "creator_email",
@@ -27,9 +45,15 @@
         "Description": "The email address of the person (or other creator type specified by the creator_type attribute) principally responsible for creating this data.",
         "Source": "ACDD"},
     {
-        "Name": "creator_name",
+        "Name": "creator_type",
         "Format": "string",
-        "Description": "The name of the person (or other creator type specified by the creator_type attribute) principally responsible for creating this data.",
+        "Description": "Specifies the type of creator with one of the following: person, group, institution, or position. If this attribute is not specified, the creator is assumed to be a person",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "creator_institution",
+        "Format": "string",
+        "Description": "The creator’s institution. The value should be specified even if it matches the value of publisher_institution or if creator_type is an institution",
         "Source": "ACDD"
     },
     {
@@ -45,10 +69,28 @@
         "Source": "ACDD"
     },
     {
-        "Name": "easternmost_longitude",
+        "Name": "date_issued",
+        "Format": "string",
+        "Description": "The date on which this version of the data (including all modifications) was issued.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "date_modified",
+        "Format": "string",
+        "Description": "The date on which this version of the data was last modified.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "date_metadata_modified",
+        "Format": "string",
+        "Description": "The date on which this version of the metadata was last modified.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "geospatial_lon_max",
         "Format": "float",
-        "Description": "Decimal degrees east, range -180 to +180. This is equivalent to ACDD geospatial_lon_max.",
-        "Source":"podaac"
+        "Description": "Decimal degrees east, range -180 to +180.  This is equivalent to GDS “westernmost_longitude”",
+        "Source":"ACDD"
     },
     {
         "Name": "geospatial_lat_resolution",
@@ -75,6 +117,36 @@
         "Source": "ACDD"
     },
     {
+        "Name": "geospatial_vertical_min",
+        "Format": "string",
+        "Description": "Describes the numerically smaller vertical limit and can be part of a 2D or 3D bounding region.  See also geospatial_vertical_positive and geospatial_vertical_units",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "geospatial_vertical_max",
+        "Format": "string",
+        "Description": "Describes the numerically larger vertical limit and can be part of a 2D or 3D bounding region.  See also geospatial_vertical_positive and geospatial_vertical_units",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "geospatial_vertical_positive",
+        "Format": "string",
+        "Description": "Values include either “up” or “down.” If “up,” vertical values are interpreted as “altitude,” with negative values corresponding to below the reference datum (e.g., under water). If “down,” vertical values are interpreted as “depth,” positive values correspond to below the reference datum. Note that if geospatial_vertical_positive is “down” (depth orientation), geospatial_vertical_min specifies the data’s vertical location furthest from the Earth’s center, and geospatial_vertical_max specifies the location closest to the Earth’s center.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "geospatial_vertical_resolution",
+        "Format": "string",
+        "Description": "Information about the targeted vertical spacing of points. Example: “25 meters”",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "geospatial_vertical_units",
+        "Format": "string",
+        "Description": "Units for the vertical axis described in geospatial_vertical_min and geospatial_vertical_max. The default is “EPSG:4979” (height above the ellipsoid, in meters), but other vertical coordinate reference systems may be specified. Note that the common oceanographic practice of using pressure for a vertical coordinate, while not strictly a depth, can be specified using the unit bar. Examples: “EPSG:5829” (instantaneous height above sea level), “EPSG:5831” (instantaneous depth below sea level)",
+        "Source": "ACDD"
+    },
+    {
         "Name": "history",
         "Format": "string",
         "Description": "The name of the institution principally responsible for originating this data. This attribute is recommended by the CF convention.",
@@ -90,6 +162,12 @@
         "Name": "institution",
         "Format": "string",
         "Description": "The name of the institution principally responsible for originating this data. This attribute is recommended by the CF convention.",
+        "Source": "CF, ACDD"
+    },
+    {
+        "Name": "instrument_vocabulary",
+        "Format": "string",
+        "Description": "Controlled vocabulary for the names used in instrument.  Example: “GCMD instrument keywords”",
         "Source": "CF, ACDD"
     },
     {
@@ -111,9 +189,15 @@
         "Source": "ACDD"
     },
     {
-        "Name": "Metadata_Conventions",
+        "Name": "platform",
         "Format": "string",
-        "Description": "A comma-separated list of the conventions that are followed by the dataset. ",
+        "Description": "Name of the platform(s) that supported the sensor data used to create this data set or product. Platforms can be of any type, including satellite, ship, station, aircraft or other. Indicate controlled vocabulary used in platform_vocabulary.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "platform_vocabulary",
+        "Format": "string",
+        "Description": "Controlled vocabulary for the names used in the \"platform\" attribute.",
         "Source": "ACDD"
     },
     {
@@ -134,10 +218,16 @@
         "Source": "GDS"
     },
     {
-        "Name": "northernmost_latitude",
-        "Format": "float",
-        "Description": "Decimal degrees north, range -90 to +90. This is equivalent to ACDD geospatial_lat_max.",
+        "Name": "geospatial_bounds_crs",
+        "Format": "string",
+        "Description": "The CRS of the point coordinates in geospatial_bounds.",
         "Source": "GDS"
+    },
+    {
+        "Name": "geospatial_lat_max",
+        "Format": "float",
+        "Description": "Decimal degrees north, range -90 to +90.  This is equivalent to GDS “northernmost latitude”",
+        "Source": "ACDD"
     },
     {
         "Name": "processing_level",
@@ -146,15 +236,39 @@
         "Source": "ACDD & GDS"
     },
     {
+        "Name": "product_name",
+        "Format": "string",
+        "Description": "TBD",
+        "Source": "ECCO"
+    },
+    {
+        "Name": "product_time_coverage_end",
+        "Format": "string",
+        "Description": "TBD",
+        "Source": "ECCO"
+    },
+    {
+        "Name": "product_time_coverage_start",
+        "Format": "string",
+        "Description": "TBD",
+        "Source": "ECCO"
+    },
+    {
         "Name": "product_version",
         "Format": "string",
         "Description": "The product version of this data file",
         "Source": "GDS"
     },
     {
+        "Name": "program",
+        "Format": "string",
+        "Description": "The overarching program of which the data belongs. A program consists of a set (or portfolio) of related and possibly interdependent projects that meet an overarching objective.  Example: 'NASA Physical Oceanography, Cryosphere, Modeling, Analysis, and Prediction (MAP)'",
+        "Source": "GDS"
+    },
+    {
         "Name": "project",
         "Format": "string",
-        "Description": "The name of the project(s) principally responsible for originating this data.",
+        "Description": "The name of the project(s) principally responsible for originating this data.  Example: 'Estimating the Circulation and Climate of the Ocean (ECCO)'",
         "Source":"ACDD"
     },
     {
@@ -164,9 +278,21 @@
         "Source": "ACDD"
     },
     {
+        "Name": "publisher_institution",
+        "Format": "string",
+        "Description": "The publisher’s institution. If publisher_type is an institution, this attribute should have the same value as publisher_name.  Example: “PO.DAAC”",
+        "Source": "ACDD"
+    },
+    {
         "Name": "publisher_name",
         "Format": "string",
         "Description": "The name of the person (or other entity specified by the publisher_type attribute) responsible for publishing the data file or product to users, with its current metadata and format.",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "publisher_type",
+        "Format": "string",
+        "Description": "Specifies type of publisher with one of the following: person, group, institution, or position. If this attribute is not specified, the publisher is assumed to be a person.  Example: “institution”",
         "Source": "ACDD"
     },
     {
@@ -188,10 +314,11 @@
         "Source":"CF"
     },
     {
-        "Name": "sourthernmost_latitude",
+        "Name": "geospatial_lat_min",
         "Format": "float",
-        "Description": "Decimal degrees north, range -90 to +90. This is equivalent to ACDD geospatial_lat_min.",
-        "Source": "GDS"},
+        "Description": "Decimal degrees north, range -90 to +90.  This is equivalent to GDS “southernmost_latitude”",
+        "Source": "ACDD"
+    },
     {
         "Name": "spatial_resolution",
         "Format": "string",
@@ -202,12 +329,14 @@
         "Name": "standard_name_vocabulary",
         "Format": "string",
         "Description": "The name and version of the controlled vocabulary from which variable standard names are taken.",
-        "Source": "ACDD"},
+        "Source": "ACDD"
+    },
     {
         "Name": "start_time",
         "Format": "string",
         "Description": "Representative date and time of the end of the granule in the ISO 8601 compliant format of \"yyyymmddThhmmssZ\".",
-        "Source": "GDS"},
+        "Source": "GDS"
+    },
     {
         "Name": "stop_time",
         "Format": "string",
@@ -218,17 +347,32 @@
         "Name": "summary",
         "Format": "string",
         "Description": "A paragraph describing the dataset, analogous to an abstract for a paper.",
-        "Source": "ACDD"},
+        "Source": "ACDD"
+    },
     {
         "Name": "time_coverage_end",
         "Format": "string",
-        "Description": "Identical to stop_time. Included for increased ACDD compliance.",
-        "Source": "ACDD"},
+        "Description": "Describes the time of the last data point in the data. Use ISO 8601:2004 date format, preferably the extended format as recommended in ACDD Section 2.6.  Example: “2017-12-30T00:00:00”",
+        "Source": "ACDD"
+    },
     {
         "Name": "time_coverage_start",
         "Format": "string",
-        "Description": "Identical to start_time. Included for increased ACDD compliance.",
-        "Source": "ACDD"},
+        "Description": "Describes the time of the first data point in the data. Use the ISO 8601:2004 date format, preferably the extended format as recommended in ACDD Section 2.6.  Example: “2017-12-29T00:00:00”",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "time_coverage_duration",
+        "Format": "string",
+        "Description": "Describes the duration of the data. Use ISO 8601:2004 duration format, preferably the extended format as recommended in ACDD Section 2.6.  Example: “P1D”",
+        "Source": "ACDD"
+    },
+    {
+        "Name": "time_coverage_resolution",
+        "Format": "string",
+        "Description": "Describes the targeted time period between each value in the data. Use ISO 8601:2004 duration format, preferably the extended format as recommended in ACDD Section 2.6.  Example: “P1D”",
+        "Source": "ACDD"
+    },
     {
         "Name": "title",
         "Format": "string",
@@ -242,9 +386,9 @@
         "Source": "GDS"
     },
     {
-        "Name": "westernmost_longitude",
+        "Name": "geospatial_lon_min",
         "Format": "float",
-        "Description": "Decimal degrees east, range -180 to +180. This is equivalent to ACDD geospatial_lon_min.",
-        "Source": "GDS"
+        "Description": "Decimal degrees east, range -180 to +180.  This is equivalent to GDS “easternmost_longitude”",
+        "Source": "ACDD"
     }
 ]

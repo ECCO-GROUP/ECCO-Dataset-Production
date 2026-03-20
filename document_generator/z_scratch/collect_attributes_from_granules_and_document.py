@@ -86,10 +86,38 @@ with open(non_global_attrs_jsonDoc_tex_path) as file:
 global_attrs_eccoExclusive = set(["author", "coordinates_comment", "product_name", "product_time_coverage_end", "product_time_coverage_start"])
 non_global_attrs_eccoExclusive = set(["c_grid_axis_shift", "coordinate", "direction", "mate", "swap_dim"])
 
+global_attrs_web_probablyNotRelevantToECCO = set(['dataprogress', 'datasetlanguage', 'datasetquality', 'enddirection', 'endlatitude', 'equatorcrossingdate', 'equatorcrossinglongitude', 'equatorcrossingtime', 'fovresolution', 'inputdataproducts', 'inputdataproductversion', 'instrument', 'numberoforbits', 'orbitnumber', 'pge_endtime', 'pge_name', 'pge_starttime', 'pgeversion', 'processingenvironment', 'productiondatetime', 'spatialcompletenessdefinition', 'spatialcompletenessratio', 'startdirection', 'startlatitude', 'startorbit', 'stoporbit', 'validationdata'])
 
 
+print()
+print()
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print()
+print("REMEMBER TO UPDATE THE FINAL JSON NAMES WITH PROPER CAPITALIZATION!!!!!  EVERYTHING HERE IS LOWER CASE FOR EASE OF COMPARISON, BUT MUST FIX IN FINAL VERSION!!!")
+print()
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print()
+print()
 
+print()
+print()
+print("global_attrs_eccoExclusive:")
+print(global_attrs_eccoExclusive)
+print()
 
+print()
+print("non_global_attrs_eccoExclusive:")
+print(non_global_attrs_eccoExclusive)
+print()
+
+print()
+print("global_attrs_web_probablyNotRelevantToECCO:")
+print(global_attrs_web_probablyNotRelevantToECCO)
+print()
 
 
 if global_attrs_granules == global_attrs_repoExampleDoc:
@@ -145,6 +173,8 @@ print(">>>>>>global_attrs_jsonDoc - global_attrs_repoExampleDoc")
 print(sorted(list(global_attrs_jsonDoc - global_attrs_repoExampleDoc)))
 
 print()
+print()
+print()
 print(">>>>>>global_attrs_repoExampleDoc - global_attrs_jsonDoc - global_attrs_eccoExclusive")
 print()
 print(sorted(list(global_attrs_repoExampleDoc - global_attrs_jsonDoc - global_attrs_eccoExclusive)))
@@ -170,6 +200,8 @@ print(">>>>>>non_global_attrs_jsonDoc - non_global_attrs_repoExampleDoc")
 print(sorted(list(non_global_attrs_jsonDoc - non_global_attrs_repoExampleDoc)))
 
 print()
+print()
+print()
 print(">>>>>>non_global_attrs_repoExampleDoc - non_global_attrs_jsonDoc - non_global_attrs_eccoExclusive")
 print()
 print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_jsonDoc - non_global_attrs_eccoExclusive)))
@@ -191,9 +223,6 @@ with open(attr_web_file_path) as file:
 global_non_global_split_string = "Appendix E"
 
 global_non_global = monster_table_line.split(global_non_global_split_string)
-
-#category_split_string = ">D."
-#categories = monster_table_line.split(category_split_string)
 
 # Note that there is one "erronious" row within one of the global data cells, containing the string "UMM-Var"  ; filter that out of the results below
 row_split_string = "<tr><td>" 
@@ -274,8 +303,6 @@ print()
 
 
 print()
-#print("global_attrs_repoExampleDoc - global_attrs_web")
-#print(sorted(list(global_attrs_repoExampleDoc - global_attrs_web)))
 print(">>>>>>global_attrs_repoExampleDoc - global_attrs_web_no_paren")
 print()
 print(sorted(list(global_attrs_repoExampleDoc - global_attrs_web_no_paren)))
@@ -283,8 +310,6 @@ print(sorted(list(global_attrs_repoExampleDoc - global_attrs_web_no_paren)))
 print()
 print()
 print()
-#print("global_attrs_web - global_attrs_repoExampleDoc")
-#print(sorted(list(global_attrs_web - global_attrs_repoExampleDoc)))
 print(">>>>>>global_attrs_web_no_paren - global_attrs_repoExampleDoc")
 print()
 print(sorted(list(global_attrs_web_no_paren - global_attrs_repoExampleDoc)))
@@ -292,8 +317,14 @@ print(sorted(list(global_attrs_web_no_paren - global_attrs_repoExampleDoc)))
 print()
 print()
 print()
-#print("global_attrs_repoExampleDoc - global_attrs_web - global_attrs_eccoExclusive")
-#print(sorted(list(global_attrs_repoExampleDoc - global_attrs_web - global_attrs_eccoExclusive)))
+print(">>>>>>global_attrs_web_no_paren - global_attrs_repoExampleDoc - global_attrs_web_probablyNotRelevantToECCO")
+print()
+print(sorted(list(global_attrs_web_no_paren - global_attrs_repoExampleDoc - global_attrs_web_probablyNotRelevantToECCO)))
+
+
+print()
+print()
+print()
 print(">>>>>>global_attrs_repoExampleDoc - global_attrs_web_no_paren - global_attrs_eccoExclusive")
 print()
 print(sorted(list(global_attrs_repoExampleDoc - global_attrs_web_no_paren - global_attrs_eccoExclusive)))
@@ -310,8 +341,6 @@ print()
 
 
 print()
-#print("non_global_attrs_repoExampleDoc - non_global_attrs_web")
-#print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_web)))
 print(">>>>>>non_global_attrs_repoExampleDoc - non_global_attrs_web_no_paren")
 print()
 print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_web_no_paren)))
@@ -319,8 +348,6 @@ print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_web_no_pare
 print()
 print()
 print()
-#print("non_global_attrs_web - non_global_attrs_repoExampleDoc")
-#print(sorted(list(non_global_attrs_web - non_global_attrs_repoExampleDoc)))
 print(">>>>>>non_global_attrs_web_no_paren - non_global_attrs_repoExampleDoc")
 print()
 print(sorted(list(non_global_attrs_web_no_paren - non_global_attrs_repoExampleDoc)))
@@ -328,8 +355,6 @@ print(sorted(list(non_global_attrs_web_no_paren - non_global_attrs_repoExampleDo
 print()
 print()
 print()
-#print("non_global_attrs_repoExampleDoc - non_global_attrs_web - non_global_attrs_eccoExclusive")
-#print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_web - non_global_attrs_eccoExclusive)))
 print(">>>>>>non_global_attrs_repoExampleDoc - non_global_attrs_web_no_paren - non_global_attrs_eccoExclusive")
 print()
 print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_web_no_paren - non_global_attrs_eccoExclusive)))
@@ -363,6 +388,15 @@ print()
 print(">>>>>>global_attrs_web_no_paren - global_attrs_jsonDoc")
 print()
 print(sorted(list(global_attrs_web_no_paren - global_attrs_jsonDoc)))
+
+
+
+print()
+print()
+print()
+print(">>>>>>global_attrs_web_no_paren - global_attrs_jsonDoc - global_attrs_web_probablyNotRelevantToECCO")
+print()
+print(sorted(list(global_attrs_web_no_paren - global_attrs_jsonDoc - global_attrs_web_probablyNotRelevantToECCO)))
 
 print()
 print()
@@ -430,60 +464,44 @@ if non_global_attrs_granules == non_global_attrs_repoExampleDoc:
     print()
 
 
+print()
+print()
+print("global_attrs_eccoExclusive:")
+print(global_attrs_eccoExclusive)
+print()
 
-#print()
-#print("non_global_attrs_repoExampleDoc - non_global_attrs_granules")
-#print(sorted(list(non_global_attrs_repoExampleDoc - non_global_attrs_granules)))
-#
-#print()
-#print("non_global_attrs_granules - non_global_attrs_repoExampleDoc")
-#print(sorted(list(non_global_attrs_granules - non_global_attrs_repoExampleDoc)))
-#
-#
-#print()
-#print("non_global_attrs_jsonDoc - non_global_attrs_granules")
-#print(sorted(list(non_global_attrs_jsonDoc - non_global_attrs_granules)))
-#
-#print()
-#print("non_global_attrs_granules - non_global_attrs_jsonDoc")
-#print(sorted(list(non_global_attrs_granules - non_global_attrs_jsonDoc)))
+print()
+print("non_global_attrs_eccoExclusive:")
+print(non_global_attrs_eccoExclusive)
+print()
 
+print()
+print("global_attrs_web_probablyNotRelevantToECCO:")
+print(global_attrs_web_probablyNotRelevantToECCO)
+print()
 
+print()
+print("global_attrs_web_paren:")
+print(global_attrs_web_paren)
+print()
 
-#print()
-#print("global_attrs_repoExampleDoc - global_attrs_granules")
-#print(sorted(list(global_attrs_repoExampleDoc - global_attrs_granules)))
-#
-#print()
-#print("global_attrs_granules - global_attrs_repoExampleDoc")
-#print(sorted(list(global_attrs_granules - global_attrs_repoExampleDoc)))
-#
-#
-#print()
-#print("global_attrs_jsonDoc - global_attrs_granules")
-#print(sorted(list(global_attrs_jsonDoc - global_attrs_granules)))
-#
-#print()
-#print("global_attrs_granules - global_attrs_jsonDoc")
-#print(sorted(list(global_attrs_granules - global_attrs_jsonDoc)))
+print()
+print("non_global_attrs_web_paren:")
+print(non_global_attrs_web_paren)
+print()
 
-
-
-
-
-
-
-'''
-global_attrs_granules = sorted(list(global_attrs_granules)) 
-non_global_attrs_granules = sorted(list(non_global_attrs_granules)) 
-
-global_attrs_repoExampleDoc = sorted(list(global_attrs_repoExampleDoc))
-non_global_attrs_repoExampleDoc = sorted(list(non_global_attrs_repoExampleDoc))
-global_attrs_jsonDoc = sorted(list(global_attrs_jsonDoc))
-non_global_attrs_jsonDoc = sorted(list(non_global_attrs_jsonDoc))
-'''
-
-#print(global_attrs_granules == global_attrs_repoExampleDoc)
-#print(non_global_attrs_granules == non_global_attrs_repoExampleDoc)
+print()
+print()
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print()
+print("REMEMBER TO UPDATE THE FINAL JSON NAMES WITH PROPER CAPITALIZATION!!!!!  EVERYTHING HERE IS LOWER CASE FOR EASE OF COMPARISON, BUT MUST FIX IN FINAL VERSION!!!")
+print()
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+print()
+print()
 
 
