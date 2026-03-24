@@ -142,5 +142,6 @@ final_compendium_files_dir: "files_general/compendium_compilation_output_files"
 compendium_tex_filepath: "files_general/resource_files/version_specific/v4r4/input_and_templates/latex/main_compendium_template_DO_NOT_MODIFY/ECCO_V4r4_Dataset_Catalog_and_Variable_Compendium.tex"
 static_support_tex_dir_relative: "files_general/resource_files/version_specific/v4r4/input_and_templates/latex/components"
 user_generated_tex_dir_relative: "files_general/resource_files/version_specific/v4r4/output_and_granules/output/latex"
+user_generated_granules_dir_relative: "files_general/resource_files/version_specific/v4r4/output_and_granules/granules"
 
 remote_server_hostname: urs.earthdata.nasa.gov

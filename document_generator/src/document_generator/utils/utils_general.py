@@ -11,6 +11,11 @@ import requests
 from PIL import Image
 
 
+def list_files_pathlib(directory_path='.'):
+    files = [str(p) for p in Path(directory_path).rglob('*.nc') if p.is_file()]
+    return files
+
+
 def write_latex_lines_to_file(latex_lines: list, output_file: str) -> None:
     """
     Write a list of LaTeX lines to a file, creating parent directories as needed.

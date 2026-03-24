@@ -26,19 +26,28 @@ contain valid data.
     \item Global Attributes
 \end{itemize}
 
+\newpage
+
 \subsection{ECCO netCFD Global Attributes}
 \par The global attributes used in the ECCO V4r4 data netCDF files are listed in the following table.
 \input{global_attributes.tex} 
 
+\newpage
+
 \subsection{ECCO Data netCFD Coordinates, Dimensions and Variables Attributes}
 \par The attributes of the ECCO V4r4 data Coordinates, Dimensions and Variabiles used in the netCDF files are listed in the following table.
 \input{variable_attributes.tex} 
+
+\newpage
 
 \subsection{ECCO Data netCDF Dimensions definitions}
 From the Climate and Forecast (CF) metadata conventions, the dimensions of the variable define the axes of the quantity it contains. Dimensions other than those of space and time may be included. Across all ot the ECCO V4r4 data netCDF files, at least 12 dimensions can be identified (see the following table). Note that \textbf{nv} is not a spatial or temporal dimension per se. It is a kind of dummy dimension of length 2 for the coordiante \textbf{time\_bnds} which has both a starting and ending time for each one averaging period. The same is true of \textbf{nb} which has length 4 and is used by \textbf{XC\_bnds} and \textbf{YC\_bnds} to store coordinates for the 4 corners of each tracer grid cell (more details in the followings sections).
 \input{dimensions_table.tex}
 
 \par Note that (i, j, k, tile, time) are centered dimension coordinates while i\_g, j\_g, k\_l and k\_u are not centered.
+
+\newpage
+
 \subsection{ECCO Data netCDF Coordinates variabile definitions}
 The so-called non-dimension coordinates: i- are variables that (may) contain coordinate data, but are not a dimension coordinate; ii- they can be multidimensional and there is no relationship between the name of a non-dimension coordinate and the name(s) of its dimension(s); iii- can be useful for indexing or plotting ... the following table provides a list of unique coordinates used in ECCO V4r4 data.
 \input{coordinates_table.tex}

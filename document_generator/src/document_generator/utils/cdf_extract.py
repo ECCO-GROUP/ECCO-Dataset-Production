@@ -124,8 +124,8 @@ def latex_example_netcdf(base_dir: str, config_dictionary: dict, grid_type: str)
     latex_lines = []
     latex_lines.append(r'\begin{longtable}{|p{\textwidth}|}')
     latex_lines.extend(config_dictionary[f"example_table_first_latex_lines_{grid_type}"])
-    latex_lines.append(f'netcdf {grid_type} example: {dataset.title} \\\\')
-    latex_lines.append(r'dimensions \\')
+    latex_lines.append(r'\noindent from: \hfill' + utils_general.sanitize(config_dictionary, f'‘{config_dictionary[f"example_granule_{grid_type}"]}’') + r'\hfill\null \\')
+    latex_lines.append(r'dimensions: \\')
     latex_lines.append(r'\hline')
 
     # --- Dimensions block (highlighted in yellow-green) ---
@@ -138,7 +138,7 @@ def latex_example_netcdf(base_dir: str, config_dictionary: dict, grid_type: str)
         )
 
     latex_lines.append(r'\hline')
-    latex_lines.append(r'coordinates \\')
+    latex_lines.append(r'coordinates: \\')
     latex_lines.append(r'\hline')
 
     # --- Coordinates block (highlighted in apricot) ---
@@ -174,7 +174,7 @@ def latex_example_netcdf(base_dir: str, config_dictionary: dict, grid_type: str)
     data_vars = []  # true scientific data variables
 
     latex_lines.append(r'\hline')
-    latex_lines.append(r'data variables \\')
+    latex_lines.append(r'data variables: \\')
     latex_lines.append(r'\hline')
 
     for datavar_name in dataset.data_vars:

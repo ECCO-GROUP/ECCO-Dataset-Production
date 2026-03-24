@@ -40,13 +40,11 @@ non_global_attrs_repoExampleDoc = set()
 
 with open(global_attrs_repoExampleDoc_tex_path) as file:
     for line in file:
-        #if line.strip()[0] != "\\":
         if line.strip()[0] != "\\" or "".join(line.strip()[:2]) == r"\_":
             global_attrs_repoExampleDoc.add(line.split("&")[0].replace('\\','').strip().lower())
 
 with open(non_global_attrs_repoExampleDoc_tex_path) as file:
     for line in file:
-        #if line.strip()[0] != "\\":
         if line.strip()[0] != "\\" or "".join(line.strip()[:2]) == r"\_":
             non_global_attrs_repoExampleDoc.add(line.split("&")[0].replace('\\','').strip().lower())
 

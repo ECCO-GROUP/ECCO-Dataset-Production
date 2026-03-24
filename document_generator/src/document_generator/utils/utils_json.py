@@ -1,3 +1,4 @@
+import xarray as xr
 import json
 from pathlib import Path
 import sys
@@ -43,6 +44,25 @@ def write_attributes_tables_tex(base_dir: str, config_dictionary: dict) -> None:
     :raises KeyError: If any of the three required config keys are missing for
         a discovered attribute type.
     """
+    # Collect all global and non-global attributes present in the granules downloaded by the user
+    global_attributes_from_granules = set()
+    non_global_attributes_from_granules = set()
+
+    all_granule_paths = utils_general.list_files_pathlib(os.path.join(base_dir, config_dictionary["user_generated_granules_dir_relative"]))
+
+    global_attributes_granules = set()
+    non_global_attributes_granules = set()
+
+    for granule_path in all_granule_paths:
+            dataset = xr.open_dataset(granule_path)
+            global_attributes_granules.update([el.lower() for el in list(dataset.attrs.keys())])
+            for var in dataset.data_vars:
+                non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+            for var in dataset.coords:
+                non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+            for var in dataset.dims:
+                non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+
     required = ["latex_lines", "json_file", "tex_file"]
     processed_attribute_types = []
 
@@ -60,13 +80,20 @@ def write_attributes_tables_tex(base_dir: str, config_dictionary: dict) -> None:
                 print(f"writing '{attribute_type}_attributes' latex table")
                 processed_attribute_types.append(attribute_type)
 
-                latex_lines = establish_table(base_dir, config_dictionary, attribute_type)
 
+                #latex_lines = write_table(base_dir, config_dictionary, attribute_type)
+                if attribute_type == "global":
+                    write_table(base_dir, config_dictionary, attribute_type, global_attributes_granules)
+                else:
+                    write_table(base_dir, config_dictionary, attribute_type, non_global_attributes_granules)
+
+                '''
                 latex_output_file = os.path.join(base_dir, config_dictionary[f"{attribute_type}_attributes_tex_file"])
                 # Create any missing parent directories for the output path
                 Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
                 with open(latex_output_file, 'w') as output_file:
                     output_file.writelines(line + '\n' for line in latex_lines)
+                '''
 
 
 def obtain_json_data(base_dir: str, filename: str) -> list:
@@ -103,8 +130,7 @@ def obtain_keys(json_data: list) -> set:
     return keys
 
 
-def establish_table(base_dir: str, config_dictionary: dict, attribute_type: str) -> list:
-#def establish_table(base_dir: str, dictionary_list_from_json: list, config_dictionary: dict, attribute_type: str) -> list:
+def write_table(base_dir: str, config_dictionary: dict, attribute_type: str, attributes_granules: set) -> list:
     """
     Build LaTeX table row lines from a list of JSON records.
 
@@ -126,37 +152,61 @@ def establish_table(base_dir: str, config_dictionary: dict, attribute_type: str)
         row ending with ``\\\\ \\hline``.
     :rtype: list[str]
     """
-
     # Copy header lines to avoid mutating the original config list
     latex_lines = list(config_dictionary[f"{attribute_type}_attributes_latex_lines"])
     dictionary_list_from_json = obtain_json_data(base_dir, config_dictionary[f"{attribute_type}_attributes_json_file"])
 
     max_col = 0  # Track the widest row to pad narrower rows consistently
 
+    attributes_list_from_json = []
     for dictionary in dictionary_list_from_json:
-        # Sanitize each cell value for LaTeX, falling back to "N/A" for absent keys
-        formatted_dictionary_as_list = [
-            utils_general.sanitize_with_url(config_dictionary, str(dictionary.get(key, "N/A")))
-            for key in dictionary
-        ]
+        attributes_list_from_json.append(list(dictionary.values())[0].lower()) 
 
-        # Update the max column count seen so far
-        max_col = len(formatted_dictionary_as_list) if len(formatted_dictionary_as_list) > max_col else max_col
 
-        # Pad with empty cells if this row has fewer columns than the widest row
-        if len(formatted_dictionary_as_list) < max_col:
-            formatted_dictionary_as_list.extend([""] * (max_col - len(formatted_dictionary_as_list)))
+    mystery_attributes = []
 
-        latex_lines.append(
-            r'\rowcolor{' + config_dictionary[f"{attribute_type}_attribute_rowcolor"] + '} ' + '\n' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
-            #r'\rowcolor{' + config_dictionary[f"{attribute_type}_attribute_rowcolor"] + '} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
-            #rf'\rowcolor{config_dictionary[f"{attribute_type}_attribute_rowcolor"]} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
-            #r'\rowcolor{cyan!25} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
-            #r'\rowcolor{LightCyan} ' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
-        )
+    for attribute in attributes_granules:
+        if attribute.lower() not in attributes_list_from_json:
+            
+            #raise KeyError(f"Attribute ‘{attribute}’ from your downloaded granules is not present in the list of approved attributes (see {config_dictionary[f'{attribute_type}_attributes_json_file']})")
+
+            mystery_attributes.append(attribute)
+
+        else:
+            dictionary_index = attributes_list_from_json.index(attribute)
+            formatted_dictionary_as_list = [
+                utils_general.sanitize_with_url(config_dictionary, str(dictionary_list_from_json[dictionary_index].get(key, "N/A")))
+                for key in dictionary
+            ]
+
+            # Update the max column count seen so far
+            max_col = len(formatted_dictionary_as_list) if len(formatted_dictionary_as_list) > max_col else max_col
+
+            # Pad with empty cells if this row has fewer columns than the widest row
+            if len(formatted_dictionary_as_list) < max_col:
+                formatted_dictionary_as_list.extend([""] * (max_col - len(formatted_dictionary_as_list)))
+
+            latex_lines.append(
+                r'\rowcolor{' + config_dictionary[f"{attribute_type}_attribute_rowcolor"] + '} ' + '\n' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
+            )
 
     latex_lines.append(r'\end{longtable}')
-    
-    return latex_lines
+
+    latex_output_file = os.path.join(base_dir, config_dictionary[f"{attribute_type}_attributes_tex_file"])
+    # Create any missing parent directories for the output path
+    Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
+    with open(latex_output_file, 'w') as output_file:
+        output_file.writelines(line + '\n' for line in latex_lines)
+
+    print() 
+    print(f"The following attributes from your local granules were not included in the ‘{attribute_type} attributes’ table, as they do not exist in the official list of possible {attribute_type} attributes:")
+    print(mystery_attributes)
+    print() 
+    print(f"For a list of allowed {attribute_type} attributes, see ‘{config_dictionary[f'{attribute_type}_attributes_json_file']}’.")
+    print() 
+    print() 
+    print() 
+
+    #return latex_lines
 
 
