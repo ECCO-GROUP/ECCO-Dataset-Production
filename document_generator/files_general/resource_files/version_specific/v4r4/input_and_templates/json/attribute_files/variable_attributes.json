@@ -48,6 +48,24 @@
     "Source": "CF, ACDD"
   },
   {
+    "Variable Attribute Name": "c_grid_axis_shift",
+    "Format": "string",
+    "Description": "Logical location of a variable relative to a tracer grid cell center in terms of fractional distance to the adjacent cell center along a given axis (x, y, or z). In the MITgcm's Arakawa C-grid, variables at 'u', 'v', and 'w' points are offset by +/- 0.5 relative to the tracer grid cell center.", 
+    "Source": "xmitgcm"
+  },
+  {
+    "Variable Attribute Name": "bounds",
+    "Format": "string",
+    "Description": "An attribute for coordinate variables to describe the vertices of the cell boundaries and thus the intervals between cells.  Examples: ‘time:bounds = “time_bnds”’, ‘XC:bounds = “XC_bnds”’, and ‘YC:bounds = “YC_bnds”’, with the later definitions: ‘time_bnds:long_name = “time bounds of averaging period”’, ‘XC_bnds:long_name = “longitudes of tracer grid cell corners”’, and ‘XC_bnds:long_name = “longitudes of tracer grid cell corners”’.",
+    "Source": "CF"
+  },
+  {
+    "Variable Attribute Name": "coverage_content_type",
+    "Format": "string",
+    "Description": "An ISO 19115-1 code to indicate the source of the data, MD_CoverageContentTypeCode [116]. Examples: “image,” “thematicClassification,” “physicalMeasurement,” “auxiliaryInformation,” “qualityInformation,” “referenceInformation,” “modelResult,” “coordinate”.",
+    "Source": "ACDD"
+  },
+  {
     "Variable Attribute Name": "comment",
     "Format": "string",
     "Description": "Miscellaneous information about the variable or the methods used to produce it.",
