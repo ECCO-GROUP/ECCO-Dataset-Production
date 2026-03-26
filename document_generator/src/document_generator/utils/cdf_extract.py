@@ -124,7 +124,11 @@ def latex_example_netcdf(base_dir: str, config_dictionary: dict, grid_type: str)
     latex_lines = []
     latex_lines.append(r'\begin{longtable}{|p{\textwidth}|}')
     latex_lines.extend(config_dictionary[f"example_table_first_latex_lines_{grid_type}"])
-    latex_lines.append(r'\noindent from: \hfill' + utils_general.sanitize(config_dictionary, f'‘{config_dictionary[f"example_granule_{grid_type}"]}’') + r'\hfill\null \\')
+    #latex_lines.append(r'granule:  ' + utils_general.sanitize(config_dictionary, f'{config_dictionary[f"example_granule_{grid_type}"]}') + r'\\')
+    #latex_lines.append('granule: ' + utils_general.sanitize(config_dictionary, f'‘{config_dictionary[f"example_granule_{grid_type}"]}’') + r'\\')
+    #latex_lines.append(r'\noindent from: \hfill' + utils_general.sanitize(config_dictionary, f'‘{config_dictionary[f"example_granule_{grid_type}"]}’') + r'\hfill\null \\')
+    latex_lines.append(r'\noindent granule: \hfill ' + utils_general.sanitize(config_dictionary, f'{config_dictionary[f"example_granule_{grid_type}"]}') + r'\hfill\null \\')
+    latex_lines.append(r'\hline')
     latex_lines.append(r'dimensions: \\')
     latex_lines.append(r'\hline')
 
@@ -479,7 +483,8 @@ def data_var_table(
     la.append(rf'{storageType} & {varName} & {description.capitalize()} & {unit} \\ \hline')
 
     # CDL description block — rendered in monospace font via \fontfamily{lmtt}
-    la.append(r'\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline')
+    #la.append(r'\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Description of the variable in Common Data language (CDL)}}} \\ \hline')
+    la.append(r'\multicolumn{4}{|c|}{\cellcolor{lightgray}{\textbf{Common Data format Language (CDL) description}}} \\ \hline')
     la.append(
         r'\multicolumn{4}{|c|}' +
         r'{\fontfamily{lmtt}\selectfont{\makecell{\parbox{.95\textwidth}' +

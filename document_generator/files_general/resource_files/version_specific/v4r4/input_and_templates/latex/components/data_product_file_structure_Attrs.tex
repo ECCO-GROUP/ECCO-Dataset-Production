@@ -59,12 +59,18 @@ The so-called non-dimension coordinates: i- are variables that (may) contain coo
 \par ECCO V4r4 uses the Lat-Lon-Cap 90 (LLC90) grid, a native specialized global grid designed for ocean and sea-ice modeling. The LLC90 grid divides the globe into five faces, with dimensions: 1- [90x270], 2- [90x270], 3- [90x90], 4- [270x90], and 5- [270x90]. Each face consists of 90x90 tiles, hence the name LLC90. LLC90 grid combines a latitude-longitude grid between 70\textdegree S and 57\textdegree N with an Arctic "cap" in the northern hemisphere to handle polar regions effectively. The horizontal resolution varies spatially from about 22 km in high latitudes to 110 km in mid-latitudes. Redarding the vertical and horizontal resolutions, the grid has 50 vertical levels, with spacing increasing from 10 m near the surface to 457 m near the ocean bottom, which is set at a maximum depth of 6145 m. The Cartesian coordinates (x, y) are locally oriented within each tile, which may differ from traditional longitude-latitude directions. Diagnostic outputs include both native (UVEL, VVEL) and conventional (EVEL, NVEL) velocity components for ease of analysis. The datasets include geometric details such as cell areas, side lengths, rotation angles, bathymetry, and land/ocean masks. LLC90 grid geometric parameters are essential for accurate modeling and budget calculations. The LLC90 grid is particularly suited for global ocean circulation studies due to its efficient handling of polar regions and its variable resolution that balances computational efficiency with detail where needed.
 
 \pagebreak
-\subsection{Example of ECCO V4r4 netCDF lat-lon grid datasets}
+\subsection{Example of ECCO V4r4 dataset from the lat-lon grid}
+%\subsection{Example of ECCO V4r4 dataset from the ‘lat-lon’ grid}
+%\subsection{Example of ECCO V4r4 netCDF lat-lon grid dataset}
 \input{example_lat-lon_table.tex}
 \pagebreak
-\subsection{Example of ECCO V4r4 netCDF native llc90 grid datasets}
+\subsection{Example of ECCO V4r4 dataset from the native LLC90 grid}
+%\subsection{Example of ECCO V4r4 dataset from the ‘native’ grid}
+%\subsection{Example of ECCO V4r4 netCDF native llc90 grid dataset}
 \input{example_native_table.tex}
 \pagebreak
-\subsection{Example of ECCO V4r4 netCDF for 1D data}
+\subsection{Example of ECCO V4r4 dataset from the 1D grid}
+%\subsection{Example of ECCO V4r4 dataset from the ‘1D’ grid}
+%\subsection{Example of ECCO V4r4 netCDF 1D data dataset}
 \input{example_1D_table.tex}
 

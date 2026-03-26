@@ -83,12 +83,15 @@ def write_datasets(base_dir: str, config_dictionary: dict, overwrite_switch: boo
     :type overwrite_switch: bool
     :returns: None
     """
-    # Navigate two levels up from the native coordinate dir to reach the
+    # Navigate two levels up from a <grid_type> coordinate dir to reach the
     # common ancestor of all granule type / grid type directories
-    granules_parent_directory = os.path.join(
-        base_dir,
-        "/".join(config_dictionary["coordinate_files_native_dir"].split("/")[:-2])
-    )
+    for grid_type in config_dictionary["possible_grid_types"]:
+        if Path(os.path.join(base_dir,config_dictionary[f"coordinate_files_{grid_type}_dir"])).exists():
+            granules_parent_directory = os.path.join(
+                base_dir,
+                "/".join(config_dictionary[f"coordinate_files_{grid_type}_dir"].split("/")[:-2])
+            )
+            break
 
     # Each leaf directory contains granules for one (type, grid) combination
     granule_directories = [

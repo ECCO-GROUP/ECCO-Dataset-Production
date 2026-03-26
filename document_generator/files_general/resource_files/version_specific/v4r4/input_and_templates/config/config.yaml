@@ -9,8 +9,8 @@ thumbnail_path_modifier_string: _thumbnail
 tab_char: \t
 tab_width_cm: 0.5
 
-overwrite_switch: True
-#overwrite_switch: False
+##overwrite_switch: True
+overwrite_switch: False
 
 ecco_version_string: v4r4
 
@@ -36,11 +36,14 @@ variable_attribute_rowcolor: violet!25
 #global_attribute_rowcolor: {cyan!25}
 #variable_attribute_rowcolor: {violet!25}
 
+#granules_url_list_file_relative: files_general/resource_files/version_specific/v4r4/input_and_templates/granules_to_download_testing/granules_to_download.txt
 granules_url_list_file_relative: files_general/resource_files/version_specific/v4r4/input_and_templates/granules_to_download/granules_to_download.txt
 
+#global_attributes_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json_testing/attribute_files/global_attributes.json
 global_attributes_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json/attribute_files/global_attributes.json
 global_attributes_tex_file: files_general/resource_files/version_specific/v4r4/output_and_granules/output/latex/global_attributes.tex
 
+#variable_attributes_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json_testing/attribute_files/variable_attributes.json
 variable_attributes_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json/attribute_files/variable_attributes.json
 variable_attributes_tex_file: files_general/resource_files/version_specific/v4r4/output_and_granules/output/latex/variable_attributes.tex
 
@@ -52,18 +55,24 @@ example_1D_table_tex_file: files_general/resource_files/version_specific/v4r4/ou
 groupings_coordinate_native_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json/wecandobetter/native_coords.json
 groupings_coordinate_lat-lon_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json/wecandobetter/lat-lon_coords.json
 
+#groupings_variable_native_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json_testing/groupings/ECCOv4r4_groupings_for_native_datasets.json
+#groupings_variable_lat-lon_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json_testing/groupings/ECCOv4r4_groupings_for_lat-lon_datasets.json
+#groupings_variable_1D_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json_testing/groupings/ECCOv4r4_groupings_for_1D_datasets.json
+
 groupings_variable_native_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json/groupings/ECCOv4r4_groupings_for_native_datasets.json
 groupings_variable_lat-lon_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json/groupings/ECCOv4r4_groupings_for_lat-lon_datasets.json
 groupings_variable_1D_json_file: files_general/resource_files/version_specific/v4r4/input_and_templates/json/groupings/ECCOv4r4_groupings_for_1D_datasets.json
 
-
 coordinate_files_native_dir: files_general/resource_files/version_specific/v4r4/output_and_granules/granules/coordinate_granules/granules_native
 coordinate_files_lat-lon_dir: files_general/resource_files/version_specific/v4r4/output_and_granules/granules/coordinate_granules/granules_lat-lon
+
+#variable_files_native_dir: files_general/resource_files/version_specific/v4r4/output_and_granules/granules_testing/variable_granules/granules_native
+#variable_files_lat-lon_dir: files_general/resource_files/version_specific/v4r4/output_and_granules/granules_testing/variable_granules/granules_lat-lon
+#variable_files_1D_dir: files_general/resource_files/version_specific/v4r4/output_and_granules/granules_testing/variable_granules/granules_1D
 
 variable_files_native_dir: files_general/resource_files/version_specific/v4r4/output_and_granules/granules/variable_granules/granules_native
 variable_files_lat-lon_dir: files_general/resource_files/version_specific/v4r4/output_and_granules/granules/variable_granules/granules_lat-lon
 variable_files_1D_dir: files_general/resource_files/version_specific/v4r4/output_and_granules/granules/variable_granules/granules_1D
-
 
 figures_coordinate_native_dir: files_general/resource_files/version_specific/v4r4/output_and_granules/output/figures/figures_coordinates_native 
 figures_coordinate_lat-lon_dir: files_general/resource_files/version_specific/v4r4/output_and_granules/output/figures/figures_coordinates_lat-lon 
@@ -110,17 +119,20 @@ variable_attributes_latex_lines:
   #- \rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline
 
 example_table_first_latex_lines_lat-lon:
-  - \caption{Example CDL description of lat-lon dataset}
+  #- \caption{Example CDL description of lat-lon dataset}
+  - \caption{Example Common Data format Language (CDL) description of lat-lon dataset}
   - \label{tab:cdl-lat-lon} \\
   - \hline \endfirsthead \endhead \endfoot \hline \endlastfoot
 
 example_table_first_latex_lines_native:
-  - \caption{Example CDL description of native dataset}
+  #- \caption{Example CDL description of native dataset}
+  - \caption{Example Common Data format Language (CDL) description of native dataset}
   - \label{tab:cdl-native} \\
   - \hline \endfirsthead \endhead \endfoot \hline \endlastfoot
 
 example_table_first_latex_lines_1D:
-  - \caption{Example CDL description of 1D dataset}
+  #- \caption{Example CDL description of 1D dataset}
+  - \caption{Example Common Data format Language (CDL) description of 1D dataset}
   - \label{tab:cdl-1D} \\
   - \hline \endfirsthead \endhead \endfoot \hline \endlastfoot
 

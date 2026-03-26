@@ -165,7 +165,7 @@ def write_table(base_dir: str, config_dictionary: dict, attribute_type: str, att
 
     mystery_attributes = []
 
-    for attribute in attributes_granules:
+    for attribute in sorted(list(attributes_granules)):
         if attribute.lower() not in attributes_list_from_json:
             
             #raise KeyError(f"Attribute ‘{attribute}’ from your downloaded granules is not present in the list of approved attributes (see {config_dictionary[f'{attribute_type}_attributes_json_file']})")
