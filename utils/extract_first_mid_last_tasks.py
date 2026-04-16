@@ -151,6 +151,9 @@ def extract_first_mid_last_tasks(
             if tl.suffix=='.json':  # AWS-copied or synced objects might be other than '.json'
                 log.debug('Extracting first/mid/last from %s ...',tl.name)
                 _tl = json.load(open(tl.resolve()))
+                if not isinstance(_tl,list) or len(_tl)==0:
+                    log.warning('Tasklist %s is not a non-empty list; skipping',tl.name)
+                    continue
                 _tl_short = [ _tl[0], _tl[len(_tl)//2], _tl[-1]]
                 json.dump(_tl_short,open(Path(tmpdir_out).joinpath(tl.stem+postfix+tl.suffix),'w'),indent=4)
 
