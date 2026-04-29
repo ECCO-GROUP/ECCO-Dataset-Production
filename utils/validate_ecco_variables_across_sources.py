@@ -3,6 +3,11 @@ import json
 import boto3
 from typing import Set
 
+## usage example
+## python validate_ecco_variables_across_sources.py --desc /Users/ifenty/git_repo_others/ECCO-v4-Configurations/ECCOv4\ Release\ 6/metadata/variable_metadata.json --groups /Users/ifenty/git_repo_others/ECCO-v4-Configurations/ECCOv4\ Release\ 6/metadata/groupings_for_native_datasets.json --s3-bucket ecco-tmp --s3-prefixes ecco-results/V4r6/diags_monthly/
+
+
+
 def get_vars_from_descriptions(filepath: str) -> Set[str]:
     """Source 1: Extract 'name' from a list of variable dictionaries."""
     with open(filepath, 'r') as f:
