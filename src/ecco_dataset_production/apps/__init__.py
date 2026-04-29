@@ -17,3 +17,4 @@ Example command-line usage::
 from . import create_job_files
 from . import create_job_task_list
 from . import generate_datasets
+from . import subset_tasklists
