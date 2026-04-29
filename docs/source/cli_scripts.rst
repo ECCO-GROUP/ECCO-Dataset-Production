@@ -2,7 +2,7 @@
 CLI Scripts Reference
 =====================
 
-The ECCO Dataset Production package provides five command-line interface (CLI)
+The ECCO Dataset Production package provides six command-line interface (CLI)
 scripts that support the end-to-end workflow of generating ECCO datasets.
 These scripts are installed as entry points when the package is installed
 and can be invoked directly from the command line.
@@ -61,6 +61,7 @@ input/output files, and execution flow diagrams.
    script_create_job_task_list
    script_generate_datasets
    script_aws_s3_sync
+   script_subset_tasklists
 
 
 Quick Reference
@@ -85,6 +86,10 @@ Quick Reference
 :doc:`script_aws_s3_sync`
     Wrapper for AWS S3 sync with multiprocessing support for uploads
     and SSO authentication handling.
+
+:doc:`script_subset_tasklists`
+    Creates subsets of tasklist JSON files for testing and quick runs.
+    Supports 10 sampling modes including temporal, statistical, and custom selection.
 
 
 Complete Workflow Example
@@ -133,6 +138,14 @@ The following shell script illustrates a complete end-to-end workflow:
             --outfile "$outfile" \
             -l INFO
     done
+
+    # 3a. (Optional) Create test subsets for validation
+    # Uncomment to test on a small subset before full production
+    # mkdir -p ./test_tasklists
+    # edp_subset_tasklists ./tasklists/ \
+    #     --output_dir ./test_tasklists \
+    #     --mode spread -n 10 \
+    #     -l INFO
 
     # 4. Generate datasets from task lists
     for tasklist in ./tasklists/*.json; do
