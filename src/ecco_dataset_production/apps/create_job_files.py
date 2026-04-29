@@ -70,7 +70,7 @@ def create_job_files(
     elif fnmatch(os.path.basename(groupings_file).lower(),'*1d*'):
         grid_type = '1d'
     if not grid_type:
-        raise RuntimeException(
+        raise RuntimeError(
             f"Cannot determine grid type ('native', 'latlon', or '1d') from groupings_file, {groupings_file}")
 
     # for now, just generate job descriptions for 'all' timesteps. In the

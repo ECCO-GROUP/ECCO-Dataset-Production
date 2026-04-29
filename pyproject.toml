@@ -43,4 +43,5 @@ edp_create_factors          = 'ecco_dataset_production.apps.create_factors:main'
 edp_create_job_files        = 'ecco_dataset_production.apps.create_job_files:main'
 edp_create_job_task_list    = 'ecco_dataset_production.apps.create_job_task_list:main'
 edp_generate_datasets       = 'ecco_dataset_production.apps.generate_datasets:main'
+edp_subset_tasklists        = 'ecco_dataset_production.apps.subset_tasklists:main'
 
