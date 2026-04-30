@@ -151,22 +151,51 @@ class ECCOGranuleFilestr(object):
 
         """
         if filestr:
-            # use filestr to set all attributes (a little complicated because
-            # ECCO variable names may include underscores):
-            try:
-                #tmp: quick fix for Darwin:
-                #re_so = re.search('_day_snap|_mon_snap|_snap|_day_mean|_mon_mean',filestr)
-                re_so = re.search('_snap|_day_mean|_mon_mean',filestr)
-                self.prefix = filestr[:re_so.span()[0]]
-                self.averaging_period = filestr[re_so.span()[0]+1:re_so.span()[1]]
-                date_version_grid_type_grid_label_and_ext = filestr[re_so.span()[1]+1:]
-                # remaining fields are reliably separated by '_'; parse accordingly:
-                self.date,_,self.version,self.grid_type,grid_label_and_ext = \
-                    filestr[re_so.span()[1]+1:].split('_')
-                self.grid_label,self.ext = grid_label_and_ext.split('.')
-            except:
-                raise ValueError(
-                    f'unrecognized file string format; must be of the form {ECCOGranuleFilestr.fmt}')
+            # use filestr to set all attributes
+            self.str = filestr
+            self._re_filestr = None
+            self.averaging_period = None
+            self.grid_type = None
+            self.date = None
+            self.version = None
+            self.grid_label = None
+            self.ext = None
+            self.prefix = None
+
+            # first, determine if this is a time-invariant granule.
+            # if so, it will not have 'day_mean', 'mon_mean', or 'snap' in the name
+            time_invariant = False
+            if not any(period in self.str for period in ['day_mean', 'mon_mean', 'snap']):
+                time_invariant = True
+
+            if time_invariant:
+                # Format: <prefix>_ECCO_<version>_<grid_type>_<grid_label>.nc
+                # Example: GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc
+                try:
+                    self.prefix, _, self.version, self.grid_type, grid_label_and_ext = \
+                        filestr.split('_', 4)
+                    self.grid_label, self.ext = grid_label_and_ext.split('.')
+                    self.averaging_period = 'time-invariant'
+                except ValueError:
+                     raise ValueError(
+                        f'unrecognized time-invariant file string format; must be of the form <prefix>_ECCO_<version>_<grid_type>_<grid_label>.nc')
+
+            else:
+                # Time-dependent formats
+                try:
+                    #tmp: quick fix for Darwin:
+                    #re_so = re.search('_day_snap|_mon_snap|_snap|_day_mean|_mon_mean',filestr)
+                    re_so = re.search('_snap|_day_mean|_mon_mean',filestr)
+                    self.prefix = filestr[:re_so.span()[0]]
+                    self.averaging_period = filestr[re_so.span()[0]+1:re_so.span()[1]]
+                    date_version_grid_type_grid_label_and_ext = filestr[re_so.span()[1]+1:]
+                    # remaining fields are reliably separated by '_'; parse accordingly:
+                    self.date,_,self.version,self.grid_type,grid_label_and_ext = \
+                        filestr[re_so.span()[1]+1:].split('_')
+                    self.grid_label,self.ext = grid_label_and_ext.split('.')
+                except:
+                    raise ValueError(
+                        f'unrecognized file string format; must be of the form {ECCOGranuleFilestr.fmt}')
         else:
             # set attributes that may have been provided:
             self.prefix = kwargs.pop('prefix',None)
@@ -198,16 +227,18 @@ class ECCOGranuleFilestr(object):
         filestring components are undefined.
 
         """
-        filestr = '_'.join([
-            self.prefix if self.prefix else '*',
-            self.averaging_period if self.averaging_period else '*',
-            self.date if self.date else '*',
-            'ECCO',
-            self.version if self.version else '*',
-            self.grid_type if self.grid_type else '*',
-            self.grid_label if self.grid_label else '*',
-            ])
-        return '.'.join([filestr,self.ext])
+        prefix = self.prefix if self.prefix else '*'
+        averaging_period = self.averaging_period if self.averaging_period else '*'
+        date = self.date if self.date else '*'
+        version = self.version if self.version else '*'
+        grid_type = self.grid_type if self.grid_type else '*'
+        grid_label = self.grid_label if self.grid_label else '*'
+        ext = self.ext if self.ext else '*'
+
+        if self.averaging_period == 'time-invariant':
+            return '_'.join([prefix, 'ECCO', version, grid_type, grid_label + '.' + ext])
+        else:
+            return '_'.join([prefix, averaging_period, date, 'ECCO', version, grid_type, grid_label + '.' + ext])
 
 
     @property
@@ -216,14 +247,19 @@ class ECCOGranuleFilestr(object):
         filestring components are undefined.
 
         """
-        filestr = '_'.join([
-            self.prefix if self.prefix else '.*',
-            self.averaging_period if self.averaging_period else '.*',
-            self.date if self.date else '.*',
-            'ECCO',
-            self.version if self.version else '.*',
-            self.grid_type if self.grid_type else '.*',
-            self.grid_label if self.grid_label else '.*',
-            ])
-        return r'\.'.join([filestr,self.ext])
+        if hasattr(self, '_re_filestr') and self._re_filestr:
+            return self._re_filestr
+
+        prefix = self.prefix if self.prefix else '.*'
+        averaging_period = self.averaging_period if self.averaging_period else '.*'
+        date = self.date if self.date else r'\d{4}-\d{2}-\d{2}'
+        version = self.version if self.version else '.*'
+        grid_type = self.grid_type if self.grid_type else '.*'
+        grid_label = self.grid_label if self.grid_label else '.*'
+        ext = self.ext if self.ext else '.*'
+
+        if self.averaging_period == 'time-invariant':
+             return '_'.join([prefix, 'ECCO', version, grid_type, grid_label + r'\.' + ext])
+        else:
+            return '_'.join([prefix, averaging_period, date, 'ECCO', version, grid_type, grid_label + r'\.' + ext])
 
