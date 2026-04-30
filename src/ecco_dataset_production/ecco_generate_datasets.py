@@ -406,18 +406,20 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
             all_metadata['global_native'], dataset, task['dynamic_metadata']['dimension'])
 
     # time metadata:
-    if 'time' in dataset.coords:
-        dataset = ecco_v4_py.ecco_utils.add_coordinate_metadata(
-            all_metadata['coord_time'], dataset)
+    if not task.is_time_invariant:
+        if 'time' in dataset.coords:
+            dataset = ecco_v4_py.ecco_utils.add_coordinate_metadata(
+                all_metadata['coord_time'], dataset)
 
     # global time and date-associated metadata:
-    if 'mean' in task.averaging_period:
-        dataset.attrs['time_coverage_start']= task['dynamic_metadata']['time_coverage_start']
-        dataset.attrs['time_coverage_end']  = task['dynamic_metadata']['time_coverage_end']
-    #TODO:
-    #else:
-    #    G.attrs['time_coverage_start'] = str(G.time.values[0])[0:19]
-    #    G.attrs['time_coverage_end'] = str(G.time.values[0])[0:19]
+    if not task.is_time_invariant:
+        if 'mean' in task.averaging_period:
+            dataset.attrs['time_coverage_start']= task['dynamic_metadata']['time_coverage_start']
+            dataset.attrs['time_coverage_end']  = task['dynamic_metadata']['time_coverage_end']
+        #TODO:
+        #else:
+        #    G.attrs['time_coverage_start'] = str(G.time.values[0])[0:19]
+        #    G.attrs['time_coverage_end'] = str(G.time.values[0])[0:19]
 
     # production date/time ('YYYY-MM-DDThh:mm:ss', i.e., minus decimal seconds)
     current_time = datetime.datetime.now().isoformat().split('.')[0]
@@ -490,9 +492,12 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
             dataset.attrs['comment'] = task['dynamic_metadata']['comment']
     except:
         pass
-    dataset.time.attrs['long_name'] = task['dynamic_metadata']['time_long_name']
-    dataset.attrs['time_coverage_duration'] = task['dynamic_metadata']['time_coverage_duration']
-    dataset.attrs['time_coverage_resolution'] = task['dynamic_metadata']['time_coverage_resolution']
+
+    if not task.is_time_invariant:
+        dataset.time.attrs['long_name'] = task['dynamic_metadata']['time_long_name']
+        dataset.attrs['time_coverage_duration'] = task['dynamic_metadata']['time_coverage_duration']
+        dataset.attrs['time_coverage_resolution'] = task['dynamic_metadata']['time_coverage_resolution']
+
     dataset.attrs['product_name'] = os.path.basename(task['granule'])
     dataset.attrs['summary'] = ' '.join([task['dynamic_metadata']['summary'],dataset.attrs['summary']])
 
@@ -533,6 +538,67 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
     dataset.attrs = dict(sorted(dataset.attrs.items(),key = lambda x : x[0].casefold()))
 
     return (dataset,encoding)
+
+
+def process_time_invariant_granule(task, cfg, grid=None, mapping_factors=None, metadata=None, log_level=None, **kwargs):
+    """
+    Process a time-invariant granule NetCDF file to add ancillary data and metadata.
+    """
+    log = logging.getLogger('edp.'+__name__)
+    if log_level:
+        log.setLevel(log_level)
+
+    netcdf_file = task['input_netcdf']
+
+    # Load the NetCDF file into an xarray Dataset
+    merged_variable_dataset = xr.open_dataset(netcdf_file)
+
+    print('pre-strip')
+    print(merged_variable_dataset)
+    for var in merged_variable_dataset.data_vars:
+        print(merged_variable_dataset[var].attrs)
+
+    if task.get('strip_attributes', False):
+        print('stripping attributes from dataset...')
+        # Remove all global attributes
+        merged_variable_dataset.attrs = {}
+        # Remove all variable and coordinate attributes
+        for var in merged_variable_dataset.variables:
+            merged_variable_dataset[var].attrs = {}
+
+    print('\npost-strip')
+    print(merged_variable_dataset)
+    for var in merged_variable_dataset.data_vars:
+        print(merged_variable_dataset[var].attrs)
+
+
+    # set miscellaneous granule attributes and properties:
+    merged_variable_dataset_with_ancillary_data = set_granule_ancillary_data(
+        dataset=merged_variable_dataset, task=task,
+        grid=grid, mapping_factors=mapping_factors, cfg=cfg)
+
+    # append metadata:
+    merged_variable_dataset_with_all_metadata, encoding = set_granule_metadata(
+        dataset=merged_variable_dataset_with_ancillary_data,
+        task=task, ecco_metadata=metadata, cfg=cfg)
+
+    # write:
+    if task.is_granule_local:
+        if os.path.dirname(task['granule']) and not os.path.exists(os.path.dirname(task['granule'])):
+            os.makedirs(os.path.dirname(task['granule']))
+        merged_variable_dataset_with_all_metadata.to_netcdf(
+            task['granule'], encoding=encoding)
+    else:
+        with tempfile.TemporaryDirectory() as upload_tmpdir:
+            # temporary directory will self-destruct at end of with block
+            _src = os.path.basename(task['granule'])
+            _dest = task['granule']
+            merged_variable_dataset_with_all_metadata.to_netcdf(
+                os.path.join(upload_tmpdir,_src), encoding=encoding)
+            log.info('uploading %s to %s', os.path.join(upload_tmpdir,_src), _dest)
+            aws.ecco_aws_s3_cp.aws_s3_cp( src=os.path.join(upload_tmpdir,_src), dest=_dest, **kwargs)
+
+    log.info('... done')
 
 
 def generate_datasets( tasklist, log_level=None, **kwargs):
@@ -597,39 +663,54 @@ def generate_datasets( tasklist, log_level=None, **kwargs):
 
 
     for task in parsed_tasklist:
-
-        cfg = configuration.ECCODatasetProductionConfig(cfgfile=task['ecco_cfg_loc'])
-
-        # Assuming all tasks share the same ECCO grid, mapping factors, and
-        # metadata references then, for performance reasons, create ECCOGrid,
-        # ECCOMappingFactors, and ECCOMetadata objects up-front (using the first
-        # task descriptor) to be shared by all granule creation tasks:
-
-        if not shared_ecco_resources:
-            try:
-                shared_ecco_grid = ecco_grid.ECCOGrid(
-                    task=task, **kwargs)
-                shared_ecco_mapping_factors = ecco_mapping_factors.ECCOMappingFactors(
-                    task=task, **kwargs)
-                shared_ecco_metadata = ecco_metadata.ECCOMetadata(
-                    task=task, **kwargs)
-                shared_ecco_resources = True
-            except Exception as e:
-                # If shared resources can't be created, all subsequent jobs
-                # would most certainly fail, even if they tried to create their
-                # own grid/factors/metadata instances; just take hard exit:
-                errmsg = 'Could not create shared ECCO resources'
-                log.error(errmsg)
-                log.exception(e)
-                raise SystemExit(e)
-
         try:
-            ecco_make_granule( task, cfg,
-                grid=shared_ecco_grid,
-                mapping_factors=shared_ecco_mapping_factors,
-                metadata=shared_ecco_metadata,
-                log_level=log_level, **kwargs)
+            cfg = configuration.ECCODatasetProductionConfig(cfgfile=task['ecco_cfg_loc'])
+
+            # Assuming all tasks share the same ECCO grid, mapping factors, and
+            # metadata references then, for performance reasons, create ECCOGrid,
+            # ECCOMappingFactors, and ECCOMetadata objects up-front (using the first
+            # task descriptor) to be shared by all granule creation tasks:
+
+            if not shared_ecco_resources:
+                try:
+                    shared_ecco_grid = ecco_grid.ECCOGrid(
+                        task=task, **kwargs)
+                    shared_ecco_mapping_factors = ecco_mapping_factors.ECCOMappingFactors(
+                        task=task, **kwargs)
+                    shared_ecco_metadata = ecco_metadata.ECCOMetadata(
+                        task=task, **kwargs)
+                    shared_ecco_resources = True
+                except Exception as e:
+                    # If shared resources can't be created, all subsequent jobs
+                    # would most certainly fail, even if they tried to create their
+                    # own grid/factors/metadata instances; just take hard exit:
+                    errmsg = 'Could not create shared ECCO resources'
+                    log.error(errmsg)
+                    log.exception(e)
+                    raise SystemExit(e)
+                
+                # this_task object needed to check for time invariance:
+                this_task = ecco_task.ECCOTask(task)
+
+                if this_task.is_time_invariant:
+                    # if time-invariant, then assume that the task's 'input_netcdf' key
+                    # points to a pre-existing NetCDF file that just needs ancillary
+                    # data and metadata added; process accordingly:
+                    process_time_invariant_granule(
+                        task=this_task, cfg=cfg,
+                        grid=shared_ecco_grid, mapping_factors=shared_ecco_mapping_factors,
+                        metadata=shared_ecco_metadata, log_level=log_level, **kwargs)
+                else:
+                    ecco_make_granule( this_task, cfg,
+                        grid=shared_ecco_grid,
+                        mapping_factors=shared_ecco_mapping_factors,
+                        metadata=shared_ecco_metadata,
+                        log_level=log_level, **kwargs)
+
         except Exception as e:
             # just log the error and continue
-            log.error('Error encountered during generation of %s: %s', task['granule'], e)
+            try:
+                log.error('Error encountered during generation of %s: %s', task['granule'], e)
+            except:
+                log.error('Error encountered during generation of a granule: %s', e)
             log.exception(e)

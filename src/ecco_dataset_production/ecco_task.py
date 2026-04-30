@@ -191,6 +191,20 @@ class ECCOTask(dict):
 
 
     @property
+    def is_time_invariant(self):
+        """bool: True if the task is time-invariant.
+
+        Determined by checking if ``dynamic_metadata['time_coverage_resolution']`` equals
+        ``'TIME-INVARIANT'`` (case-insensitive).
+
+        """
+        try:
+            return "time-invariant" == self.__getitem__('dynamic_metadata')['time_coverage_resolution'].lower()
+        except KeyError:
+            return False
+
+
+    @property
     def variable_names(self):
         """list: List of variable names included in this task.
 

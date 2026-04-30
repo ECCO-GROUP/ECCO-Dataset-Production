@@ -204,11 +204,14 @@ def create_job_task_list(
     if log_level:
         log.setLevel(log_level)
 
+    log.info("Starting create_job_task_list")
+
     # configuration initialization:
 
     log.info('initializing configuration parameters...')
     cfg = configuration.ECCODatasetProductionConfig(cfgfile=ecco_cfg_loc)
 
+    log.info("Validating ecco_source_root and ecco_destination_root")
     if not ecco_source_root or not ecco_destination_root:
         err = None
         if not ecco_source_root:
@@ -222,6 +225,7 @@ def create_job_task_list(
         raise RuntimeError(err)
 
     if aws.utils.is_s3_uri(ecco_source_root):
+        log.info("ecco_source_root is an S3 URI, checking for credentials")
         if keygen:
             # running in SSO environment; update login credentials:
             log.info('updating credentials...')
@@ -247,13 +251,17 @@ def create_job_task_list(
     elif not os.path.exists(ecco_source_root):
         raise ValueError(
             f"Nonexistent ecco_source_root directory location, '{ecco_source_root}'")
+    else:
+        log.info("ecco_source_root is a local path")
 
     # collect job groupings-related package metadata and organize into a
     # dictionary with primary keys, '1D', 'latlon', and 'native':
 
+    log.info("Loading dataset groupings metadata from %s", ecco_metadata_loc)
     dataset_groupings = ecco_metadata.ECCOMetadata(
         ecco_metadata_loc=ecco_metadata_loc,
         keygen=keygen, profile=profile).dataset_groupings
+    log.info("Dataset groupings metadata loaded successfully")
 
     #
     # list of job descriptions to be built in two steps: first, gather list of
@@ -270,10 +278,11 @@ def create_job_task_list(
     Job = collections.namedtuple(
         'Job',['metadata_groupings_id','product_type','frequency','time_steps'])
 
-    log.info(f'abcd Tasklist generation looking in "ecco_source root": {ecco_source_root}')
+    log.info(f'Processing job file: {jobfile}')
+    log.info(f'Using ecco_source_root: {ecco_source_root}')
 
     with open(jobfile,'r') as fh:
-        for line in fh:
+        for i, line in enumerate(fh):
 
             #
             # Step 1: accumulate and group all variable inputs (ECCO results
@@ -283,6 +292,8 @@ def create_job_task_list(
             #
             # a few preliminaries ...
             #
+
+            log.info("Processing job #%d: %s", i + 1, line.strip())
 
             try:
                 # assume job file entry is a Python list expression:
@@ -294,6 +305,7 @@ def create_job_task_list(
                 log.info('skipping jobfile entry "%s"', line.rstrip())
                 continue
 
+            log.info("Successfully parsed job #%d", i + 1)
             job_metadata = dataset_groupings[job.product_type][job.metadata_groupings_id]
 
             log.debug('\n\nTasklist processing job for %s, %d: %s',
@@ -335,10 +347,12 @@ def create_job_task_list(
             # find all source files referenced by this job/job_metadata combination:
             #
 
+            log.info("Finding source files for job #%d", i + 1)
             variable_inputs = {}
 
             for variable in job_metadata['fields'].replace(' ','').split(','):  # remove spaces, 'fields'
                                                                                 # string as iterable
+                log.info("Processing variable: %s", variable)
                 # collect list of available input files for the output variable.
                 # accommodate two basic schemas: direct (one-to-one), and vector
                 # component based (output based on many input components):
@@ -346,7 +360,7 @@ def create_job_task_list(
                 variable_files = []
 
                 if 'field_components' in job_metadata.keys() and variable in job_metadata['field_components'].keys():
-
+                    log.info("Variable '%s' has field components", variable)
                     # variable depends on multiple component inputs; determine
                     # availability of input files and gather accordingly:
 
@@ -354,6 +368,7 @@ def create_job_task_list(
 
                     for variable_input_component in \
                         job_metadata['field_components'][variable].values(): # i.e., the "UVEL","VVEL", not "x" and "y"
+                        log.info("... processing component: %s", variable_input_component)
 
                         variable_input_component_files = []
 
@@ -362,7 +377,7 @@ def create_job_task_list(
                                     s3_parts.path,
                                     path_freq_pat,
                                     '_'.join([variable_input_component,file_freq_pat]))
-                            log.info(f'looking for field component files in {prefix}')
+                            log.info(f'looking for field component files in s3://{s3_parts.netloc}{prefix}')
 
                             all_var_files_in_bucket = s3_list_files(
                                 s3_client=s3c,
@@ -370,6 +385,7 @@ def create_job_task_list(
                                 prefix=prefix)
 
                         if isinstance(job.time_steps,str) and 'all'==job.time_steps.lower():
+                            log.info("... searching for all time steps")
                             # get all possible time matches:
                             if aws.utils.is_s3_uri(ecco_source_root):
 
@@ -380,7 +396,7 @@ def create_job_task_list(
                                         prefix=variable_input_component,
                                         averaging_period=file_freq_pat).re_filestr)
                                 
-                                log.info(f'looking for s3_variable_input_component_pat {s3_variable_input_component_pat}')
+                                log.debug(f'looking for s3_variable_input_component_pat {s3_variable_input_component_pat}')
 
                                 variable_input_component_files.extend(
                                     [os.path.join(
@@ -392,7 +408,7 @@ def create_job_task_list(
                                     prefix=variable_input_component,
                                     averaging_period=file_freq_pat).re_filestr)
 
-                                log.info(f'looking for variable_input_component_file_pat {variable_input_component_file_pat}')
+                                log.debug(f'looking for variable_input_component_file_pat {variable_input_component_file_pat}')
                                 
                                 for dirpath,dirnames,filenames in os.walk(ecco_source_root):
                                     if cfg['ecco_version'] in dirpath:
@@ -400,10 +416,11 @@ def create_job_task_list(
                                             [os.path.join(dirpath,f)
                                                 for f in filenames if re.match(variable_input_component_file_pat,f)])
                         else:
+                            log.info("... searching for specific time steps")
                             # assume explicit list of integer time steps; one match per item:
                             #time_steps_as_int_list = ast.literal_eval(job.time_steps)
                             for time in job.time_steps:
-                            #for time in time_steps_as_int_list:
+# ...existing code...
                                 s3_variable_input_component_pat = re.compile(
                                     s3_parts.path.strip('/')    # remove leading '/' from urlpath
                                     + '.*'                      # allow anything between path and filename
@@ -412,7 +429,7 @@ def create_job_task_list(
                                         averaging_period=file_freq_pat,
                                         time=time).re_filestr)
                                 
-                                log.info(f'looking for s3_variable_input_component_pat {s3_variable_input_component_pat}')
+                                log.debug(f'looking for s3_variable_input_component_pat {s3_variable_input_component_pat}')
 
                                 if aws.utils.is_s3_uri(ecco_source_root):
                                     variable_input_component_files.extend(
@@ -420,6 +437,7 @@ def create_job_task_list(
                                             urllib.parse.urlunparse(
                                                 (s3_parts.scheme,s3_parts.netloc,'','','','')),f)
                                             for f in all_var_files_in_bucket if re.match(s3_variable_input_component_pat,f)])
+# ...existing code...
                                         #[os.path.join(urllib.parse.urlunparse(s3_parts),f.key)
                                         #    for f in files_in_bucket if re.match(file_pat,f.key)])
                                 else:
@@ -428,7 +446,7 @@ def create_job_task_list(
                                         averaging_period=file_freq_pat,
                                         time=time).re_filestr)
                                     
-                                    log.info(f'looking for variable_input_component_file_pat {variable_input_component_file_pat}')
+                                    log.debug(f'looking for variable_input_component_file_pat {variable_input_component_file_pat}')
 
 
                                     for dirpath,dirnames,filenames in os.walk(ecco_source_root):
@@ -437,6 +455,7 @@ def create_job_task_list(
                                                 [os.path.join(dirpath,f)
                                                     for f in filenames if re.match(variable_input_component_file_pat,f)])
 
+                        log.info("... found %d files for component '%s'", len(variable_input_component_files), variable_input_component)
                         # group .data/.meta pairs for all specified/retrieved time
                         # steps:
 
@@ -455,6 +474,7 @@ def create_job_task_list(
                         all_variable_input_component_files[variable_input_component] = \
                             variable_input_component_files
 
+                    log.info("Grouping component files by time")
                     # group variable input component files by time value (i.e.,
                     # across keys), collect in time-based input lists that
                     # consist of just those variables for which all components
@@ -477,6 +497,7 @@ def create_job_task_list(
                                 for file_list in v}   # file_list[0] -> just use first element of .data/.meta pair
                     times = list(times)
                     times.sort()
+                    log.info("Found %d common time steps for all components", len(times))
                     # reduce, and group by time:
                     for time in times:
                         tmp = []
@@ -487,7 +508,7 @@ def create_job_task_list(
                         variable_files.append(tmp)
 
                 else:
-
+                    log.info("Variable '%s' is a direct mapping", variable)
                     # variable depends on a single MDS input pair (.data/.meta),
                     # of same type. for data organization purposes, arrange as
                     # list of lists (a variable's single input MDS pair is
@@ -511,6 +532,7 @@ def create_job_task_list(
 
 
                     if isinstance(job.time_steps,str) and 'all'==job.time_steps.lower():
+                        log.info("... searching for all time steps")
                     #if 'all' == job.time_steps.lower():
                         # get all possible time matches:
                         if aws.utils.is_s3_uri(ecco_source_root):
@@ -534,9 +556,11 @@ def create_job_task_list(
                                     variable_files.extend(
                                         [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
                     else:
+                        log.info("... searching for specific time steps")
                         # explicit list of time steps; one match per item:
                         #time_steps_as_int_list = ast.literal_eval(job.time_steps)
                         for time in job.time_steps:
+# ...existing code...
                         #for time in time_steps_as_int_list:
                             s3_key_pat = re.compile(
                                 s3_parts.path.strip('/')    # remove leading '/' from urlpath
@@ -559,6 +583,7 @@ def create_job_task_list(
                                         variable_files.extend(
                                             [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
 
+                    log.info("... found %d files for variable '%s'", len(variable_files), variable)
                     # group .data/.meta pairs for all specified/retrieved time
                     # steps:
 
@@ -586,11 +611,13 @@ def create_job_task_list(
                         #os.path.basename(file_list[0])).time] = file_list
 
                 variable_inputs[variable] = variable_files_as_time_keyed_dict
+                log.info("... stored %d time-keyed file lists for variable '%s'", len(variable_files_as_time_keyed_dict), variable)
 
             # finally, does the job metadata specify any variable renames?:
 
             if 'variable_rename' in job_metadata.keys():
                 old_varname, new_varname = job_metadata['variable_rename'].split(':')
+                log.info("Renaming variable '%s' to '%s'", old_varname, new_varname)
                 variable_inputs[new_varname] = variable_inputs.pop(old_varname)
 
 #           json.dump(variable_inputs,sys.stdout,indent=4)
@@ -602,6 +629,7 @@ def create_job_task_list(
             # given time.
             #
 
+            log.info("Organizing inputs into tasks for job #%d", i + 1)
             # get list of times for which any of the variables exist:
             all_times = set()
             for k,v in variable_inputs.items():
@@ -609,6 +637,7 @@ def create_job_task_list(
             all_times = list(all_times)
             all_times.sort()
 
+            log.info("Found %d unique time steps with available data for this job", len(all_times))
             if not all_times:
                 log.warning('No existing input variables/times for %s; skipping.',
                     job_metadata['filename'])
@@ -616,6 +645,7 @@ def create_job_task_list(
                 continue
 
             for time in all_times:
+                log.debug("Creating task for time step: %s", time)
                 # TODO: when finalized, replace 'task={}' with 'task =
                 # ECCOTask()'; subsequent operations using class functions.
                 task = {}
@@ -740,7 +770,9 @@ def create_job_task_list(
                     task['dynamic_metadata']['summary'].split())
 
                 task_list.append(task)
+            log.info("Finished creating tasks for job #%d", i + 1)
 
+    log.info("Finished processing all jobs. Total tasks created: %d", len(task_list))
     return task_list
 
 
