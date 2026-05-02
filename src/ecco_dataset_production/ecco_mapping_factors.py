@@ -138,7 +138,27 @@ class ECCOMappingFactors(object):
                 self.mapping_factors_dir,'latlon_grid','latlon_grid.xz')))
         return self.__latlon_grid[0]['lon']
 
+    @property
+    def latlon_shape(self):
+        if not self.__latlon_grid:
+            self.__latlon_grid = pickle.load(lzma.open(os.path.join(
+                self.mapping_factors_dir,'latlon_grid','latlon_grid.xz')))
+        return self.__latlon_grid[2]['shape']
 
+    @property
+    def lats_1D(self):
+        if not self.__latlon_grid:
+            self.__latlon_grid = pickle.load(lzma.open(os.path.join(
+                self.mapping_factors_dir,'latlon_grid','latlon_grid.xz')))
+        return self.__latlon_grid[2]['lats_1D']       
+
+    @property
+    def lons_1D(self):
+        if not self.__latlon_grid:
+            self.__latlon_grid = pickle.load(lzma.open(os.path.join(
+                self.mapping_factors_dir,'latlon_grid','latlon_grid.xz')))
+        return self.__latlon_grid[2]['lons_1D']   
+    
     @property
     def depth_bounds(self):
         if not self.__latlon_grid:
