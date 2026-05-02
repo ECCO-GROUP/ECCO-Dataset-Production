@@ -309,14 +309,15 @@ def get_land_mask(
             status (str): String that is either "SUCCESS" or "ERROR {error message}"
             land_mask_ll (list): Flat list mask where nan indicates a dry point, and a 1 indicates a wet point
     """
-    log.info('Getting land mask from %s ...', product_generation_config['land_mask_dir'])
     #if extra_prints: print('\nGetting Land Mask')
 
     status = 'SUCCESS'
     land_mask_ll = []
 
-    # check to see if land mask has already been calculated:
-    land_mask_fdir = Path(product_generation_config['land_mask_dir']) if 'land_mask_dir' in product_generation_config else Path(mapping_factors_dir) / 'land_mask'
+    # the land mask should be in the land_mask directory within the mapping_factors_dir
+    land_mask_fdir = Path(mapping_factors_dir) / 'land_mask'
+    log.info('Getting land mask from %s ...', land_mask_fdir)
+    
     #land_mask_fdir = Path(mapping_factors_dir) / 'land_mask'
     land_mask_fname = ''
     for lm_file in os.listdir(land_mask_fdir):
