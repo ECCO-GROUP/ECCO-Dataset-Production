@@ -34,7 +34,7 @@ ecco_production_filestr_grid_label:
     native: 'llc0090'
 
 #---------------------------------------------------------------------
-# ECCO results computation:
+# ECCO solution parameters:
 #---------------------------------------------------------------------
 
 # ecco granule variable precision (default: float64):
@@ -62,11 +62,31 @@ num_vertical_levels: 50
 # Maximum model depth (meters):
 geospatial_vertical_min: -6134.5
 
-# Name of ECCO grid NetCDF file, assumed to be in location defined by
-# task list's 'ecco_grid_dir' field:
-ecco_native_grid_filename: 'GRID_GEOMETRY_ECCO_V4r5_native_llc0090.nc'
-ecco_grid_filename: 'GRID_GEOMETRY_ECCO_V4r5_native_llc0090.nc'
-ecco_grid_dir: '/home/jpluser/efs-mount-point/ifenty/grids/grid_ECCOV4r5'
+#---------------------------------------------------------------------
+# Mapping factors generation parameters:
+# Note: Grid file paths and mapping factors directory are specified
+# as command-line arguments to the tools that need them.
+#---------------------------------------------------------------------
+
+# Resolution of the lat-lon grid used for transformation (degrees):
+latlon_grid_resolution: 0.5
+
+# Area extent for lat-lon grid [lon_min, lat_max, lon_max, lat_min]:
+latlon_grid_area_extent: [-180.0, 90.0, 180.0, -90.0]
+
+# Effective target grid cell radius for mapping (km).
+# If not specified (null), defaults to: (111/2)*sqrt(2) ≈ 78.5 km
+latlon_effective_grid_radius: null
+
+# Specify method for calculating 'effective target grid cell radius' for mapping factors generation, if latlon_effective_grid_radius is not specified (null):
+#   Method 1: (used in V4r4) spatially-varying.  The radius of a circle with the same area as each lat-lon grid cell.
+#   Method 2: spatially-invariant, X km. X is the distance from the center of a square grid cell with sides of length L = 111 km *{latlon_grid_resolution} to a corner.
+#          ... where L is approximately the length of a side of a square lat-lon cell at {latlon_grid_resolution} degree resolution at the equator.
+#          ... i.e. latlon_effective_grid_radius = sqrt(2) * 111 km * {latlon_grid_resolution} / 2
+latlon_grid_radius_method: 'method_1'  # options are 'method_1' or 'method_2'
+
+# Use custom grid and factors (false = use ECCO grids):
+custom_grid_and_factors: false
 #---------------------------------------------------------------------
 # Metadata, variable encodings:
 #---------------------------------------------------------------------
@@ -81,13 +101,13 @@ history: 'ECCO V4r6, preliminary granule generation test 2026-03-17'
 references: 'ECCO Consortium, Fukumori, I., Wang, O., Fenty, I., Forget, G., Heimbach, P., & Ponte, R. M. 2026. Synopsis of the ECCO Central Production Global Ocean and Sea-Ice State Estimate (Version 4 Release 6). doi:10.5281/zenodo.3765928'
 
 # Source string to include with global metadata:
-source: 'The ECCO V4r6 state estimate was produced by fitting a free-running solution of the MITgcm (checkpoint 66g) to satellite and in situ observational data in a least squares sense using the adjoint method.'
+source: 'The ECCO V4r6 ocean state estimate was produced by fitting a free-running solution of the MITgcm (checkpoint 66g) to satellite and in situ observational data in a least squares sense using the adjoint method.'
 
 # Summary string to include with global metadata:
 # Note: the final dataset 'summary' metadata field is as follows:
 #    dataset_desription_head + grouping['name'] + dataset_description_tail + summary
 #    i.e. "This dataset contains daily-averaged" + {grouping['name']} + {dataset_description_tail} + {summary}
-summary: 'Estimating the Circulation and Climate of the Ocean (ECCO) state estimates are dynamically and kinematically-consistent reconstructions of the three-dimensional, time-evolving ocean, sea-ice, and surface atmospheric states. ECCO V4r6 is a free-running solution of a global, nominally 1-degree configuration of the MIT general circulation model (MITgcm) that has been fit to observations in a least-squares sense. Observational data constraints used in V4r6 include sea surface height (SSH) from satellite altimeters [ERS-1/2, TOPEX/Poseidon, GFO, ENVISAT, Jason-1,2,3, CryoSat-2, and SARAL/AltiKa]; sea surface temperature (SST) from satellite radiometers [AVHRR], sea surface salinity (SSS) from the Aquarius satellite radiometer/scatterometer, ocean bottom pressure (OBP) from the GRACE satellite gravimeter; sea-ice concentration from satellite radiometers [SSM/I and SSMIS], and in-situ ocean temperature and salinity measured with conductivity-temperature-depth (CTD) sensors and expendable bathythermographs (XBTs) from several programs [e.g., WOCE, GO-SHIP, Argo, and others] and platforms [e.g., research vessels, gliders, moorings, ice-tethered profilers, and instrumented pinnipeds]. V4r6 covers the period 1992-01-01T12:00:00 to 2026-01-01T00:00:00.'
+summary: 'Estimating the Circulation and Climate of the Ocean (ECCO) state estimates are dynamically and kinematically-consistent reconstructions of the three-dimensional, time-evolving ocean, sea-ice, and surface atmospheric states. ECCO V4r6 is a free-running solution of a global, nominally 1-degree configuration of the MIT general circulation model (MITgcm) that has been fit to observations in a least-squares sense. Observational data constraints used in V4r6 include sea surface height (SSH) from satellite altimeters [ERS-1/2, TOPEX/Poseidon, GFO, ENVISAT, Jason-1,2,3, CryoSat-2, and SARAL/AltiKa]; sea surface temperature (SST) from satellite radiometers [AVHRR], sea surface salinity (SSS) from the Aquarius satellite radiometer/scatterometer, ocean bottom pressure (OBP) from the GRACE satellite gravimeter; sea-ice concentration from satellite radiometers [SSM/I and SSMIS], and in-situ ocean temperature and salinity measured with conductivity-temperature-depth (CTD) sensors and expendable bathythermographs (XBTs) from several programs [e.g., WOCE, GO-SHIP, Argo, and others] and platforms [e.g., research vessels, gliders, moorings, ice-tethered profilers, and instrumented pinnipeds]. V4r6 covers the period 1992-01-01T12:00:00 to 2025-12-31T12:00:00.'
 
 # variable-level NetCDF4 compression encodings:
 netcdf4_compression_encodings:
