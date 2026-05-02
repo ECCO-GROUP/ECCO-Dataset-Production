@@ -65,6 +65,22 @@ def main() -> None:
                 
     compendium_template_path = os.path.join(base_dir, config_dictionary['compendium_tex_filepath'])
 
+    # Set the "issue date" to the current date
+    try:
+        result = subprocess.run(
+                [
+                    'sed',
+                    "s/REPLACE-WITH-ISSUE-DATE/$(date +%B) $(date +%d), $(date +%Y)/",
+                    config_dictionary['component_tex_files_to_modify']['front_pages'][0],
+                    '>',
+                    config_dictionary['component_tex_files_to_modify']['front_pages'][1]
+                ],
+                check=True, text=True, capture_output=True
+                )
+    except:
+        print('Bash call to modify file did not work')
+
+
     try:
         result = subprocess.run(
             [
