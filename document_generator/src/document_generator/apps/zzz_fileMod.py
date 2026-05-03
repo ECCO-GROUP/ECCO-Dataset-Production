@@ -23,20 +23,14 @@ config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator
 with open(config_file, 'r') as stream:
     config_dictionary = yaml.safe_load(stream)
 
-
 def main() -> None:
-
     Path(f"{base_dir}/{config_dictionary['latex_modified_input_files']}").mkdir(parents=True, exist_ok=True)
-
     latex_template_files = [f.name for f in Path(f"{base_dir}/{config_dictionary['latex_template_files']}").iterdir() if f.is_file() and f.suffix == ".tex"]
-
     for latex_file_name in latex_template_files: 
-
         format_map_context_dict = {
             'file_in': f"{base_dir}/{config_dictionary['latex_template_files']}/{latex_file_name}",
             'file_out': f"{base_dir}/{config_dictionary['latex_modified_input_files']}/{latex_file_name}"
         }
-
         try:
             for sed_command in config_dictionary['latex_template_modification_commands_list']:
                 result = subprocess.run(
@@ -45,8 +39,6 @@ def main() -> None:
                         )
         except:
             print('Bash call to modify file did not work')
-
-
 
 if __name__ == "__main__":
     main()

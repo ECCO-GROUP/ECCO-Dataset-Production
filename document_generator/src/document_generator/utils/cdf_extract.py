@@ -10,6 +10,7 @@ import sys
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 import src.document_generator.utils.utils_general as utils_general
+import src.document_generator.utils.utils_json as utils_json
 import src.document_generator.utils.cdf_plotter as cdf_plotter
 
 
@@ -748,6 +749,10 @@ def data_products(
 
     with open(json_groupings_filepath, 'r') as json_file:
         list_of_json_dictionaries = json.load(json_file)
+
+    # Modify variable groupings by adding an "introduction" field for each variable dataset
+    if not is_coord:
+        list_of_json_dictionaries = utils_json.modify_json_add_introduction_field_to_groupings(list_of_json_dictionaries, json_groupings_filepath, config_dictionary)
 
     # Each entry in the JSON groupings file corresponds to one document subsection
     for json_dictionary in list_of_json_dictionaries:

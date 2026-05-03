@@ -1,3 +1,4 @@
+import copy
 import xarray as xr
 import json
 from pathlib import Path
@@ -112,6 +113,46 @@ def obtain_json_data(base_dir: str, filename: str) -> list:
         json_data_dictionary_list = json.load(file)
     return json_data_dictionary_list
 
+
+def modify_json_add_introduction_field_to_groupings(json_data: list, filename: str, config_dict: dict) -> list:
+
+    modified_json_data = []
+
+    for dict in json_data:
+        modified_dict = copy.deepcopy(dict)
+        intro_string = f"{config_dict['dataset_text_dict']['opening_text']}{modified_dict['name']}"
+        frequency_list_crude = [f.strip() for f in modified_dict['frequency'].split(',')]
+        frequency_list_verbose = []
+        for frequency_crude in config_dict['dataset_text_dict']['frequency_dict'].keys():
+            if frequency_crude in frequency_list_crude:
+                frequency_list_verbose.append(config_dict['dataset_text_dict']['frequency_dict'][frequency_crude])
+        
+        if len(frequency_list_verbose) == 0:
+            intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_none_text']}"
+        elif len(frequency_list_verbose) == 1:
+            intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_single_text']}"
+            intro_string.format(frequency_list_verbose[0])
+        elif len(frequency_list_verbose) == 2:
+            intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_multiple_text']}"
+            frequency_string = f"{frequency_list_verbose[0]} and {frequency_list_verbose[1]}"
+            intro_string.format(frequency_string)
+        else:
+            intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_multiple_text']}"
+            frequency_string = ", ".join(frequency_list_verbose[:-1])
+            frequency_string = f"{frequency_string}, and {frequency_list_verbose[-1]}"
+            intro_string.format(frequency_string)
+
+        # POTENTIAL BUG HERE SINCE I DON'T HANDLE CASE WHERE NO GRID TYPE IS MATCHED.  WON'T FAIL, BUT PRINTED STRING WILL BE WRONG 
+        for grid_type in [g.replace("-","") for g in config_dict['possible_grid_types']]: 
+            if grid_type.casefold() in filename.casefold():
+                intro_string = f"{intro_string}{config_dict['dataset_text_dict'][f'grid_text_{grid_type}']}"
+                break
+
+        modified_dict['Introduction'] = intro_string
+        modified_json_data.append(modified_dict)
+
+    return modified_json_data
+    
 
 def obtain_keys(json_data: list) -> set:
     """

@@ -23,7 +23,8 @@ import src.document_generator.utils.utils_general as utils
 
 
 # Path to the YAML configuration file — update this for your environment
-config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/input_and_templates/config/config.yaml"
+#config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/input_and_templates/config/config.yaml"
+config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r6/input_and_templates/config/config.yaml"
 
 with open(config_file, 'r') as stream:
     config_dictionary = yaml.safe_load(stream)
