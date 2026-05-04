@@ -153,6 +153,11 @@ def plot_native(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
     cmap = copy.copy(plt.get_cmap('jet'))
     cmap.set_bad(color='dimgray')
 
+    #print("----------")
+    #print("----------")
+    #print(f"METADATA_LINK: {dataset.metadata_link}")
+    #print("----------")
+    #print("----------")
     shortname_tmp = dataset.metadata_link.split('ShortName=')[1]
     cmap, cmin, cmax = cal_cmin_cmax(cmap, cmin, cmax, shortname_tmp, 'Native')
 

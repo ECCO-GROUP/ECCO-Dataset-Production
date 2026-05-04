@@ -412,11 +412,16 @@ def search_and_extract(
                     data_array_list = get_non_coordinate_vars(filepath)
                 dataset = xr.open_dataset(filepath)
                 return data_array_list, dataset
+            else:
+                return None
+    
+    # NoTE: The error below triggers whenever a grouping is not found to have a corresponding granule.
+    # This is wrong - we must allow users to have any set of granule files
 
-    raise ValueError(
-        f"No NetCDF file containing '{granule_filename_truncated_stem}' "
-        f"found in granule_directory '{granule_directory}'"
-    )
+    #raise ValueError(
+    #    f"No NetCDF file containing '{granule_filename_truncated_stem}' "
+    #    f"found in granule_directory '{granule_directory}'"
+    #)
 
 
 def data_var_table(
@@ -553,6 +558,11 @@ def get_coord_vars_in_dataset(dataset: xr.Dataset, isCoord: bool = False) -> tup
 
     for ij in np.arange(len(var_list)):
         shortnames_list.append(var_list[ij])
+        #print("----------")
+        #print("----------")
+        #print(f"VARIABLE: {var_list[ij]}")
+        #print("----------")
+        #print("----------")
         longnames_list.append(str(dataset[var_list[ij]].long_name).capitalize())
         if 'units' in dataset[var_list[ij]].attrs.keys():
             units_list.append(dataset[var_list[ij]].units)
@@ -739,6 +749,7 @@ def data_products(
     granule_type, grid_type = utils_general.get_granule_and_grid_types(granule_directory)
     is_coord = granule_type == "coordinate"
 
+    #print(f"GRANULE TYPE: {granule_type}")
     granule_document_section_title = config_dictionary["table_section_titles"][f"{granule_type}_{grid_type}"]
     granule_document_section_title = utils_general.sanitize(config_dictionary, granule_document_section_title)
     latex_lines.append(r'\section{' + f'{granule_document_section_title}' + r'}')
@@ -762,11 +773,18 @@ def data_products(
         latex_lines.append(fr"\subsubsection{{Overview}}")
         latex_lines.append(r'\newp')
 
-        data_array_list, dataset = search_and_extract(
+        if search_and_extract(
             granule_filename_truncated_stem,
             os.path.join(granule_directory),
             is_coord
-        )
+            ) is None:
+            continue
+        else:
+            data_array_list, dataset = search_and_extract(
+                granule_filename_truncated_stem,
+                os.path.join(granule_directory),
+                is_coord
+            )
 
         # Introductory paragraph from the JSON groupings file
         latex_lines.append(utils_general.sanitize(config_dictionary, json_dictionary["Introduction"]))

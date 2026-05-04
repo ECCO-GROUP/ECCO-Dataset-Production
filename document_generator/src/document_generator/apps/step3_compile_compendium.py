@@ -24,7 +24,8 @@ sys.path.append(base_dir)
 
 
 # Path to the YAML configuration file — update this for your environment
-config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/input_and_templates/config/config.yaml"
+#config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/input_and_templates/config/config.yaml"
+config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r6/input_and_templates/config/config.yaml"
 
 with open(config_file, 'r') as stream:
     config_dictionary = yaml.safe_load(stream)
@@ -47,12 +48,12 @@ def main() -> None:
 
     :returns: None
     """
-    static_support_tex_dir_absolute = f"{base_dir}/{config_dictionary['static_support_tex_dir_relative']}"
-    user_generated_tex_dir_absolute = f"{base_dir}/{config_dictionary['user_generated_tex_dir_relative']}"
+    input_tex_dir_absolute = f"{base_dir}/{config_dictionary['input_tex_dir_relative']}"
+    output_component_tex_dir_absolute = f"{base_dir}/{config_dictionary['output_component_tex_dir_relative']}"
 
     # TEXINPUTS tells pdflatex where to search for \input and \include targets.
     # The trailing colon preserves the default TeX search path.
-    os.environ["TEXINPUTS"] = f"{static_support_tex_dir_absolute}:{user_generated_tex_dir_absolute}:"
+    os.environ["TEXINPUTS"] = f"{input_tex_dir_absolute}:{output_component_tex_dir_absolute}:"
 
     print(config_dictionary['compendium_compilation_runtime_message_string'])
 

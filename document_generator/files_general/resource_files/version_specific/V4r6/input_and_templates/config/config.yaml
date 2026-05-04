@@ -20,7 +20,7 @@ dataset_text_dict:
     SNAP: 'hourly snapshot'
 
 latex_template_files: files_general/resource_files/universal_input/latex_template_files
-latex_modified_input_files: files_general/resource_files/version_specific/V4r6/input_and_templates/latex_files
+latex_modified_input_files: files_general/resource_files/version_specific/V4r6/input_and_templates/latex
 
 # Notice here that only the first sed call modifies <file-in>; every subsequent sed call modifies <file-out>
 latex_template_modification_commands_list:
@@ -62,35 +62,18 @@ global_attribute_rowcolor: cyan!25
 variable_attribute_rowcolor: violet!25
 
 
-# Testing-specific entries:
-
-#granules_url_list_file_relative: files_general/resource_files/version_specific/V4r6/input_and_templates/granules_to_download_testing/granules_to_download.txt
-#variable_attributes_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json_testing/attribute_files/variable_attributes.json
-#groupings_variable_native_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json_testing/groupings/groupings_for_native_datasets.json
-#groupings_variable_lat-lon_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json_testing/groupings/groupings_for_latlon_datasets.json
-#groupings_variable_1D_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json_testing/groupings/groupings_for_1D_datasets.json
-#variable_files_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules_testing/variable_granules/granules_native
-#variable_files_lat-lon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules_testing/variable_granules/granules_lat-lon
-#variable_files_1D_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules_testing/variable_granules/granules_1D
-
-
-# Production-specific entries:
-
 granules_url_list_file_relative: files_general/resource_files/version_specific/V4r6/input_and_templates/granules_to_download/granules_to_download.txt
 variable_attributes_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/attribute_files/variable_attributes.json
 groupings_variable_native_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/groupings/groupings_for_native_datasets.json
 groupings_variable_lat-lon_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/groupings/groupings_for_latlon_datasets.json
 groupings_variable_1D_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/groupings/groupings_for_1D_datasets.json
-variable_files_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_native
-variable_files_lat-lon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_lat-lon
-variable_files_1D_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_1D
+variable_files_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules_TESTING/granules_native
+variable_files_lat-lon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules_TESTING/granules_lat-lon
+variable_files_1D_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules_TESTING/granules_1D
+#variable_files_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_native
+#variable_files_lat-lon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_lat-lon
+#variable_files_1D_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_1D
 
-
-
-
-
-
-# Universal entries:
 
 global_attributes_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/attribute_files/global_attributes.json
 global_attributes_tex_file: files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex/global_attributes.tex
@@ -147,7 +130,7 @@ global_attributes_latex_lines:
 #
 variable_attributes_latex_lines:
   - \begin{longtable}{|p{0.168\textwidth}|p{0.20\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}
-  - \caption{Coordinte, Dimension, and Variable attributes for GDS 2.0 netCDF data files}
+  - \caption{Coordinate, Dimension, and Variable attributes for GDS 2.0 netCDF data files}
   #- \caption{Variable attributes for GDS 2.0 netCDF data files}
   - \label{tab:variable-attributes} \\ 
   - \hline \endfirsthead \endhead \endfoot \hline \endlastfoot
@@ -187,9 +170,9 @@ dummy_entry_to_set_number_of_blank_lines_at_the_end_of_the_above_message: blah
 # -----------------------------------------------------------------------------------------------------------------------------------
 
 final_compendium_files_dir: "files_general/compendium_compilation_output_files"
-compendium_tex_filepath: "files_general/resource_files/version_specific/V4r6/input_and_templates/latex/main_compendium_template_DO_NOT_MODIFY/ECCO_V4r6_Dataset_Catalog_and_Variable_Compendium.tex"
-static_support_tex_dir_relative: "files_general/resource_files/version_specific/V4r6/input_and_templates/latex/components"
-user_generated_tex_dir_relative: "files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex"
+compendium_tex_filepath: "files_general/resource_files/version_specific/V4r6/input_and_templates/latex/ECCO_Dataset_Catalog_and_Variable_Compendium.tex"
+input_tex_dir_relative: "files_general/resource_files/version_specific/V4r6/input_and_templates/latex"
+output_component_tex_dir_relative: "files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex"
 user_generated_granules_dir_relative: "files_general/resource_files/version_specific/V4r6/output_and_granules/granules"
 
 remote_server_hostname: urs.earthdata.nasa.gov
