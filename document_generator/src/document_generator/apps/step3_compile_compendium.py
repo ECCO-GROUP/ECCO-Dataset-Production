@@ -17,10 +17,18 @@ import subprocess
 import yaml
 from pathlib import Path
 import datetime
+import argparse
 
 # Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('skipSed', nargs='?')
+args = parser.parse_args()
+
+skip_sed = args.skipSed
 
 
 # Path to the YAML configuration file — update this for your environment
@@ -66,22 +74,24 @@ def main() -> None:
                 
     compendium_template_path = os.path.join(base_dir, config_dictionary['compendium_tex_filepath'])
 
-    # Attempt to use the latex template files to make compendium component files with correct version and date information via bash sed calls   
-    Path(f"{base_dir}/{config_dictionary['latex_modified_input_files']}").mkdir(parents=True, exist_ok=True)
-    latex_template_files = [f.name for f in Path(f"{base_dir}/{config_dictionary['latex_template_files']}").iterdir() if f.is_file() and f.suffix == ".tex"]
-    for latex_file_name in latex_template_files: 
-        format_map_context_dict = {
-            'file_in': f"{base_dir}/{config_dictionary['latex_template_files']}/{latex_file_name}",
-            'file_out': f"{base_dir}/{config_dictionary['latex_modified_input_files']}/{latex_file_name}"
-        }
-        try:
-            for sed_command in config_dictionary['latex_template_modification_commands_list']:
-                result = subprocess.run(
-                        sed_command.format_map(format_map_context_dict),
-                        check=True, shell=True
-                        )
-        except:
-            print('Bash call to modify file did not work')
+    if skip_sed is None:
+
+        # Attempt to use the latex template files to make compendium component files with correct version and date information via bash sed calls   
+        Path(f"{base_dir}/{config_dictionary['latex_modified_input_files']}").mkdir(parents=True, exist_ok=True)
+        latex_template_files = [f.name for f in Path(f"{base_dir}/{config_dictionary['latex_template_files']}").iterdir() if f.is_file() and f.suffix == ".tex"]
+        for latex_file_name in latex_template_files: 
+            format_map_context_dict = {
+                'file_in': f"{base_dir}/{config_dictionary['latex_template_files']}/{latex_file_name}",
+                'file_out': f"{base_dir}/{config_dictionary['latex_modified_input_files']}/{latex_file_name}"
+            }
+            try:
+                for sed_command in config_dictionary['latex_template_modification_commands_list']:
+                    result = subprocess.run(
+                            sed_command.format_map(format_map_context_dict),
+                            check=True, shell=True
+                            )
+            except:
+                print('Bash call to modify file did not work')
 
 
     # Attempt compilation of final latex document

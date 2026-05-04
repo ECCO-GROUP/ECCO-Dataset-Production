@@ -78,7 +78,7 @@ def data_var_plot(
         # Dispatch to the correct plot function based on product type
         if 'native' in dataset.attrs['product_name']:
             plot_native(dataset, data_array, figure_path)
-        elif 'lat-lon' in dataset.attrs['product_name']:
+        elif 'latlon' in dataset.attrs['product_name']:
             plot_latlon(dataset, data_array, figure_path)
         elif '1D' in dataset.attrs['product_name']:
             plot_oneD(dataset, data_array, figure_path)
@@ -153,11 +153,6 @@ def plot_native(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
     cmap = copy.copy(plt.get_cmap('jet'))
     cmap.set_bad(color='dimgray')
 
-    #print("----------")
-    #print("----------")
-    #print(f"METADATA_LINK: {dataset.metadata_link}")
-    #print("----------")
-    #print("----------")
     shortname_tmp = dataset.metadata_link.split('ShortName=')[1]
     cmap, cmin, cmax = cal_cmin_cmax(cmap, cmin, cmax, shortname_tmp, 'Native')
 

@@ -558,11 +558,6 @@ def get_coord_vars_in_dataset(dataset: xr.Dataset, isCoord: bool = False) -> tup
 
     for ij in np.arange(len(var_list)):
         shortnames_list.append(var_list[ij])
-        #print("----------")
-        #print("----------")
-        #print(f"VARIABLE: {var_list[ij]}")
-        #print("----------")
-        #print("----------")
         longnames_list.append(str(dataset[var_list[ij]].long_name).capitalize())
         if 'units' in dataset[var_list[ij]].attrs.keys():
             units_list.append(dataset[var_list[ij]].units)
@@ -749,7 +744,6 @@ def data_products(
     granule_type, grid_type = utils_general.get_granule_and_grid_types(granule_directory)
     is_coord = granule_type == "coordinate"
 
-    #print(f"GRANULE TYPE: {granule_type}")
     granule_document_section_title = config_dictionary["table_section_titles"][f"{granule_type}_{grid_type}"]
     granule_document_section_title = utils_general.sanitize(config_dictionary, granule_document_section_title)
     latex_lines.append(r'\section{' + f'{granule_document_section_title}' + r'}')
@@ -764,6 +758,7 @@ def data_products(
     # Modify variable groupings by adding an "introduction" field for each variable dataset
     if not is_coord:
         list_of_json_dictionaries = utils_json.modify_json_add_introduction_field_to_groupings(list_of_json_dictionaries, json_groupings_filepath, config_dictionary)
+        list_of_json_dictionaries = utils_json.modify_json_add_product_field_to_groupings(list_of_json_dictionaries, grid_type)
 
     # Each entry in the JSON groupings file corresponds to one document subsection
     for json_dictionary in list_of_json_dictionaries:

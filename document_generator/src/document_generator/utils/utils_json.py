@@ -118,8 +118,8 @@ def modify_json_add_introduction_field_to_groupings(json_data: list, filename: s
 
     modified_json_data = []
 
-    for dict in json_data:
-        modified_dict = copy.deepcopy(dict)
+    for dictionary in json_data:
+        modified_dict = copy.deepcopy(dictionary)
         intro_string = f"{config_dict['dataset_text_dict']['opening_text']}{modified_dict['name']}"
         frequency_list_crude = [f.strip() for f in modified_dict['frequency'].split(',')]
         frequency_list_verbose = []
@@ -152,7 +152,16 @@ def modify_json_add_introduction_field_to_groupings(json_data: list, filename: s
         modified_json_data.append(modified_dict)
 
     return modified_json_data
+
     
+def modify_json_add_product_field_to_groupings(json_data: list, grid_type: str) -> list:
+    modified_json_data = []
+    for dictionary in json_data:
+        modified_dict = copy.deepcopy(dictionary)
+        modified_dict['product'] = grid_type
+        modified_json_data.append(modified_dict)
+    return modified_json_data
+
 
 def obtain_keys(json_data: list) -> set:
     """
