@@ -5,6 +5,7 @@ import json
 import subprocess
 from pathlib import Path
 import sys
+import pdb
 
 # Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
@@ -752,13 +753,18 @@ def data_products(
     granule_directory       = os.path.join(base_dir, config_dictionary[f"{granule_type}_files_{grid_type}_dir"])
     image_directory         = os.path.join(base_dir, config_dictionary[f"figures_{granule_type}_{grid_type}_dir"])
 
+    #print("*****")
+    #print(json_groupings_filepath)
+    #print(is_coord)
+    #print("*****")
+
     with open(json_groupings_filepath, 'r') as json_file:
         list_of_json_dictionaries = json.load(json_file)
 
     # Modify variable groupings by adding an "introduction" field for each variable dataset
     if not is_coord:
-        list_of_json_dictionaries = utils_json.modify_json_add_introduction_field_to_groupings(list_of_json_dictionaries, json_groupings_filepath, config_dictionary)
         list_of_json_dictionaries = utils_json.modify_json_add_product_field_to_groupings(list_of_json_dictionaries, grid_type)
+        list_of_json_dictionaries = utils_json.modify_json_add_introduction_field_to_groupings(list_of_json_dictionaries, json_groupings_filepath, config_dictionary)
 
     # Each entry in the JSON groupings file corresponds to one document subsection
     for json_dictionary in list_of_json_dictionaries:
@@ -768,20 +774,38 @@ def data_products(
         latex_lines.append(fr"\subsubsection{{Overview}}")
         latex_lines.append(r'\newp')
 
+        #print()
+        #print('looping over <list_of_json_dictionaries> in cdf_extract')
+        #print(granule_filename_truncated_stem)
+
         if search_and_extract(
             granule_filename_truncated_stem,
             os.path.join(granule_directory),
             is_coord
             ) is None:
+
+            #print()
+            #print()
+            #print(grid_type)
+            #print('the following file returned "None" from <search_and_extract>')
+            #print(granule_filename_truncated_stem)
+            #print()
+            #print()
+         
             continue
         else:
+
             data_array_list, dataset = search_and_extract(
                 granule_filename_truncated_stem,
                 os.path.join(granule_directory),
                 is_coord
             )
 
-        # Introductory paragraph from the JSON groupings file
+        #print('----')
+        #print(json_dictionary["introduction"])
+        #print('----')
+
+        # introductory paragraph from the JSON groupings file
         latex_lines.append(utils_general.sanitize(config_dictionary, json_dictionary["Introduction"]))
         latex_lines.append(r"\\\\")
 
@@ -808,6 +832,10 @@ def data_products(
             # Detailed CDL attribute table for this variable
             dataVarTable = data_var_table(config_dictionary, variable_name, attributes_dictionary, granule_filename_truncated_stem, grid_type)
             latex_lines.extend(dataVarTable)
+
+            #print()
+            #print('data_var_plot call in cdf_extract')
+            #print(variable_name)
 
             # Generate (or retrieve cached) plot and embed as a figure
             dataVarPlot = cdf_plotter.data_var_plot(

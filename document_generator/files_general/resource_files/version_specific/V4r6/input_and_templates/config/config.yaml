@@ -11,8 +11,8 @@ dataset_text_dict:
   grid_text_latlon: '  This data has been interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 6 (V4r6) ocean and sea-ice state estimate.'
   grid_text_native: '  This data is provided on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 Release 6 (V4r6) ocean and sea-ice state estimate.'
   grid_text_1D: '  This data is a one-dimensional timeseries from the ECCO Version 4 Release 6 (V4r6) ocean and sea-ice state estimate.'
-  time_resolution_single_text: ' at {} time resolution.'
-  time_resolution_multiple_text: ' at {} time resolutions.'
+  time_resolution_single_text: ' at {frequency_string} time resolution.'
+  time_resolution_multiple_text: ' at {frequency_string} time resolutions.'
   time_resolution_none_text: ' without a specified time resolution.'
   frequency_dict:
     AVG_DAY: 'daily-average'
@@ -21,6 +21,7 @@ dataset_text_dict:
 
 latex_template_files: files_general/resource_files/universal_input/latex_template_files
 latex_modified_input_files: files_general/resource_files/version_specific/V4r6/input_and_templates/latex
+#json_input_files: files_general/resource_files/version_specific/v4r6/input_and_templates/json
 
 # Notice here that only the first sed call modifies <file-in>; every subsequent sed call modifies <file-out>
 latex_template_modification_commands_list:
@@ -67,12 +68,9 @@ variable_attributes_json_file: files_general/resource_files/version_specific/V4r
 groupings_variable_native_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/groupings/groupings_for_native_datasets.json
 groupings_variable_lat-lon_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/groupings/groupings_for_latlon_datasets.json
 groupings_variable_1D_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/groupings/groupings_for_1D_datasets.json
-variable_files_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules_TESTING/granules_native
-variable_files_lat-lon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules_TESTING/granules_lat-lon
-variable_files_1D_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules_TESTING/granules_1D
-#variable_files_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_native
-#variable_files_lat-lon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_lat-lon
-#variable_files_1D_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_1D
+variable_files_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_native
+variable_files_lat-lon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_lat-lon
+variable_files_1D_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_1D
 
 
 global_attributes_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/attribute_files/global_attributes.json
@@ -88,7 +86,7 @@ groupings_coordinate_native_json_file: files_general/resource_files/version_spec
 groupings_coordinate_lat-lon_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/wecandobetter/lat-lon_coords.json
 
 coordinate_files_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/coordinate_granules/granules_native
-coordinate_files_lat-lon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/coordinate_granules/granules_lat-lon
+#coordinate_files_lat-lon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/coordinate_granules/granules_lat-lon
 
 figures_coordinate_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/output/figures/figures_coordinates_native 
 figures_coordinate_lat-lon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/output/figures/figures_coordinates_lat-lon 

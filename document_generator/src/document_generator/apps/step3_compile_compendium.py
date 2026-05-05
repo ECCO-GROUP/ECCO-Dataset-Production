@@ -79,6 +79,10 @@ def main() -> None:
         # Attempt to use the latex template files to make compendium component files with correct version and date information via bash sed calls   
         Path(f"{base_dir}/{config_dictionary['latex_modified_input_files']}").mkdir(parents=True, exist_ok=True)
         latex_template_files = [f.name for f in Path(f"{base_dir}/{config_dictionary['latex_template_files']}").iterdir() if f.is_file() and f.suffix == ".tex"]
+        #json_input_files = [str(p) for p in Path(f"{base_dir}/{config_dictionary['json_input_files']}").rglob('.json') if p.is_file()]
+
+        #files_to_modify = latex_template_files + json_input_files
+
         for latex_file_name in latex_template_files: 
             format_map_context_dict = {
                 'file_in': f"{base_dir}/{config_dictionary['latex_template_files']}/{latex_file_name}",

@@ -49,7 +49,8 @@ def write_attributes_tables_tex(base_dir: str, config_dictionary: dict) -> None:
     global_attributes_from_granules = set()
     non_global_attributes_from_granules = set()
 
-    all_granule_paths = utils_general.list_files_pathlib(os.path.join(base_dir, config_dictionary["user_generated_granules_dir_relative"]))
+    #all_granule_paths = utils_general.list_files_pathlib(os.path.join(base_dir, config_dictionary["user_generated_granules_dir_relative"]))
+    all_granule_paths = [str(p) for p in Path().rglob('.nc') if p.is_file()]
 
     global_attributes_granules = set()
     non_global_attributes_granules = set()
@@ -117,36 +118,50 @@ def obtain_json_data(base_dir: str, filename: str) -> list:
 def modify_json_add_introduction_field_to_groupings(json_data: list, filename: str, config_dict: dict) -> list:
 
     modified_json_data = []
+    
+    #print("------")
+    #print(filename)
+    #print("------")
 
     for dictionary in json_data:
+
         modified_dict = copy.deepcopy(dictionary)
         intro_string = f"{config_dict['dataset_text_dict']['opening_text']}{modified_dict['name']}"
         frequency_list_crude = [f.strip() for f in modified_dict['frequency'].split(',')]
         frequency_list_verbose = []
+
         for frequency_crude in config_dict['dataset_text_dict']['frequency_dict'].keys():
             if frequency_crude in frequency_list_crude:
                 frequency_list_verbose.append(config_dict['dataset_text_dict']['frequency_dict'][frequency_crude])
         
         if len(frequency_list_verbose) == 0:
             intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_none_text']}"
+
         elif len(frequency_list_verbose) == 1:
             intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_single_text']}"
-            intro_string.format(frequency_list_verbose[0])
+            intro_string = intro_string.format(frequency_string = frequency_list_verbose[0])
+
         elif len(frequency_list_verbose) == 2:
             intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_multiple_text']}"
             frequency_string = f"{frequency_list_verbose[0]} and {frequency_list_verbose[1]}"
-            intro_string.format(frequency_string)
+            intro_string = intro_string.format(frequency_string = frequency_string)
+
         else:
             intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_multiple_text']}"
             frequency_string = ", ".join(frequency_list_verbose[:-1])
             frequency_string = f"{frequency_string}, and {frequency_list_verbose[-1]}"
-            intro_string.format(frequency_string)
+            intro_string = intro_string.format(frequency_string = frequency_string)
 
         # POTENTIAL BUG HERE SINCE I DON'T HANDLE CASE WHERE NO GRID TYPE IS MATCHED.  WON'T FAIL, BUT PRINTED STRING WILL BE WRONG 
         for grid_type in [g.replace("-","") for g in config_dict['possible_grid_types']]: 
             if grid_type.casefold() in filename.casefold():
                 intro_string = f"{intro_string}{config_dict['dataset_text_dict'][f'grid_text_{grid_type}']}"
                 break
+
+        #print()
+        #print('intro string')
+        #print(intro_string)
+        #print()
 
         modified_dict['Introduction'] = intro_string
         modified_json_data.append(modified_dict)
