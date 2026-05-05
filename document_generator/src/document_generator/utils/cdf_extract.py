@@ -1,3 +1,4 @@
+import re
 import os
 import numpy as np
 import xarray as xr
@@ -766,9 +767,19 @@ def data_products(
         list_of_json_dictionaries = utils_json.modify_json_add_product_field_to_groupings(list_of_json_dictionaries, grid_type)
         list_of_json_dictionaries = utils_json.modify_json_add_introduction_field_to_groupings(list_of_json_dictionaries, json_groupings_filepath, config_dictionary)
 
+        # Determine which granules exist locally, so only relevant groupings are used
+        all_granule_paths = [str(p) for p in (Path(base_dir) / config_dictionary["user_generated_granules_dir_relative"]).rglob('*.nc') if p.is_file()]
+        all_grid_granule_paths = [p for p in all_granule_paths if re.search(grid_type.replace('-','_?').replace('_','_?'), p)]
+        all_grid_granule_paths_megastring = ("_").join(all_grid_granule_paths)
+
     # Each entry in the JSON groupings file corresponds to one document subsection
     for json_dictionary in list_of_json_dictionaries:
         granule_filename_truncated_stem = json_dictionary["filename"]
+
+        if not is_coord:
+            if granule_filename_truncated_stem not in all_grid_granule_paths_megastring:
+                continue
+
         granule_filename_truncated_stem_formatted = utils_general.sanitize(config_dictionary, granule_filename_truncated_stem)
         latex_lines.append(fr'\subsection{{{granule_filename_truncated_stem_formatted}}}')
         latex_lines.append(fr"\subsubsection{{Overview}}")

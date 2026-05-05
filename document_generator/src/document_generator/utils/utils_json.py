@@ -1,3 +1,4 @@
+import pdb
 import copy
 import xarray as xr
 import json
@@ -50,20 +51,21 @@ def write_attributes_tables_tex(base_dir: str, config_dictionary: dict) -> None:
     non_global_attributes_from_granules = set()
 
     #all_granule_paths = utils_general.list_files_pathlib(os.path.join(base_dir, config_dictionary["user_generated_granules_dir_relative"]))
-    all_granule_paths = [str(p) for p in Path().rglob('.nc') if p.is_file()]
+    all_granule_paths = [str(p) for p in (Path(base_dir) / config_dictionary["user_generated_granules_dir_relative"]).rglob('*.nc') if p.is_file()]
 
     global_attributes_granules = set()
     non_global_attributes_granules = set()
 
     for granule_path in all_granule_paths:
-            dataset = xr.open_dataset(granule_path)
-            global_attributes_granules.update([el.lower() for el in list(dataset.attrs.keys())])
-            for var in dataset.data_vars:
-                non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
-            for var in dataset.coords:
-                non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
-            for var in dataset.dims:
-                non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+        dataset = xr.open_dataset(granule_path)
+        global_attributes_granules.update([el.lower() for el in list(dataset.attrs.keys())])
+        for var in dataset.data_vars:
+            non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+        for var in dataset.coords:
+            non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+        for var in dataset.dims:
+            non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+
 
     required = ["latex_lines", "json_file", "tex_file"]
     processed_attribute_types = []

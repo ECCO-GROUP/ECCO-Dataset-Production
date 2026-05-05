@@ -44,10 +44,29 @@ def write_data_attributes_tables(base_dir: str, config_dictionary: dict, overwri
 
     # Navigate up one level from the native variable dir to find the shared
     # parent of all variable granule directories (native, latlon, 1D)
-    variable_granules_parent_directory = os.path.join(
-        base_dir,
-        "/".join(config_dictionary["variable_files_native_dir"].split("/")[:-1])
-    )
+    #variable_granules_parent_directory = os.path.join(
+    #    base_dir,
+    #    "/".join(config_dictionary["variable_files_native_dir"].split("/")[:-1])
+    #)
+
+    for grid_type in config_dictionary["possible_grid_types"]:
+
+        # ------------------------------------------------------------------------------------------------------
+        # REMOVE ONCE WE HAVE A LAT-LON GRID FILE
+        # ------------------------------------------------------------------------------------------------------
+        # ------------------------------------------------------------------------------------------------------
+        # No lat-lon grid currently; this approach seems slightly sloppy anyway
+        if grid_type == 'lat-lon':
+            continue
+        # ------------------------------------------------------------------------------------------------------
+        # ------------------------------------------------------------------------------------------------------
+        # ------------------------------------------------------------------------------------------------------
+        if Path(os.path.join(base_dir,config_dictionary[f"variable_files_{grid_type}_dir"])).exists():
+            variable_granules_parent_directory = os.path.join(
+                base_dir,
+                "/".join(config_dictionary[f"variable_files_{grid_type}_dir"].split("/")[:-2])
+            )
+            break
 
     # Collect only leaf directories (those with no subdirectories); each leaf
     # corresponds to one grid type (native, latlon, or 1D)
