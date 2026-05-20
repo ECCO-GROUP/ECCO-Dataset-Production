@@ -11,7 +11,6 @@
 #---------------------------------------------------------------------
 
 # Short name of ECCO product version/release:
-
 ecco_version: 'V4r6'
 
 # Long name of ECCO product version/release:
@@ -83,7 +82,8 @@ latlon_effective_grid_radius: null
 #   Method 2: spatially-invariant, X km. X is the distance from the center of a square grid cell with sides of length L = 111 km *{latlon_grid_resolution} to a corner.
 #          ... where L is approximately the length of a side of a square lat-lon cell at {latlon_grid_resolution} degree resolution at the equator.
 #          ... i.e. latlon_effective_grid_radius = sqrt(2) * 111 km * {latlon_grid_resolution} / 2
-latlon_grid_radius_method: 'method_1'  # options are 'method_1' or 'method_2'
+# latlon_grid_radius_method: 'method_1'  # options are 'method_1' or 'method_2'
+latlon_grid_radius_method: 'method_2'  # options are 'method_1' or 'method_2'
 
 # Use custom grid and factors (false = use ECCO grids):
 custom_grid_and_factors: false
