@@ -58,106 +58,94 @@ def _print_progress_bar(current, total, prefix='Progress', bar_length=40):
 # =================================================================================================
 # GET MAPPING FACTORS
 # =================================================================================================
-def get_mapping_factors(dataset_dim, 
-                        mapping_factors_dir, 
+def get_mapping_factors(mapping_factors_dir, 
                         factors_to_get,
-                        k=0):
+                        k=None):
     """
     Get mapping factors from mapping_factors_dir for level k and the factors
     requested (factors_to_get).
 
     Args:
-        dataset_dim (str): Dimension of the dataset to get factors for.
         mapping_factors_dir (PosixPath): Path to
             /ECCO-Dataset-Production/aws/mapping_factors/{ecco_version}.
-        factors_to_get (str): 'all'=grid_mappings_all, 'k'=grid_mappings_{k}, or
-            'both'=grid_mappings_all and grid_mappings_{k} (grid_mappings_all
-            includes dry points factors).
+        factors_to_get (str): 
+            'all'   = grid_mappings_all, 
+            '2D'    = grid_mappings_2D,
+            'k'     = grid_mappings_{k}, 
+            'any_wet_in_k' = grid_mappings_any_wet_in_k
         k (int, optional): Integer vertical level index to retrieve mapping
             factors for (0-{num_vertical_levels}).
 
     Returns:
-        tuple: A tuple (status, grid_mappings_all, grid_mappings_k) where
+        tuple: A tuple (status, grid_mappings) where
         ``status`` (str) is either "SUCCESS" or "ERROR {error message}",
-        ``grid_mappings_all`` (tuple) contains two lists
-        (source_indices_within_target_radius_i and
-        nearest_source_index_to_target_index_i), and ``grid_mappings_k``
-        (tuple) contains two lists (source_indices_within_target_radius_i
+        ``grid_mappings`` (tuple) contains two lists
+            (source_indices_within_target_radius_i and
+            nearest_source_index_to_target_index_i), where
         where index is target index and value is -1 if no source indices in
         target radius or a list of source indices within target radius, and
         nearest_source_index_to_target_index_i where index is the target
         index and value is the nearest source index to target index).
     """
     log.info('-'*80)
-    log.info(f'SUBROUTINE: get_mapping_factors.   k = {k}, dataset_dim = {dataset_dim}')
+    log.info(f'SUBROUTINE: get_mapping_factors: looking for {factors_to_get}')
     log.info('-'*80 )
 
     status = 'SUCCESS'
     
     # factors_to_get : factors to load in from the mapping_factors_dir
     # can be 'all', 'k', or 'both'
-    grid_mappings_all = []
-    grid_mappings_k = []
+    grid_mapping = []
 
     log.info('Getting Grid Mappings')
     grid_mapping_fname_all = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_all.xz'
     grid_mapping_fname_2D = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_2D.xz'
     grid_mapping_fname_3D = Path(mapping_factors_dir) / '3D' / f'ecco_latlon_grid_mappings_3D_{k}.xz'
+    grid_mapping_fname_any_wet_in_k = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_any_wet_in_k.xz'
 
-    get_all=False;
-    get_k=False;
-    get_2D=False;
-    get_3D=False;
+    # if k is not None, then factors_to_get has to be 'k'
+    if k is not None and factors_to_get != 'k':
+        status = f'ERROR k should only be set if factors_to_get is also "k"'
+        return (status, grid_mapping)
 
-    if factors_to_get == 'all' or factors_to_get == 'both':
-        get_all = True
-    elif factors_to_get == 'k':
-        get_k = True
-    else:
-        status = f'ERROR Invalid input for "factors_to_get": {factors_to_get}. Must be "all", "k", or "both".'
-        return (status, grid_mappings_all, grid_mappings_k)
-            
-    if dataset_dim == '2D':
-        get_2D = True
-    elif dataset_dim == '3D':
-        get_3D = True
-        get_k = True    
-    else:
-        status = f'ERROR Invalid input for "dataset_dim": {dataset_dim}. Must be "2D" or "3D".'
-        return (status, grid_mappings_all, grid_mappings_k)
-    
-
-    grid_mappings_all = None
-    grid_mappings_k = None
-
-
-    # try to load grid_mappings_all if factors_to_get is 'all' or 'both'. 
-    # If you cannot load it, return an error status and empty grid_mappings_all and grid_mappings_k
-    try:
-        # if factors_to_get is just 'all' or 'both' then load grid_mappings_all
-        if get_all:
+    if factors_to_get == 'all':
+        try:
             log.info(f'... loading {grid_mapping_fname_all.name} ...')
-            grid_mappings_all = pickle.load(lzma.open(grid_mapping_fname_all, 'rb'))
-    except:
-        status = f'ERROR Unable to load {grid_mapping_fname_all} mapping factors file: {mapping_factors_dir}'
-        log.exception('%s', status)
-        return (status, grid_mappings_all, grid_mappings_k)
-    
-    # try to load grid_mappings_k if factors_to_get is 'k' or 'both'. 
-    # If you cannot load it, return an error status and empty grid_mappings_all and grid_mappings_k
-    try:
-        if get_k:
-            if get_2D:
-                log.info(f'... loading {grid_mapping_fname_2D.name} ...')
-                grid_mappings_k = pickle.load(lzma.open(grid_mapping_fname_2D, 'rb'))
-            elif get_3D:
-                log.info(f'... loading {grid_mapping_fname_3D.name} ...')
-                grid_mappings_k = pickle.load(lzma.open(grid_mapping_fname_3D, 'rb'))
-    except:
-        status = f'ERROR Unable to load grid mapping factors: {mapping_factors_dir}'
-        log.exception('%s', status)
-        return (status, grid_mappings_all, grid_mappings_k)
-    
+            grid_mapping = pickle.load(lzma.open(grid_mapping_fname_all, 'rb'))
+        except Exception as e:
+            status = f'ERROR Unable to load {grid_mapping_fname_all} mapping factors file: {mapping_factors_dir}. {e}'
+            log.error('%s', status)
+            return (status, grid_mapping)
+
+    elif factors_to_get == '2D':
+        try:
+            log.info(f'... loading {grid_mapping_fname_2D.name} ...')
+            grid_mapping = pickle.load(lzma.open(grid_mapping_fname_2D, 'rb'))
+        except Exception as e:
+            status = f'ERROR Unable to load {grid_mapping_fname_2D} mapping factors file: {mapping_factors_dir}. {e}'
+            log.error('%s', status)
+            return (status, grid_mapping)
+
+    elif factors_to_get == 'grid_mappings_any_wet_in_k':
+        try:
+            log.info(f'... loading {grid_mapping_fname_any_wet_in_k.name} ...')
+            grid_mapping = pickle.load(lzma.open(grid_mapping_fname_any_wet_in_k, 'rb'))
+        except Exception as e:
+            status = f'ERROR Unable to load {grid_mapping_fname_any_wet_in_k} mapping factors file: {mapping_factors_dir}. {e}'
+            log.error('%s', status)
+            return (status, grid_mapping)
+
+    elif factors_to_get == 'k':
+        try:
+            log.info(f'... loading {grid_mapping_fname_3D.name} ...')
+            grid_mapping = pickle.load(lzma.open(grid_mapping_fname_3D, 'rb'))
+        except Exception as e:
+            status = f'ERROR Unable to load {grid_mapping_fname_3D} mapping factors: {mapping_factors_dir}. {e}'
+            log.error('%s', status)
+            return (status, grid_mapping)
+
+    return (status, grid_mapping)
+   
 
     
     # # Check to see that the mapping factors have been made
@@ -187,8 +175,6 @@ def get_mapping_factors(dataset_dim,
     # else:
     #     status = f'ERROR Grid mapping factors have not been created or cannot be found: {mapping_factors_dir}'
     #     return (status, grid_mappings_all, grid_mappings_k)
-
-    return (status, grid_mappings_all, grid_mappings_k)
 
 
 # =================================================================================================
@@ -232,6 +218,7 @@ def create_mapping_factors(dataset_dim,
     grid_mapping_fname_all = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_all.xz'
     grid_mapping_fname_2D = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_2D.xz'
     grid_mapping_fname_3D = Path(mapping_factors_dir) / '3D'
+    grid_mapping_fname_any_wet_in_k = Path(mapping_factors_dir) / 'ecco_latlon_grid_mappings_any_wet_in_k.xz'
 
     # check that the 3D directory exists
     if not grid_mapping_fname_3D.exists():
@@ -242,29 +229,28 @@ def create_mapping_factors(dataset_dim,
             return status
 
     # first check to see if you have already calculated the grid mapping factors
-    # if the dataset is 3D, check to see that all the nk vertical levels have a matching grid_mappings file
     if dataset_dim == '3D':
-        all_3D = True
-        all_3D_fnames = [f'ecco_latlon_grid_mappings_3D_{i}.xz' for i in range(nk)]
-        curr_3D_fnames = os.listdir(grid_mapping_fname_3D)
-        for fname in all_3D_fnames:
-            if fname not in curr_3D_fnames:  
-                all_3D = False
-                break
+        # if 3D, verify existence of all nk vertical levels have matching grid_mappings files
+        curr_3D_fnames = set(os.listdir(grid_mapping_fname_3D))
+        all_3D = all(f'ecco_latlon_grid_mappings_3D_{i}.xz' in curr_3D_fnames for i in range(nk))
+    elif dataset_dim == '2D':
+        # for 2D, verify existence of grid_mappings_2D and grid_mappings_any_wet_in_k (useful for ice-shelf cavities)
+        all_2D = grid_mapping_fname_2D.is_file() and grid_mapping_fname_any_wet_in_k.is_file() 
+        nk = 1 
 
-    # if dataset dim is 2D and the 2D mapping factors file exists, or if dataset dim is 3D and all
-    # 3D mapping factors files exist, dont remake the factors (unless force=True)
-    files_exist = (dataset_dim == '2D' and grid_mapping_fname_2D.is_file()) or (dataset_dim == '3D' and all_3D)
+    need_recalc = False
+    if dataset_dim == '2D' and not all_2D:
+        log.info(f'... grid_mappings_2D file not found in {mapping_factors_dir}, need to calculate mapping factors')
+        need_recalc=True
+    elif dataset_dim == '3D' and not all_3D:
+        log.info(f'... not all grid_mappings_3D files not found in {mapping_factors_dir}/3D, need to calculate mapping factors')
+        need_recalc=True    
 
-    if files_exist and not force_recalc:
+    if not need_recalc and not force_recalc:
         # Factors already made, continuing
-        log.info('... found grid_mappings_all [all points] and grid_mappings_k [only wet points], not recalculating')
+        log.info('... found existing grid_mappings, not remaking')
     else:
-        # if not, make new grid mapping factors
-        if force_recalc and files_exist:
-            log.info('... forcing recalculation of grid_mappings_all and grid_mappings_k')
-        else:
-            log.info('... no existing grid mapping factors found, calculating new ones')
+        log.info('... no grid_mappings found, or force_recalc is True, remaking grid mapping factors ...')
 
         # Calculate optimal neighbours value to avoid "using more neighbours than upper bound" message
         # Both target_grid_radius and source_grid_min_L are in meters
@@ -276,7 +262,6 @@ def create_mapping_factors(dataset_dim,
         max_idx = np.unravel_index(np.nanargmax(target_grid_radius), target_grid_radius.shape)
         log.info(f'    ... min radius target grid cell found at index idx={min_idx[0]} ')
         log.info(f'    ... max radius target grid cell found at index idx={max_idx[0]} ')
-
         log.info(f'  Target grid radius (max):  {np.nanmax(target_grid_radius)/1000:.2f} km ({np.nanmax(target_grid_radius):.1f} m)')
         log.info(f'  Target grid radius (mean): {np.nanmean(target_grid_radius)/1000:.2f} km ({np.nanmean(target_grid_radius):.1f} m)')
         log.info(f'  Source grid min length:    {source_grid_min_L/1000:.2f} km ({source_grid_min_L:.1f} m)')
@@ -295,36 +280,31 @@ def create_mapping_factors(dataset_dim,
 
         if neighbours_upper_bound > 100:
             log.warning(f'Calculated neighbours_upper_bound = {neighbours_upper_bound} is > 100, limiting to 100')
-        neighbours_upper_bound = min(neighbours_upper_bound, 100)  # set a maximum upper bound of 100 to avoid too high of a neighbours value
+        # limit # neighbors to max 100 to avoid lookup table memory explosion
+        neighbours_upper_bound = min(neighbours_upper_bound, 100)  
         log.info('-'*80)
 
-        # find the mapping between *all* 2D ECCO grid model grid points and the target grid.
+        # --------------------------------------------------------------------------------------------
+        # Create the mapping between *all* 2D ECCO native grid points and target grid.
         grid_mappings_all = \
             ecco_cloud_utils.mapping.find_mappings_from_source_to_target_for_processing(
-                source_grid_all,
-                target_grid,
+                source_grid_all, # all native grid points
+                target_grid, # the lat-lon grid
                 target_grid_radius,
                 source_grid_min_L,
                 source_grid_max_L,
                 neighbours=neighbours_upper_bound)
 
-        # Save grid_mappings_all
-        try:
+        try: # Save grid_mappings_all
             pickle.dump(grid_mappings_all, lzma.open(grid_mapping_fname_all, 'wb'))
         except:
             status = f'ERROR Cannot save grid_mappings_all file "{grid_mapping_fname_all}"'
             return status
+        log.info(f'... done writing {grid_mapping_fname_all} to disk')
 
-        log.info(f'... done creating {grid_mapping_fname_all} saving to disk')
-
-        # If the dataset is 2D, only compute one level of the mapping factors
-        if dataset_dim == '2D':
-            nk = 1
-
-        # Find the mapping factors between the *wet points* of the ECCO grid
-        # at each vertical level and the target grid (create mapping factors)
+        # --------------------------------------------------------------------------------------------
+        # Create the mapping between the *wet* ECCO native grid points at each k and target grid
         log.info(f'... calculating grid_mappings_k for wet points at each vertical level, nk={nk}...')
-
         for k_i in range(nk):
             _print_progress_bar(k_i, nk, prefix='Creating grid mappings')
             grid_mappings_k = \
@@ -336,9 +316,7 @@ def create_mapping_factors(dataset_dim,
                     source_grid_max_L,
                     neighbours=neighbours_upper_bound)
             try:
-                # if the dataset dim is 2D, save the factors using the 2D name, otherwise
-                # save it with the 3D name, and with level {k}
-                if dataset_dim == '2D':
+                if dataset_dim == '2D': # different filenames for 2D and 3D
                     pickle.dump(grid_mappings_k, lzma.open(grid_mapping_fname_2D, 'wb'))
                 elif dataset_dim == '3D':
                     fname_3D = Path(grid_mapping_fname_3D) / f'ecco_latlon_grid_mappings_3D_{k_i}.xz'
@@ -347,8 +325,25 @@ def create_mapping_factors(dataset_dim,
                 status = f'ERROR Cannot save grid_mappings_k file(s) "{mapping_factors_dir}"'
                 return status
 
-        log.info(f'... done creating grid_mappings_k for nk={nk} vertical levels ...')
+        # --------------------------------------------------------------------------------------------
+        # Create the mapping between points with *any* wet point in the vertical column and target grid
+        if dataset_dim == '2D':
+            grid_mappings_any_wet_in_k = \
+                ecco_cloud_utils.mapping.find_mappings_from_source_to_target_for_processing(
+                    source_grid_k['any_wet_in_k'],
+                    target_grid,
+                    target_grid_radius,
+                    source_grid_min_L,
+                    source_grid_max_L,
+                    neighbours=neighbours_upper_bound)
+            try:
+                pickle.dump(grid_mappings_any_wet_in_k, lzma.open(grid_mapping_fname_any_wet_in_k, 'wb'))
+            except:
+                status = f'ERROR Cannot save grid_mapping_fname_any_wet_in_k "{mapping_factors_dir}"'
+                return status
         
+        log.info(f'... done creating {dataset_dim}grid_mappings')
+
     return status
 
 
@@ -382,7 +377,9 @@ def create_land_mask(mapping_factors_dir,
 
     status = 'SUCCESS'
     ecco_land_mask_c = ecco_grid.maskC.copy(deep=True)
-    ecco_land_mask_c.values = np.where(ecco_land_mask_c==True, 1, np.nan)
+
+    # ecco_land_mask_c will be 3D
+    ecco_land_mask_c.values = np.where(ecco_land_mask_c == True, 1, np.nan)
 
     land_mask_fname = Path(mapping_factors_dir) / 'land_mask'
 
@@ -395,9 +392,13 @@ def create_land_mask(mapping_factors_dir,
             log.exception('%s', status)
             return status
 
-    # first check to see if you have already calculated all the land mask files for each vertical level
+
+    # check to see if you have already calculated all the land mask files for each vertical level
     all_mask = True
     all_mask_fnames = [f'ecco_latlon_land_mask_{i}.xz' for i in range(nk)]
+    
+    # include a special land mask that counts as wet if any cell in each column is wet (needed for ice-shelf cavities)
+    all_mask_fnames += ['ecco_latlon_land_mask_any_wet_in_column.xz']
 
     # make list of all the land mask files that are currently in the land mask directory
     curr_mask_fnames = os.listdir(land_mask_fname)
@@ -406,34 +407,26 @@ def create_land_mask(mapping_factors_dir,
         if fname not in curr_mask_fnames:  
             all_mask = False
             log.exception(f'... land mask file "{fname}" not found in land_mask directory')
-            log.exception(f'... expected land mask files: {all_mask_fnames}')
             break
 
-    if all_mask and not force_recalc:
-        # Land masks are already made, continuing
+    if all_mask and not force_recalc:        # Land masks are already made, continuing
         log.info('... land masks are already present in land_mask directory, not recalculating')
-    else:
-        # if not, recalculate.
+    else: # if not, recalculate.
         if force_recalc and all_mask:
             log.info('... forcing recalculation of existing land mask files')
         else:
             log.info('... no land mask files found, recalculating')
 
-
         # land mask needs the "grid_mappings_all" mapping factors
-        log.info(f'... loading grid_mappings_all for creating land masks ...')
-        (status, grid_mappings_all, _) = get_mapping_factors(dataset_dim, 
-                                                             mapping_factors_dir, 
-                                                             'all')
-
+        (status, grid_mappings_all) = get_mapping_factors(mapping_factors_dir,  'all')
         if status != 'SUCCESS':
             raise RuntimeError(status)
+        log.info(f'... loaded grid_mappings_all')
 
         source_indices_within_target_radius_i, nearest_source_index_to_target_index_i = grid_mappings_all
-
-        if status != 'SUCCESS':
-            return status
-
+        
+        # ----------------------------------------------------------------------------
+        # loop through nk levels
         for k in range(nk):
             _print_progress_bar(k, nk, prefix=f'Creating land masks. k={k}/{nk}')
 
@@ -456,14 +449,97 @@ def create_land_mask(mapping_factors_dir,
                 status = f'ERROR Cannot save land_mask file "{land_mask_fname}"'
                 log.exception('%s', status)
                 return status
+        
         log.info(f'... done creating land masks for nk={nk} vertical levels!! big yay')
         log.info('-'*80)
+
+        # ----------------------------------------------------------------------------
+        # create a special land mask that counts if any wet point in the column is wet
+        source_field = np.where(np.sum(np.where(ecco_grid.maskC ==True, 1, 0),axis=0) > 0, 1, np.nan).ravel()
+
+        # create land mask for level k
+        land_mask_ll = \
+            ecco_cloud_utils.mapping.transform_to_target_grid_for_processing(
+                source_indices_within_target_radius_i,
+                nearest_source_index_to_target_index_i,
+                source_field, target_grid_shape,
+                operation='nearest', 
+                allow_nearest_neighbor=True)
+        try:
+            # save land mask with level {k}
+            fname_mask = Path(land_mask_fname) / f'ecco_latlon_land_mask_any_wet_in_column.xz'
+            pickle.dump(land_mask_ll.ravel(), lzma.open(fname_mask, 'wb'))
+        except:
+            status = f'ERROR Cannot save land_mask file "{land_mask_fname}"'
+            log.exception('%s', status)
+            return status 
+
     return status
 
 
 # ====================================================================================================
 # SPARSE MATRIX CREATION
 # ====================================================================================================
+def __build_sparse_matrix(
+    wet_pts_k,
+    target_grid_shape,
+    source_indices_within_target_radius_i,
+    nearest_source_index_to_target_index_i,
+    land_mask):
+    """
+    Build sparse interpolation matrix from source to target grid.
+
+    Args:
+        wet_pts_k (tuple): Tuple of numpy arrays containing wet point indices
+        target_grid_shape (tuple): Shape of target grid (ny, nx)
+        source_indices_within_target_radius_i (array): Source indices within each target cell radius
+        nearest_source_index_to_target_index_i (array): Nearest source index for each target cell
+        land_mask (array): Land mask for target grid (NaN on land, 1 on water)
+
+    Returns:
+        scipy.sparse.csr_matrix: Sparse interpolation matrix of shape (n, m)
+    """
+    # get the length of the first dimension of wet_pts_k at vertical level k
+    n = len(wet_pts_k[0])
+
+    # get the total number of target grid cells
+    m = target_grid_shape[0] * target_grid_shape[1]
+
+    # get the target indices where source indices exist within it's target radius
+    target_ind_raw = np.where(source_indices_within_target_radius_i != -1)[0]
+
+    # get the nearest source index for each target index IF there are no source indices within the target index radius
+    nearest_ind_raw = np.where((nearest_source_index_to_target_index_i != -1) & (source_indices_within_target_radius_i == -1))[0]
+
+    # loop through all the wet points indices, and if that index has source indices within it's target radius then
+    # append that the target index to target_ind, the source index to source_ind, and append the weighting
+    # (calculated as 1/number of source indices) to source_to_target_weights.
+    # Otherwise, use the nearest source index, and append 1 (1/1) to source_to_target_weights
+    target_ind = []
+    source_ind = []
+    source_to_target_weights = []
+    for target_wet_ind in np.where(~np.isnan(land_mask))[0]:
+        if target_wet_ind in target_ind_raw:
+            si_list = source_indices_within_target_radius_i[target_wet_ind]
+            for si in si_list:
+                target_ind.append(target_wet_ind)
+                source_ind.append(si)
+                source_to_target_weights.append(1/len(si_list))
+        elif target_wet_ind in nearest_ind_raw:
+            ni = nearest_source_index_to_target_index_i[target_wet_ind]
+            target_ind.append(target_wet_ind)
+            source_ind.append(ni)
+            source_to_target_weights.append(1)
+
+    # create sparse matrix using the list of weights, the source indices, and target indices
+    # B is a matrix that has a row of length equal to the number of source indices, for each
+    # target grid index. (source_ind, target_ind) are the coordinates in the sparse matrix
+    # that point to the corresponding value in source_to_target_weights.
+    # i.e. (source_ind[0], target_ind[0]) = (0, 5), and source_to_target_weights[0] = 10,
+    # then the value of 10 will be placed at (0, 5) in B.
+    return sparse.csr_matrix((source_to_target_weights, (source_ind, target_ind)), shape=(n, m))
+
+
 def create_sparse_matrix(
     mapping_factors_dir, 
     product_generation_config, 
@@ -486,11 +562,10 @@ def create_sparse_matrix(
     """       
 
     log.info('-'*80)
-    log.info('SUBROUTINE: create_sparse_matrix')
+    log.info(f'SUBROUTINE: create_sparse_matrix, dataset_dim: {dataset_dim}')
     log.info('-'*80 )
 
     status = 'SUCCESS'
-
 
     if dataset_dim == '2D':
         nk=1
@@ -504,109 +579,83 @@ def create_sparse_matrix(
         return status
 
     sm_path = Path(mapping_factors_dir) / 'sparse'
-    # check that the sparse matrix directory exists
-    if not sm_path.exists():
-        try:
-            sm_path.mkdir(parents=True, exist_ok=True)
-        except:
-            status = f'ERROR Cannot make sparse matrix directory "{sm_path}"'
-            return status
+    try:
+        sm_path.mkdir(parents=True, exist_ok=True)
+    except Exception as e:
+        status = f'ERROR Cannot make sparse matrix directory "{sm_path}". {e}'
+        return status
 
     # Check if all sparse matrices are already present
     present_sm_files = list(sorted(os.listdir(f'{mapping_factors_dir}/sparse')))
-
-    # list of expected sparse matrix files based on nk and dataset_dim
     expected_sm_files = list(sorted([f'sparse_matrix_{k}.npz' for k in range(nk)]))
-    
+
+    if dataset_dim == '3D':
+        expected_sm_files.extend(['sparse_matrix_any_wet_in_k.xz'])
+
     # check to see if all the expected sparse matrix files are in the present sparse matrix files list. If any one is not, set all_sm_files = False
     all_sm_files = all([sm_file in present_sm_files for sm_file in expected_sm_files])
 
     if all_sm_files and not force_recalc:
-        # sparse matrices already made, continuing
         log.info('... sparse matrix files already exist, not recalculating')
-    else:
-        # if force_recalc is True, or not all sparse matrix files are present, recalculate.
-        if force_recalc and all_sm_files:
-            log.info('... forcing recalculation of existing sparse matrix files')
-        else:
-            log.info('... no sparse matrix files found, recalculating')
+        return status
 
-        log.info('... creating sparse matrix files for each vertical level k ... nk=%d' % nk)
+    log.info('... sparse matrix files do not exist or force recalc, creating sparse matrix files ...')
+
+    if dataset_dim == '2D':
+        k = 0
+        sm_path_fname = Path(sm_path) / f'sparse_matrix_2D.npz'
+        status, land_mask = gen_netcdf_utils.get_land_mask(mapping_factors_dir, k)
+        if status != 'SUCCESS':
+            log.error(status)
+            return status
+        
+        status, grid_mapping = get_mapping_factors(mapping_factors_dir, '2D')
+        if status != 'SUCCESS':
+            log.error(status)
+            return status
+        
+        source_indices_within_target_radius_i, nearest_source_index_to_target_index_i = grid_mapping
+
+        # Build sparse interpolation matrix
+        B = __build_sparse_matrix(
+            wet_pts_k[k],
+            target_grid_shape,
+            source_indices_within_target_radius_i,
+            nearest_source_index_to_target_index_i,
+            land_mask)
+
+        # save sparse matrix
+        try:
+            sparse.save_npz(sm_path_fname, B)
+        except:
+            status = f'ERROR Cannot save sparse matrix file "{sm_path_fname}"'
+            return status            
+
+    elif dataset_dim == '3D':
+            
         for k in range(nk):
             sm_path_fname = Path(sm_path) / f'sparse_matrix_{k}.npz'
 
             # get the land mask for level k (should exist for all k)
-            status, land_mask = gen_netcdf_utils.get_land_mask(
-                mapping_factors_dir,
-                product_generation_config,
-                k=k
-            )
+            status, land_mask = gen_netcdf_utils.get_land_mask(mapping_factors_dir, k=k)
             if status != 'SUCCESS':
-                # stick with this for now (TODO: Pythonic mods to get_land_mask):
                 log.error(status)
-                sys.exit(status)
-
-            # Create sparse matrix representation of mapping factors
-#            for dataset_dim in ['2D', '3D']:
-                # only do 2D sparse matrix for vertical level k=0
-            if dataset_dim == '2D' and k > 0:
-                continue
-
-            # get the mapping_factors_k factors for vertical level k
-            status, _, (source_indices_within_target_radius_i, \
-            nearest_source_index_to_target_index_i) = get_mapping_factors(dataset_dim, 
-                                                                            mapping_factors_dir, 
-                                                                            'k', 
-                                                                            k=k)
-            if status != 'SUCCESS':
                 return status
 
-            # # If not using a custom grid and factors, then get the wet_pts_k form the latlon_grid object
-            # if not product_generation_config['custom_grid_and_factors']:
-            #     # get the latlon grid object, and only use the wet_pts_k list
-            #     status, (_, _, _, wet_pts_k) = gen_netcdf_utils.get_latlon_grid(Path(mapping_factors_dir))
-            #     if status != 'SUCCESS':
-            #         return status
+            status, grid_mapping = get_mapping_factors(mapping_factors_dir, 'k', k=k)
+            if status != 'SUCCESS':
+                log.error(status)
+                return status
 
-            # get the length of the first dimension of wet_pts_k at vertical level k
-            n = len(wet_pts_k[k][0])
+            source_indices_within_target_radius_i, nearest_source_index_to_target_index_i = grid_mapping
 
-            # get the total number of target grid cells
-            m = target_grid_shape[0] * target_grid_shape[1]
-        
-            # get the target indices where source indices exist within it's target radius
-            target_ind_raw = np.where(source_indices_within_target_radius_i != -1)[0]
-
-            # get the nearest source index for each target index IF there are no source indices within the target index radius
-            nearest_ind_raw = np.where((nearest_source_index_to_target_index_i != -1) & (source_indices_within_target_radius_i == -1))[0]
-
-            # loop through all the wet points indices, and if that index has source indices within it's target radius then
-            # append that the target index to target_ind, the source index to source_ind, and append the weighting 
-            # (calculated as 1/number of source indices) to source_to_target_weights.
-            # Otherwise, use the nearest source index, and append 1 (1/1) to source_to_target_weights
-            target_ind = []
-            source_ind = []
-            source_to_target_weights = []
-            for wet_ind in np.where(~np.isnan(land_mask))[0]:
-                if wet_ind in target_ind_raw:
-                    si_list = source_indices_within_target_radius_i[wet_ind]
-                    for si in si_list:
-                        target_ind.append(wet_ind)
-                        source_ind.append(si)
-                        source_to_target_weights.append(1/len(si_list))
-                elif wet_ind in nearest_ind_raw:
-                    ni = nearest_source_index_to_target_index_i[wet_ind]
-                    target_ind.append(wet_ind)
-                    source_ind.append(ni)
-                    source_to_target_weights.append(1)
-
-            # create sparse matrix using the list of weights, the source indices, and target indices
-            # B is a matrix that has a row of length equal to the number of source indices, for each
-            # target grid index. (source_ind, target_ind) are the coordinates in the sparse matrix
-            # that point to the corresponding value in source_to_target_weights.
-            # i.e. (source_ind[0], target_ind[0]) = (0, 5), and source_to_target_weights[0] = 10,
-            # then the value of 10 will be placed at (0, 5) in B.
-            B = sparse.csr_matrix((source_to_target_weights, (source_ind, target_ind)), shape=(n,m))
+            # Build sparse interpolation matrix
+            B = __build_sparse_matrix(
+                wet_pts_k[k],
+                target_grid_shape,
+                source_indices_within_target_radius_i,
+                nearest_source_index_to_target_index_i,
+                land_mask)
 
             # save sparse matrix
             try:
@@ -615,7 +664,9 @@ def create_sparse_matrix(
                 status = f'ERROR Cannot save sparse matrix file "{sm_path_fname}"'
                 return status
                 
-        print('\n')  # add a newline after the progress bar is done
+        # any_wet_in_column.xz will go here:
+
+
     return status
 
 
@@ -902,9 +953,7 @@ def create_ecco_grid_values(
             log.exception(errstr)
             sys.exit(errstr)
 
-    wet_pts_k = {}
-    xc_wet_k = {}
-    yc_wet_k = {}
+
 
     force_recalc = product_generation_config.get('force_recalculation', False)
 
@@ -912,7 +961,12 @@ def create_ecco_grid_values(
     # Dictionary of pyresample 'grids' for each level of the ECCO grid where
     # there are wet points.  Used for the bin-averaging.  We don't want to bin
     # average dry points.
+    
+    wet_pts_k = {}
+    xc_wet_k = {}
+    yc_wet_k = {}
     source_grid_k = {}
+    
     log.info('-'*80)
     log.info(f'Creating Swath Definition Objects for ECCO grid wet points at each vertical level nk={nk}')
     for k in range(nk):
@@ -920,6 +974,13 @@ def create_ecco_grid_values(
         xc_wet_k[k] = ecco_grid.XC.values[wet_pts_k[k]]
         yc_wet_k[k] = ecco_grid.YC.values[wet_pts_k[k]]
         source_grid_k[k] = pr.geometry.SwathDefinition(lons=xc_wet_k[k], lats=yc_wet_k[k])
+
+    # a special layer that counts as wet if any cell in a column is wet. useful for ice-shelf cavities
+    tmp = np.where(np.sum(np.where(ecco_grid.maskC ==True, 1, 0),axis=0)>0, 1, 0)
+    wet_pts_k['any_wet_in_k'] = np.where(tmp > 0)
+    xc_wet_k['any_wet_in_k'] = ecco_grid.XC.values[wet_pts_k['any_wet_in_k']]
+    yc_wet_k['any_wet_in_k'] = ecco_grid.YC.values[wet_pts_k['any_wet_in_k']]
+    source_grid_k['any_wet_in_k'] = pr.geometry.SwathDefinition(lons=xc_wet_k['any_wet_in_k'], lats=yc_wet_k['any_wet_in_k'])
 
     # The pyresample 'grid' information for the 'source' (ECCO grid) defined using
     # all XC and YC points, even land.  Used to create the land mask
@@ -1066,7 +1127,7 @@ def create_ecco_grid_values(
     
     tgr_ds = xr.Dataset(xr.merge([tgr_da, tga_da])) 
 
-    lon_target_info_fname = Path(mapping_factors_dir) / 'lat-lon_target_grid_info.nc'
+    lon_target_info_fname = Path(mapping_factors_dir) / 'latlon_grid_area_and_radius.nc'
     try:
         log.info(f'... saving target info file to {lon_target_info_fname}')   
         tgr_ds.to_netcdf(lon_target_info_fname)
@@ -1187,9 +1248,7 @@ def create_all_factors(product_generation_config, dataset_dim):
             product_generation_config, mapping_factors_dir)
     else:
         grid_values = create_ecco_grid_values(
-            product_generation_config, mapping_factors_dir
-#           extra_prints)
-            )
+            product_generation_config, mapping_factors_dir)
 
     # Check if grid_values creation failed (returns error string instead of dict)
     if isinstance(grid_values, str):
