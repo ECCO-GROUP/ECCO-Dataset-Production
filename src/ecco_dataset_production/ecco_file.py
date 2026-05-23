@@ -15,7 +15,7 @@ class ECCOMDSFilestr(object):
 
     Args:
         filestr (str): ECCO MDS filename string. (default=None)
-        \*\*kwargs: Instead of filestr, individual file components may be provided
+        **kwargs: Instead of filestr, individual file components may be provided
             and can be used to build up file-matching expressions. Possible
             arguments include: ``prefix`` (str) - Product prefix/name.
             ``averaging_period`` (str) - Averaging period ('mon_mean',
@@ -111,13 +111,15 @@ class ECCOGranuleFilestr(object):
 
     Args:
         filestr (str): ECCO file string. (default=None)
-        \*\*kwargs: Instead of filestr, individual file components may be provided
+        **kwargs: Instead of filestr, individual file components may be provided
             and can be used to build up file-matching expressions. Possible
             arguments include: ``prefix`` (str) - Product prefix/name.
             ``averaging_period`` (str) - Averaging period ('mon_mean',
             'day_mean', or 'day_snap', case insensitive). ``date`` (str) -
             Averaging period end date, in ISO Date or Date Time format (e.g.,
-            'YYYY-MM-DD' or 'YYYY-MM-DDThh:mm:ss'). Regardless of input, filestr
+            'YYYY-MM-DD' or 'YYYY-MM-DDThh:mm:ss'). 
+            
+            Regardless of input, filestr
             date may be truncated, or extended, according to averaging period.
             For example, if averaging_period='mon_mean' and date is in
             'YYYY-MM-DD' format, only the 'YYYY-MM' portion will be used in
@@ -172,10 +174,26 @@ class ECCOGranuleFilestr(object):
                 # Format: <prefix>_ECCO_<version>_<grid_type>_<grid_label>.nc
                 # Example: GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc
                 try:
-                    self.prefix, _, self.version, self.grid_type, grid_label_and_ext = \
-                        filestr.split('_', 4)
+                    # remove path if it exists
+                    if '/' in filestr:
+                        filestr = filestr.split('/')[-1]
+
+                    # parsing time invariant granule filestring is a little simpler because we know the averaging period is 'time-invariant' and therefore not included in the filestring; we can reliably split on '_ECCO_' to separate the prefix from the rest of the filestring, and then parse the remaining fields accordingly:
+                    tmp_split = filestr.split('_ECCO_')
+                    self.prefix = tmp_split[0]
+                    self.version, self.grid_type, grid_label_and_ext = tmp_split[1].split('_', 2)
+
                     self.grid_label, self.ext = grid_label_and_ext.split('.')
                     self.averaging_period = 'time-invariant'
+
+                    # print('parsed time-invariant granule filestring successfully:')
+                    # # print out all the self attributes at this point
+                    # print(f'prefix: {self.prefix}')
+                    # print(f'version: {self.version}')
+                    # print(f'grid_type: {self.grid_type}')
+                    # print(f'grid_label: {self.grid_label}')
+                    # print(f'ext: {self.ext}')
+
                 except ValueError:
                      raise ValueError(
                         f'unrecognized time-invariant file string format; must be of the form <prefix>_ECCO_<version>_<grid_type>_<grid_label>.nc')
@@ -183,6 +201,10 @@ class ECCOGranuleFilestr(object):
             else:
                 # Time-dependent formats
                 try:
+                    # remove path if it exists
+                    if '/' in filestr:
+                        filestr = filestr.split('/')[-1]
+                        
                     #tmp: quick fix for Darwin:
                     #re_so = re.search('_day_snap|_mon_snap|_snap|_day_mean|_mon_mean',filestr)
                     re_so = re.search('_snap|_day_mean|_mon_mean',filestr)
