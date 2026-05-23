@@ -596,45 +596,47 @@ def process_time_invariant_granule(task, cfg, grid=None, mapping_factors=None, m
 
     # Load the NetCDF file into an xarray Dataset
     merged_variable_dataset = xr.open_dataset(netcdf_file)
-    
-    #print('\n\npre metadata stripping:')
-    #print_dataset_metadata(merged_variable_dataset)
+    try:
+        #print('\n\npre metadata stripping:')
+        #print_dataset_metadata(merged_variable_dataset)
 
-    if task.get('strip_attributes', False):
-        # Remove all global attributes
-        merged_variable_dataset.attrs = {}
-        # Remove all variable and coordinate attributes
-        for var in merged_variable_dataset.variables:
-            merged_variable_dataset[var].attrs = {}
+        if task.get('strip_attributes', False):
+            # Remove all global attributes
+            merged_variable_dataset.attrs = {}
+            # Remove all variable and coordinate attributes
+            for var in merged_variable_dataset.variables:
+                merged_variable_dataset[var].attrs = {}
 
-    #print('\n\npost metadata stripping:')
-    #print_dataset_metadata(merged_variable_dataset)
+        #print('\n\npost metadata stripping:')
+        #print_dataset_metadata(merged_variable_dataset)
 
-    # set miscellaneous granule attributes and properties:
-    merged_variable_dataset_with_ancillary_data = set_granule_ancillary_data(
-        dataset=merged_variable_dataset, task=task,
-        grid=grid, mapping_factors=mapping_factors, cfg=cfg)
+        # set miscellaneous granule attributes and properties:
+        merged_variable_dataset_with_ancillary_data = set_granule_ancillary_data(
+            dataset=merged_variable_dataset, task=task,
+            grid=grid, mapping_factors=mapping_factors, cfg=cfg)
 
-    # append metadata:
-    merged_variable_dataset_with_all_metadata, encoding = set_granule_metadata(
-        dataset=merged_variable_dataset_with_ancillary_data,
-        task=task, ecco_metadata=metadata, cfg=cfg)
+        # append metadata:
+        merged_variable_dataset_with_all_metadata, encoding = set_granule_metadata(
+            dataset=merged_variable_dataset_with_ancillary_data,
+            task=task, ecco_metadata=metadata, cfg=cfg)
 
-    # write:
-    if task.is_granule_local:
-        if os.path.dirname(task['granule']) and not os.path.exists(os.path.dirname(task['granule'])):
-            os.makedirs(os.path.dirname(task['granule']))
-        merged_variable_dataset_with_all_metadata.to_netcdf(
-            task['granule'], encoding=encoding)
-    else:
-        with tempfile.TemporaryDirectory() as upload_tmpdir:
-            # temporary directory will self-destruct at end of with block
-            _src = os.path.basename(task['granule'])
-            _dest = task['granule']
+        # write:
+        if task.is_granule_local:
+            if os.path.dirname(task['granule']) and not os.path.exists(os.path.dirname(task['granule'])):
+                os.makedirs(os.path.dirname(task['granule']))
             merged_variable_dataset_with_all_metadata.to_netcdf(
-                os.path.join(upload_tmpdir,_src), encoding=encoding)
-            log.info('uploading %s to %s', os.path.join(upload_tmpdir,_src), _dest)
-            aws.ecco_aws_s3_cp.aws_s3_cp( src=os.path.join(upload_tmpdir,_src), dest=_dest, **kwargs)
+                task['granule'], encoding=encoding)
+        else:
+            with tempfile.TemporaryDirectory() as upload_tmpdir:
+                # temporary directory will self-destruct at end of with block
+                _src = os.path.basename(task['granule'])
+                _dest = task['granule']
+                merged_variable_dataset_with_all_metadata.to_netcdf(
+                    os.path.join(upload_tmpdir,_src), encoding=encoding)
+                log.info('uploading %s to %s', os.path.join(upload_tmpdir,_src), _dest)
+                aws.ecco_aws_s3_cp.aws_s3_cp( src=os.path.join(upload_tmpdir,_src), dest=_dest, **kwargs)
+    finally:
+        merged_variable_dataset.close()
 
     log.info('... completely finished processing time-invariant granule %s', os.path.basename(task['granule']))
 
