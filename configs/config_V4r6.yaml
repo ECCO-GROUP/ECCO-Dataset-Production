@@ -98,7 +98,7 @@ podaac_metadata_filename: 'PODAAC_dataset_table_V4r6_prelim.csv'
 history: 'ECCO V4r6, preliminary granule generation test 2026-03-17'
 
 # References string to include with global metadata:
-references: 'ECCO Consortium, Fukumori, I., Wang, O., Fenty, I., Forget, G., Heimbach, P., & Ponte, R. M. 2026. Synopsis of the ECCO Central Production Global Ocean and Sea-Ice State Estimate (Version 4 Release 6). doi:10.5281/zenodo.3765928'
+references: 'Fenty, I., Fukumori, I., Wang, O., Forget, G., Heimbach, P., & Ponte, R. M. 2026. Synopsis of the ECCO Central Production Global Ocean and Sea-Ice State Estimate (Version 4 Release 6). doi:10.5281/zenodo.3765928'
 
 # Source string to include with global metadata:
 source: 'The ECCO V4r6 ocean state estimate was produced by fitting a free-running solution of the MITgcm (checkpoint 66g) to satellite and in situ observational data in a least squares sense using the adjoint method.'
