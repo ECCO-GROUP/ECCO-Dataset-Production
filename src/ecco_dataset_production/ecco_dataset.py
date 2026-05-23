@@ -426,12 +426,18 @@ class ECCOMDSDataset(object):
                                                                     # no singleton dimensions,
                                                                     # surface wet points only,
                                                                     # as vector
+
+            # map from native to latlon using sparse matrix multiplication                                                                    
             var_latlon = self.mapping_factors.native_to_latlon_mapping_factors(level=0).T.dot(var.compute())
                                                                     # numpy (vector) array,
                                                                     # as latlon
+
+            # apply a 2D land mask by setting all nan points in the 'mapping_factors.latlon_land_mask' in level 0 to nan in the variable as well:
             var_latlon_land_masked = np.where(
                 np.isnan(self.mapping_factors.latlon_land_mask(level=0)), np.nan, var_latlon)
                                                                     # land values as NaNs
+
+            # reorder to the dimension of teh latlon grid:                                                                    
             variable_as_latlon[:] = var_latlon_land_masked.reshape( # numpy 1D array to
                 self.grid.latlon_grid['latitude'].shape[0],         # lat x lon array
                 self.grid.latlon_grid['longitude'].shape[0])

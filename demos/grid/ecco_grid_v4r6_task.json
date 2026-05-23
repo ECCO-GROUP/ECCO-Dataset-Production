@@ -1,0 +1,18 @@
+[
+    {
+        "granule": "./dest_x/V4r6/native/GRID_GEOMETRY_ECCO_V4r6_native_llc0090.nc",
+        "input_netcdf" : "./input_netcdf/PREGRID_GEOMETRY_ECCO_V4r6_native_llc0090.nc",
+        "strip_attributes" : "True",
+        "ecco_cfg_loc": "/home/jpluser/git_repos/ECCO-Dataset-Production/configs/config_V4r6.yaml",
+        "ecco_grid_loc": "./v4r6_grid",
+        "ecco_mapping_factors_loc": "./mapping_factors",
+        "ecco_metadata_loc": "/home/jpluser/git_repos/ECCO-v4-Configurations/ECCOv4 Release 6/metadata",
+        "dynamic_metadata": {
+            "name": "gggg",
+            "dimension": "2D",
+            "time_coverage_duration": "TIME-INVARIANT",
+            "time_coverage_resolution": "TIME-INVARIANT",
+            "summary": ""
+        }
+    }
+]

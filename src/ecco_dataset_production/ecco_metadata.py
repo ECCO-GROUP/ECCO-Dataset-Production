@@ -90,6 +90,9 @@ class ECCOMetadata(object):
                 self.task = task
             ecco_metadata_loc = self.task['ecco_metadata_loc']
 
+        if ecco_metadata_loc is None:
+            raise ValueError("ecco_metadata_loc cannot be None")
+            
         if aws.utils.is_s3_uri(ecco_metadata_loc):
             # retrieve ecco metadata to temporary local storage:
             self.tmpdir = tempfile.TemporaryDirectory()
