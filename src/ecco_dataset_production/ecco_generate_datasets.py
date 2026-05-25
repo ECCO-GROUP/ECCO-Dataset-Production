@@ -440,7 +440,7 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
     dataset.attrs['product_version']            = cfg['product_version']
     dataset.attrs['references']                 = cfg['references']
     dataset.attrs['source']                     = cfg['source']
-    dataset.attrs['summary']                    = cfg['summary']    # more later...
+    dataset.attrs['project_summary']            = cfg['project_summary']
 
     # remove upstream attribute assignments that aren't necessary/desirable:
     dataset.attrs.pop('original_mds_grid_dir',None) # assigned in ecco_v4_py.read_bin_llc
@@ -479,9 +479,9 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
     encoding = var_encoding | coord_encoding
 
     # merge gcmd keywords:
-    common_gcmd_keywords = dataset.keywords.split(',') if 'keywords' in dataset.attrs else []
+    common_gcmd_keywords = [k.strip() for k in dataset.keywords.split(',')] if 'keywords' in dataset.attrs else []
     gcmd_keywords = sorted(list(set(grouping_gcmd_keywords+common_gcmd_keywords)))  # as list
-    gcmd_keywords = ', '.join(gcmd_keywords)                                        # as single cs string
+    gcmd_keywords = ', '.join([k for k in gcmd_keywords if k])  # filter empty strings, join
     dataset.attrs['keywords'] = gcmd_keywords
 
     # uuid:
@@ -503,40 +503,92 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
         dataset.attrs['time_coverage_resolution'] = task['dynamic_metadata']['time_coverage_resolution']
 
     dataset.attrs['product_name'] = os.path.basename(task['granule'])
-    dataset.attrs['summary'] = ' '.join([task['dynamic_metadata']['summary'],dataset.attrs['summary']])
+    dataset.attrs['summary'] = ' '.join([task['dynamic_metadata']['summary'], dataset.attrs['project_summary']])
 
     # optional PO.DAAC metadata:
+    log.info('Attempting to add PO.DAAC metadata from CSV file')
     try:
         # first, locate podaac metadata source file in ecco metadata directory:
+        podaac_csv_path = os.path.join(task['ecco_metadata_loc'], cfg['podaac_metadata_filename'])
+        log.info('  Loading PO.DAAC metadata from: %s', podaac_csv_path)
+
         pm = ecco_podaac_metadata.ECCOPODAACMetadata(
-            metadata_src=os.path.join(task['ecco_metadata_loc'],cfg['podaac_metadata_filename']),
+            metadata_src=podaac_csv_path,
             **kwargs).metadata
+
+        log.info('  Loaded %d entries from PO.DAAC CSV file', len(pm))
+
         # get PO.DAAC metadata (row) corresponding to 'DATASET.FILENAME' column
         # element that matches "generic" granule file string (i.e., without date and
         # version):
         granule_filestr = ecco_file.ECCOGranuleFilestr(os.path.basename(task['granule']))
         granule_filestr.date = None
         granule_filestr.version = None
+
+        log.info('  Searching for granule pattern: %s', granule_filestr.re_filestr)
+
         pm_row_for_this_granule = pm[pm['DATASET.FILENAME'].str.match(granule_filestr.re_filestr)]
+
         if pm_row_for_this_granule.empty:
+            log.warning('')
+            log.warning('='*70)
+            log.warning('WARNING: NO PO.DAAC METADATA ENTRY FOUND')
+            log.warning('='*70)
+            log.warning('Granule pattern: %s', granule_filestr.re_filestr)
+            log.warning('PO.DAAC CSV file: %s', podaac_csv_path)
+            log.warning('This granule will NOT have PO.DAAC-specific metadata:')
+            log.warning('  - id (DATASET.SHORT_NAME)')
+            log.warning('  - title (DATASET.LONG_NAME)')
+            log.warning('  - metadata_link (will use config doi_prefix: %s)', cfg['doi_prefix'])
+            log.warning('  - identifier_product_doi (will use config doi_prefix: %s)', cfg['doi_prefix'])
+            log.warning('  - coordinates_comment')
+            log.warning('='*70)
+            log.warning('')
             e1 = f'granule regular expression, {granule_filestr.re_filestr},'
             e2 = 'did not match any PO.DAAC DATASET.FILENAME column elements.'
             raise RuntimeError(f'{e1} {e2}')
         elif pm_row_for_this_granule.shape[0] > 1:
+            log.error('Found %d matching entries (expected exactly 1)', pm_row_for_this_granule.shape[0])
+            log.error('Matching entries:')
+            for idx, row in pm_row_for_this_granule.iterrows():
+                log.error('  - %s', row['DATASET.FILENAME'])
             e1 = f'granule regular expression, {granule_filestr.re_filestr},'
             e2 = 'matched more than one PO.DAAC DATASET.FILENAME column element.'
             raise RuntimeError(f'{e1} {e2}')
-        dataset.attrs['id'] = \
-            pm_row_for_this_granule['DATASET.SHORT_NAME'].iloc[0]
-        dataset.attrs['metadata_link'] = \
-            cfg['doi_prefix']
-        dataset.attrs['title'] = \
-            pm_row_for_this_granule['DATASET.LONG_NAME'].iloc[0]
-        # additional specific PO.DAAC metadata request:
+
+        # Found exactly one match
+        matched_filename = pm_row_for_this_granule['DATASET.FILENAME'].iloc[0]
+        log.info('  Found matching PO.DAAC entry: %s', matched_filename)
+
+        # Extract metadata values
+        short_name = pm_row_for_this_granule['DATASET.SHORT_NAME'].iloc[0]
+        long_name = pm_row_for_this_granule['DATASET.LONG_NAME'].iloc[0]
+        persistent_id = pm_row_for_this_granule['DATASET.PERSISTENT_ID'].iloc[0]
+
+        # Construct DOI URL from DATASET.PERSISTENT_ID
+        doi_url = f'https://doi.org/{persistent_id}'
+
+        log.info('  Adding PO.DAAC metadata to granule:')
+        log.info('    id (SHORT_NAME): %s', short_name)
+        log.info('    title (LONG_NAME): %s', long_name)
+        log.info('    PERSISTENT_ID: %s', persistent_id)
+        log.info('    metadata_link: %s', doi_url)
+        log.info('    identifier_product_doi: %s', doi_url)
+        log.info('    coordinates_comment: Note: the global \'coordinates\' attribute describes auxillary coordinates.')
+
+        # Apply metadata
+        dataset.attrs['id'] = short_name
+        dataset.attrs['metadata_link'] = doi_url
+        dataset.attrs['identifier_product_doi'] = doi_url
+        dataset.attrs['title'] = long_name
         dataset.attrs['coordinates_comment'] = \
             "Note: the global 'coordinates' attribute describes auxillary coordinates."
+
+        log.info('  Successfully added PO.DAAC metadata')
+
     except Exception as e:
-        log.info('%s -- %s', e, 'Skipping PO.DAAC metadata inclusion.')
+        log.warning('Failed to add PO.DAAC metadata: %s', e)
+        log.warning('Continuing without PO.DAAC-specific metadata')
         pass
 
     dataset.attrs = dict(sorted(dataset.attrs.items(),key = lambda x : x[0].casefold()))
@@ -639,6 +691,222 @@ def process_time_invariant_granule(task, cfg, grid=None, mapping_factors=None, m
         merged_variable_dataset.close()
 
     log.info('... completely finished processing time-invariant granule %s', os.path.basename(task['granule']))
+
+
+def apply_metadata_to_netcdf(
+    input_netcdf, output_netcdf, ecco_metadata_loc, cfg,
+    grid_type='native', is_2d=None, strip_attributes=False,
+    log_level=None, **kwargs):
+    """Apply ECCO metadata to an existing NetCDF file without loading external grid files or mapping factors.
+
+    This function is designed for adding metadata to "bare" NetCDF files (like grid geometry files)
+    that already contain their coordinate data. Unlike process_time_invariant_granule, this does NOT
+    require or load external grid files or mapping factors, making it suitable for bootstrapping
+    grid geometry files.
+
+    Args:
+        input_netcdf (str): Path to input NetCDF file to which metadata will be added.
+        output_netcdf (str): Path where the metadata-enriched NetCDF file will be written.
+        ecco_metadata_loc (str): Path to directory containing ECCO metadata JSON files,
+            or AWS S3 bucket/prefix.
+        cfg (dict or str): Either a parsed configuration dictionary or path to YAML config file.
+        grid_type (str): Grid type - 'native' or 'latlon' (default: 'native').
+        is_2d (bool or None): Whether dataset is 2D. If None (default), auto-detects from file
+            by checking for vertical dimensions (Z, k, k_l, k_u, k_p1). If any of these
+            dimensions exist, dataset is 3D. Set explicitly to True or False to override.
+        strip_attributes (bool): If True, strip all existing attributes before applying new ones
+            (default: False).
+        log_level (str): Optional logging level ('DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL').
+        **kwargs: If ecco_metadata_loc references AWS S3, may include:
+            keygen (str): AWS SSO key generation script path.
+            profile (str): AWS profile name.
+
+    Returns:
+        None. Output is written to output_netcdf path.
+
+    Example:
+        >>> from ecco_dataset_production import ecco_generate_datasets
+        >>> # Auto-detect dimension
+        >>> ecco_generate_datasets.apply_metadata_to_netcdf(
+        ...     input_netcdf='bare_grid.nc',
+        ...     output_netcdf='GRID_GEOMETRY_ECCO_V4r6_native_llc0090.nc',
+        ...     ecco_metadata_loc='/path/to/metadata',
+        ...     cfg='configs/config_V4r6.yaml',
+        ...     grid_type='native')
+    """
+    log = logging.getLogger('edp.'+__name__)
+    if log_level:
+        log.setLevel(log_level)
+
+    log.info('Applying metadata to %s', input_netcdf)
+
+    # Load config if it's a file path
+    if isinstance(cfg, str):
+        cfg = configuration.ECCODatasetProductionConfig(cfg, **kwargs)
+
+    # Load metadata
+    metadata = ecco_metadata.ECCOMetadata(ecco_metadata_loc=ecco_metadata_loc, **kwargs)
+
+    # Load the input NetCDF file
+    dataset = xr.open_dataset(input_netcdf)
+
+    # Auto-detect 2D vs 3D if not specified
+    if is_2d is None:
+        # Check for vertical dimensions common in ECCO datasets
+        vertical_dims = {'Z', 'k', 'k_l', 'k_u', 'k_p1'}
+        found_dim = None
+        for dim in vertical_dims:
+            if dim in dataset.dims:
+                found_dim = dim
+                break
+
+        if found_dim:
+            is_2d = False
+            log.info('Auto-detected 3D dataset (found vertical dimension "%s")', found_dim)
+        else:
+            is_2d = True
+            log.info('Auto-detected 2D dataset (no vertical dimensions found)')
+    else:
+        log.info('Using specified dimension: %s', '2D' if is_2d else '3D')
+
+    # Determine dataset-specific summary
+    # For GRID_GEOMETRY files, use special descriptions from JSON
+    granule_basename = os.path.basename(output_netcdf)
+    if 'GRID_GEOMETRY' in granule_basename:
+        log.info('Detected GRID_GEOMETRY file, loading geometry-specific description')
+        try:
+            # Load grid geometry descriptions
+            geom_desc_file = os.path.join(ecco_metadata_loc, 'grid_geometry_dataset_descriptions.json')
+            if aws.utils.is_s3_uri(geom_desc_file):
+                # Handle S3 location
+                with tempfile.TemporaryDirectory() as tmpdir:
+                    local_file = os.path.join(tmpdir, 'grid_geometry_dataset_descriptions.json')
+                    aws.ecco_aws_s3_cp.aws_s3_cp(src=geom_desc_file, dest=local_file, **kwargs)
+                    with open(local_file, 'r') as f:
+                        geom_descriptions = json.load(f)
+            else:
+                # Local file
+                with open(geom_desc_file, 'r') as f:
+                    geom_descriptions = json.load(f)
+
+            # Get the template for this grid type
+            template = geom_descriptions[grid_type]['description_template']
+
+            # Format template with config values
+            dataset_summary = template.format(
+                llc_grid_size=cfg.get('llc_grid_size', ''),
+                llc_code=cfg.get('llc_code', ''),
+                product_version=cfg.get('product_version', ''),
+                ecco_version=cfg.get('ecco_version', ''),
+                latlon_grid_resolution=cfg.get('latlon_grid_resolution', '')
+            )
+            log.info('Using geometry-specific description for %s grid', grid_type)
+        except Exception as e:
+            log.warning('Failed to load grid geometry description: %s', e)
+            log.warning('Using default summary')
+            dataset_summary = 'ECCO dataset'
+    else:
+        dataset_summary = 'ECCO dataset'
+
+    # Create a minimal task-like dict with required metadata fields
+    # This provides the structure that set_granule_metadata expects
+    task_dict = {
+        'ecco_metadata_loc': ecco_metadata_loc,
+        'granule': output_netcdf,
+        'dynamic_metadata': {
+            'dimension': '2D' if is_2d else '3D',
+            'summary': dataset_summary,
+            'comment': ''
+        }
+    }
+
+    # Create ECCOTask-like object with required properties
+    class MinimalTask:
+        def __init__(self, task_dict, grid_type):
+            self.data = task_dict
+            self._grid_type = grid_type
+
+        def __getitem__(self, key):
+            return self.data[key]
+
+        def get(self, key, default=None):
+            return self.data.get(key, default)
+
+        @property
+        def is_latlon(self):
+            return self._grid_type == 'latlon'
+
+        @property
+        def is_native(self):
+            return self._grid_type == 'native'
+
+        @property
+        def is_2d(self):
+            return self.data['dynamic_metadata']['dimension'] == '2D'
+
+        @property
+        def is_3d(self):
+            return self.data['dynamic_metadata']['dimension'] == '3D'
+
+        @property
+        def is_time_invariant(self):
+            return True
+
+        @property
+        def is_granule_local(self):
+            return not aws.utils.is_s3_uri(self.data['granule'])
+
+    task = MinimalTask(task_dict, grid_type)
+
+    try:
+        # Optionally strip existing attributes
+        if strip_attributes:
+            log.info('Stripping existing attributes')
+            dataset.attrs = {}
+            for var in dataset.variables:
+                dataset[var].attrs = {}
+
+        # Apply basic data type conversions and fill values
+        log.info('Applying precision and fill value settings')
+        prec = cfg['array_precision'] if 'array_precision' in cfg else 'float32'
+        ncfill = netCDF4.default_fillvals['f4'] if prec=='float32' else netCDF4.default_fillvals['f8']
+
+        for var in dataset.data_vars:
+            dataset[var].values = dataset[var].astype(eval('np.'+prec))
+            # Only calculate valid_min/max if there are non-NaN values
+            if not np.all(np.isnan(dataset[var].values)):
+                dataset[var].attrs['valid_min'] = np.nanmin(dataset[var].values)
+                dataset[var].attrs['valid_max'] = np.nanmax(dataset[var].values)
+            dataset[var].values = np.where(np.isnan(dataset[var].values), ncfill, dataset[var].values)
+
+        # Apply metadata (this is the key function that adds all attributes)
+        log.info('Applying ECCO metadata')
+        dataset_with_metadata, encoding = set_granule_metadata(
+            dataset=dataset,
+            task=task,
+            ecco_metadata=metadata,
+            cfg=cfg,
+            **kwargs)
+
+        # Write output
+        log.info('Writing output to %s', output_netcdf)
+        if task.is_granule_local:
+            if os.path.dirname(output_netcdf) and not os.path.exists(os.path.dirname(output_netcdf)):
+                os.makedirs(os.path.dirname(output_netcdf))
+            dataset_with_metadata.to_netcdf(output_netcdf, encoding=encoding)
+        else:
+            # Handle S3 output
+            with tempfile.TemporaryDirectory() as upload_tmpdir:
+                _src = os.path.basename(output_netcdf)
+                _dest = output_netcdf
+                dataset_with_metadata.to_netcdf(os.path.join(upload_tmpdir, _src), encoding=encoding)
+                log.info('Uploading %s to %s', os.path.join(upload_tmpdir, _src), _dest)
+                aws.ecco_aws_s3_cp.aws_s3_cp(src=os.path.join(upload_tmpdir, _src), dest=_dest, **kwargs)
+
+    finally:
+        dataset.close()
+
+    log.info('Successfully applied metadata to %s', output_netcdf)
 
 
 def generate_datasets( tasklist, log_level=None, **kwargs):
