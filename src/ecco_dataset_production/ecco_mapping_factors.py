@@ -49,7 +49,7 @@ class ECCOMappingFactors(object):
             and the subdirectories 3D, land_mask, latlon_grid, and sparse) or
             similar remote location given by AWS S3 bucket/prefix.  Either
             mapping_factors_loc or task may be provided but not both.
-        \*\*kwargs: If either task or mapping_factors_loc reference an AWS S3
+        **kwargs: If either task or mapping_factors_loc reference an AWS S3
             endpoint and if running within an institutionally-managed AWS IAM
             Identity Center (SSO) environment, additional arguments that may be
             necessary include:
