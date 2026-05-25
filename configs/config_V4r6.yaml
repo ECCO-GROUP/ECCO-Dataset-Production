@@ -32,6 +32,10 @@ ecco_production_filestr_grid_label:
     latlon: '0p50deg'
     native: 'llc0090'
 
+# parameters used programmatically to set grid geometry dataset descriptions
+llc_grid_size: 90
+llc_code: 'llc90'
+
 #---------------------------------------------------------------------
 # ECCO solution parameters:
 #---------------------------------------------------------------------
@@ -92,7 +96,7 @@ custom_grid_and_factors: false
 #---------------------------------------------------------------------
 
 # PO.DAAC metadata source:
-podaac_metadata_filename: 'PODAAC_dataset_table_V4r6_prelim.csv'
+podaac_metadata_filename: 'PODAAC_dataset_table_V4r6_20260525.csv'
 
 # History string to include with global metadata:
 history: 'ECCO V4r6, preliminary granule generation test 2026-05-22'
@@ -105,9 +109,9 @@ source: 'The ECCO V4r6 state estimate was produced by fitting a free-running sol
 
 # Summary string to include with global metadata:
 # Note: the final dataset 'summary' metadata field is as follows:
-#    dataset_desription_head + grouping['name'] + dataset_description_tail + summary
+#    dataset_desription_head + grouping['name'] + dataset_description_tail + project_summary
 #    i.e. "This dataset contains daily-averaged" + {grouping['name']} + {dataset_description_tail} + {summary}
-summary: 'Estimating the Circulation and Climate of the Ocean (ECCO) state estimates are dynamically and kinematically-consistent reconstructions of the three-dimensional, time-evolving ocean, sea-ice, and surface atmospheric states. ECCO V4r6 is a free-running solution of a global, nominally 1-degree configuration of the MIT general circulation model (MITgcm) that has been fit to observations in a least-squares sense. V4r6 covers the period 1992-01-01T12:00:00 to 2025-12-31T12:00:00.'
+project_summary: 'Estimating the Circulation and Climate of the Ocean (ECCO) state estimates are dynamically and kinematically-consistent reconstructions of the three-dimensional, time-evolving ocean, sea-ice, and surface atmospheric states. ECCO V4r6 is a free-running solution of a global, nominally 1-degree configuration of the MIT general circulation model (MITgcm) that has been fit to observations in a least-squares sense. V4r6 covers the period 1992-01-01T12:00:00 to 2025-12-31T12:00:00.'
 
 # variable-level NetCDF4 compression encodings:
 netcdf4_compression_encodings:
@@ -130,5 +134,5 @@ dataset_description_tail_1D: ''
 dataset_description_tail_latlon: ' interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 6 (V4r6) ocean and sea-ice state estimate.'
 
 # Tail string for the dataset description for native grid
-dataset_description_tail_native: ' on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 Release 6 (V4r6) ocean and sea-ice state estimate.'
+dataset_description_tail_native: ' on the native Lat-Lon-Cap 90 (llc90) model grid from the ECCO Version 4 Release 6 (V4r6) ocean and sea-ice state estimate.'
 
