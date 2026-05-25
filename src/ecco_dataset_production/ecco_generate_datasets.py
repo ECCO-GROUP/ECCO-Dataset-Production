@@ -541,7 +541,7 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
             log.warning('  - title (DATASET.LONG_NAME)')
             log.warning('  - metadata_link (will use config doi_prefix: %s)', cfg['doi_prefix'])
             log.warning('  - identifier_product_doi (will use config doi_prefix: %s)', cfg['doi_prefix'])
-            log.warning('  - coordinates_comment')
+            log.warning('  - coordinates (descriptive text about auxiliary coordinates)')
             log.warning('='*70)
             log.warning('')
             e1 = f'granule regular expression, {granule_filestr.re_filestr},'
@@ -574,15 +574,15 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
         log.info('    PERSISTENT_ID: %s', persistent_id)
         log.info('    metadata_link: %s', doi_url)
         log.info('    identifier_product_doi: %s', doi_url)
-        log.info('    coordinates_comment: Note: the global \'coordinates\' attribute describes auxillary coordinates.')
+        log.info('    coordinates_note: a warning note about the global attribute "coordinates" that is added to all variables by xarray during file writing')
 
         # Apply metadata
         dataset.attrs['id'] = short_name
         dataset.attrs['metadata_link'] = doi_url
         dataset.attrs['identifier_product_doi'] = doi_url
         dataset.attrs['title'] = long_name
-        dataset.attrs['coordinates_comment'] = \
-            "Note: the global 'coordinates' attribute describes auxillary coordinates."
+        dataset.attrs['coordinates_note'] = \
+            "The 'coordinates' attribute lists a subset of auxiliary coordinates. Created by xarray.to_netcdf()."
 
         log.info('  Successfully added PO.DAAC metadata')
 
