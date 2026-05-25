@@ -94,7 +94,7 @@ class ECCOMDSDataset(object):
             this shared storage space is to minimize data download for those
             cases in which variables (re)use data such as vector transformed
             fields (UV -> EW/NS).
-        \*\*kwargs: If task references AWS S3 endpoint data and if running within
+        **kwargs: If task references AWS S3 endpoint data and if running within
             an institutionally-managed AWS IAM Identity Center (SSO)
             environment, additional arguments that may be necessary include:
             keygen (str): Federated login key generation script (e.g.,
