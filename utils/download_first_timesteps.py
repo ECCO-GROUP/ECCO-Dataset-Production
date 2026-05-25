@@ -2,43 +2,279 @@
 """
 Download the first N timesteps from ECCO MDS binary file pairs stored in AWS S3.
 
-PURPOSE:
-    Efficiently download a subset of ECCO model output for testing, prototyping, or
-    small-scale analysis without downloading entire multi-year datasets.
+================================================================================
+PURPOSE
+================================================================================
 
-HOW IT WORKS:
-    1. Scans S3 bucket for directories matching pattern: VARNAME_mon_mean/
-    2. Lists all .data and .meta file pairs in each directory
-    3. Parses timesteps from filenames (VARNAME_mon_mean.NNNNNNNNNN.data)
-    4. Identifies the first N unique timesteps (sorted numerically)
-    5. Downloads both .data and .meta files for selected timesteps
-    6. Preserves directory structure locally
+Efficiently download a subset of ECCO model output for testing, prototyping, or
+small-scale analysis without downloading entire multi-year datasets. This tool is
+designed to help developers and researchers work with ECCO data locally without
+needing to download decades of global ocean model output.
 
-KEY FEATURES:
-    - Filter by dataset groupings (e.g., download only ocean bottom pressure variables)
-    - Dry-run mode to preview downloads without transferring data
-    - AWS SSO/profile support (defaults to 'saml-pub')
-    - Configurable number of timesteps per variable
+TYPICAL USE CASES:
+    - Rapid prototyping of data processing pipelines
+    - Testing metadata transformations before full-scale production runs
+    - Local development and debugging of ECCO dataset production workflows
+    - Creating minimal test datasets for CI/CD pipelines
+    - Educational demonstrations with real ECCO data
 
-USAGE EXAMPLES:
-    # Download first 12 timesteps from all variables
+================================================================================
+HOW IT WORKS
+================================================================================
+
+The script follows this workflow:
+
+1. **S3 Discovery**: Scans the S3 bucket for directories matching the pattern
+   VARNAME_mon_mean/ (e.g., ETAN_mon_mean/, SSH_mon_mean/, THETA_mon_mean/)
+
+2. **File Inventory**: Lists all .data and .meta file pairs in each directory.
+   MDS (MIT General Circulation Model Data Storage) format uses paired files:
+   - .data: Binary data array
+   - .meta: ASCII metadata describing dimensions, precision, timestep
+
+3. **Timestep Parsing**: Extracts timestep numbers from filenames following the
+   pattern: VARNAME_mon_mean.NNNNNNNNNN.data where NNNNNNNNNN is a 10-digit
+   zero-padded integer (e.g., 0000000732, 0000001464)
+
+4. **Selection**: Identifies the first N unique timesteps (sorted numerically),
+   ensuring both .data and .meta files are included for each timestep
+
+5. **Download**: Transfers selected files from S3 to local filesystem, preserving
+   the original directory structure
+
+6. **Skip Existing**: By default, skips files that already exist locally. Use
+   --force-redownload to overwrite existing files.
+
+================================================================================
+KEY FEATURES
+================================================================================
+
+FILE MANAGEMENT:
+    - Smart skip: Avoids re-downloading files that already exist locally
+    - Force redownload: Optional --force-redownload flag to overwrite existing files
+    - Directory structure preservation: Maintains original S3 directory layout locally
+    - Paired file integrity: Always downloads both .data and .meta files together
+
+FILTERING:
+    - Variable groupings: Download only variables from specific dataset groupings
+    - Grouping preview: List all available groupings before downloading
+    - Timestep control: Configurable number of timesteps per variable
+
+WORKFLOW INTEGRATION:
+    - Dry-run mode: Preview what would be downloaded without transferring data
+    - Debug logging: Multiple logging levels (DEBUG, INFO, WARNING, ERROR)
+    - AWS profile support: Works with AWS SSO and standard credential configurations
+
+PERFORMANCE:
+    - Minimal data transfer: Only downloads requested timesteps, not entire datasets
+    - Efficient S3 pagination: Handles large directories with thousands of files
+    - Skip existing files: Resumes interrupted downloads without redundant transfers
+
+================================================================================
+COMMAND-LINE ARGUMENTS
+================================================================================
+
+REQUIRED:
+    s3_path             S3 URI to ECCO data directory
+                        Format: s3://bucket-name/path/to/data/
+                        Example: s3://ecco-model-output/V4r4/mon_mean/
+
+    local_dir           Local destination directory for downloaded files
+                        Created automatically if it doesn't exist
+                        Example: ./test_data or /data/ecco/subset
+
+OPTIONAL:
+    -n, --num-timesteps N
+                        Number of timesteps to download per variable
+                        Default: 12
+                        Example: -n 24 downloads first 24 timesteps
+
+    --profile PROFILE   AWS profile name for authentication
+                        Default: 'saml-pub'
+                        Example: --profile default
+
+    --groupings-file PATH
+                        Path to JSON file containing dataset groupings
+                        Required for --grouping and --list-groupings options
+                        Example: ECCOv4r4_groupings_for_native_datasets.json
+
+    --grouping NAME     Download only variables from a specific grouping
+                        Requires --groupings-file
+                        Example: --grouping OCEAN_BOTTOM_PRESSURE
+
+    --list-groupings    List all available groupings and exit
+                        Requires --groupings-file
+                        Does not perform any downloads
+
+    --dry-run           Show what would be downloaded without actually downloading
+                        Useful for previewing operations and estimating data volume
+                        Also reports which files would be skipped (already exist)
+
+    --force-redownload  Redownload files even if they already exist locally
+                        Overwrites existing files
+                        Use when you suspect local files are corrupted or outdated
+
+    --log LEVEL         Logging verbosity level
+                        Choices: DEBUG, INFO, WARNING, ERROR
+                        Default: INFO
+                        DEBUG shows every file operation
+
+================================================================================
+USAGE EXAMPLES
+================================================================================
+
+BASIC USAGE:
+
+    # Download first 12 timesteps from all variables (default)
     python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./data
 
-    # Download first 24 timesteps for specific grouping
-    python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./data -n 24 \\
-        --groupings-file ECCOv4r4_groupings_for_native_datasets.json \\
+    # Download first 24 timesteps instead of default 12
+    python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./data -n 24
+
+    # Use a different AWS profile
+    python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./data \\
+        --profile my-aws-profile
+
+WORKING WITH GROUPINGS:
+
+    # List all available dataset groupings
+    python download_first_timesteps.py s3://dummy ./dummy \\
+        --groupings-file ECCO-v4-Configurations/ECCOv4r4_groupings_for_native_datasets.json \\
+        --list-groupings
+
+    # Download only variables from ocean bottom pressure grouping
+    python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./data \\
+        --groupings-file ECCO-v4-Configurations/ECCOv4r4_groupings_for_native_datasets.json \\
         --grouping OCEAN_BOTTOM_PRESSURE
 
-    # List available groupings
-    python download_first_timesteps.py s3://dummy ./dummy \\
-        --groupings-file ECCOv4r4_groupings_for_native_datasets.json --list-groupings
+    # Download multiple specific groupings (run command for each grouping)
+    python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./data \\
+        --groupings-file ECCOv4r4_groupings_for_native_datasets.json \\
+        --grouping SEA_SURFACE_HEIGHT
 
-    # Dry run to see what would be downloaded
+PREVIEW AND DEBUG:
+
+    # Dry run: see what would be downloaded without actually downloading
     python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./data --dry-run
 
-REQUIREMENTS:
-    - AWS credentials configured (uses 'saml-pub' profile by default)
-    - boto3 installed: pip install boto3
+    # Dry run with debug logging to see detailed file operations
+    python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./data \\
+        --dry-run --log DEBUG
+
+    # Check which files would be skipped (already exist locally)
+    python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./data \\
+        --dry-run --log INFO
+
+RESUMING AND REDOWNLOADING:
+
+    # Resume an interrupted download (skips files that already exist)
+    python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./data
+
+    # Force redownload everything (overwrite existing files)
+    python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./data \\
+        --force-redownload
+
+    # Force redownload with debug logging
+    python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./data \\
+        --force-redownload --log DEBUG
+
+PRODUCTION WORKFLOWS:
+
+    # Download minimal test dataset for CI/CD pipeline
+    python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./ci_test_data \\
+        -n 2 --log WARNING
+
+    # Download larger subset for local development
+    python download_first_timesteps.py s3://ecco-model/V4r4/mon_mean/ ./dev_data \\
+        -n 36 --grouping OCEAN_TEMPERATURE_SALINITY
+
+================================================================================
+FILE STRUCTURE
+================================================================================
+
+INPUT (S3):
+    s3://bucket/prefix/
+    ├── ETAN_mon_mean/
+    │   ├── ETAN_mon_mean.0000000732.data
+    │   ├── ETAN_mon_mean.0000000732.meta
+    │   ├── ETAN_mon_mean.0000001464.data
+    │   ├── ETAN_mon_mean.0000001464.meta
+    │   └── ...
+    ├── SSH_mon_mean/
+    │   └── ...
+    └── THETA_mon_mean/
+        └── ...
+
+OUTPUT (Local):
+    local_dir/
+    ├── ETAN_mon_mean/
+    │   ├── ETAN_mon_mean.0000000732.data
+    │   ├── ETAN_mon_mean.0000000732.meta
+    │   ├── ETAN_mon_mean.0000001464.data
+    │   └── ETAN_mon_mean.0000001464.meta
+    ├── SSH_mon_mean/
+    │   └── ...
+    └── THETA_mon_mean/
+        └── ...
+
+================================================================================
+GROUPINGS FILE FORMAT
+================================================================================
+
+The groupings JSON file defines logical collections of ECCO variables. Each
+grouping contains:
+
+    {
+        "filename": "OCEAN_BOTTOM_PRESSURE",
+        "name": "Ocean Bottom Pressure",
+        "fields": "PHIBOT, OBP",
+        "dimension": "2D",
+        "frequency": "AVG_MON"
+    }
+
+Fields:
+    - filename: Grouping identifier (used with --grouping flag)
+    - name: Human-readable description
+    - fields: Comma-separated list of variable names to download
+    - dimension: 2D or 3D (informational)
+    - frequency: Averaging period (informational)
+
+================================================================================
+REQUIREMENTS
+================================================================================
+
+PYTHON DEPENDENCIES:
+    - Python 3.7 or later
+    - boto3: AWS SDK for Python (pip install boto3)
+
+AWS CONFIGURATION:
+    - AWS credentials configured via one of:
+      * AWS SSO (aws sso login --profile saml-pub)
+      * AWS CLI configuration (~/.aws/credentials)
+      * Environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+      * IAM role (when running on EC2/ECS)
+
+S3 PERMISSIONS:
+    - s3:ListBucket (to list directories and files)
+    - s3:GetObject (to download files)
+
+================================================================================
+NOTES
+================================================================================
+
+- Timestep numbers are zero-padded 10-digit integers representing model timesteps
+- The script assumes directory names follow the pattern: VARNAME_mon_mean/
+- Both .data and .meta files are always downloaded together for each timestep
+- Directory structure from S3 is preserved in local destination
+- Existing files are skipped by default (use --force-redownload to override)
+- Dry-run mode does not require S3 read permissions (except for listing)
+
+================================================================================
+AUTHOR & VERSION
+================================================================================
+
+Part of the ECCO Dataset Production toolkit
+Repository: https://github.com/ECCO-GROUP/ECCO-Dataset-Production
 """
 
 import argparse
@@ -225,7 +461,7 @@ def get_first_n_timesteps(files, n=12):
     return selected_files
 
 
-def download_file(s3_client, bucket, s3_key, local_path):
+def download_file(s3_client, bucket, s3_key, local_path, force_redownload=False):
     """
     Download a file from S3 to local path.
 
@@ -234,12 +470,22 @@ def download_file(s3_client, bucket, s3_key, local_path):
         bucket: S3 bucket name
         s3_key: S3 object key
         local_path: Local file path
+        force_redownload: If True, redownload even if file exists locally
+
+    Returns:
+        bool: True if file was downloaded, False if skipped
     """
+    # Check if file already exists
+    if not force_redownload and os.path.exists(local_path):
+        log.debug(f"Skipping (already exists): {local_path}")
+        return False
+
     # Create parent directory if needed
     Path(local_path).parent.mkdir(parents=True, exist_ok=True)
 
     log.debug(f"Downloading s3://{bucket}/{s3_key} -> {local_path}")
     s3_client.download_file(bucket, s3_key, local_path)
+    return True
 
 
 def main():
@@ -286,6 +532,8 @@ Examples:
                         help='Logging level (default: INFO)')
     parser.add_argument('--dry-run', action='store_true',
                         help='Show what would be downloaded without actually downloading')
+    parser.add_argument('--force-redownload', action='store_true',
+                        help='Redownload files even if they already exist locally')
 
     args = parser.parse_args()
 
@@ -334,6 +582,8 @@ Examples:
     log.info(f"S3 Prefix: {prefix}")
     log.info(f"Local directory: {args.local_dir}")
     log.info(f"Timesteps per variable: {args.num_timesteps}")
+    if args.force_redownload:
+        log.info("Force redownload: enabled (will overwrite existing files)")
 
     # Create S3 client
     session_kwargs = {}
@@ -378,6 +628,7 @@ Examples:
 
     # Process each directory
     total_files = 0
+    skipped_files = 0
     for directory in directories:
         var_name = directory.rstrip('/').split('/')[-1]
         log.info(f"\nProcessing {var_name}...")
@@ -391,6 +642,8 @@ Examples:
         log.info(f"  Selected {len(selected_files)} files for first {args.num_timesteps} timesteps")
 
         # Download files
+        var_downloaded = 0
+        var_skipped = 0
         for s3_key in selected_files:
             # Construct local path preserving directory structure
             relative_path = s3_key
@@ -400,17 +653,29 @@ Examples:
             local_path = os.path.join(args.local_dir, relative_path)
 
             if args.dry_run:
-                log.info(f"  Would download: {s3_key} -> {local_path}")
+                if not args.force_redownload and os.path.exists(local_path):
+                    log.info(f"  Would skip (exists): {s3_key}")
+                    var_skipped += 1
+                else:
+                    log.info(f"  Would download: {s3_key} -> {local_path}")
+                    var_downloaded += 1
             else:
-                download_file(s3_client, bucket, s3_key, local_path)
-                total_files += 1
+                if download_file(s3_client, bucket, s3_key, local_path, args.force_redownload):
+                    total_files += 1
+                    var_downloaded += 1
+                else:
+                    skipped_files += 1
+                    var_skipped += 1
 
-        if not args.dry_run:
-            log.info(f"  Downloaded {len(selected_files)} files")
+        if args.dry_run:
+            log.info(f"  Would download {var_downloaded} files, skip {var_skipped} files")
+        else:
+            log.info(f"  Downloaded {var_downloaded} files, skipped {var_skipped} files (already exist)")
 
     log.info(f"\n{'Dry run' if args.dry_run else 'Download'} complete!")
     if not args.dry_run:
         log.info(f"Total files downloaded: {total_files}")
+        log.info(f"Total files skipped: {skipped_files}")
         log.info(f"Files saved to: {args.local_dir}")
 
 
