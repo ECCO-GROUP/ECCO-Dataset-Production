@@ -592,14 +592,15 @@ def create_sparse_matrix(
     if dataset_dim == '3D':
         expected_sm_files.extend(['sparse_matrix_any_wet_in_k.xz'])
 
-    # check to see if all the expected sparse matrix files are in the present sparse matrix files list. If any one is not, set all_sm_files = False
+    # check to see if all the expected sparse matrix files are in the present sparse matrix files list. 
+    # If any expected sparse matrix files are not present, set all_sm_files = False
     all_sm_files = all([sm_file in present_sm_files for sm_file in expected_sm_files])
 
     if all_sm_files and not force_recalc:
-        log.info('... sparse matrix files already exist, not recalculating')
+        log.info('... all sparse matrix files already exist, not recalculating')
         return status
 
-    log.info('... sparse matrix files do not exist or force recalc, creating sparse matrix files ...')
+    log.info('... not all sparse matrix files exist or force recalc, creating sparse matrix files ...')
 
     if dataset_dim == '2D':
         k = 0
@@ -664,7 +665,30 @@ def create_sparse_matrix(
                 status = f'ERROR Cannot save sparse matrix file "{sm_path_fname}"'
                 return status
                 
-        # any_wet_in_column.xz will go here:
+        # any_wet_in_column.xz land mask and sparse matrix (needed for ice-shelf cavities)
+        # in the 3D block since the existence of wet points in the column is only relevant for the 3D dataset, 
+        sm_path_fname = Path(sm_path) / f'sparse_matrix_any_wet_in_column.xz'
+        status, land_mask = gen_netcdf_utils.get_land_mask(mapping_factors_dir, k='any_wet_in_column')
+        if status != 'SUCCESS':
+            log.error(status)
+            return status
+        status, grid_mapping = get_mapping_factors(mapping_factors_dir, 'grid_mappings_any_wet_in_k')
+        if status != 'SUCCESS':
+            log.error(status)
+            return status
+        source_indices_within_target_radius_i, nearest_source_index_to_target_index_i = grid_mapping
+        B = __build_sparse_matrix(
+            wet_pts_k['any_wet_in_k'],
+            target_grid_shape,
+            source_indices_within_target_radius_i,
+            nearest_source_index_to_target_index_i,
+            land_mask)
+        try:
+            sparse.save_npz(sm_path_fname, B)
+        except:
+            status = f'ERROR Cannot save sparse matrix file "{sm_path_fname}"'
+            return status
+
 
 
     return status
