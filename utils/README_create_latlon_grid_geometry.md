@@ -16,9 +16,10 @@ Now, the grid geometry transformation uses the same code path as granule process
 
 1. **Create native grid geometry file** (manual/existing process)
 2. **Create latlon grid geometry file** ← THIS TOOL
-3. **Process hundreds of thousands of granules** (using main EDP pipeline)
+3. **Add ECCO metadata to grid geometry files** ← Use `edp_add_metadata`
+4. **Process hundreds of thousands of granules** (using main EDP pipeline)
 
-All three steps now use consistent coordinate systems and interpolation methods.
+All steps now use consistent coordinate systems and interpolation methods.
 
 ## Usage
 
@@ -228,6 +229,28 @@ print(latlon_grid.YC.min(), latlon_grid.YC.max())
 import numpy as np
 print(f"Land points (NaN): {np.isnan(latlon_grid.XC).sum().values}")
 ```
+
+## Adding ECCO Metadata
+
+After creating the latlon grid geometry file, you should add proper ECCO metadata using `edp_add_metadata`:
+
+```bash
+edp_add_metadata \
+    --input GRID_GEOMETRY_ECCO_V4r4_latlon_0p50deg.nc \
+    --output GRID_GEOMETRY_ECCO_V4r4_latlon_0p50deg_final.nc \
+    --metadata /path/to/ECCO-v4-Configurations/ECCOv4_Release_4/metadata \
+    --config configs/config_V4r4.yaml \
+    --grid-type latlon
+```
+
+This will add:
+- Variable metadata (long_name, units, standard_name, etc.)
+- Coordinate metadata
+- Global attributes (DOI, creation dates, GCMD keywords, etc.)
+- PO.DAAC-specific metadata (if CSV file is available)
+- Grid geometry-specific summary description
+
+**Note**: The tool automatically detects GRID_GEOMETRY files and uses special dataset descriptions from `grid_geometry_dataset_descriptions.json` in the metadata directory.
 
 ## Comparison with Old Method
 

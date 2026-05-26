@@ -128,8 +128,9 @@ The tool applies the following metadata:
 - `long_name`: Human-readable variable name
 - `standard_name`: CF standard name (if applicable)
 - `units`: Physical units
-- `valid_min` / `valid_max`: Data range
-- `_FillValue`: Fill value for missing data
+- `valid_min` / `valid_max`: Data range (for numeric types)
+- `_FillValue`: Fill value for missing data (type-appropriate)
+- **Data type preservation**: Boolean and integer types (uint8, int8, uint16, int16, int32, int64) are preserved with their original precision; only floating-point types are converted to the configured precision
 
 ### Coordinate Attributes
 - Coordinate metadata for appropriate grid type (native/latlon)
@@ -148,8 +149,16 @@ The tool applies the following metadata:
 
 ### Encoding
 - NetCDF4 compression (zlib, complevel=5, shuffle)
-- Appropriate data types (float32 by default)
-- Fill values
+- Appropriate data types:
+  - **Boolean variables**: Preserved as bool (no fill value)
+  - **Integer variables**: Preserved with original precision
+    - `uint8` → NetCDF `u1` (unsigned byte)
+    - `int8` → NetCDF `i1` (signed byte)
+    - `uint16` → NetCDF `u2` (unsigned short)
+    - `int16` → NetCDF `i2` (signed short)
+    - `int32/int64` → NetCDF `i4` (signed int)
+  - **Floating-point variables**: Converted to float32 (by default, configurable)
+- Fill values (type-appropriate for each data type)
 
 ## Grid Geometry File Special Handling
 
