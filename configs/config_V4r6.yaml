@@ -99,7 +99,7 @@ custom_grid_and_factors: false
 podaac_metadata_filename: 'PODAAC_dataset_table_V4r6_20260525.csv'
 
 # History string to include with global metadata:
-history: 'ECCO V4r6, preliminary granule generation test 2026-05-22'
+history: 'ECCO V4r6'
 
 # References string to include with global metadata:
 references: 'Fenty, I., Fukumori, I., Wang, O., Forget, G., Heimbach, P., & Ponte, R. M. 2026. Synopsis of the ECCO Central Production Global Ocean and Sea-Ice State Estimate (Version 4 Release 6). 10.5281/zenodo.19924242'
