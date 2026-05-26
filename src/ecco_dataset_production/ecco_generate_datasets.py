@@ -357,15 +357,13 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
         'coord_latlon':     ['coordinate_metadata_for_latlon_datasets'],
         'coord_native':     ['coordinate_metadata_for_native_datasets'],
         'coord_time':       ['time_coordinate_metadata'],
-        'geometry_latlon':  ['geometry_metadata_for_latlon_datasets'],
-        'geometry_native':  ['geometry_metadata_for_native_datasets'],
         'global_all':       ['global_metadata_for_all_datasets'],
         'global_latlon':    ['global_metadata_for_latlon_datasets'],
         'global_native':    ['global_metadata_for_native_datasets'],
         'groupings_1D':     ['groupings_for_1D_datasets'],
         'groupings_latlon': ['groupings_for_latlon_datasets'],
         'groupings_native': ['groupings_for_native_datasets'],
-        'var_latlon':       ['variable_metadata_for_latlon_datasets'],
+        'var_latlon':       ['variable_metadata_for_latlon_datasets','geometry_metadata_for_latlon_datasets'],
         'var_native':       ['variable_metadata','geometry_metadata_for_native_datasets']}
 
     all_metadata = defaultdict(list)
@@ -375,7 +373,7 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
                     for match_string in ['*'+id+'.*' for id in identifiers]]):
                 all_metadata[key].extend(json.load(open(file)))
 
-    # variable-specific metadata:
+    # variable-specific metadata (including geometry metadata):
     dataset, grouping_gcmd_keywords = ecco_v4_py.ecco_utils.add_variable_metadata(
         all_metadata['var_native'], dataset)
     if task.is_latlon:
@@ -451,8 +449,22 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
     prec = cfg['array_precision'] if 'array_precision' in cfg else 'float64'
     fill_value = netCDF4.default_fillvals['f4'] if prec=='float32' else netCDF4.default_fillvals['f8']
     for var in list(dataset.data_vars):
-        var_encoding[var] = cfg['netcdf4_compression_encodings']
-        var_encoding[var]['_FillValue'] = fill_value
+        var_encoding[var] = cfg['netcdf4_compression_encodings'].copy()
+
+        # Set appropriate fill value based on data type
+        var_dtype = dataset[var].dtype
+        if np.issubdtype(var_dtype, np.bool_):
+            # Boolean variables should not have fill values
+            var_encoding[var]['_FillValue'] = None
+            var_encoding[var]['dtype'] = 'bool'
+        elif np.issubdtype(var_dtype, np.integer):
+            # Default to int32 for all integer types
+            var_encoding[var]['_FillValue'] = None
+            var_encoding[var]['dtype'] = 'int32'
+        else:
+            # Floating point variables get float fill value
+            var_encoding[var]['_FillValue'] = fill_value
+
         # per PO.DAAC request (above), overwrite default coordinates encoding
         # attribute based on key order in dataset[var].coords:
         dataset[var].encoding['coordinates'] = ' '.join(
@@ -872,6 +884,21 @@ def apply_metadata_to_netcdf(
         ncfill = netCDF4.default_fillvals['f4'] if prec=='float32' else netCDF4.default_fillvals['f8']
 
         for var in dataset.data_vars:
+            var_dtype = dataset[var].dtype
+
+            # Preserve boolean and integer types - only convert floating point types
+            if np.issubdtype(var_dtype, np.bool_):
+                log.debug(f'  Preserving boolean type for variable: {var}')
+                # Booleans don't have valid_min/max or NaN values
+                continue
+            elif np.issubdtype(var_dtype, np.integer):
+                log.debug(f'  Preserving integer type ({var_dtype}) for variable: {var}')
+                # For integers, just set valid_min/max without type conversion
+                dataset[var].attrs['valid_min'] = np.min(dataset[var].values)
+                dataset[var].attrs['valid_max'] = np.max(dataset[var].values)
+                continue
+
+            # For floating point types, apply precision conversion and fill values
             dataset[var].values = dataset[var].astype(eval('np.'+prec))
             # Only calculate valid_min/max if there are non-NaN values
             if not np.all(np.isnan(dataset[var].values)):
