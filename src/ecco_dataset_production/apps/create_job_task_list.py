@@ -330,7 +330,8 @@ def create_job_task_list(
                 time_coverage_duration = time_coverage_resolution = 'PT0S'
                 dataset_description_head = 'This dataset contains instantaneous '
             else:
-                raise ValueError("job frequency must be one of 'avg_day', 'avg_mon', or 'snap'")
+                log.warning(f"Skipping job #{i + 1}: invalid frequency '{job.frequency}'. Must be one of 'avg_day', 'avg_mon', or 'snap'.")
+                continue
 
             if job.product_type.lower() == '1d':
                 dataset_description_tail = cfg['dataset_description_tail_1D']
@@ -339,7 +340,8 @@ def create_job_task_list(
             elif job.product_type.lower() == 'native':
                 dataset_description_tail = cfg['dataset_description_tail_native']
             else:
-                raise ValueError("job product type must be one of '1d', 'latlon', or 'native'")
+                log.warning(f"Skipping job #{i + 1}: invalid product type '{job.product_type}'. Must be one of '1d', 'latlon', or 'native'.")
+                continue
 
             log.debug(f'path_freq_pat: {path_freq_pat}, file_freq_pat: {file_freq_pat}, time_long_name: {time_long_name}, time_coverage_duration: {time_coverage_duration}, dataset_description_head: {dataset_description_head}, dataset_description_tail: {dataset_description_tail}')
 
@@ -377,7 +379,7 @@ def create_job_task_list(
                                     s3_parts.path,
                                     path_freq_pat,
                                     '_'.join([variable_input_component,file_freq_pat]))
-                            log.info(f'looking for field component files in s3://{s3_parts.netloc}{prefix}')
+                            log.info(f'looking for field component files matching pattern {variable_input_component}_{file_freq_pat} in s3://{s3_parts.netloc}{prefix}')
 
                             all_var_files_in_bucket = s3_list_files(
                                 s3_client=s3c,
@@ -395,8 +397,8 @@ def create_job_task_list(
                                     + ecco_file.ECCOMDSFilestr(
                                         prefix=variable_input_component,
                                         averaging_period=file_freq_pat).re_filestr)
-                                
-                                log.debug(f'looking for s3_variable_input_component_pat {s3_variable_input_component_pat}')
+
+                                log.debug(f'... using regex pattern: {s3_variable_input_component_pat.pattern}')
 
                                 variable_input_component_files.extend(
                                     [os.path.join(
@@ -408,13 +410,25 @@ def create_job_task_list(
                                     prefix=variable_input_component,
                                     averaging_period=file_freq_pat).re_filestr)
 
-                                log.debug(f'looking for variable_input_component_file_pat {variable_input_component_file_pat}')
-                                
+                                search_path = os.path.join(ecco_source_root, path_freq_pat)
+                                log.info(f'looking for field component files matching pattern {variable_input_component}_{file_freq_pat} in {search_path}')
+                                log.debug(f'... using regex pattern: {variable_input_component_file_pat.pattern}')
+                                log.debug(f'... filtering directories containing version string: "{cfg["ecco_version"]}"')
+
+                                found_any_matching_dir = False
                                 for dirpath,dirnames,filenames in os.walk(ecco_source_root):
-                                    if cfg['ecco_version'] in dirpath:
+                                    if cfg['ecco_version'] in dirpath or cfg['ecco_version'] == '':
+                                        if not found_any_matching_dir:
+                                            log.debug(f'... searching in directory: {dirpath}')
+                                            found_any_matching_dir = True
                                         variable_input_component_files.extend(
                                             [os.path.join(dirpath,f)
                                                 for f in filenames if re.match(variable_input_component_file_pat,f)])
+                                    else:
+                                        log.debug(f'... skipping directory (version string not found): {dirpath}')
+
+                                if not found_any_matching_dir:
+                                    log.warning(f'No directories found containing version string "{cfg["ecco_version"]}". If your directory structure does not include the version string, consider setting ecco_version to an empty string in the config file.')
                         else:
                             log.info("... searching for specific time steps")
                             # assume explicit list of integer time steps; one match per item:
@@ -428,8 +442,8 @@ def create_job_task_list(
                                         prefix=variable_input_component,
                                         averaging_period=file_freq_pat,
                                         time=time).re_filestr)
-                                
-                                log.debug(f'looking for s3_variable_input_component_pat {s3_variable_input_component_pat}')
+
+                                log.debug(f'... using regex pattern: {s3_variable_input_component_pat.pattern}')
 
                                 if aws.utils.is_s3_uri(ecco_source_root):
                                     variable_input_component_files.extend(
@@ -445,15 +459,26 @@ def create_job_task_list(
                                         prefix=variable_input_component,
                                         averaging_period=file_freq_pat,
                                         time=time).re_filestr)
-                                    
-                                    log.debug(f'looking for variable_input_component_file_pat {variable_input_component_file_pat}')
 
+                                    search_path = os.path.join(ecco_source_root, path_freq_pat)
+                                    log.info(f'looking for field component files matching pattern {variable_input_component}_{file_freq_pat} (time={time}) in {search_path}')
+                                    log.debug(f'... using regex pattern: {variable_input_component_file_pat.pattern}')
+                                    log.debug(f'... filtering directories containing version string: "{cfg["ecco_version"]}"')
 
+                                    found_any_matching_dir = False
                                     for dirpath,dirnames,filenames in os.walk(ecco_source_root):
-                                        if cfg['ecco_version'] in dirpath:
+                                        if cfg['ecco_version'] in dirpath or cfg['ecco_version'] == '':
+                                            if not found_any_matching_dir:
+                                                log.debug(f'... searching in directory: {dirpath}')
+                                                found_any_matching_dir = True
                                             variable_input_component_files.extend(
                                                 [os.path.join(dirpath,f)
                                                     for f in filenames if re.match(variable_input_component_file_pat,f)])
+                                        else:
+                                            log.debug(f'... skipping directory (version string not found): {dirpath}')
+
+                                    if not found_any_matching_dir:
+                                        log.warning(f'No directories found containing version string "{cfg["ecco_version"]}". If your directory structure does not include the version string, consider setting ecco_version to an empty string in the config file.')
 
                         log.info("... found %d files for component '%s'", len(variable_input_component_files), variable_input_component)
                         # group .data/.meta pairs for all specified/retrieved time
@@ -522,8 +547,8 @@ def create_job_task_list(
                                 s3_parts.path,
                                 path_freq_pat,
                                 '_'.join([variable,file_freq_pat]))
-                        
-                        log.info(f'looking for files in s3://{s3_parts.netloc}{prefix}')
+
+                        log.info(f'looking for files matching pattern {variable}_{file_freq_pat} in s3://{s3_parts.netloc}{prefix}')
 
                         all_var_files_in_bucket = s3_list_files(
                             s3_client=s3c,
@@ -542,6 +567,7 @@ def create_job_task_list(
                                 + ecco_file.ECCOMDSFilestr(
                                     prefix=variable,
                                     averaging_period=file_freq_pat).re_filestr)
+                            log.debug(f'... using regex pattern: {s3_key_pat.pattern}')
                             variable_files.extend(
                                 [os.path.join(
                                     urllib.parse.urlunparse(
@@ -551,10 +577,24 @@ def create_job_task_list(
                             file_pat = re.compile( r'.*' + ecco_file.ECCOMDSFilestr(
                                 prefix=variable,
                                 averaging_period=file_freq_pat).re_filestr)
+                            search_path = os.path.join(ecco_source_root, path_freq_pat)
+                            log.info(f'looking for files matching pattern {variable}_{file_freq_pat} in {search_path}')
+                            log.debug(f'... using regex pattern: {file_pat.pattern}')
+                            log.debug(f'... filtering directories containing version string: "{cfg["ecco_version"]}"')
+
+                            found_any_matching_dir = False
                             for dirpath,dirnames,filenames in os.walk(ecco_source_root):
-                                if cfg['ecco_version'] in dirpath:
+                                if cfg['ecco_version'] in dirpath or cfg['ecco_version'] == '':
+                                    if not found_any_matching_dir:
+                                        log.debug(f'... searching in directory: {dirpath}')
+                                        found_any_matching_dir = True
                                     variable_files.extend(
                                         [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
+                                else:
+                                    log.debug(f'... skipping directory (version string not found): {dirpath}')
+
+                            if not found_any_matching_dir:
+                                log.warning(f'No directories found containing version string "{cfg["ecco_version"]}". If your directory structure does not include the version string, consider setting ecco_version to an empty string in the config file.')
                     else:
                         log.info("... searching for specific time steps")
                         # explicit list of time steps; one match per item:
@@ -570,6 +610,7 @@ def create_job_task_list(
                                     averaging_period=file_freq_pat,
                                     time=time).re_filestr)
                             if aws.utils.is_s3_uri(ecco_source_root):
+                                log.debug(f'... using regex pattern: {s3_key_pat.pattern}')
                                 variable_files.extend(
                                     [os.path.join(
                                         urllib.parse.urlunparse(
@@ -578,10 +619,24 @@ def create_job_task_list(
                             else:
                                 file_pat = re.compile( r'.*' + ecco_file.ECCOMDSFilestr(
                                     prefix=variable,averaging_period=file_freq_pat,time=time).re_filestr)
+                                search_path = os.path.join(ecco_source_root, path_freq_pat)
+                                log.info(f'looking for files matching pattern {variable}_{file_freq_pat} (time={time}) in {search_path}')
+                                log.debug(f'... using regex pattern: {file_pat.pattern}')
+                                log.debug(f'... filtering directories containing version string: "{cfg["ecco_version"]}"')
+
+                                found_any_matching_dir = False
                                 for dirpath,dirnames,filenames in os.walk(ecco_source_root):
-                                    if cfg['ecco_version'] in dirpath:
+                                    if cfg['ecco_version'] in dirpath or cfg['ecco_version'] == '':
+                                        if not found_any_matching_dir:
+                                            log.debug(f'... searching in directory: {dirpath}')
+                                            found_any_matching_dir = True
                                         variable_files.extend(
                                             [os.path.join(dirpath,f) for f in filenames if re.match(file_pat,f)])
+                                    else:
+                                        log.debug(f'... skipping directory (version string not found): {dirpath}')
+
+                                if not found_any_matching_dir:
+                                    log.warning(f'No directories found containing version string "{cfg["ecco_version"]}". If your directory structure does not include the version string, consider setting ecco_version to an empty string in the config file.')
 
                     log.info("... found %d files for variable '%s'", len(variable_files), variable)
                     # group .data/.meta pairs for all specified/retrieved time
