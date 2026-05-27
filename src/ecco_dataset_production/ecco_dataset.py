@@ -38,6 +38,7 @@ from . import ecco_file
 from . import ecco_grid
 from . import ecco_mapping_factors
 from . import ecco_task
+from . import ecco_metadata
 
 
 log = logging.getLogger('edp.'+__name__)
@@ -128,6 +129,7 @@ class ECCOMDSDataset(object):
         self.grid = None
         self.mapping_factors = None
         self.task = None
+        self.metadata = None
 
         if grid:
             if isinstance(grid,ecco_grid.ECCOGrid):
@@ -166,6 +168,10 @@ class ECCOMDSDataset(object):
                 # fetch mapping factors using task definition:
                 self.mapping_factors = ecco_mapping_factors.ECCOMappingFactors(
                     task=self.task,**kwargs)
+
+            # load all metadata 
+            if not self.metadata:
+                self.metadata = ecco_metadata.ECCOMetadata(task=self.task)
 
             # gather variable input locally (not the most efficient approach for
             # data that may already be stored locally, but cleanest way to
@@ -522,31 +528,58 @@ class ECCOMDSDataset(object):
 
         """
         ## get native land mask data from ECCO grid dataset... :
-        #ecco_grid_ds = xr.open_dataset(os.path.join(
-        #    self.grid.grid_dir,self.cfg['ecco_native_grid_filename']))
 
         # apply grid-appropriate mask to the variable of interest:
-        # ...and apply grid-appropriate mask to the variable of interest:
-        if self.is_variable_c_data(variable):
-            mask_type = 'maskC'
-        elif self.is_variable_w_data(variable):
-            mask_type = 'maskW'
-        elif self.is_variable_s_data(variable):
-            mask_type = 'maskS'
-        else:
-            raise RuntimeError(f"Could not determine grid type for variable '{variable}'")
-        # numpy slice object:
+        # ...and apply grid-appropriate mask to the variable of interest.
+        # first determine whether the variable has a special mask override
+        # specified in the "land_mask_override" metadata from the
+        # variable metadata; if so, use that mask instead
+
+        # Initialize mask_type to None
+        mask_type = None
+        # pull the variable metadata for the variable of interest
+        var_metadata = self.metadata.get_variable_metadata_entry(variable, grid_type='native')
+
+        # search for land_mask_override in the variable metadata; if found, use that as the mask type:
+        if 'land_mask_override' in var_metadata:
+            mask_type = var_metadata['land_mask_override']
+
+            log.debug(f"Variable '{variable}' has 'land_mask_override' {mask_type}.")
+        
+        # proceed to determine mask_type from if no override specified in metadata:
+        if mask_type is None:
+            if self.is_variable_c_data(variable):
+                mask_type = 'maskC'
+            elif self.is_variable_w_data(variable):
+                mask_type = 'maskW'
+            elif self.is_variable_s_data(variable):
+                mask_type = 'maskS'
+            else:
+                raise RuntimeError(f"Could not determine grid type for variable '{variable}'")
+            
+        # determine dimension of the mask 
+        mask = self.grid.native_grid[mask_type]
+        mask_dims = mask.dims
+        mask_is_3d = any(['k' in dim for dim in mask_dims])
+
+        log.debug(f"Mask type '{mask_type}' has dimensions: {mask_dims}, is 3D? {mask_is_3d}")
+
+        # create a numpy slice object:
         if self.is_variable_3d(variable):
             so = np.s_[:]
-        else:
-            so = np.s_[0,:]
-        mask = self.grid.native_grid[mask_type]
+        else: # variable is 2D
+            # if the mask is 3D, slice the surface only
+            if mask_is_3d: 
+                so = np.s_[0,:]
+            # if the mask is 2D, just slice as is:
+            else: # mask is 2D, so just slice as is:
+                so = np.s_[:]
+
+        # load the mask object into memoy if it's a dask array 
         if mask.chunks is not None:
             mask.load()
         self.ds[variable] = self.ds[variable] * np.where(mask[so]==True,1,np.nan)
-        #self.ds[variable] = self.ds[variable] * np.where(self.grid.native_grid[mask_type][so]==True,1,np.nan)
-        #self.ds[variable] = self.ds[variable] * np.where(ecco_grid_ds[mask_type][so]==True,1,np.nan)
-
+        
 
     def is_variable_c_data( self, variable=None):
         """Determines whether or not specified variable is 'C' point-based data
