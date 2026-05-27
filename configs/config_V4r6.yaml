@@ -121,7 +121,7 @@ netcdf4_compression_encodings:
 
 # per PO.DAAC request, possible coordinate names to be included with
 # variable encodings (runtime-determined):
-variable_coordinates_as_encoded_attributes: ['latitude','longitude','tile','time','XC','XG','YC','YG','Z','Zp1','Zl','Zu']
+variable_coordinates_as_encoded_attributes: ['latitude','longitude','tile','time','XC','XG','XU','XV', 'XGG','YC','YG','YU','YV', 'YGG', 'Z','Zp1','Zl','Zu']
 
 # Assigned DOI prefix (ref. https://www.doi.org/):
 doi_authority: 'org.doi'
