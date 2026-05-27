@@ -45,8 +45,11 @@ from . import ecco_podaac_metadata
 from . import ecco_task
 
 
+log = logging.getLogger('edp.'+__name__)
+
+
 def ecco_make_granule( task, cfg,
-    grid=None, mapping_factors=None, metadata=None, log_level=None, **kwargs):
+    grid=None, mapping_factors=None, metadata=None, **kwargs):
     """Create PO.DAAC/ESDIS-ready ECCO granule per instructions provided in
     input task descriptor.
 
@@ -81,10 +84,6 @@ def ecco_make_granule( task, cfg,
         mapping_factors (obj): Instance of ECCOMappingFactors for current
             granule task.
         metadata (obj): Optional instance of ECCOMetadata for current granule task.
-        log_level (str): Optional local logging level for the ecco_make_granule
-            task ('DEBUG', 'INFO', 'WARNING', 'ERROR' or 'CRITICAL').  If called
-            by a top-level application, the default will be that of the parent
-            logger ('edp').
         **kwargs: Depending on run context:
             keygen (str): If tasklist descriptors reference AWS S3 endpoints and
                 if running in an institutionally-managed AWS IAM Identity Center
@@ -103,10 +102,6 @@ def ecco_make_granule( task, cfg,
         latlon).
 
     """
-    log = logging.getLogger('edp.'+__name__)
-    if log_level:
-        log.setLevel(log_level)
-
     # ECCOTask object to answer some basic questions:
     this_task = ecco_task.ECCOTask(task)
 
@@ -189,6 +184,9 @@ def set_granule_ancillary_data(
     variable-level min/max values, time bounds, and additional coordinate data
     not already established during the process of Dataset granule creation.
 
+    Logs INFO-level messages for major operations and DEBUG-level messages for
+    detailed operations (valid_min/max values, coordinate additions, etc.).
+
     .. mermaid::
 
         %%{init: {'theme': 'neutral', 'themeVariables': { 'edgeLabelBackground':'#ffffff'}}}%%
@@ -222,57 +220,61 @@ def set_granule_ancillary_data(
         Input xarray.Datatset, with global ancillary data applied.
 
     """
-    # ensure consistent variable (array) representation:
+    log.info("Setting granule ancillary data")
+
+    # Ensure consistent variable (array) representation
     prec = cfg['array_precision'] if 'array_precision' in cfg else 'float64'
     ncfill = netCDF4.default_fillvals['f4'] if prec=='float32' else netCDF4.default_fillvals['f8']
+    log.info(f"  Setting array precision to {prec} with fill value {ncfill}")
+
     for var in dataset.data_vars:
         dataset[var].values = dataset[var].astype(eval('np.'+prec))
         dataset[var].attrs['valid_min'] = np.nanmin(dataset[var].values)
         dataset[var].attrs['valid_max'] = np.nanmax(dataset[var].values)
         dataset[var].values = np.where(np.isnan(dataset[var].values),ncfill,dataset[var].values)
+        log.debug(f"    Variable '{var}': valid_min={dataset[var].attrs['valid_min']:.6e}, valid_max={dataset[var].attrs['valid_max']:.6e}")
 
-    # time coordinate bounds:
+    # Set time coordinate and bounds
     if all( [k in task['dynamic_metadata'] for k in
         ('time_coverage_start','time_coverage_end','time_coverage_center')]):
-        # original ported code that doesn't work (raises
-        # "IndexError: index 0 is out of bounds for axis 0 with size 0"):
-        #dataset['time_bnds'] = []
-        #dataset.time_bnds.values[0][0] = np.datetime64(task['dynamic_metadata']['time_coverage_start'])
-        #dataset.time_bnds.values[0][1] = np.datetime64(task['dynamic_metadata']['time_coverage_end'])
-        #dataset['time'] = []
-        #dataset.time.values[0] = np.datetime64(task['dynamic_metadata']['time_coverage_center'])
-        # possible solution:
+        log.info("  Setting time coordinate and bounds")
+        time_start = task['dynamic_metadata']['time_coverage_start']
+        time_end = task['dynamic_metadata']['time_coverage_end']
+        time_center = task['dynamic_metadata']['time_coverage_center']
+        log.debug(f"    Time bounds: {time_start} to {time_end}")
+        log.debug(f"    Time center: {time_center}")
+
         dataset.coords['time_bnds'] = (
-        #dataset['time_bnds'] = (
             ('time','nv'),
-            [[pd.Timestamp(task['dynamic_metadata']['time_coverage_start']),
-              pd.Timestamp(task['dynamic_metadata']['time_coverage_end'])]])
-            #[[np.datetime64(task['dynamic_metadata']['time_coverage_start']),
-            #  np.datetime64(task['dynamic_metadata']['time_coverage_end'])]])
+            [[pd.Timestamp(time_start), pd.Timestamp(time_end)]])
         dataset['time'] = (
             ('time'),
-            [pd.Timestamp(task['dynamic_metadata']['time_coverage_center'])])
-            #[np.datetime64(task['dynamic_metadata']['time_coverage_center'])])
+            [pd.Timestamp(time_center)])
 
-    # per PO.DAAC request, if present, remove 'timestep' non-dimension
-    # coordinate (value would have come from time string portion of input
-    # filename(s), e.g., '732', '1428', etc.):
+    # Remove 'timestep' coordinate if present (per PO.DAAC request)
+    # This non-dimension coordinate comes from input filename time strings (e.g., '732', '1428')
     try:
         dataset = dataset.drop_vars('timestep')
+        log.debug("  Removed 'timestep' coordinate")
     except:
-        pass
+        log.debug("  No 'timestep' coordinate to remove")
 
-    # spatial coordinate bounds:
+    # Set spatial coordinate bounds
+    log.info("  Setting spatial coordinate bounds")
     if task.is_latlon:
-        # assign lat/lon/depth bounds using data from mapping factors:
+        log.debug("    Adding lat/lon bounds from mapping factors")
+        # Assign lat/lon/depth bounds using data from mapping factors
         dataset = dataset.assign_coords(
             {'latitude_bnds':(('latitude','nv'), mapping_factors.latitude_bounds)})
         dataset = dataset.assign_coords(
             {'longitude_bnds':(('longitude','nv'), mapping_factors.longitude_bounds)})
         if task.is_3d:
+            log.debug("    Adding Z bounds from mapping factors (3D dataset)")
             dataset = dataset.assign_coords(
                 {'Z_bnds':(('Z','nv'),mapping_factors.depth_bounds)})
     else: # task.is_native
+        log.debug("    Adding XC_bnds and YC_bnds from native grid")
+        # Load XC and YC bounds from grid geometry
         XC_bnds = grid.native_grid['XC_bnds']
         YC_bnds = grid.native_grid['YC_bnds']
         if XC_bnds.chunks is not None:
@@ -281,17 +283,46 @@ def set_granule_ancillary_data(
             YC_bnds.load()
         dataset = dataset.assign_coords(
             {"XC_bnds": (("tile","j","i","nb"), XC_bnds.data)})
-            #{"XC_bnds": (("tile","j","i","nb"), grid.native_grid['XC_bnds'].data)})
         dataset = dataset.assign_coords(
             {"YC_bnds": (("tile","j","i","nb"), YC_bnds.data)})
-            #{"YC_bnds": (("tile","j","i","nb"), grid.native_grid['YC_bnds'].data)})
+
         if task.is_3d:
+            log.debug("    Adding Z_bnds from native grid (3D dataset)")
             Z_bnds = grid.native_grid['Z_bnds']
             if Z_bnds.chunks is not None:
                 Z_bnds.load()
             dataset = dataset.assign_coords(
                 {"Z_bnds": (('k','nv'), Z_bnds.data)})
-                #{'Z_bnds':(('k','nv'),mapping_factors.depth_bounds)})
+
+        # Add XU, YU, XV, YV coordinates for native datasets when variables are at 'u' or 'v' grid points
+        # Check if dataset contains U-grid variables (staggered on i_g, j dimensions)
+        u_in_ds = any(('i_g' in dataset[dv].dims and 'j' in dataset[dv].dims)
+                      for dv in dataset.data_vars)
+
+        # Check if dataset contains V-grid variables (staggered on i, j_g dimensions)
+        v_in_ds = any(('i' in dataset[dv].dims and 'j_g' in dataset[dv].dims)
+                      for dv in dataset.data_vars)
+
+        if u_in_ds:
+            log.debug("Dataset contains U-grid variables (i_g, j)")
+        if v_in_ds:
+            log.debug("Dataset contains V-grid variables (i, j_g)")
+
+        # Assign XU, YU coordinates if U-grid variables exist and grid has them
+        if u_in_ds and 'XU' in grid.native_grid and 'YU' in grid.native_grid:
+            dataset = dataset.assign_coords({"XU": (("tile","j","i_g"), grid.native_grid['XU'].data),
+                                             "YU": (("tile","j","i_g"), grid.native_grid['YU'].data)})
+            #dataset = dataset.assign_coords({"YU": (("tile","j","i_g"), grid.native_grid['YU'].data)})
+            log.debug("Added XU and YU coordinates for U-grid variables")
+
+        # Assign XV, YV coordinates if V-grid variables exist and grid has them
+        if v_in_ds and 'XV' in grid.native_grid and 'YV' in grid.native_grid:
+            dataset = dataset.assign_coords({"XV": (("tile","j_g","i"), grid.native_grid['XV'].data),
+                                             "YV": (("tile","j_g","i"), grid.native_grid['YV'].data)})
+            #dataset = dataset.assign_coords({"YV": (("tile","j_g","i"), grid.native_grid['YV'].data)})
+            log.debug("Added XV and YV coordinates for V-grid variables")
+
+    log.info("Finished setting granule ancillary data")
     return dataset
 
 
@@ -344,8 +375,6 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
         Input xarray.Datatset, with all metadata applied.
 
     """
-    log = logging.getLogger('edp.'+__name__)
-
     # point to ecco metadata, using whatever form provided:
     if not ecco_metadata:
         ecco_metadata_source = ecco_metadata.ECCOMetadata( task, **kwargs)
@@ -380,6 +409,11 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
         dataset, grouping_gcmd_keywords = ecco_v4_py.ecco_utils.add_variable_metadata(
             all_metadata['var_latlon'], dataset)
 
+    # remove "land_mask_override" from variable attributes if present, since this is not a standard CF attribute and is only intended for internal use during granule production:
+    for var in dataset.data_vars:
+        if 'land_mask_override' in dataset[var].attrs:
+            dataset[var].attrs.pop('land_mask_override')
+            
     # coordinate metadata:
     if task.is_latlon:
         dataset = ecco_v4_py.ecco_utils.add_coordinate_metadata(
@@ -467,8 +501,10 @@ def set_granule_metadata( dataset=None, task=None, ecco_metadata=None, cfg=None,
 
         # per PO.DAAC request (above), overwrite default coordinates encoding
         # attribute based on key order in dataset[var].coords:
-        dataset[var].encoding['coordinates'] = ' '.join(
-            [c for c in list(dataset[var].coords) if c in cfg['variable_coordinates_as_encoded_attributes']])
+        
+        # ian temporary disable
+        # dataset[var].encoding['coordinates'] = ' '.join(
+        #    [c for c in list(dataset[var].coords) if c in cfg['variable_coordinates_as_encoded_attributes']])
 
     # specific coordinate datatype encodings:
     coord_encoding = {}
@@ -648,13 +684,10 @@ def print_dataset_metadata(dataset):
     print("==================================================")
 
 
-def process_time_invariant_granule(task, cfg, grid=None, mapping_factors=None, metadata=None, log_level=None, **kwargs):
+def process_time_invariant_granule(task, cfg, grid=None, mapping_factors=None, metadata=None, **kwargs):
     """
     Process a time-invariant granule NetCDF file to add ancillary data and metadata.
     """
-    log = logging.getLogger('edp.'+__name__)
-    if log_level:
-        log.setLevel(log_level)
 
     netcdf_file = task['input_netcdf']
 
@@ -707,8 +740,7 @@ def process_time_invariant_granule(task, cfg, grid=None, mapping_factors=None, m
 
 def apply_metadata_to_netcdf(
     input_netcdf, output_netcdf, ecco_metadata_loc, cfg,
-    grid_type='native', is_2d=None, strip_attributes=False,
-    log_level=None, **kwargs):
+    grid_type='native', is_2d=None, strip_attributes=False, **kwargs):
     """Apply ECCO metadata to an existing NetCDF file without loading external grid files or mapping factors.
 
     This function is designed for adding metadata to "bare" NetCDF files (like grid geometry files)
@@ -728,7 +760,6 @@ def apply_metadata_to_netcdf(
             dimensions exist, dataset is 3D. Set explicitly to True or False to override.
         strip_attributes (bool): If True, strip all existing attributes before applying new ones
             (default: False).
-        log_level (str): Optional logging level ('DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL').
         **kwargs: If ecco_metadata_loc references AWS S3, may include:
             keygen (str): AWS SSO key generation script path.
             profile (str): AWS profile name.
@@ -746,10 +777,6 @@ def apply_metadata_to_netcdf(
         ...     cfg='configs/config_V4r6.yaml',
         ...     grid_type='native')
     """
-    log = logging.getLogger('edp.'+__name__)
-    if log_level:
-        log.setLevel(log_level)
-
     log.info('Applying metadata to %s', input_netcdf)
 
     # Load config if it's a file path
@@ -981,7 +1008,6 @@ def generate_datasets( tasklist, log_level=None, **kwargs):
         PO.DAAC/ESDIS-ready ECCO granule(s) to location(s) defined in tasklist.
 
     """
-    log = logging.getLogger('edp.'+__name__)
     if log_level:
         log.setLevel(log_level)
 
