@@ -13,6 +13,404 @@ import src.document_generator.utils.utils_general as utils_general
 
 
 
+def check_for_attributes(base_dir: str, config_dictionary: dict, required_ratio: float) -> None:
+
+    #var_types_to_consider = ['data_vars','coords']
+    var_types_to_consider = ['data_vars','coords', 'dims']
+    attr_string_buffer = 30
+
+    # Collect all global and variable attributes present in the granules downloaded by the user
+    all_granule_paths = [str(p) for p in (Path(base_dir) / config_dictionary["user_generated_granules_dir_relative"]).rglob('*.nc') if p.is_file()]
+
+    granules_attributes_dictionary = {}
+    granules_attributes_dictionary['global'] = {}
+    granules_attributes_dictionary['variable'] = {}
+
+    for granule_path in all_granule_paths:
+        dataset = xr.open_dataset(granule_path)
+        granules_attributes_dictionary['global'][dataset.attrs['product_name']] = [s.strip() for s in list(dataset.attrs.keys())]
+
+        data_vars = {}
+        coords = {}
+        dims = {}
+
+        for var in dataset.data_vars:
+            data_vars[var] = [s.strip() for s in list(dataset[var].attrs.keys())]
+            #variable_attributes_temp_dict[var] = [s.strip() for s in list(dataset[var].attrs.keys())]
+        for var in dataset.coords:
+            coords[var] = [s.strip() for s in list(dataset[var].attrs.keys())]
+            #variable_attributes_temp_dict[var] = [s.strip() for s in list(dataset[var].attrs.keys())]
+        for var in dataset.dims:
+            dims[var] = [s.strip() for s in list(dataset[var].attrs.keys())]
+            #variable_attributes_temp_dict[var] = [s.strip() for s in list(dataset[var].attrs.keys())]
+
+        temp_dict = {}
+        temp_dict['data_vars'] = data_vars
+        temp_dict['coords'] = coords
+        temp_dict['dims'] = dims
+
+        granules_attributes_dictionary['variable'][dataset.attrs['product_name']] = temp_dict
+        #granules_attributes_dictionary['variable'][dataset.attrs['product_name']] = variable_attributes_temp_dict
+
+    
+
+    # Determine which attributes are "common"
+    attribute_ratios_global = {}
+    attribute_ratios_variable = {}
+    attribute_ratios_variable['data_vars'] = {}
+    attribute_ratios_variable['coords'] = {}
+    attribute_ratios_variable['dims'] = {}
+    
+    num_granules = len(all_granule_paths)
+    num_variables = {}
+    num_variables['data_vars'] = 0 
+    num_variables['coords'] = 0 
+    num_variables['dims'] = 0 
+
+
+    for global_attributes_list in granules_attributes_dictionary['global'].values():
+        for attr in global_attributes_list:
+            if attr not in attribute_ratios_global.keys():
+                attribute_ratios_global[attr] = 1 
+            else:
+                attribute_ratios_global[attr] += 1 
+
+    for temp_dict in granules_attributes_dictionary['variable'].values():
+        for var_type in temp_dict.keys():
+            for attr_list in temp_dict[var_type].values():
+                num_variables[var_type] += 1
+                for attr in attr_list:
+                    if attr not in attribute_ratios_variable[var_type].keys():
+                        attribute_ratios_variable[var_type][attr] = 1 
+                    else:
+                        attribute_ratios_variable[var_type][attr] += 1 
+
+    
+    for attr in attribute_ratios_global.keys():
+        attribute_ratios_global[attr] /= num_granules
+
+    for var_type in attribute_ratios_variable.keys():
+        for attr in attribute_ratios_variable[var_type].keys():
+            attribute_ratios_variable[var_type][attr] /= num_variables[var_type]
+
+
+    for attribute_type in ['global', 'variable']:
+
+        dictionary_list_from_json = obtain_json_data(base_dir, config_dictionary[f"{attribute_type}_attributes_json_file"])
+
+        # NoTE:
+        # The algolrithm below for extracting attribute names from dictionaries makes the assumption that the attribute name was
+        # the first field inserted into the dictionary, ie is the first field listed in the json file.  This logic will break
+        # if that is ever not the case.
+        attributes_list_from_json = []
+        for dictionary in dictionary_list_from_json:
+            attributes_list_from_json.append(list(dictionary.values())[0]) 
+
+        if attribute_type == 'global':
+            print("global attributes MISSING from all granules:")        
+            print('-----------------------------------------------------------------------')
+            print()
+            attributes_from_json_absent_from_all = []
+            for attribute in attributes_list_from_json:
+                if attribute not in attribute_ratios_global.keys():
+                    attributes_from_json_absent_from_all.append(attribute)
+                    print(attribute)
+
+            print()
+            print()
+            print("global attributes NEW to all granules:")        
+            print('-----------------------------------------------------------------------')
+            print()
+            first_granule_switch = True
+            for granule_name in granules_attributes_dictionary[attribute_type].keys():
+                new_attributes_flags = [True] * len(granules_attributes_dictionary[attribute_type][granule_name])
+                for ii in range(len(granules_attributes_dictionary[attribute_type][granule_name])):
+                    if granules_attributes_dictionary[attribute_type][granule_name][ii] in attributes_list_from_json:
+                        new_attributes_flags[ii] = False
+                    new_attrs_granule = set([attr for attr,flag in zip(granules_attributes_dictionary[attribute_type][granule_name], new_attributes_flags) if flag])
+                    if first_granule_switch:
+                        attributes_new_for_all = new_attrs_granule
+                    else:
+                        attributes_new_for_all = attributes_new_for_all & new_attrs_granule
+
+            for attribute in sorted(list(attributes_new_for_all)):
+                print(attribute)
+
+            print()
+            print()
+            print()
+
+        else:
+            attributes_from_json_absent_from_all = {} 
+            for var_type in var_types_to_consider:
+                print()
+                print(f"variable attributes MISSING from all {var_type} variables:")        
+                print('-----------------------------------------------------------------------')
+                print()
+                attributes_from_json_absent_from_all[var_type] = [] 
+                for attribute in attributes_list_from_json:
+                    if attribute not in attribute_ratios_variable[var_type].keys():
+                        attributes_from_json_absent_from_all[var_type].append(attribute)
+                        print(attribute)
+
+            print()
+            print()
+
+            attributes_new_for_all = {} 
+            for var_type in var_types_to_consider:
+                print()
+                print(f"variable attributes NEW for all {var_type} variables:")        
+                print('-----------------------------------------------------------------------')
+                print()
+                first_granule_switch = True
+                for granule_name in granules_attributes_dictionary[attribute_type].keys():
+
+                    #for ii in range(len(granules_attributes_dictionary[attribute_type][granule_name][var_type])):
+                    for attr_list in granules_attributes_dictionary[attribute_type][granule_name][var_type].values():
+                        new_attributes_flags = [True] * len(attr_list)
+                        for ii in range(len(attr_list)):
+                        #if granules_attributes_dictionary[attribute_type][granule_name][var_type][ii] in attributes_list_from_json:
+                            if attr_list[ii] in attributes_list_from_json:
+                                new_attributes_flags[ii] = False
+                        new_attrs_granule = set([attr for attr,flag in zip(attr_list, new_attributes_flags) if flag])
+                        if first_granule_switch:
+                            attributes_new_for_all[var_type] = new_attrs_granule
+                        else:
+                            attributes_new_for_all[var_type] = attributes_new_for_all & new_attrs_granule
+
+                for attribute in sorted(list(attributes_new_for_all[var_type])):
+                    print(attribute)
+
+            print()
+            print()
+            print()
+            print()
+            print()
+            print()
+            print()
+            print()
+            print()
+            print()
+            print()
+            print()
+            print()
+            print("Now, to deal with attributes which are not new/missing across all granules")
+            print()
+            print("NOTE:")
+            print(f"-  For global attributes, missing attributes are only printed if they are present in over {int(required_ratio*100)} percent of variables across all granules.")
+            print("    (There are actually no global attributes missing which aren't missing across all granules)")
+            print(f"-  For variable attributes, missing attributes are only printed if they are present in over {int(required_ratio*100)} percent of variables of a given variable type (data_vars, coords, dims) across all granules.")
+            print()
+            print(f"This filtering of printed output is based on your input value of {required_ratio} for the parameter 'required_ratio', which defaults to 0.")
+            print()
+            print()
+            print()
+            print()
+            print()
+            print()
+            print()
+            print()
+
+
+            for granule_name in granules_attributes_dictionary[attribute_type].keys():
+                
+                if attribute_type == 'global':
+
+                    attr_dict_print = {}
+                    attr_dict_print['new'] = []
+                    attr_dict_print['missing'] = []
+                    
+                    for attribute in sorted(granules_attributes_dictionary[attribute_type][granule_name]):
+                        if attribute not in attributes_list_from_json and attribute not in attributes_new_for_all:
+                            attr_dict_print['new'].append(attribute)
+                    
+                    for attribute in sorted(attributes_list_from_json):
+                        if attribute in attributes_from_json_absent_from_all:
+                            continue
+                        if attribute not in granules_attributes_dictionary[attribute_type][granule_name]:
+                            if attribute_ratios_global[attribute] > required_ratio: 
+                                attr_dict_print['missing'].append(attribute)
+
+                    if len(attr_dict_print['missing']) + len(attr_dict_print['new']) > 0:
+
+                        print()
+                        print()
+                        print(f'granule: {granule_name}')
+                        print('-----------------------------------------------------------------------')
+                        print(f'{attribute_type} attributes:')
+
+                        if len(attr_dict_print['new']) > 0:
+                            print('    NEW:')
+                            for attribute in attr_dict_print['new']:
+                                print(f"            {attribute}")
+                            
+                        if len(attr_dict_print['missing']) > 0:
+                            print()
+                            print('    MISSING:')
+                            for attribute in attr_dict_print['missing']:
+                                print(f"            {attribute}")
+
+                    print()
+                    print()
+                 
+                else:
+
+                    attr_dict_print = {}
+                    attr_dict_print['new'] = {}
+                    attr_dict_print['missing'] = {}
+
+                    for var_type in var_types_to_consider:
+
+                        temp_dict = granules_attributes_dictionary[attribute_type][granule_name][var_type]
+                            
+                        for var in temp_dict.keys():
+
+                            for attribute in sorted(temp_dict[var]):
+                                if attribute not in attributes_list_from_json and attribute not in attributes_new_for_all[var_type]:
+                                    if var_type in attr_dict_print['new'].keys():
+                                        if attribute in attr_dict_print['new'][var_type].keys():
+                                            attr_dict_print['new'][var_type][attribute].append(var)
+                                        else:
+                                            attr_dict_print['new'][var_type][attribute] = [var]
+                                    else:
+                                        attr_dict_print['new'][var_type] = {}
+                                        attr_dict_print['new'][var_type][attribute] = [var]
+
+                            for attribute in sorted(attributes_list_from_json):
+                                if attribute in attributes_from_json_absent_from_all[var_type]:
+                                    continue
+                                if attribute not in temp_dict[var]:
+                                    if attribute_ratios_variable[var_type][attribute] > required_ratio: 
+
+                                        if var_type in attr_dict_print['missing'].keys():
+                                            if attribute in attr_dict_print['missing'][var_type].keys():
+                                                attr_dict_print['missing'][var_type][attribute].append(var)
+                                            else:
+                                                attr_dict_print['missing'][var_type][attribute] = [var]
+                                        else:
+                                            attr_dict_print['missing'][var_type] = {}
+                                            attr_dict_print['missing'][var_type][attribute] = [var]
+
+
+
+                    if len(attr_dict_print['missing'].keys()) + len(attr_dict_print['new'].keys()) > 0:
+
+                        print()
+                        print()
+                        print()
+                        print()
+                        print()
+                        print()
+                        print()
+                        print()
+                        print('--------------------------------------------------------------------------------------------------------------')
+                        print(f'granule: {granule_name}')
+                        print('--------------------------------------------------------------------------------------------------------------')
+                        print(f"'{attribute_type} attributes' table:")
+                        print('--------------------------------------------------------------------------------------------------------------')
+                        print(f"{'':<{attr_string_buffer}} {'variable_type':<{attr_string_buffer}} {'attribute':<{attr_string_buffer}} {'variable'}")
+
+                        if len(attr_dict_print['new'].keys()) > 0:
+                            print('--------------------------------------------------------------------------------------------------------------')
+                            first_entry = True
+
+                            #print('    NEW:')
+
+                            for var_type in attr_dict_print['new'].keys():
+                                new_type_switch = True
+                                for attr in attr_dict_print['new'][var_type].keys():
+                                    new_attr_switch = True
+                                    for var in attr_dict_print['new'][var_type][attr]:
+
+                                        if new_type_switch and new_attr_switch:
+                                            if not first_entry:
+                                                print()
+                                            print(f"{'NEW':<{attr_string_buffer}} {var_type:<{attr_string_buffer}} {attr:<{attr_string_buffer}} {var}")
+                                            new_type_switch = False
+                                            new_attr_switch = False
+                                            first_entry = False
+                                        elif new_attr_switch:
+                                            print()
+                                            print(f"{'':<{attr_string_buffer}} {'':<{attr_string_buffer}} {attr:<{attr_string_buffer}} {var}")
+                                            new_attr_switch = False
+                                        else:
+                                            print(f"{'':<{attr_string_buffer}} {'':<{attr_string_buffer}} {'':<{attr_string_buffer}} {var}")
+
+
+                        if len(attr_dict_print['missing'].keys()) > 0:
+                            print('--------------------------------------------------------------------------------------------------------------')
+                            first_entry = True
+
+                            #print('    MISSING:')
+                            #print(f"{'MISSING':<{attr_string_buffer}} {'variable_type':<{attr_string_buffer}} {'attribute':<{attr_string_buffer}} {'variable'}")
+                            #print(f"                {'---------':<{attr_string_buffer}} {'--------':<{attr_string_buffer}} {'-------------'}")
+
+                            for var_type in attr_dict_print['missing'].keys():
+                                missing_type_switch = True
+                                for attr in attr_dict_print['missing'][var_type].keys():
+                                    missing_attr_switch = True
+                                    for var in attr_dict_print['missing'][var_type][attr]:
+
+                                        if missing_type_switch and missing_attr_switch:
+                                            if not first_entry:
+                                                print()
+                                            print(f"{'MISSING':<{attr_string_buffer}} {var_type:<{attr_string_buffer}} {attr:<{attr_string_buffer}} {var}")
+                                            missing_type_switch = False
+                                            missing_attr_switch = False
+                                            first_entry = False
+                                        elif missing_attr_switch:
+                                            print()
+                                            print(f"{'':<{attr_string_buffer}} {'':<{attr_string_buffer}} {attr:<{attr_string_buffer}} {var}")
+                                            missing_attr_switch = False
+                                        else:
+                                            print(f"{'':<{attr_string_buffer}} {'':<{attr_string_buffer}} {'':<{attr_string_buffer}} {var}")
+
+                        print('--------------------------------------------------------------------------------------------------------------')
+
+
+
+                                
+
+    #for attribute_type in ['global', 'variable']:
+    '''
+        print()
+        print()
+        print()
+
+
+
+                                
+
+    #for attribute_type in ['global', 'variable']:
+        print()
+        print()
+        print()
+        print()
+        print()
+        print()
+        print()
+        print()
+        print()
+        print()
+        print()
+        print()
+        print('-----------------------------------------------------------------------')
+        print('-----------------------------------------------------------------------')
+        print('-----------------------------------------------------------------------')
+        print('-----------------------------------------------------------------------')
+        print(f'{attribute_type.upper()} attribute diagnostic information:')
+        print('-----------------------------------------------------------------------')
+        print('-----------------------------------------------------------------------')
+        print('-----------------------------------------------------------------------')
+        print('-----------------------------------------------------------------------')
+        print()
+        print()
+        print()
+        print()
+    '''
+
+
+
 def write_attributes_tables_tex(base_dir: str, config_dictionary: dict) -> None:
     """
     Generate and write LaTeX longtable files for each unique attribute type in the config.
@@ -58,6 +456,7 @@ def write_attributes_tables_tex(base_dir: str, config_dictionary: dict) -> None:
 
     for granule_path in all_granule_paths:
         dataset = xr.open_dataset(granule_path)
+        #pdb.set_trace()
         global_attributes_granules.update([el.lower() for el in list(dataset.attrs.keys())])
         for var in dataset.data_vars:
             non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
@@ -98,6 +497,7 @@ def write_attributes_tables_tex(base_dir: str, config_dictionary: dict) -> None:
                 with open(latex_output_file, 'w') as output_file:
                     output_file.writelines(line + '\n' for line in latex_lines)
                 '''
+
 
 
 def obtain_json_data(base_dir: str, filename: str) -> list:
@@ -224,10 +624,15 @@ def write_table(base_dir: str, config_dictionary: dict, attribute_type: str, att
     dictionary_list_from_json = obtain_json_data(base_dir, config_dictionary[f"{attribute_type}_attributes_json_file"])
 
     max_col = 0  # Track the widest row to pad narrower rows consistently
-
+    
+    # NoTE:
+    # The algolrithm below for extracting attribute names from dictionaries makes the assumption that the attribute name was
+    # the first field inserted into the dictionary, ie is the first field listed in the json file.  This logic will break
+    # if that is ever not the case.
     attributes_list_from_json = []
     for dictionary in dictionary_list_from_json:
         attributes_list_from_json.append(list(dictionary.values())[0].lower()) 
+        #pdb.set_trace()
 
 
     mystery_attributes = []
@@ -275,5 +680,7 @@ def write_table(base_dir: str, config_dictionary: dict, attribute_type: str, att
     print() 
 
     #return latex_lines
+
+
 
 

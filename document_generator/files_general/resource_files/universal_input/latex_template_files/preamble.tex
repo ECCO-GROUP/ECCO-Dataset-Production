@@ -1,3 +1,4 @@
+\usepackage{array}
 \usepackage{makecell} % dedicated to formating cells
 \usepackage{morefloats}
 \usepackage[utf8]{inputenc}
@@ -11,7 +12,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[sfdefault]{cabin}
 \usepackage{url}
-%\usepackage{longtable}
+\usepackage{longtable}
 
 % \usepackage{color}   %May be necessary if you want to color links
 
@@ -85,3 +86,7 @@
 % % Center longtables that are wider than the textwidth
 % \setlength\LTleft{0pt plus 1fill}
 % \setlength\LTright{0pt plus 1fill}
+
+
+\newcolumntype{M}[1]{>{\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\hspace{0pt}}c{#1}}

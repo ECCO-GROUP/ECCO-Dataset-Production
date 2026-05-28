@@ -39,6 +39,7 @@ def write_data_attributes_tables(base_dir: str, config_dictionary: dict, overwri
     :type overwrite_switch: bool
     :returns: None
     """
+
     # --- Step 1: Write global and variable attribute reference tables ---
     utils_json.write_attributes_tables_tex(base_dir, config_dictionary)
 
@@ -62,6 +63,7 @@ def write_data_attributes_tables(base_dir: str, config_dictionary: dict, overwri
         # ------------------------------------------------------------------------------------------------------
         # ------------------------------------------------------------------------------------------------------
         if Path(os.path.join(base_dir,config_dictionary[f"variable_files_{grid_type}_dir"])).exists():
+            # NoTE: SKETCHY HARDCODED NUMBER OF DIRECTORIES TO TRACE BACK... THIS SHOULD BE A CONFIG PARAMETER, AS SHOULD ANY OTHER SIMILAR NUMBER
             variable_granules_parent_directory = os.path.join(
                 base_dir,
                 "/".join(config_dictionary[f"variable_files_{grid_type}_dir"].split("/")[:-2])
@@ -131,6 +133,7 @@ def write_datasets(base_dir: str, config_dictionary: dict, overwrite_switch: boo
         if not dirs
     ]
 
+    # NoTE: SKETCHY HARDCODED NUMBER OF DIRECTORIES TO TRACE BACK... THIS SHOULD BE A CONFIG PARAMETER, AS SHOULD ANY OTHER SIMILAR NUMBER
     for granule_directory in granule_directories:
         print(
             f"writing latex table and figure files for granules in the "

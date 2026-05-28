@@ -7,6 +7,7 @@ import subprocess
 from pathlib import Path
 import sys
 import pdb
+import matplotlib.pyplot as plt
 
 # Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
@@ -43,11 +44,22 @@ def fieldTable(config_dictionary: dict, dataset: xr.Dataset, is_coord: bool, gri
     :rtype: list[str]
     """
     product_name = get_product_name(dataset)
-    datavar_shortname, datavar_longname, datavar_units = get_coord_vars_in_dataset(dataset=dataset, isCoord=False)
-    coordvar_shortname, coordvar_longname, coordvar_units = get_coord_vars_in_dataset(dataset=dataset, isCoord=True)
+    datavar_shortname_list, datavar_longname_list, datavar_units_list = get_variable_names_in_dataset(dataset=dataset, isCoord=False)
+    coordvar_shortname_list, coordvar_longname_list, coordvar_units_list = get_variable_names_in_dataset(dataset=dataset, isCoord=True)
 
+    # NoTE: Bruce: THIS METHOD HAS A THRESHOLD, PAST WHICH IT ASSIGNS A FIXED LENGTH.  THAT'S WHY "ocean_column_thickness" is spilling into the next column!
     # Compute column widths based on the longest variable name across both lists
-    a, b = table_cellSize(datavar_shortname + coordvar_shortname)
+    a, b = table_cellSize(datavar_shortname_list + coordvar_shortname_list)
+
+    # ----------------------------------------------------------------------------------------------------------------------------------------
+    # ----------------------------------------------------------------------------------------------------------------------------------------
+    # Bruce - HACK CITY
+    # ----------------------------------------------------------------------------------------------------------------------------------------
+    # ----------------------------------------------------------------------------------------------------------------------------------------
+    coordvar_shortname_list_hyphenated = hyphenate_shortnames(coordvar_shortname_list)
+    datavar_shortname_list_hyphenated = hyphenate_shortnames(datavar_shortname_list)
+    # ----------------------------------------------------------------------------------------------------------------------------------------
+    # ----------------------------------------------------------------------------------------------------------------------------------------
 
     latex_lines = []
     latex_lines.append(r'\begin{longtable}{|m{' + str(a) + r'\textwidth}|m{' + str(b) + r'\textwidth}|m{0.12\textwidth}|}')
@@ -61,11 +73,12 @@ def fieldTable(config_dictionary: dict, dataset: xr.Dataset, is_coord: bool, gri
         r'& \multicolumn{1}{|c|}{\textbf{Description of data coordinates}} '
         r'& \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline'
     )
-    for ij in np.arange(len(coordvar_shortname)):
+
+    for ij in np.arange(len(coordvar_shortname_list)):
         latex_lines.append(
-            f'{utils_general.sanitize(config_dictionary, coordvar_shortname[ij])} &'
-            f'{utils_general.sanitize(config_dictionary, coordvar_longname[ij])} &'
-            rf'{utils_general.sanitize(config_dictionary, coordvar_units[ij])}  \\ \hline'
+            f'{utils_general.sanitize(config_dictionary, coordvar_shortname_list_hyphenated[ij])} &'
+            f'{utils_general.sanitize(config_dictionary, coordvar_longname_list[ij])} &'
+            rf'{utils_general.sanitize(config_dictionary, coordvar_units_list[ij])}  \\ \hline'
         )
 
     # --- Data variables section ---
@@ -74,11 +87,12 @@ def fieldTable(config_dictionary: dict, dataset: xr.Dataset, is_coord: bool, gri
         r'& \multicolumn{1}{|c|}{\textbf{Description of data variables}} '
         r'& \multicolumn{1}{|c|}{\textbf{Unit}}\\ \hline'
     )
-    for ij in np.arange(len(datavar_shortname)):
+
+    for ij in np.arange(len(datavar_shortname_list)):
         latex_lines.append(
-            f'{utils_general.sanitize(config_dictionary, datavar_shortname[ij])} &'
-            f'{utils_general.sanitize(config_dictionary, datavar_longname[ij])} &'
-            rf'{utils_general.sanitize(config_dictionary, datavar_units[ij])}  \\ \hline'
+            f'{utils_general.sanitize(config_dictionary, datavar_shortname_list_hyphenated[ij])} &'
+            f'{utils_general.sanitize(config_dictionary, datavar_longname_list[ij])} &'
+            rf'{utils_general.sanitize(config_dictionary, datavar_units_list[ij])}  \\ \hline'
         )
 
     latex_lines.append(r'\end{longtable}')
@@ -240,17 +254,27 @@ def get_non_coordinate_vars(filename: str) -> list:
     :returns: DataArrays for all non-coordinate variables, sorted by name.
     :rtype: list[xr.DataArray]
     """
+
+    #print()
+    #print(filename)
+
+
     dataset = xr.open_dataset(
         filename,
         decode_times=False, decode_coords=False,
         decode_cf=False, decode_timedelta=False
     )
     non_coordinate = []
+
     for var in dataset.data_vars:
-        if dataset[var].attrs['coverage_content_type'] != 'coordinate':
-            non_coordinate.append(var)
+        try:
+            if dataset[var].attrs['coverage_content_type'] != 'coordinate':
+                non_coordinate.append(var)
+        except:
+            pdb.set_trace()
     non_coordinate = sorted(non_coordinate)
     data_array_list = [dataset[field] for field in non_coordinate]
+
     return data_array_list
 
 
@@ -413,9 +437,14 @@ def search_and_extract(
                 else:
                     data_array_list = get_non_coordinate_vars(filepath)
                 dataset = xr.open_dataset(filepath)
+
+                #for da in data_array_list:
+                #    print(filepath)
+                #    print(da.name)
+
                 return data_array_list, dataset
-            else:
-                return None
+            #else:
+        return None
     
     # NoTE: The error below triggers whenever a grouping is not found to have a corresponding granule.
     # This is wrong - we must allow users to have any set of granule files
@@ -539,7 +568,7 @@ def get_product_name(dataset: xr.Dataset) -> str:
     return product_name
 
 
-def get_coord_vars_in_dataset(dataset: xr.Dataset, isCoord: bool = False) -> tuple:
+def get_variable_names_in_dataset(dataset: xr.Dataset, isCoord: bool = False) -> tuple:
     """
     Extract short names, long names, and units for either coordinates or data variables.
 
@@ -772,18 +801,16 @@ def data_products(
         all_grid_granule_paths = [p for p in all_granule_paths if re.search(grid_type.replace('-','_?').replace('_','_?'), p)]
         all_grid_granule_paths_megastring = ("_").join(all_grid_granule_paths)
 
+        #print(all_grid_granule_paths_megastring)
+
     # Each entry in the JSON groupings file corresponds to one document subsection
     for json_dictionary in list_of_json_dictionaries:
         granule_filename_truncated_stem = json_dictionary["filename"]
 
         if not is_coord:
             if granule_filename_truncated_stem not in all_grid_granule_paths_megastring:
+                #print(granule_filename_truncated_stem)
                 continue
-
-        granule_filename_truncated_stem_formatted = utils_general.sanitize(config_dictionary, granule_filename_truncated_stem)
-        latex_lines.append(fr'\subsection{{{granule_filename_truncated_stem_formatted}}}')
-        latex_lines.append(fr"\subsubsection{{Overview}}")
-        latex_lines.append(r'\newp')
 
         #print()
         #print('looping over <list_of_json_dictionaries> in cdf_extract')
@@ -795,13 +822,13 @@ def data_products(
             is_coord
             ) is None:
 
-            #print()
-            #print()
-            #print(grid_type)
-            #print('the following file returned "None" from <search_and_extract>')
-            #print(granule_filename_truncated_stem)
-            #print()
-            #print()
+            print()
+            print()
+            print(grid_type)
+            print('the following file returned "None" from <search_and_extract>')
+            print(granule_filename_truncated_stem)
+            print()
+            print()
          
             continue
         else:
@@ -812,11 +839,11 @@ def data_products(
                 is_coord
             )
 
-        #print('----')
-        #print(json_dictionary["introduction"])
-        #print('----')
 
-        # introductory paragraph from the JSON groupings file
+        granule_filename_truncated_stem_formatted = utils_general.sanitize(config_dictionary, granule_filename_truncated_stem)
+        latex_lines.append(fr'\subsection{{{granule_filename_truncated_stem_formatted}}}')
+        latex_lines.append(fr"\subsubsection{{Overview}}")
+        latex_lines.append(r'\newp')
         latex_lines.append(utils_general.sanitize(config_dictionary, json_dictionary["Introduction"]))
         latex_lines.append(r"\\\\")
 
@@ -865,3 +892,59 @@ def data_products(
             base_dir, config_dictionary[f'{granule_type}_table_{grid_type}_tex_file']
         )
         utils_general.write_latex_lines_to_file(latex_lines, granule_latex_output_file)
+
+
+def get_word_width(word):
+    
+    fig, ax = plt.subplots()
+    # Set up LaTeX rendering environment
+    plt.rc('text', usetex=True)
+
+    # Measure width of the word in inches (convert to points by multiplying by 72)
+    text_obj = ax.text(0, 0, word, fontsize=12, fontfamily='serif')
+    renderer = fig.canvas.get_renderer()
+    bbox = text_obj.get_window_extent(renderer=renderer)
+
+    width_in_points = bbox.width
+    plt.close()
+    return width_in_points
+
+def hyphenate_shortnames(shortname_list):
+    # Bruce - hypthenated name hack to prevent spilling into adjacent columns
+    # Now that this is a function, these parameters should be arguments which are defined in a config file...
+
+    # Taking WILD stabs at how "wide" the column in question is
+    width_max = 180
+    #width_max = 190
+    starting_length_check = 10
+    
+    shortnames_hyphenated = []
+    for name in shortname_list:
+        if get_word_width(name) <= width_max:
+            shortnames_hyphenated.append(name)
+        else:
+            #print(f"{name} width: {get_word_width(name)}")
+            name_pieces = [] 
+            dex_start = 0
+            dex_end = starting_length_check
+            while True:
+                if get_word_width(name[dex_start:]) < width_max:
+                    name_pieces.append(name[dex_start:])
+                    break
+                while True:
+                    if get_word_width(name[dex_start:dex_end]) < width_max:
+                        dex_end += 1
+                    else:
+                        name_pieces.append(name[dex_start:dex_end])
+                        dex_start = dex_end
+                        dex_end += 1
+                        break
+
+            if len(name_pieces[-1]) == 0:
+                name_pieces = name_pieces[:-1]
+            shortnames_hyphenated.append(r"- \newline ".join(name_pieces))
+
+    return shortnames_hyphenated
+
+
+
