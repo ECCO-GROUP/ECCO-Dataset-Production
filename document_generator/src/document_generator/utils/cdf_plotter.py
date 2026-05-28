@@ -15,6 +15,7 @@ import cmocean
 import argparse
 from pathlib import Path
 from PIL import Image
+import pdb
 
 # Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
@@ -144,7 +145,17 @@ def plot_native(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
         tmp_plt = tmp_plt.isel(k_l=target_k)
     elif 'k' in field.dims:
         tmp_plt = tmp_plt.isel(k=target_k)
-    verti_level = target_k + 1  # 1-indexed for display in the title
+
+    # Bruce - my hack to stop "vertical level = _" being printed for 2D spatial fields
+    for dim in field.dims:
+        if dim[0] == "k":
+            target_k += 1
+            break
+            #pdb.set_trace()
+
+    verti_level = target_k
+    #verti_level = target_k + 1  # 1-indexed for display in the title
+
 
     cmin = np.nanmin(tmp_plt)
     cmax = np.nanmax(tmp_plt)
@@ -199,11 +210,13 @@ def plot_native(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
         # Title block: variable name, long name, vertical level, product name
         if 'time' in field.dims:
             fig.suptitle(str(field.name) + " (Daily Mean)", ha='center', x=.45, y=.90, weight='bold', fontsize=16)
-            fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
+            fig.text(s=field.attrs["long_name"], x=0.45, y=.82, fontsize=12, ha='center', va='center')
+            #fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
             plt.figtext(0.45, 0.13, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
         else:
             fig.suptitle(str(field.name), ha='center', x=.45, y=.90, weight='bold', fontsize=16)
-            fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
+            fig.text(s=field.attrs["long_name"], x=0.45, y=.82, fontsize=12, ha='center', va='center')
+            #fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
             plt.figtext(0.45, 0.13, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
 
     else:
@@ -241,14 +254,20 @@ def plot_native(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
             if len(field.dims) <= 4:
                 fig.text(s=field.attrs["long_name"] + "\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
             else:
-                fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
+                if verti_level > 0: 
+                    fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
+                else:
+                    fig.text(s=field.attrs["long_name"] + "\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
             plt.figtext(0.5, -0.02, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
         else:
             fig.suptitle(str(field.name), ha='center', x=.5, y=.968, weight='bold', fontsize=16)
             if len(field.dims) <= 4:
                 fig.text(s=field.attrs["long_name"] + "\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
             else:
-                fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
+                if verti_level > 0: 
+                    fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
+                else:
+                    fig.text(s=field.attrs["long_name"] + "\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
             plt.figtext(0.5, -0.02, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
 
     plt.savefig(figure_path, dpi=300, facecolor='w', bbox_inches='tight', pad_inches=0.05)
@@ -287,7 +306,15 @@ def plot_latlon(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
         target_k = 1
     if 'Z' in field.dims:
         tmp_plt = tmp_plt.isel(Z=target_k)
-    verti_level = target_k + 1
+    #verti_level = target_k + 1
+
+    for dim in field.dims:
+        if dim[0] == "k":
+            target_k += 1
+            break
+            #pdb.set_trace()
+
+    verti_level = target_k
 
     cmin = np.nanmin(tmp_plt)
     cmax = np.nanmax(tmp_plt)
@@ -328,7 +355,10 @@ def plot_latlon(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
             cax2.set_position([bbox2.x0, ax2pos.y0, bbox2.width, ax2pos.height])
 
         fig.suptitle(str(field.name) + " (Daily Mean)", ha='center', x=.45, y=.91, weight='bold', fontsize=16)
-        fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
+        if verti_level > 0:
+            fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
+        else:
+            fig.text(s=field.attrs["long_name"], x=0.45, y=.82, fontsize=12, ha='center', va='center')
         plt.figtext(0.45, 0.1, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
 
     elif field.name == 'drF':
@@ -367,14 +397,20 @@ def plot_latlon(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
             if len(field.dims) <= 4:
                 plt.title(field.attrs["long_name"] + "\n", wrap=True, fontsize=12)
             else:
-                plt.title(field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", wrap=True, fontsize=12)
+                if verti_level > 0:
+                    plt.title(field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", wrap=True, fontsize=12)
+                else:
+                    plt.title(field.attrs["long_name"], wrap=True, fontsize=12)
             plt.figtext(0.45, 0.1, s=str(field.time.values[0])[:10] + ',\n ' + product_name, wrap=True, horizontalalignment='center', fontsize=11)
         else:
             plt.suptitle(str(field.name), ha='center', x=.45, y=.91, weight='bold', fontsize=16)
             if len(field.dims) <= 4:
                 plt.title(field.attrs["long_name"] + "\n", wrap=True, fontsize=12)
             else:
-                plt.title(field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", wrap=True, fontsize=12)
+                if verti_level > 0:
+                    plt.title(field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", wrap=True, fontsize=12)
+                else:
+                    plt.title(field.attrs["long_name"], wrap=True, fontsize=12)
             plt.figtext(0.45, 0.1, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
 
     plt.savefig(figure_path, dpi=300, facecolor='w', bbox_inches='tight', pad_inches=0.05)
