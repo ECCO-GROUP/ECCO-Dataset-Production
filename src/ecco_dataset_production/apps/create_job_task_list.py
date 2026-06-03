@@ -16,7 +16,7 @@ import sys
 import urllib
 
 from .. import aws
-from .. import configuration
+from ..config import ECCODatasetProductionConfig
 from .. import ecco_file
 from .. import ecco_metadata
 from .. import ecco_time
@@ -209,7 +209,7 @@ def create_job_task_list(
     # configuration initialization:
 
     log.info('initializing configuration parameters...')
-    cfg = configuration.ECCODatasetProductionConfig(cfgfile=ecco_cfg_loc)
+    cfg = ECCODatasetProductionConfig(cfgfile=ecco_cfg_loc)
 
     log.info("Validating ecco_source_root and ecco_destination_root")
     if not ecco_source_root or not ecco_destination_root:

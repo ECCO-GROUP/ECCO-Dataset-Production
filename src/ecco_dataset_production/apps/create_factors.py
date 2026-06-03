@@ -8,7 +8,7 @@ import argparse
 import logging
 import sys
 
-from .. import configuration
+from ..config import ECCODatasetProductionConfig
 from .. import utils
 #import ecco_production.configuration
 #import ecco_production.utils
@@ -87,7 +87,7 @@ def create_factors( cfgfile=None, workingdir=None, dims=None, log_level=None):
         log.setLevel(log_level)
 
     log.info('Initializing configuration parameters...')
-    cfg = configuration.ECCODatasetProductionConfig(cfgfile=cfgfile)
+    cfg = ECCODatasetProductionConfig(cfgfile=cfgfile)
     #cfg.set_default_paths(workingdir)
     log.info('Configuration key value pairs:')
     for k,v in cfg.items():
