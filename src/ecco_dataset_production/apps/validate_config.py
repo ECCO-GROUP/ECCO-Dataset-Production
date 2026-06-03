@@ -3,9 +3,10 @@
 Validate ECCO Dataset Production configuration files against the yamale schema.
 
 Usage:
-    ecco_validate_config config_V4r6.yaml
-    ecco_validate_config config_V4r*.yaml
-    ecco_validate_config --with-defaults config_V4r6.yaml  # Show defaults applied
+    edp_validate_config config_V4r6.yaml
+    edp_validate_config config_V4r*.yaml
+    edp_validate_config --show-config config_V4r6.yaml  # Show validated configuration
+    edp_validate_config --show-defaults  # Show only default values
 """
 
 import argparse
@@ -26,9 +27,9 @@ def main():
         help='Configuration file(s) to validate'
     )
     parser.add_argument(
-        '--with-defaults',
+        '--show-config',
         action='store_true',
-        help='Show configuration with defaults applied'
+        help='Show the validated configuration (defaults are always applied)'
     )
     parser.add_argument(
         '--show-defaults',
@@ -69,8 +70,8 @@ def main():
             # Config is automatically validated and defaults applied on load
             cfg = ECCODatasetProductionConfig(str(config_path))
 
-            if args.with_defaults:
-                # Return config data with defaults already applied
+            if args.show_config:
+                # Return config data (defaults are already applied)
                 results.append((True, dict(cfg), f"✓ {config_path.name} is valid"))
             else:
                 # Just validate
@@ -86,9 +87,9 @@ def main():
 
     for success, config_data, message in results:
         print(message)
-        if config_data and args.with_defaults:
+        if config_data and args.show_config:
             import json
-            print("\nConfiguration with defaults applied:")
+            print("\nConfiguration:")
             print(json.dumps(config_data, indent=2, default=str))
             print()
 
