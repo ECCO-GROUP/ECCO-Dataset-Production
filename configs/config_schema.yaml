@@ -1,62 +1,45 @@
 # Yamale schema for ECCO Dataset Production configuration files
-# Usage: yamale -s config_schema.yaml config_V4r6.yaml
 #
-# DEFAULTS: This schema validates configuration structure. Default values are
-# documented in comments but must be applied by the application code, not by yamale.
-# See ECCODatasetProductionConfig.apply_defaults() for runtime default application.
+# This schema defines the structure for ECCO configuration files.
+# Default values are extracted programmatically using the `default=` keyword.
 
 #---------------------------------------------------------------------
 # ECCO version and filename-associated strings
 #---------------------------------------------------------------------
 
-# Short name of ECCO product version/release
 ecco_version: str(required=True)
-
-# Long name of ECCO product version/release
 product_version: str(required=True)
-
-# ECCO dataset filestring component for 'latlon' or 'native' dataproducts
 ecco_production_filestr_grid_label: include('grid_labels', required=True)
 
 #---------------------------------------------------------------------
-# ECCO results computation
+# Model parameters
 #---------------------------------------------------------------------
 
-# Variable precision
-# DEFAULT: 'float64' (see ecco_generate_datasets.py:225, 445)
-# IMPACT: float32 produces ~50% smaller files than float64
+# Variable precision: float32 produces ~50% smaller files than float64
 array_precision: enum('float32', 'float64', required=False, default='float64')
 
-# Model start date and time in ISO format (YYYY-MM-DDThh:mm:ss)
+# Model start/end time in ISO format (YYYY-MM-DDThh:mm:ss)
 model_start_time: str(required=True, matches=r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$')
-
-# Model end date and time in ISO format (YYYY-MM-DDThh:mm:ss)
 model_end_time: str(required=True, matches=r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$')
 
-# Model timestep units (numpy datetime64 conventions: 'h', 'm', 's', etc.)
+# Timestep configuration
 model_timestep_units: enum('h', 'm', 's', 'D', required=True)
-
-# Number of simulation timestep units per granule time increment
 model_timestep: int(min=1, required=True)
 
-# Number of vertical levels in 3D fields (may be commented in older configs)
+# Vertical levels and depth
 num_vertical_levels: int(min=1, required=False, default=50)
-
-# Maximum model depth in meters (negative value)
 geospatial_vertical_min: num(required=True)
 
-# Name of ECCO grid NetCDF file
+# ECCO grid files (paths may be specified via task list or CLI)
 ecco_native_grid_filename: str(required=True)
 ecco_grid_filename: str(required=False)
-
-# Location of ECCO grid files (may be specified via task list instead)
 ecco_grid_dir: str(required=False)
+ecco_grid_dir_mds: str(required=False)
 
 #---------------------------------------------------------------------
-# Metadata, variable encodings
+# Metadata and encodings
 #---------------------------------------------------------------------
 
-# PO.DAAC metadata source filename
 podaac_metadata_filename: str(required=True)
 
 # Global metadata strings
@@ -65,53 +48,38 @@ references: str(required=True)
 source: str(required=True)
 summary: str(required=True)
 
-# NetCDF4 compression encodings
+# NetCDF4 compression
 netcdf4_compression_encodings: include('compression', required=True)
 
-# Coordinate names to include with variable encodings
+# Coordinate encoding
 variable_coordinates_as_encoded_attributes: list(str(), required=True)
 
 # DOI configuration
 doi_authority: str(required=True)
 doi_prefix: str(required=True, matches=r'^\d+\.\d+$')
 
-# Dataset description tail strings
+# Dataset descriptions
 dataset_description_tail_1D: str(required=False)
 dataset_description_tail_latlon: str(required=True)
 dataset_description_tail_native: str(required=True)
 
 #---------------------------------------------------------------------
-# Optional/advanced parameters
+# Optional control flags (with defaults)
 #---------------------------------------------------------------------
 
-# Lat-lon transformation parameters
-latlon_grid_resolution: num(min=0, required=False)
-latlon_grid_area_extent: list(num(), required=False)
-
-# xmitgcm.open_mdsdataset flag
 read_grid: bool(required=False, default=False)
-
-# Control flags
 create_checksum: bool(required=False, default=False)
 extra_prints: bool(required=False, default=False)
-
-# Lambda/cloud parameters
 download_all_fields: bool(required=False, default=False)
 use_workers_to_download: bool(required=False, default=False)
 compare_checksums: bool(required=False, default=False)
-
-# Custom grid parameters
 custom_grid_and_factors: bool(required=False, default=False)
-grid_files_dir: str(required=False)
-custom_factors_dir: str(required=False)
-source_grid_min_L: num(required=False)
-source_grid_max_L: num(required=False)
-source_grid_ftype: str(required=False)
-target_grid_ftype: str(required=False)
-latlon_effective_grid_radius: num(required=False)
+read_ecco_grid_for_native_load: bool(required=False, default=False)
 
-# Path parameters
-ecco_grid_dir_mds: str(required=False)
+#---------------------------------------------------------------------
+# Path parameters (used by various CLI tools)
+#---------------------------------------------------------------------
+
 mapping_factors_dir: str(required=False)
 land_mask_dir: str(required=False)
 metadata_dir: str(required=False)
@@ -119,11 +87,30 @@ model_output_dir: str(required=False)
 local_file_dir_to_upload: str(required=False)
 processed_output_dir_base: str(required=False)
 
-# Legacy parameters (for backward compatibility with old configs)
-metadata_link_root: str(required=False)
+#---------------------------------------------------------------------
+# Lat-lon grid parameters (used by create_factors)
+#---------------------------------------------------------------------
 
-# Processing parameters
-read_ecco_grid_for_native_load: bool(required=False, default=False)
+latlon_grid_resolution: num(min=0, required=False)
+latlon_grid_area_extent: list(num(), required=False)
+latlon_effective_grid_radius: num(required=False)
+
+#---------------------------------------------------------------------
+# Custom grid parameters (used by create_factors)
+#---------------------------------------------------------------------
+
+grid_files_dir: str(required=False)
+custom_factors_dir: str(required=False)
+source_grid_min_L: num(required=False)
+source_grid_max_L: num(required=False)
+source_grid_ftype: str(required=False)
+target_grid_ftype: str(required=False)
+
+#---------------------------------------------------------------------
+# Legacy/backward compatibility
+#---------------------------------------------------------------------
+
+metadata_link_root: str(required=False)
 
 #---------------------------------------------------------------------
 # Schema includes/definitions
