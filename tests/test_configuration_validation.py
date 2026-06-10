@@ -126,16 +126,26 @@ def test_integration_with_real_config():
 
 
 def test_cli_overrides(valid_config_file):
-    """Test CLI overrides are applied and validated."""
-    # Override with valid value via config_fields
-    argv = ['--cfgfile', valid_config_file, '--array_precision', 'float64']
-    cfg = ECCODatasetProductionConfig(config_fields=['array_precision'], argv=argv)
+    """Test CLI overrides using factory methods."""
+    # Override with valid value
+    parser = ECCODatasetProductionConfig.create_parser(
+        config_fields=['array_precision']
+    )
+    args = parser.parse_args(['--cfgfile', valid_config_file, '--array_precision', 'float64'])
+    cfg = ECCODatasetProductionConfig.from_parsed_args(
+        args, config_fields=['array_precision']
+    )
     assert cfg['array_precision'] == 'float64'
 
-    # Override with invalid value should fail validation with clear message
-    argv = ['--cfgfile', valid_config_file, '--array_precision', 'invalid_type']
+    # Override with invalid value should fail validation
+    parser = ECCODatasetProductionConfig.create_parser(
+        config_fields=['array_precision']
+    )
+    args = parser.parse_args(['--cfgfile', valid_config_file, '--array_precision', 'invalid_type'])
     with pytest.raises(ConfigurationValidationError) as exc_info:
-        ECCODatasetProductionConfig(config_fields=['array_precision'], argv=argv)
+        ECCODatasetProductionConfig.from_parsed_args(
+            args, config_fields=['array_precision']
+        )
 
     # Error should mention CLI overrides
     error_msg = str(exc_info.value).lower()
@@ -143,30 +153,35 @@ def test_cli_overrides(valid_config_file):
     assert 'invalid' in error_msg
 
 
-def test_parse_args_via_init(valid_config_file):
-    """Test CLI argument parsing via __init__."""
+def test_parse_args_via_factory(valid_config_file):
+    """Test CLI argument parsing via factory methods."""
     # Test basic parsing with just config file
-    argv = ['--cfgfile', valid_config_file]
-    cfg = ECCODatasetProductionConfig(config_fields=[], argv=argv)
+    parser = ECCODatasetProductionConfig.create_parser()
+    args = parser.parse_args(['--cfgfile', valid_config_file])
+    cfg = ECCODatasetProductionConfig.from_parsed_args(args)
     assert cfg['ecco_version'] == 'V4r6'
 
     # Test with override fields
-    argv = ['--cfgfile', valid_config_file, '--array_precision', 'float64']
-    cfg = ECCODatasetProductionConfig(
-        config_fields=['array_precision'],
-        argv=argv
+    parser = ECCODatasetProductionConfig.create_parser(
+        config_fields=['array_precision']
+    )
+    args = parser.parse_args(['--cfgfile', valid_config_file, '--array_precision', 'float64'])
+    cfg = ECCODatasetProductionConfig.from_parsed_args(
+        args, config_fields=['array_precision']
     )
     assert cfg['array_precision'] == 'float64'
 
     # Test with multiple override fields (types inferred from schema)
-    argv = [
+    parser = ECCODatasetProductionConfig.create_parser(
+        config_fields=['array_precision', 'num_vertical_levels']
+    )
+    args = parser.parse_args([
         '--cfgfile', valid_config_file,
         '--array_precision', 'float32',
         '--num_vertical_levels', '100'
-    ]
-    cfg = ECCODatasetProductionConfig(
-        config_fields=['array_precision', 'num_vertical_levels'],
-        argv=argv
+    ])
+    cfg = ECCODatasetProductionConfig.from_parsed_args(
+        args, config_fields=['array_precision', 'num_vertical_levels']
     )
     assert cfg['array_precision'] == 'float32'
     assert cfg['num_vertical_levels'] == 100  # Converted to int by argparse
