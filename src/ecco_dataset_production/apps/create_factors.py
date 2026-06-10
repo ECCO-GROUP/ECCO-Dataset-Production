@@ -26,21 +26,13 @@ def create_parser():
         argparser.ArgumentParser instance.
 
     """
-    parser = argparse.ArgumentParser(
+    # Create parser with config file support
+    parser = ECCODatasetProductionConfig.create_parser(
         description="""Creates 2- and/or 3-D mapping factors, land mask, and
-        lon/lat grid files.""",
-        epilog="""The input ECCO grid path and filename and output mapping
-        factors directory are implicitly defined via the product generation
-        configuration file fields 'ecco_grid_dir', 'ecco_grid_filename', and
-        'mapping_factors_dir', respectively. 'ecco_grid_filename' is the only
-        one that is required, as path defaults will be assigned if necessary.
-        Additionally, configuration fields starting with 'latlon' are referenced
-        if lon/lat-based mapping factors are to be generated, while
-        'custom_grid_and_factors' is used if custom target grid mappings are to
-        instead be generated.""")
-    parser.add_argument('--cfgfile', default='./product_generation_config.yaml',
-        help="""(Path and) filename of ECCO Production configuration file
-        (default: '%(default)s')""")
+        lon/lat grid files."""
+    )
+
+    # Add tool-specific arguments
     parser.add_argument('--workingdir', default='.', help="""
         If any configuration path data are unassigned, --workingdir will be used
         to set default path root values (default: '%(default)s')""")
@@ -51,16 +43,26 @@ def create_parser():
         choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],
         default='WARNING', help="""
         Set logging level (default: %(default)s)""")
+
+    parser.epilog = """The input ECCO grid path and filename and output mapping
+        factors directory are implicitly defined via the product generation
+        configuration file fields 'ecco_grid_dir', 'ecco_grid_filename', and
+        'mapping_factors_dir', respectively. 'ecco_grid_filename' is the only
+        one that is required, as path defaults will be assigned if necessary.
+        Additionally, configuration fields starting with 'latlon' are referenced
+        if lon/lat-based mapping factors are to be generated, while
+        'custom_grid_and_factors' is used if custom target grid mappings are to
+        instead be generated."""
+
     return parser
 
 
-def create_factors( cfgfile=None, workingdir=None, dims=None, log_level=None):
+def create_factors(cfg, workingdir=None, dims=None, log_level=None):
     """Convenience wrapper for call to
     ecco_production.utils.mapping_factors_utils.create_all_factors.
 
     Args:
-        cfgfile (str): (Path and) filename of ECCO Dataset Production
-            configuration file.
+        cfg (ECCODatasetProductionConfig): Configuration instance.
         workingdir (str): Working directory path definition default if explicit
             path definitions are otherwise unassigned in cfgfile.
         dims (str): List of dimensions for which mapping factors are to be
@@ -86,13 +88,9 @@ def create_factors( cfgfile=None, workingdir=None, dims=None, log_level=None):
     if log_level:
         log.setLevel(log_level)
 
-    log.info('Initializing configuration parameters...')
-    cfg = ECCODatasetProductionConfig(cfgfile=cfgfile)
-    #cfg.set_default_paths(workingdir)
     log.info('Configuration key value pairs:')
     for k,v in cfg.items():
         log.info('%s: %s', k, v)
-    log.info('...done initializing configuration parameters.')
 
     # convert input 'dims' into format required by create_all_factors:
     try:
@@ -101,8 +99,7 @@ def create_factors( cfgfile=None, workingdir=None, dims=None, log_level=None):
         errstr = f'{sys._getframe().f_code.co_name} "dims" input error'
         log.exception('%s', errstr)
 
-    utils.mapping_factors_utils.create_all_factors(
-        cfg, dims)
+    utils.mapping_factors_utils.create_all_factors(cfg, dims)
 
 
 def main():
@@ -112,5 +109,8 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
-    create_factors( args.cfgfile, args.workingdir, args.dims, args.log_level)
+    # Load configuration from parsed args
+    cfg = ECCODatasetProductionConfig.from_parsed_args(args)
+
+    create_factors(cfg, args.workingdir, args.dims, args.log_level)
     
