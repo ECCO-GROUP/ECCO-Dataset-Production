@@ -43,6 +43,9 @@ def fieldTable(config_dictionary: dict, dataset: xr.Dataset, is_coord: bool, gri
     :returns: LaTeX lines forming a complete ``longtable`` environment.
     :rtype: list[str]
     """
+
+    #print(dataset)
+
     product_name = get_product_name(dataset)
     datavar_shortname_list, datavar_longname_list, datavar_units_list = get_variable_names_in_dataset(dataset=dataset, isCoord=False)
     coordvar_shortname_list, coordvar_longname_list, coordvar_units_list = get_variable_names_in_dataset(dataset=dataset, isCoord=True)
@@ -89,11 +92,15 @@ def fieldTable(config_dictionary: dict, dataset: xr.Dataset, is_coord: bool, gri
     )
 
     for ij in np.arange(len(datavar_shortname_list)):
-        latex_lines.append(
-            f'{utils_general.sanitize(config_dictionary, datavar_shortname_list_hyphenated[ij])} &'
-            f'{utils_general.sanitize(config_dictionary, datavar_longname_list[ij])} &'
-            rf'{utils_general.sanitize(config_dictionary, datavar_units_list[ij])}  \\ \hline'
-        )
+        try:
+            latex_lines.append(
+                f'{utils_general.sanitize(config_dictionary, datavar_shortname_list_hyphenated[ij])} &'
+                f'{utils_general.sanitize(config_dictionary, datavar_longname_list[ij])} &'
+                rf'{utils_general.sanitize(config_dictionary, datavar_units_list[ij])}  \\ \hline'
+            )
+        except Exception:
+            print("/// current file failing with long_name query at another point in code ////")
+
 
     latex_lines.append(r'\end{longtable}')
     latex_lines.append(r"")
@@ -271,7 +278,9 @@ def get_non_coordinate_vars(filename: str) -> list:
             if dataset[var].attrs['coverage_content_type'] != 'coordinate':
                 non_coordinate.append(var)
         except:
-            pdb.set_trace()
+            #pdb.set_trace()
+            print("not sure why this try except clause was here, cdf_extract get_non_coordinate_vars")
+            continue
     non_coordinate = sorted(non_coordinate)
     data_array_list = [dataset[field] for field in non_coordinate]
 
@@ -494,7 +503,10 @@ def data_var_table(
     varName     = utils_general.sanitize(config_dictionary, attrs["Variable Name"])
     description = utils_general.sanitize(config_dictionary, attrs["Description"])
     unit        = utils_general.sanitize(config_dictionary, attrs["Units"])
-    comment     = utils_general.sanitize(config_dictionary, attrs["Comments"])
+    #comment     = utils_general.sanitize_remove_dollar(config_dictionary, attrs["Comments"])
+    #comment     = utils_general.sanitize_with_math(config_dictionary, comment)
+    comment     = utils_general.sanitize_with_math(config_dictionary, attrs["Comments"])
+    ####comment     = utils_general.sanitize(config_dictionary, attrs["Comments"])
 
     # CDL description may contain math; use the math-aware sanitizer
     cdl_description = utils_general.sanitize_with_math(config_dictionary, attrs['CDL Description'])
@@ -530,7 +542,8 @@ def data_var_table(
 
     # Comments row
     la.append(r'\rowcolor{lightgray} \multicolumn{4}{|c|}{\textbf{Comments}} \\ \hline')
-    la.append(r'\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{' + rf'{{{comment.capitalize()}}}' + r'}} \\ \hline')
+    la.append(r'\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{' + rf'{{{comment}}}' + r'}} \\ \hline')
+    #la.append(r'\multicolumn{4}{|p{1\textwidth}|}{\footnotesize{' + rf'{{{comment.capitalize()}}}' + r'}} \\ \hline')
     la.append(r'\end{longtable}')
     la.append(r"")
 
@@ -589,7 +602,13 @@ def get_variable_names_in_dataset(dataset: xr.Dataset, isCoord: bool = False) ->
 
     for ij in np.arange(len(var_list)):
         shortnames_list.append(var_list[ij])
-        longnames_list.append(str(dataset[var_list[ij]].long_name).capitalize())
+        try:
+            longnames_list.append(str(dataset[var_list[ij]].long_name).capitalize())
+        except Exception:
+            print("******** long_name missing in one or more granule variables  ********")
+            print("******** dataset var:")
+            print(dataset[var_list[ij]])
+            print("*********************************************************************")
         if 'units' in dataset[var_list[ij]].attrs.keys():
             units_list.append(dataset[var_list[ij]].units)
         else:
@@ -832,6 +851,8 @@ def data_products(
          
             continue
         else:
+
+            print(granule_filename_truncated_stem)
 
             data_array_list, dataset = search_and_extract(
                 granule_filename_truncated_stem,

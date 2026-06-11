@@ -127,6 +127,11 @@ def plot_native(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
     :type figure_path: str
     :returns: None
     """
+
+    centered_frac_x = 0.5
+
+    num_dims_max_native = 5
+
     show_colorbar = True
     product_name = dataset.product_name
     tmp_plt = field
@@ -146,7 +151,8 @@ def plot_native(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
     elif 'k' in field.dims:
         tmp_plt = tmp_plt.isel(k=target_k)
 
-    # Bruce - my hack to stop "vertical level = _" being printed for 2D spatial fields
+    '''
+    # Bruce - my hack to stop "vertical level = _" being printed for fields without a depth dimension 
     for dim in field.dims:
         if dim[0] == "k":
             target_k += 1
@@ -154,7 +160,8 @@ def plot_native(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
             #pdb.set_trace()
 
     verti_level = target_k
-    #verti_level = target_k + 1  # 1-indexed for display in the title
+    '''
+    verti_level = target_k + 1  # 1-indexed for display in the title
 
 
     cmin = np.nanmin(tmp_plt)
@@ -164,8 +171,7 @@ def plot_native(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
     cmap = copy.copy(plt.get_cmap('jet'))
     cmap.set_bad(color='dimgray')
 
-    shortname_tmp = dataset.metadata_link.split('ShortName=')[1]
-    cmap, cmin, cmax = cal_cmin_cmax(cmap, cmin, cmax, shortname_tmp, 'Native')
+    cmap, cmin, cmax = cal_cmin_cmax(cmap, cmin, cmax, field.name, 'Native')
 
     if dataset.attrs["product_name"].startswith('SEA_ICE'):
         # Sea-ice variables: side-by-side Arctic / Antarctic polar stereo plots
@@ -209,15 +215,17 @@ def plot_native(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
 
         # Title block: variable name, long name, vertical level, product name
         if 'time' in field.dims:
-            fig.suptitle(str(field.name) + " (Daily Mean)", ha='center', x=.45, y=.90, weight='bold', fontsize=16)
-            fig.text(s=field.attrs["long_name"], x=0.45, y=.82, fontsize=12, ha='center', va='center')
-            #fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
-            plt.figtext(0.45, 0.13, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
+            fig.suptitle(str(field.name) + " (Daily Mean)", ha='center', x=centered_frac_x, y=.90, weight='bold', fontsize=16)
+            fig.text(s=field.attrs["long_name"], x=centered_frac_x, y=.82, fontsize=12, ha='center', va='center')
+            #fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", x=centered_frac_x, y=.82, fontsize=12, ha='center', va='center')
+            plt.figtext(centered_frac_x, 0.13, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
+            #plt.figtext(centered_frac_x, 0.13, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
         else:
-            fig.suptitle(str(field.name), ha='center', x=.45, y=.90, weight='bold', fontsize=16)
-            fig.text(s=field.attrs["long_name"], x=0.45, y=.82, fontsize=12, ha='center', va='center')
-            #fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
-            plt.figtext(0.45, 0.13, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
+            fig.suptitle(str(field.name), ha='center', x=centered_frac_x, y=.90, weight='bold', fontsize=16)
+            fig.text(s=field.attrs["long_name"], x=centered_frac_x, y=.82, fontsize=12, ha='center', va='center')
+            #fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", x=centered_frac_x, y=.82, fontsize=12, ha='center', va='center')
+            plt.figtext(centered_frac_x, 0.13, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
+            #plt.figtext(centered_frac_x, 0.13, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
 
     else:
         # All other native variables: 13-tile plot
@@ -250,25 +258,27 @@ def plot_native(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
         ax_ojh.set_facecolor('none')
 
         if 'time' in field.dims:
-            fig.suptitle(str(field.name) + " (Daily Mean)", ha='center', x=.5, y=.968, weight='bold', fontsize=16)
-            if len(field.dims) <= 4:
-                fig.text(s=field.attrs["long_name"] + "\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
+            fig.suptitle(str(field.name) + " (Daily Mean)", ha='center', x=centered_frac_x, y=.968, weight='bold', fontsize=16)
+            #if len(field.dims) <= 4: # Bruce - is this ever not true??????
+            if len(field.dims) < num_dims_max_native:
+                fig.text(s=field.attrs["long_name"] + "\n", x=centered_frac_x, y=.9, fontsize=12, ha='center', va='center')
             else:
-                if verti_level > 0: 
-                    fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
-                else:
-                    fig.text(s=field.attrs["long_name"] + "\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
-            plt.figtext(0.5, -0.02, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
+                #if verti_level > 0: 
+                fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ") \n", x=centered_frac_x, y=.9, fontsize=12, ha='center', va='center')
+                #else:
+                #    fig.text(s=field.attrs["long_name"] + "\n", x=centered_frac_x, y=.9, fontsize=12, ha='center', va='center')
+            plt.figtext(centered_frac_x, -0.02, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
         else:
-            fig.suptitle(str(field.name), ha='center', x=.5, y=.968, weight='bold', fontsize=16)
-            if len(field.dims) <= 4:
-                fig.text(s=field.attrs["long_name"] + "\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
+            fig.suptitle(str(field.name), ha='center', x=centered_frac_x, y=.968, weight='bold', fontsize=16)
+            if len(field.dims) < num_dims_max_native:
+            #if len(field.dims) <= 4:
+                fig.text(s=field.attrs["long_name"] + "\n", x=centered_frac_x, y=.9, fontsize=12, ha='center', va='center')
             else:
-                if verti_level > 0: 
-                    fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ") \n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
-                else:
-                    fig.text(s=field.attrs["long_name"] + "\n", x=0.5, y=.9, fontsize=12, ha='center', va='center')
-            plt.figtext(0.5, -0.02, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
+                #if verti_level > 0: 
+                fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ") \n", x=centered_frac_x, y=.9, fontsize=12, ha='center', va='center')
+                #else:
+                #    fig.text(s=field.attrs["long_name"] + "\n", x=centered_frac_x, y=.9, fontsize=12, ha='center', va='center')
+            plt.figtext(centered_frac_x, -0.02, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
 
     plt.savefig(figure_path, dpi=300, facecolor='w', bbox_inches='tight', pad_inches=0.05)
     plt.close('all')
@@ -293,6 +303,11 @@ def plot_latlon(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
     :type figure_path: str
     :returns: None
     """
+
+    centered_frac_x = 0.5
+
+    num_dims_max_latlon = 4
+
     show_colorbar = True
     product_name  = dataset.product_name
     tmp_plt = field
@@ -306,8 +321,8 @@ def plot_latlon(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
         target_k = 1
     if 'Z' in field.dims:
         tmp_plt = tmp_plt.isel(Z=target_k)
-    #verti_level = target_k + 1
 
+    '''
     for dim in field.dims:
         if dim[0] == "k":
             target_k += 1
@@ -315,13 +330,14 @@ def plot_latlon(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
             #pdb.set_trace()
 
     verti_level = target_k
+    '''
+    verti_level = target_k + 1
 
     cmin = np.nanmin(tmp_plt)
     cmax = np.nanmax(tmp_plt)
     cmap = copy.copy(plt.get_cmap('jet'))
 
-    shortname_tmp = dataset.metadata_link.split('ShortName=')[1]
-    cmap, cmin, cmax = cal_cmin_cmax(cmap, cmin, cmax, shortname_tmp, 'Latlon')
+    cmap, cmin, cmax = cal_cmin_cmax(cmap, cmin, cmax, field.name, 'Latlon')
 
     cbarLabel = field.attrs.get('units', None)
 
@@ -354,12 +370,13 @@ def plot_latlon(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
             ax2pos = ax2.get_position()
             cax2.set_position([bbox2.x0, ax2pos.y0, bbox2.width, ax2pos.height])
 
-        fig.suptitle(str(field.name) + " (Daily Mean)", ha='center', x=.45, y=.91, weight='bold', fontsize=16)
-        if verti_level > 0:
-            fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", x=0.45, y=.82, fontsize=12, ha='center', va='center')
+        fig.suptitle(str(field.name) + " (Daily Mean)", ha='center', x=centered_frac_x, y=.91, weight='bold', fontsize=16)
+        #if verti_level > 0:
+        if len(field.dims) < num_dims_max_latlon:
+            fig.text(s=field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", x=centered_frac_x, y=.82, fontsize=12, ha='center', va='center')
         else:
-            fig.text(s=field.attrs["long_name"], x=0.45, y=.82, fontsize=12, ha='center', va='center')
-        plt.figtext(0.45, 0.1, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
+            fig.text(s=field.attrs["long_name"], x=centered_frac_x, y=.82, fontsize=12, ha='center', va='center')
+        plt.figtext(centered_frac_x, 0.1, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
 
     elif field.name == 'drF':
         # Special case: vertical grid cell thickness plotted as a depth profile
@@ -372,9 +389,9 @@ def plot_latlon(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
         plt.xticks(np.arange(0, 490.1, 50))
         plt.xlabel(field.long_name.capitalize() + " [m]", wrap=True)
         plt.ylabel("Depth of the grid cell center [m]")
-        fig.suptitle(str(field.name), ha='center', x=.5, y=.95, weight='bold', fontsize=16)
+        fig.suptitle(str(field.name), ha='center', x=centered_frac_x, y=.95, weight='bold', fontsize=16)
         plt.title(field.attrs["long_name"] + "\n", wrap=True, fontsize=12)
-        plt.figtext(0.45, 0.025, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
+        plt.figtext(centered_frac_x, 0.025, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
 
     else:
         # Standard global Robinson projection plot
@@ -393,25 +410,27 @@ def plot_latlon(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> N
             cax.set_position([bbox.x0, axpos.y0, bbox.width, axpos.height])
 
         if 'time' in field.dims:
-            plt.suptitle(str(field.name) + " (Daily Mean)", ha='center', x=.45, y=.91, weight='bold', fontsize=16)
-            if len(field.dims) <= 4:
+            plt.suptitle(str(field.name) + " (Daily Mean)", ha='center', x=centered_frac_x, y=.91, weight='bold', fontsize=16)
+            if len(field.dims) < num_dims_max_latlon:
+            #if len(field.dims) <= 4:
                 plt.title(field.attrs["long_name"] + "\n", wrap=True, fontsize=12)
             else:
-                if verti_level > 0:
-                    plt.title(field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", wrap=True, fontsize=12)
-                else:
-                    plt.title(field.attrs["long_name"], wrap=True, fontsize=12)
-            plt.figtext(0.45, 0.1, s=str(field.time.values[0])[:10] + ',\n ' + product_name, wrap=True, horizontalalignment='center', fontsize=11)
+                #if verti_level > 0:
+                plt.title(field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", wrap=True, fontsize=12)
+                #else:
+                #    plt.title(field.attrs["long_name"], wrap=True, fontsize=12)
+            plt.figtext(centered_frac_x, 0.1, s=str(field.time.values[0])[:10] + ',\n ' + product_name, wrap=True, horizontalalignment='center', fontsize=11)
         else:
-            plt.suptitle(str(field.name), ha='center', x=.45, y=.91, weight='bold', fontsize=16)
-            if len(field.dims) <= 4:
+            plt.suptitle(str(field.name), ha='center', x=centered_frac_x, y=.91, weight='bold', fontsize=16)
+            if len(field.dims) < num_dims_max_latlon:
+            #if len(field.dims) <= 4:
                 plt.title(field.attrs["long_name"] + "\n", wrap=True, fontsize=12)
             else:
-                if verti_level > 0:
-                    plt.title(field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", wrap=True, fontsize=12)
-                else:
-                    plt.title(field.attrs["long_name"], wrap=True, fontsize=12)
-            plt.figtext(0.45, 0.1, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
+                #if verti_level > 0:
+                plt.title(field.attrs["long_name"] + "\n (vertical level = " + str(verti_level) + ")", wrap=True, fontsize=12)
+                #else:
+                #    plt.title(field.attrs["long_name"], wrap=True, fontsize=12)
+            plt.figtext(centered_frac_x, 0.1, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
 
     plt.savefig(figure_path, dpi=300, facecolor='w', bbox_inches='tight', pad_inches=0.05)
     plt.close('all')
@@ -433,13 +452,16 @@ def plot_oneD(dataset: xr.Dataset, field: xr.DataArray, figure_path: str) -> Non
     :type figure_path: str
     :returns: None
     """
+
+    centered_frac_x = 0.5
+
     product_name = dataset.product_name
     dataset[field.name].plot()
 
     fig = plt.gcf()
     fig.set_size_inches(12, 6)
     plt.title(field.attrs["long_name"] + "\n", wrap=True, weight='bold', fontsize=16)
-    plt.figtext(0.45, -0.05, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
+    plt.figtext(centered_frac_x, -0.05, s=product_name, wrap=True, horizontalalignment='center', fontsize=11)
 
     plt.savefig(figure_path, dpi=300, facecolor='w', bbox_inches='tight', pad_inches=0.05)
     plt.close('all')
@@ -507,7 +529,7 @@ def plot_datasetPicEg(dataset: xr.Dataset, save_to: str) -> None:
         )
 
     # Derive the output filename from the ShortName in the metadata_link URL
-    FILEname = dataset.metadata_link.split('ShortName=')[1] + '.png'
+    FILEname = field.name + '.png'
     fig_path = os.path.join(save_to, FILEname)
 
     plt.savefig(fig_path, dpi=300, facecolor='w', bbox_inches='tight', pad_inches=0.05)
@@ -545,7 +567,7 @@ def cal_cmin_cmax(
     cmap: matplotlib.colors.LinearSegmentedColormap,
     cmin: float,
     cmax: float,
-    shortname_tmp: str,
+    fieldname: str,
     product_type: str
 ) -> tuple:
     """
@@ -568,9 +590,8 @@ def cal_cmin_cmax(
     :type cmin: float
     :param cmax: Data maximum used as fallback if no rule matches.
     :type cmax: float
-    :param shortname_tmp: Dataset short name extracted from ``metadata_link``,
-        used to identify the variable category via substring matching.
-    :type shortname_tmp: str
+    :param fieldname: Variable name 
+    :type fieldname: str
     :param product_type: ``'Native'`` or ``'Latlon'``. Native products have
         NaN cells coloured dark grey.
     :type product_type: str
@@ -578,33 +599,33 @@ def cal_cmin_cmax(
     :rtype: tuple[matplotlib.colors.LinearSegmentedColormap, float, float]
     """
     if (
-        ('STRESS'  in shortname_tmp) or
-        ('FLUX'    in shortname_tmp) or
-        ('VEL'     in shortname_tmp) or
-        ('TEND'    in shortname_tmp) or
-        ('BOLUS'   in shortname_tmp)
+        ('STRESS'  in fieldname) or
+        ('FLUX'    in fieldname) or
+        ('VEL'     in fieldname) or
+        ('TEND'    in fieldname) or
+        ('BOLUS'   in fieldname)
     ):
         fac = 0.8
         # Narrow the range further for products with large outliers
-        if ('FRESH_FLUX' in shortname_tmp) or ('MOMENTUM_TEND' in shortname_tmp):
+        if ('FRESH_FLUX' in fieldname) or ('MOMENTUM_TEND' in fieldname):
             fac = 0.25
         cmin, cmax = even_cax(cmin, cmax, fac)
         cmap = copy.copy(cmocean.cm.balance)
 
-    elif 'TEMP_SALINITY' in shortname_tmp:
+    elif 'TEMP_SALINITY' in fieldname:
         cmap = copy.copy(cmocean.cm.thermal)
 
-    elif 'MIXED_LAYER' in shortname_tmp:
+    elif 'MIXED_LAYER' in fieldname:
         cmap = copy.copy(cmocean.cm.deep)
         cmin = 0
         cmax = 250
 
-    elif 'SEA_ICE_CONC' in shortname_tmp:
+    elif 'SEA_ICE_CONC' in fieldname:
         cmap = copy.copy(cmocean.cm.ice)
         cmin = 0
         cmax = 1
 
-    elif 'DENS_STRAT' in shortname_tmp:
+    elif 'DENS_STRAT' in fieldname:
         cmap = copy.copy(cmocean.cm.dense)
 
     # Native-grid plots need NaN cells coloured to distinguish them from ocean

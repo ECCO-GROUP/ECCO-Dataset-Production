@@ -280,6 +280,13 @@ def sanitize(config_dictionary: dict, string: str) -> str:
 
     return string
 
+def sanitize_remove_dollar(config_dictionary: dict, string: str) -> str:
+
+    string = string.replace(r"$", "")
+
+    return string
+
+
 
 def sanitize_with_math(config_dictionary: dict, string: str) -> str:
     """
