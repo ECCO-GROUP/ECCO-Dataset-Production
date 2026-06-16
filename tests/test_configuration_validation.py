@@ -111,7 +111,7 @@ class TestConfigurationValidation:
 
 
 @pytest.mark.skipif(
-    not Path(__file__).parent.parent / 'configs' / 'config_V4r6.yaml',
+    not (Path(__file__).parent.parent / 'configs' / 'config_V4r6.yaml').exists(),
     reason="config_V4r6.yaml not found"
 )
 def test_integration_with_real_config():
