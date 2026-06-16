@@ -1,5 +1,5 @@
 """ECCODatasetProductionConfig class for loading and managing configuration."""
-# pylint: disable=consider-using-with,unspecified-encoding
+# pylint: disable=unspecified-encoding
 
 import argparse
 from collections import UserDict
@@ -73,9 +73,11 @@ class ECCODatasetProductionConfig(UserDict):
                 tmpdir_and_fname = os.path.join(tmpdir, os.path.basename(self.cfgfile))
                 log.debug('Fetching %s to %s', self.cfgfile, tmpdir_and_fname)
                 aws.ecco_aws_s3_cp.aws_s3_cp(src=self.cfgfile, dest=tmpdir, **kwargs)
-                self.update(yaml.safe_load(open(tmpdir_and_fname)))
+                with open(tmpdir_and_fname) as f:
+                    self.update(yaml.safe_load(f))
         else:
-            self.update(yaml.safe_load(open(self.cfgfile)))
+            with open(self.cfgfile) as f:
+                self.update(yaml.safe_load(f))
 
         # Apply defaults first so required fields with defaults are filled in
         self._apply_defaults()
@@ -252,9 +254,11 @@ class ECCODatasetProductionConfig(UserDict):
                 tmpdir_and_fname = os.path.join(tmpdir, os.path.basename(cfgfile))
                 log.debug('Fetching %s to %s', cfgfile, tmpdir_and_fname)
                 aws.ecco_aws_s3_cp.aws_s3_cp(src=cfgfile, dest=tmpdir, **kwargs)
-                instance.update(yaml.safe_load(open(tmpdir_and_fname)))
+                with open(tmpdir_and_fname) as f:
+                    instance.update(yaml.safe_load(f))
         else:
-            instance.update(yaml.safe_load(open(cfgfile)))
+            with open(cfgfile) as f:
+                instance.update(yaml.safe_load(f))
 
         # Apply defaults
         instance._apply_defaults()
