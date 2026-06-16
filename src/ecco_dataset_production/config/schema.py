@@ -9,7 +9,7 @@ from typing import Any
 import yamale
 
 
-SCHEMA_PATH = Path(__file__).parent.parent.parent.parent / 'configs' / 'config_schema.yaml'
+DEFAULT_SCHEMA_PATH = Path(__file__).parent.parent.parent.parent / 'configs' / 'config_schema.yaml'
 
 
 class Schema:
@@ -20,9 +20,14 @@ class Schema:
     """
 
     def __init__(self, schema_path: Path | str | None = None):
-        if schema_path is None:
-            schema_path = SCHEMA_PATH
-        self.schema_path = Path(schema_path)
+        if schema_path is not None:
+            schema_path = Path(schema_path)
+        else:
+            schema_path = DEFAULT_SCHEMA_PATH
+
+        if not schema_path.exists():
+            raise RuntimeError(f'Schema not found: {str(schema_path)}')
+
         self._schema = yamale.make_schema(self.schema_path)
         self._defaults = self._extract_defaults()
         self._arg_names = self._extract_arg_names()
