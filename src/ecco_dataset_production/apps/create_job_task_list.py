@@ -34,8 +34,9 @@ def create_parser():
         argparser.ArgumentParser instance.
 
     """
-    # Create parser with config file support (--cfgfile argument)
+    # Create parser with config file support and config field overrides
     parser = ECCODatasetProductionConfig.create_parser(
+        config_fields=['ecco_grid_dir', 'mapping_factors_dir', 'metadata_dir'],
         description="""Create a list of task inputs and outputs from an ECCO
         Dataset Production job file."""
     )
@@ -51,22 +52,6 @@ def create_parser():
     parser.add_argument('--ecco_destination_root', help="""
         ECCO Dataset Production output root location, either directory path
         (e.g., ECCOV4r5_datasets) or AWS S3 bucket (s3://bucket_name).""")
-    parser.add_argument('--ecco_grid_loc', help="""
-        Directory containing ECCO grid files (XC.*, YC.*, *latlon*.nc,
-        *native*.nc, etc., as well as the file available_diagnostics.log), or
-        ECCO grid zipfile, or similar remote location given by AWS S3
-        bucket/prefix.""")
-    parser.add_argument('--ecco_mapping_factors_loc', help="""
-        Directory containing ECCO mapping factors (3D, land_mask, latlon_grid,
-        and sparse subdirectories), or similar remote location given by AWS S3
-        bucket/prefix.""")
-    parser.add_argument('--ecco_metadata_loc', help="""
-        Directory containing ECCO metadata *.json source files, or similar
-        remote location given by AWS S3 bucket/prefix.  Three of the source
-        files, *_groupings_for_{1D,latlon,native}_datasets.json, are used here
-        to create task definitions, while the others, e.g.
-        *_global_metadata_for_{all,native,latlon}_datasets.json, etc. are
-        referenced during subsequent dataset production task execution.""")
     parser.add_argument('--outfile', help="""
         Resulting job task output file (json format) (default: stdout).""")
     parser.add_argument('--keygen', help="""
@@ -778,22 +763,23 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
-    # Load configuration from parsed args
+    # Load configuration from parsed args with config field overrides
     cfg = ECCODatasetProductionConfig.from_parsed_args(
         args,
+        config_fields=['ecco_grid_dir', 'mapping_factors_dir', 'metadata_dir'],
         keygen=args.keygen,
         profile=args.profile
     )
 
     task_list = create_job_task_list(
         cfg=cfg,
-        ecco_cfg_loc=args.cfgfile,
+        ecco_cfg_loc=args.ecco_cfg_loc,
         jobfile=args.jobfile,
         ecco_source_root=args.ecco_source_root,
         ecco_destination_root=args.ecco_destination_root,
-        ecco_grid_loc=args.ecco_grid_loc,
-        ecco_mapping_factors_loc=args.ecco_mapping_factors_loc,
-        ecco_metadata_loc=args.ecco_metadata_loc,
+        ecco_grid_loc=cfg['ecco_grid_dir'],
+        ecco_mapping_factors_loc=cfg['mapping_factors_dir'],
+        ecco_metadata_loc=cfg['metadata_dir'],
         keygen=args.keygen,
         profile=args.profile,
         log_level=args.log_level
