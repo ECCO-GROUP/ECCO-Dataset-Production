@@ -38,7 +38,6 @@ class ECCODatasetProductionConfig(UserDict):
 
     Attributes:
         cfgfile (str): Local store of cfgfile input string.
-        _local_cfgfile (str): Path to local config file (for validation).
 
     Raises:
         ConfigurationValidationError: If config is invalid.
@@ -62,7 +61,6 @@ class ECCODatasetProductionConfig(UserDict):
 
     def __init__(self, cfgfile, **kwargs):
         super().__init__()
-        self._local_cfgfile = None
         self._schema = Schema()
 
         # Load config file
@@ -76,10 +74,8 @@ class ECCODatasetProductionConfig(UserDict):
                 log.debug('Fetching %s to %s', self.cfgfile, tmpdir_and_fname)
                 aws.ecco_aws_s3_cp.aws_s3_cp(src=self.cfgfile, dest=tmpdir, **kwargs)
                 self.update(yaml.safe_load(open(tmpdir_and_fname)))
-                self._local_cfgfile = tmpdir_and_fname
         else:
             self.update(yaml.safe_load(open(self.cfgfile)))
-            self._local_cfgfile = self.cfgfile
 
         # Apply defaults first so required fields with defaults are filled in
         self._apply_defaults()
@@ -180,7 +176,9 @@ class ECCODatasetProductionConfig(UserDict):
                     if arg_type == list:
                         arg_kwargs['nargs'] = '+'
                         # Get element type from list validator
-                        element_type = schema._get_list_element_type(field)  # pylint: disable=protected-access
+                        # pylint: disable=protected-access
+                        element_type = schema._get_list_element_type(field)
+                        # pylint: enable=protected-access
                         arg_type = element_type if element_type else str
 
                 parser.add_argument(
@@ -245,7 +243,6 @@ class ECCODatasetProductionConfig(UserDict):
         # Create instance by directly loading the file and applying overrides
         instance = cls.__new__(cls)
         UserDict.__init__(instance)
-        instance._local_cfgfile = None
         instance._schema = schema
         instance.cfgfile = cfgfile
 
@@ -256,10 +253,8 @@ class ECCODatasetProductionConfig(UserDict):
                 log.debug('Fetching %s to %s', cfgfile, tmpdir_and_fname)
                 aws.ecco_aws_s3_cp.aws_s3_cp(src=cfgfile, dest=tmpdir, **kwargs)
                 instance.update(yaml.safe_load(open(tmpdir_and_fname)))
-                instance._local_cfgfile = tmpdir_and_fname
         else:
             instance.update(yaml.safe_load(open(cfgfile)))
-            instance._local_cfgfile = cfgfile
 
         # Apply defaults
         instance._apply_defaults()
