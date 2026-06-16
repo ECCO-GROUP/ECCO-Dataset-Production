@@ -21,11 +21,11 @@ class Schema:
 
     def __init__(self, schema_path: Path | str | None = None):
         if schema_path is not None:
-            schema_path = Path(schema_path)
+            self.schema_path = Path(schema_path)
         else:
-            schema_path = DEFAULT_SCHEMA_PATH
+            self.schema_path = DEFAULT_SCHEMA_PATH
 
-        if not schema_path.exists():
+        if not self.schema_path.exists():
             raise RuntimeError(f'Schema not found: {str(schema_path)}')
 
         self._schema = yamale.make_schema(self.schema_path)
