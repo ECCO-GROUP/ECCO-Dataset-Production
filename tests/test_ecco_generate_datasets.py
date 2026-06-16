@@ -2,7 +2,6 @@ import importlib.util
 import sys
 import tempfile
 import types
-import unittest
 from pathlib import Path
 from unittest import mock
 
@@ -56,28 +55,24 @@ class LocalTask(dict):
         return True
 
 
-class TestProcessTimeInvariantGranule(unittest.TestCase):
-    def test_process_time_invariant_granule_closes_input_dataset(self):
-        module = load_ecco_generate_datasets_module()
+def test_process_time_invariant_granule_closes_input_dataset():
+    """Test that process_time_invariant_granule closes input dataset."""
+    module = load_ecco_generate_datasets_module()
 
-        input_dataset = mock.MagicMock()
-        input_dataset.variables = []
+    input_dataset = mock.MagicMock()
+    input_dataset.variables = []
 
-        output_dataset = mock.MagicMock()
+    output_dataset = mock.MagicMock()
 
-        module.xr.open_dataset.return_value = input_dataset
-        module.set_granule_ancillary_data = mock.Mock(return_value=output_dataset)
-        module.set_granule_metadata = mock.Mock(return_value=(output_dataset, {}))
+    module.xr.open_dataset.return_value = input_dataset
+    module.set_granule_ancillary_data = mock.Mock(return_value=output_dataset)
+    module.set_granule_metadata = mock.Mock(return_value=(output_dataset, {}))
 
-        with tempfile.TemporaryDirectory() as tmpdir:
-            granule_path = str(Path(tmpdir) / 'granule.nc')
-            task = LocalTask(input_netcdf='input.nc', granule=granule_path)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        granule_path = str(Path(tmpdir) / 'granule.nc')
+        task = LocalTask(input_netcdf='input.nc', granule=granule_path)
 
-            module.process_time_invariant_granule(task=task, cfg={})
+        module.process_time_invariant_granule(task=task, cfg={})
 
-        input_dataset.close.assert_called_once_with()
-        output_dataset.to_netcdf.assert_called_once_with(granule_path, encoding={})
-
-
-if __name__ == '__main__':
-    unittest.main()
+    input_dataset.close.assert_called_once_with()
+    output_dataset.to_netcdf.assert_called_once_with(granule_path, encoding={})
