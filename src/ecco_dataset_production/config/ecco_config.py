@@ -1,4 +1,5 @@
 """ECCODatasetProductionConfig class for loading and managing configuration."""
+# pylint: disable=consider-using-with,unspecified-encoding
 
 import argparse
 from collections import UserDict
@@ -15,7 +16,6 @@ log = logging.getLogger('edp.config')
 
 class ConfigurationValidationError(Exception):
     """Raised when configuration validation fails."""
-    pass
 
 
 class ECCODatasetProductionConfig(UserDict):
@@ -134,7 +134,7 @@ class ECCODatasetProductionConfig(UserDict):
         )
 
         # Track which fields are config overrides
-        parser._config_fields = config_fields or []
+        parser._config_fields = config_fields or []  # pylint: disable=protected-access
 
         # Add config field override arguments if specified
         if config_fields:
@@ -143,11 +143,13 @@ class ECCODatasetProductionConfig(UserDict):
 
             for field in config_fields:
                 # Get custom arg name if defined in schema, otherwise use field name
+                # pylint: disable=protected-access
                 arg_name = schema._get_arg_name(field)
                 default_val = defaults.get(field)
 
                 # Get description from schema or use default help text
                 description = schema._get_description(field)
+                # pylint: enable=protected-access
                 if description:
                     help_text = description
                 else:
@@ -166,7 +168,7 @@ class ECCODatasetProductionConfig(UserDict):
                             help=help_text
                         )
                         continue
-                    elif isinstance(default_val, list):
+                    if isinstance(default_val, list):
                         # Lists need special handling
                         arg_type = type(default_val[0]) if default_val else str
                         arg_kwargs['nargs'] = '+'
@@ -174,11 +176,11 @@ class ECCODatasetProductionConfig(UserDict):
                         arg_type = type(default_val)
                 else:
                     # No default - infer type from validator
-                    arg_type = schema._get_field_type(field)
+                    arg_type = schema._get_field_type(field)  # pylint: disable=protected-access
                     if arg_type == list:
                         arg_kwargs['nargs'] = '+'
                         # Get element type from list validator
-                        element_type = schema._get_list_element_type(field)
+                        element_type = schema._get_list_element_type(field)  # pylint: disable=protected-access
                         arg_type = element_type if element_type else str
 
                 parser.add_argument(
@@ -281,7 +283,10 @@ class ECCODatasetProductionConfig(UserDict):
                 schema.validate(dict(instance), source='CLI overrides')
                 log.info('Configuration with CLI overrides validation successful')
             except Exception as e:
-                msg = f"Configuration with CLI overrides is invalid:\n{str(e)}\nOverrides: {overrides}"
+                msg = (
+                    f"Configuration with CLI overrides is invalid:\n{str(e)}\n"
+                    f"Overrides: {overrides}"
+                )
                 log.error(msg)
                 raise ConfigurationValidationError(msg) from e
 
@@ -297,8 +302,8 @@ class ECCODatasetProductionConfig(UserDict):
         """
         try:
             return self.data[key]
-        except:
-            log.warning(f'Undefined configuration parameter reference, "%s".', key)
+        except KeyError:
+            log.warning('Undefined configuration parameter reference, "%s".', key)
             return ''
 
     def _apply_defaults(self):
