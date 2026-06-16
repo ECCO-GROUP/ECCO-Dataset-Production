@@ -33,7 +33,7 @@ geospatial_vertical_min: num(required=True)
 # ECCO grid files (paths may be specified via task list or CLI)
 ecco_native_grid_filename: str(required=True)
 ecco_grid_filename: str(required=False)
-ecco_grid_dir: str(required=False)
+ecco_grid_dir: str(required=False, arg_name='ecco_grid_loc', description='Directory containing ECCO grid files or AWS S3 bucket/prefix')
 ecco_grid_dir_mds: str(required=False)
 
 #---------------------------------------------------------------------
@@ -80,9 +80,9 @@ read_ecco_grid_for_native_load: bool(required=False, default=False)
 # Path parameters (used by various CLI tools)
 #---------------------------------------------------------------------
 
-mapping_factors_dir: str(required=False)
+mapping_factors_dir: str(required=False, arg_name='ecco_mapping_factors_loc', description='Directory containing ECCO mapping factors or AWS S3 bucket/prefix')
 land_mask_dir: str(required=False)
-metadata_dir: str(required=False)
+metadata_dir: str(required=False, arg_name='ecco_metadata_loc', description='Directory containing ECCO metadata JSON files or AWS S3 bucket/prefix')
 model_output_dir: str(required=False)
 local_file_dir_to_upload: str(required=False)
 processed_output_dir_base: str(required=False)
@@ -91,15 +91,15 @@ processed_output_dir_base: str(required=False)
 # Lat-lon grid parameters (used by create_factors)
 #---------------------------------------------------------------------
 
-latlon_grid_resolution: num(min=0, required=False)
-latlon_grid_area_extent: list(num(), required=False)
-latlon_effective_grid_radius: num(required=False)
+latlon_grid_resolution: num(min=0, required=False, arg_name='resolution', description='Lat-lon grid resolution in degrees')
+latlon_grid_area_extent: list(num(), required=False, arg_name='extent', description='Grid area extent [min_lon, max_lon, min_lat, max_lat]')
+latlon_effective_grid_radius: num(required=False, arg_name='grid-radius', description='Effective grid radius in meters')
 
 #---------------------------------------------------------------------
 # Custom grid parameters (used by create_factors)
 #---------------------------------------------------------------------
 
-grid_files_dir: str(required=False)
+grid_files_dir: str(required=False, arg_name='ecco_grid_loc')
 custom_factors_dir: str(required=False)
 source_grid_min_L: num(required=False)
 source_grid_max_L: num(required=False)
