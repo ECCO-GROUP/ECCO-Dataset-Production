@@ -153,35 +153,33 @@ class ECCODatasetProductionConfig(UserDict):
                 else:
                     help_text = f'Override {field} from config file'
 
-                # Infer type from default value or from validator
-                arg_type = None
+                # Infer type from validator (handles both with/without defaults)
+                # pylint: disable=protected-access
+                arg_type = schema._get_field_type(field)
+                # pylint: enable=protected-access
                 arg_kwargs = {}
+
                 if default_val is not None:
                     help_text += f' (default: {default_val})'
-                    if isinstance(default_val, bool):
-                        parser.add_argument(
-                            f'--{arg_name}',
-                            dest=field,  # Map to field name internally
-                            action='store_true' if not default_val else 'store_false',
-                            help=help_text
-                        )
-                        continue
-                    if isinstance(default_val, list):
-                        # Lists need special handling
-                        arg_type = type(default_val[0]) if default_val else str
-                        arg_kwargs['nargs'] = '+'
-                    else:
-                        arg_type = type(default_val)
-                else:
-                    # No default - infer type from validator
-                    arg_type = schema._get_field_type(field)  # pylint: disable=protected-access
-                    if arg_type == list:
-                        arg_kwargs['nargs'] = '+'
-                        # Get element type from list validator
-                        # pylint: disable=protected-access
-                        element_type = schema._get_list_element_type(field)
-                        # pylint: enable=protected-access
-                        arg_type = element_type if element_type else str
+
+                # Handle boolean types with action flags
+                if arg_type == bool:
+                    default_bool = default_val if default_val is not None else False
+                    parser.add_argument(
+                        f'--{arg_name}',
+                        dest=field,
+                        action='store_true' if not default_bool else 'store_false',
+                        help=help_text
+                    )
+                    continue
+
+                # Handle list types
+                if arg_type == list:
+                    arg_kwargs['nargs'] = '+'
+                    # pylint: disable=protected-access
+                    element_type = schema._get_list_element_type(field)
+                    # pylint: enable=protected-access
+                    arg_type = element_type if element_type else str
 
                 parser.add_argument(
                     f'--{arg_name}',
