@@ -166,18 +166,28 @@ class ECCODatasetProductionConfig(UserDict):
                 else:
                     arg_kwargs['default'] = argparse.SUPPRESS
 
-                # Handle boolean types with store_const action
+                # Handle boolean types with intuitive flag behavior
                 if arg_type == bool:
-                    # For booleans, use store_const to set the opposite of default
-                    const_val = not default_val if default_val is not None else True
-                    parser.add_argument(
-                        f'--{arg_name}',
-                        dest=field,
-                        action='store_const',
-                        const=const_val,
-                        help=help_text,
-                        default=arg_kwargs['default']
-                    )
+                    if default_val is True:
+                        # Default is True, so provide --disable-flag to set False
+                        parser.add_argument(
+                            f'--disable-{arg_name}',
+                            dest=field,
+                            action='store_const',
+                            const=False,
+                            help=help_text,
+                            default=arg_kwargs['default']
+                        )
+                    else:
+                        # Default is False (or None), so --flag sets True
+                        parser.add_argument(
+                            f'--{arg_name}',
+                            dest=field,
+                            action='store_const',
+                            const=True,
+                            help=help_text,
+                            default=arg_kwargs['default']
+                        )
                     continue
 
                 # Handle list types
