@@ -159,17 +159,24 @@ class ECCODatasetProductionConfig(UserDict):
                 # pylint: enable=protected-access
                 arg_kwargs = {}
 
+                # Set default - use SUPPRESS if no default in schema
                 if default_val is not None:
                     help_text += f' (default: {default_val})'
+                    arg_kwargs['default'] = default_val
+                else:
+                    arg_kwargs['default'] = argparse.SUPPRESS
 
-                # Handle boolean types with action flags
+                # Handle boolean types with store_const action
                 if arg_type == bool:
-                    default_bool = default_val if default_val is not None else False
+                    # For booleans, use store_const to set the opposite of default
+                    const_val = not default_val if default_val is not None else True
                     parser.add_argument(
                         f'--{arg_name}',
                         dest=field,
-                        action='store_true' if not default_bool else 'store_false',
-                        help=help_text
+                        action='store_const',
+                        const=const_val,
+                        help=help_text,
+                        default=arg_kwargs['default']
                     )
                     continue
 
