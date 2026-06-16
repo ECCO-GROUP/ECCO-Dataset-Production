@@ -128,7 +128,7 @@ class ECCODatasetProductionConfig(UserDict):
 
         parser = argparse.ArgumentParser(description=description)
         parser.add_argument(
-            '--cfgfile',
+            '--ecco_cfg_loc',
             required=True,
             help='Path to configuration YAML file'
         )
@@ -142,26 +142,51 @@ class ECCODatasetProductionConfig(UserDict):
             defaults = schema.get_defaults()
 
             for field in config_fields:
+                # Get custom arg name if defined in schema, otherwise use field name
+                arg_name = schema._get_arg_name(field)
                 default_val = defaults.get(field)
-                help_text = f'Override {field} from config file'
 
+                # Get description from schema or use default help text
+                description = schema._get_description(field)
+                if description:
+                    help_text = description
+                else:
+                    help_text = f'Override {field} from config file'
+
+                # Infer type from default value or from validator
                 arg_type = None
+                arg_kwargs = {}
                 if default_val is not None:
                     help_text += f' (default: {default_val})'
                     if isinstance(default_val, bool):
                         parser.add_argument(
-                            f'--{field}',
+                            f'--{arg_name}',
+                            dest=field,  # Map to field name internally
                             action='store_true' if not default_val else 'store_false',
                             help=help_text
                         )
                         continue
+                    elif isinstance(default_val, list):
+                        # Lists need special handling
+                        arg_type = type(default_val[0]) if default_val else str
+                        arg_kwargs['nargs'] = '+'
                     else:
                         arg_type = type(default_val)
+                else:
+                    # No default - infer type from validator
+                    arg_type = schema._get_field_type(field)
+                    if arg_type == list:
+                        arg_kwargs['nargs'] = '+'
+                        # Get element type from list validator
+                        element_type = schema._get_list_element_type(field)
+                        arg_type = element_type if element_type else str
 
                 parser.add_argument(
-                    f'--{field}',
+                    f'--{arg_name}',
+                    dest=field,  # Map to field name internally
                     type=arg_type,
-                    help=help_text
+                    help=help_text,
+                    **arg_kwargs
                 )
 
         return parser
@@ -196,14 +221,14 @@ class ECCODatasetProductionConfig(UserDict):
             ... )
             >>> # Access config via cfg, tool args via args.jobfile
         """
-        if not hasattr(args, 'cfgfile'):
+        if not hasattr(args, 'ecco_cfg_loc'):
             raise AttributeError(
-                "Parsed args must have 'cfgfile' attribute. "
+                "Parsed args must have 'ecco_cfg_loc' attribute. "
                 "Did you create the parser with create_parser()?"
             )
 
         args_dict = vars(args)
-        cfgfile = args_dict['cfgfile']
+        cfgfile = args_dict['ecco_cfg_loc']
 
         # Extract config field overrides
         overrides = {}
