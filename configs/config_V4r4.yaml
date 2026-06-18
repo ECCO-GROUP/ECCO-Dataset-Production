@@ -57,14 +57,29 @@ model_timestep: 1
 
 # Number of vertical of 3D fields (one (1) vertical level assumed for
 # 2D files):
-#num_vertical_levels: 50
+num_vertical_levels: 50
 
 # Maximum model depth (meters):
 geospatial_vertical_min: -6134.5
 
-# Name of ECCO grid NetCDF file, assumed to be in location defined by
-# task list's 'ecco_grid_dir' field:
-ecco_native_grid_filename: 'GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc'
+#---------------------------------------------------------------------
+# Mapping factors generation parameters:
+# Note: Grid file paths and mapping factors directory are specified
+# as command-line arguments to the tools that need them.
+#---------------------------------------------------------------------
+
+# Resolution of the lat-lon grid used for transformation (degrees):
+latlon_grid_resolution: 0.5
+
+# Area extent for lat-lon grid [lon_min, lat_max, lon_max, lat_min]:
+latlon_grid_area_extent: [-180.0, 90.0, 180.0, -90.0]
+
+# Effective grid cell radius for mapping (km).
+# If not specified (null), defaults to: (111/2)*sqrt(2) ≈ 78.5 km
+latlon_effective_grid_radius: null
+
+# Use custom grid and factors (false = use ECCO grids):
+custom_grid_and_factors: false
 
 #---------------------------------------------------------------------
 # Metadata, variable encodings:
