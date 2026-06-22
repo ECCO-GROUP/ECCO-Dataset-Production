@@ -1,0 +1,176 @@
+# NoTE: Ideally, this config file would work for all versions/releases, so that VXrX would be the only thing the user had to specify
+# This is the static configuration file for the ECCO document generator product; it should be provided to the user with each ECCO release
+# All paths are relative to the base document generator directory
+
+# Tail string for the dataset introduction for latlon grid
+#dataset_introduction_tail_latlon: ' interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 6 (V4r6) ocean and sea-ice state estimate.'
+#dataset_introduction_tail_native: ' on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 Release 6 (V4r6) ocean and sea-ice state estimate.'
+
+dataset_text_dict: 
+  opening_text: 'This dataset provides '
+  grid_text_latlon: '  This data has been interpolated to a regular 0.5-degree grid from the ECCO Version 4 Release 6 (V4r6) ocean and sea-ice state estimate.'
+  grid_text_native: '  This data is provided on the native Lat-Lon-Cap 90 (LLC90) model grid from the ECCO Version 4 Release 6 (V4r6) ocean and sea-ice state estimate.'
+  grid_text_1D: '  This data is a one-dimensional timeseries from the ECCO Version 4 Release 6 (V4r6) ocean and sea-ice state estimate.'
+  time_resolution_single_text: ' at {frequency_string} time resolution.'
+  time_resolution_multiple_text: ' at {frequency_string} time resolutions.'
+  time_resolution_none_text: ' without a specified time resolution.'
+  frequency_dict:
+    AVG_DAY: 'daily-average'
+    AVG_MON: 'monthly-average'
+    SNAP: 'hourly snapshot'
+
+latex_template_files: files_general/resource_files/universal_input/latex_template_files
+latex_modified_input_files: files_general/resource_files/version_specific/V4r6/input_and_templates/latex
+#json_input_files: files_general/resource_files/version_specific/v4r6/input_and_templates/json
+
+# Notice here that only the first sed call modifies <file-in>; every subsequent sed call modifies <file-out>
+latex_template_modification_commands_list:
+  - "sed \"s/ISSUE-DATE-placeholder/$(date +%B) $(date +%d), $(date +%Y)/g\" {file_in} > {file_out}"
+  - "sed -i \"s/V-NUM-r-NUM-placeholder/V4r6/g\" {file_out}"
+  - "sed -i \"s/V-NUM-r-NUM-PROPER-ENGLISH-UPPERCASE-placeholder/Version 4 Release 6/g\" {file_out}"
+  - "sed -i \"s/V-NUM-r-NUM-PROPER-ENGLISH-LOWERCASE-placeholder/version 4 release 6/g\" {file_out}"
+
+thumbnail_size: 512
+#thumbnail_size: 256
+#thumbnail_size: 128
+thumbnail_path_modifier_string: _thumbnail
+
+tab_char: \t
+tab_width_cm: 0.5
+
+##overwrite_switch: True
+overwrite_switch: False
+
+ecco_version_string: V4r6
+
+url_grid_type_substrings:
+  - _native
+  - _lat-lon
+  - _1D
+
+url_coordinate_substring: GRID_GEOMETRY
+
+possible_grid_types:
+  - lat-lon
+  - native
+#  - 1D
+
+possible_granule_types:
+  - coordinate
+  - variable
+
+global_attribute_rowcolor: cyan!25
+variable_attribute_rowcolor: violet!25
+
+
+granules_url_list_file_relative: files_general/resource_files/version_specific/V4r6/input_and_templates/granules_to_download/granules_to_download.txt
+variable_attributes_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/attribute_files/variable_attributes.json
+groupings_variable_native_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/groupings_variables/groupings_for_native_datasets.json
+groupings_variable_latlon_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/groupings_variables/groupings_for_latlon_datasets.json
+groupings_variable_1D_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/groupings_variables/groupings_for_1D_datasets.json
+variable_files_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_native
+variable_files_latlon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_latlon
+variable_files_1D_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/variable_granules/granules_1D
+
+
+global_attributes_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/attribute_files/global_attributes.json
+global_attributes_tex_file: files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex/global_attributes.tex
+
+variable_attributes_tex_file: files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex/variable_attributes.tex
+
+example_latlon_table_tex_file: files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex/example_lat-lon_table.tex
+example_native_table_tex_file: files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex/example_native_table.tex
+example_1D_table_tex_file: files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex/example_1D_table.tex
+
+groupings_coordinate_native_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/groupings_coordinates/native_coords.json
+groupings_coordinate_latlon_json_file: files_general/resource_files/version_specific/V4r6/input_and_templates/json/groupings_coordinates/lat-lon_coords.json
+
+coordinate_files_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/coordinate_granules/granules_native
+coordinate_files_latlon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/granules/coordinate_granules/granules_latlon
+
+figures_coordinate_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/output/figures/figures_coordinates_native 
+figures_coordinate_latlon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/output/figures/figures_coordinates_lat-lon 
+
+figures_variable_native_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/output/figures/figures_variables_native 
+figures_variable_latlon_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/output/figures/figures_variables_lat-lon 
+figures_variable_1D_dir: files_general/resource_files/version_specific/V4r6/output_and_granules/output/figures/figures_variables_1D 
+
+
+coordinate_table_native_tex_file: files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex/native_coords_table.tex
+coordinate_table_latlon_tex_file: files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex/lat-lon_coords_table.tex
+
+variable_table_native_tex_file: files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex/native_variables_tables.tex
+variable_table_latlon_tex_file: files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex/lat-lon_variables_tables.tex
+variable_table_1D_tex_file: files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex/1D_variables_tables.tex
+
+#example_granule_1D: 
+#example_granule_1D: GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r6_1D.nc
+example_granule_latlon: SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_V4r6_latlon_0p50deg.nc
+#example_granule_latlon: SEA_SURFACE_HEIGHT_day_mean_2017-12-29_ECCO_V4r6_latlon_0p50deg.nc
+example_granule_native: OCEAN_TEMPERATURE_SALINITY_mon_mean_1992-01_ECCO_V4r6_native_llc0090.nc
+#example_granule_native: OCEAN_TEMPERATURE_SALINITY_day_mean_2017-12-29_ECCO_V4r6_native_llc0090.nc
+
+
+table_section_titles:
+  coordinate_native: "Native lat-lon-cap 90 (llc90) Coordinates and Grid Geometry"
+  coordinate_latlon: "Lat-Lon Coordinates and Grid Geometry" 
+  variable_native: "Native Dataset Groupings"
+  variable_latlon: "Lat-Lon Dataset Groupings"
+  variable_1D: "1-D Dataset Groupings"
+
+global_attributes_latex_lines:
+  - \begin{longtable}{|p{0.276\textwidth}|p{0.092\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}
+  - \caption{Mandatory global attributes for GDS 2.0 netCDF data files}
+  - \label{tab:global-attributes} \\ 
+  - \hline \endfirsthead \endhead \endfoot \hline \endlastfoot
+  - \rowcolor{blue!25} \textbf{Global Attribute Name} & \textbf{Type} & \textbf{Description} & \textbf{Source} \\ \hline
+  #- \rowcolor{lightgray} \textbf{Global Attribute Name} & \textbf{Type} & \textbf{Description} & \textbf{Source} \\ \hline
+#
+variable_attributes_latex_lines:
+  - \begin{longtable}{|p{0.168\textwidth}|p{0.20\textwidth}|p{0.46\textwidth}|p{0.092\textwidth}|}
+  - \caption{Coordinate, Dimension, and Variable attributes for GDS 2.0 netCDF data files}
+  #- \caption{Variable attributes for GDS 2.0 netCDF data files}
+  - \label{tab:variable-attributes} \\ 
+  - \hline \endfirsthead \endhead \endfoot \hline \endlastfoot
+  - \rowcolor{blue!25} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline
+  #- \rowcolor{lightgray} \textbf{Variable Attribute Name} & \textbf{Format} & \textbf{Description} & \textbf{Source} \\ \hline
+
+example_table_first_latex_lines_latlon:
+  #- \caption{Example CDL description of lat-lon dataset}
+  - \caption{Example Common Data format Language (CDL) description of lat-lon dataset}
+  - \label{tab:cdl-lat-lon} \\
+  - \hline \endfirsthead \endhead \endfoot \hline \endlastfoot
+
+example_table_first_latex_lines_native:
+  #- \caption{Example CDL description of native dataset}
+  - \caption{Example Common Data format Language (CDL) description of native dataset}
+  - \label{tab:cdl-native} \\
+  - \hline \endfirsthead \endhead \endfoot \hline \endlastfoot
+
+example_table_first_latex_lines_1D:
+  #- \caption{Example CDL description of 1D dataset}
+  - \caption{Example Common Data format Language (CDL) description of 1D dataset}
+  - \label{tab:cdl-1D} \\
+  - \hline \endfirsthead \endhead \endfoot \hline \endlastfoot
+
+longtable_headers_footers: \hline \endfirsthead \endhead \endfoot \hline \endlastfoot
+
+# -----------------------------------------------------------------------------------------------------------------------------------
+compendium_compilation_runtime_message_string: |+
+  
+  Compiling the final latex document (if successful, will be found in the directory 'final_compendium_files')
+  
+  Note: 'pdflatex' is running in the background; if execution seems stalled, try typing "X" and pressing Enter. If this works, 
+  useful error messages should print to the screen.  Otherwise, terminate the process (e.g. type'ctrl + c' and hit 'return'), 
+  and look for error messages in the '__.log' file, which should be found in the 'final_compendium_files' directory.
+
+dummy_entry_to_set_number_of_blank_lines_at_the_end_of_the_above_message: blah
+# -----------------------------------------------------------------------------------------------------------------------------------
+
+final_compendium_files_dir: "files_general/compendium_compilation_output_files"
+compendium_tex_filepath: "files_general/resource_files/version_specific/V4r6/input_and_templates/latex/ECCO_Dataset_Catalog_and_Variable_Compendium.tex"
+input_tex_dir_relative: "files_general/resource_files/version_specific/V4r6/input_and_templates/latex"
+output_component_tex_dir_relative: "files_general/resource_files/version_specific/V4r6/output_and_granules/output/latex"
+user_generated_granules_dir_relative: "files_general/resource_files/version_specific/V4r6/output_and_granules/granules"
+
+remote_server_hostname: urs.earthdata.nasa.gov

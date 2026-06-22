@@ -1,0 +1,1230 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>document_generator.utils package &mdash; Ecco Document Generator 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Ecco Document Generator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">document_generator.utils package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-document_generator.utils.cdf_extract">document_generator.utils.cdf_extract module</a><ul>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.data_products"><code class="docutils literal notranslate"><span class="pre">data_products()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.data_var_table"><code class="docutils literal notranslate"><span class="pre">data_var_table()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.extract_field_info"><code class="docutils literal notranslate"><span class="pre">extract_field_info()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.fieldTable"><code class="docutils literal notranslate"><span class="pre">fieldTable()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.get_Global_or_CoordsDimsVarsList"><code class="docutils literal notranslate"><span class="pre">get_Global_or_CoordsDimsVarsList()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.get_coord_vars_in_dataset"><code class="docutils literal notranslate"><span class="pre">get_coord_vars_in_dataset()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.get_coordinate_vars"><code class="docutils literal notranslate"><span class="pre">get_coordinate_vars()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.get_non_coordinate_vars"><code class="docutils literal notranslate"><span class="pre">get_non_coordinate_vars()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.get_product_name"><code class="docutils literal notranslate"><span class="pre">get_product_name()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.global_attrs_for_ECCOnetCDF"><code class="docutils literal notranslate"><span class="pre">global_attrs_for_ECCOnetCDF()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.latex_example_netcdf"><code class="docutils literal notranslate"><span class="pre">latex_example_netcdf()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.search_and_extract"><code class="docutils literal notranslate"><span class="pre">search_and_extract()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_extract.table_cellSize"><code class="docutils literal notranslate"><span class="pre">table_cellSize()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-document_generator.utils.cdf_plotter">document_generator.utils.cdf_plotter module</a><ul>
+<li><a class="reference internal" href="#document_generator.utils.cdf_plotter.cal_cmin_cmax"><code class="docutils literal notranslate"><span class="pre">cal_cmin_cmax()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_plotter.compute_cmin_cmax"><code class="docutils literal notranslate"><span class="pre">compute_cmin_cmax()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_plotter.data_var_plot"><code class="docutils literal notranslate"><span class="pre">data_var_plot()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_plotter.even_cax"><code class="docutils literal notranslate"><span class="pre">even_cax()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_plotter.plot_datasetPicEg"><code class="docutils literal notranslate"><span class="pre">plot_datasetPicEg()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_plotter.plot_latlon"><code class="docutils literal notranslate"><span class="pre">plot_latlon()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_plotter.plot_native"><code class="docutils literal notranslate"><span class="pre">plot_native()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.cdf_plotter.plot_oneD"><code class="docutils literal notranslate"><span class="pre">plot_oneD()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-document_generator.utils.latex_outline">document_generator.utils.latex_outline module</a><ul>
+<li><a class="reference internal" href="#document_generator.utils.latex_outline.write_data_attributes_tables"><code class="docutils literal notranslate"><span class="pre">write_data_attributes_tables()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.latex_outline.write_datasets"><code class="docutils literal notranslate"><span class="pre">write_datasets()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-document_generator.utils.utils_general">document_generator.utils.utils_general module</a><ul>
+<li><a class="reference internal" href="#document_generator.utils.utils_general.add_to_line"><code class="docutils literal notranslate"><span class="pre">add_to_line()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_general.append_hanging_indentation_commands_cm_latex"><code class="docutils literal notranslate"><span class="pre">append_hanging_indentation_commands_cm_latex()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_general.download_granules"><code class="docutils literal notranslate"><span class="pre">download_granules()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_general.get_a_file_with_max_num_vars"><code class="docutils literal notranslate"><span class="pre">get_a_file_with_max_num_vars()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_general.get_a_file_with_min_num_vars"><code class="docutils literal notranslate"><span class="pre">get_a_file_with_min_num_vars()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_general.get_ds_title"><code class="docutils literal notranslate"><span class="pre">get_ds_title()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_general.get_granule_and_grid_types"><code class="docutils literal notranslate"><span class="pre">get_granule_and_grid_types()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_general.get_substring"><code class="docutils literal notranslate"><span class="pre">get_substring()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_general.sanitize"><code class="docutils literal notranslate"><span class="pre">sanitize()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_general.sanitize_with_math"><code class="docutils literal notranslate"><span class="pre">sanitize_with_math()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_general.sanitize_with_url"><code class="docutils literal notranslate"><span class="pre">sanitize_with_url()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_general.write_latex_lines_to_file"><code class="docutils literal notranslate"><span class="pre">write_latex_lines_to_file()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-document_generator.utils.utils_json">document_generator.utils.utils_json module</a><ul>
+<li><a class="reference internal" href="#document_generator.utils.utils_json.establish_table"><code class="docutils literal notranslate"><span class="pre">establish_table()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_json.obtain_json_data"><code class="docutils literal notranslate"><span class="pre">obtain_json_data()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_json.obtain_keys"><code class="docutils literal notranslate"><span class="pre">obtain_keys()</span></code></a></li>
+<li><a class="reference internal" href="#document_generator.utils.utils_json.write_attributes_tables_tex"><code class="docutils literal notranslate"><span class="pre">write_attributes_tables_tex()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-document_generator.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ecco Document Generator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">document_generator.utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/document_generator.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="document-generator-utils-package">
+<h1>document_generator.utils package<a class="headerlink" href="#document-generator-utils-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-document_generator.utils.cdf_extract">
+<span id="document-generator-utils-cdf-extract-module"></span><h2>document_generator.utils.cdf_extract module<a class="headerlink" href="#module-document_generator.utils.cdf_extract" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.data_products">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">data_products</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">granule_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite_switch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.data_products" title="Link to this definition"></a></dt>
+<dd><p>Generate all LaTeX content for one granule directory and write it to a <code class="docutils literal notranslate"><span class="pre">.tex</span></code> file.</p>
+<p>For each dataset group defined in the corresponding JSON groupings file,
+this function:</p>
+<ol class="arabic simple">
+<li><p>Opens the matched NetCDF granule.</p></li>
+<li><p>Writes an overview field table (coordinates + variables).</p></li>
+<li><p>For each variable, writes a detailed CDL attribute table.</p></li>
+<li><p>Generates (or reuses) a thumbnail plot figure.</p></li>
+<li><p>Embeds the figure with a caption and label.</p></li>
+</ol>
+<p>All output is accumulated and written to a single <code class="docutils literal notranslate"><span class="pre">.tex</span></code> file per granule
+type / grid type combination, as specified in the config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_dir</strong> (<em>str</em>) – Root directory of the project.</p></li>
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – Configuration mapping. Must contain keys for JSON
+groupings file paths, granule directories, image directories, output
+<code class="docutils literal notranslate"><span class="pre">.tex</span></code> file paths, and section title strings.</p></li>
+<li><p><strong>granule_directory</strong> (<em>str</em>) – Absolute path to the directory containing the
+NetCDF granules to document. The last two path components are used to
+infer granule type and grid type.</p></li>
+<li><p><strong>overwrite_switch</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, regenerate plot images even if they
+already exist on disk.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.data_var_table">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">data_var_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.data_var_table" title="Link to this definition"></a></dt>
+<dd><p>Build a LaTeX <code class="docutils literal notranslate"><span class="pre">longtable</span></code> for a single data variable.</p>
+<p>Creates a four-column table with a header row (storage type, variable name,
+description, unit), a full-width CDL description block rendered in
+typewriter font, and a full-width comments row.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – Configuration mapping passed to sanitization
+utilities.</p></li>
+<li><p><strong>field_name</strong> (<em>str</em>) – Short name of the variable, used in the caption and label.</p></li>
+<li><p><strong>attrs</strong> (<em>dict</em>) – Attribute dictionary as returned by <a class="reference internal" href="#document_generator.utils.cdf_extract.extract_field_info" title="document_generator.utils.cdf_extract.extract_field_info"><code class="xref py py-func docutils literal notranslate"><span class="pre">extract_field_info()</span></code></a>.
+Expected keys: <code class="docutils literal notranslate"><span class="pre">'Storage</span> <span class="pre">Type'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Variable</span> <span class="pre">Name'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'Description'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Units'</span></code>, <code class="docutils literal notranslate"><span class="pre">'CDL</span> <span class="pre">Description'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Comments'</span></code>.</p></li>
+<li><p><strong>dataset_name</strong> (<em>str</em>) – Short name of the parent dataset, used in the caption
+and label.</p></li>
+<li><p><strong>grid_type</strong> (<em>str</em>) – Human-readable grid type included in the caption,
+e.g. <code class="docutils literal notranslate"><span class="pre">&quot;native&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>LaTeX lines forming a complete <code class="docutils literal notranslate"><span class="pre">longtable</span></code> environment for this
+variable.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.extract_field_info">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">extract_field_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataArray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.extract_field_info" title="Link to this definition"></a></dt>
+<dd><p>Extract metadata from a DataArray into a flat dictionary for table rendering.</p>
+<p>Builds a CDL-style description string from the variable’s attributes (sorted
+alphabetically, as per CDL convention), then packages it alongside the key
+metadata fields needed to populate a LaTeX variable table.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The CDL description is built via a chain of string substitutions using
+the sentinel strings <code class="docutils literal notranslate"><span class="pre">'-Coovi-Paul-Houndegnonto-'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Victory'</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">'I</span> <span class="pre">will</span> <span class="pre">have</span> <span class="pre">a</span> <span class="pre">job</span> <span class="pre">soon'</span></code> as temporary delimiters. These strings are
+assumed to be absent from any real attribute values. They allow safe
+handling of commas and trailing newlines without regex.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>field</strong> (<em>xr.DataArray</em>) – The data variable to describe.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with keys <code class="docutils literal notranslate"><span class="pre">'Variable</span> <span class="pre">Name'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Storage</span> <span class="pre">Type'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'Description'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Units'</span></code>, <code class="docutils literal notranslate"><span class="pre">'CDL</span> <span class="pre">Description'</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">'Comments'</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.fieldTable">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">fieldTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.fieldTable" title="Link to this definition"></a></dt>
+<dd><p>Build a LaTeX <code class="docutils literal notranslate"><span class="pre">longtable</span></code> listing all coordinates and variables in a dataset.</p>
+<p>Produces a two-section table: one section for coordinate variables and one
+for data variables, each with columns for variable name, description, and
+unit. Column widths are chosen dynamically based on the longest variable name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – Configuration mapping passed to sanitization utilities.</p></li>
+<li><p><strong>dataset</strong> (<em>xr.Dataset</em>) – The open NetCDF dataset to describe.</p></li>
+<li><p><strong>is_coord</strong> (<em>bool</em>) – Unused in the current implementation; reserved for future
+filtering logic.</p></li>
+<li><p><strong>grid_type</strong> (<em>str</em>) – Human-readable grid type string included in the table
+caption, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;native&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;latlon&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>LaTeX lines forming a complete <code class="docutils literal notranslate"><span class="pre">longtable</span></code> environment.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.get_Global_or_CoordsDimsVarsList">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">get_Global_or_CoordsDimsVarsList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">netCDFpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jsonFileName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saveTo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.get_Global_or_CoordsDimsVarsList" title="Link to this definition"></a></dt>
+<dd><p>Collect unique global attribute names across a set of NetCDF files and save as JSON.</p>
+<p>Useful for building a reference list of all attribute names that appear
+across an ECCO dataset collection (geometry, grid, and 1-D data files).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>netCDFpath</strong> (<em>str</em>) – Path to a directory containing example NetCDF files.
+All files in the directory are opened.</p></li>
+<li><p><strong>jsonFileName</strong> (<em>str</em>) – Filename for the output JSON file.</p></li>
+<li><p><strong>saveTo</strong> (<em>str</em>) – Directory where the JSON file should be saved.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.get_coord_vars_in_dataset">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">get_coord_vars_in_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isCoord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.get_coord_vars_in_dataset" title="Link to this definition"></a></dt>
+<dd><p>Extract short names, long names, and units for either coordinates or data variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<em>xr.Dataset</em>) – The dataset to inspect.</p></li>
+<li><p><strong>isCoord</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code> (default), extract from <code class="docutils literal notranslate"><span class="pre">dataset.data_vars</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">True</span></code>, extract from <code class="docutils literal notranslate"><span class="pre">dataset.coords</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 3-tuple of <code class="docutils literal notranslate"><span class="pre">(shortnames_list,</span> <span class="pre">longnames_list,</span> <span class="pre">units_list)</span></code>
+where each element is a list of strings. Units default to
+<code class="docutils literal notranslate"><span class="pre">'--none--'</span></code> when the <code class="docutils literal notranslate"><span class="pre">units</span></code> attribute is absent.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list[str], list[str], list[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.get_coordinate_vars">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">get_coordinate_vars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.get_coordinate_vars" title="Link to this definition"></a></dt>
+<dd><p>Return the coordinate-typed data variables from a NetCDF file.</p>
+<p>The logic for identifying coordinate variables differs between native and
+lat-lon grids:</p>
+<ul class="simple">
+<li><p><strong>Native</strong> — variables whose dimensions include <code class="docutils literal notranslate"><span class="pre">'tile'</span></code> and whose
+name does not contain <code class="docutils literal notranslate"><span class="pre">'bnds'</span></code>.</p></li>
+<li><p><strong>Lat-lon</strong> — all data variables whose name does not contain <code class="docutils literal notranslate"><span class="pre">'bnds'</span></code>.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The heuristic for distinguishing native from lat-lon datasets checks
+whether the string <code class="docutils literal notranslate"><span class="pre">'native'</span></code> appears in
+<code class="docutils literal notranslate"><span class="pre">dataset.attrs['product_name']</span></code>. Consider using an explicit config
+flag for robustness.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Path to the NetCDF file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataArrays for all coordinate-typed variables found in the file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[xr.DataArray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.get_non_coordinate_vars">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">get_non_coordinate_vars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.get_non_coordinate_vars" title="Link to this definition"></a></dt>
+<dd><p>Return the non-coordinate data variables from a NetCDF file.</p>
+<p>A variable is considered non-coordinate if its <code class="docutils literal notranslate"><span class="pre">coverage_content_type</span></code>
+attribute is <strong>not</strong> <code class="docutils literal notranslate"><span class="pre">'coordinate'</span></code>. Results are sorted alphabetically
+by variable name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Path to the NetCDF file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataArrays for all non-coordinate variables, sorted by name.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[xr.DataArray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.get_product_name">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">get_product_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.get_product_name" title="Link to this definition"></a></dt>
+<dd><p>Extract the all-uppercase product name prefix from a dataset’s <code class="docutils literal notranslate"><span class="pre">product_name</span></code> attribute.</p>
+<p>Iterates over underscore-separated tokens in the <code class="docutils literal notranslate"><span class="pre">product_name</span></code> global
+attribute and collects consecutive all-uppercase tokens, e.g.
+<code class="docutils literal notranslate"><span class="pre">&quot;OCEAN_TEMPERATURE_SALINITY&quot;</span></code> from a longer product string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset</strong> (<em>xr.Dataset</em>) – An ECCO NetCDF dataset with a <code class="docutils literal notranslate"><span class="pre">product_name</span></code> global
+attribute.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The uppercase product name prefix,
+e.g. <code class="docutils literal notranslate"><span class="pre">&quot;OCEAN_TEMPERATURE_SALINITY&quot;</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.global_attrs_for_ECCOnetCDF">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">global_attrs_for_ECCOnetCDF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jsonFileRef</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GlobalAttrsCollect</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tableCaption</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latexFilename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saveTo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.global_attrs_for_ECCOnetCDF" title="Link to this definition"></a></dt>
+<dd><p>Generate a LaTeX <code class="docutils literal notranslate"><span class="pre">longtable</span></code> describing selected global NetCDF attributes.</p>
+<p>Reads a reference JSON file that maps attribute names to their type,
+description, and source, then writes a table covering the requested
+subset of attributes. Attributes not found in the reference are filled
+with <code class="docutils literal notranslate"><span class="pre">&quot;TBD&quot;</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>jsonFileRef</strong> (<em>str</em>) – Path to the JSON reference file. Each key is an
+attribute name; each value is a dict with <code class="docutils literal notranslate"><span class="pre">'type'</span></code>, <code class="docutils literal notranslate"><span class="pre">'description'</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">'sourc'</span></code> keys.</p></li>
+<li><p><strong>GlobalAttrsCollect</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – Ordered list of attribute names to include in
+the table.</p></li>
+<li><p><strong>tableCaption</strong> (<em>str</em>) – LaTeX caption string for the generated table.</p></li>
+<li><p><strong>latexFilename</strong> (<em>str</em>) – Filename of the output <code class="docutils literal notranslate"><span class="pre">.tex</span></code> file (without
+directory prefix).</p></li>
+<li><p><strong>saveTo</strong> (<em>str</em>) – Directory path where the output file should be written.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.latex_example_netcdf">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">latex_example_netcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.latex_example_netcdf" title="Link to this definition"></a></dt>
+<dd><p>Write a LaTeX <code class="docutils literal notranslate"><span class="pre">longtable</span></code> showing an example NetCDF file’s CDL structure.</p>
+<p>Opens the example granule for the given grid type (specified by name in the
+config), then renders its dimensions, coordinate variables (with all
+attributes), and non-coordinate data variables into a colour-coded longtable
+and writes the result to the output <code class="docutils literal notranslate"><span class="pre">.tex</span></code> file path defined in the config.</p>
+<p>Colour coding follows CDL convention:</p>
+<ul class="simple">
+<li><p><strong>YellowGreen</strong> — dimension entries.</p></li>
+<li><p><strong>Apricot</strong> — coordinate variable declarations and their attributes.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_dir</strong> (<em>str</em>) – Root directory of the project.</p></li>
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – Configuration mapping. Expected keys include
+<code class="docutils literal notranslate"><span class="pre">'variable_files_{grid_type}_dir'</span></code>, <code class="docutils literal notranslate"><span class="pre">'example_granule_{grid_type}'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'example_table_first_latex_lines_{grid_type}'</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">'example_{grid_type}_table_tex_file'</span></code>.</p></li>
+<li><p><strong>grid_type</strong> (<em>str</em>) – Grid type identifier, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;native&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;latlon&quot;</span></code>,
+or <code class="docutils literal notranslate"><span class="pre">&quot;1D&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.search_and_extract">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">search_and_extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">granule_filename_truncated_stem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">granule_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.search_and_extract" title="Link to this definition"></a></dt>
+<dd><p>Find a NetCDF file by a stem substring and extract its variables.</p>
+<p>Walks <code class="docutils literal notranslate"><span class="pre">granule_directory</span></code> recursively to find the first <code class="docutils literal notranslate"><span class="pre">.nc</span></code> file
+whose name contains <code class="docutils literal notranslate"><span class="pre">granule_filename_truncated_stem</span></code>, then returns
+either the coordinate or non-coordinate variables depending on <code class="docutils literal notranslate"><span class="pre">is_coord</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>granule_filename_truncated_stem</strong> (<em>str</em>) – Substring to match against file
+names (case-sensitive).</p></li>
+<li><p><strong>granule_directory</strong> (<em>str</em>) – Root directory to search recursively.</p></li>
+<li><p><strong>is_coord</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, return coordinate variables; if <code class="docutils literal notranslate"><span class="pre">False</span></code>
+(default), return non-coordinate data variables.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 2-tuple of <code class="docutils literal notranslate"><span class="pre">(data_array_list,</span> <span class="pre">dataset)</span></code> where
+<code class="docutils literal notranslate"><span class="pre">data_array_list</span></code> is a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">xr.DataArray</span></code> objects and
+<code class="docutils literal notranslate"><span class="pre">dataset</span></code> is the open <code class="xref py py-class docutils literal notranslate"><span class="pre">xr.Dataset</span></code> for the matched file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list[xr.DataArray], xr.Dataset]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If no <code class="docutils literal notranslate"><span class="pre">.nc</span></code> file containing the given stem is found
+in the directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_extract.table_cellSize">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_extract.</span></span><span class="sig-name descname"><span class="pre">table_cellSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_var</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_extract.table_cellSize" title="Link to this definition"></a></dt>
+<dd><p>Compute proportional column widths for a LaTeX table based on variable name length.</p>
+<p>Returns fractions of <code class="docutils literal notranslate"><span class="pre">\textwidth</span></code> for the “Variable Name” column (<code class="docutils literal notranslate"><span class="pre">a</span></code>)
+and the “Description” column (<code class="docutils literal notranslate"><span class="pre">b</span></code>), widening the name column if any name
+exceeds 28 characters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>field_var</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – Variable (or coordinate) short names to consider.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 2-tuple <code class="docutils literal notranslate"><span class="pre">(a,</span> <span class="pre">b)</span></code> where <code class="docutils literal notranslate"><span class="pre">a</span></code> is the fraction of
+<code class="docutils literal notranslate"><span class="pre">\textwidth</span></code> for the variable name column and <code class="docutils literal notranslate"><span class="pre">b</span></code> is the fraction
+for the description column.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-document_generator.utils.cdf_plotter">
+<span id="document-generator-utils-cdf-plotter-module"></span><h2>document_generator.utils.cdf_plotter module<a class="headerlink" href="#module-document_generator.utils.cdf_plotter" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_plotter.cal_cmin_cmax">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_plotter.</span></span><span class="sig-name descname"><span class="pre">cal_cmin_cmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LinearSegmentedColormap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shortname_tmp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_plotter.cal_cmin_cmax" title="Link to this definition"></a></dt>
+<dd><p>Adjust the colormap and colour limits based on the variable’s short name.</p>
+<p>Applies domain-specific rules to select a perceptually appropriate
+colormap and colour range:</p>
+<ul class="simple">
+<li><p>Flux, stress, velocity, tendency, bolus → diverging <code class="docutils literal notranslate"><span class="pre">cmocean.balance</span></code>,
+symmetric colour axis (factor 0.8; 0.25 for fresh-flux / momentum-tend).</p></li>
+<li><p>Temperature / salinity → <code class="docutils literal notranslate"><span class="pre">cmocean.thermal</span></code>.</p></li>
+<li><p>Mixed layer depth → <code class="docutils literal notranslate"><span class="pre">cmocean.deep</span></code>, clamped to [0, 250].</p></li>
+<li><p>Sea ice concentration → <code class="docutils literal notranslate"><span class="pre">cmocean.ice</span></code>, clamped to [0, 1].</p></li>
+<li><p>Density stratification → <code class="docutils literal notranslate"><span class="pre">cmocean.dense</span></code>.</p></li>
+<li><p>All others → the default <code class="docutils literal notranslate"><span class="pre">'jet'</span></code> colormap passed in.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmap</strong> (<em>matplotlib.colors.LinearSegmentedColormap</em>) – Starting colormap (typically <code class="docutils literal notranslate"><span class="pre">'jet'</span></code>).</p></li>
+<li><p><strong>cmin</strong> (<em>float</em>) – Data minimum used as fallback if no rule matches.</p></li>
+<li><p><strong>cmax</strong> (<em>float</em>) – Data maximum used as fallback if no rule matches.</p></li>
+<li><p><strong>shortname_tmp</strong> (<em>str</em>) – Dataset short name extracted from <code class="docutils literal notranslate"><span class="pre">metadata_link</span></code>,
+used to identify the variable category via substring matching.</p></li>
+<li><p><strong>product_type</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">'Native'</span></code> or <code class="docutils literal notranslate"><span class="pre">'Latlon'</span></code>. Native products have
+NaN cells coloured dark grey.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 3-tuple <code class="docutils literal notranslate"><span class="pre">(cmap,</span> <span class="pre">cmin,</span> <span class="pre">cmax)</span></code> with adjusted values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[matplotlib.colors.LinearSegmentedColormap, float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_plotter.compute_cmin_cmax">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_plotter.</span></span><span class="sig-name descname"><span class="pre">compute_cmin_cmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_plotter.compute_cmin_cmax" title="Link to this definition"></a></dt>
+<dd><p>Compute robust colour axis limits using the IQR method.</p>
+<p>Calculates lower and upper bounds as <code class="docutils literal notranslate"><span class="pre">Q1</span> <span class="pre">-</span> <span class="pre">factor</span> <span class="pre">*</span> <span class="pre">IQR</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Q3</span> <span class="pre">+</span> <span class="pre">factor</span> <span class="pre">*</span> <span class="pre">IQR</span></code>, then clamps to the actual data range to avoid
+extrapolation. This is more robust to outliers than using the global
+min/max directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>array-like</em><em> or </em><em>xr.DataArray</em>) – The data for which to compute colour limits. NaN values are
+ignored. If an <code class="xref py py-class docutils literal notranslate"><span class="pre">xr.DataArray</span></code> is passed, it is converted to a
+numpy array internally.</p></li>
+<li><p><strong>factor</strong> (<em>float</em>) – Multiplier for the IQR. Default is <code class="docutils literal notranslate"><span class="pre">1.5</span></code> (the standard
+Tukey fence).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 2-tuple <code class="docutils literal notranslate"><span class="pre">(cmin,</span> <span class="pre">cmax)</span></code> of robust colour axis limits.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_plotter.data_var_plot">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_plotter.</span></span><span class="sig-name descname"><span class="pre">data_var_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite_switch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_plotter.data_var_plot" title="Link to this definition"></a></dt>
+<dd><p>Generate a plot image for a data variable and return a LaTeX include command.</p>
+<p>Dispatches to the appropriate plotting function (native tile, lat-lon, or
+1-D) based on the <code class="docutils literal notranslate"><span class="pre">product_name</span></code> attribute of the dataset. If
+<code class="docutils literal notranslate"><span class="pre">overwrite_switch</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, the image is always regenerated;
+otherwise the existing file is reused. A thumbnail copy is also created
+at the size specified in the config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – Configuration mapping. Expected keys include
+<code class="docutils literal notranslate"><span class="pre">'thumbnail_path_modifier_string'</span></code> (str, suffix inserted before the
+file extension to form the thumbnail filename) and <code class="docutils literal notranslate"><span class="pre">'thumbnail_size'</span></code>
+(int, longest edge in pixels for the thumbnail).</p></li>
+<li><p><strong>dataset</strong> (<em>xr.Dataset</em>) – The dataset containing <code class="docutils literal notranslate"><span class="pre">data_array</span></code>. Used for
+<code class="docutils literal notranslate"><span class="pre">product_name</span></code> and coordinate variables needed by the plot functions.</p></li>
+<li><p><strong>data_array</strong> (<em>xr.DataArray</em>) – The variable to plot.</p></li>
+<li><p><strong>image_directory</strong> (<em>str</em>) – Directory where the output PNG should be saved.</p></li>
+<li><p><strong>overwrite_switch</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, regenerate the image even if it
+already exists on disk.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A LaTeX <code class="docutils literal notranslate"><span class="pre">\includegraphics</span></code> command referencing the saved figure.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_plotter.even_cax">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_plotter.</span></span><span class="sig-name descname"><span class="pre">even_cax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fac</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_plotter.even_cax" title="Link to this definition"></a></dt>
+<dd><p>Make a colour axis symmetric about zero.</p>
+<p>Sets <code class="docutils literal notranslate"><span class="pre">cmin</span> <span class="pre">=</span> <span class="pre">-tmp</span> <span class="pre">*</span> <span class="pre">fac</span></code> and <code class="docutils literal notranslate"><span class="pre">cmax</span> <span class="pre">=</span> <span class="pre">tmp</span> <span class="pre">*</span> <span class="pre">fac</span></code> where
+<code class="docutils literal notranslate"><span class="pre">tmp</span> <span class="pre">=</span> <span class="pre">max(|cmin|,</span> <span class="pre">|cmax|)</span></code>, ensuring the colour scale is centred on zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmin</strong> (<em>float</em>) – Current minimum of the colour axis.</p></li>
+<li><p><strong>cmax</strong> (<em>float</em>) – Current maximum of the colour axis.</p></li>
+<li><p><strong>fac</strong> (<em>float</em>) – Scaling factor applied to the symmetric bound. Default is
+<code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 2-tuple <code class="docutils literal notranslate"><span class="pre">(cmin,</span> <span class="pre">cmax)</span></code> with a symmetric range about zero.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_plotter.plot_datasetPicEg">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_plotter.</span></span><span class="sig-name descname"><span class="pre">plot_datasetPicEg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_plotter.plot_datasetPicEg" title="Link to this definition"></a></dt>
+<dd><p>Generate a quick-look thumbnail plot for a dataset using its first variable.</p>
+<p>Selects the first variable in the dataset and the first time step (if
+present), then dispatches to either a tile plot (native grid) or a global
+Robinson plot (lat-lon). The output filename is derived from the dataset’s
+<code class="docutils literal notranslate"><span class="pre">metadata_link</span></code> ShortName attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<em>xr.Dataset</em>) – The dataset to visualise. Must have a <code class="docutils literal notranslate"><span class="pre">metadata_link</span></code>
+global attribute containing a <code class="docutils literal notranslate"><span class="pre">ShortName=</span></code> query parameter.</p></li>
+<li><p><strong>save_to</strong> (<em>str</em>) – Directory where the output PNG should be saved.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_plotter.plot_latlon">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_plotter.</span></span><span class="sig-name descname"><span class="pre">plot_latlon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figure_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_plotter.plot_latlon" title="Link to this definition"></a></dt>
+<dd><p>Create and save a global lat-lon projection plot for a data variable.</p>
+<p>Sea-ice variables receive side-by-side polar stereographic plots. The
+special 1-D variable <code class="docutils literal notranslate"><span class="pre">drF</span></code> (vertical cell thickness) is plotted as a
+depth profile. All other variables are rendered on a Robinson projection
+centred at 200° longitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<em>xr.Dataset</em>) – The full dataset, providing <code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">latitude</span></code>,
+and global attributes.</p></li>
+<li><p><strong>field</strong> (<em>xr.DataArray</em>) – The variable to plot. Time and depth slicing follows the
+same rules as <a class="reference internal" href="#document_generator.utils.cdf_plotter.plot_native" title="document_generator.utils.cdf_plotter.plot_native"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_native()</span></code></a>.</p></li>
+<li><p><strong>figure_path</strong> (<em>str</em>) – Full path to the output PNG file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_plotter.plot_native">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_plotter.</span></span><span class="sig-name descname"><span class="pre">plot_native</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figure_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_plotter.plot_native" title="Link to this definition"></a></dt>
+<dd><p>Create and save a native LLC-grid tile plot for a data variable.</p>
+<p>For sea-ice variables, produces two side-by-side polar stereographic
+subplots (Arctic and Antarctic). For all other native variables, generates
+a 13-tile plot using <code class="docutils literal notranslate"><span class="pre">ecco.plot_tiles</span></code> with an x/y axis arrow overlay
+indicating tile orientation.</p>
+<p>The surface layer (k=0 or k_l=0) is plotted by default, except for
+<code class="docutils literal notranslate"><span class="pre">WVEL</span></code> and <code class="docutils literal notranslate"><span class="pre">DRHODR</span></code> where layer 1 is used because layer 0 is
+identically zero or NaN at the surface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<em>xr.Dataset</em>) – The full dataset, used for coordinate arrays (<code class="docutils literal notranslate"><span class="pre">XC</span></code>,
+<code class="docutils literal notranslate"><span class="pre">YC</span></code>) and global attributes (<code class="docutils literal notranslate"><span class="pre">product_name</span></code>, <code class="docutils literal notranslate"><span class="pre">metadata_link</span></code>).</p></li>
+<li><p><strong>field</strong> (<em>xr.DataArray</em>) – The variable to plot. May have a <code class="docutils literal notranslate"><span class="pre">'time'</span></code> dimension (first
+time step is selected) and optionally a <code class="docutils literal notranslate"><span class="pre">'k'</span></code> or <code class="docutils literal notranslate"><span class="pre">'k_l'</span></code> depth
+dimension.</p></li>
+<li><p><strong>figure_path</strong> (<em>str</em>) – Full path to the output PNG file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.cdf_plotter.plot_oneD">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.cdf_plotter.</span></span><span class="sig-name descname"><span class="pre">plot_oneD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figure_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.cdf_plotter.plot_oneD" title="Link to this definition"></a></dt>
+<dd><p>Create and save a simple xarray default plot for a 1-D data variable.</p>
+<p>Uses xarray’s built-in <code class="docutils literal notranslate"><span class="pre">.plot()</span></code> method, which selects an appropriate
+plot type (line, step, etc.) based on the data’s dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<em>xr.Dataset</em>) – The full dataset, used only for the <code class="docutils literal notranslate"><span class="pre">product_name</span></code>
+attribute.</p></li>
+<li><p><strong>field</strong> (<em>xr.DataArray</em>) – The 1-D variable to plot.</p></li>
+<li><p><strong>figure_path</strong> (<em>str</em>) – Full path to the output PNG file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-document_generator.utils.latex_outline">
+<span id="document-generator-utils-latex-outline-module"></span><h2>document_generator.utils.latex_outline module<a class="headerlink" href="#module-document_generator.utils.latex_outline" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.latex_outline.write_data_attributes_tables">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.latex_outline.</span></span><span class="sig-name descname"><span class="pre">write_data_attributes_tables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite_switch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.latex_outline.write_data_attributes_tables" title="Link to this definition"></a></dt>
+<dd><p>Write all attribute and example variable tables to their respective <code class="docutils literal notranslate"><span class="pre">.tex</span></code> files.</p>
+<p>This is the first of two document-generation passes (the second is
+<a class="reference internal" href="#document_generator.utils.latex_outline.write_datasets" title="document_generator.utils.latex_outline.write_datasets"><code class="xref py py-func docutils literal notranslate"><span class="pre">write_datasets()</span></code></a>). It handles:</p>
+<ol class="arabic simple">
+<li><p><strong>Attribute tables</strong> — global and variable attribute reference tables,
+generated from JSON source files via
+<code class="xref py py-func docutils literal notranslate"><span class="pre">utils_json.write_attributes_tables_tex()</span></code>.</p></li>
+<li><p><strong>Example variable tables</strong> — one CDL-style longtable per grid type
+(native, latlon, 1D), generated from the example granule specified in
+the config via <code class="xref py py-func docutils literal notranslate"><span class="pre">cdf_extract.latex_example_netcdf()</span></code>.</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_dir</strong> (<em>str</em>) – Root directory of the project.</p></li>
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – Configuration mapping. Must contain
+<code class="docutils literal notranslate"><span class="pre">'variable_files_native_dir'</span></code> (used to locate the parent directory
+of all variable granule directories) plus all keys required by
+<code class="xref py py-func docutils literal notranslate"><span class="pre">utils_json.write_attributes_tables_tex()</span></code> and
+<code class="xref py py-func docutils literal notranslate"><span class="pre">cdf_extract.latex_example_netcdf()</span></code>.</p></li>
+<li><p><strong>overwrite_switch</strong> (<em>bool</em>) – Passed through to downstream functions; if
+<code class="docutils literal notranslate"><span class="pre">True</span></code>, existing files are regenerated rather than skipped.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.latex_outline.write_datasets">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.latex_outline.</span></span><span class="sig-name descname"><span class="pre">write_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite_switch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.latex_outline.write_datasets" title="Link to this definition"></a></dt>
+<dd><p>Write all dataset variable and coordinate tables to their <code class="docutils literal notranslate"><span class="pre">.tex</span></code> files.</p>
+<p>Walks the granule parent directory to discover every leaf directory (one
+per granule type × grid type combination), then calls
+<code class="xref py py-func docutils literal notranslate"><span class="pre">cdf_extract.data_products()</span></code> for each, which generates the full set
+of LaTeX sections, tables, and figures for that directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_dir</strong> (<em>str</em>) – Root directory of the project.</p></li>
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – Configuration mapping. Must contain
+<code class="docutils literal notranslate"><span class="pre">'coordinate_files_native_dir'</span></code> (used to locate the shared parent
+directory of all granule directories) plus all keys required by
+<code class="xref py py-func docutils literal notranslate"><span class="pre">cdf_extract.data_products()</span></code>.</p></li>
+<li><p><strong>overwrite_switch</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, plot images are regenerated even if
+they already exist on disk.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-document_generator.utils.utils_general">
+<span id="document-generator-utils-utils-general-module"></span><h2>document_generator.utils.utils_general module<a class="headerlink" href="#module-document_generator.utils.utils_general" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_general.add_to_line">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_general.</span></span><span class="sig-name descname"><span class="pre">add_to_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">before</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#document_generator.utils.utils_general.add_to_line" title="Link to this definition"></a></dt>
+<dd><p>Replace all occurrences of a substring in a string.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Equivalent to <code class="docutils literal notranslate"><span class="pre">line.replace(before,</span> <span class="pre">after)</span></code> but implemented as an
+explicit loop. Prefer the built-in <code class="docutils literal notranslate"><span class="pre">str.replace</span></code> for new code.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>line</strong> (<em>str</em>) – The string to perform replacements on.</p></li>
+<li><p><strong>before</strong> (<em>str</em>) – The substring to find and replace.</p></li>
+<li><p><strong>after</strong> (<em>str</em>) – The replacement string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The modified string with all occurrences of <code class="docutils literal notranslate"><span class="pre">before</span></code> replaced
+by <code class="docutils literal notranslate"><span class="pre">after</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_general.append_hanging_indentation_commands_cm_latex">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_general.</span></span><span class="sig-name descname"><span class="pre">append_hanging_indentation_commands_cm_latex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_tabs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latex_lines_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#document_generator.utils.utils_general.append_hanging_indentation_commands_cm_latex" title="Link to this definition"></a></dt>
+<dd><p>Append LaTeX hanging-indentation commands to a list of LaTeX lines.</p>
+<p>Inserts <code class="docutils literal notranslate"><span class="pre">\hangindent</span></code> and <code class="docutils literal notranslate"><span class="pre">\hangafter1</span></code> commands sized in centimetres
+based on the tab width defined in the config. Used to visually indent
+nested CDL attribute lines in the output tables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – Configuration mapping. Must contain
+<code class="docutils literal notranslate"><span class="pre">'tab_char'</span></code> (str, the character used as a tab in source strings) and
+<code class="docutils literal notranslate"><span class="pre">'tab_width_cm'</span></code> (float, width of one tab stop in centimetres).</p></li>
+<li><p><strong>num_tabs</strong> (<em>int</em>) – Depth of indentation. The hang indent is set to
+<code class="docutils literal notranslate"><span class="pre">(num_tabs</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">*</span> <span class="pre">tab_width_cm</span></code> cm.</p></li>
+<li><p><strong>latex_lines_list</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – Existing list of LaTeX lines to append to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The input list with the two indentation commands appended.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_general.download_granules">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_general.</span></span><span class="sig-name descname"><span class="pre">download_granules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.utils_general.download_granules" title="Link to this definition"></a></dt>
+<dd><p>Download ECCO granule files from a remote server to local directories.</p>
+<p>Reads a list of granule URLs from the file specified in the config, then
+authenticates using credentials stored in the user’s <code class="docutils literal notranslate"><span class="pre">.netrc</span></code> file. Each
+URL is matched against grid-type substrings to determine the correct local
+destination directory. Files that already exist are skipped unless
+<code class="docutils literal notranslate"><span class="pre">overwrite_switch</span></code> is enabled in the config.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.netrc</span></code> file must have an entry for the hostname specified in
+<code class="docutils literal notranslate"><span class="pre">config_dictionary['remote_server_hostname']</span></code>. See the project README
+for setup instructions.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_dir</strong> (<em>str</em>) – Root directory of the project; used to resolve relative
+paths in the config.</p></li>
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – <p>Configuration mapping. Expected keys include:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'granules_url_list_file_relative'</span></code> (str) — path to the URL list file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'remote_server_hostname'</span></code> (str) — hostname used for <code class="docutils literal notranslate"><span class="pre">.netrc</span></code> lookup.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'url_grid_type_substrings'</span></code> (list[str]) — substrings identifying grid types.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'url_coordinate_substring'</span></code> (str) — substring identifying coordinate files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'overwrite_switch'</span></code> (bool) — if <code class="docutils literal notranslate"><span class="pre">True</span></code>, re-download existing files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'coordinate_files_{grid_type}_dir'</span></code> / <code class="docutils literal notranslate"><span class="pre">'variable_files_{grid_type}_dir'</span></code>
+(str) — relative paths for saving coordinate vs. variable granules.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_general.get_a_file_with_max_num_vars">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_general.</span></span><span class="sig-name descname"><span class="pre">get_a_file_with_max_num_vars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#document_generator.utils.utils_general.get_a_file_with_max_num_vars" title="Link to this definition"></a></dt>
+<dd><p>Return the path to the NetCDF file with the most variables in a directory.</p>
+<p>Variable count is estimated by the number of occurrences of the string
+<code class="docutils literal notranslate"><span class="pre">&quot;long_name&quot;</span></code> in the output of <code class="docutils literal notranslate"><span class="pre">ncdump</span> <span class="pre">-h</span></code>, which corresponds to the
+number of coordinate and data variables that carry a <code class="docutils literal notranslate"><span class="pre">long_name</span></code> attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_dir</strong> (<em>str</em>) – Root directory of the project.</p></li>
+<li><p><strong>nc_dir</strong> (<em>str</em>) – Path to the directory containing <code class="docutils literal notranslate"><span class="pre">.nc</span></code> files, relative
+to <code class="docutils literal notranslate"><span class="pre">base_dir</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Absolute path to the <code class="docutils literal notranslate"><span class="pre">.nc</span></code> file with the maximum variable count.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_general.get_a_file_with_min_num_vars">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_general.</span></span><span class="sig-name descname"><span class="pre">get_a_file_with_min_num_vars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#document_generator.utils.utils_general.get_a_file_with_min_num_vars" title="Link to this definition"></a></dt>
+<dd><p>Return the path to the NetCDF file with the fewest variables in a directory.</p>
+<p>Variable count is estimated by the number of occurrences of the string
+<code class="docutils literal notranslate"><span class="pre">&quot;long_name&quot;</span></code> in the output of <code class="docutils literal notranslate"><span class="pre">ncdump</span> <span class="pre">-h</span></code>, which corresponds to the
+number of coordinate and data variables that carry a <code class="docutils literal notranslate"><span class="pre">long_name</span></code> attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_dir</strong> (<em>str</em>) – Root directory of the project.</p></li>
+<li><p><strong>nc_dir</strong> (<em>str</em>) – Path to the directory containing <code class="docutils literal notranslate"><span class="pre">.nc</span></code> files, relative
+to <code class="docutils literal notranslate"><span class="pre">base_dir</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Absolute path to the <code class="docutils literal notranslate"><span class="pre">.nc</span></code> file with the minimum variable count.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_general.get_ds_title">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_general.</span></span><span class="sig-name descname"><span class="pre">get_ds_title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#document_generator.utils.utils_general.get_ds_title" title="Link to this definition"></a></dt>
+<dd><p>Extract a compact title slug from an ECCO dataset’s <code class="docutils literal notranslate"><span class="pre">title</span></code> attribute.</p>
+<p>Iterates over whitespace-separated words in <code class="docutils literal notranslate"><span class="pre">ds.title</span></code>, skipping the
+word <code class="docutils literal notranslate"><span class="pre">&quot;ECCO&quot;</span></code> and stopping at <code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code>. The remaining words are joined
+with underscores.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ds</strong> (<em>xr.Dataset</em>) – An ECCO NetCDF dataset with a <code class="docutils literal notranslate"><span class="pre">title</span></code> global attribute,
+e.g. <code class="docutils literal notranslate"><span class="pre">&quot;ECCO</span> <span class="pre">Ocean</span> <span class="pre">Temperature</span> <span class="pre">Salinity</span> <span class="pre">-</span> <span class="pre">Version</span> <span class="pre">4</span> <span class="pre">Release</span> <span class="pre">4&quot;</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Underscore-joined title slug,
+e.g. <code class="docutils literal notranslate"><span class="pre">&quot;Ocean_Temperature_Salinity&quot;</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_general.get_granule_and_grid_types">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_general.</span></span><span class="sig-name descname"><span class="pre">get_granule_and_grid_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">granule_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#document_generator.utils.utils_general.get_granule_and_grid_types" title="Link to this definition"></a></dt>
+<dd><p>Infer the granule type and grid type from the last two path components.</p>
+<p>Assumes the directory structure follows the convention
+<code class="docutils literal notranslate"><span class="pre">.../&lt;granule_type&gt;_&lt;...&gt;/&lt;...&gt;_&lt;grid_type&gt;/</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">&quot;.../variable_files/data_native&quot;</span></code> yields <code class="docutils literal notranslate"><span class="pre">(&quot;variable&quot;,</span> <span class="pre">&quot;native&quot;)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>granule_directory</strong> (<em>str</em>) – Absolute or relative path to a granule directory.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 2-tuple of <code class="docutils literal notranslate"><span class="pre">(granule_type,</span> <span class="pre">grid_type)</span></code> where
+<code class="docutils literal notranslate"><span class="pre">granule_type</span></code> is the prefix of the second-to-last path component
+(typically <code class="docutils literal notranslate"><span class="pre">&quot;coordinate&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;variable&quot;</span></code>) and <code class="docutils literal notranslate"><span class="pre">grid_type</span></code> is
+the suffix of the last path component (typically <code class="docutils literal notranslate"><span class="pre">&quot;native&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;latlon&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;1D&quot;</span></code>).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_general.get_substring">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_general.</span></span><span class="sig-name descname"><span class="pre">get_substring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#document_generator.utils.utils_general.get_substring" title="Link to this definition"></a></dt>
+<dd><p>Extract the substring enclosed by the first pair of parentheses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_string</strong> (<em>str</em>) – The string to search for parentheses.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The content between the first <code class="docutils literal notranslate"><span class="pre">(</span></code> and the first <code class="docutils literal notranslate"><span class="pre">)</span></code>.
+Returns an empty string if no parentheses are found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_general.sanitize">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_general.</span></span><span class="sig-name descname"><span class="pre">sanitize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#document_generator.utils.utils_general.sanitize" title="Link to this definition"></a></dt>
+<dd><p>Escape LaTeX special characters in a plain-text string.</p>
+<p>Replaces all LaTeX reserved characters (<code class="docutils literal notranslate"><span class="pre">&amp;</span> <span class="pre">%</span> <span class="pre">$</span> <span class="pre">#</span> <span class="pre">_</span> <span class="pre">{</span> <span class="pre">}</span> <span class="pre">~</span> <span class="pre">^</span> <span class="pre">\</span></code>) with
+their LaTeX-safe equivalents. Tab characters defined in the config are
+replaced with an <code class="docutils literal notranslate"><span class="pre">\hspace</span></code> command of the configured width.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function does <strong>not</strong> preserve math environments. For strings that
+may contain <code class="docutils literal notranslate"><span class="pre">$...$</span></code> math, use <a class="reference internal" href="#document_generator.utils.utils_general.sanitize_with_math" title="document_generator.utils.utils_general.sanitize_with_math"><code class="xref py py-func docutils literal notranslate"><span class="pre">sanitize_with_math()</span></code></a> instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – Configuration mapping. Must contain
+<code class="docutils literal notranslate"><span class="pre">'tab_char'</span></code> (str) and <code class="docutils literal notranslate"><span class="pre">'tab_width_cm'</span></code> (float).</p></li>
+<li><p><strong>string</strong> (<em>str</em>) – The input string to sanitize.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The sanitized string, safe for direct inclusion in LaTeX source.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_general.sanitize_with_math">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_general.</span></span><span class="sig-name descname"><span class="pre">sanitize_with_math</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#document_generator.utils.utils_general.sanitize_with_math" title="Link to this definition"></a></dt>
+<dd><p>Escape LaTeX special characters while preserving inline math environments.</p>
+<p>Splits the string on <code class="docutils literal notranslate"><span class="pre">$</span></code> delimiters so that content inside <code class="docutils literal notranslate"><span class="pre">$...$</span></code>
+math environments is left untouched. Only the non-math segments (even
+indices after splitting) are sanitized.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span></code> itself is intentionally excluded from the replacement table so
+that math delimiters are preserved. Compare with <a class="reference internal" href="#document_generator.utils.utils_general.sanitize" title="document_generator.utils.utils_general.sanitize"><code class="xref py py-func docutils literal notranslate"><span class="pre">sanitize()</span></code></a>,
+which does escape <code class="docutils literal notranslate"><span class="pre">$</span></code>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – Configuration mapping. Must contain
+<code class="docutils literal notranslate"><span class="pre">'tab_char'</span></code> (str) and <code class="docutils literal notranslate"><span class="pre">'tab_width_cm'</span></code> (float).</p></li>
+<li><p><strong>string</strong> (<em>str</em>) – The input string, which may contain <code class="docutils literal notranslate"><span class="pre">$...$</span></code> inline math.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The sanitized string with math environments intact.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_general.sanitize_with_url">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_general.</span></span><span class="sig-name descname"><span class="pre">sanitize_with_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#document_generator.utils.utils_general.sanitize_with_url" title="Link to this definition"></a></dt>
+<dd><p>Escape LaTeX special characters while preserving <code class="docutils literal notranslate"><span class="pre">\url{...}</span></code> commands.</p>
+<p>Temporarily replaces any <code class="docutils literal notranslate"><span class="pre">\url{...}</span></code> substrings with numbered
+placeholders, sanitizes the remaining text, then restores the original
+URL commands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – Configuration mapping. Must contain
+<code class="docutils literal notranslate"><span class="pre">'tab_char'</span></code> (str) and <code class="docutils literal notranslate"><span class="pre">'tab_width_cm'</span></code> (float).</p></li>
+<li><p><strong>string</strong> (<em>str</em>) – The input string, which may contain <code class="docutils literal notranslate"><span class="pre">\url{...}</span></code> commands.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The sanitized string with <code class="docutils literal notranslate"><span class="pre">\url{...}</span></code> commands intact.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_general.write_latex_lines_to_file">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_general.</span></span><span class="sig-name descname"><span class="pre">write_latex_lines_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latex_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.utils_general.write_latex_lines_to_file" title="Link to this definition"></a></dt>
+<dd><p>Write a list of LaTeX lines to a file, creating parent directories as needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>latex_lines</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – LaTeX content to write, one element per line.</p></li>
+<li><p><strong>output_file</strong> (<em>str</em>) – Destination file path. Parent directories are created
+if they do not exist.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-document_generator.utils.utils_json">
+<span id="document-generator-utils-utils-json-module"></span><h2>document_generator.utils.utils_json module<a class="headerlink" href="#module-document_generator.utils.utils_json" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_json.establish_table">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_json.</span></span><span class="sig-name descname"><span class="pre">establish_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary_list_from_json</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#document_generator.utils.utils_json.establish_table" title="Link to this definition"></a></dt>
+<dd><p>Build LaTeX table row lines from a list of JSON records.</p>
+<p>Each record is rendered as a <code class="docutils literal notranslate"><span class="pre">\rowcolor{LightCyan}</span></code> LaTeX row. Rows
+with fewer columns than the widest row encountered are padded with empty
+cells to ensure consistent column alignment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Missing values for any key are filled with <code class="docutils literal notranslate"><span class="pre">&quot;N/A&quot;</span></code>. Rows shorter
+than the widest row encountered are padded with empty strings.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dictionary_list_from_json</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – Records loaded from a JSON file, each
+representing one table row. Keys define the columns.</p></li>
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – Configuration mapping passed through to the
+sanitization utilities.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>LaTeX row strings, each formatted as a <code class="docutils literal notranslate"><span class="pre">\rowcolor{LightCyan}</span></code>
+row ending with <code class="docutils literal notranslate"><span class="pre">\\</span> <span class="pre">\hline</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_json.obtain_json_data">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_json.</span></span><span class="sig-name descname"><span class="pre">obtain_json_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#document_generator.utils.utils_json.obtain_json_data" title="Link to this definition"></a></dt>
+<dd><p>Read JSON data from a file and return its contents as a list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_dir</strong> (<em>str</em>) – Root directory used to resolve the file path.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – Path to the JSON file, relative to <code class="docutils literal notranslate"><span class="pre">base_dir</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Parsed contents of the JSON file. Each element represents one
+table record (row).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_json.obtain_keys">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_json.</span></span><span class="sig-name descname"><span class="pre">obtain_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="headerlink" href="#document_generator.utils.utils_json.obtain_keys" title="Link to this definition"></a></dt>
+<dd><p>Extract all unique keys from a list of dictionaries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – Data parsed from a JSON file, where each element
+represents a record.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Union of all keys found across every dictionary in the list.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>set[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.utils.utils_json.write_attributes_tables_tex">
+<span class="sig-prename descclassname"><span class="pre">document_generator.utils.utils_json.</span></span><span class="sig-name descname"><span class="pre">write_attributes_tables_tex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.utils.utils_json.write_attributes_tables_tex" title="Link to this definition"></a></dt>
+<dd><p>Generate and write LaTeX longtable files for each unique attribute type in the config.</p>
+<p>Iterates over the config dictionary to identify all attribute types (keys
+containing <code class="docutils literal notranslate"><span class="pre">&quot;_attributes_&quot;</span></code>), validates that the three required config keys
+are present for each type, then builds and writes a <code class="docutils literal notranslate"><span class="pre">.tex</span></code> file for each
+unique attribute type by combining header lines from the config with rows
+derived from a JSON data source.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">latex_lines</span></code> list retrieved from <code class="docutils literal notranslate"><span class="pre">config_dictionary</span></code> is copied
+before modification to avoid mutating the original config. Output
+directories are created automatically if they do not exist.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_dir</strong> (<em>str</em>) – Root directory used to resolve input JSON file paths and
+output <code class="docutils literal notranslate"><span class="pre">.tex</span></code> file paths.</p></li>
+<li><p><strong>config_dictionary</strong> (<em>dict</em>) – <p>Configuration mapping containing attribute metadata.
+For each attribute type the following keys must be present:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">{attribute_type}_attributes_latex_lines</span></code> (list[str]) — LaTeX lines
+forming the table preamble.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{attribute_type}_attributes_json_file</span></code> (str) — path to the JSON file
+containing table row data, relative to <code class="docutils literal notranslate"><span class="pre">base_dir</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{attribute_type}_attributes_tex_file</span></code> (str) — path for the output
+<code class="docutils literal notranslate"><span class="pre">.tex</span></code> file, relative to <code class="docutils literal notranslate"><span class="pre">base_dir</span></code>.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>KeyError</strong> – If any of the three required config keys are missing for
+a discovered attribute type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-document_generator.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-document_generator.utils" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Ian, Jose, Odilon, Bruce.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

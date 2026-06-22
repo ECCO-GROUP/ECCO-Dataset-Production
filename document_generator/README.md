@@ -14,7 +14,7 @@ For the python environment setting and external package dependence for the prese
 
 </div>
 
-On Mac OS, the following softwares is required along with the python environment setting: [GEOS](https://libgeos.org/) and [PROJ](https://proj.org/en/stable/). They can be installed using [Homebrew](https://brew.sh/) as follow:
+On Mac OS, the following software is required along with the python environment setting: [GEOS](https://libgeos.org/) and [PROJ](https://proj.org/en/stable/). They can be installed using [Homebrew](https://brew.sh/) as follow:
 
 ```bash
 > brew update
@@ -36,7 +36,7 @@ Preferably, install `geos` and `proj` before setting the python environment. To 
 > conda install --file requirements.txt
 ```
 
-<h1>2. How to run the documewnt generator?</h1>
+<h1>2. How to run the document generator?</h1>
 <div align="justify">
   
 If the Python environment is properly configured, you are now ready to start. In this section, you will learn how to run the program. We will provide you with a step-by-step guide to running the document generator program. The first time you do this, everything needs to be done one by one. Follow the order indicated below.
@@ -85,7 +85,7 @@ This `json` file is used by `cdf_extract.get_dataset_version()` to handle folder
 <h2>2.2 Download the targeted dataset sample</h1>
 <div align="justify">
 
-This script (in `/document_generator/granule_datasets/`) aims to download a sample of ECCO data sets that will be documented by the document generator. The local environment settings in order to make `download_granules.py` works can be found in [/granule_datasets/download_instructions.txt](/granule_datasets/download_instructions.txt/). If it is yur first time to download data from NASA Earthdata platform, you have to create an account, and then run the following `bash` script (works for Mac OS and Linux distrbution. If other OS, go ask Google!):
+This script (in `/document_generator/granule_datasets/`) aims to download a sample of ECCO data sets that will be documented by the document generator. The local environment settings in order to make `download_granules.py` work can be found in [/granule_datasets/download_instructions.txt](/granule_datasets/download_instructions.txt/). If it is yur first time to download data from NASA Earthdata platform, you have to create an account, and then run the following `bash` script (works for Mac OS and Linux distrbution. If other OS, go ask Google!):
 
 ```bash
   > cd ~
@@ -152,6 +152,20 @@ Now, it is time to run `download_granules.py`. To do so, go to the folder `docum
 ```
 
 If the download process goes well, you are ready to proceed to the next step. 
+
+<h3>2.2.9million Runing "main.py"</h3>
+
+<div align="justify">
+
+Manifest the 5 json groupings files, i.e.:
+
+```txt
+ECCOv4r4_groupings_for_1D_datasets.json
+ECCOv4r4_groupings_for_latlon_datasets.json
+ECCOv4r4_groupings_for_native_datasets.json
+latlon_coords.json
+native_coords.json
+'''
 
 <h3>2.2.3 Runing "main.py"</h3>
 
