@@ -34,7 +34,6 @@ geospatial_vertical_min: num(required=True)
 ecco_native_grid_filename: str(required=True)
 ecco_grid_filename: str(required=False)
 ecco_grid_dir: str(required=False, arg_name='ecco_grid_loc', description='Directory containing ECCO grid files or AWS S3 bucket/prefix')
-ecco_grid_dir_mds: str(required=False)
 
 #---------------------------------------------------------------------
 # Metadata and encodings
@@ -70,11 +69,7 @@ dataset_description_tail_native: str(required=True)
 read_grid: bool(required=False, default=False)
 create_checksum: bool(required=False, default=False)
 extra_prints: bool(required=False, default=False)
-download_all_fields: bool(required=False, default=False)
-use_workers_to_download: bool(required=False, default=False)
-compare_checksums: bool(required=False, default=False)
 custom_grid_and_factors: bool(required=False, default=False)
-read_ecco_grid_for_native_load: bool(required=False, default=False)
 
 #---------------------------------------------------------------------
 # Path parameters (used by various CLI tools)
@@ -84,7 +79,6 @@ mapping_factors_dir: str(required=False, arg_name='ecco_mapping_factors_loc', de
 land_mask_dir: str(required=False)
 metadata_dir: str(required=False, arg_name='ecco_metadata_loc', description='Directory containing ECCO metadata JSON files or AWS S3 bucket/prefix')
 model_output_dir: str(required=False)
-local_file_dir_to_upload: str(required=False)
 processed_output_dir_base: str(required=False)
 
 #---------------------------------------------------------------------
@@ -99,18 +93,8 @@ latlon_effective_grid_radius: num(required=False, arg_name='grid-radius', descri
 # Custom grid parameters (used by create_factors)
 #---------------------------------------------------------------------
 
-grid_files_dir: str(required=False, arg_name='ecco_grid_loc')
-custom_factors_dir: str(required=False)
 source_grid_min_L: num(required=False)
 source_grid_max_L: num(required=False)
-source_grid_ftype: str(required=False)
-target_grid_ftype: str(required=False)
-
-#---------------------------------------------------------------------
-# Legacy/backward compatibility
-#---------------------------------------------------------------------
-
-metadata_link_root: str(required=False)
 
 #---------------------------------------------------------------------
 # Schema includes/definitions

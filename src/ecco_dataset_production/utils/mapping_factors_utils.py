@@ -451,8 +451,8 @@ def create_custom_grid_values(product_generation_config,
                                mapping_factors_dir):
 
     # Create relevant paths
-    source_grid_path = f'{Path(product_generation_config["grid_files_dir"]) / "source_grids"}'
-    target_grid_path = f'{Path(product_generation_config["grid_files_dir"]) / "target_grids"}'
+    source_grid_path = f'{Path(product_generation_config["ecco_grid_dir"]) / "source_grids"}'
+    target_grid_path = f'{Path(product_generation_config["ecco_grid_dir"]) / "target_grids"}'
 
     # get number of vertical levels of the grid from product_generation_config
     nk = product_generation_config['num_vertical_levels']
