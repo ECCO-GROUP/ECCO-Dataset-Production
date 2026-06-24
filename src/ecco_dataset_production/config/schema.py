@@ -26,7 +26,7 @@ class Schema:
             self.schema_path = DEFAULT_SCHEMA_PATH
 
         if not self.schema_path.exists():
-            raise RuntimeError(f'Schema not found: {str(schema_path)}')
+            raise RuntimeError(f'Schema not found: {str(self.schema_path)}')
 
         self._schema = yamale.make_schema(self.schema_path)
         self._defaults = self._extract_defaults()
