@@ -255,37 +255,8 @@ class ECCODatasetProductionConfig(UserDict):
                 if field in args_dict and args_dict[field] is not None:
                     overrides[field] = args_dict[field]
 
-        schema = Schema()
-
-        # Create instance by directly loading the file and applying overrides
-        instance = cls.__new__(cls)
-        UserDict.__init__(instance)
-        instance._schema = schema
-        instance.cfgfile = cfgfile
-
-        # Load config file
-        if aws.utils.is_s3_uri(cfgfile):
-            with tempfile.TemporaryDirectory() as tmpdir:
-                tmpdir_and_fname = os.path.join(tmpdir, os.path.basename(cfgfile))
-                log.debug('Fetching %s to %s', cfgfile, tmpdir_and_fname)
-                aws.ecco_aws_s3_cp.aws_s3_cp(src=cfgfile, dest=tmpdir, **kwargs)
-                with open(tmpdir_and_fname) as f:
-                    instance.update(yaml.safe_load(f))
-        else:
-            with open(cfgfile) as f:
-                instance.update(yaml.safe_load(f))
-
-        # Apply defaults
-        instance._apply_defaults()
-
-        # Validate config file
-        try:
-            schema.validate(dict(instance), source=cfgfile)
-            log.info('Configuration file validation successful: %s', cfgfile)
-        except Exception as e:
-            msg = f"Configuration file '{cfgfile}' is invalid:\n{str(e)}"
-            log.error(msg)
-            raise ConfigurationValidationError(msg) from e
+        # Use __init__ to load and validate the base config
+        instance = cls(cfgfile, **kwargs)
 
         # Apply overrides if any
         if overrides:
@@ -294,7 +265,7 @@ class ECCODatasetProductionConfig(UserDict):
 
             # Validate again with overrides
             try:
-                schema.validate(dict(instance), source='CLI overrides')
+                instance._schema.validate(dict(instance), source='CLI overrides')
                 log.info('Configuration with CLI overrides validation successful')
             except Exception as e:
                 msg = (
@@ -303,10 +274,6 @@ class ECCODatasetProductionConfig(UserDict):
                 )
                 log.error(msg)
                 raise ConfigurationValidationError(msg) from e
-
-        log.debug('Using configuration data per "%s":', cfgfile)
-        for k, v in instance.items():
-            log.debug(' %s: %s', k, v)
 
         return instance
 
