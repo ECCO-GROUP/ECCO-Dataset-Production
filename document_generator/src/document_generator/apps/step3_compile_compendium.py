@@ -76,18 +76,22 @@ def main() -> None:
 
     if skip_sed is None:
 
-        # Attempt to use the latex template files to make compendium component files with correct version and date information via bash sed calls   
-        Path(f"{base_dir}/{config_dictionary['latex_modified_input_files']}").mkdir(parents=True, exist_ok=True)
-        latex_template_files = [f.name for f in Path(f"{base_dir}/{config_dictionary['latex_template_files']}").iterdir() if f.is_file() and f.suffix == ".tex"]
-        #json_input_files = [str(p) for p in Path(f"{base_dir}/{config_dictionary['json_input_files']}").rglob('.json') if p.is_file()]
+        # <ecco_version_string> is expected to have the form V#r#, where #'s are integers (ie V4r6)
+        ecco_version_string = config_dictionary['ecco_version_string']
 
-        #files_to_modify = latex_template_files + json_input_files
+        # Attempt to use the latex template files to make compendium component files with correct version and date information via bash sed calls   
+        Path(f"{base_dir}/{config_dictionary['latex_modified_input_files']}".format(ecco_version_string)).mkdir(parents=True, exist_ok=True)
+        latex_template_files = [f.name for f in Path(f"{base_dir}/{config_dictionary['latex_template_files']}").iterdir() if f.is_file() and f.suffix == ".tex"]
 
         for latex_file_name in latex_template_files: 
             format_map_context_dict = {
+                'ecco_version_string': ecco_version_string,
+                'version_number': int(ecco_version_string[1:ecco_version_string.index('r')]),
+                'release_number': int(ecco_version_string[ecco_version_string.index('r')+1:]),
                 'file_in': f"{base_dir}/{config_dictionary['latex_template_files']}/{latex_file_name}",
-                'file_out': f"{base_dir}/{config_dictionary['latex_modified_input_files']}/{latex_file_name}"
+                'file_out': f"{base_dir}/{config_dictionary['latex_modified_input_files']}/{latex_file_name}",
             }
+            
             try:
                 for sed_command in config_dictionary['latex_template_modification_commands_list']:
                     result = subprocess.run(

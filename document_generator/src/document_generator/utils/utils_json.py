@@ -11,6 +11,275 @@ base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 import src.document_generator.utils.utils_general as utils_general
 
+def write_attributes_tables_tex(base_dir: str, config_dictionary: dict) -> None:
+    """
+    Generate and write LaTeX longtable files for each unique attribute type in the config.
+
+    Iterates over the config dictionary to identify all attribute types (keys
+    containing ``"_attributes_"``), validates that the three required config keys
+    are present for each type, then builds and writes a ``.tex`` file for each
+    unique attribute type by combining header lines from the config with rows
+    derived from a JSON data source.
+
+    .. note::
+        The ``latex_lines`` list retrieved from ``config_dictionary`` is copied
+        before modification to avoid mutating the original config. Output
+        directories are created automatically if they do not exist.
+
+    :param base_dir: Root directory used to resolve input JSON file paths and
+        output ``.tex`` file paths.
+    :type base_dir: str
+    :param config_dictionary: Configuration mapping containing attribute metadata.
+        For each attribute type the following keys must be present:
+
+        - ``{attribute_type}_attributes_latex_lines`` (list[str]) — LaTeX lines
+          forming the table preamble.
+        - ``{attribute_type}_attributes_json_file`` (str) — path to the JSON file
+          containing table row data, relative to ``base_dir``.
+        - ``{attribute_type}_attributes_tex_file`` (str) — path for the output
+          ``.tex`` file, relative to ``base_dir``.
+
+    :type config_dictionary: dict
+    :returns: None
+    :raises KeyError: If any of the three required config keys are missing for
+        a discovered attribute type.
+    """
+    # Collect all global and non-global attributes present in the granules downloaded by the user
+    global_attributes_from_granules = set()
+    non_global_attributes_from_granules = set()
+
+    #all_granule_paths = utils_general.list_files_pathlib(os.path.join(base_dir, config_dictionary["user_generated_granules_dir_relative"]))
+    all_granule_paths = [str(p) for p in (Path(base_dir) / config_dictionary["user_generated_granules_dir_relative"]).rglob('*.nc') if p.is_file()]
+
+    global_attributes_granules = set()
+    non_global_attributes_granules = set()
+
+    for granule_path in all_granule_paths:
+        dataset = xr.open_dataset(granule_path)
+        #pdb.set_trace()
+        global_attributes_granules.update([el.lower() for el in list(dataset.attrs.keys())])
+        for var in dataset.data_vars:
+            non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+        for var in dataset.coords:
+            non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+        for var in dataset.dims:
+            non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
+
+
+    required = ["latex_lines", "json_file", "tex_file"]
+    processed_attribute_types = []
+
+    for key in config_dictionary.keys():
+        if "_attributes_" in key:
+            # Extract the attribute type prefix, e.g. "global" from "global_attributes_json_file"
+            attribute_type = key.split("_attributes_")[0]
+
+            if attribute_type not in processed_attribute_types:
+                # Validate that all three required config keys exist before proceeding
+                for suffix in required:
+                    if f"{attribute_type}_attributes_{suffix}" not in config_dictionary:
+                        raise KeyError(f"Missing config key: {attribute_type}_attributes_{suffix}")
+
+                print(f"writing '{attribute_type}_attributes' latex table")
+                processed_attribute_types.append(attribute_type)
+
+
+                #latex_lines = write_table(base_dir, config_dictionary, attribute_type)
+                if attribute_type == "global":
+                    write_table(base_dir, config_dictionary, attribute_type, global_attributes_granules)
+                else:
+                    write_table(base_dir, config_dictionary, attribute_type, non_global_attributes_granules)
+
+                '''
+                latex_output_file = os.path.join(base_dir, config_dictionary[f"{attribute_type}_attributes_tex_file"])
+                # Create any missing parent directories for the output path
+                Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
+                with open(latex_output_file, 'w') as output_file:
+                    output_file.writelines(line + '\n' for line in latex_lines)
+                '''
+
+
+
+def obtain_json_data(base_dir: str, filename: str) -> list:
+    """
+    Read JSON data from a file and return its contents as a list.
+
+    :param base_dir: Root directory used to resolve the file path.
+    :type base_dir: str
+    :param filename: Path to the JSON file, relative to ``base_dir``.
+    :type filename: str
+    :returns: Parsed contents of the JSON file. Each element represents one
+        table record (row).
+    :rtype: list[dict]
+    """
+    with open(os.path.join(base_dir, filename), "r") as file:
+        json_data_dictionary_list = json.load(file)
+    return json_data_dictionary_list
+
+
+def modify_json_add_introduction_field_to_groupings(json_data: list, filename: str, config_dict: dict) -> list:
+
+    modified_json_data = []
+
+    # <ecco_version_string> is expected to have the form V#r#, where #'s are integers (ie V4r6)
+    ecco_version_string = config_dict['ecco_version_string']
+
+    format_map_context_dict = {
+        'ecco_version_string': ecco_version_string,
+        'version_number': int(ecco_version_string[1:ecco_version_string.index('r')]),
+        'release_number': int(ecco_version_string[ecco_version_string.index('r')+1:]),
+    }
+
+    for dictionary in json_data:
+
+        modified_dict = copy.deepcopy(dictionary)
+        intro_string = f"{config_dict['dataset_text_dict']['opening_text']}{modified_dict['name']}"
+        frequency_list_crude = [f.strip() for f in modified_dict['frequency'].split(',')]
+        frequency_list_verbose = []
+
+        for frequency_crude in config_dict['dataset_text_dict']['frequency_dict'].keys():
+            if frequency_crude in frequency_list_crude:
+                frequency_list_verbose.append(config_dict['dataset_text_dict']['frequency_dict'][frequency_crude])
+        
+        if len(frequency_list_verbose) == 0:
+            intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_none_text']}"
+
+        elif len(frequency_list_verbose) == 1:
+            intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_single_text']}"
+            intro_string = intro_string.format(frequency_string = frequency_list_verbose[0])
+
+        elif len(frequency_list_verbose) == 2:
+            intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_multiple_text']}"
+            frequency_string = f"{frequency_list_verbose[0]} and {frequency_list_verbose[1]}"
+            intro_string = intro_string.format(frequency_string = frequency_string)
+
+        else:
+            intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_multiple_text']}"
+            frequency_string = ", ".join(frequency_list_verbose[:-1])
+            frequency_string = f"{frequency_string}, and {frequency_list_verbose[-1]}"
+            intro_string = intro_string.format(frequency_string = frequency_string)
+
+        # POTENTIAL BUG HERE SINCE I DON'T HANDLE CASE WHERE NO GRID TYPE IS MATCHED.  WON'T FAIL, BUT PRINTED STRING WILL BE WRONG 
+        for grid_type in [g.replace("-","") for g in config_dict['grid_types_considered']]: 
+            if grid_type.casefold() in filename.casefold():
+                intro_string = f"{intro_string}{config_dict['dataset_text_dict'][f'grid_text_{grid_type}']}"
+                intro_string.format_map(format_map_context_dict)
+                break
+
+        modified_dict['Introduction'] = intro_string
+        modified_json_data.append(modified_dict)
+
+    return modified_json_data
+
+    
+def modify_json_add_product_field_to_groupings(json_data: list, grid_type: str) -> list:
+    modified_json_data = []
+    for dictionary in json_data:
+        modified_dict = copy.deepcopy(dictionary)
+        modified_dict['product'] = grid_type
+        modified_json_data.append(modified_dict)
+    return modified_json_data
+
+
+def obtain_keys(json_data: list) -> set:
+    """
+    Extract all unique keys from a list of dictionaries.
+
+    :param json_data: Data parsed from a JSON file, where each element
+        represents a record.
+    :type json_data: list[dict]
+    :returns: Union of all keys found across every dictionary in the list.
+    :rtype: set[str]
+    """
+    keys = set()
+    for element in json_data:
+        # Union the current key set with the keys of this record
+        keys |= set(element)
+    return keys
+
+
+def write_table(base_dir: str, config_dictionary: dict, attribute_type: str, attributes_granules: set) -> list:
+    """
+    Build LaTeX table row lines from a list of JSON records.
+
+    Each record is rendered as a ``\\rowcolor{LightCyan}`` LaTeX row. Rows
+    with fewer columns than the widest row encountered are padded with empty
+    cells to ensure consistent column alignment.
+
+    .. note::
+        Missing values for any key are filled with ``"N/A"``. Rows shorter
+        than the widest row encountered are padded with empty strings.
+
+    :param dictionary_list_from_json: Records loaded from a JSON file, each
+        representing one table row. Keys define the columns.
+    :type dictionary_list_from_json: list[dict]
+    :param config_dictionary: Configuration mapping passed through to the
+        sanitization utilities.
+    :type config_dictionary: dict
+    :returns: LaTeX row strings, each formatted as a ``\\rowcolor{LightCyan}``
+        row ending with ``\\\\ \\hline``.
+    :rtype: list[str]
+    """
+    # Copy header lines to avoid mutating the original config list
+    latex_lines = list(config_dictionary[f"{attribute_type}_attributes_latex_lines"])
+    dictionary_list_from_json = obtain_json_data(base_dir, config_dictionary[f"{attribute_type}_attributes_json_file"].format(config_dictionary['ecco_version_string']))
+
+    max_col = 0  # Track the widest row to pad narrower rows consistently
+    
+    # NoTE:
+    # The algolrithm below for extracting attribute names from dictionaries makes the assumption that the attribute name was
+    # the first field inserted into the dictionary, ie is the first field listed in the json file.  This logic will break
+    # if that is ever not the case.
+    attributes_list_from_json = []
+    for dictionary in dictionary_list_from_json:
+        attributes_list_from_json.append(list(dictionary.values())[0].lower()) 
+        #pdb.set_trace()
+
+
+    mystery_attributes = []
+
+    for attribute in sorted(list(attributes_granules)):
+        if attribute.lower() not in attributes_list_from_json:
+            
+            #raise KeyError(f"Attribute ‘{attribute}’ from your downloaded granules is not present in the list of approved attributes (see {config_dictionary[f'{attribute_type}_attributes_json_file']})")
+
+            mystery_attributes.append(attribute)
+
+        else:
+            dictionary_index = attributes_list_from_json.index(attribute)
+            formatted_dictionary_as_list = [
+                utils_general.sanitize_with_url(config_dictionary, str(dictionary_list_from_json[dictionary_index].get(key, "N/A")))
+                for key in dictionary
+            ]
+
+            # Update the max column count seen so far
+            max_col = len(formatted_dictionary_as_list) if len(formatted_dictionary_as_list) > max_col else max_col
+
+            # Pad with empty cells if this row has fewer columns than the widest row
+            if len(formatted_dictionary_as_list) < max_col:
+                formatted_dictionary_as_list.extend([""] * (max_col - len(formatted_dictionary_as_list)))
+
+            latex_lines.append(
+                r'\rowcolor{' + config_dictionary[f"{attribute_type}_attribute_rowcolor"] + '} ' + '\n' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
+            )
+
+    latex_lines.append(r'\end{longtable}')
+
+    latex_output_file = os.path.join(base_dir, config_dictionary[f"{attribute_type}_attributes_tex_file"].format(config_dictionary['ecco_version_string']))
+    # Create any missing parent directories for the output path
+    Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
+    with open(latex_output_file, 'w') as output_file:
+        output_file.writelines(line + '\n' for line in latex_lines)
+
+    print() 
+    print(f"The following attributes from your local granules were not included in the ‘{attribute_type} attributes’ table, as they do not exist in the official list of possible {attribute_type} attributes:")
+    print(mystery_attributes)
+    print() 
+    print(f"For a list of allowed {attribute_type} attributes, see ‘{config_dictionaryionary[f'{attribute_type}_attributes_json_file'].format(config_dictionary['ecco_version_string'])}’.")
+    print() 
+    print() 
+    print() 
+
 
 
 def check_for_attributes(base_dir: str, config_dictionary: dict, required_ratio: float) -> None:
@@ -96,7 +365,7 @@ def check_for_attributes(base_dir: str, config_dictionary: dict, required_ratio:
 
     for attribute_type in ['global', 'variable']:
 
-        dictionary_list_from_json = obtain_json_data(base_dir, config_dictionary[f"{attribute_type}_attributes_json_file"])
+        dictionary_list_from_json = obtain_json_data(base_dir, config_dictionary[f"{attribute_type}_attributes_json_file"].format(config_dictionary['ecco_version_string']))
 
         # NoTE:
         # The algolrithm below for extracting attribute names from dictionaries makes the assumption that the attribute name was
@@ -408,279 +677,6 @@ def check_for_attributes(base_dir: str, config_dictionary: dict, required_ratio:
         print()
         print()
     '''
-
-
-
-def write_attributes_tables_tex(base_dir: str, config_dictionary: dict) -> None:
-    """
-    Generate and write LaTeX longtable files for each unique attribute type in the config.
-
-    Iterates over the config dictionary to identify all attribute types (keys
-    containing ``"_attributes_"``), validates that the three required config keys
-    are present for each type, then builds and writes a ``.tex`` file for each
-    unique attribute type by combining header lines from the config with rows
-    derived from a JSON data source.
-
-    .. note::
-        The ``latex_lines`` list retrieved from ``config_dictionary`` is copied
-        before modification to avoid mutating the original config. Output
-        directories are created automatically if they do not exist.
-
-    :param base_dir: Root directory used to resolve input JSON file paths and
-        output ``.tex`` file paths.
-    :type base_dir: str
-    :param config_dictionary: Configuration mapping containing attribute metadata.
-        For each attribute type the following keys must be present:
-
-        - ``{attribute_type}_attributes_latex_lines`` (list[str]) — LaTeX lines
-          forming the table preamble.
-        - ``{attribute_type}_attributes_json_file`` (str) — path to the JSON file
-          containing table row data, relative to ``base_dir``.
-        - ``{attribute_type}_attributes_tex_file`` (str) — path for the output
-          ``.tex`` file, relative to ``base_dir``.
-
-    :type config_dictionary: dict
-    :returns: None
-    :raises KeyError: If any of the three required config keys are missing for
-        a discovered attribute type.
-    """
-    # Collect all global and non-global attributes present in the granules downloaded by the user
-    global_attributes_from_granules = set()
-    non_global_attributes_from_granules = set()
-
-    #all_granule_paths = utils_general.list_files_pathlib(os.path.join(base_dir, config_dictionary["user_generated_granules_dir_relative"]))
-    all_granule_paths = [str(p) for p in (Path(base_dir) / config_dictionary["user_generated_granules_dir_relative"]).rglob('*.nc') if p.is_file()]
-
-    global_attributes_granules = set()
-    non_global_attributes_granules = set()
-
-    for granule_path in all_granule_paths:
-        dataset = xr.open_dataset(granule_path)
-        #pdb.set_trace()
-        global_attributes_granules.update([el.lower() for el in list(dataset.attrs.keys())])
-        for var in dataset.data_vars:
-            non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
-        for var in dataset.coords:
-            non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
-        for var in dataset.dims:
-            non_global_attributes_granules.update([s.strip() for s in list(dataset[var].attrs.keys())])
-
-
-    required = ["latex_lines", "json_file", "tex_file"]
-    processed_attribute_types = []
-
-    for key in config_dictionary.keys():
-        if "_attributes_" in key:
-            # Extract the attribute type prefix, e.g. "global" from "global_attributes_json_file"
-            attribute_type = key.split("_attributes_")[0]
-
-            if attribute_type not in processed_attribute_types:
-                # Validate that all three required config keys exist before proceeding
-                for suffix in required:
-                    if f"{attribute_type}_attributes_{suffix}" not in config_dictionary:
-                        raise KeyError(f"Missing config key: {attribute_type}_attributes_{suffix}")
-
-                print(f"writing '{attribute_type}_attributes' latex table")
-                processed_attribute_types.append(attribute_type)
-
-
-                #latex_lines = write_table(base_dir, config_dictionary, attribute_type)
-                if attribute_type == "global":
-                    write_table(base_dir, config_dictionary, attribute_type, global_attributes_granules)
-                else:
-                    write_table(base_dir, config_dictionary, attribute_type, non_global_attributes_granules)
-
-                '''
-                latex_output_file = os.path.join(base_dir, config_dictionary[f"{attribute_type}_attributes_tex_file"])
-                # Create any missing parent directories for the output path
-                Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
-                with open(latex_output_file, 'w') as output_file:
-                    output_file.writelines(line + '\n' for line in latex_lines)
-                '''
-
-
-
-def obtain_json_data(base_dir: str, filename: str) -> list:
-    """
-    Read JSON data from a file and return its contents as a list.
-
-    :param base_dir: Root directory used to resolve the file path.
-    :type base_dir: str
-    :param filename: Path to the JSON file, relative to ``base_dir``.
-    :type filename: str
-    :returns: Parsed contents of the JSON file. Each element represents one
-        table record (row).
-    :rtype: list[dict]
-    """
-    with open(os.path.join(base_dir, filename), "r") as file:
-        json_data_dictionary_list = json.load(file)
-    return json_data_dictionary_list
-
-
-def modify_json_add_introduction_field_to_groupings(json_data: list, filename: str, config_dict: dict) -> list:
-
-    modified_json_data = []
-    
-    #print("------")
-    #print(filename)
-    #print("------")
-
-    for dictionary in json_data:
-
-        modified_dict = copy.deepcopy(dictionary)
-        intro_string = f"{config_dict['dataset_text_dict']['opening_text']}{modified_dict['name']}"
-        frequency_list_crude = [f.strip() for f in modified_dict['frequency'].split(',')]
-        frequency_list_verbose = []
-
-        for frequency_crude in config_dict['dataset_text_dict']['frequency_dict'].keys():
-            if frequency_crude in frequency_list_crude:
-                frequency_list_verbose.append(config_dict['dataset_text_dict']['frequency_dict'][frequency_crude])
-        
-        if len(frequency_list_verbose) == 0:
-            intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_none_text']}"
-
-        elif len(frequency_list_verbose) == 1:
-            intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_single_text']}"
-            intro_string = intro_string.format(frequency_string = frequency_list_verbose[0])
-
-        elif len(frequency_list_verbose) == 2:
-            intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_multiple_text']}"
-            frequency_string = f"{frequency_list_verbose[0]} and {frequency_list_verbose[1]}"
-            intro_string = intro_string.format(frequency_string = frequency_string)
-
-        else:
-            intro_string = f"{intro_string}{config_dict['dataset_text_dict']['time_resolution_multiple_text']}"
-            frequency_string = ", ".join(frequency_list_verbose[:-1])
-            frequency_string = f"{frequency_string}, and {frequency_list_verbose[-1]}"
-            intro_string = intro_string.format(frequency_string = frequency_string)
-
-        # POTENTIAL BUG HERE SINCE I DON'T HANDLE CASE WHERE NO GRID TYPE IS MATCHED.  WON'T FAIL, BUT PRINTED STRING WILL BE WRONG 
-        for grid_type in [g.replace("-","") for g in config_dict['possible_grid_types']]: 
-            if grid_type.casefold() in filename.casefold():
-                intro_string = f"{intro_string}{config_dict['dataset_text_dict'][f'grid_text_{grid_type}']}"
-                break
-
-        #print()
-        #print('intro string')
-        #print(intro_string)
-        #print()
-
-        modified_dict['Introduction'] = intro_string
-        modified_json_data.append(modified_dict)
-
-    return modified_json_data
-
-    
-def modify_json_add_product_field_to_groupings(json_data: list, grid_type: str) -> list:
-    modified_json_data = []
-    for dictionary in json_data:
-        modified_dict = copy.deepcopy(dictionary)
-        modified_dict['product'] = grid_type
-        modified_json_data.append(modified_dict)
-    return modified_json_data
-
-
-def obtain_keys(json_data: list) -> set:
-    """
-    Extract all unique keys from a list of dictionaries.
-
-    :param json_data: Data parsed from a JSON file, where each element
-        represents a record.
-    :type json_data: list[dict]
-    :returns: Union of all keys found across every dictionary in the list.
-    :rtype: set[str]
-    """
-    keys = set()
-    for element in json_data:
-        # Union the current key set with the keys of this record
-        keys |= set(element)
-    return keys
-
-
-def write_table(base_dir: str, config_dictionary: dict, attribute_type: str, attributes_granules: set) -> list:
-    """
-    Build LaTeX table row lines from a list of JSON records.
-
-    Each record is rendered as a ``\\rowcolor{LightCyan}`` LaTeX row. Rows
-    with fewer columns than the widest row encountered are padded with empty
-    cells to ensure consistent column alignment.
-
-    .. note::
-        Missing values for any key are filled with ``"N/A"``. Rows shorter
-        than the widest row encountered are padded with empty strings.
-
-    :param dictionary_list_from_json: Records loaded from a JSON file, each
-        representing one table row. Keys define the columns.
-    :type dictionary_list_from_json: list[dict]
-    :param config_dictionary: Configuration mapping passed through to the
-        sanitization utilities.
-    :type config_dictionary: dict
-    :returns: LaTeX row strings, each formatted as a ``\\rowcolor{LightCyan}``
-        row ending with ``\\\\ \\hline``.
-    :rtype: list[str]
-    """
-    # Copy header lines to avoid mutating the original config list
-    latex_lines = list(config_dictionary[f"{attribute_type}_attributes_latex_lines"])
-    dictionary_list_from_json = obtain_json_data(base_dir, config_dictionary[f"{attribute_type}_attributes_json_file"])
-
-    max_col = 0  # Track the widest row to pad narrower rows consistently
-    
-    # NoTE:
-    # The algolrithm below for extracting attribute names from dictionaries makes the assumption that the attribute name was
-    # the first field inserted into the dictionary, ie is the first field listed in the json file.  This logic will break
-    # if that is ever not the case.
-    attributes_list_from_json = []
-    for dictionary in dictionary_list_from_json:
-        attributes_list_from_json.append(list(dictionary.values())[0].lower()) 
-        #pdb.set_trace()
-
-
-    mystery_attributes = []
-
-    for attribute in sorted(list(attributes_granules)):
-        if attribute.lower() not in attributes_list_from_json:
-            
-            #raise KeyError(f"Attribute ‘{attribute}’ from your downloaded granules is not present in the list of approved attributes (see {config_dictionary[f'{attribute_type}_attributes_json_file']})")
-
-            mystery_attributes.append(attribute)
-
-        else:
-            dictionary_index = attributes_list_from_json.index(attribute)
-            formatted_dictionary_as_list = [
-                utils_general.sanitize_with_url(config_dictionary, str(dictionary_list_from_json[dictionary_index].get(key, "N/A")))
-                for key in dictionary
-            ]
-
-            # Update the max column count seen so far
-            max_col = len(formatted_dictionary_as_list) if len(formatted_dictionary_as_list) > max_col else max_col
-
-            # Pad with empty cells if this row has fewer columns than the widest row
-            if len(formatted_dictionary_as_list) < max_col:
-                formatted_dictionary_as_list.extend([""] * (max_col - len(formatted_dictionary_as_list)))
-
-            latex_lines.append(
-                r'\rowcolor{' + config_dictionary[f"{attribute_type}_attribute_rowcolor"] + '} ' + '\n' + ' & '.join(formatted_dictionary_as_list) + r' \\ \hline' + '\n'
-            )
-
-    latex_lines.append(r'\end{longtable}')
-
-    latex_output_file = os.path.join(base_dir, config_dictionary[f"{attribute_type}_attributes_tex_file"])
-    # Create any missing parent directories for the output path
-    Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
-    with open(latex_output_file, 'w') as output_file:
-        output_file.writelines(line + '\n' for line in latex_lines)
-
-    print() 
-    print(f"The following attributes from your local granules were not included in the ‘{attribute_type} attributes’ table, as they do not exist in the official list of possible {attribute_type} attributes:")
-    print(mystery_attributes)
-    print() 
-    print(f"For a list of allowed {attribute_type} attributes, see ‘{config_dictionary[f'{attribute_type}_attributes_json_file']}’.")
-    print() 
-    print() 
-    print() 
-
-    #return latex_lines
-
 
 
 

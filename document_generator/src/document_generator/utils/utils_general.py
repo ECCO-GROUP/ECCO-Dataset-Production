@@ -1,3 +1,4 @@
+import pdb
 import os
 import re
 import xarray as xr
@@ -28,7 +29,7 @@ def write_latex_lines_to_file(latex_lines: list, output_file: str) -> None:
 
 
 def append_hanging_indentation_commands_cm_latex(
-    config_dictionary: dict, num_tabs: int, latex_lines_list: list
+    config_static_dictionary: dict, num_tabs: int, latex_lines_list: list
 ) -> list:
     """
     Append LaTeX hanging-indentation commands to a list of LaTeX lines.
@@ -37,10 +38,10 @@ def append_hanging_indentation_commands_cm_latex(
     based on the tab width defined in the config. Used to visually indent
     nested CDL attribute lines in the output tables.
 
-    :param config_dictionary: Configuration mapping. Must contain
+    :param config_static_dictionary: Configuration mapping. Must contain
         ``'tab_char'`` (str, the character used as a tab in source strings) and
         ``'tab_width_cm'`` (float, width of one tab stop in centimetres).
-    :type config_dictionary: dict
+    :type config_static_dictionary: dict
     :param num_tabs: Depth of indentation. The hang indent is set to
         ``(num_tabs + 1) * tab_width_cm`` cm.
     :type num_tabs: int
@@ -51,15 +52,15 @@ def append_hanging_indentation_commands_cm_latex(
     """
     latex_lines_list.append(
         sanitize_with_math(
-            config_dictionary,
-            f"\\hangindent={(num_tabs + 1) * config_dictionary['tab_width_cm']}cm"
+            config_static_dictionary,
+            f"\\hangindent={(num_tabs + 1) * config_static_dictionary['tab_width_cm']}cm"
         )
     )
     latex_lines_list.append(r"\hangafter1")
     return latex_lines_list
 
 
-def download_granules(base_dir: str, config_dictionary: dict) -> None:
+def download_granules(base_dir: str, config_static_dictionary: dict, config_user_dictionary: dict) -> None:
     """
     Download ECCO granule files from a remote server to local directories.
 
@@ -71,13 +72,13 @@ def download_granules(base_dir: str, config_dictionary: dict) -> None:
 
     .. note::
         The ``.netrc`` file must have an entry for the hostname specified in
-        ``config_dictionary['remote_server_hostname']``. See the project README
+        ``config_static_dictionary['remote_server_hostname']``. See the project README
         for setup instructions.
 
     :param base_dir: Root directory of the project; used to resolve relative
         paths in the config.
     :type base_dir: str
-    :param config_dictionary: Configuration mapping. Expected keys include:
+    :param config_static_dictionary: Configuration mapping. Expected keys include:
 
         - ``'granules_url_list_file_relative'`` (str) — path to the URL list file.
         - ``'remote_server_hostname'`` (str) — hostname used for ``.netrc`` lookup.
@@ -87,10 +88,11 @@ def download_granules(base_dir: str, config_dictionary: dict) -> None:
         - ``'coordinate_files_{grid_type}_dir'`` / ``'variable_files_{grid_type}_dir'``
           (str) — relative paths for saving coordinate vs. variable granules.
 
-    :type config_dictionary: dict
+    :type config_static_dictionary: dict
     :returns: None
     """
-    granule_list_filepath = os.path.join(base_dir, config_dictionary['granules_url_list_file_relative'])
+
+    granule_list_filepath = os.path.join(base_dir, config_static_dictionary['granules_url_list_file_relative'].format(ecco_version_string=config_user_dictionary['ecco_version_string']))
 
     # Read the URL list, skipping blank lines and comment lines starting with '#'
     granule_url_list = []
@@ -100,7 +102,7 @@ def download_granules(base_dir: str, config_dictionary: dict) -> None:
                 if line.strip():
                     granule_url_list.append(line.strip())
 
-    hostname = config_dictionary["remote_server_hostname"]
+    hostname = config_static_dictionary["remote_server_hostname"]
 
     # Retrieve credentials from the user's local .netrc file
     netrc_info = netrc.netrc()
@@ -110,30 +112,30 @@ def download_granules(base_dir: str, config_dictionary: dict) -> None:
         login, account, password = auth_info
 
         # Iterate over all grid types (e.g. 'native', 'latlon', '1D')
-        for grid_type_substring in config_dictionary["url_grid_type_substrings"]:
+        for grid_type_substring in config_static_dictionary["url_grid_type_substrings"]:
             for granule_url in granule_url_list:
                 # Normalise 'lat-lon' -> 'latlon' for URL matching, since URLs omit the hyphen
                 if "".join(grid_type_substring.split("-")) in granule_url:
 
                     # Determine whether this URL points to a coordinate or variable file
-                    if config_dictionary["url_coordinate_substring"] in granule_url:
+                    if config_static_dictionary["url_coordinate_substring"] in granule_url:
                         # Strip leading underscore from grid type substring if present
                         if grid_type_substring.startswith("_"):
-                            dataset_dir_pre = config_dictionary[f"coordinate_files_{grid_type_substring[1:]}_dir"]
+                            dataset_dir_pre = config_static_dictionary[f"coordinate_files_{grid_type_substring[1:]}_dir"].format(ecco_version_string=config_user_dictionary['ecco_version_string'])
                         else:
-                            dataset_dir_pre = config_dictionary[f"coordinate_files_{grid_type_substring}_dir"]
+                            dataset_dir_pre = config_static_dictionary[f"coordinate_files_{grid_type_substring}_dir"].format(ecco_version_string=config_user_dictionary['ecco_version_string'])
                     else:
                         if grid_type_substring.startswith("_"):
-                            dataset_dir_pre = config_dictionary[f"variable_files_{grid_type_substring[1:]}_dir"]
+                            dataset_dir_pre = config_static_dictionary[f"variable_files_{grid_type_substring[1:]}_dir"].format(ecco_version_string=config_user_dictionary['ecco_version_string'])
                         else:
-                            dataset_dir_pre = config_dictionary[f"variable_files_{grid_type_substring}_dir"]
+                            dataset_dir_pre = config_static_dictionary[f"variable_files_{grid_type_substring}_dir"].format(ecco_version_string=config_user_dictionary['ecco_version_string'])
 
                     dataset_dir = os.path.join(os.path.realpath(base_dir), dataset_dir_pre)
                     os.makedirs(dataset_dir, exist_ok=True)
                     local_filename = os.path.join(dataset_dir, Path(granule_url).name)
 
-                    # Skip download if file already exists and overwrite is disabled
-                    if not config_dictionary['overwrite_switch']:
+                    # Skip download if file already exists and download overwrite is disabled
+                    if not config_user_dictionary['granule_download_overwrite_switch']:
                         if os.path.exists(local_filename):
                             continue
 
@@ -240,7 +242,7 @@ def get_a_file_with_max_num_vars(base_dir: str, nc_dir: str) -> str:
     return nc_files[num_vars_per_file_list.index(num_vars_max)]
 
 
-def sanitize(config_dictionary: dict, string: str) -> str:
+def sanitize(config_static_dictionary: dict, string: str) -> str:
     """
     Escape LaTeX special characters in a plain-text string.
 
@@ -252,9 +254,9 @@ def sanitize(config_dictionary: dict, string: str) -> str:
         This function does **not** preserve math environments. For strings that
         may contain ``$...$`` math, use :func:`sanitize_with_math` instead.
 
-    :param config_dictionary: Configuration mapping. Must contain
+    :param config_static_dictionary: Configuration mapping. Must contain
         ``'tab_char'`` (str) and ``'tab_width_cm'`` (float).
-    :type config_dictionary: dict
+    :type config_static_dictionary: dict
     :param string: The input string to sanitize.
     :type string: str
     :returns: The sanitized string, safe for direct inclusion in LaTeX source.
@@ -272,7 +274,7 @@ def sanitize(config_dictionary: dict, string: str) -> str:
         r"^":  r"\textasciicircum",
         r"\\": r"\textbackslash",
         r"|":  r"\textbar",
-        config_dictionary['tab_char']: f"\\hspace{{{config_dictionary['tab_width_cm']}cm}}",
+        config_static_dictionary['tab_char']: f"\\hspace{{{config_static_dictionary['tab_width_cm']}cm}}",
     }
 
     for key, value in replacements.items():
@@ -280,7 +282,7 @@ def sanitize(config_dictionary: dict, string: str) -> str:
 
     return string
 
-def sanitize_remove_dollar(config_dictionary: dict, string: str) -> str:
+def sanitize_remove_dollar(config_static_dictionary: dict, string: str) -> str:
 
     string = string.replace(r"$", "")
 
@@ -288,7 +290,7 @@ def sanitize_remove_dollar(config_dictionary: dict, string: str) -> str:
 
 
 
-def sanitize_with_math(config_dictionary: dict, string: str) -> str:
+def sanitize_with_math(config_static_dictionary: dict, string: str) -> str:
     """
     Escape LaTeX special characters while preserving inline math environments.
 
@@ -301,9 +303,9 @@ def sanitize_with_math(config_dictionary: dict, string: str) -> str:
         that math delimiters are preserved. Compare with :func:`sanitize`,
         which does escape ``$``.
 
-    :param config_dictionary: Configuration mapping. Must contain
+    :param config_static_dictionary: Configuration mapping. Must contain
         ``'tab_char'`` (str) and ``'tab_width_cm'`` (float).
-    :type config_dictionary: dict
+    :type config_static_dictionary: dict
     :param string: The input string, which may contain ``$...$`` inline math.
     :type string: str
     :returns: The sanitized string with math environments intact.
@@ -320,7 +322,7 @@ def sanitize_with_math(config_dictionary: dict, string: str) -> str:
         r"^":  r"\textasciicircum",
         r"\\": r"\textbackslash",
         r"|":  r"\textbar",
-        config_dictionary['tab_char']: f"\\hspace{{{config_dictionary['tab_width_cm']}cm}}",
+        config_static_dictionary['tab_char']: f"\\hspace{{{config_static_dictionary['tab_width_cm']}cm}}",
     }
 
     # Split on '$' to separate math and non-math regions.
@@ -340,7 +342,7 @@ def sanitize_with_math(config_dictionary: dict, string: str) -> str:
     return '$'.join(parts)
 
 
-def sanitize_with_url(config_dictionary: dict, string: str) -> str:
+def sanitize_with_url(config_static_dictionary: dict, string: str) -> str:
     """
     Escape LaTeX special characters while preserving ``\\url{...}`` commands.
 
@@ -348,9 +350,9 @@ def sanitize_with_url(config_dictionary: dict, string: str) -> str:
     placeholders, sanitizes the remaining text, then restores the original
     URL commands.
 
-    :param config_dictionary: Configuration mapping. Must contain
+    :param config_static_dictionary: Configuration mapping. Must contain
         ``'tab_char'`` (str) and ``'tab_width_cm'`` (float).
-    :type config_dictionary: dict
+    :type config_static_dictionary: dict
     :param string: The input string, which may contain ``\\url{...}`` commands.
     :type string: str
     :returns: The sanitized string with ``\\url{...}`` commands intact.
@@ -376,7 +378,7 @@ def sanitize_with_url(config_dictionary: dict, string: str) -> str:
         r"^":  r"\textasciicircum",
         r"\\": r"\textbackslash",
         r"|":  r"\textbar",
-        config_dictionary['tab_char']: f"\\hspace{{{config_dictionary['tab_width_cm']}cm}}",
+        config_static_dictionary['tab_char']: f"\\hspace{{{config_static_dictionary['tab_width_cm']}cm}}",
     }
 
     for key, value in replacements.items():

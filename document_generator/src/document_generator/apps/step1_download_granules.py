@@ -15,19 +15,33 @@ import os
 import sys
 from pathlib import Path
 import yaml
+import argparse
+import pdb
+
+parser = argparse.ArgumentParser()
+parser.add_argument('eccoversionstring')
+args = parser.parse_args()
+
+ecco_version_string = args.eccoversionstring
+
+print(ecco_version_string)
 
 # Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 import src.document_generator.utils.utils_general as utils
 
+config_static_file = ('/').join([base_dir, "files_general/resource_files/universal_input/config_files/config_static.yaml"])
 
-# Path to the YAML configuration file — update this for your environment
-#config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/V4r4/input_and_templates/config/config.yaml"
-config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/V4r6/input_and_templates/config/config.yaml"
+with open(config_static_file, 'r') as stream:
+    config_static_dictionary = yaml.safe_load(stream)
 
-with open(config_file, 'r') as stream:
-    config_dictionary = yaml.safe_load(stream)
+
+config_user_file = ('/').join([base_dir, f"files_general/resource_files/version_specific/{ecco_version_string}/input_and_templates/config/config_user.yaml"])
+#config_user_file = ('/').join([base_dir, f"files_general/resource_files/version_specific/{config_user_dictionary['ecco_version_string']}/input_and_templates/config/config_user.yaml"])
+
+with open(config_user_file, 'r') as stream:
+    config_user_dictionary = yaml.safe_load(stream)
 
 
 def main() -> None:
@@ -41,7 +55,7 @@ def main() -> None:
     :returns: None
     """
     print("\ndownloading granules:\n")
-    utils.download_granules(base_dir, config_dictionary)
+    utils.download_granules(base_dir, config_static_dictionary, config_user_dictionary)
     print()
 
 

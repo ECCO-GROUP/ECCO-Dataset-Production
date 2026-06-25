@@ -50,23 +50,13 @@ def write_data_attributes_tables(base_dir: str, config_dictionary: dict, overwri
     #    "/".join(config_dictionary["variable_files_native_dir"].split("/")[:-1])
     #)
 
-    for grid_type in config_dictionary["possible_grid_types"]:
+    for grid_type in config_dictionary["grid_types_considered"]:
 
-        # ------------------------------------------------------------------------------------------------------
-        # REMOVE ONCE WE HAVE A LAT-LON GRID FILE
-        # ------------------------------------------------------------------------------------------------------
-        # ------------------------------------------------------------------------------------------------------
-        # No lat-lon grid currently; this approach seems slightly sloppy anyway
-        if grid_type == 'lat-lon':
-            continue
-        # ------------------------------------------------------------------------------------------------------
-        # ------------------------------------------------------------------------------------------------------
-        # ------------------------------------------------------------------------------------------------------
         if Path(os.path.join(base_dir,config_dictionary[f"variable_files_{grid_type}_dir"])).exists():
             # NoTE: SKETCHY HARDCODED NUMBER OF DIRECTORIES TO TRACE BACK... THIS SHOULD BE A CONFIG PARAMETER, AS SHOULD ANY OTHER SIMILAR NUMBER
             variable_granules_parent_directory = os.path.join(
                 base_dir,
-                "/".join(config_dictionary[f"variable_files_{grid_type}_dir"].split("/")[:-2])
+                "/".join(config_dictionary[f"variable_files_{grid_type}_dir"].split("/")[:-config_dictionary["negative_steps_to_variable_granules_dir"]])
             )
             break
 
@@ -106,7 +96,7 @@ def write_datasets(base_dir: str, config_dictionary: dict, overwrite_switch: boo
     """
     # Navigate two levels up from a <grid_type> coordinate dir to reach the
     # common ancestor of all granule type / grid type directories
-    for grid_type in config_dictionary["possible_grid_types"]:
+    for grid_type in config_dictionary["grid_types_considered"]:
 
         # ------------------------------------------------------------------------------------------------------
         # REMOVE ONCE WE HAVE A LAT-LON GRID FILE
@@ -123,7 +113,7 @@ def write_datasets(base_dir: str, config_dictionary: dict, overwrite_switch: boo
         if Path(os.path.join(base_dir,config_dictionary[f"coordinate_files_{grid_type}_dir"])).exists():
             granules_parent_directory = os.path.join(
                 base_dir,
-                "/".join(config_dictionary[f"coordinate_files_{grid_type}_dir"].split("/")[:-2])
+                "/".join(config_dictionary[f"coordinate_files_{grid_type}_dir"].split("/")[:-config_dictionary["negative_steps_to_variable_granules_dir"]])
             )
             break
     
@@ -137,7 +127,8 @@ def write_datasets(base_dir: str, config_dictionary: dict, overwrite_switch: boo
     for granule_directory in granule_directories:
         print(
             f"writing latex table and figure files for granules in the "
-            f"'{'/'.join(granule_directory.split('/')[-2:])}' directory"
+            #f"'{'/'.join(granule_directory.split('/')[-f"{config_dictionary['negative_steps_to_variable_granules_dir']}":])}' directory"
+            f"'{'/'.join(granule_directory.split('/')[-config_dictionary['negative_steps_to_variable_granules_dir']:])}' directory"
             )
         cdf_extract.data_products(base_dir, config_dictionary, granule_directory, overwrite_switch)
 
