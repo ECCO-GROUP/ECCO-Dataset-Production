@@ -17,16 +17,17 @@ required_ratio = 0
 if args.requiredRatio is not None:
     required_ratio = args.requiredRatio 
 
-# Path to the YAML configuration file — update this for your environment
-config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/V4r6/input_and_templates/config/config.yaml"
+config_file_static = Path(base_dir) / "files_general/resource_files/universal_input/config_static_DoNotModifyMe/config_static.yaml"
+config_file_user = Path(base_dir) / "files_general/resource_files/config_user_ModifyMe/config_user.yaml"
 
-with open(config_file, 'r') as stream:
-    config_dictionary = yaml.safe_load(stream)
+with open(config_file_static, 'r') as stream:
+    config_dictionary_static = yaml.safe_load(stream)
 
+with open(config_file_user, 'r') as stream:
+    config_dictionary_user = yaml.safe_load(stream)
 
 def main() -> None:
-    utils_json.check_for_attributes(base_dir, config_dictionary, required_ratio)
-
+    utils_json.check_for_attributes(base_dir, config_dictionary_static, config_dictionary_user, required_ratio)
 
 if __name__ == "__main__":
     main()

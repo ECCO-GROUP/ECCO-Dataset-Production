@@ -1,0 +1,49 @@
+# User instructions:  Edit this yaml file as necessary.  
+#
+# <ecco_version_string> identifies the version of ECCO that you are documenting.  
+#
+# <grid_types_considered> lists the types of ECCO grids for which you have either coordinate or variable granules 
+# (the three possibilities are "lat-lon", "native", and "1D").
+#
+# <example_granule_*>, where "*" is "latlon", "native", or "1D", specifies the basename (filename without parent directory path) 
+# of a granule of your choosing from your downloaded granules directory which will be used to make an exhaustive example table of 
+# granule metadata for the "*" grid type appearing early in the compendium.  
+# Note: please select only a single <example_granule_*> for a given grid type.
+#
+# <figure_generation_overwrite_switch> is a boolean parameter which allows the user to skip re-generation of figures which
+# have already been generated.  We recommend leaving this set to "True", to prevent unwittingly including outdated figures
+# in your compendiums.
+#
+# <granule_download_overwrite_switch> is a boolean parameter which allows the user to skip re-downloading granules which are observed
+# to already be present on the user's machine.  We recommend leaving this set to "False", as downloading can be a bottleneck 
+# and re-downloading granules should only be necessary if new versions of granules are made available by the ECCO team or if
+# the user has modified their local granule files and would like to generate fresh original versions. 
+#
+# Yaml files treat lines starting with the hash mark "#" as comments, so feel free to "comment out" elements of the list 
+# <grid_types_considered> and any of the <example_granule_*> mapping pairs according to your local collection of granules
+# (the current version of the code will crash if, for example, you don't have and "1D" granules, but you leave "1D" in 
+# the list <grid_types_considered>).
+# -------------------------------------------------------------------------------------------------------------------------------------
+
+
+ecco_version_string: V4r6
+
+
+grid_types_considered:
+  - latlon
+#- lat-lon
+  - native
+#  - 1D
+
+
+example_granule_latlon: SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_{ecco_version_string}_latlon_0p50deg.nc
+example_granule_native: OCEAN_TEMPERATURE_SALINITY_mon_mean_1992-01_ECCO_{ecco_version_string}_native_llc0090.nc
+#example_granule_1D: GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_{ecco_version_string}_1D.nc
+
+
+#granule_download_overwrite_switch: True
+granule_download_overwrite_switch: False
+
+
+figure_generation_overwrite_switch: True
+#figure_generation_overwrite_switch: False

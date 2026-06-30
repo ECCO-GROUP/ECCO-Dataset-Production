@@ -11,6 +11,7 @@ Usage::
     python a_step3_compile_latex.py
 """
 
+import pdb
 import os
 import sys
 import subprocess
@@ -23,6 +24,8 @@ import argparse
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 
+import src.document_generator.utils.utils_general as utils
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('skipSed', nargs='?')
@@ -30,13 +33,14 @@ args = parser.parse_args()
 
 skip_sed = args.skipSed
 
+config_file_static = Path(base_dir) / "files_general/resource_files/universal_input/config_static_DoNotModifyMe/config_static.yaml"
+config_file_user = Path(base_dir) / "files_general/resource_files/config_user_ModifyMe/config_user.yaml"
 
-# Path to the YAML configuration file — update this for your environment
-#config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/input_and_templates/config/config.yaml"
-config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r6/input_and_templates/config/config.yaml"
+with open(config_file_static, 'r') as stream:
+    config_dict_static = yaml.safe_load(stream)
 
-with open(config_file, 'r') as stream:
-    config_dictionary = yaml.safe_load(stream)
+with open(config_file_user, 'r') as stream:
+    config_dict_user = yaml.safe_load(stream)
 
 
 def main() -> None:
@@ -56,50 +60,29 @@ def main() -> None:
 
     :returns: None
     """
-    input_tex_dir_absolute = f"{base_dir}/{config_dictionary['input_tex_dir_relative']}"
-    output_component_tex_dir_absolute = f"{base_dir}/{config_dictionary['output_component_tex_dir_relative']}"
+    ecco_version_string = config_dict_user['ecco_version_string']
+    compendium_template_path = Path(base_dir) / config_dict_static['compendium_tex_filepath'].format(ecco_version_string=ecco_version_string)
+    base_tex_stem = compendium_template_path.stem
+
+    input_tex_dir_absolute = Path(base_dir) / config_dict_static['input_tex_dir_relative'].format(ecco_version_string=ecco_version_string)
+    output_component_tex_dir_absolute = Path(base_dir) / config_dict_static['output_component_tex_dir_relative'].format(ecco_version_string=ecco_version_string)
 
     # TEXINPUTS tells pdflatex where to search for \input and \include targets.
     # The trailing colon preserves the default TeX search path.
     os.environ["TEXINPUTS"] = f"{input_tex_dir_absolute}:{output_component_tex_dir_absolute}:"
 
-    print(config_dictionary['compendium_compilation_runtime_message_string'])
+    print(config_dict_static['compendium_compilation_runtime_message_string'])
 
-    output_directory = os.path.join(base_dir, config_dictionary["final_compendium_files_dir"])
-    os.makedirs(output_directory, exist_ok=True)
+    output_directory = Path(base_dir) / config_dict_static["final_compendium_files_dir"]
+    output_directory.mkdir(parents=True, exist_ok=True)
 
     # Timestamp the output filename so repeated runs don't overwrite each other
     timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
-    base_tex_stem = Path(config_dictionary["compendium_tex_filepath"]).stem
                 
-    compendium_template_path = os.path.join(base_dir, config_dictionary['compendium_tex_filepath'])
-
+    
     if skip_sed is None:
-
-        # <ecco_version_string> is expected to have the form V#r#, where #'s are integers (ie V4r6)
-        ecco_version_string = config_dictionary['ecco_version_string']
-
-        # Attempt to use the latex template files to make compendium component files with correct version and date information via bash sed calls   
-        Path(f"{base_dir}/{config_dictionary['latex_modified_input_files']}".format(ecco_version_string)).mkdir(parents=True, exist_ok=True)
-        latex_template_files = [f.name for f in Path(f"{base_dir}/{config_dictionary['latex_template_files']}").iterdir() if f.is_file() and f.suffix == ".tex"]
-
-        for latex_file_name in latex_template_files: 
-            format_map_context_dict = {
-                'ecco_version_string': ecco_version_string,
-                'version_number': int(ecco_version_string[1:ecco_version_string.index('r')]),
-                'release_number': int(ecco_version_string[ecco_version_string.index('r')+1:]),
-                'file_in': f"{base_dir}/{config_dictionary['latex_template_files']}/{latex_file_name}",
-                'file_out': f"{base_dir}/{config_dictionary['latex_modified_input_files']}/{latex_file_name}",
-            }
-            
-            try:
-                for sed_command in config_dictionary['latex_template_modification_commands_list']:
-                    result = subprocess.run(
-                            sed_command.format_map(format_map_context_dict),
-                            check=True, shell=True
-                            )
-            except:
-                print('Bash call to modify file did not work')
+        file_type_to_modify = "latex"
+        utils.sed_replacement(base_dir, config_dict_static, config_dict_user, file_type_to_modify)
 
 
     # Attempt compilation of final latex document

@@ -22,7 +22,7 @@ import src.document_generator.utils.cdf_plotter as cdf_plotter
 # -------------------- Extracting CDL For Examples -------------------------
 # ---------------------------------------------------------------------------
 
-def fieldTable(config_dictionary: dict, dataset: xr.Dataset, is_coord: bool, grid_type: str) -> list:
+def fieldTable(config_dict_static: dict, dataset: xr.Dataset, is_coord: bool, grid_type: str) -> list:
     """
     Build a LaTeX ``longtable`` listing all coordinates and variables in a dataset.
 
@@ -30,8 +30,8 @@ def fieldTable(config_dictionary: dict, dataset: xr.Dataset, is_coord: bool, gri
     for data variables, each with columns for variable name, description, and
     unit. Column widths are chosen dynamically based on the longest variable name.
 
-    :param config_dictionary: Configuration mapping passed to sanitization utilities.
-    :type config_dictionary: dict
+    :param config_dict_static: Configuration mapping passed to sanitization utilities.
+    :type config_dict_static: dict
     :param dataset: The open NetCDF dataset to describe.
     :type dataset: xr.Dataset
     :param is_coord: Unused in the current implementation; reserved for future
@@ -66,7 +66,7 @@ def fieldTable(config_dictionary: dict, dataset: xr.Dataset, is_coord: bool, gri
 
     latex_lines = []
     latex_lines.append(r'\begin{longtable}{|m{' + str(a) + r'\textwidth}|m{' + str(b) + r'\textwidth}|m{0.12\textwidth}|}')
-    latex_lines.append(fr"\caption{{Coordinates and variables from {utils_general.sanitize(config_dictionary, product_name)} ({grid_type})}}")
+    latex_lines.append(fr"\caption{{Coordinates and variables from {utils_general.sanitize(config_dict_static, product_name)} ({grid_type})}}")
     latex_lines.append(fr'\label{{tab:table-{dataset}-fields}} \\ ')
     latex_lines.append(r"\hline \endfirsthead \endhead \endfoot \hline \endlastfoot")
 
@@ -79,9 +79,9 @@ def fieldTable(config_dictionary: dict, dataset: xr.Dataset, is_coord: bool, gri
 
     for ij in np.arange(len(coordvar_shortname_list)):
         latex_lines.append(
-            f'{utils_general.sanitize(config_dictionary, coordvar_shortname_list_hyphenated[ij])} &'
-            f'{utils_general.sanitize(config_dictionary, coordvar_longname_list[ij])} &'
-            rf'{utils_general.sanitize(config_dictionary, coordvar_units_list[ij])}  \\ \hline'
+            f'{utils_general.sanitize(config_dict_static, coordvar_shortname_list_hyphenated[ij])} &'
+            f'{utils_general.sanitize(config_dict_static, coordvar_longname_list[ij])} &'
+            rf'{utils_general.sanitize(config_dict_static, coordvar_units_list[ij])}  \\ \hline'
         )
 
     # --- Data variables section ---
@@ -94,9 +94,9 @@ def fieldTable(config_dictionary: dict, dataset: xr.Dataset, is_coord: bool, gri
     for ij in np.arange(len(datavar_shortname_list)):
         try:
             latex_lines.append(
-                f'{utils_general.sanitize(config_dictionary, datavar_shortname_list_hyphenated[ij])} &'
-                f'{utils_general.sanitize(config_dictionary, datavar_longname_list[ij])} &'
-                rf'{utils_general.sanitize(config_dictionary, datavar_units_list[ij])}  \\ \hline'
+                f'{utils_general.sanitize(config_dict_static, datavar_shortname_list_hyphenated[ij])} &'
+                f'{utils_general.sanitize(config_dict_static, datavar_longname_list[ij])} &'
+                rf'{utils_general.sanitize(config_dict_static, datavar_units_list[ij])}  \\ \hline'
             )
         except Exception:
             print("/// current file failing with long_name query at another point in code ////")
@@ -107,7 +107,7 @@ def fieldTable(config_dictionary: dict, dataset: xr.Dataset, is_coord: bool, gri
     return latex_lines
 
 
-def latex_example_netcdf(base_dir: str, config_dictionary: dict, grid_type: str) -> None:
+def latex_example_netcdf(base_dir: str, config_dict_static: dict, config_dict_user: dict, grid_type: str) -> None:
     """
     Write a LaTeX ``longtable`` showing an example NetCDF file's CDL structure.
 
@@ -123,20 +123,20 @@ def latex_example_netcdf(base_dir: str, config_dictionary: dict, grid_type: str)
 
     :param base_dir: Root directory of the project.
     :type base_dir: str
-    :param config_dictionary: Configuration mapping. Expected keys include
+    :param config_dict_static: Configuration mapping. Expected keys include
         ``'variable_files_{grid_type}_dir'``, ``'example_granule_{grid_type}'``,
         ``'example_table_first_latex_lines_{grid_type}'``, and
         ``'example_{grid_type}_table_tex_file'``.
-    :type config_dictionary: dict
+    :type config_dict_static: dict
     :param grid_type: Grid type identifier, e.g. ``"native"``, ``"latlon"``,
         or ``"1D"``.
     :type grid_type: str
     :returns: None
     """
-    granule_directory = os.path.join(base_dir, config_dictionary[f"variable_files_{grid_type}_dir"])
+    granule_directory = os.path.join(base_dir, config_dict_static[f"variable_files_{grid_type}_dir"].format(ecco_version_string=config_dict_user["ecco_version_string"]))
 
     # Use the hardcoded example granule filename as requested by the project lead
-    example_granule = os.path.join(granule_directory, config_dictionary[f"example_granule_{grid_type}"])
+    example_granule = os.path.join(granule_directory, config_dict_user[f"example_granule_{grid_type}"].format(ecco_version_string=config_dict_user["ecco_version_string"]))
 
     # Open without decoding so raw attribute values are preserved in the CDL output
     dataset = xr.open_dataset(
@@ -147,11 +147,8 @@ def latex_example_netcdf(base_dir: str, config_dictionary: dict, grid_type: str)
 
     latex_lines = []
     latex_lines.append(r'\begin{longtable}{|p{\textwidth}|}')
-    latex_lines.extend(config_dictionary[f"example_table_first_latex_lines_{grid_type}"])
-    #latex_lines.append(r'granule:  ' + utils_general.sanitize(config_dictionary, f'{config_dictionary[f"example_granule_{grid_type}"]}') + r'\\')
-    #latex_lines.append('granule: ' + utils_general.sanitize(config_dictionary, f'‘{config_dictionary[f"example_granule_{grid_type}"]}’') + r'\\')
-    #latex_lines.append(r'\noindent from: \hfill' + utils_general.sanitize(config_dictionary, f'‘{config_dictionary[f"example_granule_{grid_type}"]}’') + r'\hfill\null \\')
-    latex_lines.append(r'\noindent granule: \hfill ' + utils_general.sanitize(config_dictionary, f'{config_dictionary[f"example_granule_{grid_type}"]}') + r'\hfill\null \\')
+    latex_lines.extend(config_dict_static[f"example_table_first_latex_lines_{grid_type}"])
+    latex_lines.append(r'\noindent granule: \hfill ' + utils_general.sanitize(config_dict_static, f'{config_dict_user[f"example_granule_{grid_type}"]}') + r'\hfill\null \\')
     latex_lines.append(r'\hline')
     latex_lines.append(r'dimensions: \\')
     latex_lines.append(r'\hline')
@@ -160,9 +157,9 @@ def latex_example_netcdf(base_dir: str, config_dictionary: dict, grid_type: str)
     for dimension_name in dataset.sizes:
         num_tabs = 1
         latex_lines.append(r'\rowcolor{YellowGreen}')
-        latex_lines = utils_general.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines)
+        latex_lines = utils_general.append_hanging_indentation_commands_cm_latex(config_dict_static, num_tabs, latex_lines)
         latex_lines.append(
-            utils_general.sanitize_with_math(config_dictionary, f'{dimension_name} = {len(dataset[dimension_name])}') + "\\\\"
+            utils_general.sanitize_with_math(config_dict_static, f'{dimension_name} = {len(dataset[dimension_name])}') + "\\\\"
         )
 
     latex_lines.append(r'\hline')
@@ -177,22 +174,22 @@ def latex_example_netcdf(base_dir: str, config_dictionary: dict, grid_type: str)
 
         num_tabs = 1
         latex_lines.append(r'\rowcolor{Apricot}')
-        latex_lines = utils_general.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines)
+        latex_lines = utils_general.append_hanging_indentation_commands_cm_latex(config_dict_static, num_tabs, latex_lines)
         latex_lines.append(
             utils_general.sanitize_with_math(
-                config_dictionary,
-                f'{config_dictionary["tab_char"] * num_tabs}{coord_dt} {coord.name} ({coord_dims})'
+                config_dict_static,
+                f'{config_dict_static["tab_char"] * num_tabs}{coord_dt} {coord.name} ({coord_dims})'
             ) + "\\\\"
         )
         # Indent each attribute one level deeper than the variable declaration
         num_tabs += 1
         for coord_attr in coord.attrs:
             latex_lines.append(r'\rowcolor{Apricot}')
-            latex_lines = utils_general.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines)
+            latex_lines = utils_general.append_hanging_indentation_commands_cm_latex(config_dict_static, num_tabs, latex_lines)
             latex_lines.append(
                 utils_general.sanitize_with_math(
-                    config_dictionary,
-                    f'{config_dictionary["tab_char"] * num_tabs}{coord.name}:{coord_attr} = "{coord.attrs[coord_attr]}"'
+                    config_dict_static,
+                    f'{config_dict_static["tab_char"] * num_tabs}{coord.name}:{coord_attr} = "{coord.attrs[coord_attr]}"'
                 ) + "\\\\"
             )
 
@@ -219,26 +216,26 @@ def latex_example_netcdf(base_dir: str, config_dictionary: dict, grid_type: str)
         datavar_dims = ', '.join([str(x) for x in datavar.dims])
 
         num_tabs = 1
-        latex_lines = utils_general.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines)
+        latex_lines = utils_general.append_hanging_indentation_commands_cm_latex(config_dict_static, num_tabs, latex_lines)
         latex_lines.append(
             utils_general.sanitize_with_math(
-                config_dictionary,
-                f'{config_dictionary["tab_char"] * num_tabs}{datavar_dt} {datavar.name} ({datavar_dims})'
+                config_dict_static,
+                f'{config_dict_static["tab_char"] * num_tabs}{datavar_dt} {datavar.name} ({datavar_dims})'
             ) + "\\\\"
         )
         num_tabs += 1
         for datavar_attr in datavar.attrs:
-            latex_lines = utils_general.append_hanging_indentation_commands_cm_latex(config_dictionary, num_tabs, latex_lines)
+            latex_lines = utils_general.append_hanging_indentation_commands_cm_latex(config_dict_static, num_tabs, latex_lines)
             latex_lines.append(
                 utils_general.sanitize_with_math(
-                    config_dictionary,
-                    f'{config_dictionary["tab_char"] * num_tabs}{datavar.name}:{datavar_attr} = "{datavar.attrs[datavar_attr]}"'
+                    config_dict_static,
+                    f'{config_dict_static["tab_char"] * num_tabs}{datavar.name}:{datavar_attr} = "{datavar.attrs[datavar_attr]}"'
                 ) + "\\\\"
             )
 
     latex_lines.append(r'\end{longtable}')
 
-    latex_output_file = os.path.join(base_dir, config_dictionary[f"example_{grid_type}_table_tex_file"])
+    latex_output_file = os.path.join(base_dir, config_dict_static[f"example_{grid_type}_table_tex_file"])
     Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
     with open(latex_output_file, 'w') as output_file:
         output_file.write('\n'.join(latex_lines))
@@ -278,7 +275,6 @@ def get_non_coordinate_vars(filename: str) -> list:
             if dataset[var].attrs['coverage_content_type'] != 'coordinate':
                 non_coordinate.append(var)
         except:
-            #pdb.set_trace()
             print("not sure why this try except clause was here, cdf_extract get_non_coordinate_vars")
             continue
     non_coordinate = sorted(non_coordinate)
@@ -338,7 +334,7 @@ def get_coordinate_vars(filename: str) -> list:
 
 def extract_field_info(field: xr.DataArray) -> dict:
     """
-    Extract metadata from a DataArray into a flat dictionary for table rendering.
+    Extract metadata from a DataArray into a flat dict for table rendering.
 
     Builds a CDL-style description string from the variable's attributes (sorted
     alphabetically, as per CDL convention), then packages it alongside the key
@@ -465,7 +461,7 @@ def search_and_extract(
 
 
 def data_var_table(
-    config_dictionary: dict,
+    config_dict_static: dict,
     field_name: str,
     attrs: dict,
     dataset_name: str,
@@ -478,12 +474,12 @@ def data_var_table(
     description, unit), a full-width CDL description block rendered in
     typewriter font, and a full-width comments row.
 
-    :param config_dictionary: Configuration mapping passed to sanitization
+    :param config_dict_static: Configuration mapping passed to sanitization
         utilities.
-    :type config_dictionary: dict
+    :type config_dict_static: dict
     :param field_name: Short name of the variable, used in the caption and label.
     :type field_name: str
-    :param attrs: Attribute dictionary as returned by :func:`extract_field_info`.
+    :param attrs: Attribute dict as returned by :func:`extract_field_info`.
         Expected keys: ``'Storage Type'``, ``'Variable Name'``,
         ``'Description'``, ``'Units'``, ``'CDL Description'``, ``'Comments'``.
     :type attrs: dict
@@ -497,19 +493,19 @@ def data_var_table(
         variable.
     :rtype: list[str]
     """
-    dataset_name_formatted = utils_general.sanitize(config_dictionary, dataset_name)
+    dataset_name_formatted = utils_general.sanitize(config_dict_static, dataset_name)
 
-    storageType = utils_general.sanitize(config_dictionary, attrs["Storage Type"])
-    varName     = utils_general.sanitize(config_dictionary, attrs["Variable Name"])
-    description = utils_general.sanitize(config_dictionary, attrs["Description"])
-    unit        = utils_general.sanitize(config_dictionary, attrs["Units"])
-    #comment     = utils_general.sanitize_remove_dollar(config_dictionary, attrs["Comments"])
-    #comment     = utils_general.sanitize_with_math(config_dictionary, comment)
-    comment     = utils_general.sanitize_with_math(config_dictionary, attrs["Comments"])
-    ####comment     = utils_general.sanitize(config_dictionary, attrs["Comments"])
+    storageType = utils_general.sanitize(config_dict_static, attrs["Storage Type"])
+    varName     = utils_general.sanitize(config_dict_static, attrs["Variable Name"])
+    description = utils_general.sanitize(config_dict_static, attrs["Description"])
+    unit        = utils_general.sanitize(config_dict_static, attrs["Units"])
+    #comment     = utils_general.sanitize_remove_dollar(config_dict_static, attrs["Comments"])
+    #comment     = utils_general.sanitize_with_math(config_dict_static, comment)
+    comment     = utils_general.sanitize_with_math(config_dict_static, attrs["Comments"])
+    ####comment     = utils_general.sanitize(config_dict_static, attrs["Comments"])
 
     # CDL description may contain math; use the math-aware sanitizer
-    cdl_description = utils_general.sanitize_with_math(config_dictionary, attrs['CDL Description'])
+    cdl_description = utils_general.sanitize_with_math(config_dict_static, attrs['CDL Description'])
     cdl_description = cdl_description.replace(r'\\', '\'')
     cdl_description = cdl_description.replace('\n', '\\\\\\\n')
     cdl_description = cdl_description.replace('    ', r'\hspace*{0.5cm}')
@@ -522,7 +518,7 @@ def data_var_table(
 
     la = [
         r'\begin{longtable}{|m{0.06\textwidth}|m{' + str(a) + r'\textwidth}|m{' + str(b) + r'\textwidth}|m{0.12\textwidth}|}',
-        fr"\caption{{{utils_general.sanitize(config_dictionary, field_name)} from {dataset_name_formatted} ({grid_type})}}"
+        fr"\caption{{{utils_general.sanitize(config_dict_static, field_name)} from {dataset_name_formatted} ({grid_type})}}"
         fr'\label{{tab:table-{dataset_name}_{field_name}}} \\ ',
         r'\hline \endhead \hline \endfoot',
     ]
@@ -709,8 +705,8 @@ def global_attrs_for_ECCOnetCDF(
         GASource      = GlobAttrsFilledECCO[i]["sourc"]
         latex_lines.append(r'\rowcolor{cyan!25}')
         latex_lines.append(
-            rf'{utils_general.sanitize(config_dictionary, GAttrsNam)} & {GAFormat} & '
-            rf'{utils_general.sanitize(config_dictionary, GAdescription)} & {GASource} \\ \hline'
+            rf'{utils_general.sanitize(config_dict_static, GAttrsNam)} & {GAFormat} & '
+            rf'{utils_general.sanitize(config_dict_static, GAdescription)} & {GASource} \\ \hline'
         )
 
     latex_lines.append(r'\end{longtable}')
@@ -752,7 +748,8 @@ def get_Global_or_CoordsDimsVarsList(netCDFpath: str, jsonFileName: str, saveTo:
 
 def data_products(
     base_dir: str,
-    config_dictionary: dict,
+    config_dict_static: dict,
+    config_dict_user: dict,
     granule_directory: str,
     overwrite_switch: bool
 ) -> None:
@@ -773,10 +770,10 @@ def data_products(
 
     :param base_dir: Root directory of the project.
     :type base_dir: str
-    :param config_dictionary: Configuration mapping. Must contain keys for JSON
+    :param config_dict_static: Configuration mapping. Must contain keys for JSON
         groupings file paths, granule directories, image directories, output
         ``.tex`` file paths, and section title strings.
-    :type config_dictionary: dict
+    :type config_dict_static: dict
     :param granule_directory: Absolute path to the directory containing the
         NetCDF granules to document. The last two path components are used to
         infer granule type and grid type.
@@ -786,7 +783,7 @@ def data_products(
     :type overwrite_switch: bool
     :returns: None
     """
-    ecco_version_string = config_dictionary["ecco_version_string"]
+    ecco_version_string = config_dict_user["ecco_version_string"]
     latex_lines = []
 
     # Infer granule type (e.g. "coordinate", "variable") and grid type
@@ -794,18 +791,13 @@ def data_products(
     granule_type, grid_type = utils_general.get_granule_and_grid_types(granule_directory)
     is_coord = granule_type == "coordinate"
 
-    granule_document_section_title = config_dictionary["table_section_titles"][f"{granule_type}_{grid_type}"]
-    granule_document_section_title = utils_general.sanitize(config_dictionary, granule_document_section_title)
+    granule_document_section_title = config_dict_static["table_section_titles"][f"{granule_type}_{grid_type}"]
+    granule_document_section_title = utils_general.sanitize(config_dict_static, granule_document_section_title)
     latex_lines.append(r'\section{' + f'{granule_document_section_title}' + r'}')
 
-    json_groupings_filepath = os.path.join(base_dir, config_dictionary[f"groupings_{granule_type}_{grid_type}_json_file"])
-    granule_directory       = os.path.join(base_dir, config_dictionary[f"{granule_type}_files_{grid_type}_dir"])
-    image_directory         = os.path.join(base_dir, config_dictionary[f"figures_{granule_type}_{grid_type}_dir"])
-
-    #print("*****")
-    #print(json_groupings_filepath)
-    #print(is_coord)
-    #print("*****")
+    json_groupings_filepath = Path(base_dir) / config_dict_static[f"groupings_{granule_type}_{grid_type}_json_file"].format(ecco_version_string=config_dict_user["ecco_version_string"])
+    granule_directory       = Path(base_dir) / config_dict_static[f"{granule_type}_files_{grid_type}_dir"].format(ecco_version_string=config_dict_user["ecco_version_string"])
+    image_directory         = Path(base_dir) / config_dict_static[f"figures_{granule_type}_{grid_type}_dir"].format(ecco_version_string=config_dict_user["ecco_version_string"])
 
     with open(json_groupings_filepath, 'r') as json_file:
         list_of_json_dictionaries = json.load(json_file)
@@ -813,27 +805,21 @@ def data_products(
     # Modify variable groupings by adding an "introduction" field for each variable dataset
     if not is_coord:
         list_of_json_dictionaries = utils_json.modify_json_add_product_field_to_groupings(list_of_json_dictionaries, grid_type)
-        list_of_json_dictionaries = utils_json.modify_json_add_introduction_field_to_groupings(list_of_json_dictionaries, json_groupings_filepath, config_dictionary)
+        list_of_json_dictionaries = utils_json.modify_json_add_introduction_field_to_groupings(list_of_json_dictionaries, str(json_groupings_filepath), config_dict_static, config_dict_user)
 
         # Determine which granules exist locally, so only relevant groupings are used
-        all_granule_paths = [str(p) for p in (Path(base_dir) / config_dictionary["user_generated_granules_dir_relative"]).rglob('*.nc') if p.is_file()]
+        all_granule_paths = [str(p) for p in (Path(base_dir) / config_dict_static["user_generated_granules_dir_relative"]).rglob('*.nc') if p.is_file()]
         all_grid_granule_paths = [p for p in all_granule_paths if re.search(grid_type.replace('-','_?').replace('_','_?'), p)]
         all_grid_granule_paths_megastring = ("_").join(all_grid_granule_paths)
 
-        #print(all_grid_granule_paths_megastring)
 
     # Each entry in the JSON groupings file corresponds to one document subsection
-    for json_dictionary in list_of_json_dictionaries:
-        granule_filename_truncated_stem = json_dictionary["filename"]
+    for json_dict in list_of_json_dictionaries:
+        granule_filename_truncated_stem = json_dict["filename"]
 
         if not is_coord:
             if granule_filename_truncated_stem not in all_grid_granule_paths_megastring:
-                #print(granule_filename_truncated_stem)
                 continue
-
-        #print()
-        #print('looping over <list_of_json_dictionaries> in cdf_extract')
-        #print(granule_filename_truncated_stem)
 
         if search_and_extract(
             granule_filename_truncated_stem,
@@ -861,44 +847,40 @@ def data_products(
             )
 
 
-        granule_filename_truncated_stem_formatted = utils_general.sanitize(config_dictionary, granule_filename_truncated_stem)
+        granule_filename_truncated_stem_formatted = utils_general.sanitize(config_dict_static, granule_filename_truncated_stem)
         latex_lines.append(fr'\subsection{{{granule_filename_truncated_stem_formatted}}}')
         latex_lines.append(fr"\subsubsection{{Overview}}")
         latex_lines.append(r'\newp')
-        latex_lines.append(utils_general.sanitize(config_dictionary, json_dictionary["Introduction"]))
+        latex_lines.append(utils_general.sanitize(config_dict_static, json_dict["Introduction"]))
         latex_lines.append(r"\\\\")
 
         # Optional note field from the JSON groupings file
-        if "comment" in json_dictionary.keys():
-            latex_lines.append(utils_general.sanitize(config_dictionary, f"Note: {json_dictionary['comment']}"))
+        if "comment" in json_dict.keys():
+            latex_lines.append(utils_general.sanitize(config_dict_static, f"Note: {json_dict['comment']}"))
             latex_lines.append(r"\\")
 
         # Overview table listing all variables and coordinates
-        latex_lines.extend(fieldTable(config_dictionary, dataset, is_coord, grid_type))
+        latex_lines.extend(fieldTable(config_dict_static, dataset, is_coord, grid_type))
         latex_lines.append(r'\newp')
 
         # One sub-subsection per variable: CDL table + thumbnail figure
         for variable in data_array_list:
-            attributes_dictionary = extract_field_info(variable)
+            attributes_dict = extract_field_info(variable)
 
-            variable_name = attributes_dictionary['Variable Name']
-            variable_name_formatted = utils_general.sanitize(config_dictionary, variable_name)
+            variable_name = attributes_dict['Variable Name']
+            variable_name_formatted = utils_general.sanitize(config_dict_static, variable_name)
             variable_descriptor_string = f"{variable_name_formatted} ({grid_type})"
 
             latex_lines.append(r'\pagebreak')
             latex_lines.append(fr'\subsubsection{{{variable_descriptor_string}}}')
 
             # Detailed CDL attribute table for this variable
-            dataVarTable = data_var_table(config_dictionary, variable_name, attributes_dictionary, granule_filename_truncated_stem, grid_type)
+            dataVarTable = data_var_table(config_dict_static, variable_name, attributes_dict, granule_filename_truncated_stem, grid_type)
             latex_lines.extend(dataVarTable)
-
-            #print()
-            #print('data_var_plot call in cdf_extract')
-            #print(variable_name)
 
             # Generate (or retrieve cached) plot and embed as a figure
             dataVarPlot = cdf_plotter.data_var_plot(
-                config_dictionary, dataset, dataset[variable_name], image_directory, overwrite_switch
+                config_dict_static, dataset, dataset[variable_name], image_directory, overwrite_switch
             )
             latex_lines.append(r'\begin{figure}[H]')
             latex_lines.append(r'\centering')
@@ -910,7 +892,7 @@ def data_products(
 
         # Write the accumulated lines to the section's .tex file after each grouping entry
         granule_latex_output_file = os.path.join(
-            base_dir, config_dictionary[f'{granule_type}_table_{grid_type}_tex_file']
+            base_dir, config_dict_static[f'{granule_type}_table_{grid_type}_tex_file']
         )
         utils_general.write_latex_lines_to_file(latex_lines, granule_latex_output_file)
 

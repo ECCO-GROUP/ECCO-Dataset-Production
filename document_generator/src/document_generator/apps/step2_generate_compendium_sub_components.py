@@ -14,32 +14,38 @@ by Step 3.
 
 Usage::
 
-    python a_step2_generate_document.py
+    python step2_generate_document.py
 """
 
-import os
 import sys
 import yaml
 from pathlib import Path
+import argparse
 
 # Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 import src.document_generator.utils.latex_outline as latex_outline
+import src.document_generator.utils.utils_general as utils
 
 
-# Path to the static configuration file — update this for your environment
-config_static_file = ('/').join([base_dir, "files_general/resource_files/universal_input/config_files/config_static.yaml"])
+parser = argparse.ArgumentParser()
+parser.add_argument('skipSed', nargs='?')
+args = parser.parse_args()
 
-with open(config_static_file, 'r') as stream:
-    config_static_dictionary = yaml.safe_load(stream)
+skip_sed = args.skipSed
 
-config_user_file = ('/').join([base_dir, f"files_general/resource_files/version_specific/{config_static_dictionary['ecco_version_string']}/input_and_templates/config/config_user.yaml"])
 
-with open(config_user_file, 'r') as stream:
-    config_user_dictionary = yaml.safe_load(stream)
+config_file_static = Path(base_dir) / "files_general/resource_files/universal_input/config_static_DoNotModifyMe/config_static.yaml"
+config_file_user = Path(base_dir) / "files_general/resource_files/config_user_ModifyMe/config_user.yaml"
 
-overwrite_switch = config_user_dictionary['figure_generation_overwrite_switch ']
+with open(config_file_static, 'r') as stream:
+    config_dict_static = yaml.safe_load(stream)
+
+with open(config_file_user, 'r') as stream:
+    config_dict_user = yaml.safe_load(stream)
+
+overwrite_switch = config_dict_user['figure_generation_overwrite_switch']
 
 
 def main() -> None:
@@ -55,9 +61,14 @@ def main() -> None:
 
     :returns: None
     """
+
+    if skip_sed is None:
+        file_type_to_modify = "json"
+        utils.sed_replacement(base_dir, config_dict_static, config_dict_user, file_type_to_modify)
+
     print("\nGenerating supporting latex table and image files:\n")
-    latex_outline.write_data_attributes_tables(base_dir, config_static_dictionary, overwrite_switch)
-    latex_outline.write_datasets(base_dir, config_static_dictionary, overwrite_switch)
+    latex_outline.write_data_attributes_tables(base_dir, config_dict_static, config_dict_user, overwrite_switch)
+    latex_outline.write_datasets(base_dir, config_dict_static, config_dict_user, overwrite_switch)
     print()
 
 
