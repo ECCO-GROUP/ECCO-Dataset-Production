@@ -6,6 +6,7 @@ import sys
 import yaml
 
 # Ensure the project root is on the path so relative imports resolve correctly
+#base_dir = Path(__file__).parent.parent.parent.parent.resolve()
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 import src.document_generator.utils.utils_general as utils_general
@@ -13,7 +14,7 @@ import src.document_generator.utils.utils_json as utils_json
 import src.document_generator.utils.cdf_extract as cdf_extract
 
 
-def write_data_attributes_tables(base_dir: str, config_dict_static: dict, config_dict_user: dict, overwrite_switch: bool) -> None:
+def write_data_attributes_tables(base_dir: str, config_dict_static: dict, config_dict_user: dict) -> None:
     """
     Write all attribute and example variable tables to their respective ``.tex`` files.
 
@@ -44,13 +45,6 @@ def write_data_attributes_tables(base_dir: str, config_dict_static: dict, config
     # --- Step 1: Write global and variable attribute reference tables ---
     utils_json.write_attributes_tables_tex(base_dir, config_dict_static, config_dict_user)
 
-    # Navigate up one level from the native variable dir to find the shared
-    # parent of all variable granule directories (native, latlon, 1D)
-    #variable_granules_parent_directory = os.path.join(
-    #    base_dir,
-    #    "/".join(config_dict_static["variable_files_native_dir"].split("/")[:-1])
-    #)
-
     for grid_type in config_dict_user["grid_types_considered"]:
         variable_files_dir = Path(base_dir) / config_dict_static[f"variable_files_{grid_type}_dir"].format(ecco_version_string=config_dict_user["ecco_version_string"])
         if variable_files_dir.exists():
@@ -69,8 +63,12 @@ def write_data_attributes_tables(base_dir: str, config_dict_static: dict, config
         granule_type, grid_type = utils_general.get_granule_and_grid_types(granule_directory)
         cdf_extract.latex_example_netcdf(base_dir, config_dict_static, config_dict_user, grid_type)
 
+    # --- Step 3: Modify "filenames_conventions.tex" to reflect the example granules currently being analyzed ---
+    for grid_type in config_dict_user["grid_types_considered"]:
+        cdf_extract.append_to_filenames_conventions_file(base_dir, config_dict_static, config_dict_user, grid_type)
 
-def write_datasets(base_dir: str, config_dict_static: dict, config_dict_user: dict, overwrite_switch: bool) -> None:
+
+def write_datasets(base_dir: str, config_dict_static: dict, config_dict_user: dict) -> None:
     """
     Write all dataset variable and coordinate tables to their ``.tex`` files.
 
@@ -102,12 +100,10 @@ def write_datasets(base_dir: str, config_dict_static: dict, config_dict_user: di
     # Each leaf directory contains granules for one (type, grid) combination
     granule_directories = [root for root, dirs, files in os.walk(str(granules_parent_directory)) if not dirs]
 
-    pdb.set_trace()
-
     for granule_directory in granule_directories:
         dir_path_string = ('/').join(granule_directory.split('/')[-config_dict_static['negative_steps_to_variable_granules_dir']:])
         print(f"writing latex table and figure files for granules in the {dir_path_string} directory")
-        cdf_extract.data_products(base_dir, config_dict_static, config_dict_user, granule_directory, overwrite_switch)
+        cdf_extract.data_products(base_dir, config_dict_static, config_dict_user, granule_directory)
 
 
 if __name__ == '__main__':

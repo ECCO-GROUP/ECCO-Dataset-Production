@@ -49,7 +49,7 @@ def write_attributes_tables_tex(base_dir: str, config_dict_static: dict, config_
     non_global_attributes_from_granules = set()
 
     #all_granule_paths = utils_general.list_files_pathlib(os.path.join(base_dir, config_dict["user_generated_granules_dir_relative"]))
-    all_granule_paths = [str(p) for p in (Path(base_dir) / config_dict_static["user_generated_granules_dir_relative"]).rglob('*.nc') if p.is_file()]
+    all_granule_paths = [str(p) for p in (Path(base_dir) / config_dict_static["user_generated_granules_dir_relative"].format(ecco_version_string=config_dict_user['ecco_version_string'])).rglob('*.nc') if p.is_file()]
 
     global_attributes_granules = set()
     non_global_attributes_granules = set()

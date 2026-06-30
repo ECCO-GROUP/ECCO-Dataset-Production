@@ -76,15 +76,11 @@ def main() -> None:
     output_directory = Path(base_dir) / config_dict_static["final_compendium_files_dir"]
     output_directory.mkdir(parents=True, exist_ok=True)
 
+    '''
     # Timestamp the output filename so repeated runs don't overwrite each other
     timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
-                
+    '''
     
-    if skip_sed is None:
-        file_type_to_modify = "latex"
-        utils.sed_replacement(base_dir, config_dict_static, config_dict_user, file_type_to_modify)
-
-
     # Attempt compilation of final latex document
     try:
         result = subprocess.run(

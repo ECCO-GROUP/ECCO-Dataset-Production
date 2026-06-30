@@ -5,6 +5,7 @@ import xarray as xr
 import json
 import subprocess
 from pathlib import Path
+import pathlib
 import sys
 import pdb
 import matplotlib.pyplot as plt
@@ -43,8 +44,6 @@ def fieldTable(config_dict_static: dict, dataset: xr.Dataset, is_coord: bool, gr
     :returns: LaTeX lines forming a complete ``longtable`` environment.
     :rtype: list[str]
     """
-
-    #print(dataset)
 
     product_name = get_product_name(dataset)
     datavar_shortname_list, datavar_longname_list, datavar_units_list = get_variable_names_in_dataset(dataset=dataset, isCoord=False)
@@ -133,10 +132,10 @@ def latex_example_netcdf(base_dir: str, config_dict_static: dict, config_dict_us
     :type grid_type: str
     :returns: None
     """
-    granule_directory = os.path.join(base_dir, config_dict_static[f"variable_files_{grid_type}_dir"].format(ecco_version_string=config_dict_user["ecco_version_string"]))
+    granule_directory = Path(base_dir) / config_dict_static[f"variable_files_{grid_type}_dir"].format(ecco_version_string=config_dict_user["ecco_version_string"])
 
     # Use the hardcoded example granule filename as requested by the project lead
-    example_granule = os.path.join(granule_directory, config_dict_user[f"example_granule_{grid_type}"].format(ecco_version_string=config_dict_user["ecco_version_string"]))
+    example_granule = Path(granule_directory) / config_dict_user[f"example_granule_{grid_type}"].format(ecco_version_string=config_dict_user["ecco_version_string"])
 
     # Open without decoding so raw attribute values are preserved in the CDL output
     dataset = xr.open_dataset(
@@ -148,7 +147,7 @@ def latex_example_netcdf(base_dir: str, config_dict_static: dict, config_dict_us
     latex_lines = []
     latex_lines.append(r'\begin{longtable}{|p{\textwidth}|}')
     latex_lines.extend(config_dict_static[f"example_table_first_latex_lines_{grid_type}"])
-    latex_lines.append(r'\noindent granule: \hfill ' + utils_general.sanitize(config_dict_static, f'{config_dict_user[f"example_granule_{grid_type}"]}') + r'\hfill\null \\')
+    latex_lines.append(r'\noindent granule: \hfill ' + utils_general.sanitize(config_dict_static, f'{config_dict_user[f"example_granule_{grid_type}"].format(ecco_version_string=config_dict_user["ecco_version_string"])}') + r'\hfill\null \\')
     latex_lines.append(r'\hline')
     latex_lines.append(r'dimensions: \\')
     latex_lines.append(r'\hline')
@@ -235,10 +234,34 @@ def latex_example_netcdf(base_dir: str, config_dict_static: dict, config_dict_us
 
     latex_lines.append(r'\end{longtable}')
 
-    latex_output_file = os.path.join(base_dir, config_dict_static[f"example_{grid_type}_table_tex_file"])
+    latex_output_file = Path(base_dir) / config_dict_static[f"example_{grid_type}_table_tex_file"].format(ecco_version_string=config_dict_user["ecco_version_string"])
     Path(latex_output_file).parent.mkdir(parents=True, exist_ok=True)
     with open(latex_output_file, 'w') as output_file:
         output_file.write('\n'.join(latex_lines))
+
+
+    
+def append_to_filenames_conventions_file(base_dir: str, config_dict_static: dict, config_dict_user: dict, grid_type: str, example_granule: str | None = None) -> None:
+
+    if not example_granule:
+        granule_directory = Path(base_dir) / config_dict_static[f"variable_files_{grid_type}_dir"].format(ecco_version_string=config_dict_user["ecco_version_string"])
+        example_granule = Path(granule_directory) / config_dict_user[f"example_granule_{grid_type}"].format(ecco_version_string=config_dict_user["ecco_version_string"])
+
+    # Open without decoding so raw attribute values are preserved in the CDL output
+    dataset = xr.open_dataset(
+        example_granule,
+        decode_times=False, decode_cf=False,
+        decode_coords=False, decode_timedelta=False
+    )
+
+    with open((Path(base_dir) / config_dict_static["input_tex_filenames_conventions"].format(ecco_version_string=config_dict_user["ecco_version_string"])), 'a') as appending_file:
+        appending_file.write("\\par\n")
+        appending_file.write(fr"{utils_general.sanitize(config_dict_static, example_granule.stem)}" + "\n")
+        appending_file.write("\\begin{itemize}\n")
+        appending_file.write(fr"    \item {utils_general.sanitize(config_dict_static, dataset.attrs['summary'].split('. ')[0])}." + "\n")
+        appending_file.write("\\end{itemize}\n")
+
+
 
 
 # ---------------------------------------------------------------------------
@@ -258,10 +281,6 @@ def get_non_coordinate_vars(filename: str) -> list:
     :returns: DataArrays for all non-coordinate variables, sorted by name.
     :rtype: list[xr.DataArray]
     """
-
-    #print()
-    #print(filename)
-
 
     dataset = xr.open_dataset(
         filename,
@@ -436,19 +455,13 @@ def search_and_extract(
     for root, dirs, files in os.walk(granule_directory):
         for file in files:
             if granule_filename_truncated_stem in file and file.endswith(".nc"):
-                filepath = os.path.join(root, file)
+                filepath = Path(root) / file
                 if is_coord:
                     data_array_list = get_coordinate_vars(filepath)
                 else:
                     data_array_list = get_non_coordinate_vars(filepath)
                 dataset = xr.open_dataset(filepath)
-
-                #for da in data_array_list:
-                #    print(filepath)
-                #    print(da.name)
-
                 return data_array_list, dataset
-            #else:
         return None
     
     # NoTE: The error below triggers whenever a grouping is not found to have a corresponding granule.
@@ -742,7 +755,7 @@ def get_Global_or_CoordsDimsVarsList(netCDFpath: str, jsonFileName: str, saveTo:
     # Deduplicate and sort for a stable, human-readable output
     GlobalAttrsCollect = sorted(list(set(GlobalAttrsCollect)))
 
-    with open(os.path.join(saveTo, jsonFileName), 'w') as output_file:
+    with open((Path(saveTo) / jsonFileName), 'w') as output_file:
         output_file.write(str(json.dumps(GlobalAttrsCollect)))
 
 
@@ -751,7 +764,6 @@ def data_products(
     config_dict_static: dict,
     config_dict_user: dict,
     granule_directory: str,
-    overwrite_switch: bool
 ) -> None:
     """
     Generate all LaTeX content for one granule directory and write it to a ``.tex`` file.
@@ -799,6 +811,16 @@ def data_products(
     granule_directory       = Path(base_dir) / config_dict_static[f"{granule_type}_files_{grid_type}_dir"].format(ecco_version_string=config_dict_user["ecco_version_string"])
     image_directory         = Path(base_dir) / config_dict_static[f"figures_{granule_type}_{grid_type}_dir"].format(ecco_version_string=config_dict_user["ecco_version_string"])
 
+
+    #Modify "filenames_conventions.tex" to reflect the coordinate granules currently being analyzed
+    if is_coord:
+        for root, dirs, files in os.walk(granule_directory):
+            for file in files:
+                if file.endswith(".nc"):
+                    filepath = Path(base_dir) / root / file
+                    append_to_filenames_conventions_file(base_dir, config_dict_static, config_dict_user, grid_type, filepath)
+
+
     with open(json_groupings_filepath, 'r') as json_file:
         list_of_json_dictionaries = json.load(json_file)
 
@@ -808,7 +830,7 @@ def data_products(
         list_of_json_dictionaries = utils_json.modify_json_add_introduction_field_to_groupings(list_of_json_dictionaries, str(json_groupings_filepath), config_dict_static, config_dict_user)
 
         # Determine which granules exist locally, so only relevant groupings are used
-        all_granule_paths = [str(p) for p in (Path(base_dir) / config_dict_static["user_generated_granules_dir_relative"]).rglob('*.nc') if p.is_file()]
+        all_granule_paths = [str(p) for p in (Path(base_dir) / config_dict_static["user_generated_granules_dir_relative"].format(ecco_version_string=config_dict_user["ecco_version_string"])).rglob('*.nc') if p.is_file()]
         all_grid_granule_paths = [p for p in all_granule_paths if re.search(grid_type.replace('-','_?').replace('_','_?'), p)]
         all_grid_granule_paths_megastring = ("_").join(all_grid_granule_paths)
 
@@ -819,11 +841,12 @@ def data_products(
 
         if not is_coord:
             if granule_filename_truncated_stem not in all_grid_granule_paths_megastring:
+                #print(f"granule not present: {granule_filename_truncated_stem}({grid_type})")
                 continue
 
         if search_and_extract(
             granule_filename_truncated_stem,
-            os.path.join(granule_directory),
+            granule_directory,
             is_coord
             ) is None:
 
@@ -838,11 +861,11 @@ def data_products(
             continue
         else:
 
-            print(granule_filename_truncated_stem)
+            #print(granule_filename_truncated_stem)
 
             data_array_list, dataset = search_and_extract(
                 granule_filename_truncated_stem,
-                os.path.join(granule_directory),
+                granule_directory,
                 is_coord
             )
 
@@ -878,10 +901,10 @@ def data_products(
             dataVarTable = data_var_table(config_dict_static, variable_name, attributes_dict, granule_filename_truncated_stem, grid_type)
             latex_lines.extend(dataVarTable)
 
+            overwrite_switch = config_dict_user['figure_generation_overwrite_switch']
+
             # Generate (or retrieve cached) plot and embed as a figure
-            dataVarPlot = cdf_plotter.data_var_plot(
-                config_dict_static, dataset, dataset[variable_name], image_directory, overwrite_switch
-            )
+            dataVarPlot = cdf_plotter.data_var_plot(config_dict_static, dataset, dataset[variable_name], image_directory, overwrite_switch)
             latex_lines.append(r'\begin{figure}[H]')
             latex_lines.append(r'\centering')
             latex_lines.append(dataVarPlot)
@@ -891,9 +914,10 @@ def data_products(
             latex_lines.append(r'\newpage')
 
         # Write the accumulated lines to the section's .tex file after each grouping entry
-        granule_latex_output_file = os.path.join(
-            base_dir, config_dict_static[f'{granule_type}_table_{grid_type}_tex_file']
-        )
+        granule_latex_output_file = Path(base_dir) / config_dict_static[f'{granule_type}_table_{grid_type}_tex_file'].format(ecco_version_string=config_dict_user["ecco_version_string"])
+
+        #print(granule_latex_output_file)
+
         utils_general.write_latex_lines_to_file(latex_lines, granule_latex_output_file)
 
 

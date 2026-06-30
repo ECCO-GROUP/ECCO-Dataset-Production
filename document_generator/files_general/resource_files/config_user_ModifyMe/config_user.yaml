@@ -26,7 +26,8 @@
 # -------------------------------------------------------------------------------------------------------------------------------------
 
 
-ecco_version_string: V4r6
+ecco_version_string: V4r4
+#ecco_version_string: V4r6
 
 
 grid_types_considered:
@@ -36,9 +37,9 @@ grid_types_considered:
 #  - 1D
 
 
-example_granule_latlon: SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_{ecco_version_string}_latlon_0p50deg.nc
-example_granule_native: OCEAN_TEMPERATURE_SALINITY_mon_mean_1992-01_ECCO_{ecco_version_string}_native_llc0090.nc
-#example_granule_1D: GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_{ecco_version_string}_1D.nc
+example_granule_latlon: SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_V4r6_latlon_0p50deg.nc
+example_granule_native: OCEAN_TEMPERATURE_SALINITY_mon_mean_1992-01_ECCO_V4r6_native_llc0090.nc
+#example_granule_1D: GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r6_1D.nc
 
 
 #granule_download_overwrite_switch: True

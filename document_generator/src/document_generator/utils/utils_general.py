@@ -506,6 +506,7 @@ def sed_replacement(base_dir: str, config_dict_static: dict, config_dict_user: d
         }
 
         try:
+            #for sed_command in config_dict_static[f'{file_type}_template_modification_commands_list']:
             for sed_command in config_dict_static['template_file_modification_commands_list']:
                 result = subprocess.run(
                         sed_command.format_map(format_map_context_dict),
@@ -513,5 +514,4 @@ def sed_replacement(base_dir: str, config_dict_static: dict, config_dict_user: d
                         )
         except:
             print('Bash call to modify file did not work')
-            pdb.set_trace()
 

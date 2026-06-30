@@ -25,7 +25,8 @@ ECCO V-NUM-r-NUM-PROPER-ENGLISH-UPPERCASE-placeholder (V-NUM-r-NUM-placeholder) 
 
 \begin{center}
 \begin{tabular}{m{0.18\textwidth} m{0.75\textwidth}}
-    \multicolumn{1}{c}{\textbf{Keypoins}} & \multicolumn{1}{c}{\textbf{Description}} \\ \hline
+    \multicolumn{1}{c}{\textbf{Filename Parameter}} & \multicolumn{1}{c}{\textbf{Description}} \\ \hline
+    %\multicolumn{1}{c}{\textbf{Keypoints}} & \multicolumn{1}{c}{\textbf{Description}} \\ \hline
     ShortName: & Describes the dataset variable (e.g., SSH for sea surface height, TEMP\_SALINITY for temperature and salinity). \\ \hline 
     TemporalResolution: & Indicates the time averaging or snapshot type (e.g., DAILY, MONTHLY, SNAP). \\ \hline
     GridType : & Specifies the grid used (e.g., \textbf{native\_llc90} for the native ECCO grid or \textbf{laton\_0p50deg} for interpolated 0.5 \textdegree lat-lon grid). It can also be a specific information such as \textbf{1D} to indication the one-dimentional dataset files over the full period of ECCO data availability.\\ \hline
@@ -37,25 +38,9 @@ ECCO V-NUM-r-NUM-PROPER-ENGLISH-UPPERCASE-placeholder (V-NUM-r-NUM-placeholder) 
 
 \par \vspace{0.25cm}
 \subsection{Examples}
-\par Daily atmosphere surface temperature, humidity, winds, and pressure on the lat-lon-cap 90 (llc90)
-native model grid (first) and on the interpolated regular 0.5-degree lat-lon grid (second) from ECCO V-NUM-r-NUM-placeholder on 2017-12-29.
-\begin{itemize}
-    \item ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES\_day\_mean\_2017-12-29\_ECCO\_V-NUM-r-NUM-placeholder\_native\_llc0090.nc
-    \item ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES\_day\_mean\_2017-12-29\_ECCO\_V-NUM-r-NUM-placeholder\_latlon\_0p50deg.nc
-\end{itemize}
+% append the examples rather than hardcode
 
-\par Dynamic sea surface height interpolated on the lat-lon regular 0.5-degree model grid from ECCO V-NUM-r-NUM-placeholder on 2017-12-29.
-
-\begin{itemize}
-    \item SEA\_SURFACE\_HEIGHT\_day\_mean\_2017-12-29\_ECCO\_V-NUM-r-NUM-placeholder\_native\_llc0090.nc
-\end{itemize}
-
-\par One-dimentional field of global mean atmospheric surface pressure over the ocean and sea-ice fromthe ECCO V-NUM-r-NUM-placeholder.
-\begin{itemize}
-    \item GLOBAL\_MEAN\_ATM\_SURFACE\_PRES\_snap\_ECCO\_V-NUM-r-NUM-placeholder\_1D.nc
-\end{itemize}
-
-\par Geometric parameters for the regular 0.5-degree lat-lon grid from ECCO V-NUM-r-NUM-placeholder.
-\begin{itemize}
-    \item GRID\_GEOMETRY\_ECCO\_V-NUM-r-NUM-placeholder\_lat-lon\_0p50deg.nc
-\end{itemize}
+%\par Dynamic sea surface height interpolated on the lat-lon regular 0.5-degree model grid from ECCO V-NUM-r-NUM-placeholder on 2017-12-29.
+%\begin{itemize}
+%    \item ATM\_SURFACE\_TEMP\_HUM\_WIND\_PRES\_day\_mean\_2017-12-29\_ECCO\_V-NUM-r-NUM-placeholder\_latlon\_0p50deg.nc
+%\end{itemize}

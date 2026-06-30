@@ -133,6 +133,7 @@ dummy_entry_to_set_number_of_blank_lines_at_the_end_of_the_above_message: blah
 final_compendium_files_dir: "files_general/compendium_compilation_output_files"
 compendium_tex_filepath: "files_general/resource_files/version_specific/{ecco_version_string}/input_and_templates/latex/ECCO_Dataset_Catalog_and_Variable_Compendium.tex"
 input_tex_dir_relative: "files_general/resource_files/version_specific/{ecco_version_string}/input_and_templates/latex"
+input_tex_filenames_conventions: "files_general/resource_files/version_specific/{ecco_version_string}/input_and_templates/latex/filenames_conventions.tex"
 output_component_tex_dir_relative: "files_general/resource_files/version_specific/{ecco_version_string}/output_and_granules/output/latex"
 user_generated_granules_dir_relative: "files_general/resource_files/version_specific/{ecco_version_string}/output_and_granules/granules"
 

@@ -32,7 +32,7 @@ import ecco_v4_py as ecco
 # ---------------------------------------------------------------------------
 
 def data_var_plot(
-    config_dictionary: dict,
+    config_dict: dict,
     dataset: xr.Dataset,
     data_array: xr.DataArray,
     image_directory: str,
@@ -47,11 +47,11 @@ def data_var_plot(
     otherwise the existing file is reused. A thumbnail copy is also created
     at the size specified in the config.
 
-    :param config_dictionary: Configuration mapping. Expected keys include
+    :param config_dict: Configuration mapping. Expected keys include
         ``'thumbnail_path_modifier_string'`` (str, suffix inserted before the
         file extension to form the thumbnail filename) and ``'thumbnail_size'``
         (int, longest edge in pixels for the thumbnail).
-    :type config_dictionary: dict
+    :type config_dict: dict
     :param dataset: The dataset containing ``data_array``. Used for
         ``product_name`` and coordinate variables needed by the plot functions.
     :type dataset: xr.Dataset
@@ -87,10 +87,10 @@ def data_var_plot(
         # Build the thumbnail path by inserting the modifier before the extension
         thumbnail_output_path = (
             f"{'.' .join(figure_path.split('.')[:-1])}"
-            f"{config_dictionary['thumbnail_path_modifier_string']}"
+            f"{config_dict['thumbnail_path_modifier_string']}"
             f".{figure_path.split('.')[-1]}"
         )
-        thumbnail_size_tuple = (config_dictionary["thumbnail_size"], config_dictionary["thumbnail_size"])
+        thumbnail_size_tuple = (config_dict["thumbnail_size"], config_dict["thumbnail_size"])
 
         try:
             with Image.open(figure_path) as image:
