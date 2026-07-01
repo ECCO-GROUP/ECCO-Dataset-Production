@@ -340,3 +340,329 @@ class TestDatasetOutputContract:
 
         finally:
             output_ds.close()
+
+
+class TestGenerateDatasets:
+    """Integration tests for generate_datasets top-level function."""
+
+    @pytest.fixture
+    def config_file(self, minimal_config, tmp_path):
+        """Create a minimal config YAML file."""
+        import yaml
+        config_path = tmp_path / "config.yaml"
+        config_path.write_text(yaml.dump(minimal_config))
+        return str(config_path)
+
+    @pytest.fixture
+    def metadata_directory(self, tmp_path):
+        """Create metadata directory with minimal JSON files."""
+        metadata_dir = tmp_path / "metadata"
+        metadata_dir.mkdir()
+
+        for filename in [
+            'variable_metadata.json',
+            'coordinate_metadata_for_latlon_datasets.json',
+            'global_metadata_for_all_datasets.json',
+        ]:
+            (metadata_dir / filename).write_text('[]')
+
+        return str(metadata_dir)
+
+    @pytest.fixture
+    def grid_directory(self, tmp_path):
+        """Create a minimal grid directory with required files."""
+        grid_dir = tmp_path / "grid"
+        grid_dir.mkdir()
+
+        # Create minimal grid NetCDF file
+        grid_ds = xr.Dataset(
+            {
+                'XC': (['tile', 'j', 'i'], np.zeros((1, 2, 2))),
+                'YC': (['tile', 'j', 'i'], np.zeros((1, 2, 2))),
+                'Z': (['k'], np.array([0.0, 1.0])),
+            },
+            coords={
+                'tile': [1],
+                'j': [0, 1],
+                'i': [0, 1],
+                'k': [0, 1],
+            }
+        )
+
+        grid_file = grid_dir / "GRID.nc"
+        grid_ds.to_netcdf(grid_file)
+
+        return str(grid_dir)
+
+    @pytest.fixture
+    def mapping_factors_directory(self, tmp_path):
+        """Create mapping factors directory."""
+        factors_dir = tmp_path / "factors"
+        factors_dir.mkdir()
+
+        # Create minimal mapping factors file
+        factors_ds = xr.Dataset(
+            {
+                'wet_mask': (['latitude', 'longitude'], np.ones((2, 2))),
+            },
+            coords={
+                'latitude': [0.0, 1.0],
+                'longitude': [0.0, 1.0],
+            }
+        )
+
+        factors_file = factors_dir / "factors.nc"
+        factors_ds.to_netcdf(factors_file)
+
+        return str(factors_dir)
+
+    def test_processes_single_time_invariant_task(
+        self, minimal_input_netcdf, config_file, metadata_directory,
+        grid_directory, mapping_factors_directory, tmp_path, monkeypatch
+    ):
+        """Test that generate_datasets processes a single time-invariant task."""
+        # Use ECCO naming convention for time-invariant files
+        output_file = tmp_path / "TEST_ECCO_V4r6_latlon_0p50deg.nc"
+
+        # Create tasklist JSON
+        tasklist = [
+            {
+                'input_netcdf': minimal_input_netcdf,
+                'granule': str(output_file),
+                'strip_attributes': True,
+                'ecco_cfg_loc': config_file,
+                'ecco_grid_loc': grid_directory,
+                'ecco_mapping_factors_loc': mapping_factors_directory,
+                'ecco_metadata_loc': metadata_directory,
+                'dynamic_metadata': {
+                    'name': 'test_granule',
+                    'dimension': '2D',
+                    'time_coverage_duration': 'TIME-INVARIANT',
+                    'time_coverage_resolution': 'TIME-INVARIANT',
+                    'summary': 'Test single task',
+                    'comment': 'Integration test',
+                }
+            }
+        ]
+
+        tasklist_file = tmp_path / "tasklist.json"
+        tasklist_file.write_text(json.dumps(tasklist))
+
+        # Mock the complex resource initialization to avoid dependencies
+        from unittest import mock
+
+        with mock.patch('ecco_dataset_production.ecco_grid.ECCOGrid') as mock_grid_cls, \
+             mock.patch('ecco_dataset_production.ecco_mapping_factors.ECCOMappingFactors') as mock_factors_cls, \
+             mock.patch('ecco_dataset_production.ecco_metadata.ECCOMetadata') as mock_metadata_cls:
+
+            # Setup mocks
+            mock_grid = mock.MagicMock()
+            mock_grid.native_grid = {}
+            mock_grid_cls.return_value = mock_grid
+
+            mock_factors = mock.MagicMock()
+            mock_factors.latitude_bounds = np.array([[0.0, 0.5], [0.5, 1.0]])
+            mock_factors.longitude_bounds = np.array([[0.0, 0.5], [0.5, 1.0]])
+            mock_factors_cls.return_value = mock_factors
+
+            mock_metadata = mock.MagicMock()
+            mock_metadata.metadata_dir = metadata_directory
+            mock_metadata_cls.return_value = mock_metadata
+
+            # Execute
+            ecco_generate_datasets.generate_datasets(str(tasklist_file))
+
+        # Verify output was created
+        assert output_file.exists(), "Output file should be created"
+
+        # Verify it's a valid NetCDF
+        ds = xr.open_dataset(output_file)
+        try:
+            assert 'TEMP' in ds.data_vars, "Expected variable should be present"
+            assert ds['TEMP'].dtype == np.float32, "Should be float32"
+        finally:
+            ds.close()
+
+    def test_processes_multiple_tasks(
+        self, minimal_input_netcdf, config_file, metadata_directory,
+        grid_directory, mapping_factors_directory, tmp_path
+    ):
+        """Test that generate_datasets processes multiple tasks in sequence."""
+        # Use ECCO naming convention
+        output_file1 = tmp_path / "TEMP_ECCO_V4r6_latlon_0p50deg.nc"
+        output_file2 = tmp_path / "SALT_ECCO_V4r6_latlon_0p50deg.nc"
+
+        # Create second input file
+        ds2 = xr.Dataset(
+            {'SALT': (['time', 'lat', 'lon'], np.random.rand(1, 2, 2))},
+            coords={
+                'time': [np.datetime64('1992-01-02')],
+                'lat': [0.0, 1.0],
+                'lon': [0.0, 1.0],
+            }
+        )
+        input_file2 = tmp_path / "input2.nc"
+        ds2.to_netcdf(input_file2)
+
+        # Create tasklist with two tasks
+        tasklist = [
+            {
+                'input_netcdf': minimal_input_netcdf,
+                'granule': str(output_file1),
+                'strip_attributes': True,
+                'ecco_cfg_loc': config_file,
+                'ecco_grid_loc': grid_directory,
+                'ecco_mapping_factors_loc': mapping_factors_directory,
+                'ecco_metadata_loc': metadata_directory,
+                'dynamic_metadata': {
+                    'name': 'task1',
+                    'dimension': '2D',
+                    'time_coverage_duration': 'TIME-INVARIANT',
+                    'time_coverage_resolution': 'TIME-INVARIANT',
+                    'summary': 'Task 1',
+                    'comment': 'First task',
+                }
+            },
+            {
+                'input_netcdf': str(input_file2),
+                'granule': str(output_file2),
+                'strip_attributes': True,
+                'ecco_cfg_loc': config_file,
+                'ecco_grid_loc': grid_directory,
+                'ecco_mapping_factors_loc': mapping_factors_directory,
+                'ecco_metadata_loc': metadata_directory,
+                'dynamic_metadata': {
+                    'name': 'task2',
+                    'dimension': '2D',
+                    'time_coverage_duration': 'TIME-INVARIANT',
+                    'time_coverage_resolution': 'TIME-INVARIANT',
+                    'summary': 'Task 2',
+                    'comment': 'Second task',
+                }
+            }
+        ]
+
+        tasklist_file = tmp_path / "tasklist_multi.json"
+        tasklist_file.write_text(json.dumps(tasklist))
+
+        # Mock the complex resource initialization
+        from unittest import mock
+
+        with mock.patch('ecco_dataset_production.ecco_grid.ECCOGrid') as mock_grid_cls, \
+             mock.patch('ecco_dataset_production.ecco_mapping_factors.ECCOMappingFactors') as mock_factors_cls, \
+             mock.patch('ecco_dataset_production.ecco_metadata.ECCOMetadata') as mock_metadata_cls:
+
+            mock_grid = mock.MagicMock()
+            mock_grid.native_grid = {}
+            mock_grid_cls.return_value = mock_grid
+
+            mock_factors = mock.MagicMock()
+            mock_factors.latitude_bounds = np.array([[0.0, 0.5], [0.5, 1.0]])
+            mock_factors.longitude_bounds = np.array([[0.0, 0.5], [0.5, 1.0]])
+            mock_factors_cls.return_value = mock_factors
+
+            mock_metadata = mock.MagicMock()
+            mock_metadata.metadata_dir = metadata_directory
+            mock_metadata_cls.return_value = mock_metadata
+
+            # Execute
+            ecco_generate_datasets.generate_datasets(str(tasklist_file))
+
+        # Verify both outputs were created
+        assert output_file1.exists(), "First output file should be created"
+        assert output_file2.exists(), "Second output file should be created"
+
+        # Verify they contain different variables
+        ds1 = xr.open_dataset(output_file1)
+        ds2 = xr.open_dataset(output_file2)
+        try:
+            assert 'TEMP' in ds1.data_vars, "First file should have TEMP"
+            assert 'SALT' in ds2.data_vars, "Second file should have SALT"
+        finally:
+            ds1.close()
+            ds2.close()
+
+    def test_continues_after_task_error(
+        self, minimal_input_netcdf, config_file, metadata_directory,
+        grid_directory, mapping_factors_directory, tmp_path
+    ):
+        """Test that generate_datasets continues processing after a task fails."""
+        # Use ECCO naming convention
+        output_file1 = tmp_path / "FAIL_ECCO_V4r6_latlon_0p50deg.nc"
+        output_file2 = tmp_path / "SUCCESS_ECCO_V4r6_latlon_0p50deg.nc"
+
+        # Create tasklist where first task will fail (bad input file)
+        tasklist = [
+            {
+                'input_netcdf': '/nonexistent/file.nc',  # This will fail
+                'granule': str(output_file1),
+                'strip_attributes': True,
+                'ecco_cfg_loc': config_file,
+                'ecco_grid_loc': grid_directory,
+                'ecco_mapping_factors_loc': mapping_factors_directory,
+                'ecco_metadata_loc': metadata_directory,
+                'dynamic_metadata': {
+                    'name': 'failing_task',
+                    'dimension': '2D',
+                    'time_coverage_duration': 'TIME-INVARIANT',
+                    'time_coverage_resolution': 'TIME-INVARIANT',
+                    'summary': 'Failing task',
+                    'comment': 'This should fail',
+                }
+            },
+            {
+                'input_netcdf': minimal_input_netcdf,  # This should succeed
+                'granule': str(output_file2),
+                'strip_attributes': True,
+                'ecco_cfg_loc': config_file,
+                'ecco_grid_loc': grid_directory,
+                'ecco_mapping_factors_loc': mapping_factors_directory,
+                'ecco_metadata_loc': metadata_directory,
+                'dynamic_metadata': {
+                    'name': 'working_task',
+                    'dimension': '2D',
+                    'time_coverage_duration': 'TIME-INVARIANT',
+                    'time_coverage_resolution': 'TIME-INVARIANT',
+                    'summary': 'Working task',
+                    'comment': 'This should work',
+                }
+            }
+        ]
+
+        tasklist_file = tmp_path / "tasklist_error.json"
+        tasklist_file.write_text(json.dumps(tasklist))
+
+        # Mock the complex resource initialization
+        from unittest import mock
+
+        with mock.patch('ecco_dataset_production.ecco_grid.ECCOGrid') as mock_grid_cls, \
+             mock.patch('ecco_dataset_production.ecco_mapping_factors.ECCOMappingFactors') as mock_factors_cls, \
+             mock.patch('ecco_dataset_production.ecco_metadata.ECCOMetadata') as mock_metadata_cls:
+
+            mock_grid = mock.MagicMock()
+            mock_grid.native_grid = {}
+            mock_grid_cls.return_value = mock_grid
+
+            mock_factors = mock.MagicMock()
+            mock_factors.latitude_bounds = np.array([[0.0, 0.5], [0.5, 1.0]])
+            mock_factors.longitude_bounds = np.array([[0.0, 0.5], [0.5, 1.0]])
+            mock_factors_cls.return_value = mock_factors
+
+            mock_metadata = mock.MagicMock()
+            mock_metadata.metadata_dir = metadata_directory
+            mock_metadata_cls.return_value = mock_metadata
+
+            # Execute - should not raise despite first task failing
+            ecco_generate_datasets.generate_datasets(str(tasklist_file))
+
+        # Verify first task failed (no output)
+        assert not output_file1.exists(), "First output should not exist due to error"
+
+        # Verify second task succeeded
+        assert output_file2.exists(), "Second output should exist despite first task error"
+
+        ds2 = xr.open_dataset(output_file2)
+        try:
+            assert 'TEMP' in ds2.data_vars, "Second task should have completed successfully"
+        finally:
+            ds2.close()
