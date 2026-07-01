@@ -12,6 +12,7 @@ dependencies = [
     'lxml',
     'netCDF4',
     'numpy',
+    'yamale',
     'requests',
     'scipy',
     'sphinx_rtd_theme',
@@ -44,4 +45,13 @@ edp_create_job_files        = 'ecco_dataset_production.apps.create_job_files:mai
 edp_create_job_task_list    = 'ecco_dataset_production.apps.create_job_task_list:main'
 edp_generate_datasets       = 'ecco_dataset_production.apps.generate_datasets:main'
 edp_subset_tasklists        = 'ecco_dataset_production.apps.subset_tasklists:main'
+edp_validate_config         = 'ecco_dataset_production.apps.validate_config:main'
+
+[project.optional-dependencies]
+dev = [
+    'flake8',
+    'pylint',
+    'pytest',
+    'pytest-cov'
+]
 

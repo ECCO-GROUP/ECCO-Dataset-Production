@@ -36,7 +36,7 @@ import ecco_v4_py
 
 from . import aws
 from . import ecco_dataset
-from . import configuration
+from .config import ECCODatasetProductionConfig
 from . import ecco_file
 from . import ecco_grid
 from . import ecco_mapping_factors
@@ -707,7 +707,7 @@ def generate_datasets( tasklist, log_level=None, **kwargs):
         print('NEW TASK!')
         pprint(task)
         try:
-            cfg = configuration.ECCODatasetProductionConfig(cfgfile=task['ecco_cfg_loc'])
+            cfg = ECCODatasetProductionConfig(cfgfile=task['ecco_cfg_loc'])
 
             # Assuming all tasks share the same ECCO grid, mapping factors, and
             # metadata references then, for performance reasons, create ECCOGrid,
