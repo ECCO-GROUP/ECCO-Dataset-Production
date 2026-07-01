@@ -1,0 +1,112 @@
+# Yamale schema for ECCO Dataset Production configuration files
+#
+# This schema defines the structure for ECCO configuration files.
+# Default values are extracted programmatically using the `default=` keyword.
+
+#---------------------------------------------------------------------
+# ECCO version and filename-associated strings
+#---------------------------------------------------------------------
+
+ecco_version: str(required=True)
+product_version: str(required=True)
+ecco_production_filestr_grid_label: include('grid_labels', required=True)
+
+#---------------------------------------------------------------------
+# Model parameters
+#---------------------------------------------------------------------
+
+# Variable precision: float32 produces ~50% smaller files than float64
+array_precision: enum('float32', 'float64', required=False, default='float64')
+
+# Model start/end time in ISO format (YYYY-MM-DDThh:mm:ss)
+model_start_time: str(required=True, matches=r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$')
+model_end_time: str(required=True, matches=r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$')
+
+# Timestep configuration
+model_timestep_units: enum('h', 'm', 's', 'D', required=True)
+model_timestep: int(min=1, required=True)
+
+# Vertical levels and depth
+num_vertical_levels: int(min=1, required=False, default=50)
+geospatial_vertical_min: num(required=True)
+
+# ECCO grid files (paths may be specified via task list or CLI)
+ecco_native_grid_filename: str(required=True)
+ecco_grid_filename: str(required=False)
+ecco_grid_dir: str(required=False, arg_name='ecco_grid_loc', description='Directory containing ECCO grid files or AWS S3 bucket/prefix')
+
+#---------------------------------------------------------------------
+# Metadata and encodings
+#---------------------------------------------------------------------
+
+podaac_metadata_filename: str(required=True)
+
+# Global metadata strings
+history: str(required=True)
+references: str(required=True)
+source: str(required=True)
+summary: str(required=True)
+
+# NetCDF4 compression
+netcdf4_compression_encodings: include('compression', required=True)
+
+# Coordinate encoding
+variable_coordinates_as_encoded_attributes: list(str(), required=True)
+
+# DOI configuration
+doi_authority: str(required=True)
+doi_prefix: str(required=True, matches=r'^\d+\.\d+$')
+
+# Dataset descriptions
+dataset_description_tail_1D: str(required=False)
+dataset_description_tail_latlon: str(required=True)
+dataset_description_tail_native: str(required=True)
+
+#---------------------------------------------------------------------
+# Optional control flags (with defaults)
+#---------------------------------------------------------------------
+
+read_grid: bool(required=False, default=False)
+create_checksum: bool(required=False, default=False)
+extra_prints: bool(required=False, default=False)
+custom_grid_and_factors: bool(required=False, default=False)
+
+#---------------------------------------------------------------------
+# Path parameters (used by various CLI tools)
+#---------------------------------------------------------------------
+
+mapping_factors_dir: str(required=False, arg_name='ecco_mapping_factors_loc', description='Directory containing ECCO mapping factors or AWS S3 bucket/prefix')
+land_mask_dir: str(required=False)
+metadata_dir: str(required=False, arg_name='ecco_metadata_loc', description='Directory containing ECCO metadata JSON files or AWS S3 bucket/prefix')
+model_output_dir: str(required=False)
+processed_output_dir_base: str(required=False)
+
+#---------------------------------------------------------------------
+# Lat-lon grid parameters (used by create_factors)
+#---------------------------------------------------------------------
+
+latlon_grid_resolution: num(min=0, required=False, arg_name='resolution', description='Lat-lon grid resolution in degrees')
+latlon_grid_area_extent: list(num(), required=False, arg_name='extent', description='Grid area extent [min_lon, max_lon, min_lat, max_lat]')
+latlon_effective_grid_radius: num(required=False, arg_name='grid-radius', description='Effective grid radius in meters')
+
+#---------------------------------------------------------------------
+# Custom grid parameters (used by create_factors)
+#---------------------------------------------------------------------
+
+source_grid_min_L: num(required=False)
+source_grid_max_L: num(required=False)
+
+#---------------------------------------------------------------------
+# Schema includes/definitions
+#---------------------------------------------------------------------
+
+---
+grid_labels:
+  latlon: str(required=True)
+  native: str(required=True)
+
+---
+compression:
+  zlib: bool(required=True)
+  complevel: int(min=0, max=9, required=True)
+  shuffle: bool(required=True)

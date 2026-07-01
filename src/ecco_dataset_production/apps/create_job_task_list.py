@@ -16,7 +16,7 @@ import sys
 import urllib
 
 from .. import aws
-from .. import configuration
+from ..config import ECCODatasetProductionConfig
 from .. import ecco_file
 from .. import ecco_metadata
 from .. import ecco_time
@@ -34,9 +34,14 @@ def create_parser():
         argparser.ArgumentParser instance.
 
     """
-    parser = argparse.ArgumentParser(
+    # Create parser with config file support and config field overrides
+    parser = ECCODatasetProductionConfig.create_parser(
+        config_fields=['ecco_grid_dir', 'mapping_factors_dir', 'metadata_dir'],
         description="""Create a list of task inputs and outputs from an ECCO
-        Dataset Production job file.""")
+        Dataset Production job file."""
+    )
+
+    # Add tool-specific arguments
     parser.add_argument('--jobfile', help="""
         (Path and) filename of ECCO Dataset Production jobs text file.""")
     parser.add_argument('--ecco_source_root', help="""
@@ -47,26 +52,6 @@ def create_parser():
     parser.add_argument('--ecco_destination_root', help="""
         ECCO Dataset Production output root location, either directory path
         (e.g., ECCOV4r5_datasets) or AWS S3 bucket (s3://bucket_name).""")
-    parser.add_argument('--ecco_grid_loc', help="""
-        Directory containing ECCO grid files (XC.*, YC.*, *latlon*.nc,
-        *native*.nc, etc., as well as the file available_diagnostics.log), or
-        ECCO grid zipfile, or similar remote location given by AWS S3
-        bucket/prefix.""")
-    parser.add_argument('--ecco_mapping_factors_loc', help="""
-        Directory containing ECCO mapping factors (3D, land_mask, latlon_grid,
-        and sparse subdirectories), or similar remote location given by AWS S3
-        bucket/prefix.""")
-    parser.add_argument('--ecco_metadata_loc', help="""
-        Directory containing ECCO metadata *.json source files, or similar
-        remote location given by AWS S3 bucket/prefix.  Three of the source
-        files, *_groupings_for_{1D,latlon,native}_datasets.json, are used here
-        to create task definitions, while the others, e.g.
-        *_global_metadata_for_{all,native,latlon}_datasets.json, etc. are
-        referenced during subsequent dataset production task execution.""")
-    parser.add_argument('--ecco_cfg_loc', help="""
-        (Path and) filename of ECCO Dataset Production configuration file (yaml
-        format), or similar remote location given by AWS S3
-        bucket/prefix/filename.""")
     parser.add_argument('--outfile', help="""
         Resulting job task output file (json format) (default: stdout).""")
     parser.add_argument('--keygen', help="""
@@ -104,10 +89,9 @@ def s3_list_files( s3_client, bucket, prefix):
 
 
 def create_job_task_list(
-    jobfile=None, ecco_source_root=None, ecco_destination_root=None,
+    cfg, ecco_cfg_loc, jobfile=None, ecco_source_root=None, ecco_destination_root=None,
     ecco_grid_loc=None, ecco_mapping_factors_loc=None,
-    ecco_metadata_loc=None, ecco_cfg_loc=None,
-    keygen=None, profile=None, log_level=None):
+    ecco_metadata_loc=None, keygen=None, profile=None, log_level=None):
     """Create a list of task inputs and outputs from an ECCO Dataset Production
     job file.
 
@@ -145,6 +129,8 @@ def create_job_task_list(
             W -->|No| X[Return task_list]
 
     Args:
+        cfg (ECCODatasetProductionConfig): Loaded configuration instance.
+        ecco_cfg_loc (str): Path to configuration file (embedded in task list).
         jobfile (str): (Path and) filename of ECCO Dataset Production jobs
             text file, each line containing a Python case insensitive list-style
             specifier of the form
@@ -170,9 +156,6 @@ def create_job_task_list(
             source files (groupings_for_1D/latlon/native_datasets.json,
             global_metadata_for_all/native/latlon_datasets.json, etc.), or
             similar remote location given by AWS S3 bucket/prefix.
-        ecco_cfg_loc (str): (Path and) filename of ECCO Dataset Production
-            configuration file (yaml format), or similar remote location given
-            by AWS S3 bucket/prefix/filename.
         keygen (str): If ecco_source_root references an S3 bucket and if running
             in an institutionally-managed AWS IAM Identity Center (SSO)
             environment, name of federated login key generation script (e.g.,
@@ -207,9 +190,6 @@ def create_job_task_list(
     log.info("Starting create_job_task_list")
 
     # configuration initialization:
-
-    log.info('initializing configuration parameters...')
-    cfg = configuration.ECCODatasetProductionConfig(cfgfile=ecco_cfg_loc)
 
     log.info("Validating ecco_source_root and ecco_destination_root")
     if not ecco_source_root or not ecco_destination_root:
@@ -783,16 +763,27 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
+    # Load configuration from parsed args with config field overrides
+    cfg = ECCODatasetProductionConfig.from_parsed_args(
+        args,
+        config_fields=['ecco_grid_dir', 'mapping_factors_dir', 'metadata_dir'],
+        keygen=args.keygen,
+        profile=args.profile
+    )
+
     task_list = create_job_task_list(
+        cfg=cfg,
+        ecco_cfg_loc=args.ecco_cfg_loc,
         jobfile=args.jobfile,
         ecco_source_root=args.ecco_source_root,
         ecco_destination_root=args.ecco_destination_root,
-        ecco_grid_loc=args.ecco_grid_loc,
-        ecco_mapping_factors_loc=args.ecco_mapping_factors_loc,
-        ecco_metadata_loc=args.ecco_metadata_loc,
-        ecco_cfg_loc=args.ecco_cfg_loc,
-        keygen=args.keygen, profile=args.profile,
-        log_level=args.log_level)
+        ecco_grid_loc=cfg['ecco_grid_dir'],
+        ecco_mapping_factors_loc=cfg['mapping_factors_dir'],
+        ecco_metadata_loc=cfg['metadata_dir'],
+        keygen=args.keygen,
+        profile=args.profile,
+        log_level=args.log_level
+    )
 
     if args.outfile:
         fp = open(args.outfile,'w')
