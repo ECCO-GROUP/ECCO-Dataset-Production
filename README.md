@@ -42,6 +42,10 @@ ECCO Dataset Production uses [uv](https://docs.astral.sh/uv/) for fast, reproduc
 	$ cd ECCO-Dataset-Production
     $ uv sync
 
+For development work (running tests, linting), include the dev dependencies:
+
+    $ uv sync --extra dev
+
 This creates a virtual environment in `.venv` with all required dependencies. The package is installed in editable mode by default, so changes to the source code are immediately reflected.
 
 ### Alternative: pip install
@@ -50,9 +54,9 @@ If you prefer traditional pip installation:
 
     $ pip install .
 
-For development work, use an editable install:
+For development work, use an editable install with dev dependencies:
 
-    $ pip install -e .
+    $ pip install -e ".[dev]"
 
 Note that `uv` is recommended for development as it ensures reproducible builds and faster dependency resolution.
 
