@@ -32,20 +32,11 @@ dev = [
     'pytest-cov~=7.1.0'
 ]
 
-#[tool.setuptools]
-# include-package-data is true by default, so the following need not be
-# specified and is listed here only for reference:
-#include-package-data = true
-
-#[tool.setuptools.packages.find]
-# namespace package support is true by default, so the following need not be
-# specified and is listed here only for reference:
-#namespaces = true
-#where = ["src"]
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.setuptools.package-data]
-"ecco_dataset_production" = ["*.json"]
-#"ecco_dataset_production.metadata.V4r4" = ["*.json"]
+"ecco_dataset_production" = ["configs/*"]
 
 [project.scripts]
 edp_aws_s3_sync             = 'ecco_dataset_production.apps.aws_s3_sync:main'
