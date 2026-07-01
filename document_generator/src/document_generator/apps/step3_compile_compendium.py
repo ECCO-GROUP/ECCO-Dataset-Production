@@ -11,27 +11,16 @@ Usage::
     python a_step3_compile_latex.py
 """
 
-import pdb
 import os
 import sys
 import subprocess
 import yaml
 from pathlib import Path
 import datetime
-import argparse
-
-# Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
-
 import src.document_generator.utils.utils_general as utils
 
-
-parser = argparse.ArgumentParser()
-parser.add_argument('skipSed', nargs='?')
-args = parser.parse_args()
-
-skip_sed = args.skipSed
 
 config_file_static = Path(base_dir) / "files_general/resource_files/universal_input/config_static_DoNotModifyMe/config_static.yaml"
 config_file_user = Path(base_dir) / "files_general/resource_files/config_user_ModifyMe/config_user.yaml"
@@ -76,30 +65,28 @@ def main() -> None:
     output_directory = Path(base_dir) / config_dict_static["final_compendium_files_dir"]
     output_directory.mkdir(parents=True, exist_ok=True)
 
-    '''
-    # Timestamp the output filename so repeated runs don't overwrite each other
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
-    '''
+    for ii in range(config_dict_user['num_pdflatex_calls']):
+
+        print(f"pdflatex call {ii+1}/{config_dict_user['num_pdflatex_calls']}")
     
-    # Attempt compilation of final latex document
-    try:
-        result = subprocess.run(
-            [
-                'pdflatex',
-                '-halt-on-error',
-                f'--jobname={base_tex_stem}',
-                #f'--jobname={base_tex_stem}_{timestamp}',
-                f'--output-directory={output_directory}',
-                compendium_template_path
-            ],
-            check=True, text=True, capture_output=True
-        )
-    except subprocess.CalledProcessError as e:
-        print("An error occurred during pdflatex execution:")
-        print(e.stderr)
-        print(e.stdout)
-    except FileNotFoundError:
-        print("Please install the 'pdflatex' python package, perhaps via 'conda install pdflatex'")
+        # Attempt compilation of final latex document
+        try:
+            result = subprocess.run(
+                [
+                    'pdflatex',
+                    '-halt-on-error',
+                    f'--jobname={base_tex_stem}',
+                    f'--output-directory={output_directory}',
+                    compendium_template_path
+                ],
+                check=True, text=True, capture_output=True
+            )
+        except subprocess.CalledProcessError as e:
+            print("An error occurred during pdflatex execution:")
+            print(e.stderr)
+            print(e.stdout)
+        except FileNotFoundError:
+            print("Please install the 'pdflatex' program onto your computer in order to compile a latex document")
 
 
 if __name__ == "__main__":

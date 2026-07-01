@@ -20,21 +20,10 @@ Usage::
 import sys
 import yaml
 from pathlib import Path
-import argparse
-
-# Ensure the project root is on the path so relative imports resolve correctly
-#base_dir = Path(__file__).parent.parent.parent.parent.resolve()
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 import src.document_generator.utils.latex_outline as latex_outline
 import src.document_generator.utils.utils_general as utils
-
-
-parser = argparse.ArgumentParser()
-parser.add_argument('skipSed', nargs='?')
-args = parser.parse_args()
-
-skip_sed = args.skipSed
 
 
 config_file_static = Path(base_dir) / "files_general/resource_files/universal_input/config_static_DoNotModifyMe/config_static.yaml"
@@ -45,7 +34,6 @@ with open(config_file_static, 'r') as stream:
 
 with open(config_file_user, 'r') as stream:
     config_dict_user = yaml.safe_load(stream)
-
 
 
 def main() -> None:
@@ -62,11 +50,8 @@ def main() -> None:
     :returns: None
     """
 
-    # Modify all template files to reflect the version of ECCO being documented
-    if skip_sed is None:
-        for file_type_to_modify in ["latex", "json"]:
-            utils.sed_replacement(base_dir, config_dict_static, config_dict_user, file_type_to_modify)
-
+    for file_type_to_modify in ["latex", "json"]:
+        utils.template_file_text_replacement(base_dir, config_dict_static, config_dict_user, file_type_to_modify)
 
     print("\nGenerating supporting latex table and image files:\n")
     latex_outline.write_data_attributes_tables(base_dir, config_dict_static, config_dict_user)

@@ -8,38 +8,19 @@
 negative_steps_to_variable_granules_dir: 2
 # This is the number of steps "up the file tree" to the "variable_granules" directory from any of the "variable_files_<grid_type>_dir" mapping pairs specified here
 
+url_grid_type_substrings:
+  - _native
+  - _latlon
+  - _1D
+
+url_coordinate_substring: GRID_GEOMETRY
+
+granules_url_list_file_relative: files_general/resource_files/version_specific/{ecco_version_string}/input_and_templates/granules_to_download/granules_to_download.txt
 
 latex_template_files: files_general/resource_files/universal_input/template_files/latex_template_files
 json_template_files: files_general/resource_files/universal_input/template_files/json_coordinate_template_files
 latex_modified_input_files: files_general/resource_files/version_specific/{ecco_version_string}/input_and_templates/latex
 json_modified_input_files: files_general/resource_files/version_specific/{ecco_version_string}/input_and_templates/json/groupings_coordinates
-
-template_file_modification_commands_list:
-  - "sed \"s/ISSUE-DATE-placeholder/$(date +%B) $(date +%d), $(date +%Y)/g\" {file_in} > {file_out}"
-  - "sed -i \"s/V-NUM-r-NUM-placeholder/{ecco_version_string}/g\" {file_out}"
-  - "sed -i \"s/V-NUM-r-NUM-PROPER-ENGLISH-UPPERCASE-placeholder/Version {version_number} Release {release_number}/g\" {file_out}"
-  - "sed -i \"s/V-NUM-r-NUM-PROPER-ENGLISH-LOWERCASE-placeholder/version {version_number} release {release_number}/g\" {file_out}"
-# Notice here that only the first sed call references <file-in>, which is modified and saved as <file-out>, with only <file-out> being modified further
-
-thumbnail_size: 512
-thumbnail_path_modifier_string: _thumbnail
-
-tab_char: \t
-tab_width_cm: 0.5
-
-url_grid_type_substrings:
-  - _native
-  - _lat-lon
-  - _1D
-
-url_coordinate_substring: GRID_GEOMETRY
-
-
-global_attribute_rowcolor: cyan!25
-variable_attribute_rowcolor: violet!25
-
-
-granules_url_list_file_relative: files_general/resource_files/version_specific/{ecco_version_string}/input_and_templates/granules_to_download/granules_to_download.txt
 
 groupings_variable_native_json_file: files_general/resource_files/version_specific/{ecco_version_string}/input_and_templates/json/groupings_variables/groupings_for_native_datasets.json
 groupings_variable_latlon_json_file: files_general/resource_files/version_specific/{ecco_version_string}/input_and_templates/json/groupings_variables/groupings_for_latlon_datasets.json
@@ -151,5 +132,19 @@ dataset_text_dict:
     AVG_DAY: 'daily-average'
     AVG_MON: 'monthly-average'
     SNAP: 'hourly snapshot'
+
+
+# Formatting
+# -------------------------------------------------------------------------------------------------------------------------------------
+thumbnail_size: 512
+thumbnail_path_modifier_string: _thumbnail
+
+tab_char: \t
+tab_width_cm: 0.5
+
+global_attribute_rowcolor: cyan!25
+variable_attribute_rowcolor: violet!25
+# -------------------------------------------------------------------------------------------------------------------------------------
+
 
 

@@ -1,12 +1,9 @@
-import pdb
 import copy
 import xarray as xr
 import json
 from pathlib import Path
 import sys
 import os
-
-# Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 import src.document_generator.utils.utils_general as utils_general

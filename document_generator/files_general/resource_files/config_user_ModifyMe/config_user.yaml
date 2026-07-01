@@ -1,50 +1,68 @@
-# User instructions:  Edit this yaml file as necessary.  
-#
-# <ecco_version_string> identifies the version of ECCO that you are documenting.  
-#
-# <grid_types_considered> lists the types of ECCO grids for which you have either coordinate or variable granules 
-# (the three possibilities are "lat-lon", "native", and "1D").
-#
-# <example_granule_*>, where "*" is "latlon", "native", or "1D", specifies the basename (filename without parent directory path) 
-# of a granule of your choosing from your downloaded granules directory which will be used to make an exhaustive example table of 
-# granule metadata for the "*" grid type appearing early in the compendium.  
-# Note: please select only a single <example_granule_*> for a given grid type.
-#
-# <figure_generation_overwrite_switch> is a boolean parameter which allows the user to skip re-generation of figures which
-# have already been generated.  We recommend leaving this set to "True", to prevent unwittingly including outdated figures
-# in your compendiums.
-#
-# <granule_download_overwrite_switch> is a boolean parameter which allows the user to skip re-downloading granules which are observed
-# to already be present on the user's machine.  We recommend leaving this set to "False", as downloading can be a bottleneck 
-# and re-downloading granules should only be necessary if new versions of granules are made available by the ECCO team or if
-# the user has modified their local granule files and would like to generate fresh original versions. 
-#
-# Yaml files treat lines starting with the hash mark "#" as comments, so feel free to "comment out" elements of the list 
-# <grid_types_considered> and any of the <example_granule_*> mapping pairs according to your local collection of granules
-# (the current version of the code will crash if, for example, you don't have and "1D" granules, but you leave "1D" in 
-# the list <grid_types_considered>).
-# -------------------------------------------------------------------------------------------------------------------------------------
+# Notes and instructions printed at the bottom
 
-
-ecco_version_string: V4r4
-#ecco_version_string: V4r6
-
+ecco_version_string: V4r6
 
 grid_types_considered:
-  - latlon
-#- lat-lon
   - native
+  - latlon
 #  - 1D
 
-
-example_granule_latlon: SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_V4r6_latlon_0p50deg.nc
 example_granule_native: OCEAN_TEMPERATURE_SALINITY_mon_mean_1992-01_ECCO_V4r6_native_llc0090.nc
+example_granule_latlon: SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_V4r6_latlon_0p50deg.nc
 #example_granule_1D: GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r6_1D.nc
-
 
 #granule_download_overwrite_switch: True
 granule_download_overwrite_switch: False
 
-
 figure_generation_overwrite_switch: True
 #figure_generation_overwrite_switch: False
+
+num_pdflatex_calls: 2
+#num_pdflatex_calls: 1
+
+
+# -------------------------------------------------------------------------------------------------------------------------------------
+# Instructions:  edit this configuration file as necessary.  
+# -------------------------------------------------------------------------------------------------------------------------------------
+#
+# Note: Use comments (#) to make lines invisible to programs reading this file.
+#
+# Note: Yaml files use a specific syntax.  Here are examples relevant to this file:
+#
+### defining a variable:
+# variable: value
+#
+#
+### defining a list:
+# list:
+#   - element_1
+#   - element_2
+#   - element_3
+#
+#
+# Configuration variables/lists defined in this file:
+# -------------------------------------------------------------------------------------------------------------------------------------
+# <ecco_version_string> identifies the version of ECCO that you are documenting (i.e. V4r6).  
+#
+# <grid_types_considered> lists the types of ECCO grids for which you have either coordinate or variable granules downloaded
+# and which you'd like documented in the compendium (the three possibilities are "native", "latlon", and "1D").
+#
+# <example_granule_*>, where "*" is "native", "latlon", or "1D", specifies the basename (filename without parent directory path) 
+# of a granule of your choosing from your downloaded granules directory which will be used to make an exhaustive example table of 
+# granule metadata for the "*" grid type.  
+# Note: please specify only a single <example_granule_*> for a given grid type.
+#
+# <granule_download_overwrite_switch> is a boolean parameter which allows users to skip re-downloading granules with names
+# already found in the local granules directory.  We recommend setting this variable to "False" to make use of this option,
+# as downloading can be a bottleneck and re-downloading granules should only be necessary if new versions of granules are made 
+# available by the ECCO team or if the user has modified their local granule files and would like to obtain the original versions. 
+#
+# <figure_generation_overwrite_switch> is a boolean parameter which allows users to avoid re-generating figure files with
+# names already found in the local output directory.  We recommend setting this variable to "True", as doing otherwise invites 
+# the possibility of accidentally using outdated figures.
+#
+# <num_pdflatex_calls> specifies the number of times the pdflatex program will be called to compile the final compendium document.
+# Compiling at least twice is usually necessary in order for pdflatex to make an accurate table of contents, among other things.
+# -------------------------------------------------------------------------------------------------------------------------------------
+
+

@@ -1,6 +1,11 @@
-# NOTE: This module depends on ecco_v4_py for native-grid tile plots and
+# ---------------------------------------------------------------------------
+# NoTE: This module depends on ecco_v4_py for native-grid tile plots and
 # polar stereographic projections. Ensure the library is installed and its
-# path is appended to sys.path before importing this module.
+# path is appended to sys.path before importing this module.  I.E:
+sys.path.append('/Users/brucel/ECCOv4-py')
+import ecco_v4_py as ecco
+# ---------------------------------------------------------------------------
+
 
 import sys
 import matplotlib.colors
@@ -15,16 +20,10 @@ import cmocean
 import argparse
 from pathlib import Path
 from PIL import Image
-import pdb
-
-# Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 import src.document_generator.utils.utils_general as utils_general
 import src.document_generator.utils.cdf_extract as cdf_extract
-
-sys.path.append('/Users/brucel/ECCOv4-py')
-import ecco_v4_py as ecco
 
 
 # ---------------------------------------------------------------------------
@@ -670,58 +669,3 @@ def compute_cmin_cmax(data, factor: float = 1.5) -> tuple:
 
     return cmin, cmax
 
-
-if __name__ == '__main__':
-    """
-    Command-line interface for plotting a single variable from a NetCDF file.
-
-    Usage::
-
-        python cdf_plotter.py --file PATH --field VARNAME [--directory DIR]
-                              [--cbar BOOL] [--coords BOOL]
-
-    :param --file: Path to the NetCDF file.
-    :param --field: Name of the variable to plot, or ``'all'`` to plot every
-        variable.
-    :param --directory: Output directory for plot images. Defaults to
-        ``'images/plots/{type}_plots/'``.
-    :param --cbar: ``'True'`` or ``'False'``. Whether to show the colorbar.
-        Default is ``True``.
-    :param --coords: ``'True'`` or ``'False'``. Whether to plot coordinate
-        variables. Default is ``False``.
-    """
-    parser = argparse.ArgumentParser(description='Plot a data variable.')
-    parser.add_argument('--file',      required=True,  type=str)
-    parser.add_argument('--field',     required=True,  type=str)
-    parser.add_argument('--directory', required=False, type=str)
-    parser.add_argument('--cbar',      required=False, type=str, default=None)
-    parser.add_argument('--coords',    required=False, type=str, default=None)
-
-    args = parser.parse_args()
-    file      = args.file
-    field     = args.field
-    directory = args.directory
-
-    cbar   = False if args.cbar   == 'False' else True
-    coords = True  if args.coords == 'True'  else False
-
-    ds = xr.open_dataset(args.file)
-
-    # Determine the grid type from the file path for the output directory default
-    if 'native' in file:
-        type = 'native'
-    elif 'lat-lon' in file:
-        type = 'lat-lon'
-    else:
-        type = '1D'
-
-    if args.field == 'all':
-        fields = list(ds.coords if coords else ds.data_vars)
-    else:
-        fields = [args.field]
-
-    for fi, f in enumerate(fields):
-        field = ds[f]
-        if directory is None:
-            directory = 'images/plots/' + type + '_plots/'
-        data_var_plot(ds, field, directory, cbar, coords)

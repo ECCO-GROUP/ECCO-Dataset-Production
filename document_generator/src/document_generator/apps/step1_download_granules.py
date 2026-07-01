@@ -14,13 +14,10 @@ Usage::
 import sys
 from pathlib import Path
 import yaml
-import pdb
-
-
-# Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 import src.document_generator.utils.utils_general as utils
+
 
 config_file_static = Path(base_dir) / "files_general/resource_files/universal_input/config_static_DoNotModifyMe/config_static.yaml"
 config_file_user = Path(base_dir) / "files_general/resource_files/config_user_ModifyMe/config_user.yaml"
@@ -30,6 +27,7 @@ with open(config_file_static, 'r') as stream:
 
 with open(config_file_user, 'r') as stream:
     config_dictionary_user = yaml.safe_load(stream)
+
 
 def main() -> None:
     """

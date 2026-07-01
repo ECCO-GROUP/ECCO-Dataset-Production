@@ -7,7 +7,6 @@ import subprocess
 from pathlib import Path
 import pathlib
 import sys
-import pdb
 import matplotlib.pyplot as plt
 
 # Ensure the project root is on the path so relative imports resolve correctly

@@ -1,4 +1,4 @@
-import pdb
+from datetime import datetime
 import os
 import re
 import xarray as xr
@@ -484,34 +484,44 @@ def get_granule_and_grid_types(granule_directory: str) -> tuple:
     )
 
 
-def sed_replacement(base_dir: str, config_dict_static: dict, config_dict_user: dict, file_type: str) -> None:
+def template_file_text_replacement(base_dir: str, config_dict_static: dict, config_dict_user: dict, file_type: str) -> None:
 
     if file_type == "latex":
         suffix = ".tex"
     elif file_type == "json":
         suffix = ".json"
 
-    ecco_version_string = config_dict_user["ecco_version_string"]
-
-    (Path(base_dir) / config_dict_static[f'{file_type}_modified_input_files'].format(ecco_version_string=ecco_version_string)).mkdir(parents=True, exist_ok=True)
     template_files = [f.name for f in (Path(base_dir) / config_dict_static[f'{file_type}_template_files']).iterdir() if f.is_file() and f.suffix == suffix]
 
-    for file_name in template_files:
-        format_map_context_dict = {
-            'ecco_version_string': ecco_version_string,
-            'version_number': int(ecco_version_string[1:ecco_version_string.index('r')]),
-            'release_number': int(ecco_version_string[ecco_version_string.index('r')+1:]),
-            'file_in': str(Path(base_dir) / config_dict_static[f'{file_type}_template_files'] / file_name),
-            'file_out': str(Path(base_dir) / config_dict_static[f'{file_type}_modified_input_files'].format(ecco_version_string=ecco_version_string) / file_name),
-        }
 
-        try:
-            #for sed_command in config_dict_static[f'{file_type}_template_modification_commands_list']:
-            for sed_command in config_dict_static['template_file_modification_commands_list']:
-                result = subprocess.run(
-                        sed_command.format_map(format_map_context_dict),
-                        check=True, shell=True
-                        )
-        except:
-            print('Bash call to modify file did not work')
+    ecco_version_string = config_dict_user["ecco_version_string"]
+    (Path(base_dir) / config_dict_static[f'{file_type}_modified_input_files'].format(ecco_version_string=ecco_version_string)).mkdir(parents=True, exist_ok=True)
+    version_number = int(ecco_version_string[1:ecco_version_string.index('r')])
+    release_number = int(ecco_version_string[ecco_version_string.index('r')+1:])
+
+    current_time = datetime.now()
+    year_num = current_time.year
+    day_num = current_time.day
+    month_name = current_time.strftime("%B")
+
+    replacement_map_dictionary = {
+            "ISSUE-DATE-placeholder": f"{month_name} {day_num}, {year_num}",
+            "V-NUM-r-NUM-placeholder": ecco_version_string,
+            "V-NUM-r-NUM-PROPER-ENGLISH-UPPERCASE-placeholder": f"Version {version_number} Release {release_number}",
+            "V-NUM-r-NUM-PROPER-ENGLISH-LOWERCASE-placeholder": f"version {version_number} release {release_number}",
+      } 
+
+    for file_name in template_files:
+
+        file_in = str(Path(base_dir) / config_dict_static[f'{file_type}_template_files'] / file_name)
+        file_out = str(Path(base_dir) / config_dict_static[f'{file_type}_modified_input_files'].format(ecco_version_string=ecco_version_string) / file_name)
+
+        with open(file_in, "r", encoding="utf-8") as file:
+            template_file_content = file.read()
+
+        for placeholder in replacement_map_dictionary.keys():
+            template_file_content = template_file_content.replace(placeholder, replacement_map_dictionary[placeholder])
+            
+        with open(file_out, "w", encoding="utf-8") as file:
+            file.write(template_file_content)
 

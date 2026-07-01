@@ -1,12 +1,8 @@
-import pdb
 import os
 import argparse
 from pathlib import Path
 import sys
 import yaml
-
-# Ensure the project root is on the path so relative imports resolve correctly
-#base_dir = Path(__file__).parent.parent.parent.parent.resolve()
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 import src.document_generator.utils.utils_general as utils_general
@@ -105,22 +101,3 @@ def write_datasets(base_dir: str, config_dict_static: dict, config_dict_user: di
         print(f"writing latex table and figure files for granules in the {dir_path_string} directory")
         cdf_extract.data_products(base_dir, config_dict_static, config_dict_user, granule_directory)
 
-
-if __name__ == '__main__':
-    """
-    Command-line entry point for writing dataset tables directly.
-
-    Usage::
-
-        python latex_outline.py --type {Native,Latlon,1D}
-
-    :param --type: The dataset type to write. Must be one of ``'Native'``,
-        ``'Latlon'``, or ``'1D'``.
-    """
-    parser = argparse.ArgumentParser(description='Write datasets to latex')
-    parser.add_argument(
-        '--type', required=True, type=str,
-        help="Type of the dataset to write. Should be one of 'Native', 'Latlon', '1D'."
-    )
-    args = parser.parse_args()
-    write_datasets(args.type)
