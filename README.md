@@ -36,13 +36,31 @@ cloud-based (i.e., multi-terabyte) production and distribution.
 
 ## Installation and Usage
 
-ECCO Dataset Production can be pip-installed as with any other Python
-package. Just clone the repo, `cd` to the top-level directory and
-install:
+ECCO Dataset Production uses [uv](https://docs.astral.sh/uv/) for fast, reproducible dependency management. Clone the repo and install with:
 
     $ git clone https://github.com/ECCO-GROUP/ECCO-Dataset-Production.git
 	$ cd ECCO-Dataset-Production
+    $ uv sync
+
+For development work (running tests, linting), include the dev dependencies:
+
+    $ uv sync --extra dev
+
+This creates a virtual environment in `.venv` with all required dependencies. The package is installed in editable mode by default, so changes to the source code are immediately reflected.
+
+### Alternative: pip install
+
+If you prefer traditional pip installation:
+
     $ pip install .
+
+For development work, use an editable install with dev dependencies:
+
+    $ pip install -e ".[dev]"
+
+Note that `uv` is recommended for development as it ensures reproducible builds and faster dependency resolution.
+
+### Docker
 
 Dockerfiles, Docker Compose files, and automation scripts have also
 been included to support local, and AWS-targeted container-based
@@ -71,6 +89,22 @@ ECCO-Dataset-Production hasn't originally been cloned using the
 `./demos/native_latlon_local` is a useful "getting started" example
 illustrating generation of local NetCDF files from local input files,
 with a discussion of problem setup, input formats, and job submittal.
+
+
+## Running Tests
+
+The test suite uses pytest and requires development dependencies:
+
+    $ uv sync --extra dev
+    $ .venv/bin/python -m pytest
+
+To run tests with coverage:
+
+    $ .venv/bin/python -m pytest --cov=ecco_dataset_production
+
+To run a specific test file:
+
+    $ .venv/bin/python -m pytest tests/test_ecco_generate_datasets.py -v
 
 
 ## History

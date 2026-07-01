@@ -5,38 +5,38 @@ build-backend = 'setuptools.build_meta'
 [project]
 name = 'ecco_dataset_production'
 version = '1.0'
+requires-python = '>=3.13'
 dependencies = [
-    'boto3',
-    'bs4',
+    'boto3~=1.43.0',
+    'beautifulsoup4~=4.15.0',
     'importlib.resources',
-    'lxml',
-    'netCDF4',
-    'numpy',
-    'yamale',
-    'requests',
-    'scipy',
-    'sphinx_rtd_theme',
-    'xarray',
-    'xmitgcm',
-    'xgcm',
+    'lxml~=6.1.0',
+    'netCDF4~=1.7.0',
+    'numpy~=2.5.0',
+    'requests~=2.34.0',
+    'scipy~=1.18.0',
+    'sphinx-rtd-theme~=3.1.0',
+    'xarray~=2026.4.0',
+    'xmitgcm~=0.5.0',
+    'xgcm~=0.9.0',
+    'yamale~=5.2.0',
     'ecco_cloud_utils @ git+https://github.com/ECCO-GROUP/ECCO-ACCESS/#subdirectory=ecco-cloud-utils',
     'ecco_v4_py @ git+https://github.com/ECCO-GROUP/ECCOv4-py'
 ]
 
-#[tool.setuptools]
-# include-package-data is true by default, so the following need not be
-# specified and is listed here only for reference:
-#include-package-data = true
+[project.optional-dependencies]
+dev = [
+    'flake8~=7.3.0',
+    'pylint~=4.0.0',
+    'pytest~=9.1.0',
+    'pytest-cov~=7.1.0'
+]
 
-#[tool.setuptools.packages.find]
-# namespace package support is true by default, so the following need not be
-# specified and is listed here only for reference:
-#namespaces = true
-#where = ["src"]
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.setuptools.package-data]
-"ecco_dataset_production" = ["*.json"]
-#"ecco_dataset_production.metadata.V4r4" = ["*.json"]
+"ecco_dataset_production" = ["configs/*"]
 
 [project.scripts]
 edp_aws_s3_sync             = 'ecco_dataset_production.apps.aws_s3_sync:main'
