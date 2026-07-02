@@ -4,7 +4,7 @@ ECCO Document Generator user instructions
 
 <br>
 
-Note: All local paths printed here are in reference to the location of the "/ECCO-Dataset-Production/document\_generator" directory on your local machine (see Setup Step 1 below) (i.e. "/Users/your\_user\_name/ECCO-Dataset-Production/document\_generator")
+Note: All local paths printed here are in reference to the location of the "/ECCO-Dataset-Production/document\_generator" directory on your local machine (see Step 1 in the "Before running the code" section below) (i.e. "/Users/your\_user\_name/ECCO-Dataset-Production/document\_generator")
 
 <h2 align="left">
 Before running the code:
