@@ -2,6 +2,14 @@
 ECCO Document Generator user instructions
 </h1>
 
+
+<br>
+
+Note: All local paths printed here are in reference to the location of the "/ECCO-Dataset-Production/document\_generator" directory on your local machine (see Setup Step 1 below) (i.e. "/Users/your\_user\_name/ECCO-Dataset-Production/document\_generator")
+
+<br>
+
+
 <h2 align="left">
 Setup:
 </h2>
@@ -34,7 +42,9 @@ Step 6: Modify the "config\_user.yaml" file ("/files\_general/resource\_files/co
  - overwrite options 
  - latex compilation options 
  
-
+<br>
+<br>
+<br>
 
 <h2 align="left">
 Running the code:
