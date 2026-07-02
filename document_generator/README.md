@@ -2,6 +2,8 @@
 ECCO Document Generator user instructions
 </h1>
 
+<br>
+
 Note: All local paths printed here are in reference to the location of the "/ECCO-Dataset-Production/document\_generator" directory on your local machine (see Setup Step 1 below) (i.e. "/Users/your\_user\_name/ECCO-Dataset-Production/document\_generator")
 
 <h2 align="left">
