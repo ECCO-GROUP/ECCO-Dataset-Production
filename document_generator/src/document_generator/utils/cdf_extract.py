@@ -259,16 +259,6 @@ def append_to_filenames_conventions_file(base_dir: str, config_dict_static: dict
         appending_file.write("\\end{itemize}\n")
 
 
-def append_input_calls_to_tex_files(base_dir: str, config_dict_static: dict, config_dict_user: dict) -> None:
-
-    with open((Path(base_dir) / config_dict_static["input_tex_filenames_conventions"].format(ecco_version_string=config_dict_user["ecco_version_string"])), 'a') as appending_file:
-        appending_file.write("\\par\n")
-        appending_file.write(fr"{utils_general.sanitize(config_dict_static, example_granule.stem)}" + "\n")
-        appending_file.write("\\begin{itemize}\n")
-        appending_file.write(fr"    \item {utils_general.sanitize(config_dict_static, dataset.attrs['summary'].split('. ')[0])}." + "\n")
-        appending_file.write("\\end{itemize}\n")
-
-
 
 # ---------------------------------------------------------------------------
 # -------------------- Extracting CDL For Datasets -------------------------

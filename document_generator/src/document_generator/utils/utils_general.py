@@ -519,6 +519,21 @@ def template_file_text_replacement(base_dir: str, config_dict_static: dict, conf
         with open(file_in, "r", encoding="utf-8") as file:
             template_file_content = file.read()
 
+        if file_name == config_dict_static['example_tables_tex_file_name']:
+            for grid_type in config_dict_user['grid_types_considered']:
+                for tex_line in config_dict_static['example_tables_tex_file_lines_to_append'][grid_type]:
+                    template_file_content += tex_line
+
+        if file_name == config_dict_static['compendium_tex_file_name']:
+            for grid_type in config_dict_user['grid_types_considered']:
+
+                template_file_content += f"\n\\input{{{grid_type}_coords_table.tex}}"
+                template_file_content += f"\n\\input{{{grid_type}_variables_tables.tex}}"
+
+            template_file_content += f"\n\\input{{closing_statement.tex}}"
+            template_file_content += f"\n\\end{{document}}"
+
+
         for placeholder in replacement_map_dictionary.keys():
             template_file_content = template_file_content.replace(placeholder, replacement_map_dictionary[placeholder])
             
