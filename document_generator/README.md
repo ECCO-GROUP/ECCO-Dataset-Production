@@ -2,18 +2,11 @@
 ECCO Document Generator user instructions
 </h1>
 
-
-<br>
-
 Note: All local paths printed here are in reference to the location of the "/ECCO-Dataset-Production/document\_generator" directory on your local machine (see Setup Step 1 below) (i.e. "/Users/your\_user\_name/ECCO-Dataset-Production/document\_generator")
 
-<br>
-
-
 <h2 align="left">
-Setup:
+Before running the code:
 </h2>
-
 
 Step 1: If you haven't done so already, clone the "ECCO-Dataset-Production" git repo (the parent folder of this project) to your local machine (i.e. "https://github.com/ECCO-GROUP/ECCO-Dataset-Production")
 
@@ -42,7 +35,6 @@ Step 6: Modify the "config\_user.yaml" file ("/files\_general/resource\_files/co
  - overwrite options 
  - latex compilation options 
  
-<br>
 <br>
 <br>
 
