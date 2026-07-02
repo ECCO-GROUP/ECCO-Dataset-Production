@@ -41,7 +41,7 @@ Step 6: Modify the "config\_user.yaml" file ("/files\_general/resource\_files/co
 <br>
 
 <h2 align="left">
-Running the code:
+Running the code - from the "/ECCO-Dataset-Production/document\_generator" directory, execute the python terminal calls listed in the bullet points below:
 </h2>
 
 Step 1: Download granules via:
