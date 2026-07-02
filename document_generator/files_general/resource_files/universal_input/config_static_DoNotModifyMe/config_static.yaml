@@ -134,6 +134,12 @@ dataset_text_dict:
     SNAP: 'hourly snapshot'
 
 
+
+data_product_file_structure_Attrs_: 
+
+
+
+
 # Formatting
 # -------------------------------------------------------------------------------------------------------------------------------------
 thumbnail_size: 512

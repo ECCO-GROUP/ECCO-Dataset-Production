@@ -47,7 +47,7 @@ Running the code:
 Step 1: Download granules via:
  - python src/document\_generator/apps/step1\_download\_granules.py
 
-Step 2: Generate the document components (figures and latex table files)
+Step 2: Generate the compendium components (figures and latex table files)
  - python src/document\_generator/apps/step2\_generate\_compendium\_sub\_components.py
 
 Step 3: Compile the compendium, resulting in the pdf file "/files\_general/compendium\_compilation\_output\_files/ECCO\_Dataset\_Catalog\_and\_Variable\_Compendium.pdf"

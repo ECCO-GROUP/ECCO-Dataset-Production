@@ -26,10 +26,9 @@ ECCO V-NUM-r-NUM-PROPER-ENGLISH-UPPERCASE-placeholder (V-NUM-r-NUM-placeholder) 
 \begin{center}
 \begin{tabular}{m{0.18\textwidth} m{0.75\textwidth}}
     \multicolumn{1}{c}{\textbf{Filename Parameter}} & \multicolumn{1}{c}{\textbf{Description}} \\ \hline
-    %\multicolumn{1}{c}{\textbf{Keypoints}} & \multicolumn{1}{c}{\textbf{Description}} \\ \hline
     ShortName: & Describes the dataset variable (e.g., SSH for sea surface height, TEMP\_SALINITY for temperature and salinity). \\ \hline 
     TemporalResolution: & Indicates the time averaging or snapshot type (e.g., DAILY, MONTHLY, SNAP). \\ \hline
-    GridType : & Specifies the grid used (e.g., \textbf{native\_llc90} for the native ECCO grid or \textbf{laton\_0p50deg} for interpolated 0.5 \textdegree lat-lon grid). It can also be a specific information such as \textbf{1D} to indication the one-dimentional dataset files over the full period of ECCO data availability.\\ \hline
+    GridType : & Specifies the grid used (e.g., \textbf{native\_llc90} for the native ECCO grid or \textbf{lat-lon\_0p50deg} for interpolated 0.5 \textdegree lat-lon grid). It can also be a specific information such as \textbf{1D} to indication the one-dimentional dataset files over the full period of ECCO data availability.\\ \hline
     Version: &  Identifies the ECCO release version (e.g., V-NUM-r-NUM-placeholder). \\ \hline
     Indicative Time: & Encodes the time period covered by the file (e.g., monthly files use YYYY-MM, daily files use YYYY-MM-DD) \\ \hline
     File Type & netCDF or Zarr data format. \\ \hline
@@ -39,6 +38,8 @@ ECCO V-NUM-r-NUM-PROPER-ENGLISH-UPPERCASE-placeholder (V-NUM-r-NUM-placeholder) 
 \par \vspace{0.25cm}
 \subsection{Examples}
 % append the examples rather than hardcode
+
+% eg:
 
 %\par Dynamic sea surface height interpolated on the lat-lon regular 0.5-degree model grid from ECCO V-NUM-r-NUM-placeholder on 2017-12-29.
 %\begin{itemize}
