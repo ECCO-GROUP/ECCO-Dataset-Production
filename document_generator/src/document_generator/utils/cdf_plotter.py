@@ -1,13 +1,12 @@
 # ---------------------------------------------------------------------------
-# NoTE: This module depends on ecco_v4_py for native-grid tile plots and
-# polar stereographic projections. Ensure the library is installed and its
-# path is appended to sys.path before importing this module.  I.E:
+# NoTE: This module depends on the ecco_v#_py module for native-grid tile plots and polar stereographic projection plots, 
+# where "#" is the version of ECCO used to produce the granules being documented.
+# Ensure that its parent repo, "ECCOv#-py", is cloned locally, and append the parent repo filepath to your python path variable:
+import sys
 sys.path.append('/Users/brucel/ECCOv4-py')
-import ecco_v4_py as ecco
 # ---------------------------------------------------------------------------
 
-
-import sys
+import ecco_v4_py as ecco
 import matplotlib.colors
 import matplotlib.pyplot as plt
 from mpl_toolkits.axisartist.axislines import AxesZero  # for x/y axis arrow overlays
