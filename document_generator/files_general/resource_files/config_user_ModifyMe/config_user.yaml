@@ -1,4 +1,4 @@
-# Notes and instructions printed at the bottom
+# Instructions for modifying this configuration file are printed below
 
 ecco_version_string: V4r6
 
@@ -21,8 +21,12 @@ num_pdflatex_calls: 2
 #num_pdflatex_calls: 1
 
 
+
+
+
+
 # -------------------------------------------------------------------------------------------------------------------------------------
-# Instructions:  edit this configuration file as necessary.  
+# Instructions:  Edit this configuration file as necessary; see below for more details
 # -------------------------------------------------------------------------------------------------------------------------------------
 #
 # Note: Use comments (#) to make lines invisible to programs reading this file.
@@ -64,5 +68,3 @@ num_pdflatex_calls: 2
 # <num_pdflatex_calls> specifies the number of times the pdflatex program will be called to compile the final compendium document.
 # Compiling at least twice is usually necessary in order for pdflatex to make an accurate table of contents, among other things.
 # -------------------------------------------------------------------------------------------------------------------------------------
-
-

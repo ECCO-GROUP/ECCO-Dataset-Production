@@ -9,9 +9,9 @@ Setup:
 
 Step 1: If you haven't done so already, clone the "ECCO-Dataset-Production" git repo (the parent folder of this project) to your local machine (i.e. "https://github.com/ECCO-GROUP/ECCO-Dataset-Production")
 
-Step 2: If you haven't done so already, clone the "ECCOv#-py" git repo to your local machine (where "#" is the version of ECCO used to produce the granules you're documenting (i.e. "https://github.com/ECCO-GROUP/ECCOv4-py")).  Once you have done this, in the first block of code in "/document\_generator/src/document\_generator/utils/cdf\_plotter.py", modify the argument of the first call to "sys.path.append()" to be the location of your cloned ECCOv#-py repo (i.e. sys.path.append('/Users/brucel/ECCOv4-py')).  
+Step 2: If you haven't done so already, clone the "ECCOv#-py" git repo to your local machine (where "#" is the version of ECCO used to produce the granules you're documenting (i.e. "https://github.com/ECCO-GROUP/ECCOv4-py")).  Once you have done this, in the first block of code in "/document\_generator/src/document\_generator/utils/cdf\_plotter.py", modify the argument of the first call to "sys.path.append()" to be the location of your cloned ECCOv#-py repo (i.e. sys.path.append('/Users/your\_user\_name/ECCOv4-py')).  
 
-Step 3: Install the program "pdflatex" (installation instructions depend on your operating system).
+Step 3: Install the program "pdflatex" onto your local machine (installation instructions depend on operating system).
 
 Step 4: Install the following Python packages:
 - pyyaml
@@ -26,13 +26,12 @@ Step 4: Install the following Python packages:
 - pyresample
 - netCDF4
 
-Step 5: In the file "granules\_to\_download.txt" (relative path printed below, where "V#r#" must be changed to reflect the version of ECCO you're documenting (i.e. V4r6)), specify the urls of the remotely hosted granules to download and describe in the compendium (further instructions are provided within the file):
- - .../ECCO-Dataset-Production/document\_generator/files\_general/resource\_files/version\_specific/V#r#/input\_and\_templates/granules\_to\_download/granules\_to\_download.txt
+Step 5: In the file "granules\_to\_download.txt" ("/files\_general/resource\_files/version\_specific/V#r#/input\_and\_templates/granules\_to\_download/granules\_to\_download.txt", where "V#r#" must be changed to reflect the version of ECCO you're documenting (i.e. V4r6)), specify the urls of the remotely hosted granules to download and describe in the compendium (further instructions are provided within the file).
 
 Step 6: Modify the "config\_user.yaml" file ("/files\_general/resource\_files/config\_user\_ModifyMe/config\_user.yaml", further instructions provided within the file) to reflect:
  - the version of ECCO used to generate the granules you're documenting
  - the grid types of the granules you're documenting
- - overwrite options
+ - overwrite options 
  - latex compilation options 
  
 
