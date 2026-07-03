@@ -47,6 +47,7 @@ Running the main scripts:
 <h5>
 (From the "/ECCO-Dataset-Production/document\_generator" directory, run the commands listed in the following steps (each step is a single python command line call)):
 </h5>
+---
 
 
 Step 1: If required, download granules via:
