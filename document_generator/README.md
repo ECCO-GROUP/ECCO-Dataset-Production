@@ -1,6 +1,5 @@
 <h1 align="center">
-ECCO Document Generator user instructions
-<br>
+User instructions for the ECCO Document Generator 
 </h1>
 
 <br>
@@ -8,7 +7,7 @@ ECCO Document Generator user instructions
 Note: All local paths printed here are in reference to the location of the "/ECCO-Dataset-Production/document\_generator" directory on your local machine (see Step 1 in the "Before running the code" section below) (i.e. "/Users/your\_user\_name/ECCO-Dataset-Production/document\_generator")
 
 <h2 align="left">
-Setup - Before running the main document generator code:
+Setup - Before running the main document generator scripts:
 </h2>
 
 Step 1: If you haven't done so already, clone the "ECCO-Dataset-Production" git repo (the parent folder of this project) to your local machine (i.e. "https://github.com/ECCO-GROUP/ECCO-Dataset-Production")
@@ -42,8 +41,13 @@ Step 6: Modify the "config\_user.yaml" file ("/files\_general/resource\_files/co
 <br>
 
 <h2 align="left">
-Running the code - From the "/ECCO-Dataset-Production/document\_generator" directory, run the commands listed in the following steps (each step is a single python command line call):
-</h6>
+Running the main scripts:
+</h2>
+
+<h5>
+(From the "/ECCO-Dataset-Production/document\_generator" directory, run the commands listed in the following steps (each step is a single python command line call)):
+</h5>
+
 
 Step 1: If required, download granules via:
  - python src/document\_generator/apps/step1\_download\_granules.py
