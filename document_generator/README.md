@@ -40,16 +40,16 @@ Step 5: Modify the "config\_user.yaml" file ("/files\_general/resource\_files/co
  - overwrite options ('url\_list\_overwrite\_switch', 'granule\_download\_overwrite\_switch', 'figure\_generation\_overwrite\_switch')
  - latex compilation options ('num\_pdflatex\_calls')
 
-Step 6: If necessary (i.e. this is your first time running the code for a given ECCO version, or you'd like to generate a new "granules\_to\_download.txt" file (see Step 8) (possible when "url\_list\_overwrite\_switch" is set to "True" in "config\_user.yaml")), run "step0\_generate\_preliminary\_file\_tree.py".  This generates the granule directory structure you'll need if using your own granules (see Step 7), along with optionally creating a fresh version of "granules\_to\_download.txt", with the old one being renamed according to current UTC time. 
+Step 6: If necessary (i.e. if this is your first time running the code for a given ECCO version, or you'd like to generate a new "granules\_to\_download.txt" file (see Step 8) (possible when "url\_list\_overwrite\_switch" is set to "True" in "config\_user.yaml")), run "step0\_generate\_preliminary\_file\_tree.py".  This generates the granule directory structure you'll need if using your own granules (see Step 7), along with optionally creating a fresh version of "granules\_to\_download.txt", with the old one being renamed according to current UTC time. 
 
-Step 7 (if documenting any local granules in the compendium): To document local granules, either create symbolic links (recommended) to them in, or move them into, the following directories, according to their type:
- - native coordinate (ie geometry) granule: files\_general/resource\_files/version\_specific/V#r#/output\_and\_granules/granules/coordinate\_granules/granules\_native\\  
- - latlon coordinate (ie geometry) granule: files\_general/resource\_files/version\_specific/V#r#/output\_and\_granules/granules/coordinate\_granules/granules\_latlon\\  
- - native variable granules: files\_general/resource\_files/version\_specific/V#r#/output\_and\_granules/granules/variable\_granules/granules\_native\\
- - latlon variable granules: files\_general/resource\_files/version\_specific/V#r#/output\_and\_granules/granules/variable\_granules/granules\_latlon\\
- - 1D variable granules: files\_general/resource\_files/version\_specific/V#r#/output\_and\_granules/granules/variable\_granules/granules\_1D\\
+Step 7 (if using any granules already present on your machine): To document local granules, either create symbolic links to them (recommended) in, or move them into, the following directories, according to their type (grid type and content type (i.e. variable vs coordinate)):
+ - native coordinate (ie geometry) granule directory: files\_general/resource\_files/version\_specific/V#r#/output\_and\_granules/granules/coordinate\_granules/granules\_native/  
+ - latlon coordinate (ie geometry) granule directory: files\_general/resource\_files/version\_specific/V#r#/output\_and\_granules/granules/coordinate\_granules/granules\_latlon/  
+ - native variable granules directory: files\_general/resource\_files/version\_specific/V#r#/output\_and\_granules/granules/variable\_granules/granules\_native/
+ - latlon variable granules directory: files\_general/resource\_files/version\_specific/V#r#/output\_and\_granules/granules/variable\_granules/granules\_latlon/
+ - 1D variable granules directory: files\_general/resource\_files/version\_specific/V#r#/output\_and\_granules/granules/variable\_granules/granules\_1D/
 
-Step 8 (if downloading any granules for the compendium): To download granules for the compendium, edit the file "granules\_to\_download.txt" ("/files\_general/resource\_files/version\_specific/V#r#/input\_and\_templates/granules\_to\_download/granules\_to\_download.txt" by specifying the urls of the remotely hosted granules to download. 
+Step 8 (if downloading any granules for the compendium): To download granules for the compendium, edit the file "granules\_to\_download.txt" by specifying the urls of the remotely hosted granules to download (further instructions provided in the file; full file path: "/files\_general/resource\_files/version\_specific/V#r#/input\_and\_templates/granules\_to\_download/granules\_to\_download.txt"). 
 
  
 <br>
@@ -65,14 +65,14 @@ Running the main scripts:
 
 ---
 
-Step 0: If documenting with a specific version of ECCO (i.e. V#r#) for the first time, or if wanting a fresh copy of "granules\_to\_download.txt" to edit (with the prevoius version of the file being automatically renamed according to current UTC time), execute:
+Step 0: If documenting a specific version (V#r#) of ECCO for the first time, wanting to re-create the granule directory structure (no overwriting will occur if stucture already exists), or wanting a fresh copy of "granules\_to\_download.txt" to edit (with the prevoius version of the file being automatically renamed according to current UTC time), execute:
  - python src/document\_generator/apps/step0\_generate\_preliminary\_file\_tree.py
 
 Step 1: If needed, download granules (note that this script reads only the file "granules\_to\_download.txt", and not any renamed versions) via:
  - python src/document\_generator/apps/step1\_download\_granules.py
 
-Step 2: Generate the compendium components (figures and latex table files)
+Step 2: Generate the compendium components (figures and latex table files) via:
  - python src/document\_generator/apps/step2\_generate\_compendium\_sub\_components.py
 
-Step 3: Compile the compendium, resulting in the pdf file "/files\_general/compendium\_compilation\_output\_files/ECCO\_Dataset\_Catalog\_and\_Variable\_Compendium.pdf"
+Step 3: Compile the compendium, resulting in the pdf file "/files\_general/compendium\_compilation\_output\_files/ECCO\_Dataset\_Catalog\_and\_Variable\_Compendium.pdf", via:
  - python src/document\_generator/apps/step3\_compile\_compendium.py
