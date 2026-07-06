@@ -513,8 +513,8 @@ def template_file_text_replacement(base_dir: str, config_dict_static: dict, conf
 
     for file_name in template_files:
 
-        file_in = str(Path(base_dir) / config_dict_static[f'{file_type}_template_files'] / file_name)
-        file_out = str(Path(base_dir) / config_dict_static[f'{file_type}_modified_input_files'].format(ecco_version_string=ecco_version_string) / file_name)
+        file_in = Path(base_dir) / config_dict_static[f'{file_type}_template_files'] / file_name
+        file_out = Path(base_dir) / config_dict_static[f'{file_type}_modified_input_files'].format(ecco_version_string=ecco_version_string) / file_name
 
         with open(file_in, "r", encoding="utf-8") as file:
             template_file_content = file.read()
@@ -524,11 +524,26 @@ def template_file_text_replacement(base_dir: str, config_dict_static: dict, conf
                 for tex_line in config_dict_static['example_tables_tex_file_lines_to_append'][grid_type]:
                     template_file_content += tex_line
 
+        granule_file_suffix = config_dict_static['granule_file_suffix']
+
         if file_name == config_dict_static['compendium_tex_file_name']:
             for grid_type in config_dict_user['grid_types_considered']:
 
                 template_file_content += f"\n\\input{{{grid_type}_coords_table.tex}}"
                 template_file_content += f"\n\\input{{{grid_type}_variables_tables.tex}}"
+
+                '''
+                    # This may be too cautious, but... only insert references to tables if associated files exist (ie don't try to insert coordinate tables
+                    # if the associated coordinate/geometry files aren't present in the granules directories)
+                    if grid_type != "1D":
+                        coordinate_granule_dir = Path(base_dir) / config_dict_static[f'coordinate_files_{grid_type}_dir'].format(ecco_version_string=ecco_version_string)
+                        if any(coordinate_granule_dir.glob(f"*{granule_file_suffix}")):
+                            template_file_content += f"\n\\input{{{grid_type}_coords_table.tex}}"
+
+                    variable_granule_dir = Path(base_dir) / config_dict_static[f'variable_files_{grid_type}_dir'].format(ecco_version_string=ecco_version_string)
+                    if any(variable_granule_dir.glob(f"*{granule_file_suffix}")):
+                        template_file_content += f"\n\\input{{{grid_type}_variables_tables.tex}}"
+                '''
 
             template_file_content += f"\n\\input{{closing_statement.tex}}"
             template_file_content += f"\n\\end{{document}}"

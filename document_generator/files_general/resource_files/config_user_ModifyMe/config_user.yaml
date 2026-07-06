@@ -1,29 +1,38 @@
-# Instructions for modifying this configuration file are printed below
+# Modify this config file according to your ECCO version and other options.  ExplanationsDetails/Instructions provided below. 
 
 ecco_version_string: V4r6
+
+#url_list_overwrite_switch: False
+url_list_overwrite_switch: True
+
+### example syntax for the user to see (remove any of the three grid types for which you lack granules from this list)
+### grid_types_considered:
+###  - native
+###  - latlon
+###  - 1D
 
 grid_types_considered:
   - native
   - latlon
-#  - 1D
-
+  #- 1D
+  
+### example syntax for the user to see (don't use these unless they are present on your local machine)
 example_granule_native: OCEAN_TEMPERATURE_SALINITY_mon_mean_1992-01_ECCO_V4r6_native_llc0090.nc
 example_granule_latlon: SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_V4r6_latlon_0p50deg.nc
 #example_granule_1D: GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r6_1D.nc
 
-#granule_download_overwrite_switch: True
-granule_download_overwrite_switch: False
+#example_granule_native: 
+#example_granule_latlon: 
+#example_granule_1D:
 
-figure_generation_overwrite_switch: True
+granule_download_overwrite_switch: False
+#granule_download_overwrite_switch: True
+
 #figure_generation_overwrite_switch: False
+figure_generation_overwrite_switch: True
 
 num_pdflatex_calls: 2
 #num_pdflatex_calls: 1
-
-
-
-
-
 
 # -------------------------------------------------------------------------------------------------------------------------------------
 # Instructions:  Edit this configuration file as necessary; see below for more details
@@ -48,12 +57,18 @@ num_pdflatex_calls: 2
 # -------------------------------------------------------------------------------------------------------------------------------------
 # <ecco_version_string> identifies the version of ECCO that you are documenting (i.e. V4r6).  
 #
+# <url_list_overwrite_switch> is a boolean parameter which determins whether a new "granules_to_download.txt" file is created when
+# 'step0_generate_preliminary_file_tree.py' is executed.  When set to "True", old files are renamed with the current UTC time appended, and
+# a new file is generated.  We consider "False" to be the default setting, which is how it's set when this config file is first downloaded.
+#
 # <grid_types_considered> lists the types of ECCO grids for which you have either coordinate or variable granules downloaded
-# and which you'd like documented in the compendium (the three possibilities are "native", "latlon", and "1D").
+# and which you'd like documented in the compendium (the three possibilities are "native", "latlon", and "1D").  Leave a grid type
+# "commented out" or absent from the list if you lack granules for it or want it ignored.
 #
 # <example_granule_*>, where "*" is "native", "latlon", or "1D", specifies the basename (filename without parent directory path) 
 # of a granule of your choosing from your downloaded granules directory which will be used to make an exhaustive example table of 
-# granule metadata for the "*" grid type.  
+# granule metadata for the "*" grid type.  Leave this variable "commented out" for the "*" grid type if you lack granules 
+# for the "*" grid or don't want an example granule table made for it.  
 # Note: please specify only a single <example_granule_*> for a given grid type.
 #
 # <granule_download_overwrite_switch> is a boolean parameter which allows users to skip re-downloading granules with names

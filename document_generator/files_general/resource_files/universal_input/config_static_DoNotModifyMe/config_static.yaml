@@ -8,6 +8,8 @@
 negative_steps_to_variable_granules_dir: 2
 # This is the number of steps "up the file tree" to the "variable_granules" directory from any of the "variable_files_<grid_type>_dir" mapping pairs specified here
 
+granule_file_suffix: .nc
+
 url_grid_type_substrings:
   - _native
   - _latlon
@@ -17,6 +19,7 @@ url_coordinate_substring: GRID_GEOMETRY
 
 granules_url_list_file_relative: files_general/resource_files/version_specific/{ecco_version_string}/input_and_templates/granules_to_download/granules_to_download.txt
 
+granules_url_list_template_file: files_general/resource_files/universal_input/template_files/granules_to_download.txt
 latex_template_files: files_general/resource_files/universal_input/template_files/latex_template_files
 json_template_files: files_general/resource_files/universal_input/template_files/json_coordinate_template_files
 latex_modified_input_files: files_general/resource_files/version_specific/{ecco_version_string}/input_and_templates/latex
