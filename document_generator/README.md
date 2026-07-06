@@ -49,7 +49,7 @@ Step 7 (if using any granules already present on your machine): To document loca
  - latlon variable granules directory: files\_general/resource\_files/version\_specific/V#r#/output\_and\_granules/granules/variable\_granules/granules\_latlon/
  - 1D variable granules directory: files\_general/resource\_files/version\_specific/V#r#/output\_and\_granules/granules/variable\_granules/granules\_1D/
 
-Step 8 (if downloading any granules for the compendium): To download granules for the compendium, edit the file "granules\_to\_download.txt" by specifying the urls of the remotely hosted granules to download (further instructions provided in the file; full file path: "/files\_general/resource\_files/version\_specific/V#r#/input\_and\_templates/granules\_to\_download/granules\_to\_download.txt"). 
+Step 8 (if downloading any granules for the compendium): To prepare to download granules for the compendium, edit the file "granules\_to\_download.txt" by specifying the urls of the remotely hosted granules to download (further instructions provided in the file; full file path: "/files\_general/resource\_files/version\_specific/V#r#/input\_and\_templates/granules\_to\_download/granules\_to\_download.txt"). 
 
  
 <br>
