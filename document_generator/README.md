@@ -6,7 +6,7 @@ User instructions for the ECCO Document Generator
 
 Notes:
  - All local paths printed here are in reference to the location of the "/ECCO-Dataset-Production/document\_generator" directory on your local machine (see Step 1 in the "Before running the code" section below) (i.e. "/Users/your\_user\_name/ECCO-Dataset-Production/document\_generator")
- - Where you see the "#" symbol in the text below, it represents a number that you must substitute according to the version of ECCO used to generate the granules you're documenting.  For example, with for ECCO version 4 release 6 granules, "ECCOv#-py" becomes "ECCOv4-py", and "V#r#" becomes "V4r6".
+ - Where you see the "#" symbol in the text below, it represents a number that you must substitute according to the version of ECCO used to generate the granules you're documenting.  For example, for ECCO version 4 release 6, "ECCOv#-py" becomes "ECCOv4-py", and "V#r#" becomes "V4r6".
 
 
 
