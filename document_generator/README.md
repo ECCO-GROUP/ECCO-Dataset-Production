@@ -5,7 +5,7 @@ User instructions for the ECCO Document Generator
 <br>
 
 Notes:
- - All local paths printed here are in reference to the location of the "/ECCO-Dataset-Production/document\_generator" directory on your local machine (see Setup Step 1) (i.e. "/Users/your\_user\_name/ECCO-Dataset-Production/document\_generator")
+ - All local paths printed here are in reference to the location of the "/ECCO-Dataset-Production/document\_generator" directory on your local machine (see Setup Step 1) (i.e. "/Users/your\_user\_name/ECCO-Dataset-Production/document\_generator").
  - Where you see the "#" symbol in the text below, it represents a number that you must substitute according to the version of ECCO used to generate the granules you're documenting.  For example, for ECCO version 4 release 6, "ECCOv#-py" becomes "ECCOv4-py", and "V#r#" becomes "V4r6".
 
 
@@ -14,9 +14,9 @@ Notes:
 Setup - Before running the main document generator scripts:
 </h2>
 
-Step 1: If you haven't done so already, clone the "ECCO-Dataset-Production" git repo (the parent folder of this project) to your local machine (i.e. "https://github.com/ECCO-GROUP/ECCO-Dataset-Production")
+Step 1: If you haven't done so already, clone the "ECCO-Dataset-Production" git repo (the parent folder of this project) to your local machine (i.e. "https://github.com/ECCO-GROUP/ECCO-Dataset-Production").
 
-Step 2: If you haven't done so already, clone the "ECCOv#-py" git repo to your local machine (i.e. "https://github.com/ECCO-GROUP/ECCOv4-py").  ***Once you have done this, in the first block of code in "/document\_generator/src/document\_generator/utils/cdf\_plotter.py", modify the argument of the first call to "sys.path.append()" to be the location of your cloned ECCOv#-py repo (i.e. sys.path.append('/Users/your\_user\_name/ECCOv4-py')).***  
+Step 2: If you haven't done so already, clone the "ECCOv#-py" git repo to your local machine (i.e. "https://github.com/ECCO-GROUP/ECCOv4-py").  ***Once you have done this, immediately after "import sys" in the very first block of code in "/document\_generator/src/document\_generator/utils/cdf\_plotter.py", modify the argument of the first call to "sys.path.append()" to be the location of your cloned ECCOv#-py repo (i.e. sys.path.append('/Users/your\_user\_name/ECCOv4-py')).  These instructions are repeated at the top of that file (cdf\_plotter.py) in the first block of code***.
 
 Step 3: If you haven't already, install the program "pdflatex" onto your local machine (installation instructions will vary depending on your operating system).
 
