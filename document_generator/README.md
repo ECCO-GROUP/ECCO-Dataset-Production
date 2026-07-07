@@ -5,7 +5,7 @@ User instructions for the ECCO Document Generator
 <br>
 
 Notes:
- - All local paths printed here are in reference to the location of the "/ECCO-Dataset-Production/document\_generator" directory on your local machine (see Step 1 in the "Before running the code" section below) (i.e. "/Users/your\_user\_name/ECCO-Dataset-Production/document\_generator")
+ - All local paths printed here are in reference to the location of the "/ECCO-Dataset-Production/document\_generator" directory on your local machine (see Step 1 in the "Setup" section below) (i.e. "/Users/your\_user\_name/ECCO-Dataset-Production/document\_generator")
  - Where you see the "#" symbol in the text below, it represents a number that you must substitute according to the version of ECCO used to generate the granules you're documenting.  For example, for ECCO version 4 release 6, "ECCOv#-py" becomes "ECCOv4-py", and "V#r#" becomes "V4r6".
 
 
@@ -18,7 +18,7 @@ Step 1: If you haven't done so already, clone the "ECCO-Dataset-Production" git 
 
 Step 2: If you haven't done so already, clone the "ECCOv#-py" git repo to your local machine (i.e. "https://github.com/ECCO-GROUP/ECCOv4-py").  Once you have done this, in the first block of code in "/document\_generator/src/document\_generator/utils/cdf\_plotter.py", modify the argument of the first call to "sys.path.append()" to be the location of your cloned ECCOv#-py repo (i.e. sys.path.append('/Users/your\_user\_name/ECCOv4-py')).  
 
-Step 3: If you haven't already, install the program "pdflatex" onto your local machine (installation instructions vary depending on operating system).
+Step 3: If you haven't already, install the program "pdflatex" onto your local machine (installation instructions will vary depending on your operating system).
 
 Step 4: Make sure you've installed the following Python packages: 
 - pyyaml
@@ -65,14 +65,16 @@ Running the main scripts:
 
 ---
 
-Step 0: If documenting a specific version (V#r#) of ECCO for the first time, wanting to re-create the granule directory structure (no overwriting will occur if stucture already exists), or wanting a fresh copy of "granules\_to\_download.txt" to edit (with the prevoius version of the file being automatically renamed according to current UTC time), execute:
+Step 0: If documenting a specific version (V#r#) of ECCO for the first time, wanting to re-create the granule directory structure (no overwriting will occur if the stucture already exists), or wanting a fresh copy of "granules\_to\_download.txt" to edit (with the prevoius version being automatically renamed according to current UTC time, which preserves it and prevents it from being used (only "granules\_to\_download.txt" is used)), execute:
  - python src/document\_generator/apps/step0\_generate\_preliminary\_file\_tree.py
 
 Step 1: If needed, download granules (note that this script reads only the file "granules\_to\_download.txt", and not any renamed versions) via:
  - python src/document\_generator/apps/step1\_download\_granules.py
 
-Step 2: Generate the compendium components (figures and latex table files) via:
+Step 2: Generate the compendium components via:
  - python src/document\_generator/apps/step2\_generate\_compendium\_sub\_components.py
 
-Step 3: Compile the compendium, resulting in the pdf file "/files\_general/compendium\_compilation\_output\_files/ECCO\_Dataset\_Catalog\_and\_Variable\_Compendium.pdf", via:
+Step 3: Compile the compendium via:
  - python src/document\_generator/apps/step3\_compile\_compendium.py
+
+The compendium should then be found here: "/files\_general/compendium\_compilation\_output\_files/ECCO\_Dataset\_Catalog\_and\_Variable\_Compendium.pdf"
