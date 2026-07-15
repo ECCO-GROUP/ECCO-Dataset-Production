@@ -32,7 +32,7 @@ import argparse
 import logging
 import sys
 
-from .. import configuration
+from ..config import ECCODatasetProductionConfig
 from .. import utils
 #import ecco_production.configuration
 #import ecco_production.utils
@@ -50,30 +50,16 @@ def create_parser():
         argparser.ArgumentParser instance.
 
     """
-    parser = argparse.ArgumentParser(
+    # Create parser with config file support
+    parser = ECCODatasetProductionConfig.create_parser(
         description="""Creates 2- and/or 3-D mapping factors, land mask, and
-        lon/lat grid files from a native ECCO grid geometry file.""",
-        epilog="""The configuration file contains grid definition parameters
-        (resolution, area extent, etc.). File paths for input grid and output
-        directory are provided as command-line arguments. Configuration fields
-        starting with 'latlon' define the target grid parameters, while
-        'custom_grid_and_factors' determines whether to use ECCO grids or
-        custom grid definitions.""")
+        lon/lat grid files."""
+    )
 
-    parser.add_argument('--cfgfile', required=True,
-        help="""(Path and) filename of ECCO Dataset Production configuration file
-        (e.g., configs/config_V4r4.yaml). Contains grid definition parameters
-        like latlon_grid_resolution and latlon_grid_area_extent.""")
-
-    parser.add_argument('--grid_file', required=True,
-        help="""Path to native ECCO grid geometry NetCDF file
-        (e.g., GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc). This file must
-        contain hFacC, XC, YC, and other grid variables.""")
-
-    parser.add_argument('--output_dir', required=True,
-        help="""Output directory where mapping factors will be written.
-        Will create subdirectories: 3D/, land_mask/, latlon_grid/, and sparse/""")
-
+    # Add tool-specific arguments
+    parser.add_argument('--workingdir', default='.', help="""
+        If any configuration path data are unassigned, --workingdir will be used
+        to set default path root values (default: '%(default)s')""")
     parser.add_argument('dims', nargs='+', default=['2', '3'], help="""
         Dimension(s) of mapping factors to be generated (2, 3, or both).
         Example: 2 3 for both two- and three-dimensional mapping factors.""")
@@ -83,23 +69,27 @@ def create_parser():
         default='WARNING', help="""
         Set logging level (default: %(default)s)""")
 
-    parser.add_argument('--force', action='store_true',
-        help="""Force recalculation of mapping factors even if they already exist.
-        By default, existing mapping factors are not regenerated.""")
+    parser.epilog = """The input ECCO grid path and filename and output mapping
+        factors directory are implicitly defined via the product generation
+        configuration file fields 'ecco_grid_dir', 'ecco_grid_filename', and
+        'mapping_factors_dir', respectively. 'ecco_grid_filename' is the only
+        one that is required, as path defaults will be assigned if necessary.
+        Additionally, configuration fields starting with 'latlon' are referenced
+        if lon/lat-based mapping factors are to be generated, while
+        'custom_grid_and_factors' is used if custom target grid mappings are to
+        instead be generated."""
 
     return parser
 
 
-def create_factors( cfgfile=None, grid_file=None, output_dir=None, dims=None,
-                   force=False, log_level=None):
+def create_factors(cfg, workingdir=None, dims=None, log_level=None):
     """Convenience wrapper for call to
     ecco_production.utils.mapping_factors_utils.create_all_factors.
 
     Args:
-        cfgfile (str): (Path and) filename of ECCO Dataset Production
-            configuration file containing grid definition parameters.
-        grid_file (str): Path to native ECCO grid geometry NetCDF file.
-        output_dir (str): Directory where mapping factors will be written.
+        cfg (ECCODatasetProductionConfig): Configuration instance.
+        workingdir (str): Working directory path definition default if explicit
+            path definitions are otherwise unassigned in cfgfile.
         dims (str): List of dimensions for which mapping factors are to be
             generated (e.g., ['2','3'] for both two- and three-dimensional
             mapping).
@@ -126,24 +116,9 @@ def create_factors( cfgfile=None, grid_file=None, output_dir=None, dims=None,
         logging.getLogger('ecco_dataset_production').setLevel(log_level)
         log.setLevel(log_level)
 
-    log.info('-'*80)
-    log.info('Initializing configuration parameters...')
-    log.info('-'*80)
-
-    cfg = configuration.ECCODatasetProductionConfig(cfgfile=cfgfile)
-
-    # Inject file paths from command-line arguments into config
-    from pathlib import Path
-    cfg['ecco_grid_dir'] = str(Path(grid_file).parent)
-    cfg['ecco_grid_filename'] = Path(grid_file).name
-    cfg['mapping_factors_dir'] = output_dir
-    cfg['force_recalculation'] = force
-
     log.info('Configuration key value pairs:')
     for k,v in cfg.items():
         log.info('%s: %s', k, v)
-    log.info('...done initializing configuration parameters.')
-    log.info('-'*80)
 
     # convert input 'dims' into format required by create_all_factors:
     try:
@@ -152,8 +127,7 @@ def create_factors( cfgfile=None, grid_file=None, output_dir=None, dims=None,
         errstr = f'{sys._getframe().f_code.co_name} "dims" input error'
         log.exception('%s', errstr)
 
-    utils.mapping_factors_utils.create_all_factors(
-        cfg, dims)
+    utils.mapping_factors_utils.create_all_factors(cfg, dims)
 
 
 def main():
@@ -163,12 +137,8 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
-    create_factors(
-        cfgfile=args.cfgfile,
-        grid_file=args.grid_file,
-        output_dir=args.output_dir,
-        dims=args.dims,
-        force=args.force,
-        log_level=args.log_level
-    )
+    # Load configuration from parsed args
+    cfg = ECCODatasetProductionConfig.from_parsed_args(args)
+
+    create_factors(cfg, args.workingdir, args.dims, args.log_level)
     

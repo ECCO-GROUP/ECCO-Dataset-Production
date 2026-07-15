@@ -1,0 +1,222 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>document_generator.apps package &mdash; Ecco Document Generator 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Ecco Document Generator
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">document_generator.apps package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-document_generator.apps.step1_download_granules">document_generator.apps.step1_download_granules module</a><ul>
+<li><a class="reference internal" href="#document_generator.apps.step1_download_granules.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-document_generator.apps.step2_generate_compendium_sub_components">document_generator.apps.step2_generate_compendium_sub_components module</a><ul>
+<li><a class="reference internal" href="#document_generator.apps.step2_generate_compendium_sub_components.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-document_generator.apps.step3_compile_compendium">document_generator.apps.step3_compile_compendium module</a><ul>
+<li><a class="reference internal" href="#document_generator.apps.step3_compile_compendium.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-document_generator.apps">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ecco Document Generator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">document_generator.apps package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/document_generator.apps.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="document-generator-apps-package">
+<h1>document_generator.apps package<a class="headerlink" href="#document-generator-apps-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-document_generator.apps.step1_download_granules">
+<span id="document-generator-apps-step1-download-granules-module"></span><h2>document_generator.apps.step1_download_granules module<a class="headerlink" href="#module-document_generator.apps.step1_download_granules" title="Link to this heading"></a></h2>
+<p>Step 1 — Download ECCO granule files from the remote server.</p>
+<p>Reads granule URLs from the list file specified in the YAML config and
+downloads each file to the appropriate local directory, authenticating
+via the user’s <code class="docutils literal notranslate"><span class="pre">.netrc</span></code> file. See the project README for <code class="docutils literal notranslate"><span class="pre">.netrc</span></code>
+setup instructions.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">a_step1_download_granules</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.apps.step1_download_granules.main">
+<span class="sig-prename descclassname"><span class="pre">document_generator.apps.step1_download_granules.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.apps.step1_download_granules.main" title="Link to this definition"></a></dt>
+<dd><p>Entry point for the granule download step.</p>
+<p>Calls <code class="xref py py-func docutils literal notranslate"><span class="pre">utils.download_granules()</span></code> with the project base
+directory and the loaded configuration dictionary. Prints a header and
+footer message for visibility in pipeline logs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-document_generator.apps.step2_generate_compendium_sub_components">
+<span id="document-generator-apps-step2-generate-compendium-sub-components-module"></span><h2>document_generator.apps.step2_generate_compendium_sub_components module<a class="headerlink" href="#module-document_generator.apps.step2_generate_compendium_sub_components" title="Link to this heading"></a></h2>
+<p>Step 2 — Generate LaTeX table and figure source files.</p>
+<p>Processes the downloaded NetCDF granules to produce:</p>
+<ul class="simple">
+<li><p>Attribute reference tables (global and variable), sourced from JSON.</p></li>
+<li><p>Example CDL (Common Data Language) listings for one representative
+granule per grid type.</p></li>
+<li><p>Per-variable attribute tables and thumbnail plots for every dataset
+listed in the JSON groupings files.</p></li>
+</ul>
+<p>All output is written as <code class="docutils literal notranslate"><span class="pre">.tex</span></code> and <code class="docutils literal notranslate"><span class="pre">.png</span></code> files ready for compilation
+by Step 3.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">a_step2_generate_document</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.apps.step2_generate_compendium_sub_components.main">
+<span class="sig-prename descclassname"><span class="pre">document_generator.apps.step2_generate_compendium_sub_components.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.apps.step2_generate_compendium_sub_components.main" title="Link to this definition"></a></dt>
+<dd><p>Entry point for the LaTeX source generation step.</p>
+<p>Runs two passes over the granule directories:</p>
+<ol class="arabic simple">
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">latex_outline.write_data_attributes_tables()</span></code> — writes attribute
+reference and example CDL tables.</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">latex_outline.write_datasets()</span></code> — writes per-dataset variable
+tables and generates plot figures.</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-document_generator.apps.step3_compile_compendium">
+<span id="document-generator-apps-step3-compile-compendium-module"></span><h2>document_generator.apps.step3_compile_compendium module<a class="headerlink" href="#module-document_generator.apps.step3_compile_compendium" title="Link to this heading"></a></h2>
+<p>Step 3 — Compile the LaTeX compendium to PDF.</p>
+<p>Sets the <code class="docutils literal notranslate"><span class="pre">TEXINPUTS</span></code> environment variable so that <code class="docutils literal notranslate"><span class="pre">pdflatex</span></code> can locate
+both the static support <code class="docutils literal notranslate"><span class="pre">.tex</span></code> files and the user-generated <code class="docutils literal notranslate"><span class="pre">.tex</span></code> files
+produced by Step 2, then invokes <code class="docutils literal notranslate"><span class="pre">pdflatex</span></code> with a timestamped job name so
+successive runs do not silently overwrite each other.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">a_step3_compile_latex</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="document_generator.apps.step3_compile_compendium.main">
+<span class="sig-prename descclassname"><span class="pre">document_generator.apps.step3_compile_compendium.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#document_generator.apps.step3_compile_compendium.main" title="Link to this definition"></a></dt>
+<dd><p>Entry point for the LaTeX compilation step.</p>
+<p>Resolves absolute paths for the static support and user-generated TeX
+directories, sets <code class="docutils literal notranslate"><span class="pre">TEXINPUTS</span></code> so <code class="docutils literal notranslate"><span class="pre">pdflatex</span></code> can find <code class="docutils literal notranslate"><span class="pre">\input</span></code>
+targets in both locations, then runs <code class="docutils literal notranslate"><span class="pre">pdflatex</span></code> with
+<code class="docutils literal notranslate"><span class="pre">-halt-on-error</span></code> and a timestamped <code class="docutils literal notranslate"><span class="pre">--jobname</span></code> to produce the final
+PDF.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Install <code class="docutils literal notranslate"><span class="pre">pdflatex</span></code> via your TeX distribution (e.g. TeX Live or
+MiKTeX). On conda environments, <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">pdflatex</span></code> may also
+work.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-document_generator.apps">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-document_generator.apps" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Ian, Jose, Odilon, Bruce.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

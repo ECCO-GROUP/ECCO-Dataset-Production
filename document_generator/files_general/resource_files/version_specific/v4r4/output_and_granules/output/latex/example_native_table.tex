@@ -1,0 +1,379 @@
+\begin{longtable}{|p{\textwidth}|}
+\caption{Example Common Data format Language (CDL) description of native dataset}
+\label{tab:cdl-native} \\
+\hline \endfirsthead \endhead \endfoot \hline \endlastfoot
+\noindent granule: \hfill OCEAN\_TEMPERATURE\_SALINITY\_day\_mean\_2017-12-29\_ECCO\_V4r4\_native\_llc0090.nc\hfill\null \\
+\hline
+dimensions: \\
+\hline
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+tile = 13\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+j = 90\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+i = 90\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+j\_g = 90\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+i\_g = 90\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+k = 50\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+k\_p1 = 51\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+k\_u = 50\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+k\_l = 50\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+time = 1\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+nv = 2\\
+\rowcolor{YellowGreen}
+\hangindent=1.0cm
+\hangafter1
+nb = 4\\
+\hline
+coordinates: \\
+\hline
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 i (i)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i:axis = "X"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i:long\_name = "grid index in x for variables at tracer and 'v' locations"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i:swap\_dim = "XC"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'v' variables (e.g., VVEL) have the same x coordinate on the model grid."\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 i\_g (i\_g)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i\_g:axis = "X"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i\_g:long\_name = "grid index in x for variables at 'u' and 'g' locations"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i\_g:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i\_g:swap\_dim = "XG"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i\_g:comment = "In the Arakawa C-grid system, 'u' (e.g., UVEL) and 'g' variables (e.g., XG) have the same x coordinate on the model grid."\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}i\_g:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 j (j)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j:axis = "Y"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j:long\_name = "grid index in y for variables at tracer and 'u' locations"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j:swap\_dim = "YC"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j:comment = "In the Arakawa C-grid system, tracer (e.g., THETA) and 'u' variables (e.g., UVEL) have the same y coordinate on the model grid."\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 j\_g (j\_g)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j\_g:axis = "Y"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j\_g:long\_name = "grid index in y for variables at 'v' and 'g' locations"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j\_g:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j\_g:swap\_dim = "YG"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j\_g:comment = "In the Arakawa C-grid system, 'v' (e.g., VVEL) and 'g' variables (e.g., XG) have the same y coordinate."\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}j\_g:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 k (k)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k:axis = "Z"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k:long\_name = "grid index in z for tracer variables"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k:swap\_dim = "Z"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 k\_u (k\_u)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_u:axis = "Z"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_u:c\_grid\_axis\_shift = "0.5"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_u:swap\_dim = "Zu"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_u:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_u:long\_name = "grid index in z corresponding to the bottom face of tracer grid cells ('w' locations)"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_u:comment = "First index corresponds to the bottom surface of the uppermost tracer grid cell. The use of 'u' in the variable name follows the MITgcm convention for ocean variables in which the upper (u) face of a tracer grid cell on the logical grid corresponds to the bottom face of the grid cell on the physical grid."\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 k\_l (k\_l)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_l:axis = "Z"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_l:c\_grid\_axis\_shift = "-0.5"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_l:swap\_dim = "Zl"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_l:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_l:long\_name = "grid index in z corresponding to the top face of tracer grid cells ('w' locations)"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_l:comment = "First index corresponds to the top surface of the uppermost tracer grid cell. The use of 'l' in the variable name follows the MITgcm convention for ocean variables in which the lower (l) face of a tracer grid cell on the logical grid corresponds to the top face of the grid cell on the physical grid."\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 k\_p1 (k\_p1)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_p1:axis = "Z"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_p1:long\_name = "grid index in z for variables at 'w' locations"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_p1:c\_grid\_axis\_shift = "[-0.5  0.5]"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_p1:swap\_dim = "Zp1"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_p1:comment = "Includes top of uppermost model tracer cell (k\_p1=0) and bottom of lowermost tracer cell (k\_p1=51)."\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}k\_p1:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 tile (tile)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}tile:long\_name = "lat-lon-cap tile index"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}tile:comment = "The ECCO V4 horizontal model grid is divided into 13 tiles of 90x90 cells for convenience."\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}tile:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}int32 time (time)\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:long\_name = "center time of averaging period"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:axis = "T"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:bounds = "time\_bnds"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:coverage\_content\_type = "coordinate"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:standard\_name = "time"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:units = "hours since 1992-01-01T12:00:00"\\
+\rowcolor{Apricot}
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}time:calendar = "proleptic\_gregorian"\\
+\hline
+data variables: \\
+\hline
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 THETA (time, k, tile, j, i)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}THETA:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}THETA:long\_name = "Potential temperature "\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}THETA:units = "degree\_C"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}THETA:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}THETA:standard\_name = "sea\_water\_potential\_temperature"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}THETA:comment = "Sea water potential temperature is the temperature a parcel of sea water would have if moved adiabatically to sea level pressure. Note: the equation of state is a modified UNESCO formula by Jackett and McDougall (1995), which uses the model variable potential temperature as input assuming a horizontally and temporally constant pressure of $p_0=-g ho_{0} z$."\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}THETA:coordinates = "YC Z XC time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}THETA:valid\_min = "-2.9179372787475586"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}THETA:valid\_max = "36.425140380859375"\\
+\hangindent=1.0cm
+\hangafter1
+\hspace{0.5cm}float32 SALT (time, k, tile, j, i)\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SALT:\_FillValue = "9.969209968386869e+36"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SALT:long\_name = "Salinity"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SALT:units = "1e-3"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SALT:coverage\_content\_type = "modelResult"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SALT:standard\_name = "sea\_water\_salinity"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SALT:coordinates = "YC Z XC time"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SALT:valid\_min = "16.73577880859375"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SALT:valid\_max = "41.321231842041016"\\
+\hangindent=1.5cm
+\hangafter1
+\hspace{0.5cm}\hspace{0.5cm}SALT:comment = "Defined using CF convention 'Sea water salinity is the salt content of sea water, often on the Practical Salinity Scale of 1978. However, the unqualified term 'salinity' is generic and does not necessarily imply any particular method of calculation. The units of salinity are dimensionless and the units attribute should normally be given as 1e-3 or 0.001 i.e. parts per thousand.' see https://cfconventions.org/Data/cf-standard-names/73/build/cf-standard-name-table.html"\\
+\end{longtable}

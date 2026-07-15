@@ -1,0 +1,47 @@
+prompt:
+
+create reST function signatures for all python files in zip file using claude
+
+
+
+response:
+
+Step 1: Upload and Prompt Claude
+Open a new chat in Claude.
+Click the + (Attach) button and select your ZIP file.
+Use the following detailed prompt to instruct Claude:
+
+
+"Please analyze the uploaded ZIP file. Iterate through all Python files (.py) and extract all top-level functions and class methods.
+For each function/method, generate a reStructuredText (reST) documentation snippet using the .. py:function:: or .. py:method:: directive.
+Requirements:
+Include the full signature (name, arguments, type hints, and return type).
+Organize the output by file name.
+Do not include the docstring content, only the signature.
+Ensure it is ready to be pasted into a Sphinx documentation file.
+Example Output Format:
+```rst
+file_name.py
+.. py:function:: function_name(arg1: type, arg2: type = default) -> return_type
+.. py:method:: ClassName.method_name(self, arg1)
+```"
+
+
+Step 2: Review and Extract
+Claude will process the ZIP content, identify the file structure, and generate the signatures. Review the output for accuracy. You can ask Claude to "Fix the signature in file X" if necessary.
+
+
+Step 3: Implement in Documentation
+Copy the generated rst code block and paste it into your index.rst or dedicated API reference file within your Sphinx documentation project.
+
+Sample Expected Output from Claude:
+rst
+**data_processor.py**
+
+.. py:function:: load_data(file_path: str, format: str = 'csv') -> pandas.DataFrame
+
+.. py:method:: DataCleaner.clean(self, columns: list) -> None
+
+**utils.py**
+
+.. py:function:: validate_input(user_id: int) -> bool

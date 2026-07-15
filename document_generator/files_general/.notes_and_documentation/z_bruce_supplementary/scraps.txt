@@ -1,0 +1,3 @@
+s/\.\./\.\.\/\.\.\/\.\.\/static\/figures_static/g
+
+

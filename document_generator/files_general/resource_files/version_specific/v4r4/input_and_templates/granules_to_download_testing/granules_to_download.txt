@@ -1,0 +1,28 @@
+# README:
+# In this configuration file, the user specifies urls to remotely hosted ECCO output they wish to download.
+# Note that, for data on the ECCO "native" or "lat-lon" grids, coordinate granules can also be downloaded which
+# contain grid information which may be useful.
+#
+# An example of a url:
+# https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_VARIABLE.nc"
+#
+# The user should edit this file as needed.  Note that commented lines (beginning with #) are ignored during downloading. 
+
+
+# grid type: lat-lon
+# coordinate url:
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_GEOMETRY_05DEG_V4R4/GRID_GEOMETRY_ECCO_V4r4_latlon_0p50deg.nc
+# variable urls:
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_SSH_05DEG_DAILY_V4R4/SEA_SURFACE_HEIGHT_day_mean_2017-12-29_ECCO_V4r4_latlon_0p50deg.nc
+
+
+# grid type: native
+# coordinate url:
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_GEOMETRY_LLC0090GRID_V4R4/GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc
+# variable ursl:
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_TEMP_SALINITY_LLC0090GRID_DAILY_V4R4/OCEAN_TEMPERATURE_SALINITY_day_mean_2017-12-29_ECCO_V4r4_native_llc0090.nc
+
+
+# grid type: 1D
+# variable urls:
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/ECCO_L4_GMAP_TIME_SERIES_SNAPSHOT_V4R4/GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r4_1D.nc
