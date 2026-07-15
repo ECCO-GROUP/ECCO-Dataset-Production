@@ -1,0 +1,85 @@
+# Modify this config file according to your ECCO version and other options.  ExplanationsDetails/Instructions provided below. 
+
+ecco_version_string: 
+######## Example:
+### ecco_version_string: V4r6
+
+#url_list_overwrite_switch: False
+url_list_overwrite_switch: True
+
+# Edit this list according to which grid types are represented in your local granules (i.e. add/remove comments).
+# The possibilities are "native", "latlon", and "1D", so this list should have at most 3 entries.
+grid_types_considered:
+  - native
+  - latlon
+  - 1D
+  
+# Specify the names (without any parent paths) of granules to use for your example tables (see example below).
+# Comment-out any of these for which you don't have relevant granules.
+example_granule_native: 
+example_granule_latlon: 
+example_granule_1D:
+
+####### Example syntax for the three "example_granule_<grid_type>" variables above 
+### example_granule_native: OCEAN_TEMPERATURE_SALINITY_mon_mean_1992-01_ECCO_V4r6_native_llc0090.nc
+### example_granule_latlon: SEA_SURFACE_HEIGHT_mon_mean_1992-01_ECCO_V4r6_latlon_0p50deg.nc
+### example_granule_1D: GLOBAL_MEAN_ATM_SURFACE_PRES_snap_ECCO_V4r6_1D.nc
+
+granule_download_overwrite_switch: False
+#granule_download_overwrite_switch: True
+
+#figure_generation_overwrite_switch: False
+figure_generation_overwrite_switch: True
+
+num_pdflatex_calls: 2
+#num_pdflatex_calls: 1
+
+# -------------------------------------------------------------------------------------------------------------------------------------
+# Instructions:  Edit this configuration file as necessary; see below for more details
+# -------------------------------------------------------------------------------------------------------------------------------------
+#
+# Note: Use comments (#) to make lines invisible to programs reading this file.
+#
+# Note: Yaml files use a specific syntax.  Here are examples relevant to this file:
+#
+### defining a variable:
+# variable: value
+#
+#
+### defining a list:
+# list:
+#   - element_1
+#   - element_2
+#   - element_3
+#
+#
+# Configuration variables/lists defined in this file:
+# -------------------------------------------------------------------------------------------------------------------------------------
+# <ecco_version_string> identifies the version of ECCO that you are documenting (i.e. V4r6).  
+#
+# <url_list_overwrite_switch> is a boolean parameter which determins whether a new "granules_to_download.txt" file is created when
+# 'step0_generate_preliminary_file_tree.py' is executed.  When set to "True", old files are renamed with the current UTC time appended, and
+# a new file is generated.  We consider "False" to be the default setting, which is how it's set when this config file is first downloaded.
+#
+# <grid_types_considered> lists the types of ECCO grids for which you have either coordinate or variable granules downloaded
+# and which you'd like documented in the compendium (the three possibilities are "native", "latlon", and "1D").  Leave a grid type
+# "commented out" or absent from the list if you lack granules for it or want it ignored.
+#
+# <example_granule_*>, where "*" is "native", "latlon", or "1D", specifies the basename (filename without parent directory path) 
+# of a granule of your choosing from your downloaded granules directory which will be used to make an exhaustive example table of 
+# granule metadata for the "*" grid type.  Leave this variable "commented out" for the "*" grid type if you lack granules 
+# for the "*" grid or don't want an example granule table made for it.  
+# Note: please specify only a single <example_granule_*> for a given grid type.
+#
+# <granule_download_overwrite_switch> is a boolean parameter which allows users to skip re-downloading granules with names
+# already found in the local granules directory.  We recommend setting this variable to "False" to make use of this option,
+# as downloading can be a bottleneck and re-downloading granules should only be necessary if new versions of granules are made 
+# available by the ECCO team or if the user has modified their local granule files and would like to obtain the original versions. 
+#
+# <figure_generation_overwrite_switch> is a boolean parameter which allows users to avoid re-generating figure files with
+# names already found in the local output directory.  We recommend setting this variable to "True", as doing otherwise invites 
+# the possibility of accidentally using outdated figures.
+#
+# <num_pdflatex_calls> specifies the number of times the pdflatex program will be called to compile the final compendium document.
+# Compiling at least twice is usually necessary in order for pdflatex to make an accurate table of contents, among other things.
+# -------------------------------------------------------------------------------------------------------------------------------------

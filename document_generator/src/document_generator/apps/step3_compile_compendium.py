@@ -17,26 +17,19 @@ import subprocess
 import yaml
 from pathlib import Path
 import datetime
-import argparse
-
-# Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
+import src.document_generator.utils.utils_general as utils
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument('skipSed', nargs='?')
-args = parser.parse_args()
+config_file_static = Path(base_dir) / "files_general/resource_files/universal_input/config_static_DoNotModifyMe/config_static.yaml"
+config_file_user = Path(base_dir) / "files_general/resource_files/config_user_ModifyMe/config_user.yaml"
 
-skip_sed = args.skipSed
+with open(config_file_static, 'r') as stream:
+    config_dict_static = yaml.safe_load(stream)
 
-
-# Path to the YAML configuration file — update this for your environment
-#config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r4/input_and_templates/config/config.yaml"
-config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/v4r6/input_and_templates/config/config.yaml"
-
-with open(config_file, 'r') as stream:
-    config_dictionary = yaml.safe_load(stream)
+with open(config_file_user, 'r') as stream:
+    config_dict_user = yaml.safe_load(stream)
 
 
 def main() -> None:
@@ -56,67 +49,44 @@ def main() -> None:
 
     :returns: None
     """
-    input_tex_dir_absolute = f"{base_dir}/{config_dictionary['input_tex_dir_relative']}"
-    output_component_tex_dir_absolute = f"{base_dir}/{config_dictionary['output_component_tex_dir_relative']}"
+    ecco_version_string = config_dict_user['ecco_version_string']
+    compendium_template_path = Path(base_dir) / config_dict_static['compendium_tex_filepath'].format(ecco_version_string=ecco_version_string)
+    base_tex_stem = compendium_template_path.stem
+
+    input_tex_dir_absolute = Path(base_dir) / config_dict_static['input_tex_dir_relative'].format(ecco_version_string=ecco_version_string)
+    output_component_tex_dir_absolute = Path(base_dir) / config_dict_static['output_component_tex_dir_relative'].format(ecco_version_string=ecco_version_string)
 
     # TEXINPUTS tells pdflatex where to search for \input and \include targets.
     # The trailing colon preserves the default TeX search path.
     os.environ["TEXINPUTS"] = f"{input_tex_dir_absolute}:{output_component_tex_dir_absolute}:"
 
-    print(config_dictionary['compendium_compilation_runtime_message_string'])
+    print(config_dict_static['compendium_compilation_runtime_message_string'])
 
-    output_directory = os.path.join(base_dir, config_dictionary["final_compendium_files_dir"])
-    os.makedirs(output_directory, exist_ok=True)
+    output_directory = Path(base_dir) / config_dict_static["final_compendium_files_dir"]
+    output_directory.mkdir(parents=True, exist_ok=True)
 
-    # Timestamp the output filename so repeated runs don't overwrite each other
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
-    base_tex_stem = Path(config_dictionary["compendium_tex_filepath"]).stem
-                
-    compendium_template_path = os.path.join(base_dir, config_dictionary['compendium_tex_filepath'])
+    for ii in range(config_dict_user['num_pdflatex_calls']):
 
-    if skip_sed is None:
-
-        # Attempt to use the latex template files to make compendium component files with correct version and date information via bash sed calls   
-        Path(f"{base_dir}/{config_dictionary['latex_modified_input_files']}").mkdir(parents=True, exist_ok=True)
-        latex_template_files = [f.name for f in Path(f"{base_dir}/{config_dictionary['latex_template_files']}").iterdir() if f.is_file() and f.suffix == ".tex"]
-        #json_input_files = [str(p) for p in Path(f"{base_dir}/{config_dictionary['json_input_files']}").rglob('.json') if p.is_file()]
-
-        #files_to_modify = latex_template_files + json_input_files
-
-        for latex_file_name in latex_template_files: 
-            format_map_context_dict = {
-                'file_in': f"{base_dir}/{config_dictionary['latex_template_files']}/{latex_file_name}",
-                'file_out': f"{base_dir}/{config_dictionary['latex_modified_input_files']}/{latex_file_name}"
-            }
-            try:
-                for sed_command in config_dictionary['latex_template_modification_commands_list']:
-                    result = subprocess.run(
-                            sed_command.format_map(format_map_context_dict),
-                            check=True, shell=True
-                            )
-            except:
-                print('Bash call to modify file did not work')
-
-
-    # Attempt compilation of final latex document
-    try:
-        result = subprocess.run(
-            [
-                'pdflatex',
-                '-halt-on-error',
-                f'--jobname={base_tex_stem}',
-                #f'--jobname={base_tex_stem}_{timestamp}',
-                f'--output-directory={output_directory}',
-                compendium_template_path
-            ],
-            check=True, text=True, capture_output=True
-        )
-    except subprocess.CalledProcessError as e:
-        print("An error occurred during pdflatex execution:")
-        print(e.stderr)
-        print(e.stdout)
-    except FileNotFoundError:
-        print("Please install the 'pdflatex' python package, perhaps via 'conda install pdflatex'")
+        print(f"pdflatex call {ii+1}/{config_dict_user['num_pdflatex_calls']}")
+    
+        # Attempt compilation of final latex document
+        try:
+            result = subprocess.run(
+                [
+                    'pdflatex',
+                    '-halt-on-error',
+                    f'--jobname={base_tex_stem}',
+                    f'--output-directory={output_directory}',
+                    compendium_template_path
+                ],
+                check=True, text=True, capture_output=True
+            )
+        except subprocess.CalledProcessError as e:
+            print("An error occurred during pdflatex execution:")
+            print(e.stderr)
+            print(e.stdout)
+        except FileNotFoundError:
+            print("Please install the 'pdflatex' program onto your computer in order to compile a latex document")
 
 
 if __name__ == "__main__":

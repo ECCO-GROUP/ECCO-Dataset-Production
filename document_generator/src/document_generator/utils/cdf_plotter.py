@@ -1,8 +1,12 @@
-# NOTE: This module depends on ecco_v4_py for native-grid tile plots and
-# polar stereographic projections. Ensure the library is installed and its
-# path is appended to sys.path before importing this module.
-
+# ---------------------------------------------------------------------------
+# NoTE: This module depends on the ecco_v#_py module for native-grid tile plots and polar stereographic projection plots, 
+# where "#" is the version of ECCO used to produce the granules being documented.
+# Ensure that its parent repo, "ECCOv#-py", is cloned locally, and append the parent repo filepath to your python path variable:
 import sys
+sys.path.append('/Users/brucel/ECCOv4-py')
+# ---------------------------------------------------------------------------
+
+import ecco_v4_py as ecco
 import matplotlib.colors
 import matplotlib.pyplot as plt
 from mpl_toolkits.axisartist.axislines import AxesZero  # for x/y axis arrow overlays
@@ -15,16 +19,10 @@ import cmocean
 import argparse
 from pathlib import Path
 from PIL import Image
-import pdb
-
-# Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 import src.document_generator.utils.utils_general as utils_general
 import src.document_generator.utils.cdf_extract as cdf_extract
-
-sys.path.append('/Users/brucel/ECCOv4-py')
-import ecco_v4_py as ecco
 
 
 # ---------------------------------------------------------------------------
@@ -32,7 +30,7 @@ import ecco_v4_py as ecco
 # ---------------------------------------------------------------------------
 
 def data_var_plot(
-    config_dictionary: dict,
+    config_dict: dict,
     dataset: xr.Dataset,
     data_array: xr.DataArray,
     image_directory: str,
@@ -47,11 +45,11 @@ def data_var_plot(
     otherwise the existing file is reused. A thumbnail copy is also created
     at the size specified in the config.
 
-    :param config_dictionary: Configuration mapping. Expected keys include
+    :param config_dict: Configuration mapping. Expected keys include
         ``'thumbnail_path_modifier_string'`` (str, suffix inserted before the
         file extension to form the thumbnail filename) and ``'thumbnail_size'``
         (int, longest edge in pixels for the thumbnail).
-    :type config_dictionary: dict
+    :type config_dict: dict
     :param dataset: The dataset containing ``data_array``. Used for
         ``product_name`` and coordinate variables needed by the plot functions.
     :type dataset: xr.Dataset
@@ -87,10 +85,10 @@ def data_var_plot(
         # Build the thumbnail path by inserting the modifier before the extension
         thumbnail_output_path = (
             f"{'.' .join(figure_path.split('.')[:-1])}"
-            f"{config_dictionary['thumbnail_path_modifier_string']}"
+            f"{config_dict['thumbnail_path_modifier_string']}"
             f".{figure_path.split('.')[-1]}"
         )
-        thumbnail_size_tuple = (config_dictionary["thumbnail_size"], config_dictionary["thumbnail_size"])
+        thumbnail_size_tuple = (config_dict["thumbnail_size"], config_dict["thumbnail_size"])
 
         try:
             with Image.open(figure_path) as image:
@@ -670,58 +668,3 @@ def compute_cmin_cmax(data, factor: float = 1.5) -> tuple:
 
     return cmin, cmax
 
-
-if __name__ == '__main__':
-    """
-    Command-line interface for plotting a single variable from a NetCDF file.
-
-    Usage::
-
-        python cdf_plotter.py --file PATH --field VARNAME [--directory DIR]
-                              [--cbar BOOL] [--coords BOOL]
-
-    :param --file: Path to the NetCDF file.
-    :param --field: Name of the variable to plot, or ``'all'`` to plot every
-        variable.
-    :param --directory: Output directory for plot images. Defaults to
-        ``'images/plots/{type}_plots/'``.
-    :param --cbar: ``'True'`` or ``'False'``. Whether to show the colorbar.
-        Default is ``True``.
-    :param --coords: ``'True'`` or ``'False'``. Whether to plot coordinate
-        variables. Default is ``False``.
-    """
-    parser = argparse.ArgumentParser(description='Plot a data variable.')
-    parser.add_argument('--file',      required=True,  type=str)
-    parser.add_argument('--field',     required=True,  type=str)
-    parser.add_argument('--directory', required=False, type=str)
-    parser.add_argument('--cbar',      required=False, type=str, default=None)
-    parser.add_argument('--coords',    required=False, type=str, default=None)
-
-    args = parser.parse_args()
-    file      = args.file
-    field     = args.field
-    directory = args.directory
-
-    cbar   = False if args.cbar   == 'False' else True
-    coords = True  if args.coords == 'True'  else False
-
-    ds = xr.open_dataset(args.file)
-
-    # Determine the grid type from the file path for the output directory default
-    if 'native' in file:
-        type = 'native'
-    elif 'lat-lon' in file:
-        type = 'lat-lon'
-    else:
-        type = '1D'
-
-    if args.field == 'all':
-        fields = list(ds.coords if coords else ds.data_vars)
-    else:
-        fields = [args.field]
-
-    for fi, f in enumerate(fields):
-        field = ds[f]
-        if directory is None:
-            directory = 'images/plots/' + type + '_plots/'
-        data_var_plot(ds, field, directory, cbar, coords)

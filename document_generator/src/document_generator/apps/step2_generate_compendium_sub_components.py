@@ -14,31 +14,26 @@ by Step 3.
 
 Usage::
 
-    python a_step2_generate_document.py
+    python step2_generate_document.py
 """
 
-import os
 import sys
 import yaml
 from pathlib import Path
-
-# Ensure the project root is on the path so relative imports resolve correctly
 base_dir = str(Path(__file__).parent.parent.parent.parent.resolve())
 sys.path.append(base_dir)
 import src.document_generator.utils.latex_outline as latex_outline
+import src.document_generator.utils.utils_general as utils
 
 
+config_file_static = Path(base_dir) / "files_general/resource_files/universal_input/config_static_DoNotModifyMe/config_static.yaml"
+config_file_user = Path(base_dir) / "files_general/resource_files/config_user_ModifyMe/config_user.yaml"
 
-# If True, regenerate all output files even if they already exist on disk
-overwrite_switch = True
-# overwrite_switch = False  # uncomment to skip files that already exist
+with open(config_file_static, 'r') as stream:
+    config_dict_static = yaml.safe_load(stream)
 
-# Path to the YAML configuration file — update this for your environment
-#config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/V4r4/input_and_templates/config/config.yaml"
-config_file = "/Users/brucel/ecco/yip/ECCO-Dataset-Production/document_generator/files_general/resource_files/version_specific/V4r6/input_and_templates/config/config.yaml"
-
-with open(config_file, 'r') as stream:
-    config_dictionary = yaml.safe_load(stream)
+with open(config_file_user, 'r') as stream:
+    config_dict_user = yaml.safe_load(stream)
 
 
 def main() -> None:
@@ -54,9 +49,13 @@ def main() -> None:
 
     :returns: None
     """
+
+    for file_type_to_modify in ["latex", "json"]:
+        utils.template_file_text_replacement(base_dir, config_dict_static, config_dict_user, file_type_to_modify)
+
     print("\nGenerating supporting latex table and image files:\n")
-    latex_outline.write_data_attributes_tables(base_dir, config_dictionary, overwrite_switch)
-    latex_outline.write_datasets(base_dir, config_dictionary, overwrite_switch)
+    latex_outline.write_data_attributes_tables(base_dir, config_dict_static, config_dict_user)
+    latex_outline.write_datasets(base_dir, config_dict_static, config_dict_user)
     print()
 
 

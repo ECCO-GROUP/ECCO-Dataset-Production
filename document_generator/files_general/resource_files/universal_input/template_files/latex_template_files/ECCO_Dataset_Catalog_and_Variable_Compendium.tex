@@ -1,0 +1,44 @@
+
+\documentclass[letterpaper]{article}
+
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tocloft}
+\setlength{\cfttabnumwidth}{3em}
+\setlength{\cftsubsecnumwidth}{3em}
+\usepackage{graphicx}
+
+\graphicspath{ {../../../files\_general/resource\_files/universal\_input/figures/} {../../../files\_general/resource\_files/version\_specific/V-NUM-r-NUM-placeholder/output\_and\_granules/output/figures/} }
+
+\input{preamble.tex}
+
+\begin{document}
+
+\input{front_pages.tex}
+\input{doc_records.tex}
+\input{ECCO_team.tex}
+\input{executive_summary.tex}
+
+\pagebreak
+\section{Table of Contents}
+\tableofcontents
+
+\pagebreak
+\section{Figures in this document}
+\listoffigures
+\par \vspace{0.5cm}
+
+\section{Tables in this document}
+\listoftables
+\par \vspace{0.5cm}
+
+\input{scope_content_doc.tex}
+\input{ECCO_overview.tex}
+\input{filenames_conventions.tex}
+
+\input{data_product_file_structure_Attrs.tex}
+
+\pagebreak
+
+% remaining lines are appended and saved to new file at runtime
