@@ -61,8 +61,6 @@ num_vertical_levels: 50
 # Maximum model depth (meters):
 geospatial_vertical_min: -6134.5
 
-ecco_grid_filename: 'GRID_GEOMETRY_ECCO_V4r5_native_llc0090.nc' # NOTE: Check later
-
 # Grid geometry dataset descriptions
 llc_grid_size: 90
 llc_code: 'llc90'
