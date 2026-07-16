@@ -36,16 +36,24 @@ Arguments
     Path and filename of the ECCO Production configuration file (YAML format).
     Default: ``./product_generation_config.yaml``
 
-``--workingdir``
-    Working directory used to set default path root values if configuration
-    path data are unassigned.
-    Default: ``.``
+``--grid_file``
+    Path to native ECCO grid geometry NetCDF file (must contain hFacC, XC, YC, etc.)
+    Required.
 
-``--dims``
-    Dimensions of mapping factors to generate. Specify ``2`` for 2D factors,
-    ``3`` for 3D factors, or both (e.g., ``--dims 2 3``).
+``--output_dir``
+    Directory where mapping factors will be written.
+    Required.
 
-``-l, --log``
+``dims``
+    Space-separated list of dimensions to generate. Specify ``2`` for 2D factors,
+    ``3`` for 3D factors, or both (e.g., ``2 3``).
+    Required (positional argument).
+
+``--force``
+    Force recalculation of mapping factors even if they already exist.
+    Default: False (existing factors are reused)
+
+``--log``
     Set logging level. Choices: ``DEBUG``, ``INFO``, ``WARNING``, ``ERROR``,
     ``CRITICAL``.
     Default: ``WARNING``
@@ -54,21 +62,39 @@ Arguments
 Configuration Parameters
 ------------------------
 
-The following configuration file parameters are referenced:
+The configuration file (YAML) contains grid definition parameters. Example:
 
-- ``custom_grid_and_factors`` - Custom target grid mapping specifications
-- ``ecco_grid_dir`` - Directory containing ECCO grid files
-- ``ecco_grid_filename`` - ECCO grid filename (required)
+.. code-block:: yaml
+
+    # Resolution of the lat-lon grid used for transformation (degrees):
+    latlon_grid_resolution: 0.5
+
+    # Area extent for lat-lon grid [lon_min, lat_max, lon_max, lat_min]:
+    latlon_grid_area_extent: [-180.0, 90.0, 180.0, -90.0]
+
+    # Effective grid cell radius for mapping (km).
+    # If not specified (null), defaults to: (111/2)*sqrt(2) ≈ 78.5 km
+    latlon_effective_grid_radius: null
+
+    # Use custom grid and factors (false = use ECCO grids):
+    custom_grid_and_factors: false
+
+    # Number of vertical levels:
+    num_vertical_levels: 50
+
+**Note:** File paths (grid files, output directories) are specified as
+command-line arguments, not in config files. This makes configs portable
+across different systems.
+
+The following configuration parameters are referenced:
+
+- ``latlon_grid_resolution`` - Target grid resolution in degrees (e.g., 0.5)
+- ``latlon_grid_area_extent`` - Geographic bounds [lon_min, lat_max, lon_max, lat_min]
+- ``latlon_effective_grid_radius`` - Effective radius for mapping (km), defaults to ~78.5 km if null
+- ``custom_grid_and_factors`` - Use custom grids (false = use ECCO grids)
+- ``num_vertical_levels`` - Number of vertical levels (e.g., 50)
 - ``ecco_version`` - ECCO version string (e.g., "V4r5")
-- ``grid_files_dir`` - Output directory for grid files
-- ``latlon_effective_grid_radius`` - Effective radius for lat/lon mapping
-- ``latlon_grid_area_extent`` - Area extent for lat/lon grid
-- ``latlon_grid_dims`` - Dimensions of lat/lon grid
-- ``latlon_grid_resolution`` - Resolution of lat/lon grid
-- ``latlon_max_lat`` - Maximum latitude for lat/lon grid
-- ``mapping_factors_dir`` - Output directory for mapping factors
-- ``num_vertical_levels`` - Number of vertical levels
-- ``source_grid_min_L`` / ``source_grid_max_L`` - Source grid L bounds
+- ``source_grid_min_L`` / ``source_grid_max_L`` - Source grid cell size bounds (optional)
 
 
 Entry Point
@@ -172,28 +198,39 @@ All output files are written to ``{mapping_factors_dir}/``:
 Examples
 --------
 
-**Basic usage with 2D and 3D factors:**
+**Generate both 2D and 3D mapping factors:**
 
 .. code-block:: bash
 
-    edp_create_factors --cfgfile ./config/V4r5_config.yaml \
-                       --workingdir /data/ecco \
-                       --dims 2 3 \
-                       -l INFO
+    edp_create_factors \
+        --cfgfile configs/config_V4r4.yaml \
+        --grid_file /path/to/GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc \
+        --output_dir /path/to/output/mapping_factors \
+        2 3 \
+        --log INFO
 
 **Generate only 2D factors:**
 
 .. code-block:: bash
 
-    edp_create_factors --cfgfile ./config/V4r5_config.yaml \
-                       --dims 2
+    edp_create_factors \
+        --cfgfile configs/config_V4r4.yaml \
+        --grid_file /path/to/GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc \
+        --output_dir /path/to/output/mapping_factors \
+        2 \
+        --log INFO
 
-**Using default configuration file:**
+**Force recalculation even if factors already exist:**
 
 .. code-block:: bash
 
-    cd /path/to/working/directory
-    edp_create_factors --dims 2 3
+    edp_create_factors \
+        --cfgfile configs/config_V4r4.yaml \
+        --grid_file /path/to/GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc \
+        --output_dir /path/to/output/mapping_factors \
+        2 3 \
+        --force \
+        --log INFO
 
 
 Execution Flow Diagram
@@ -391,11 +428,93 @@ Key Module Dependencies
                 +---> pyresample
 
 
+What Gets Stored
+----------------
+
+The mapping factors encode the transformation between grids and ensure coordinate
+consistency across all processed datasets.
+
+**latlon_grid/latlon_grid.xz**
+    Contains the **source of truth** for lat-lon coordinates:
+
+    - ``latitude_bounds``: (nlat+1, 2) array of cell boundaries
+    - ``longitude_bounds``: (nlon+1, 2) array of cell boundaries
+    - ``depth_bounds``: (nz+1, 2) array of depth boundaries
+
+    Cell centers are calculated as midpoints of the bounds.
+
+**sparse/sparse_matrix_*.npz**
+    Sparse CSR matrices that transform native grid wet points to lat-lon grid points.
+    One matrix per depth level (0 to nz-1).
+
+**land_mask/ecco_latlon_land_mask_*.xz**
+    Land masks for each depth level. Points over land are NaN.
+
+
+Important Notes
+---------------
+
+1. **Grid resolution is fixed**: Once mapping factors are created with a specific
+   resolution (e.g., 0.5°), that resolution is "baked into" the files. To change
+   resolution, you must regenerate all mapping factors.
+
+2. **Coordinates come from mapping factors**: When processing granules or creating
+   grid geometry files, the lat-lon coordinates always come from
+   ``latlon_grid/latlon_grid.xz``, ensuring consistency across all datasets.
+
+3. **Large computation**: Generating mapping factors for 3D fields with 50 depth
+   levels can take significant time and memory.
+
+4. **One-time setup**: For each ECCO version, mapping factors are typically
+   generated once and then reused for all granule processing.
+
+
+Changing Resolution
+-------------------
+
+To generate mapping factors at a different resolution (e.g., 0.25°):
+
+1. Edit the config file:
+
+   .. code-block:: yaml
+
+       latlon_grid_resolution: 0.25
+
+2. Run the create_factors command:
+
+   .. code-block:: bash
+
+       edp_create_factors \
+           --cfgfile configs/config_V4r4_0p25deg.yaml \
+           --grid_file /path/to/GRID_GEOMETRY_ECCO_V4r4_native_llc0090.nc \
+           --output_dir /path/to/mapping_factors_0p25deg \
+           2 3
+
+3. Update the grid label in your config:
+
+   .. code-block:: yaml
+
+       ecco_production_filestr_grid_label:
+           latlon: '0p25deg'
+
+This creates a completely new set of mapping factors at the new resolution.
+
+
+Related Tools
+-------------
+
+- ``edp_create_factors``: Generate mapping factors (this document)
+- ``utils/create_latlon_grid_geometry.py``: Transform grid geometry files using existing mapping factors
+- ``edp_generate_datasets``: Process granules using mapping factors
+
+All three tools use the same mapping factors to ensure coordinate consistency.
+
+
 Performance Notes
 -----------------
 
 - Mapping factor creation is computationally intensive
-- Files are cached and reused if they already exist
+- Files are cached and reused if they already exist (use ``--force`` to override)
 - The script checks for existing files before recalculating
 - 3D factors require processing each vertical level (50+ iterations)
 
