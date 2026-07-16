@@ -277,7 +277,7 @@ class TestRealConfigs:
         configs_dir = Path(__file__).parent.parent / 'configs'
 
         # Explicitly list current config versions to test
-        config_filenames = ['config_V4r5.yaml', 'config_V4r6.yaml']
+        config_filenames = ['config_V4r6.yaml']
 
         for filename in config_filenames:
             config_file = configs_dir / filename
