@@ -11,7 +11,8 @@ import yaml
 from .. import aws
 from .schema import Schema
 
-log = logging.getLogger('edp.config')
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
 
 
 class ConfigurationValidationError(Exception):
@@ -59,7 +60,7 @@ class ECCODatasetProductionConfig(UserDict):
         >>> # Use cfg for config, args for tool-specific arguments
     """
 
-    def __init__(self, cfgfile, **kwargs):
+    def __init__(self, cfgfile, validate_required=True, **kwargs):
         super().__init__()
         self._schema = Schema()
 
@@ -84,7 +85,8 @@ class ECCODatasetProductionConfig(UserDict):
 
         # Validate config file after defaults applied
         try:
-            self._schema.validate(dict(self), source=self.cfgfile)
+            self._schema.validate(dict(self), source=self.cfgfile,
+                                 check_required=validate_required)
             log.info('Configuration file validation successful: %s', self.cfgfile)
         except Exception as e:
             msg = f"Configuration file '{self.cfgfile}' is invalid:\n{str(e)}"
@@ -255,25 +257,24 @@ class ECCODatasetProductionConfig(UserDict):
                 if field in args_dict and args_dict[field] is not None:
                     overrides[field] = args_dict[field]
 
-        # Use __init__ to load and validate the base config
-        instance = cls(cfgfile, **kwargs)
+        # Use __init__ without required field validation (CLI overrides may provide them)
+        instance = cls(cfgfile, validate_required=False, **kwargs)
 
         # Apply overrides if any
         if overrides:
             log.debug('Applying CLI overrides: %s', overrides)
             instance.update(overrides)
 
-            # Validate again with overrides
-            try:
-                instance._schema.validate(dict(instance), source='CLI overrides')
-                log.info('Configuration with CLI overrides validation successful')
-            except Exception as e:
-                msg = (
-                    f"Configuration with CLI overrides is invalid:\n{str(e)}\n"
-                    f"Overrides: {overrides}"
-                )
-                log.error(msg)
-                raise ConfigurationValidationError(msg) from e
+        # Validate complete config with required field checks (now that CLI overrides applied)
+        try:
+            instance._schema.validate(dict(instance), source=cfgfile, check_required=True)
+            log.info('Configuration validation successful')
+        except Exception as e:
+            msg = f"Configuration is invalid:\n{str(e)}"
+            if overrides:
+                msg += f"\nCLI overrides: {overrides}"
+            log.error(msg)
+            raise ConfigurationValidationError(msg) from e
 
         return instance
 
