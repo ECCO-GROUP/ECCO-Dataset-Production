@@ -1242,7 +1242,7 @@ def create_ecco_grid_values(
 # =================================================================================================
 # CREATE ALL FACTORS (MAPPING FACTORS, LAND MASK, LATLON GRID, and SPARSE MATRICES)
 # =================================================================================================
-def create_all_factors(product_generation_config, dataset_dim):
+def create_all_factors(product_generation_config, dataset_dim, force_recalculation=False):
     """
     Generates 2- and/or 3-D mapping factors including land masks, and lon/lat
     grid files.

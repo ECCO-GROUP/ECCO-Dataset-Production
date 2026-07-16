@@ -52,6 +52,7 @@ def create_parser():
     """
     # Create parser with config file support
     parser = ECCODatasetProductionConfig.create_parser(
+        config_fields=['ecco_grid_dir', 'ecco_grid_filename'],
         description="""Creates 2- and/or 3-D mapping factors, land mask, and
         lon/lat grid files."""
     )
@@ -60,6 +61,9 @@ def create_parser():
     parser.add_argument('--workingdir', default='.', help="""
         If any configuration path data are unassigned, --workingdir will be used
         to set default path root values (default: '%(default)s')""")
+    parser.add_argument('--force', action='store_true',
+        help="""Force recalculation of mapping factors even if they already exist.
+        By default, existing mapping factors are not regenerated.""")
     parser.add_argument('dims', nargs='+', default=['2', '3'], help="""
         Dimension(s) of mapping factors to be generated (2, 3, or both).
         Example: 2 3 for both two- and three-dimensional mapping factors.""")
@@ -82,7 +86,7 @@ def create_parser():
     return parser
 
 
-def create_factors(cfg, workingdir=None, dims=None, log_level=None):
+def create_factors(cfg, workingdir=None, dims=None, log_level=None, force_recalculation=False):
     """Convenience wrapper for call to
     ecco_production.utils.mapping_factors_utils.create_all_factors.
 
@@ -127,7 +131,7 @@ def create_factors(cfg, workingdir=None, dims=None, log_level=None):
         errstr = f'{sys._getframe().f_code.co_name} "dims" input error'
         log.exception('%s', errstr)
 
-    utils.mapping_factors_utils.create_all_factors(cfg, dims)
+    utils.mapping_factors_utils.create_all_factors(cfg, dims, force_recalculation)
 
 
 def main():
@@ -140,5 +144,4 @@ def main():
     # Load configuration from parsed args
     cfg = ECCODatasetProductionConfig.from_parsed_args(args)
 
-    create_factors(cfg, args.workingdir, args.dims, args.log_level)
-    
+    create_factors(cfg, args.workingdir, args.dims, args.log_level, args.force)

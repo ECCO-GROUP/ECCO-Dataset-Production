@@ -31,8 +31,7 @@ num_vertical_levels: int(min=1, required=False, default=50)
 geospatial_vertical_min: num(required=True)
 
 # ECCO grid files (paths may be specified via task list or CLI)
-ecco_native_grid_filename: str(required=True)
-ecco_grid_filename: str(required=False)
+ecco_grid_filename: str(required=True) # NOTE: Update test
 ecco_grid_dir: str(required=False, arg_name='ecco_grid_loc', description='Directory containing ECCO grid files or AWS S3 bucket/prefix')
 
 #---------------------------------------------------------------------
@@ -45,7 +44,7 @@ podaac_metadata_filename: str(required=True)
 history: str(required=True)
 references: str(required=True)
 source: str(required=True)
-summary: str(required=True)
+project_summary: str(required=True)
 
 # NetCDF4 compression
 netcdf4_compression_encodings: include('compression', required=True)
@@ -88,6 +87,7 @@ processed_output_dir_base: str(required=False)
 latlon_grid_resolution: num(min=0, required=False, arg_name='resolution', description='Lat-lon grid resolution in degrees')
 latlon_grid_area_extent: list(num(), required=False, arg_name='extent', description='Grid area extent [min_lon, max_lon, min_lat, max_lat]')
 latlon_effective_grid_radius: num(required=False, arg_name='grid-radius', description='Effective grid radius in meters')
+latlon_grid_radius_method: str(required=False) # NOTE: Either this or latlon_effective_grid_radius; add check
 
 #---------------------------------------------------------------------
 # Custom grid parameters (used by create_factors)
@@ -95,6 +95,9 @@ latlon_effective_grid_radius: num(required=False, arg_name='grid-radius', descri
 
 source_grid_min_L: num(required=False)
 source_grid_max_L: num(required=False)
+# NOTE: Check these for dep/validation
+llc_grid_size: num(required=False)
+llc_code: str(required=False)
 
 #---------------------------------------------------------------------
 # Schema includes/definitions
