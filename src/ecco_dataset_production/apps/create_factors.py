@@ -142,6 +142,6 @@ def main():
     args = parser.parse_args()
 
     # Load configuration from parsed args
-    cfg = ECCODatasetProductionConfig.from_parsed_args(args)
+    cfg = ECCODatasetProductionConfig.from_parsed_args(args, config_fields=['ecco_grid_dir', 'ecco_grid_filename'])
 
     create_factors(cfg, args.workingdir, args.dims, args.log_level, args.force)
