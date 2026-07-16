@@ -26,7 +26,7 @@ model_timestep: int(min=1, required=True, description='Number of simulation time
 num_vertical_levels: int(min=1, required=False, default=50, description='Number of vertical levels in 3D fields (one vertical level assumed for 2D files)')
 geospatial_vertical_min: num(required=True, description='Maximum model depth (meters)')
 
-ecco_grid_filename: str(required=True, description='ECCO grid geometry filename') # NOTE: Update test
+ecco_grid_filename: str(required=False, description='ECCO grid geometry filename')
 ecco_grid_dir: str(required=False, arg_name='ecco_grid_loc', description='Directory containing ECCO grid files or AWS S3 bucket/prefix')
 
 #---------------------------------------------------------------------
