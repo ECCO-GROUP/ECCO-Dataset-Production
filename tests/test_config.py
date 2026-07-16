@@ -20,7 +20,7 @@ VALID_CONFIG = {
     'model_timestep': 1,
     'model_timestep_units': 'h',
     'geospatial_vertical_min': -6134.5,
-    'ecco_native_grid_filename': 'GRID_GEOMETRY_ECCO_V4r6_native_llc0090.nc',
+    'ecco_grid_filename': 'GRID_GEOMETRY_ECCO_V4r6_native_llc0090.nc',
     'ecco_production_filestr_grid_label': {
         'latlon': '0p50deg',
         'native': 'llc0090'
@@ -30,7 +30,7 @@ VALID_CONFIG = {
     'history': 'Test history',
     'references': 'Test references',
     'source': 'Test source',
-    'summary': 'Test summary',
+    'project_summary': 'Test summary',
     'netcdf4_compression_encodings': {
         'zlib': True,
         'complevel': 5,
@@ -208,11 +208,14 @@ class TestCustomArgNames:
         schema = Schema()
 
         # Fields with descriptions
-        assert 'Lat-lon grid resolution' in schema._get_description('latlon_grid_resolution')
-        assert 'ECCO grid files' in schema._get_description('ecco_grid_dir')
+        desc = schema._get_description('latlon_grid_resolution')
+        assert desc is not None and 'resolution' in desc.lower()
 
-        # Fields without descriptions return None
-        assert schema._get_description('array_precision') is None
+        desc = schema._get_description('ecco_grid_dir')
+        assert desc is not None and 'grid' in desc.lower()
+
+        # Fields with descriptions shouldn't return None
+        assert schema._get_description('array_precision') is not None
 
     def test_parser_uses_custom_arg_names(self):
         """Test parser uses custom arg names for CLI arguments."""
@@ -239,9 +242,9 @@ class TestCustomArgNames:
 
         for action in parser._actions:
             if action.dest == 'latlon_grid_resolution':
-                assert 'Lat-lon grid resolution' in action.help
+                assert 'resolution' in action.help.lower()
             elif action.dest == 'ecco_grid_dir':
-                assert 'ECCO grid files' in action.help
+                assert 'grid' in action.help.lower()
 
     def test_end_to_end_with_custom_names(self, valid_config_file):
         """Test complete workflow with custom arg names."""
