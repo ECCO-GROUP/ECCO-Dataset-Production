@@ -9,10 +9,11 @@
 
 ecco_version: str(required=True, description='Short name of ECCO product version/release')
 product_version: str(required=True, description='Long name of ECCO product version/release. Used to set the product_version global attribute in the final output dataset(s)')
-ecco_production_filestr_grid_label: include('grid_labels', required=True, description='
-    ECCO dataset filestring component for latlon or native dataproducts.
-    Used by ECCOGranuleFilestr class to set the grid_label portion of the dataset filestring.
-    Format: <prefix>_<averaging_period>_<date>_ECCO_<version>_<grid_type>_<grid_label>.nc')
+ecco_production_filestr_grid_label: |
+  include('grid_labels', required=True, description='''
+  ECCO dataset filestring component for latlon or native dataproducts.
+  Used by ECCOGranuleFilestr class to set the grid_label portion of the dataset filestring.
+  Format: <prefix>_<averaging_period>_<date>_ECCO_<version>_<grid_type>_<grid_label>.nc''')
 
 #---------------------------------------------------------------------
 # Model parameters
@@ -21,7 +22,7 @@ ecco_production_filestr_grid_label: include('grid_labels', required=True, descri
 array_precision: enum('float32', 'float64', required=False, default='float64', description='ECCO granule variable precision. float32 produces ~50% smaller files than float64')
 model_start_time: str(required=True, matches=r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$', description='Model start date and time in ISO format (YYYY-MM-DDThh:mm:ss)')
 model_end_time: str(required=True, matches=r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$', description='Model end date and time in ISO format (YYYY-MM-DDThh:mm:ss)')
-model_timestep_units: enum('h', 'm', 's', 'D', required=True, description='Model timestep units (per numpy datetime64 conventions: hours(h), minutes(m), seconds(s), etc.)')
+model_timestep_units: "enum('h', 'm', 's', 'D', required=True, description='Model timestep units (per numpy datetime64 conventions: hours(h), minutes(m), seconds(s), etc.)')"
 model_timestep: int(min=1, required=True, description='Number of simulation timestep units per granule time increment')
 num_vertical_levels: int(min=1, required=False, default=50, description='Number of vertical levels in 3D fields (one vertical level assumed for 2D files)')
 geospatial_vertical_min: num(required=True, description='Maximum model depth (meters)')
@@ -37,12 +38,11 @@ podaac_metadata_filename: str(required=True, description='PO.DAAC metadata sourc
 history: str(required=True, description='History string to include with global metadata')
 references: str(required=True, description='References string to include with global metadata')
 source: str(required=True, description='Source string to include with global metadata')
-project_summary: str(required=True, description='
-    Summary string to include with global metadata.
-    The final dataset summary metadata field is: dataset_description_head + grouping[name] + dataset_description_tail + project_summary')
+project_summary: |
+  str(required=True, description='''Summary string to include with global metadata.
+  The final dataset summary metadata field is: dataset_description_head + grouping[name] + dataset_description_tail + project_summary''')
 netcdf4_compression_encodings: include('compression', required=True, description='Variable-level NetCDF4 compression encodings')
-variable_coordinates_as_encoded_attributes: list(str(), required=True, description='
-    Per PO.DAAC request: possible coordinate names to be included with variable encodings (runtime-determined)')
+variable_coordinates_as_encoded_attributes: "list(str(), required=True, description='Per PO.DAAC request: possible coordinate names to be included with variable encodings (runtime-determined)')"
 doi_authority: str(required=True, description='Assigned DOI authority (ref. https://www.doi.org/)')
 doi_prefix: str(required=True, matches=r'^\d+\.\d+$', description='Assigned DOI prefix')
 dataset_description_tail_1D: str(required=False, description='Tail string for the dataset description for 1D grid')
@@ -76,12 +76,12 @@ processed_output_dir_base: str(required=False)
 
 latlon_grid_resolution: num(min=0, required=False, arg_name='resolution', description='Resolution of the lat-lon grid used for transformation (degrees)')
 latlon_grid_area_extent: list(num(), required=False, arg_name='extent', description='Area extent for lat-lon grid [lon_min, lat_max, lon_max, lat_min]')
-latlon_effective_grid_radius: num(required=False, arg_name='grid-radius', description='Effective target grid cell radius for mapping (km). If not specified (null), defaults to: (111/2)*sqrt(2) ≈ 78.5 km')
-latlon_grid_radius_method: enum('method_1', 'method_2', required=False, description='
-    Method for calculating effective target grid cell radius for mapping factors generation, if latlon_effective_grid_radius is not specified (null).
+latlon_effective_grid_radius: "num(required=False, arg_name='grid-radius', description='Effective target grid cell radius for mapping (km). If not specified (null), defaults to: (111/2)*sqrt(2) ≈ 78.5 km')"
+latlon_grid_radius_method: |
+  enum('method_1', 'method_2', required=False, description='''Method for calculating effective target grid cell radius for mapping factors generation, if latlon_effective_grid_radius is not specified (null).
     Method 1: (used in V4r4) spatially-varying, the radius of a circle with the same area as each lat-lon grid cell.
     Method 2: spatially-invariant, X km, the distance from the center of a square grid cell with sides of length L = 111 km * latlon_grid_resolution to a corner.
-    i.e. latlon_effective_grid_radius = sqrt(2) * 111 km * latlon_grid_resolution / 2')
+      i.e. latlon_effective_grid_radius = sqrt(2) * 111 km * latlon_grid_resolution / 2''')
 
 #---------------------------------------------------------------------
 # Custom grid parameters (used by create_factors)
