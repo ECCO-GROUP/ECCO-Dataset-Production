@@ -2,7 +2,7 @@
 CLI Scripts Reference
 =====================
 
-The ECCO Dataset Production package provides six command-line interface (CLI)
+The ECCO Dataset Production package provides command-line interface (CLI)
 scripts that support the end-to-end workflow of generating ECCO datasets.
 These scripts are installed as entry points when the package is installed
 and can be invoked directly from the command line.
@@ -62,6 +62,8 @@ input/output files, and execution flow diagrams.
    script_generate_datasets
    script_aws_s3_sync
    script_subset_tasklists
+   script_add_metadata
+   script_verify_doi_coverage
 
 
 Quick Reference
@@ -90,6 +92,14 @@ Quick Reference
 :doc:`script_subset_tasklists`
     Creates subsets of tasklist JSON files for testing and quick runs.
     Supports 10 sampling modes including temporal, statistical, and custom selection.
+
+:doc:`script_add_metadata`
+    Applies ECCO metadata to existing NetCDF files without requiring external
+    grid files or mapping factors. Useful for grid geometry files and bare datasets.
+
+:doc:`script_verify_doi_coverage`
+    Verifies that all dataset groupings have corresponding DOI entries in the
+    PO.DAAC dataset CSV file. Ensures publication readiness.
 
 
 Complete Workflow Example

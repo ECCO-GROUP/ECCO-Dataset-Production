@@ -19,3 +19,4 @@ Untitled*.ipynb
 
 document_generator/document/final_doc.fdb_latexmk
 document_generator/document/final_doc.fls
+*.sha512

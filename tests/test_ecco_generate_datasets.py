@@ -45,17 +45,28 @@ def minimal_input_netcdf():
 def minimal_config():
     """Minimal configuration for testing."""
     return {
+        'ecco_version': 'V4r6',
+        'product_version': 'Version 4, Release 6',
+        'ecco_production_filestr_grid_label': {
+            'latlon': '0p50deg',
+            'native': 'llc0090'
+        },
         'array_precision': 'float32',
-        'doi_prefix': 'https://doi.org/10.5067/TEST',
-        'doi_authority': 'https://dx.doi.org',
-        'history': 'Test history',
-        'geospatial_vertical_min': '0.0',
         'model_start_time': '1992-01-01T00:00:00',
         'model_end_time': '2017-12-31T23:59:59',
-        'product_version': '4r6',
+        'model_timestep': 1,
+        'model_timestep_units': 'h',
+        'geospatial_vertical_min': -6134.5,
+        'podaac_metadata_filename': 'PODAAC_dataset_table_V4r6.csv',
+        'doi_prefix': '10.5067',
+        'doi_authority': 'https://dx.doi.org',
+        'history': 'Test history',
         'references': 'Test references',
         'source': 'Test source',
-        'summary': 'Test summary',
+        'project_summary': 'Test summary',
+        'dataset_description_tail_latlon': 'Test latlon description',
+        'dataset_description_tail_native': 'Test native description',
+        'dataset_description_tail_1D': '',
         'netcdf4_compression_encodings': {
             'zlib': True,
             'complevel': 5,

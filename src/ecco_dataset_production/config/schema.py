@@ -4,6 +4,7 @@ ECCO Dataset Production configuration schema utilities.
 This module provides the Schema class for validating configuration files
 and extracting default values.
 """
+import copy
 from pathlib import Path
 from typing import Any
 import yamale
@@ -29,22 +30,32 @@ class Schema:
             raise RuntimeError(f'Schema not found: {str(self.schema_path)}')
 
         self._schema = yamale.make_schema(self.schema_path)
+
+        # Cache a copy without required constraints for partial validation
+        self._schema_no_required = copy.deepcopy(self._schema)
+        for validator in self._schema_no_required.dict.values():
+            if hasattr(validator, 'is_required'):
+                validator.is_required = False
+
         self._defaults = self._extract_defaults()
         self._arg_names = self._extract_arg_names()
         self._descriptions = self._extract_descriptions()
 
-    def validate(self, config_dict: dict, source: str = 'in-memory') -> None:
+    def validate(self, config_dict: dict, source: str = 'in-memory',
+                 check_required: bool = True) -> None:
         """Validate a configuration dictionary against the schema.
 
         Args:
             config_dict: Configuration dictionary to validate
             source: Source identifier for error messages (e.g., filename or description)
+            check_required: If False, skip required field validation
 
         Raises:
             yamale.YamaleError: If validation fails
         """
         data_list = [(config_dict, source)]
-        yamale.validate(self._schema, data_list)
+        schema = self._schema if check_required else self._schema_no_required
+        yamale.validate(schema, data_list)
 
     def get_defaults(self) -> dict[str, Any]:
         """Get default values from the schema.

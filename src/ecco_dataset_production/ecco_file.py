@@ -249,13 +249,15 @@ class ECCOGranuleFilestr(object):
         filestring components are undefined.
 
         """
-        prefix = self.prefix if self.prefix else '*'
-        averaging_period = self.averaging_period if self.averaging_period else '*'
-        date = self.date if self.date else '*'
-        version = self.version if self.version else '*'
-        grid_type = self.grid_type if self.grid_type else '*'
-        grid_label = self.grid_label if self.grid_label else '*'
-        ext = self.ext if self.ext else '*'
+        # Build filename pattern components: use actual values if defined, otherwise use shell wildcard '*'
+        # This allows partial filename matching, e.g., "SSH_*_2010-01_*" matches any version/grid
+        prefix = self.prefix if self.prefix else '*'                        # e.g., 'SEA_SURFACE_HEIGHT' or '*'
+        averaging_period = self.averaging_period if self.averaging_period else '*'  # e.g., 'mon_mean', 'day_mean', or '*'
+        date = self.date if self.date else '*'                              # e.g., '2010-01', '2010-01-15', or '*'
+        version = self.version if self.version else '*'                     # e.g., 'V4r4', 'V4r6', or '*'
+        grid_type = self.grid_type if self.grid_type else '*'               # e.g., 'native', 'latlon', or '*'
+        grid_label = self.grid_label if self.grid_label else '*'            # e.g., 'llc0090', '0p50deg', or '*'
+        ext = self.ext if self.ext else '*'                                 # e.g., 'nc', 'data', 'meta', or '*'
 
         if self.averaging_period == 'time-invariant':
             return '_'.join([prefix, 'ECCO', version, grid_type, grid_label + '.' + ext])
@@ -272,13 +274,25 @@ class ECCOGranuleFilestr(object):
         if hasattr(self, '_re_filestr') and self._re_filestr:
             return self._re_filestr
 
-        prefix = self.prefix if self.prefix else '.*'
-        averaging_period = self.averaging_period if self.averaging_period else '.*'
-        date = self.date if self.date else r'\d{4}-\d{2}-\d{2}'
-        version = self.version if self.version else '.*'
-        grid_type = self.grid_type if self.grid_type else '.*'
-        grid_label = self.grid_label if self.grid_label else '.*'
-        ext = self.ext if self.ext else '.*'
+        # Build regex pattern components: use actual values if defined, otherwise use regex wildcard '.*'
+        # This enables pattern matching in pandas/PO.DAAC metadata lookups
+        prefix = self.prefix if self.prefix else '.*'                        # e.g., 'SEA_SURFACE_HEIGHT' or '.*'
+        averaging_period = self.averaging_period if self.averaging_period else '.*'  # e.g., 'mon_mean', 'day_mean', or '.*'
+
+        # Date pattern depends on averaging period
+        if self.date:
+            date = self.date                                                  # Use specific date if provided
+        else:
+            # Monthly means have YYYY-MM format, daily means have YYYY-MM-DD format
+            if self.averaging_period and 'mon' in self.averaging_period.lower():
+                date = r'\d{4}-\d{2}'                                        # Regex for YYYY-MM (e.g., '2010-01')
+            else:
+                date = r'\d{4}-\d{2}-\d{2}'                                  # Regex for YYYY-MM-DD (e.g., '2010-01-15')
+
+        version = self.version if self.version else '.*'                     # e.g., 'V4r4', 'V4r6', or '.*'
+        grid_type = self.grid_type if self.grid_type else '.*'               # e.g., 'native', 'latlon', or '.*'
+        grid_label = self.grid_label if self.grid_label else '.*'            # e.g., 'llc0090', '0p50deg', or '.*'
+        ext = self.ext if self.ext else '.*'                                 # e.g., 'nc', 'data', 'meta', or '.*'
 
         if self.averaging_period == 'time-invariant':
              return '_'.join([prefix, 'ECCO', version, grid_type, grid_label + r'\.' + ext])

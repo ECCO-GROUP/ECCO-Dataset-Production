@@ -290,34 +290,27 @@ def delete_files(data_file_paths,
 # =================================================================================================
 # GET LAND MASK
 # =================================================================================================
-def get_land_mask(
-    mapping_factors_dir,
-    product_generation_config, k=0
-    #extra_prints=False):
-    ):
+def get_land_mask(mapping_factors_dir, k=0):
     """
     Get land mask from mapping_factors_dir for level k
 
     Args:
-        #mapping_factors_dir (PosixPath): Path to /ECCO-Dataset-Production/aws/mapping_factors/{ecco_version}
-        #extra_prints (optional, bool): Boolean to enable more print statements
-        product_generation_config (dict): Configuration data, with runtime defaults applied.
-        k (optional, int): Integer vertical level index to retrieve land mask for (0-{num_vertical_levels})
+        mapping_factors_dir (PosixPath): Path to mapping factors directory
+        k (int, optional): Vertical level index to retrieve land mask for (default: 0)
 
     Returns:
-        (status, land_mask_ll) (tuple):
-            status (str): String that is either "SUCCESS" or "ERROR {error message}"
-            land_mask_ll (list): Flat list mask where nan indicates a dry point, and a 1 indicates a wet point
+        tuple: (status, land_mask_ll) where
+            status (str): Either "SUCCESS" or "ERROR {error message}"
+            land_mask_ll (array): Flat array mask where NaN indicates dry point, 1 indicates wet point
     """
-    log.info('Getting land mask from %s ...', product_generation_config['land_mask_dir'])
-    #if extra_prints: print('\nGetting Land Mask')
 
     status = 'SUCCESS'
     land_mask_ll = []
 
-    # check to see if land mask has already been calculated:
-    land_mask_fdir = Path(product_generation_config['land_mask_dir']) if 'land_mask_dir' in product_generation_config else Path(mapping_factors_dir) / 'land_mask'
-    #land_mask_fdir = Path(mapping_factors_dir) / 'land_mask'
+    # the land mask should be in the land_mask directory within the mapping_factors_dir
+    land_mask_fdir = Path(mapping_factors_dir) / 'land_mask'
+    log.info('Getting land mask from %s ...', land_mask_fdir)
+    
     land_mask_fname = ''
     for lm_file in os.listdir(land_mask_fdir):
         if f'_{k}.xz' in lm_file:
@@ -486,9 +479,7 @@ def transform_latlon(ecco,
             F_wet_native = F[k][wet_pts_k[k]]
 
         # Get land mask for the corresponding vertical level
-        status, ll_land_mask = get_land_mask(mapping_factors_dir, 
-                                             k=k, 
-                                             extra_prints=extra_prints)
+        status, ll_land_mask = get_land_mask(mapping_factors_dir, k=k)
         if status != 'SUCCESS':
             return (status, [])
 

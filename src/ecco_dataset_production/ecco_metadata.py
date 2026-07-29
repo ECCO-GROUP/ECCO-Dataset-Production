@@ -49,7 +49,7 @@ class ECCOMetadata(object):
         ecco_metadata_loc (str): Optional pathname of either ECCO metadata directory,
             or similar remote location given by AWS S3 bucket/prefix. Either
             ecco_metadata_loc or task may be provided but not both.
-        \*\*kwargs: If either task or ecco_metadata_loc references an AWS S3
+        **kwargs: If either task or ecco_metadata_loc references an AWS S3
             endpoint and if running within an institutionally-managed AWS IAM
             Identity Center (SSO) environment, additional arguments that may be
             necessary include:
@@ -137,6 +137,82 @@ class ECCOMetadata(object):
                     log.debug('  %s: %s', k, v)
         log.info("...done collecting 'groupings' metadata sourced from %s", self.metadata_dir)
         return dataset_groupings
+
+
+    @property
+    def variable_metadata(self):
+        """Get variable metadata, returned as dictionary with 'native', 'latlon',
+        and 'geometry' keys. Each contains a list of variable metadata dictionaries.
+
+        Returns:
+            dict: Variable metadata organized by type:
+                - 'native': List of metadata dicts from variable_metadata.json
+                - 'latlon': List of metadata dicts from variable_metadata_for_latlon_datasets.json
+                - 'geometry_native': List of geometry metadata dicts for native datasets
+                - 'geometry_latlon': List of geometry metadata dicts for latlon datasets
+
+        """
+        log.info("collecting 'variable' metadata sourced from %s...", self.metadata_dir)
+        variable_metadata = {}
+
+        for file in glob.glob(os.path.join(self.metadata_dir,'*.json')):
+            basename = os.path.basename(file)
+
+            # Native variable metadata
+            if re.search(r'variable_metadata\.json$', basename, re.IGNORECASE):
+                log.debug('parsing native variable metadata file %s ... ', file)
+                with open(file) as f:
+                    variable_metadata['native'] = json.load(f)
+
+            # Latlon variable metadata
+            elif re.search(r'variable_metadata_for_latlon_datasets\.json$', basename, re.IGNORECASE):
+                log.debug('parsing latlon variable metadata file %s ... ', file)
+                with open(file) as f:
+                    variable_metadata['latlon'] = json.load(f)
+
+            # Geometry metadata for native
+            elif re.search(r'geometry_metadata_for_native_datasets\.json$', basename, re.IGNORECASE):
+                log.debug('parsing native geometry metadata file %s ... ', file)
+                with open(file) as f:
+                    variable_metadata['geometry_native'] = json.load(f)
+
+            # Geometry metadata for latlon
+            elif re.search(r'geometry_metadata_for_latlon_datasets\.json$', basename, re.IGNORECASE):
+                log.debug('parsing latlon geometry metadata file %s ... ', file)
+                with open(file) as f:
+                    variable_metadata['geometry_latlon'] = json.load(f)
+
+        log.info("...done collecting 'variable' metadata sourced from %s", self.metadata_dir)
+        return variable_metadata
+
+
+    def get_variable_metadata_entry(self, variable_name, grid_type='native'):
+        """Get metadata entry for a specific variable.
+
+        Args:
+            variable_name (str): Name of the variable (e.g., 'SSH', 'THETA').
+            grid_type (str): Grid type - 'native' or 'latlon' (default: 'native').
+
+        Returns:
+            dict or None: Metadata dictionary for the variable, or None if not found.
+
+        """
+        var_meta = self.variable_metadata
+
+        # Search in primary variable metadata
+        metadata_list = var_meta.get(grid_type, [])
+        for entry in metadata_list:
+            if entry.get('name') == variable_name:
+                return entry
+
+        # Search in geometry metadata as fallback
+        geometry_key = f'geometry_{grid_type}'
+        geometry_list = var_meta.get(geometry_key, [])
+        for entry in geometry_list:
+            if entry.get('name') == variable_name:
+                return entry
+
+        return None
 
 
     def __del__(self):
